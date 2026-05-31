@@ -3,20 +3,34 @@
     <!-- iTunes Playlist / Album Header -->
     <div class="p-6 border-b border-zinc-900 bg-[#0e0e11]/80 flex items-start gap-5">
         
-        <!-- Album Art Box -->
-        <div class="h-24 w-24 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-inner flex items-center justify-center flex-shrink-0">
-            <img src="https://unpkg.com/pixelarticons@latest/svg/music.svg" class="h-8 w-8" style="filter: invert(1);" />
+        <!-- Cassette Tape / Floppy Disk Graphic -->
+        <div class="h-24 w-24 rounded bg-zinc-950 border border-zinc-800 flex flex-col justify-between p-2 shadow-inner select-none relative flex-shrink-0">
+            <!-- Floppy Shutter sliding metal band -->
+            <div class="h-8 w-11 bg-zinc-700 border border-zinc-650 rounded-sm self-center flex items-center justify-center text-[5px] font-pixel text-zinc-400 select-none">
+                SHUTTER
+            </div>
+            <!-- Dynamic Label block -->
+            <div class="bg-white text-black rounded p-1 flex-1 flex flex-col justify-center text-[7px] font-pixel select-none tracking-normal leading-tight mt-1.5 overflow-hidden">
+                <span class="truncate uppercase font-bold text-center block tracking-widest text-[#fb526b]">
+                    {{ bank.synth_model.split(' ')[0] }}
+                </span>
+                <span class="text-[5.5px] text-zinc-600 font-mono text-center block mt-0.5">
+                    {{ bank.patches | length }} FILES
+                </span>
+            </div>
+            <!-- Protect notch notch -->
+            <div class="absolute bottom-2.5 right-2.5 h-1.5 w-1.5 bg-black rounded-xs"></div>
         </div>
         
         <!-- Playlist details & actions -->
         <div class="flex-1 flex flex-col justify-between h-24 min-w-0">
             <div>
                 <span class="text-[10px] font-pixel text-[#fb526b] uppercase tracking-widest">Knob Monster Soundbank</span>
-                <h2 class="text-lg font-bold text-white tracking-tight leading-tight truncate mt-0.5">
+                <h2 class="text-lg font-pixel uppercase text-white tracking-tight leading-tight truncate mt-0.5">
                     {{ bank.name }}
                 </h2>
-                <p class="text-2xs text-zinc-500 font-medium mt-1">
-                    {{ bank.synth_model }} &bull; {{ bank.patches | length }} Presets &bull; Saved on {{ bank.created_at }}
+                <p class="text-2xs text-zinc-500 font-mono mt-1">
+                    {{ bank.synth_model }} &bull; {{ bank.patches | length }} Presets &bull; Saved: {{ bank.created_at }}
                 </p>
             </div>
             
@@ -25,7 +39,7 @@
                 <div class="flex items-center gap-2">
                     <!-- Sync/Flash Button -->
                     <button onclick="flashBank({{ bank.id }}, '{{ bank.name }}')" 
-                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#fb526b] text-white hover:bg-[#ff697e] font-pixel uppercase text-[10px] tracking-wider transition-colors shadow active:scale-95">
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-[#fb526b] text-white hover:bg-[#ff697e] font-pixel uppercase text-[9px] tracking-wider transition-colors shadow active:scale-95 tactical-pink-button">
                         <img src="https://unpkg.com/pixelarticons@latest/svg/reload.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
                         Sync to Synth
                     </button>
@@ -33,7 +47,7 @@
                     <!-- Download -->
                     <a href="/banks/{{ bank.id }}/download" 
                        title="Download .syx backup file" 
-                       class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-zinc-900 border border-zinc-850 hover:bg-zinc-800 text-zinc-350 font-pixel uppercase text-[10px] tracking-wider transition-colors">
+                       class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-350 font-pixel uppercase text-[9px] tracking-wider transition-colors tactical-button">
                         <img src="https://unpkg.com/pixelarticons@latest/svg/download.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
                         Download file
                     </a>
@@ -42,36 +56,36 @@
                     <button hx-delete="/banks/{{ bank.id }}" 
                             hx-target="#bank-list-container" 
                             hx-confirm="Remove this soundbank from your library?"
-                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-rose-500/10 text-zinc-550 hover:text-rose-450 font-semibold text-xs transition-colors">
-                        <img src="https://unpkg.com/pixelarticons@latest/svg/trash.svg" class="h-3.5 w-3.5 opacity-40 group-hover:opacity-100 transition-opacity" style="filter: invert(1);" />
+                            class="inline-flex items-center gap-1 px-2 py-1 rounded hover:bg-rose-500/10 text-zinc-500 hover:text-rose-450 font-semibold text-xs transition-colors border border-transparent hover:border-rose-500/20">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/trash.svg" class="h-3.5 w-3.5 opacity-60 hover:opacity-100 transition-opacity" style="filter: invert(1);" />
                     </button>
                 </div>
 
-                <!-- Playlist Search bar -->
-                <div class="relative w-48">
-                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
-                        <img src="https://unpkg.com/pixelarticons@latest/svg/search.svg" class="h-3.5 w-3.5 opacity-40" style="filter: invert(1);" />
+                <!-- Playlist Search bar styled as retro console terminal input -->
+                <div class="relative w-52">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[8px] font-pixel text-zinc-600">
+                        $ SEARCH &gt;
                     </div>
                     <input type="text" 
                            id="patch-search" 
-                           placeholder="Search presets..." 
+                           placeholder="" 
                            onkeyup="filterPatches()"
-                           class="block w-full pl-8 pr-2.5 py-2 text-[11px] bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-350 focus:outline-none focus:border-zinc-800 font-pixel uppercase placeholder-zinc-700 tracking-wider">
+                           class="block w-full pl-20 pr-2.5 py-1.5 text-2xs bg-zinc-950 border border-zinc-900 focus:border-zinc-750 rounded text-zinc-350 focus:outline-none font-mono placeholder-zinc-850">
                 </div>
             </div>
         </div>
     </div>
 
     <!-- iTunes Song Grid Table -->
-    <div class="flex-1 overflow-y-auto custom-scrollbar">
+    <div class="flex-1 overflow-y-auto custom-scrollbar bg-[#08080a]">
         <table class="w-full border-collapse text-left">
             <thead>
-                <tr class="border-b border-zinc-900 text-[10px] font-pixel text-zinc-550 uppercase tracking-widest select-none bg-[#0a0a0c]/50 sticky top-0 backdrop-blur-xs">
-                    <th class="py-2.5 pl-6 w-12 text-center">Index</th>
-                    <th class="py-2.5 px-4">Preset Name</th>
-                    <th class="py-2.5 px-4 w-40">Synthesizer</th>
-                    <th class="py-2.5 px-4 w-28">Slot</th>
-                    <th class="py-2.5 pr-6 w-24 text-right">Size</th>
+                <tr class="border-b border-zinc-900 text-[10px] font-pixel text-zinc-600 uppercase tracking-widest select-none bg-[#0a0a0c]/80 sticky top-0 backdrop-blur-xs">
+                    <th class="py-2.5 pl-6 w-16 text-center">Index</th>
+                    <th class="py-2.5 px-4 font-pixel">Preset Name</th>
+                    <th class="py-2.5 px-4 w-40 font-pixel">Synthesizer</th>
+                    <th class="py-2.5 px-4 w-28 font-pixel">Slot</th>
+                    <th class="py-2.5 pr-6 w-24 text-right font-pixel">Size</th>
                 </tr>
             </thead>
             <tbody id="patches-grid">
@@ -79,27 +93,27 @@
                 <tr id="patch-row-{{ patch.index }}"
                     onclick="selectPatch({{ patch.index }}, '{{ patch.name }}')"
                     ondblclick="selectPatch({{ patch.index }}, '{{ patch.name }}'); toggleAuditionPlay();"
-                    class="patch-row group border-b border-zinc-900/40 hover:bg-zinc-900/30 transition-colors cursor-pointer text-xs"
+                    class="patch-row group border-b border-zinc-900/40 hover:bg-zinc-900/20 transition-colors cursor-pointer text-xs"
                     data-name="{{ patch.name | lower }}"
                     data-index="{{ patch.index + 1 }}">
                     
                     <!-- Index / Play Trigger -->
-                    <td class="py-2.5 pl-6 text-center text-zinc-655 font-lcd text-sm relative">
-                        <span class="group-hover:hidden">{{ "%02d" | format(patch.index + 1) }}</span>
+                    <td class="py-2.5 pl-6 text-center text-zinc-600 font-lcd text-sm relative">
+                        <span class="group-hover:hidden tracking-wider">{{ "%02d" | format(patch.index + 1) }}</span>
                         <!-- Play Hover Icon -->
                         <button onclick="event.stopPropagation(); selectPatch({{ patch.index }}, '{{ patch.name }}'); toggleAuditionPlay();"
                                 class="hidden group-hover:flex absolute inset-0 items-center justify-center text-[#fb526b]">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/play.svg" class="h-3.5 w-3.5" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/play.svg" class="h-3.5 w-3.5 animate-pulse" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
                         </button>
                     </td>
                     
                     <!-- Name -->
-                    <td class="py-2.5 px-4 font-semibold text-zinc-300 group-hover:text-[#fb526b] transition-colors">
+                    <td class="py-2.5 px-4 font-semibold text-zinc-300 group-hover:text-[#fb526b] transition-colors font-mono tracking-wide">
                         {{ patch.name }}
                     </td>
                     
                     <!-- Model -->
-                    <td class="py-2.5 px-4 text-zinc-550">
+                    <td class="py-2.5 px-4 text-zinc-550 font-mono text-[10px]">
                         {{ bank.synth_model }}
                     </td>
                     

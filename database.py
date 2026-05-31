@@ -2,14 +2,15 @@ import sqlite3
 import os
 from datetime import datetime
 
-DATABASE_URL = os.getenv("DATABASE_URL", "")
-IS_POSTGRES = DATABASE_URL.startswith("postgres://") or DATABASE_URL.startswith("postgresql://")
+# Hardcoded Production Neon PostgreSQL Configuration
+DATABASE_URL = "postgresql://neondb_owner:npg_pS5QZYe0Nwyr@ep-empty-night-ajgmosjt-pooler.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+IS_POSTGRES = True
 
 def get_db_connection():
     if IS_POSTGRES:
         import psycopg2
-        # Handle sslmode (recommended for Supabase/Render/Neon in production)
-        conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+        # psycopg2 automatically parses query params like sslmode from the connection string URL
+        conn = psycopg2.connect(DATABASE_URL)
         return conn
     else:
         DB_PATH = "d:/crew/experiment/sysex_vault.db"

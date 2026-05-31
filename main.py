@@ -23,12 +23,12 @@ templates = Jinja2Templates(directory="d:/crew/experiment/templates")
 app.mount("/static", StaticFiles(directory="d:/crew/experiment/static"), name="static")
 
 # Configure Stripe key & fallback mock mode
-STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
-STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+STRIPE_SECRET_KEY = "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"
+STRIPE_WEBHOOK_SECRET = "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
 stripe.api_key = STRIPE_SECRET_KEY
 
-STRIPE_PRICE_ID = os.getenv("STRIPE_PRICE_ID", "")
-BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000")
+STRIPE_PRICE_ID = "price_1TdIB8LuSQGuB7eywbBCPAmF"
+BASE_URL = "https://knob.monster"
 
 # Initialize SQLite database and copy assets on startup
 @app.on_event("startup")

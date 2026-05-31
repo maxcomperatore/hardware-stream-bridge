@@ -92,6 +92,19 @@ async def startup_event():
 def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
 
+# Version-safe TemplateResponse wrapper to support both Starlette >= 0.28 and Starlette < 0.28
+def render_template(template_name: str, request: Request, context: dict = None, status_code: int = 200):
+    if context is None:
+        context = {}
+    context["request"] = request
+    
+    import inspect
+    sig = inspect.signature(templates.TemplateResponse)
+    if "request" in sig.parameters:
+        return templates.TemplateResponse(request=request, name=template_name, context=context, status_code=status_code)
+    else:
+        return templates.TemplateResponse(name=template_name, context=context, status_code=status_code)
+
 # Session resolver
 def get_current_user(request: Request):
     email = request.cookies.get("session_user")
@@ -103,26 +116,26 @@ def get_current_user(request: Request):
 @app.exception_handler(StarletteHTTPException)
 async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
     if exc.status_code == 404:
-        return templates.TemplateResponse("404.html", {"request": request}, status_code=404)
+        return render_template("404.html", request, status_code=404)
     return HTMLResponse(str(exc.detail), status_code=exc.status_code)
 
 # --- Marketing & Auth Pages ---
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     user = get_current_user(request)
-    return templates.TemplateResponse("landing.html", {"request": request, "user": user})
+    return render_template("landing.html", request, {"user": user})
 
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request, error: str = None):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
-    return templates.TemplateResponse("login.html", {"request": request, "error": error})
+    return render_template("login.html", request, {"error": error})
 
 @app.post("/login")
 async def do_login(request: Request, email: str = Form(...), password: str = Form(...)):
     user = database.get_user_by_email(email)
     if not user or user["hashed_password"] != hash_password(password):
-        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid email or password"})
+        return render_template("login.html", request, {"error": "Invalid email or password"})
     
     response = RedirectResponse(url="/dashboard", status_code=303)
     response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
@@ -132,21 +145,21 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
 async def signup_page(request: Request, error: str = None):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
-    return templates.TemplateResponse("signup.html", {"request": request, "error": error})
+    return render_template("signup.html", request, {"error": error})
 
 @app.post("/signup")
 async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...)):
     if password != confirm_password:
-        return templates.TemplateResponse("signup.html", {"request": request, "error": "Passwords do not match"})
+        return render_template("signup.html", request, {"error": "Passwords do not match"})
     
     user = database.get_user_by_email(email)
     if user:
-        return templates.TemplateResponse("signup.html", {"request": request, "error": "Email is already registered"})
+        return render_template("signup.html", request, {"error": "Email is already registered"})
     
     try:
         database.create_user(email, hash_password(password))
     except Exception as e:
-        return templates.TemplateResponse("signup.html", {"request": request, "error": "Account registration failed."})
+        return render_template("signup.html", request, {"error": "Account registration failed."})
         
     response = RedirectResponse(url="/dashboard", status_code=303)
     response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
@@ -166,7 +179,7 @@ async def dashboard(request: Request):
         return RedirectResponse(url="/login")
         
     banks = database.get_all_banks(user["id"])
-    return templates.TemplateResponse("index.html", {"request": request, "banks": banks, "user": user})
+    return render_template("index.html", request, {"banks": banks, "user": user})
 
 @app.get("/banks", response_class=HTMLResponse)
 async def get_banks(request: Request):
@@ -177,7 +190,7 @@ async def get_banks(request: Request):
         return RedirectResponse(url="/login")
         
     banks = database.get_all_banks(user["id"])
-    return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
+    return render_template("bank_list.html", request, {"banks": banks})
 
 @app.get("/banks/{bank_id}", response_class=HTMLResponse)
 async def get_bank_details(request: Request, bank_id: int):
@@ -190,7 +203,7 @@ async def get_bank_details(request: Request, bank_id: int):
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
-    return templates.TemplateResponse("patch_list.html", {"request": request, "bank": bank})
+    return render_template("patch_list.html", request, {"bank": bank})
 
 @app.post("/banks", response_class=HTMLResponse)
 async def create_bank(
@@ -232,7 +245,7 @@ async def create_bank(
     
     # Return updated bank list
     banks = database.get_all_banks(user["id"])
-    return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
+    return render_template("bank_list.html", request, {"banks": banks})
 
 @app.post("/banks/upload", response_class=HTMLResponse)
 async def upload_bank_file(
@@ -269,7 +282,7 @@ async def upload_bank_file(
     database.save_bank(name, synth_model, sysex_hex, patch_names, user["id"])
     
     banks = database.get_all_banks(user["id"])
-    return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
+    return render_template("bank_list.html", request, {"banks": banks})
 
 @app.delete("/banks/{bank_id}", response_class=HTMLResponse)
 async def delete_bank(request: Request, bank_id: int):
@@ -281,7 +294,7 @@ async def delete_bank(request: Request, bank_id: int):
         
     database.delete_bank(bank_id, user["id"])
     banks = database.get_all_banks(user["id"])
-    return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
+    return render_template("bank_list.html", request, {"banks": banks})
 
 @app.get("/banks/{bank_id}/download")
 async def download_bank(request: Request, bank_id: int):

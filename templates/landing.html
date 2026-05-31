@@ -117,10 +117,21 @@
             </nav>
 
             <div class="flex items-center gap-4">
+                {% if user %}
                 <a href="/dashboard"
                     class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
                     Launch Console
                 </a>
+                {% else %}
+                <a href="/login"
+                    class="border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center">
+                    Sign In
+                </a>
+                <a href="/signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Launch Console
+                </a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -476,10 +487,17 @@
                     </ul>
                 </div>
 
-                <a href="/dashboard"
+                {% if user %}
+                <a href="/checkout"
                     class="w-full text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
                     Upgrade to Pro
                 </a>
+                {% else %}
+                <a href="/signup"
+                    class="w-full text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
+                    Upgrade to Pro
+                </a>
+                {% endif %}
             </div>
         </div>
     </section>

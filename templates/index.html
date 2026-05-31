@@ -262,7 +262,14 @@
                         <img src="/static/logo.png" alt="Knob Monster Logo" class="h-6 w-6 shrink-0 object-contain">
                         knob.monster
                     </h2>
-                    <p class="text-[9px] text-zinc-655 font-pixel uppercase tracking-wider mt-1.5">Archiving 80s/90s patches</p>
+                    <div class="flex items-center justify-between mt-2.5 pl-0.5 border-t border-zinc-900/60 pt-2">
+                        <span class="text-[8px] font-mono text-zinc-550 truncate max-w-[125px]" title="{{ user.email }}">{{ user.email }}</span>
+                        {% if user.tier == 'premium' %}
+                        <a href="/portal" class="text-[7px] font-pixel px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase hover:bg-amber-500 hover:text-black transition-all">PRO</a>
+                        {% else %}
+                        <button onclick="showUpgradeModal()" class="text-[7px] font-pixel px-1.5 py-0.5 rounded bg-[#fb526b]/10 text-[#fb526b] border border-[#fb526b]/20 uppercase hover:bg-[#fb526b] hover:text-white transition-all">UPGRADE</button>
+                        {% endif %}
+                    </div>
                 </div>
                 
                 <!-- Library Menu -->
@@ -339,10 +346,13 @@
             </div>
             
             <!-- Sidebar Bottom Info -->
-            <div class="p-4 border-t border-zinc-900 text-[8px] font-pixel text-zinc-600 flex flex-col gap-1 uppercase tracking-wider">
+            <div class="p-4 border-t border-zinc-900 text-[8px] font-pixel text-zinc-655 flex flex-col gap-1 uppercase tracking-wider">
                 <span>Midi: <span id="midi-port-lbl">Simulation</span></span>
                 <span>Security: Sandbox</span>
-                <span>Logo by <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer" class="hover:text-white underline">Skoll</a> (CC BY 3.0)</span>
+                <div class="flex items-center justify-between mt-1.5 border-t border-zinc-900/40 pt-1.5">
+                    <a href="/logout" class="text-zinc-500 hover:text-white underline transition-colors">LOG OUT &rarr;</a>
+                    <span class="text-zinc-600">Logo: Skoll</span>
+                </div>
             </div>
         </aside>
         
@@ -1460,6 +1470,85 @@
                 toast.classList.add('translate-y-12', 'opacity-0');
             }, 4000);
         }
+
+        // --- Premium Paywall Modal & Hooks ---
+        function showUpgradeModal() {
+            const modal = document.getElementById('upgrade-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+            }
+        }
+        function closeUpgradeModal() {
+            const modal = document.getElementById('upgrade-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
+
+        document.body.addEventListener('triggerUpgradeModal', () => {
+            closeStatusOverlay();
+            showUpgradeModal();
+            showToast("Upgrade Required", "You have reached the limit of 3 soundbanks.", "warning");
+        });
+        
+        // Show success/cancel billing status notifications
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('payment') === 'success') {
+                showToast("Upgrade Successful", "Welcome to King of Knobs PRO!", "success");
+            } else if (params.get('payment') === 'cancel') {
+                showToast("Upgrade Cancelled", "Billing process was cancelled.", "info");
+            } else if (params.get('mock_portal') === '1') {
+                showToast("Pro Subscription Toggle", "Mock billing portal active: subscription changed.", "success");
+            }
+        });
     </script>
+
+    <!-- Premium Upgrade Paywall Modal -->
+    <div id="upgrade-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 flex items-center justify-center hidden-transition">
+        <div class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-96 max-w-[90vw] text-center shadow-2xl relative select-none">
+            <!-- Close btn -->
+            <button onclick="closeUpgradeModal()" class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
+                <img src="https://unpkg.com/pixelarticons@latest/svg/close.svg" class="h-4.5 w-4.5" style="filter: invert(0.6);" />
+            </button>
+
+            <!-- Mascot Badge -->
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-4">
+                <img src="/static/troll_gold.png" class="h-9 w-9 object-contain" />
+            </div>
+
+            <span class="text-[9px] font-pixel text-amber-500 uppercase tracking-widest">KING OF KNOBS</span>
+            <h3 class="text-sm font-pixel text-white uppercase mt-2">Unleash the Knob Monster</h3>
+            <p class="text-xs text-zinc-450 mt-3.5 leading-relaxed font-sans font-normal">
+                You've hit the free tier limit of <strong>3 saved soundbanks</strong>. Upgrade to premium for unlimited cloud vaults, instant backups, and continuous hardware sync.
+            </p>
+
+            <div class="my-5 p-4 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5 text-left text-2xs font-pixel uppercase tracking-wider text-zinc-400">
+                <div class="flex items-center gap-2">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/check.svg" class="h-3.5 w-3.5" style="filter: invert(0.6);" />
+                    <span>Unlimited Cloud Sync Storage</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/check.svg" class="h-3.5 w-3.5" style="filter: invert(0.6);" />
+                    <span>Real-time Live MIDI Monitor Log</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/check.svg" class="h-3.5 w-3.5" style="filter: invert(0.6);" />
+                    <span>DX7, Juno-106 & Korg M1 Support</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2.5 mt-2">
+                <a href="/checkout" class="w-full py-3 bg-white hover:bg-zinc-200 text-black text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
+                    Upgrade For $12/Mo
+                </a>
+                <button onclick="closeUpgradeModal()" class="w-full py-2 bg-transparent text-zinc-550 hover:text-zinc-400 text-[10px] font-pixel uppercase tracking-wider transition-colors">
+                    No thanks, keep it limited
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

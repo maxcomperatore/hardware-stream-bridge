@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException
+from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException, Response
 from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 import io
 import os
+import hashlib
+import stripe
 import database
 import parser
 
@@ -19,6 +21,14 @@ templates = Jinja2Templates(directory="d:/crew/experiment/templates")
 
 # Mount Static Files
 app.mount("/static", StaticFiles(directory="d:/crew/experiment/static"), name="static")
+
+# Configure Stripe key & fallback mock mode
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+stripe.api_key = STRIPE_SECRET_KEY
+
+STRIPE_PRICE_ID = os.getenv("STRIPE_PRICE_ID", "")
+BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000")
 
 # Initialize SQLite database and copy assets on startup
 @app.on_event("startup")
@@ -74,6 +84,17 @@ async def startup_event():
     if os.path.exists(recall_src):
         shutil.copy(recall_src, os.path.join(dest_dir, "recall_button.png"))
 
+# Password hashing helper
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Session resolver
+def get_current_user(request: Request):
+    email = request.cookies.get("session_user")
+    if not email:
+        return None
+    return database.get_user_by_email(email)
+
 # Custom 404 Error handler
 @app.exception_handler(StarletteHTTPException)
 async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
@@ -81,23 +102,88 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
         return templates.TemplateResponse("404.html", {"request": request}, status_code=404)
     return HTMLResponse(str(exc.detail), status_code=exc.status_code)
 
+# --- Marketing & Auth Pages ---
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse("landing.html", {"request": request})
+    user = get_current_user(request)
+    return templates.TemplateResponse("landing.html", {"request": request, "user": user})
 
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request, error: str = None):
+    if get_current_user(request):
+        return RedirectResponse(url="/dashboard")
+    return templates.TemplateResponse("login.html", {"request": request, "error": error})
+
+@app.post("/login")
+async def do_login(request: Request, email: str = Form(...), password: str = Form(...)):
+    user = database.get_user_by_email(email)
+    if not user or user["hashed_password"] != hash_password(password):
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid email or password"})
+    
+    response = RedirectResponse(url="/dashboard", status_code=303)
+    response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
+    return response
+
+@app.get("/signup", response_class=HTMLResponse)
+async def signup_page(request: Request, error: str = None):
+    if get_current_user(request):
+        return RedirectResponse(url="/dashboard")
+    return templates.TemplateResponse("signup.html", {"request": request, "error": error})
+
+@app.post("/signup")
+async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...)):
+    if password != confirm_password:
+        return templates.TemplateResponse("signup.html", {"request": request, "error": "Passwords do not match"})
+    
+    user = database.get_user_by_email(email)
+    if user:
+        return templates.TemplateResponse("signup.html", {"request": request, "error": "Email is already registered"})
+    
+    try:
+        database.create_user(email, hash_password(password))
+    except Exception as e:
+        return templates.TemplateResponse("signup.html", {"request": request, "error": "Account registration failed."})
+        
+    response = RedirectResponse(url="/dashboard", status_code=303)
+    response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
+    return response
+
+@app.get("/logout")
+async def do_logout():
+    response = RedirectResponse(url="/login", status_code=303)
+    response.delete_cookie(key="session_user", path="/")
+    return response
+
+# --- Protected Console App ---
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request):
-    banks = database.get_all_banks()
-    return templates.TemplateResponse("index.html", {"request": request, "banks": banks})
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    banks = database.get_all_banks(user["id"])
+    return templates.TemplateResponse("index.html", {"request": request, "banks": banks, "user": user})
 
 @app.get("/banks", response_class=HTMLResponse)
 async def get_banks(request: Request):
-    banks = database.get_all_banks()
+    user = get_current_user(request)
+    if not user:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/login"})
+        return RedirectResponse(url="/login")
+        
+    banks = database.get_all_banks(user["id"])
     return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
 
 @app.get("/banks/{bank_id}", response_class=HTMLResponse)
 async def get_bank_details(request: Request, bank_id: int):
-    bank = database.get_bank(bank_id)
+    user = get_current_user(request)
+    if not user:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/login"})
+        return RedirectResponse(url="/login")
+        
+    bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
     return templates.TemplateResponse("patch_list.html", {"request": request, "bank": bank})
@@ -109,15 +195,25 @@ async def create_bank(
     synth_model: str = Form(...),
     sysex_hex: str = Form(...)
 ):
+    user = get_current_user(request)
+    if not user:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/login"})
+        return RedirectResponse(url="/login")
+
+    # Paywall verification: free users are capped at 3 soundbanks
+    if user["tier"] == "free":
+        current_banks = database.get_all_banks(user["id"])
+        if len(current_banks) >= 3:
+            return Response(status_code=402, headers={"HX-Trigger": "triggerUpgradeModal"})
+
     try:
-        # Convert hex string back to bytes for parsing
-        # Strip any whitespace/newlines that might be in the hex string
         clean_hex = sysex_hex.strip().replace(" ", "").replace("\n", "").replace("\r", "")
         sysex_bytes = bytes.fromhex(clean_hex)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid hexadecimal string data")
     
-    # Parse voice names based on model
+    # Parse voices
     if synth_model == "Yamaha DX7":
         patch_names = parser.parse_dx7_sysex(sysex_bytes)
     elif synth_model == "Roland Juno-106":
@@ -127,11 +223,11 @@ async def create_bank(
     else:
         patch_names = parser.parse_generic_sysex(sysex_bytes)
         
-    # Save to database
-    database.save_bank(name, synth_model, clean_hex, patch_names)
+    # Save to database scoped to user
+    database.save_bank(name, synth_model, clean_hex, patch_names, user["id"])
     
-    # Return re-rendered bank list
-    banks = database.get_all_banks()
+    # Return updated bank list
+    banks = database.get_all_banks(user["id"])
     return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
 
 @app.post("/banks/upload", response_class=HTMLResponse)
@@ -141,11 +237,22 @@ async def upload_bank_file(
     synth_model: str = Form(...),
     file: UploadFile = File(...)
 ):
-    # Read raw bytes of the file
+    user = get_current_user(request)
+    if not user:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/login"})
+        return RedirectResponse(url="/login")
+
+    # Paywall verification: free users are capped at 3 soundbanks
+    if user["tier"] == "free":
+        current_banks = database.get_all_banks(user["id"])
+        if len(current_banks) >= 3:
+            return Response(status_code=402, headers={"HX-Trigger": "triggerUpgradeModal"})
+
     sysex_bytes = await file.read()
     sysex_hex = sysex_bytes.hex()
     
-    # Parse voice names
+    # Parse voices
     if synth_model == "Yamaha DX7":
         patch_names = parser.parse_dx7_sysex(sysex_bytes)
     elif synth_model == "Roland Juno-106":
@@ -155,22 +262,30 @@ async def upload_bank_file(
     else:
         patch_names = parser.parse_generic_sysex(sysex_bytes)
         
-    # Save to database
-    database.save_bank(name, synth_model, sysex_hex, patch_names)
+    database.save_bank(name, synth_model, sysex_hex, patch_names, user["id"])
     
-    # Return re-rendered bank list
-    banks = database.get_all_banks()
+    banks = database.get_all_banks(user["id"])
     return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
 
 @app.delete("/banks/{bank_id}", response_class=HTMLResponse)
 async def delete_bank(request: Request, bank_id: int):
-    database.delete_bank(bank_id)
-    banks = database.get_all_banks()
+    user = get_current_user(request)
+    if not user:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/login"})
+        return RedirectResponse(url="/login")
+        
+    database.delete_bank(bank_id, user["id"])
+    banks = database.get_all_banks(user["id"])
     return templates.TemplateResponse("bank_list.html", {"request": request, "banks": banks})
 
 @app.get("/banks/{bank_id}/download")
-async def download_bank(bank_id: int):
-    bank = database.get_bank(bank_id)
+async def download_bank(request: Request, bank_id: int):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
         
@@ -179,10 +294,7 @@ async def download_bank(bank_id: int):
     except ValueError:
         raise HTTPException(status_code=500, detail="Database data corruption: invalid hex")
         
-    # Stream the raw bytes back as a file download
     file_stream = io.BytesIO(sysex_bytes)
-    
-    # Generate a clean filename
     safe_name = bank["name"].lower().replace(" ", "_")
     filename = f"{safe_name}.syx"
     
@@ -193,8 +305,103 @@ async def download_bank(bank_id: int):
     )
 
 @app.get("/banks/{bank_id}/hex")
-async def get_bank_hex(bank_id: int):
-    bank = database.get_bank(bank_id)
+async def get_bank_hex(request: Request, bank_id: int):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+        
+    bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
     return {"sysex_hex": bank["sysex_hex"]}
+
+# --- Stripe Monetization Endpoints ---
+@app.get("/checkout")
+async def create_checkout_session(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    # If Stripe keys are missing, run in sandbox developer mock-mode
+    if not STRIPE_SECRET_KEY:
+        return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}")
+        
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price': STRIPE_PRICE_ID,
+                    'quantity': 1,
+                },
+            ],
+            mode='subscription',
+            success_url=BASE_URL + "/dashboard?payment=success",
+            cancel_url=BASE_URL + "/dashboard?payment=cancel",
+            customer_email=user["email"],
+            metadata={"user_email": user["email"]}
+        )
+        return RedirectResponse(url=checkout_session.url, status_code=303)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Stripe integration session error: {str(e)}")
+
+@app.get("/portal")
+async def create_portal_session(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    if not STRIPE_SECRET_KEY:
+        # Toggle subscription locally in mock mode for billing portal test ease
+        new_tier = "free" if user["tier"] == "premium" else "premium"
+        database.update_user_tier(user["email"], new_tier)
+        return RedirectResponse(url="/dashboard?mock_portal=1")
+        
+    if not user["stripe_customer_id"]:
+        return RedirectResponse(url="/checkout")
+        
+    try:
+        portal_session = stripe.billing_portal.Session.create(
+            customer=user["stripe_customer_id"],
+            return_url=BASE_URL + "/dashboard"
+        )
+        return RedirectResponse(url=portal_session.url, status_code=303)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Billing portal connection error: {str(e)}")
+
+@app.get("/mock-checkout-success")
+async def mock_checkout_success(email: str):
+    database.update_user_tier(email, "premium", "mock_customer_id")
+    return RedirectResponse(url="/dashboard?payment=success")
+
+@app.post("/stripe-webhook")
+async def stripe_webhook(request: Request):
+    payload = await request.body()
+    sig_header = request.headers.get("stripe-signature")
+    
+    if not STRIPE_WEBHOOK_SECRET:
+        return {"status": "ignored"}
+        
+    event = None
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, STRIPE_WEBHOOK_SECRET
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail="Invalid payload")
+    except stripe.error.SignatureVerificationError as e:
+        raise HTTPException(status_code=400, detail="Invalid signature")
+        
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        customer_email = session.get('customer_email') or session.get('metadata', {}).get('user_email')
+        customer_id = session.get('customer')
+        if customer_email:
+            database.update_user_tier(customer_email, "premium", customer_id)
+            
+    elif event['type'] == 'customer.subscription.deleted':
+        session = event['data']['object']
+        customer_id = session.get('customer')
+        database.update_user_tier_by_customer_id(customer_id, "free")
+        
+    return {"status": "success"}

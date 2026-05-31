@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - knob.monster</title>
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            450: '#7e7e8a',
+                            550: '#5c5c66',
+                            555: '#52525c',
+                            650: '#43434c',
+                            655: '#3e3e46',
+                            850: '#1c1c21',
+                        },
+                        blue: {
+                            650: '#1d4ed8',
+                        },
+                        rose: {
+                            450: '#fb7185',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+</head>
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-hidden min-h-screen flex flex-col justify-center items-center relative">
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+
+    <div class="w-full max-w-sm px-6 py-8 bg-zinc-950 border border-zinc-900 rounded-2xl shadow-2xl relative z-10">
+        <div class="text-center mb-8">
+            <img src="/static/logo.png" alt="Knob Monster Logo" class="h-10 w-auto mx-auto object-contain mb-3">
+            <h2 class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</h2>
+            <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start backup</p>
+        </div>
+
+        {% if error %}
+        <div class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/signup" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email Address</label>
+                <input type="email" name="email" required placeholder="name@domain.com"
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
+            </div>
+
+            <div>
+                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Password</label>
+                <input type="password" name="password" required placeholder="••••••••"
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
+            </div>
+
+            <div>
+                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Confirm Password</label>
+                <input type="password" name="confirm_password" required placeholder="••••••••"
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
+            </div>
+
+            <button type="submit"
+                class="w-full py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-[0.98]">
+                Register
+            </button>
+        </form>
+
+        <p class="text-center text-[10px] text-zinc-650 font-normal mt-6">
+            Already have an account? <a href="/login" class="text-white hover:underline">Sign In</a>
+        </p>
+    </div>
+</body>
+</html>

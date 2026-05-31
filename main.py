@@ -12,15 +12,14 @@ import parser
 
 app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
 
-# Ensure static and templates directories exist
-os.makedirs("d:/crew/experiment/templates", exist_ok=True)
-os.makedirs("d:/crew/experiment/static", exist_ok=True)
+# Absolute path of the directory containing main.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Templates
-templates = Jinja2Templates(directory="d:/crew/experiment/templates")
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # Mount Static Files
-app.mount("/static", StaticFiles(directory="d:/crew/experiment/static"), name="static")
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # Configure Stripe key & fallback mock mode
 STRIPE_SECRET_KEY = "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"
@@ -30,59 +29,64 @@ stripe.api_key = STRIPE_SECRET_KEY
 STRIPE_PRICE_ID = "price_1TdIB8LuSQGuB7eywbBCPAmF"
 BASE_URL = "https://knob.monster"
 
-# Initialize SQLite database and copy assets on startup
+# Initialize database and copy assets on startup
 @app.on_event("startup")
 async def startup_event():
     database.init_db()
-    import shutil
-    src_dir = "C:/Users/Usuario/.gemini/antigravity/brain/21cc624c-71d6-4620-83a8-f77a95f2af34"
-    dest_dir = "d:/crew/experiment/static"
-    os.makedirs(dest_dir, exist_ok=True)
     
-    hero_src = os.path.join(src_dir, "vintage_synth_hero_1780240317485.png")
-    if os.path.exists(hero_src):
-        shutil.copy(hero_src, os.path.join(dest_dir, "vintage_synth_hero.png"))
+    # Try copying files locally, skip/fail silently on serverless read-only environments
+    try:
+        import shutil
+        src_dir = "C:/Users/Usuario/.gemini/antigravity/brain/21cc624c-71d6-4620-83a8-f77a95f2af34"
+        dest_dir = os.path.join(BASE_DIR, "static")
+        os.makedirs(dest_dir, exist_ok=True)
         
-    detail_src = os.path.join(src_dir, "studio_detail_1780240351621.png")
-    if os.path.exists(detail_src):
-        shutil.copy(detail_src, os.path.join(dest_dir, "studio_detail.png"))
+        hero_src = os.path.join(src_dir, "vintage_synth_hero_1780240317485.png")
+        if os.path.exists(hero_src):
+            shutil.copy(hero_src, os.path.join(dest_dir, "vintage_synth_hero.png"))
+            
+        detail_src = os.path.join(src_dir, "studio_detail_1780240351621.png")
+        if os.path.exists(detail_src):
+            shutil.copy(detail_src, os.path.join(dest_dir, "studio_detail.png"))
 
-    camera_src = os.path.join(src_dir, "vintage_camera_404_1780240561882.png")
-    if os.path.exists(camera_src):
-        shutil.copy(camera_src, os.path.join(dest_dir, "vintage_camera_404.png"))
+        camera_src = os.path.join(src_dir, "vintage_camera_404_1780240561882.png")
+        if os.path.exists(camera_src):
+            shutil.copy(camera_src, os.path.join(dest_dir, "vintage_camera_404.png"))
 
-    troll_src = os.path.join(src_dir, "troll.png")
-    troll_dest = os.path.join(dest_dir, "troll.png")
-    if os.path.exists(troll_src):
-        shutil.copy(troll_src, troll_dest)
-        
-    if os.path.exists(troll_dest):
-        shutil.copy(troll_dest, os.path.join(dest_dir, "logo.png"))
-    else:
-        logo_src = os.path.join(src_dir, "vaultsynth_logo_1780240683932.png")
-        if os.path.exists(logo_src):
-            shutil.copy(logo_src, os.path.join(dest_dir, "logo.png"))
+        troll_src = os.path.join(src_dir, "troll.png")
+        troll_dest = os.path.join(dest_dir, "troll.png")
+        if os.path.exists(troll_src):
+            shutil.copy(troll_src, troll_dest)
+            
+        if os.path.exists(troll_dest):
+            shutil.copy(troll_dest, os.path.join(dest_dir, "logo.png"))
+        else:
+            logo_src = os.path.join(src_dir, "vaultsynth_logo_1780240683932.png")
+            if os.path.exists(logo_src):
+                shutil.copy(logo_src, os.path.join(dest_dir, "logo.png"))
 
-    # Copy green and gold trolls
-    for filename, dest_filename in [("troll (1).png", "troll_green.png"), ("troll (2).png", "troll_gold.png")]:
-        path_dest = os.path.join(dest_dir, filename)
-        path_src = os.path.join(src_dir, filename)
-        if os.path.exists(path_dest):
-            shutil.copy(path_dest, os.path.join(dest_dir, dest_filename))
-        elif os.path.exists(path_src):
-            shutil.copy(path_src, os.path.join(dest_dir, dest_filename))
+        # Copy green and gold trolls
+        for filename, dest_filename in [("troll (1).png", "troll_green.png"), ("troll (2).png", "troll_gold.png")]:
+            path_dest = os.path.join(dest_dir, filename)
+            path_src = os.path.join(src_dir, filename)
+            if os.path.exists(path_dest):
+                shutil.copy(path_dest, os.path.join(dest_dir, dest_filename))
+            elif os.path.exists(path_src):
+                shutil.copy(path_src, os.path.join(dest_dir, dest_filename))
 
-    handshake_src = os.path.join(src_dir, "midi_handshake_1780240701609.png")
-    if os.path.exists(handshake_src):
-        shutil.copy(handshake_src, os.path.join(dest_dir, "midi_handshake.png"))
+        handshake_src = os.path.join(src_dir, "midi_handshake_1780240701609.png")
+        if os.path.exists(handshake_src):
+            shutil.copy(handshake_src, os.path.join(dest_dir, "midi_handshake.png"))
 
-    extraction_src = os.path.join(src_dir, "index_extraction_1780240720083.png")
-    if os.path.exists(extraction_src):
-        shutil.copy(extraction_src, os.path.join(dest_dir, "index_extraction.png"))
+        extraction_src = os.path.join(src_dir, "index_extraction_1780240720083.png")
+        if os.path.exists(extraction_src):
+            shutil.copy(extraction_src, os.path.join(dest_dir, "index_extraction.png"))
 
-    recall_src = os.path.join(src_dir, "recall_button_1780240735209.png")
-    if os.path.exists(recall_src):
-        shutil.copy(recall_src, os.path.join(dest_dir, "recall_button.png"))
+        recall_src = os.path.join(src_dir, "recall_button_1780240735209.png")
+        if os.path.exists(recall_src):
+            shutil.copy(recall_src, os.path.join(dest_dir, "recall_button.png"))
+    except Exception as e:
+        print(f"Startup asset copy skipped: {e}")
 
 # Password hashing helper
 def hash_password(password: str) -> str:

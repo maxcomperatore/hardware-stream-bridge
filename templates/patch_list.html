@@ -1,0 +1,145 @@
+<div class="h-full flex flex-col select-none">
+    
+    <!-- iTunes Playlist / Album Header -->
+    <div class="p-6 border-b border-zinc-900 bg-[#0e0e11]/80 flex items-start gap-5">
+        
+        <!-- Album Art Box -->
+        <div class="h-24 w-24 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-inner flex items-center justify-center flex-shrink-0">
+            <img src="https://unpkg.com/pixelarticons@latest/svg/music.svg" class="h-8 w-8" style="filter: invert(1);" />
+        </div>
+        
+        <!-- Playlist details & actions -->
+        <div class="flex-1 flex flex-col justify-between h-24 min-w-0">
+            <div>
+                <span class="text-[10px] font-pixel text-[#fb526b] uppercase tracking-widest">Knob Monster Soundbank</span>
+                <h2 class="text-lg font-bold text-white tracking-tight leading-tight truncate mt-0.5">
+                    {{ bank.name }}
+                </h2>
+                <p class="text-2xs text-zinc-500 font-medium mt-1">
+                    {{ bank.synth_model }} &bull; {{ bank.patches | length }} Presets &bull; Saved on {{ bank.created_at }}
+                </p>
+            </div>
+            
+            <!-- Actions bar -->
+            <div class="flex items-center justify-between gap-4 mt-2">
+                <div class="flex items-center gap-2">
+                    <!-- Sync/Flash Button -->
+                    <button onclick="flashBank({{ bank.id }}, '{{ bank.name }}')" 
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#fb526b] text-white hover:bg-[#ff697e] font-pixel uppercase text-[10px] tracking-wider transition-colors shadow active:scale-95">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/reload.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                        Sync to Synth
+                    </button>
+                    
+                    <!-- Download -->
+                    <a href="/banks/{{ bank.id }}/download" 
+                       title="Download .syx backup file" 
+                       class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-zinc-900 border border-zinc-850 hover:bg-zinc-800 text-zinc-350 font-pixel uppercase text-[10px] tracking-wider transition-colors">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/download.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                        Download file
+                    </a>
+                    
+                    <!-- Delete -->
+                    <button hx-delete="/banks/{{ bank.id }}" 
+                            hx-target="#bank-list-container" 
+                            hx-confirm="Remove this soundbank from your library?"
+                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-rose-500/10 text-zinc-550 hover:text-rose-450 font-semibold text-xs transition-colors">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/trash.svg" class="h-3.5 w-3.5 opacity-40 group-hover:opacity-100 transition-opacity" style="filter: invert(1);" />
+                    </button>
+                </div>
+
+                <!-- Playlist Search bar -->
+                <div class="relative w-48">
+                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/search.svg" class="h-3.5 w-3.5 opacity-40" style="filter: invert(1);" />
+                    </div>
+                    <input type="text" 
+                           id="patch-search" 
+                           placeholder="Search presets..." 
+                           onkeyup="filterPatches()"
+                           class="block w-full pl-8 pr-2.5 py-2 text-[11px] bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-350 focus:outline-none focus:border-zinc-800 font-pixel uppercase placeholder-zinc-700 tracking-wider">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- iTunes Song Grid Table -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar">
+        <table class="w-full border-collapse text-left">
+            <thead>
+                <tr class="border-b border-zinc-900 text-[10px] font-pixel text-zinc-550 uppercase tracking-widest select-none bg-[#0a0a0c]/50 sticky top-0 backdrop-blur-xs">
+                    <th class="py-2.5 pl-6 w-12 text-center">Index</th>
+                    <th class="py-2.5 px-4">Preset Name</th>
+                    <th class="py-2.5 px-4 w-40">Synthesizer</th>
+                    <th class="py-2.5 px-4 w-28">Slot</th>
+                    <th class="py-2.5 pr-6 w-24 text-right">Size</th>
+                </tr>
+            </thead>
+            <tbody id="patches-grid">
+                {% for patch in bank.patches %}
+                <tr id="patch-row-{{ patch.index }}"
+                    onclick="selectPatch({{ patch.index }}, '{{ patch.name }}')"
+                    ondblclick="selectPatch({{ patch.index }}, '{{ patch.name }}'); toggleAuditionPlay();"
+                    class="patch-row group border-b border-zinc-900/40 hover:bg-zinc-900/30 transition-colors cursor-pointer text-xs"
+                    data-name="{{ patch.name | lower }}"
+                    data-index="{{ patch.index + 1 }}">
+                    
+                    <!-- Index / Play Trigger -->
+                    <td class="py-2.5 pl-6 text-center text-zinc-655 font-lcd text-sm relative">
+                        <span class="group-hover:hidden">{{ "%02d" | format(patch.index + 1) }}</span>
+                        <!-- Play Hover Icon -->
+                        <button onclick="event.stopPropagation(); selectPatch({{ patch.index }}, '{{ patch.name }}'); toggleAuditionPlay();"
+                                class="hidden group-hover:flex absolute inset-0 items-center justify-center text-[#fb526b]">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/play.svg" class="h-3.5 w-3.5" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                        </button>
+                    </td>
+                    
+                    <!-- Name -->
+                    <td class="py-2.5 px-4 font-semibold text-zinc-300 group-hover:text-[#fb526b] transition-colors">
+                        {{ patch.name }}
+                    </td>
+                    
+                    <!-- Model -->
+                    <td class="py-2.5 px-4 text-zinc-550">
+                        {{ bank.synth_model }}
+                    </td>
+                    
+                    <!-- Hardware slot -->
+                    <td class="py-2.5 px-4 text-zinc-550 font-lcd text-xs">
+                        Preset Slot {{ patch.index + 1 }}
+                    </td>
+                    
+                    <!-- Size -->
+                    <td class="py-2.5 pr-6 text-right text-zinc-650 font-lcd text-xs">
+                        128 B
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Update local variables inside index.html global context
+    currentActivePatches = {{ bank.patches | tojson | safe }};
+    
+    // Select the first patch as default preview target
+    if (currentActivePatches.length > 0) {
+        selectPatch(0, currentActivePatches[0].name);
+    }
+    
+    function filterPatches() {
+        const query = document.getElementById('patch-search').value.toLowerCase();
+        const items = document.querySelectorAll('.patch-row');
+        
+        items.forEach(item => {
+            const name = item.getAttribute('data-name');
+            const index = item.getAttribute('data-index');
+            if (name.includes(query) || index.includes(query)) {
+                item.style.display = 'table-row';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+</script>

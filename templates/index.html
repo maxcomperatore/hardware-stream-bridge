@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>knob.monster</title>
+    
+    <!-- Favicon / Shortcut Icon -->
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+    
+    <!-- Vercel Geist Fonts (Geist & Geist Mono) -->
+    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
+    
+    <!-- Retro Pixel & Dot-Matrix Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            450: '#7e7e8a',
+                            550: '#5c5c66',
+                            555: '#52525c',
+                            650: '#43434c',
+                            655: '#3e3e46',
+                            850: '#1c1c21',
+                        },
+                        blue: {
+                            650: '#1d4ed8',
+                        },
+                        rose: {
+                            450: '#fb7185',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    },
+                    fontSize: {
+                        '2xs': '0.68rem',
+                        '3xs': '0.58rem',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Smooth, premium scrollbars */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0e0e11;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+        
+        /* Clean Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #27272a;
+            height: 4px;
+            border-radius: 999px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #3f3f46;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #fb526b;
+        }
+
+        /* LCD Screen Ambient Glow */
+        @keyframes subtle-glow {
+            0%, 100% { text-shadow: 0 0 6px rgba(251, 82, 107, 0.2); }
+            50% { text-shadow: 0 0 14px rgba(251, 82, 107, 0.6); }
+        }
+        .lcd-glow {
+            animation: subtle-glow 4s infinite ease-in-out;
+        }
+        
+        .hidden-transition {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .visible-transition {
+            opacity: 1;
+            pointer-events: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Dither effect on images */
+        .dithered {
+            filter: grayscale(100%) contrast(130%) brightness(110%) url(#dither-filter);
+            image-rendering: pixelated;
+            will-change: filter;
+        }
+
+        /* 1-bit style dither mesh with retro ASCII characters */
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+</head>
+<body class="bg-[#0b0b0d] text-zinc-300 font-sans min-h-screen flex flex-col antialiased selection:bg-[#fb526b]/30 selection:text-white overflow-hidden relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+
+    <!-- SVG Dither Filter definition -->
+    <svg class="absolute h-0 w-0 pointer-events-none" width="0" height="0">
+      <filter id="dither-filter">
+        <!-- Generate heavy fractal noise grain -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />
+        <!-- Convert noise to high-contrast dither matrix -->
+        <feColorMatrix type="matrix" values="0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 15 -7" result="dither" />
+        <!-- Composite the noise over the source graphic -->
+        <feComposite in="SourceGraphic" in2="dither" operator="in" />
+      </filter>
+    </svg>
+
+    <!-- Top Navigation Player Bar -->
+    <header class="h-16 border-b border-zinc-900 bg-[#0e0e11] px-5 flex items-center justify-between z-10 shadow-sm select-none">
+        
+        <!-- Left: Quick play & Audition Volume -->
+        <div class="flex items-center gap-5 w-1/4">
+            <!-- Transport Buttons -->
+            <div class="flex items-center gap-1.5">
+                <button onclick="navigatePatch(-1)" title="Previous sound preset"
+                        class="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors active:scale-90 flex items-center justify-center">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/chevron-left.svg" class="h-4 w-4" style="filter: invert(1);" />
+                </button>
+                <button onclick="toggleAuditionPlay()" id="player-play-btn" title="Play sound preset"
+                        class="p-2.5 bg-white text-black rounded-lg hover:bg-zinc-200 transition-all active:scale-95 shadow flex items-center justify-center">
+                    <img id="play-icon" src="https://unpkg.com/pixelarticons@latest/svg/play.svg" class="h-4.5 w-4.5" />
+                    <img id="stop-icon" src="https://unpkg.com/pixelarticons@latest/svg/square.svg" class="h-4.5 w-4.5 hidden" />
+                </button>
+                <button onclick="navigatePatch(1)" title="Next sound preset"
+                        class="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors active:scale-90 flex items-center justify-center">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/chevron-right.svg" class="h-4 w-4" style="filter: invert(1);" />
+                </button>
+            </div>
+            
+            <!-- Audition Volume -->
+            <div class="flex items-center gap-2 flex-1 max-w-[110px]">
+                <img src="https://unpkg.com/pixelarticons@latest/svg/volume.svg" class="h-3.5 w-3.5 opacity-50" style="filter: invert(1);" />
+                <input type="range" id="midi-volume" min="0" max="127" value="100" oninput="sendMidiVolume(this.value)" class="w-full">
+            </div>
+        </div>
+
+        <!-- Center: LCD Display Console -->
+        <div class="w-2/5 bg-[#070709] border border-zinc-900 rounded-lg px-4 py-2 flex flex-col items-center justify-center relative overflow-hidden select-none">
+            <!-- Simulated LED Status -->
+            <div class="absolute top-1 right-2.5 flex items-center gap-1">
+                <span class="text-[6px] font-pixel text-zinc-600 tracking-widest uppercase">Midi Signal</span>
+                <span id="lcd-sync-dot" class="h-1.5 w-1.5 rounded-full bg-zinc-800 transition-colors duration-300"></span>
+            </div>
+            
+            <div class="w-full text-center">
+                <p id="lcd-status-text" class="text-[8px] font-pixel text-zinc-550 uppercase tracking-widest truncate">
+                    Ready
+                </p>
+                <p id="lcd-patch-title" class="text-lg font-lcd font-semibold text-[#fb526b] lcd-glow tracking-wider truncate">
+                    SELECT A PRESET FROM PLAYLIST
+                </p>
+            </div>
+            
+            <!-- Sleek progress line -->
+            <div class="w-full bg-[#111115] h-[2px] rounded-full mt-1.5 overflow-hidden">
+                <div id="lcd-progress-bar" class="bg-[#fb526b] h-full rounded-full transition-all duration-150" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Right: Connections Popover & Mode selection -->
+        <div class="flex items-center justify-end gap-3.5 w-1/4">
+            
+            <!-- Friendly Simulation Toggle -->
+            <label class="inline-flex items-center gap-2 cursor-pointer bg-[#141417] hover:bg-zinc-900 border border-zinc-900 px-3 py-1.5 rounded-lg text-2xs transition-colors">
+                <input type="checkbox" id="simulated-midi-toggle" checked onchange="toggleMidiMode()" class="sr-only peer">
+                <div class="relative w-6 h-3 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-zinc-400 after:rounded-full after:h-2.5 after:w-2.5 after:transition-all peer-checked:after:bg-[#fb526b] peer-checked:bg-[#fb526b]/10 peer-checked:border-[#fb526b]/20"></div>
+                <span class="text-zinc-400 font-semibold select-none" id="sim-status-label">Simulate Synth</span>
+            </label>
+
+            <!-- Friendly Devices Trigger -->
+            <button onclick="toggleDevicePopover()" id="device-menu-btn"
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-[#141417] border border-zinc-900 rounded-lg hover:bg-zinc-900 hover:border-zinc-800 transition-all text-2xs text-white font-semibold">
+                <span id="midi-status-dot" class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                <span>Devices</span>
+                <img src="https://unpkg.com/pixelarticons@latest/svg/chevron-down.svg" class="h-3 w-3 opacity-60" style="filter: invert(1);" />
+            </button>
+            
+            <!-- Setup Popover Dropdown -->
+            <div id="device-popover" class="absolute right-5 top-15 w-72 bg-[#0e0e11] border border-zinc-900 rounded-xl p-4 shadow-2xl z-20 flex-col gap-3.5 select-none hidden">
+                <h4 class="font-pixel uppercase text-[8px] tracking-wider text-white border-b border-zinc-800/80 pb-2">MIDI Interface Setup</h4>
+                
+                <div class="space-y-3.5">
+                    <div>
+                        <label class="block text-[7px] font-pixel text-zinc-500 uppercase mb-1 tracking-wider">Midi Input Port</label>
+                        <select id="midi-input-select" class="block w-full text-2xs bg-zinc-950 border border-zinc-900 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-800 cursor-pointer">
+                            <option value="">No MIDI inputs detected</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[7px] font-pixel text-zinc-500 uppercase mb-1 tracking-wider">Midi Output Port</label>
+                        <select id="midi-output-select" class="block w-full text-2xs bg-zinc-950 border border-zinc-900 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-800 cursor-pointer">
+                            <option value="">No MIDI outputs detected</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="initializeMidiAccess(true); toggleDevicePopover();" 
+                            class="w-full flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-850 text-zinc-450 hover:text-white text-3xs font-pixel uppercase tracking-wider transition-colors">
+                        Re-scan Ports
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 flex overflow-hidden">
+        
+        <!-- Left Sidebar: Library Controls -->
+        <aside class="w-56 border-r border-zinc-900 bg-[#0c0c0f] flex flex-col justify-between select-none">
+            <div class="p-4 space-y-6">
+                
+                <!-- Logo & Heading -->
+                <div class="px-2">
+                    <h2 class="font-pixel uppercase text-xs text-white tracking-widest flex items-center gap-2">
+                        <img src="/static/logo.png" alt="Knob Monster Logo" class="h-4.5 w-auto object-contain">
+                        knob.monster
+                    </h2>
+                    <p class="text-[9px] text-zinc-655 font-pixel uppercase tracking-wider mt-1.5">Archiving 80s/90s patches</p>
+                </div>
+                
+                <!-- Library Menu -->
+                <div class="space-y-1.5">
+                    <h3 class="text-[10px] font-pixel uppercase text-zinc-650 tracking-wider pl-2">Library</h3>
+                    
+                    <a href="#" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-white bg-zinc-900/60">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/folder.svg" class="h-4 w-4" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                        All Saved Banks
+                    </a>
+                </div>
+
+                <!-- Vault Banks Playlists -->
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between pl-2 pr-1">
+                        <h3 class="text-[10px] font-pixel uppercase text-zinc-650 tracking-wider">Vault Library</h3>
+                    </div>
+                    
+                    <!-- Soundbanks list populated here -->
+                    <div class="space-y-0.5 max-h-[160px] overflow-y-auto custom-scrollbar" id="bank-list-container">
+                        {% include 'bank_list.html' %}
+                    </div>
+                </div>
+
+                <!-- Back Up My Synth Form -->
+                <div class="space-y-2 border-t border-zinc-900/60 pt-4">
+                    <h3 class="text-[10px] font-pixel uppercase text-zinc-650 tracking-wider pl-2">Back Up My Synth</h3>
+                    
+                    <form id="pull-bank-form" onsubmit="event.preventDefault(); initiateDumpSequence();" class="space-y-2 px-2">
+                        <div>
+                            <select id="pull-synth-model" class="block w-full text-3xs bg-zinc-950 border border-zinc-900 rounded py-1 px-1.5 text-zinc-400 focus:outline-none cursor-pointer">
+                                <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
+                                <option value="Roland Juno-106">Roland Juno-106 (Gen)</option>
+                                <option value="Korg M1">Korg M1 (Gen)</option>
+                                <option value="Generic Synth">Generic Synth</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <input type="text" id="pull-bank-name" required placeholder="Name this backup..." 
+                                   class="block w-full text-3xs bg-zinc-950 border border-zinc-900 rounded py-1 px-2 text-zinc-300 placeholder-zinc-700 focus:outline-none">
+                        </div>
+                        
+                        <button type="submit"
+                                class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#fb526b]/10 text-[#fb526b] hover:bg-[#fb526b] hover:text-white font-pixel uppercase text-[8px] tracking-wider transition-colors border border-[#fb526b]/15">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/download.svg" class="h-3 w-3" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                            Capture Soundbank
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Manual Import -->
+                <div class="space-y-2 border-t border-zinc-900/60 pt-4">
+                    <h3 class="text-[10px] font-pixel uppercase text-zinc-650 tracking-wider pl-2">Import .SYX File</h3>
+                    <form id="upload-form" hx-post="/banks/upload" hx-encoding="multipart/form-data" hx-target="#bank-list-container" onsubmit="showUploadProgress();" class="space-y-2 px-2">
+                        <select name="synth_model" class="block w-full text-3xs bg-zinc-950 border border-zinc-900 rounded py-1 px-1.5 text-zinc-400 focus:outline-none cursor-pointer">
+                            <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
+                            <option value="Roland Juno-106">Roland Juno-106</option>
+                        </select>
+                        <input type="text" name="name" required placeholder="Import label..." 
+                               class="block w-full text-3xs bg-zinc-950 border border-zinc-900 rounded py-1 px-2 text-zinc-300 placeholder-zinc-700 focus:outline-none">
+                        
+                        <div class="relative border border-dashed border-zinc-850 hover:border-zinc-800 rounded-lg p-2 text-center cursor-pointer bg-zinc-950/20">
+                            <input type="file" name="file" id="file-input" required accept=".syx,.bin" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <span class="block text-3xs font-semibold text-zinc-500 truncate" id="file-label">Select .syx backup</span>
+                        </div>
+                        <button type="submit" class="w-full py-1.5 rounded bg-zinc-900 border border-zinc-850 text-zinc-450 hover:text-white font-pixel uppercase text-[8px] tracking-wider transition-colors">
+                            Upload File
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Sidebar Bottom Info -->
+            <div class="p-4 border-t border-zinc-900 text-[8px] font-pixel text-zinc-600 flex flex-col gap-1 uppercase tracking-wider">
+                <span>Midi: <span id="midi-port-lbl">Simulation</span></span>
+                <span>Security: Sandbox</span>
+                <span>Logo by <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer" class="hover:text-white underline">Skoll</a> (CC BY 3.0)</span>
+            </div>
+        </aside>
+        
+        <!-- Center/Right Pane: Song/Patch Table (iTunes Grid) -->
+        <section class="flex-1 bg-[#09090b] flex flex-col overflow-hidden" id="patch-explorer-content">
+            <!-- Cozy human Onboarding panel when empty -->
+            <div class="flex-1 flex flex-col items-center justify-center p-8 text-center select-none max-w-lg mx-auto">
+                <div class="h-12 w-12 rounded-2xl bg-zinc-900/60 border border-zinc-850 flex items-center justify-center mb-5 shadow-inner">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/audio-waveform.svg" class="h-6 w-6" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                </div>
+                <h3 class="text-sm font-semibold text-white tracking-tight">Your Vintage Sounds, Safe in the Cloud</h3>
+                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">
+                    VaultSynth connects to vintage hardware directly through your web browser. No complex configurations. Back up, organize, search, and restore your sound banks instantly.
+                </p>
+                
+                <!-- Onboarding Step List -->
+                <div class="grid grid-cols-1 gap-3.5 mt-8 w-full max-w-sm text-left">
+                    <div class="flex items-start gap-3">
+                        <div class="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 border border-zinc-850 text-zinc-500 font-mono text-3xs font-bold mt-0.5">1</div>
+                        <div>
+                            <h4 class="text-2xs font-semibold text-zinc-300">Plug in your USB-to-MIDI cable</h4>
+                            <p class="text-3xs text-zinc-500 mt-0.5">Connect your laptop to your synth's MIDI ports.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 border border-zinc-850 text-zinc-500 font-mono text-3xs font-bold mt-0.5">2</div>
+                        <div>
+                            <h4 class="text-2xs font-semibold text-zinc-300">Click "Capture Soundbank"</h4>
+                            <p class="text-3xs text-zinc-500 mt-0.5">We'll automatically request the voice memory list and index it.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="flex h-5 w-5 items-center justify-center rounded-full bg-[#fb526b]/10 border border-[#fb526b]/20 text-[#fb526b] font-mono text-3xs font-bold mt-0.5">✨</div>
+                        <div>
+                            <h4 class="text-2xs font-semibold text-[#fb526b]">No keyboard nearby?</h4>
+                            <p class="text-3xs text-zinc-500 mt-0.5">Leave "Simulate Synth" enabled above to try the full flow immediately with virtual synthesizers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Global Progress / Sync Ingestion Popup -->
+    <div id="status-overlay" class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center hidden-transition">
+        <div class="bg-[#0e0e11] border border-zinc-900 rounded-xl p-5 w-80 max-w-[90vw] text-center shadow-2xl shadow-black select-none">
+            <!-- Spinner / Success check -->
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-3.5" id="overlay-icon-container">
+                <img src="https://unpkg.com/pixelarticons@latest/svg/reload.svg" class="h-5 w-5 animate-spin" style="filter: invert(1);" id="overlay-spinner" />
+                <img src="https://unpkg.com/pixelarticons@latest/svg/check.svg" class="h-6 w-6 hidden" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(90deg) brightness(95%) contrast(90%);" id="overlay-check" />
+            </div>
+            
+            <h3 class="text-xs font-bold text-white mb-0.5" id="overlay-title">Backing Up Synthesizer</h3>
+            <p class="text-[10px] text-zinc-500" id="overlay-message">Initiating handshake with vintage hardware...</p>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-zinc-950 rounded-full h-1 mt-3.5 overflow-hidden">
+                <div id="overlay-progress" class="bg-emerald-500 h-full rounded-full transition-all duration-150" style="width: 0%"></div>
+            </div>
+            
+            <div class="flex items-center justify-between text-[8px] font-mono text-zinc-500 mt-2">
+                <span id="overlay-status-left">0%</span>
+                <span id="overlay-status-right">WAITING</span>
+            </div>
+            
+            <!-- Abort button -->
+            <button onclick="closeStatusOverlay()" id="overlay-close-btn" class="mt-5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-semibold text-[10px] rounded border border-zinc-800 transition-colors w-full">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 transition-all duration-300 ease-out bg-[#0e0e11] border border-zinc-900 rounded-xl px-4 py-3 flex items-center gap-3 shadow-2xl max-w-sm pointer-events-none select-none">
+        <div id="toast-icon-wrapper" class="flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center">
+            <!-- Icon injected by JS -->
+        </div>
+        <div class="flex-1">
+            <p id="toast-title" class="text-xs font-bold text-white leading-tight"></p>
+            <p id="toast-desc" class="text-3xs text-zinc-400 mt-0.5 leading-normal"></p>
+        </div>
+    </div>
+
+    <!-- Web MIDI & Audio Library Script -->
+    <script>
+        // --- Web MIDI & Audio API Core State ---
+        let midiAccess = null;
+        let selectedInput = null;
+        let selectedOutput = null;
+        let isSimulationMode = true; // Default to Simulation Mode for zero friction
+        
+        let dumpTimeout = null;
+        let isIngesting = false;
+        let ingestedBytes = [];
+
+        // Currently selected bank state
+        let currentActiveBank = null;
+        let currentActivePatches = [];
+        let currentPatchIndex = -1; // -1 means none playing
+
+        // Web Audio API context for simulated sound previews
+        let audioContext = null;
+        let activeOscillators = []; // Track active sound preview oscs
+
+        // Init MIDI Access
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeMidiAccess(false);
+            
+            // Custom file label updates on dropzone select
+            const fileInput = document.getElementById('file-input');
+            const fileLabel = document.getElementById('file-label');
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    fileLabel.textContent = fileInput.files[0].name;
+                }
+            });
+        });
+
+        // Initialize Web Audio context (on first interaction to comply with browser policy)
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        // Toggle popover menu
+        function toggleDevicePopover() {
+            const popover = document.getElementById('device-popover');
+            popover.classList.toggle('hidden');
+        }
+
+        // Close popover if clicked outside
+        document.addEventListener('click', (e) => {
+            const popover = document.getElementById('device-popover');
+            const btn = document.getElementById('device-menu-btn');
+            if (popover && btn && !popover.contains(e.target) && !btn.contains(e.target)) {
+                popover.classList.add('hidden');
+            }
+        });
+
+        // Toggle simulation checkbox
+        function toggleMidiMode() {
+            const toggle = document.getElementById('simulated-midi-toggle');
+            const statusLabel = document.getElementById('sim-status-label');
+            isSimulationMode = toggle.checked;
+            
+            const portLbl = document.getElementById('midi-port-lbl');
+            
+            if (isSimulationMode) {
+                statusLabel.textContent = "Simulate Synth";
+                portLbl.textContent = "Simulation Mode";
+                updateMidiBadge("active", "Simulated MIDI Interface Ready");
+            } else {
+                statusLabel.textContent = "Hardware Mode";
+                portLbl.textContent = "USB-to-MIDI Port";
+                initializeMidiAccess(true); // Attempt to query actual MIDI hardware
+            }
+        }
+
+        // Update MIDI Status Badge
+        function updateMidiBadge(status, text) {
+            const dot = document.getElementById('midi-status-dot');
+            const syncDot = document.getElementById('lcd-sync-dot');
+            
+            dot.className = "h-1.5 w-1.5 rounded-full";
+            
+            if (status === "active") {
+                dot.classList.add("bg-emerald-500");
+                syncDot.className = "h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse";
+            } else if (status === "inactive") {
+                dot.classList.add("bg-zinc-600");
+                syncDot.className = "h-1.5 w-1.5 rounded-full bg-zinc-800";
+            } else {
+                dot.classList.add("bg-rose-500");
+                syncDot.className = "h-1.5 w-1.5 rounded-full bg-rose-600";
+            }
+        }
+
+        // Query browser MIDI API
+        function initializeMidiAccess(interactive) {
+            if (isSimulationMode) {
+                updateMidiBadge("active", "Simulated MIDI Interface Ready");
+                populateSimulatedPorts();
+                return;
+            }
+
+            if (!navigator.requestMIDIAccess) {
+                updateMidiBadge("error", "Web MIDI API Un-supported");
+                if (interactive) {
+                    showToast("Compatibility Warning", "Your browser does not support Web MIDI API. Please switch to Google Chrome or Microsoft Edge.", "warning");
+                }
+                return;
+            }
+
+            navigator.requestMIDIAccess({ sysex: true })
+                .then(access => {
+                    midiAccess = access;
+                    updateMidiBadge("active", "Hardware MIDI Access Live");
+                    
+                    // Listen for hardware connections changes
+                    midiAccess.onstatechange = (e) => {
+                        updatePortsDropdowns();
+                    };
+                    
+                    updatePortsDropdowns();
+                    
+                    if (interactive) {
+                        showToast("MIDI Connected", "Found your MIDI cables and ports.", "success");
+                    }
+                })
+                .catch(err => {
+                    console.error("MIDI access denied:", err);
+                    updateMidiBadge("error", "Permission Denied / Failed");
+                    if (interactive) {
+                        showToast("MIDI Access Blocked", "Please grant MIDI permission in your browser URL bar to talk to synths.", "warning");
+                    }
+                });
+        }
+
+        // Simulated Input/Output MIDI Devices
+        function populateSimulatedPorts() {
+            const inputSelect = document.getElementById('midi-input-select');
+            const outputSelect = document.getElementById('midi-output-select');
+            
+            inputSelect.innerHTML = '<option value="sim_in_1">Virtual MIDI Interface (Input)</option><option value="sim_in_2">Simulated DX7 Port A</option>';
+            outputSelect.innerHTML = '<option value="sim_out_1">Virtual MIDI Interface (Output)</option><option value="sim_out_2">Simulated DX7 Port A</option>';
+            
+            selectedInput = "sim_in_1";
+            selectedOutput = "sim_out_1";
+        }
+
+        // Update real ports select lists
+        function updatePortsDropdowns() {
+            const inputSelect = document.getElementById('midi-input-select');
+            const outputSelect = document.getElementById('midi-output-select');
+            
+            inputSelect.innerHTML = '';
+            outputSelect.innerHTML = '';
+            
+            const inputs = Array.from(midiAccess.inputs.values());
+            const outputs = Array.from(midiAccess.outputs.values());
+            
+            if (inputs.length === 0) {
+                inputSelect.innerHTML = '<option value="">No MIDI inputs detected</option>';
+            } else {
+                inputs.forEach(input => {
+                    const opt = document.createElement('option');
+                    opt.value = input.id;
+                    opt.textContent = `${input.name} (${input.manufacturer || 'Generic'})`;
+                    inputSelect.appendChild(opt);
+                });
+                selectedInput = inputSelect.value;
+            }
+            
+            if (outputs.length === 0) {
+                outputSelect.innerHTML = '<option value="">No MIDI outputs detected</option>';
+            } else {
+                outputs.forEach(output => {
+                    const opt = document.createElement('option');
+                    opt.value = output.id;
+                    opt.textContent = `${output.name} (${output.manufacturer || 'Generic'})`;
+                    outputSelect.appendChild(opt);
+                });
+                selectedOutput = outputSelect.value;
+            }
+            
+            // Listeners
+            inputSelect.onchange = () => { selectedInput = inputSelect.value; };
+            outputSelect.onchange = () => { selectedOutput = outputSelect.value; };
+        }
+
+        // --- Status Overlay Utils ---
+        function showStatusOverlay(title, initialMessage, isCancelable, leftStatus, rightStatus) {
+            const overlay = document.getElementById('status-overlay');
+            const titleEl = document.getElementById('overlay-title');
+            const msgEl = document.getElementById('overlay-message');
+            const progressEl = document.getElementById('overlay-progress');
+            const cancelBtn = document.getElementById('overlay-close-btn');
+            const spinner = document.getElementById('overlay-spinner');
+            const check = document.getElementById('overlay-check');
+            
+            const leftEl = document.getElementById('overlay-status-left');
+            const rightEl = document.getElementById('overlay-status-right');
+            
+            titleEl.textContent = title;
+            msgEl.textContent = initialMessage;
+            progressEl.style.width = "0%";
+            leftEl.textContent = leftStatus || "0%";
+            rightEl.textContent = rightStatus || "PENDING";
+            
+            spinner.classList.remove('hidden');
+            check.classList.add('hidden');
+            
+            if (isCancelable) {
+                cancelBtn.style.display = 'block';
+                cancelBtn.textContent = 'Cancel';
+            } else {
+                cancelBtn.style.display = 'none';
+            }
+            
+            overlay.classList.remove('hidden-transition');
+            overlay.classList.add('visible-transition');
+        }
+
+        function updateStatusOverlay(progressPercent, message, leftStatus, rightStatus) {
+            const progressEl = document.getElementById('overlay-progress');
+            const msgEl = document.getElementById('overlay-message');
+            const leftEl = document.getElementById('overlay-status-left');
+            const rightEl = document.getElementById('overlay-status-right');
+            
+            progressEl.style.width = `${progressPercent}%`;
+            msgEl.textContent = message;
+            if (leftStatus) leftEl.textContent = leftStatus;
+            if (rightStatus) rightEl.textContent = rightStatus;
+            
+            // Update iTunes Top LCD simultaneously
+            const lcdStatus = document.getElementById('lcd-status-text');
+            const lcdTitle = document.getElementById('lcd-patch-title');
+            const lcdProgress = document.getElementById('lcd-progress-bar');
+            
+            lcdStatus.textContent = rightStatus || "SYNCING";
+            lcdTitle.textContent = message;
+            lcdProgress.style.width = `${progressPercent}%`;
+        }
+
+        function completeStatusOverlay(title, successMessage, duration = 1200) {
+            const titleEl = document.getElementById('overlay-title');
+            const msgEl = document.getElementById('overlay-message');
+            const spinner = document.getElementById('overlay-spinner');
+            const check = document.getElementById('overlay-check');
+            const progressEl = document.getElementById('overlay-progress');
+            
+            titleEl.textContent = title;
+            msgEl.textContent = successMessage;
+            progressEl.style.width = "100%";
+            
+            spinner.classList.add('hidden');
+            check.classList.remove('hidden');
+            
+            document.getElementById('overlay-status-left').textContent = "100%";
+            document.getElementById('overlay-status-right').textContent = "COMPLETED";
+            
+            // LCD update
+            const lcdStatus = document.getElementById('lcd-status-text');
+            const lcdTitle = document.getElementById('lcd-patch-title');
+            const lcdProgress = document.getElementById('lcd-progress-bar');
+            
+            lcdStatus.textContent = "DONE";
+            lcdTitle.textContent = successMessage;
+            lcdProgress.style.width = "100%";
+            
+            setTimeout(() => {
+                closeStatusOverlay();
+                lcdStatus.textContent = "READY";
+                lcdProgress.style.width = "0%";
+            }, duration);
+        }
+
+        function closeStatusOverlay() {
+            const overlay = document.getElementById('status-overlay');
+            overlay.classList.remove('visible-transition');
+            overlay.classList.add('hidden-transition');
+            
+            // Terminate any active hardware listeners/timeouts
+            if (isIngesting) {
+                stopMidiIngestion(false);
+            }
+        }
+
+        // --- Ingest and Pull SysEx Logic ---
+        function initiateDumpSequence() {
+            initAudioContext();
+            
+            const synthModel = document.getElementById('pull-synth-model').value;
+            const bankName = document.getElementById('pull-bank-name').value;
+            
+            if (!isSimulationMode && (!selectedInput || !selectedOutput)) {
+                showToast("Devices Not Connected", "Please select valid MIDI Input and Output ports first.", "warning");
+                return;
+            }
+            
+            showStatusOverlay("Backing Up Synth", "Sending backup request to synthesizer...", true);
+            
+            if (isSimulationMode) {
+                simulateIngestion(bankName, synthModel);
+            } else {
+                startMidiIngestion(bankName, synthModel);
+            }
+        }
+
+        function simulateIngestion(bankName, synthModel) {
+            let progress = 0;
+            const messages = [
+                { limit: 25, msg: "Sending MIDI backup command..." },
+                { limit: 55, msg: "Listening for patch stream..." },
+                { limit: 80, msg: "Reassembling voice bytes (4,104 bytes)..." },
+                { limit: 100, msg: "Saving voice bank index..." }
+            ];
+            
+            const interval = setInterval(() => {
+                progress += 5;
+                if (progress > 100) progress = 100;
+                
+                let currentMsg = messages[0].msg;
+                for (let i = 0; i < messages.length; i++) {
+                    if (progress <= messages[i].limit) {
+                        currentMsg = messages[i].msg;
+                        break;
+                    }
+                }
+                
+                const bytesTransmitted = Math.floor((4104 * progress) / 100);
+                updateStatusOverlay(
+                    progress, 
+                    currentMsg, 
+                    `${bytesTransmitted} Bytes`, 
+                    progress < 100 ? "CAPTURING" : "VERIFYING"
+                );
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    const simulatedHex = generateMockDX7SysEx();
+                    
+                    const formData = new FormData();
+                    formData.append('name', bankName);
+                    formData.append('synth_model', synthModel);
+                    formData.append('sysex_hex', simulatedHex);
+                    
+                    fetch('/banks', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        completeStatusOverlay("Backup Finished", "Soundbank archived successfully.");
+                        showToast("Bank Archived", `"${bankName}" saved in library.`, "success");
+                        
+                        document.getElementById('bank-list-container').innerHTML = html;
+                        document.getElementById('pull-bank-form').reset();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        closeStatusOverlay();
+                        showToast("Failed to save bank", "Error sending SysEx payload to server.", "error");
+                    });
+                }
+            }, 70);
+        }
+
+        // Live MIDI Ingestion
+        function startMidiIngestion(bankName, synthModel) {
+            isIngesting = true;
+            ingestedBytes = [];
+            
+            const inputPort = midiAccess.inputs.get(selectedInput);
+            const outputPort = midiAccess.outputs.get(selectedOutput);
+            
+            if (!inputPort || !outputPort) {
+                closeStatusOverlay();
+                showToast("Connection Lost", "The MIDI interface was unplugged.", "error");
+                return;
+            }
+            
+            inputPort.onmidimessage = handleIncomingMidiBytes;
+            
+            let dumpRequestCommand = new Uint8Array([0xF0, 0x43, 0x20, 0x09, 0xF7]);
+            
+            if (synthModel === "Roland Juno-106") {
+                updateStatusOverlay(10, "Press manual WRITE button on Juno-106 to dump patches...", "0 B", "AWAITING SYNTH");
+            } else {
+                updateStatusOverlay(10, "Sending dump request command...", "0 B", "HANDSHAKE");
+                outputPort.send(dumpRequestCommand);
+            }
+            
+            dumpTimeout = setTimeout(() => {
+                if (isIngesting && ingestedBytes.length === 0) {
+                    stopMidiIngestion(false);
+                    closeStatusOverlay();
+                    showToast("No response from synth", "Verify MIDI Cables (In to Out) and device MIDI channel.", "warning");
+                }
+            }, 15000);
+        }
+
+        function handleIncomingMidiBytes(event) {
+            if (!isIngesting) return;
+            
+            const dataBytes = event.data;
+            for (let i = 0; i < dataBytes.length; i++) {
+                ingestedBytes.push(dataBytes[i]);
+            }
+            
+            if (dumpTimeout) {
+                clearTimeout(dumpTimeout);
+                dumpTimeout = null;
+            }
+            
+            const expectedSize = 4104;
+            const progress = Math.min(Math.floor((ingestedBytes.length / expectedSize) * 100), 99);
+            
+            updateStatusOverlay(
+                progress, 
+                `Receiving presets stream...`, 
+                `${ingestedBytes.length} Bytes`, 
+                "CAPTURING"
+            );
+            
+            const lastByte = ingestedBytes[ingestedBytes.length - 1];
+            if (lastByte === 0xF7 && ingestedBytes.length >= 100) {
+                stopMidiIngestion(true);
+            }
+        }
+
+        function stopMidiIngestion(saveData) {
+            isIngesting = false;
+            
+            if (midiAccess && selectedInput) {
+                const inputPort = midiAccess.inputs.get(selectedInput);
+                if (inputPort) inputPort.onmidimessage = null;
+            }
+            
+            if (dumpTimeout) {
+                clearTimeout(dumpTimeout);
+                dumpTimeout = null;
+            }
+            
+            if (!saveData) return;
+            
+            const hexString = Array.from(ingestedBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+            const synthModel = document.getElementById('pull-synth-model').value;
+            const bankName = document.getElementById('pull-bank-name').value;
+            
+            updateStatusOverlay(100, "Extracting patch names...", `${ingestedBytes.length} B`, "VERIFYING");
+            
+            const formData = new FormData();
+            formData.append('name', bankName);
+            formData.append('synth_model', synthModel);
+            formData.append('sysex_hex', hexString);
+            
+            fetch('/banks', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                completeStatusOverlay("Backup Completed", "Soundbank successfully archived and parsed.");
+                showToast("Bank Archived", `"${bankName}" saved in library.`, "success");
+                document.getElementById('bank-list-container').innerHTML = html;
+                document.getElementById('pull-bank-form').reset();
+            })
+            .catch(err => {
+                console.error(err);
+                closeStatusOverlay();
+                showToast("Save Failed", "Error processing SysEx dump.", "error");
+            });
+        }
+
+        // Mock DX7 Hex dump generator
+        function generateMockDX7SysEx() {
+            const data = new Uint8Array(4104);
+            data[0] = 0xF0; data[1] = 0x43; data[2] = 0x00; data[3] = 0x09; data[4] = 0x20; data[5] = 0x00;
+            
+            const patchNames = [
+                "E.PIANO FM", "E.BASS 1  ", "FAT SYNTH ", "JAZZ ORGAN",
+                "WIND HARP ", "BELLS FM  ", "SITAR GLID", "ATMOSPHERE",
+                "COSMIC PAD", "STRINGS 1 ", "BRASS HORN", "WIND FLUTE",
+                "DX7 MARIMB", "SOLO LEAD ", "AC. PIANO ", "CHURCH ORG",
+                "FAT BASS  ", "DIGI BASS ", "ANALOG STR", "RESONANCE ",
+                "HARMONICA ", "CELESTA   ", "TUBULAR BE", "CHORUS EP ",
+                "GLOCKEN 1 ", "KOTO PLUCK", "NOISE EXPL", "WOOD FLUTE",
+                "STEEL DRUM", "HARPSICHOR", "CLAVINET A", "ORCHESTRA "
+            ];
+            
+            for (let i = 0; i < 32; i++) {
+                const voiceOffset = 6 + (i * 128);
+                for (let j = 0; j < 118; j++) {
+                    data[voiceOffset + j] = Math.floor(Math.random() * 128);
+                }
+                const name = patchNames[i] || `DX7 PRESET`;
+                for (let j = 0; j < 10; j++) {
+                    data[voiceOffset + 118 + j] = name.charCodeAt(j) || 32;
+                }
+            }
+            
+            let sum = 0;
+            for (let i = 6; i <= 4101; i++) {
+                sum += data[i];
+            }
+            data[4102] = (-sum) & 0x7F;
+            data[4103] = 0xF7;
+            
+            return Array.from(data).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // --- Flashing SysEx to Synthesizer ---
+        function flashBank(bankId, bankName) {
+            initAudioContext();
+            
+            if (!isSimulationMode && !selectedOutput) {
+                showToast("Flash Aborted", "Select a MIDI Output port first.", "warning");
+                return;
+            }
+            
+            showStatusOverlay("Flashing Synth Memory", `Writing soundbank to physical memory...`, false);
+            
+            fetch(`/banks/${bankId}/hex`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Failed to fetch bank");
+                    return res.json();
+                })
+                .then(data => {
+                    const hex = data.sysex_hex;
+                    const byteLen = hex.length / 2;
+                    
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 10;
+                        if (progress > 100) progress = 100;
+                        
+                        const bytesSent = Math.floor((byteLen * progress) / 100);
+                        updateStatusOverlay(
+                            progress, 
+                            `Streaming presets down MIDI port...`, 
+                            `${bytesSent} B`, 
+                            "WRITING"
+                        );
+                        
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                            
+                            if (isSimulationMode) {
+                                completeStatusOverlay("Sync Finished", "Presets successfully loaded!");
+                                showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
+                            } else {
+                                executeMidiFlash(hex, bankName);
+                            }
+                        }
+                    }, 100);
+                })
+                .catch(err => {
+                    console.error(err);
+                    closeStatusOverlay();
+                    showToast("Flash Failed", "Cannot retrieve SysEx dump from database.", "error");
+                });
+        }
+
+        function executeMidiFlash(hexString, bankName) {
+            try {
+                const bytes = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+                const outputPort = midiAccess.outputs.get(selectedOutput);
+                if (!outputPort) {
+                    closeStatusOverlay();
+                    showToast("Port Unavailable", "The target output MIDI device is disconnected.", "error");
+                    return;
+                }
+                
+                outputPort.send(bytes);
+                completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!");
+                showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
+            } catch (err) {
+                console.error("Midi flash error:", err);
+                closeStatusOverlay();
+                showToast("Flash Failed", "Error transmitting MIDI data packet.", "error");
+            }
+        }
+
+        // --- Audition Patch Note ---
+        function selectPatch(index, name) {
+            currentPatchIndex = index;
+            
+            // Set current playing patch layout details
+            const lcdTitle = document.getElementById('lcd-patch-title');
+            const lcdStatus = document.getElementById('lcd-status-text');
+            
+            lcdTitle.textContent = `${(index + 1).toString().padStart(2, '0')} : ${name}`;
+            lcdStatus.textContent = "Audition Selected";
+            
+            // Highlight selected row in table
+            document.querySelectorAll('.patch-row').forEach(row => {
+                row.classList.remove('bg-zinc-900/60', 'border-zinc-800/80');
+            });
+            const selectedRow = document.getElementById(`patch-row-${index}`);
+            if (selectedRow) {
+                selectedRow.classList.add('bg-zinc-900/60', 'border-zinc-800/80');
+            }
+        }
+
+        function toggleAuditionPlay() {
+            initAudioContext();
+            if (currentPatchIndex === -1) {
+                showToast("No preset selected", "Choose a preset row in the list first.", "info");
+                return;
+            }
+            
+            const name = currentActivePatches[currentPatchIndex]?.name || "Unknown";
+            
+            const playIcon = document.getElementById('play-icon');
+            const stopIcon = document.getElementById('stop-icon');
+            
+            if (playIcon.classList.contains('hidden')) {
+                // Stop active sound
+                stopWebAudioNote();
+                playIcon.classList.remove('hidden');
+                stopIcon.classList.add('hidden');
+                document.getElementById('lcd-status-text').textContent = "Stopped";
+            } else {
+                // Play Note
+                playIcon.classList.add('hidden');
+                stopIcon.classList.remove('hidden');
+                document.getElementById('lcd-status-text').textContent = "Playing...";
+                
+                if (isSimulationMode) {
+                    playWebAudioNote(currentPatchIndex);
+                } else {
+                    executeMidiNoteOn(currentPatchIndex);
+                }
+            }
+        }
+
+        function executeMidiNoteOn(index) {
+            if (!selectedOutput) return;
+            const outputPort = midiAccess.outputs.get(selectedOutput);
+            if (!outputPort) return;
+            
+            // Program change to index
+            outputPort.send(new Uint8Array([0xC0, index]));
+            
+            // Volume
+            const volume = parseInt(document.getElementById('midi-volume').value);
+            outputPort.send(new Uint8Array([0xB0, 0x07, volume]));
+            
+            // Note On C4
+            outputPort.send(new Uint8Array([0x90, 60, 100]));
+            
+            // Trigger automatic Note Off after 1 sec
+            setTimeout(() => {
+                outputPort.send(new Uint8Array([0x80, 60, 0]));
+                // Reset buttons visually
+                const playIcon = document.getElementById('play-icon');
+                const stopIcon = document.getElementById('stop-icon');
+                if (playIcon) {
+                    playIcon.classList.remove('hidden');
+                    stopIcon.classList.add('hidden');
+                }
+                document.getElementById('lcd-status-text').textContent = "Audition Selected";
+            }, 1000);
+        }
+
+        function navigatePatch(dir) {
+            if (currentActivePatches.length === 0) return;
+            
+            let nextIndex = currentPatchIndex + dir;
+            if (nextIndex < 0) nextIndex = currentActivePatches.length - 1;
+            if (nextIndex >= currentActivePatches.length) nextIndex = 0;
+            
+            selectPatch(nextIndex, currentActivePatches[nextIndex].name);
+            
+            // Play note on navigation if play was active
+            const playIcon = document.getElementById('play-icon');
+            if (playIcon.classList.contains('hidden')) {
+                stopWebAudioNote();
+                if (isSimulationMode) {
+                    playWebAudioNote(nextIndex);
+                } else {
+                    executeMidiNoteOn(nextIndex);
+                }
+            }
+        }
+
+        function sendMidiVolume(val) {
+            const volValue = parseInt(val);
+            const statusText = document.getElementById('lcd-status-text');
+            statusText.textContent = `Synth Volume: ${Math.floor((volValue/127)*100)}%`;
+            
+            if (!isSimulationMode && selectedOutput) {
+                const outputPort = midiAccess.outputs.get(selectedOutput);
+                if (outputPort) {
+                    // Send Control Change 7 (Channel Volume)
+                    outputPort.send(new Uint8Array([0xB0, 0x07, volValue]));
+                }
+            }
+            
+            setTimeout(() => {
+                statusText.textContent = "Audition Selected";
+            }, 1200);
+        }
+
+        // Web Audio note playback logic
+        function playWebAudioNote(index) {
+            if (!audioContext) return;
+            stopWebAudioNote();
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            const baseFreq = 130.81; // C3
+            const minorPentatonic = [0, 3, 5, 7, 10, 12, 15, 17, 19, 22, 24];
+            const noteOffset = minorPentatonic[index % minorPentatonic.length] + Math.floor(index / minorPentatonic.length) * 12;
+            const freq = baseFreq * Math.pow(2, noteOffset / 12);
+            
+            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+            
+            // Route volume slider value to local gain
+            const userVol = parseInt(document.getElementById('midi-volume').value) / 127;
+            const maxVol = userVol * 0.12; // Limit clipping
+            
+            // Oscillator style simulates DX7 voices
+            if (index % 4 === 0) {
+                osc.type = 'triangle'; // Smooth EP
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(800, audioContext.currentTime);
+            } else if (index % 4 === 1) {
+                osc.type = 'sawtooth'; // Bass/Brass
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(1200, audioContext.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.5);
+            } else if (index % 4 === 2) {
+                osc.type = 'square'; // Chiptune lead
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(2000, audioContext.currentTime);
+            } else {
+                osc.type = 'sine'; // Bell chime
+                osc.frequency.setValueAtTime(freq * 2, audioContext.currentTime); // high octave
+            }
+            
+            gain.gain.setValueAtTime(0, audioContext.currentTime);
+            gain.gain.linearRampToValueAtTime(maxVol, audioContext.currentTime + 0.05); // Attack
+            
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.start();
+            
+            activeOscillators.push({ osc, gain, stopTime: audioContext.currentTime + 1.2 });
+            
+            // Automate note off after 1.2 seconds if user doesn't press stop
+            setTimeout(() => {
+                if (activeOscillators.length > 0) {
+                    stopWebAudioNote();
+                    const playIcon = document.getElementById('play-icon');
+                    const stopIcon = document.getElementById('stop-icon');
+                    if (playIcon) {
+                        playIcon.classList.remove('hidden');
+                        stopIcon.classList.add('hidden');
+                    }
+                    document.getElementById('lcd-status-text').textContent = "Audition Selected";
+                }
+            }, 1200);
+        }
+
+        function stopWebAudioNote() {
+            activeOscillators.forEach(item => {
+                try {
+                    item.gain.gain.setValueAtTime(item.gain.gain.value, audioContext.currentTime);
+                    item.gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.1);
+                    setTimeout(() => {
+                        item.osc.stop();
+                        item.osc.disconnect();
+                    }, 120);
+                } catch (e) {}
+            });
+            activeOscillators = [];
+        }
+
+        // --- Search & Sidebar UI Helpers ---
+        function filterBanks() {
+            const query = document.getElementById('bank-search').value.toLowerCase();
+            const cards = document.querySelectorAll('#bank-list-container > a');
+            cards.forEach(card => {
+                const name = card.querySelector('span').textContent.toLowerCase();
+                if (name.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function selectBank(bankId, bankName, synthModel) {
+            initAudioContext();
+            
+            // Reset active sidebar items
+            document.querySelectorAll('#bank-list-container > a').forEach(a => {
+                a.classList.remove('bg-[#141417]', 'text-white');
+                a.classList.add('text-zinc-400');
+            });
+            
+            // Highlight selected
+            const selectedElem = document.getElementById(`bank-item-${bankId}`);
+            if (selectedElem) {
+                selectedElem.classList.add('bg-[#141417]', 'text-white');
+                selectedElem.classList.remove('text-zinc-400');
+            }
+            
+            currentActiveBank = bankId;
+
+            // Load patch list view in central pane via HTMX
+            const content = document.getElementById('patch-explorer-content');
+            content.innerHTML = `
+                <div class="flex-1 flex flex-col items-center justify-center p-8 text-center select-none">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/reload.svg" class="h-5 w-5 animate-spin mb-2" style="filter: invert(0.4);" />
+                    <span class="block text-2xs font-semibold text-zinc-500 font-mono">Decompressing bank...</span>
+                </div>
+            `;
+            
+            htmx.ajax('GET', `/banks/${bankId}`, {target: '#patch-explorer-content', swap: 'innerHTML'});
+        }
+
+        function showUploadProgress() {
+            showStatusOverlay("Uploading Backup File", "Transferring .SYX dump to cloud database...", false);
+            
+            document.body.addEventListener('htmx:afterOnLoad', function listener(evt) {
+                if (evt.detail.target.id === 'bank-list-container') {
+                    completeStatusOverlay("Upload Complete", "Soundbank successfully imported.");
+                    showToast("Import Successful", "Parsed and loaded to Vault Library.", "success");
+                    document.getElementById('upload-form').reset();
+                    document.getElementById('file-label').textContent = "Select .syx backup";
+                    document.body.removeEventListener('htmx:afterOnLoad', listener);
+                }
+            });
+        }
+
+        // --- Elegant Toast Alerts ---
+        let toastTimeout = null;
+        function showToast(title, description, type = "info") {
+            const toast = document.getElementById('toast');
+            const iconWrapper = document.getElementById('toast-icon-wrapper');
+            const titleEl = document.getElementById('toast-title');
+            const descEl = document.getElementById('toast-desc');
+            
+            if (toastTimeout) clearTimeout(toastTimeout);
+            
+            titleEl.textContent = title;
+            descEl.textContent = description;
+            
+            iconWrapper.className = "flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center";
+            if (type === "success") {
+                iconWrapper.classList.add("bg-emerald-500/10", "text-emerald-400", "border", "border-emerald-500/20");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                `;
+            } else if (type === "warning") {
+                iconWrapper.classList.add("bg-amber-500/10", "text-amber-400", "border", "border-amber-500/20");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                `;
+            } else if (type === "error") {
+                iconWrapper.classList.add("bg-rose-500/10", "text-rose-400", "border", "border-rose-500/20");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                `;
+            } else {
+                iconWrapper.classList.add("bg-zinc-800", "text-zinc-400");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `;
+            }
+            
+            toast.classList.remove('translate-y-12', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-12', 'opacity-0');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

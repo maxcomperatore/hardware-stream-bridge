@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>knob.monster</title>
+
+    <!-- Favicon / Shortcut Icon -->
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+
+    <!-- Vercel Geist Fonts (Geist & Geist Mono) -->
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Retro Pixel & Dot-Matrix Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            450: '#7e7e8a',
+                            550: '#5c5c66',
+                            555: '#52525c',
+                            650: '#43434c',
+                            655: '#3e3e46',
+                            850: '#1c1c21',
+                        },
+                        blue: {
+                            650: '#1d4ed8',
+                        },
+                        rose: {
+                            450: '#fb7185',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    },
+                    fontSize: {
+                        '2xs': '0.68rem',
+                        '3xs': '0.58rem',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom selection color */
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* Dither effect on images */
+        .dithered {
+            filter: grayscale(100%) contrast(130%) brightness(110%) url(#dither-filter);
+            image-rendering: pixelated;
+            will-change: filter;
+        }
+
+        /* 1-bit style dither mesh with retro ASCII characters */
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+
+    <!-- SVG Dither Filter definition -->
+    <svg class="absolute h-0 w-0 pointer-events-none" width="0" height="0">
+        <filter id="dither-filter">
+            <!-- Generate heavy fractal noise grain -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />
+            <!-- Convert noise to high-contrast dither matrix -->
+            <feColorMatrix type="matrix" values="0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 15 -7" result="dither" />
+            <!-- Composite the noise over the source graphic -->
+            <feComposite in="SourceGraphic" in2="dither" operator="in" />
+        </filter>
+    </svg>
+
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <img src="/static/logo.png" alt="Knob Monster Logo" class="h-6 w-auto object-contain">
+                <span class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</span>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="#problem" class="hover:text-white transition-colors duration-200">The Problem</a>
+                <a href="#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <a href="#faq" class="hover:text-white transition-colors duration-200">FAQ</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <a href="#pricing"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-6 pt-24 pb-16 text-center relative z-10">
+        <!-- Badge Tag -->
+        <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-pixel uppercase tracking-wider text-zinc-400 mb-8 shadow-sm">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            <span>Now supporting DX7, Juno-106 & Generic SysEx</span>
+        </div>
+
+        <h1
+            class="text-3xl md:text-5xl font-pixel uppercase text-white leading-tight max-w-5xl mx-auto tracking-normal">
+            The iCloud for your <br class="hidden sm:inline">
+            <span class="text-zinc-550">vintage synthesizers.</span>
+        </h1>
+
+        <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed font-normal">
+            Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No
+            desktop software downloads or driver installations required.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+            <a href="#pricing"
+                class="w-full sm:w-auto bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
+                Connect Synth
+            </a>
+            <a href="#demo"
+                class="w-full sm:w-auto bg-transparent border border-zinc-700 hover:border-zinc-500 text-white px-8 py-3.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
+                Try Simulator
+            </a>
+        </div>
+
+        <p class="text-[9px] text-zinc-500 font-mono mt-5 uppercase tracking-widest">
+            Requires Standard USB-to-MIDI Cable & Chrome/Edge Browser
+        </p>
+
+        <!-- Social Proof Stats Banner -->
+        <div
+            class="border-t border-zinc-900 py-10 mt-24 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <span class="block text-4xl font-lcd text-[#fb526b] tracking-wider leading-none">3,400+</span>
+                <span class="text-[10px] font-pixel uppercase text-zinc-500 mt-1 block tracking-wider">Producers</span>
+            </div>
+            <div>
+                <span class="block text-4xl font-lcd text-[#fb526b] tracking-wider leading-none">125,000+</span>
+                <span class="text-[10px] font-pixel uppercase text-zinc-500 mt-1 block tracking-wider">Patches
+                    Saved</span>
+            </div>
+            <div>
+                <span class="block text-4xl font-lcd text-[#fb526b] tracking-wider leading-none">100%</span>
+                <span class="text-[10px] font-pixel uppercase text-zinc-500 mt-1 block tracking-wider">Browser
+                    Native</span>
+            </div>
+            <div>
+                <span class="block text-4xl font-lcd text-[#fb526b] tracking-wider leading-none">0 DRIVERS</span>
+                <span class="text-[10px] font-pixel uppercase text-zinc-500 mt-1 block tracking-wider">No
+                    Installation</span>
+            </div>
+        </div>
+
+        <!-- Symmetric Preview Grid (Physical Synth vs. Virtual App) -->
+        <div id="demo" class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch text-left">
+
+            <!-- Left Card: 4K Physical Hardware Photography -->
+            <div
+                class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group">
+                <div class="p-6">
+                    <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">physical hardware</span>
+                    <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Connection via Web MIDI
+                    </h3>
+                    <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Connect your synth's MIDI ports to
+                        your laptop and read patch names directly from RAM memory bank registers.</p>
+                </div>
+                <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
+                    <img src="/static/vintage_synth_hero.png" alt="Vintage Synthesizer Hardware"
+                        class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500 dithered">
+                </div>
+            </div>
+
+            <!-- Right Card: Stylized Dashboard Mockup -->
+            <div
+                class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-4 flex flex-col justify-between shadow-2xl backdrop-blur-md relative overflow-hidden">
+                <!-- Mac window buttons -->
+                <div class="flex items-center gap-1.5 absolute top-5 left-6 z-20">
+                    <span class="h-2 w-2 rounded-full bg-zinc-800"></span>
+                    <span class="h-2 w-2 rounded-full bg-zinc-800"></span>
+                    <span class="h-2 w-2 rounded-full bg-zinc-800"></span>
+                </div>
+
+                <div
+                    class="w-full h-8 rounded border border-zinc-900 bg-zinc-900/30 mb-3 flex items-center justify-center flex-shrink-0">
+                    <span class="text-[10px] font-pixel text-zinc-550 uppercase tracking-widest">dashboard
+                        preview</span>
+                </div>
+
+                <!-- Dashboard Live Demo IFrame -->
+                <div class="rounded-xl border border-zinc-900 bg-black overflow-hidden h-80 relative">
+                    <iframe src="/dashboard" class="w-full h-full border-none bg-black" style="color-scheme: dark;"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem Section -->
+    <section id="problem" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
+        <div class="text-center max-w-2xl mx-auto mb-20">
+            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">THE FRICTION</span>
+            <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Why backups feel stuck in 1995.</h2>
+            <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans">Synthesizers are built to last
+                forever, but the digital tools to manage them didn't keep up.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <!-- Archaic Tools -->
+            <div class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-8 space-y-6">
+                <div
+                    class="h-8 w-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/close.svg" class="h-4 w-4" style="filter: invert(0.4);" /></div>
+                <h3 class="text-sm font-pixel uppercase text-zinc-350 tracking-wide">Archaic Desktop Utilities</h3>
+                <ul class="space-y-3.5 text-xs text-zinc-550">
+                    <li class="flex items-start gap-3">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/app-windows.svg" class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
+                        Requires installing legacy software drivers on Windows/macOS.
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/eye-off.svg" class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
+                        Saves backups as raw ".syx" files—completely black boxes that you can't search or read names from.
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/settings-2.svg" class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
+                        Must configure complex latency buffers and baud rates manually.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- knob.monster -->
+            <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 space-y-6">
+                <div
+                    class="h-8 w-8 rounded-full bg-blue-650/10 border border-blue-500/20 flex items-center justify-center">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/check.svg" class="h-4 w-4" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(200deg) brightness(98%) contrast(98%);" /></div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">knob.monster Flow</h3>
+                <ul class="space-y-3.5 text-xs text-zinc-300">
+                    <li class="flex items-start gap-3">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/tab.svg" class="h-3.5 w-3.5 mt-0.5 text-blue-500" style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
+                        Zero-installation. Connects natively inside any Chrome/Edge tab.
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/binary.svg" class="h-3.5 w-3.5 mt-0.5 text-blue-500" style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
+                        Hex-to-ASCII Parser decompresses dumps automatically to extract patch name tags in real-time.
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/audio-waveform.svg" class="h-3.5 w-3.5 mt-0.5 text-blue-500" style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
+                        Audition sounds directly inside the browser using Web Audio previews before sending.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Detail Feature Break -->
+    <section class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-12 relative z-10">
+        <div
+            class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 grid grid-cols-1 md:grid-cols-2 items-center gap-0 shadow-xl">
+            <div class="p-8 md:p-16 space-y-6 text-left">
+                <span class="text-[11px] font-pixel text-blue-500 uppercase tracking-widest font-semibold">lossless
+                    preservation</span>
+                <h3 class="text-2xl md:text-3xl font-pixel uppercase text-white tracking-wide">Every byte preserved
+                    exactly as it left the CPU.</h3>
+                <p class="text-xs text-zinc-400 leading-relaxed font-normal">
+                    Our SysEx engine records standard MIDI dumps byte-for-byte. There is no compression, translation, or
+                    loss of high-resolution patch data. Retrieve your settings exactly as they were 40 years ago.
+                </p>
+            </div>
+            <div
+                class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black">
+                <img src="/static/studio_detail.png" alt="Studio Synthesizer Cables close-up"
+                    class="w-full h-full object-cover dithered">
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Core Pillars (Visual Steps) -->
+    <section id="features" class="border-t border-zinc-900 bg-zinc-950/20 py-24 relative z-10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-20">
+                <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">HOW IT WORKS</span>
+                <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Abstracting 40 years of hardware
+                    friction.</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div
+                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group">
+                    <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
+                        <img src="/static/midi_handshake.png" alt="MIDI Din Connection Handshake"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
+                    </div>
+                    <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                        <div class="space-y-3 text-left">
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                                    <img src="https://unpkg.com/pixelarticons@latest/svg/computer.svg" class="h-3.5 w-3.5" style="filter: invert(1);" /></span>
+                                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">The MIDI Handshake
+                                </h3>
+                            </div>
+                            <p class="text-2xs text-zinc-400 leading-relaxed font-normal">
+                                Plug in your synth using a standard USB-to-MIDI adapter. Open knob.monster—the browser
+                                Web MIDI API initiates a handshake immediately.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div
+                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group">
+                    <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
+                        <img src="/static/index_extraction.png" alt="Auto-naming Hexadecimal Parser"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
+                    </div>
+                    <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                        <div class="space-y-3 text-left">
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                                    <img src="https://unpkg.com/pixelarticons@latest/svg/search.svg" class="h-3.5 w-3.5" style="filter: invert(1);" /></span>
+                                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Index Extraction</h3>
+                            </div>
+                            <p class="text-2xs text-zinc-400 leading-relaxed font-normal">
+                                We send specific low-level request sequences to dump presets. The parser instantly
+                                extracts text characters from the registers in real-time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div
+                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group">
+                    <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
+                        <img src="/static/recall_button.png" alt="Single Click Preset Flash Sync"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
+                    </div>
+                    <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                        <div class="space-y-3 text-left">
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                                    <img src="https://unpkg.com/pixelarticons@latest/svg/audio-waveform.svg" class="h-3.5 w-3.5" style="filter: invert(1);" /></span>
+                                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Single-Click Recall
+                                </h3>
+                            </div>
+                            <p class="text-2xs text-zinc-400 leading-relaxed font-normal">
+                                Hit Sync to write sound banks back. We flash the entire hexadecimal data payload,
+                                overwriting hardware RAM registers instantly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Grid -->
+    <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
+        <div class="text-center max-w-2xl mx-auto mb-20">
+            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">PRICING</span>
+            <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for producers.
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto text-left">
+            <!-- Knob Gremlin Plan -->
+            <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 flex flex-col justify-between h-[395px] relative overflow-hidden">
+                <div class="absolute top-6 right-6 border border-dashed border-[#00ff66]/30 p-2 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center">
+                    <img src="/static/troll_green.png" alt="Knob Gremlin Stamp" class="h-8 w-auto object-contain">
+                </div>
+                <div class="space-y-5">
+                    <div>
+                        <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Knob Gremlin</h3>
+                        <p class="text-xs text-zinc-500 mt-1">For composers and multi-synth collectors</p>
+                    </div>
+
+                    <div class="text-5xl font-lcd text-[#fb526b]">$12 <span
+                            class="text-xs font-pixel uppercase text-zinc-500">/ month</span></div>
+
+                    <ul class="space-y-2.5 text-xs text-zinc-400">
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/database.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
+                            Unlimited Soundbank slots
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/search.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
+                            Full Library ASCII search and filter
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/binary.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
+                            Custom name parsers (DX7, Juno, M1)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/headphone.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
+                            Web Audio patch auditor and simulator
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/zap.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
+                            Single-click MIDI flash recall
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="/dashboard"
+                    class="w-full text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
+                    Start Preserving
+                </a>
+            </div>
+
+            <!-- King of Knobs Plan -->
+            <div class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between h-[395px] relative overflow-hidden">
+                <div class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-2 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center">
+                    <img src="/static/troll_gold.png" alt="King of Knobs Stamp" class="h-8 w-auto object-contain">
+                </div>
+                <div class="space-y-5">
+                    <div>
+                        <h3 class="text-sm font-pixel uppercase text-white tracking-wide">King of Knobs</h3>
+                        <p class="text-xs text-zinc-500 mt-1">For studios, repair labs, and museums</p>
+                    </div>
+
+                    <div class="text-5xl font-lcd text-[#fb526b]">$49 <span
+                            class="text-xs font-pixel uppercase text-zinc-500">/ month</span></div>
+
+                    <ul class="space-y-2.5 text-xs text-zinc-400">
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/users.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            Up to 5 Studio team seats
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/keyboard-music.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            Custom hardware parsers on-demand
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/cloud-server.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            Dedicated backup mirroring and API
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/human.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            1-on-1 MIDI hardware setup support
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/shield.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            SLA recovery assistance
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="mailto:vault@knob.monster?subject=King%20of%20Knobs%20Inquiry"
+                    class="w-full text-center py-3 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-pixel uppercase tracking-wider text-white hover:bg-zinc-800 transition-colors duration-200">
+                    Setup Studio Vault
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="border-t border-zinc-900 max-w-3xl mx-auto px-6 py-24 relative z-10 text-left">
+        <div class="text-center mb-16">
+            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">FAQ</span>
+            <h2 class="text-2xl font-pixel uppercase text-white mt-3 text-center">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="space-y-6">
+            <div class="border-b border-zinc-900 pb-6">
+                <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/info-box.svg" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                    Which synthesizers are supported?
+                </h4>
+                <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                    We feature custom name parsers for the <strong>Yamaha DX7</strong> (and compatible synths like DX7II, TX7,
+                    TX81Z). Our <strong>Generic Scan</strong> feature works with any synth that dumps standard SysEx banks (like the
+                    Roland Juno-106 or Korg M1)—we'll capture the dump and scan the binary data for ASCII characters to
+                    extract names automatically.
+                </p>
+            </div>
+
+            <div class="border-b border-zinc-900 pb-6">
+                <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/audio-waveform.svg" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                    Do I need special drivers or software?</h4>
+                <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                    No. That's the beauty of it. knob.monster uses the native browser Web MIDI API. As long as you are
+                    running Chrome or Edge on Windows, macOS, or Linux, your browser can communicate directly with your
+                    USB-to-MIDI cable interfaces.
+                </p>
+            </div>
+
+            <div class="border-b border-zinc-900 pb-6">
+                <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
+                    <img src="https://unpkg.com/pixelarticons@latest/svg/shield.svg" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                    Are my patches private and secure?</h4>
+                <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                    Yes. All your uploaded soundbanks are stored in your secure personal directory account. We only read
+                    the ASCII patch names to display them in your private searchable library.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 bg-black py-16 relative z-10 text-center select-none">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5 w-auto object-contain">
+                <span class="font-pixel uppercase text-xs text-white tracking-widest">knob dot monster</span>
+            </div>
+
+            <p class="text-[10px] text-zinc-655 font-mono">
+                &copy; 2026 knob dot monster. Powered by 1-bit logic and the MIDI Troll under the bridge. <br
+                    class="md:hidden">
+                Logo by <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-white underline">Skoll</a> under <a
+                    href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-white underline">CC BY 3.0</a>.
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

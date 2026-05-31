@@ -120,6 +120,10 @@ async def create_bank(
     # Parse voice names based on model
     if synth_model == "Yamaha DX7":
         patch_names = parser.parse_dx7_sysex(sysex_bytes)
+    elif synth_model == "Roland Juno-106":
+        patch_names = parser.parse_juno106_sysex(sysex_bytes)
+    elif synth_model == "Korg M1":
+        patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
     else:
         patch_names = parser.parse_generic_sysex(sysex_bytes)
         
@@ -144,6 +148,10 @@ async def upload_bank_file(
     # Parse voice names
     if synth_model == "Yamaha DX7":
         patch_names = parser.parse_dx7_sysex(sysex_bytes)
+    elif synth_model == "Roland Juno-106":
+        patch_names = parser.parse_juno106_sysex(sysex_bytes)
+    elif synth_model == "Korg M1":
+        patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
     else:
         patch_names = parser.parse_generic_sysex(sysex_bytes)
         

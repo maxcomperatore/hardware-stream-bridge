@@ -258,8 +258,8 @@
                 
                 <!-- Logo & Heading -->
                 <div class="px-2">
-                    <h2 class="font-pixel uppercase text-xs text-white tracking-widest flex items-center gap-2">
-                        <img src="/static/logo.png" alt="Knob Monster Logo" class="h-4.5 w-auto object-contain">
+                    <h2 class="font-pixel uppercase text-sm text-white tracking-widest flex items-center gap-2">
+                        <img src="/static/logo.png" alt="Knob Monster Logo" class="h-6 w-6 shrink-0 object-contain">
                         knob.monster
                     </h2>
                     <p class="text-[9px] text-zinc-655 font-pixel uppercase tracking-wider mt-1.5">Archiving 80s/90s patches</p>
@@ -321,6 +321,8 @@
                         <select name="synth_model" class="block w-full text-3xs bg-zinc-950 border border-zinc-900 rounded py-1 px-1.5 text-zinc-400 focus:outline-none cursor-pointer">
                             <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
                             <option value="Roland Juno-106">Roland Juno-106</option>
+                            <option value="Korg M1">Korg M1</option>
+                            <option value="Generic Synth">Generic Synth</option>
                         </select>
                         <input type="text" name="name" required placeholder="Import label..." 
                                class="block w-full text-3xs bg-zinc-950 border border-zinc-900 rounded py-1 px-2 text-zinc-300 placeholder-zinc-700 focus:outline-none">
@@ -344,44 +346,62 @@
             </div>
         </aside>
         
-        <!-- Center/Right Pane: Song/Patch Table (iTunes Grid) -->
-        <section class="flex-1 bg-[#09090b] flex flex-col overflow-hidden" id="patch-explorer-content">
-            <!-- Cozy human Onboarding panel when empty -->
-            <div class="flex-1 flex flex-col items-center justify-center p-8 text-center select-none max-w-lg mx-auto">
-                <div class="h-12 w-12 rounded-2xl bg-zinc-900/60 border border-zinc-850 flex items-center justify-center mb-5 shadow-inner">
-                    <img src="https://unpkg.com/pixelarticons@latest/svg/audio-waveform.svg" class="h-6 w-6" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+        <!-- Center/Right Container: Explorer and MIDI Monitor Panel -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Center/Right Pane: Song/Patch Table (iTunes Grid) -->
+            <section class="flex-1 bg-[#09090b] flex flex-col overflow-hidden" id="patch-explorer-content">
+                <!-- Cozy human Onboarding panel when empty -->
+                <div class="flex-1 flex flex-col items-center justify-center p-8 text-center select-none max-w-lg mx-auto">
+                    <div class="h-12 w-12 rounded-2xl bg-zinc-900/60 border border-zinc-850 flex items-center justify-center mb-5 shadow-inner">
+                        <img src="https://unpkg.com/pixelarticons@latest/svg/audio-waveform.svg" class="h-6 w-6" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                    </div>
+                    <h3 class="text-sm font-semibold text-white tracking-tight">Your Vintage Sounds, Safe in the Cloud</h3>
+                    <p class="text-xs text-zinc-500 mt-2 leading-relaxed">
+                        VaultSynth connects to vintage hardware directly through your web browser. No complex configurations. Back up, organize, search, and restore your sound banks instantly.
+                    </p>
+                    
+                    <!-- Onboarding Step List -->
+                    <div class="grid grid-cols-1 gap-3.5 mt-8 w-full max-w-sm text-left">
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 border border-zinc-850 text-zinc-500 font-mono text-3xs font-bold mt-0.5">1</div>
+                            <div>
+                                <h4 class="text-2xs font-semibold text-zinc-300">Plug in your USB-to-MIDI cable</h4>
+                                <p class="text-3xs text-zinc-500 mt-0.5">Connect your laptop to your synth's MIDI ports.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 border border-zinc-850 text-zinc-500 font-mono text-3xs font-bold mt-0.5">2</div>
+                            <div>
+                                <h4 class="text-2xs font-semibold text-zinc-300">Click "Capture Soundbank"</h4>
+                                <p class="text-3xs text-zinc-500 mt-0.5">We'll automatically request the voice memory list and index it.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-5 w-5 items-center justify-center rounded-full bg-[#fb526b]/10 border border-[#fb526b]/20 text-[#fb526b] font-mono text-3xs font-bold mt-0.5">✨</div>
+                            <div>
+                                <h4 class="text-2xs font-semibold text-[#fb526b]">No keyboard nearby?</h4>
+                                <p class="text-3xs text-zinc-500 mt-0.5">Leave "Simulate Synth" enabled above to try the full flow immediately with virtual synthesizers.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-sm font-semibold text-white tracking-tight">Your Vintage Sounds, Safe in the Cloud</h3>
-                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">
-                    VaultSynth connects to vintage hardware directly through your web browser. No complex configurations. Back up, organize, search, and restore your sound banks instantly.
-                </p>
-                
-                <!-- Onboarding Step List -->
-                <div class="grid grid-cols-1 gap-3.5 mt-8 w-full max-w-sm text-left">
-                    <div class="flex items-start gap-3">
-                        <div class="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 border border-zinc-850 text-zinc-500 font-mono text-3xs font-bold mt-0.5">1</div>
-                        <div>
-                            <h4 class="text-2xs font-semibold text-zinc-300">Plug in your USB-to-MIDI cable</h4>
-                            <p class="text-3xs text-zinc-500 mt-0.5">Connect your laptop to your synth's MIDI ports.</p>
-                        </div>
+            </section>
+
+            <!-- MIDI System Monitor / Log Panel -->
+            <div class="h-28 border-t border-zinc-900 bg-[#0e0e11] flex flex-col font-mono text-[9px] select-none">
+                <div class="px-4 py-1.5 border-b border-zinc-900/60 bg-[#0b0b0d] flex items-center justify-between text-zinc-500 font-pixel uppercase tracking-wider text-[7px]">
+                    <div class="flex items-center gap-1.5">
+                        <span class="h-1.5 w-1.5 rounded-full bg-[#fb526b] animate-ping"></span>
+                        <span>MIDI SYSTEM MONITOR</span>
                     </div>
-                    <div class="flex items-start gap-3">
-                        <div class="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 border border-zinc-850 text-zinc-500 font-mono text-3xs font-bold mt-0.5">2</div>
-                        <div>
-                            <h4 class="text-2xs font-semibold text-zinc-300">Click "Capture Soundbank"</h4>
-                            <p class="text-3xs text-zinc-500 mt-0.5">We'll automatically request the voice memory list and index it.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="flex h-5 w-5 items-center justify-center rounded-full bg-[#fb526b]/10 border border-[#fb526b]/20 text-[#fb526b] font-mono text-3xs font-bold mt-0.5">✨</div>
-                        <div>
-                            <h4 class="text-2xs font-semibold text-[#fb526b]">No keyboard nearby?</h4>
-                            <p class="text-3xs text-zinc-500 mt-0.5">Leave "Simulate Synth" enabled above to try the full flow immediately with virtual synthesizers.</p>
-                        </div>
-                    </div>
+                    <button onclick="clearMidiLog()" class="hover:text-white text-zinc-500 transition-colors uppercase text-[6px] tracking-wide bg-zinc-950 border border-zinc-900 px-1.5 py-0.5 rounded">Clear Log</button>
+                </div>
+                <div id="midi-log-console" class="flex-1 p-3 overflow-y-auto custom-scrollbar space-y-1 text-zinc-500 select-text">
+                    <div class="text-zinc-600">[SYSTEM] Initializing MIDI interface console... ready.</div>
+                    <div class="text-zinc-600">[SYSTEM] Sandbox active. Virtual synthesizer simulator online.</div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Global Progress / Sync Ingestion Popup -->
@@ -445,8 +465,64 @@
         let audioContext = null;
         let activeOscillators = []; // Track active sound preview oscs
 
+        // --- MIDI Console Logging ---
+        function logMidiEvent(direction, dataHex) {
+            const consoleEl = document.getElementById('midi-log-console');
+            if (!consoleEl) return;
+            
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
+            
+            const logLine = document.createElement('div');
+            
+            if (direction === 'IN') {
+                logLine.className = 'text-emerald-500/80';
+                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-emerald-400">MIDI IN:</span> <span class="tracking-wide">${dataHex.toUpperCase()}</span>`;
+            } else if (direction === 'OUT') {
+                logLine.className = 'text-[#fb526b]/80';
+                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-rose-400">MIDI OUT:</span> <span class="tracking-wide">${dataHex.toUpperCase()}</span>`;
+            } else if (direction === 'SYSTEM') {
+                logLine.className = 'text-amber-500/80';
+                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-amber-400">[SYS]</span> ${dataHex}`;
+            } else {
+                logLine.className = 'text-zinc-500';
+                logLine.innerHTML = `[${timeStr}] <span class="text-zinc-650">[MSG]</span> ${dataHex}`;
+            }
+            
+            consoleEl.appendChild(logLine);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+        
+        function clearMidiLog() {
+            const consoleEl = document.getElementById('midi-log-console');
+            if (consoleEl) {
+                consoleEl.innerHTML = '<div class="text-zinc-600">[SYSTEM] Log cleared. Monitoring MIDI bus...</div>';
+            }
+        }
+
         // Init MIDI Access
         window.addEventListener('DOMContentLoaded', () => {
+            // Check for query parameters to auto-toggle simulation vs hardware mode
+            const urlParams = new URLSearchParams(window.location.search);
+            const simulateParam = urlParams.get('simulate');
+            const toggle = document.getElementById('simulated-midi-toggle');
+            const statusLabel = document.getElementById('sim-status-label');
+            const portLbl = document.getElementById('midi-port-lbl');
+            
+            if (simulateParam === '0') {
+                isSimulationMode = false;
+                if (toggle) toggle.checked = false;
+                if (statusLabel) statusLabel.textContent = "Hardware Mode";
+                if (portLbl) portLbl.textContent = "USB-to-MIDI Port";
+                logMidiEvent("SYSTEM", "Configured via query parameter: Physical Hardware Mode active.");
+            } else if (simulateParam === '1') {
+                isSimulationMode = true;
+                if (toggle) toggle.checked = true;
+                if (statusLabel) statusLabel.textContent = "Simulate Synth";
+                if (portLbl) portLbl.textContent = "Simulation Mode";
+                logMidiEvent("SYSTEM", "Configured via query parameter: Virtual MIDI Sandbox Mode active.");
+            }
+
             initializeMidiAccess(false);
             
             // Custom file label updates on dropzone select
@@ -496,9 +572,11 @@
                 statusLabel.textContent = "Simulate Synth";
                 portLbl.textContent = "Simulation Mode";
                 updateMidiBadge("active", "Simulated MIDI Interface Ready");
+                logMidiEvent("SYSTEM", "Switching to Virtual MIDI simulator mode (Sandbox).");
             } else {
                 statusLabel.textContent = "Hardware Mode";
                 portLbl.textContent = "USB-to-MIDI Port";
+                logMidiEvent("SYSTEM", "Switching to Physical MIDI hardware interface.");
                 initializeMidiAccess(true); // Attempt to query actual MIDI hardware
             }
         }
@@ -532,20 +610,24 @@
 
             if (!navigator.requestMIDIAccess) {
                 updateMidiBadge("error", "Web MIDI API Un-supported");
+                logMidiEvent("SYSTEM", "Web MIDI API is unsupported in this browser.");
                 if (interactive) {
                     showToast("Compatibility Warning", "Your browser does not support Web MIDI API. Please switch to Google Chrome or Microsoft Edge.", "warning");
                 }
                 return;
             }
 
+            logMidiEvent("SYSTEM", "Requesting hardware MIDI access with SysEx capability...");
             navigator.requestMIDIAccess({ sysex: true })
                 .then(access => {
                     midiAccess = access;
                     updateMidiBadge("active", "Hardware MIDI Access Live");
+                    logMidiEvent("SYSTEM", "Hardware MIDI access granted successfully.");
                     
                     // Listen for hardware connections changes
                     midiAccess.onstatechange = (e) => {
                         updatePortsDropdowns();
+                        logMidiEvent("SYSTEM", `MIDI Port State Change: ${e.port.name} is now ${e.port.state}`);
                     };
                     
                     updatePortsDropdowns();
@@ -557,6 +639,7 @@
                 .catch(err => {
                     console.error("MIDI access denied:", err);
                     updateMidiBadge("error", "Permission Denied / Failed");
+                    logMidiEvent("SYSTEM", `MIDI Access Denied: ${err.message}`);
                     if (interactive) {
                         showToast("MIDI Access Blocked", "Please grant MIDI permission in your browser URL bar to talk to synths.", "warning");
                     }
@@ -743,6 +826,15 @@
                 { limit: 100, msg: "Saving voice bank index..." }
             ];
             
+            logMidiEvent("SYSTEM", `Simulating ingestion for '${bankName}' [${synthModel}]...`);
+            if (synthModel === "Yamaha DX7") {
+                logMidiEvent("OUT", "F0 43 20 09 F7");
+            } else if (synthModel === "Korg M1") {
+                logMidiEvent("OUT", "F0 42 30 19 10 F7");
+            } else if (synthModel === "Roland Juno-106") {
+                logMidiEvent("SYSTEM", "Awaiting manual WRITE message simulation from Juno-106 interface...");
+            }
+            
             const interval = setInterval(() => {
                 progress += 5;
                 if (progress > 100) progress = 100;
@@ -767,6 +859,8 @@
                     clearInterval(interval);
                     
                     const simulatedHex = generateMockDX7SysEx();
+                    logMidiEvent("IN", simulatedHex.slice(0, 48) + " ... " + simulatedHex.slice(-8));
+                    logMidiEvent("SYSTEM", `Successfully received ${simulatedHex.length / 2} bytes of SysEx dump data.`);
                     
                     const formData = new FormData();
                     formData.append('name', bankName);
@@ -805,18 +899,31 @@
             if (!inputPort || !outputPort) {
                 closeStatusOverlay();
                 showToast("Connection Lost", "The MIDI interface was unplugged.", "error");
+                logMidiEvent("SYSTEM", "MIDI hardware error: interface disconnected.");
                 return;
             }
             
+            logMidiEvent("SYSTEM", `Opening MIDI Input listener on '${inputPort.name}'...`);
             inputPort.onmidimessage = handleIncomingMidiBytes;
             
-            let dumpRequestCommand = new Uint8Array([0xF0, 0x43, 0x20, 0x09, 0xF7]);
+            let dumpRequestCommand;
+            if (synthModel === "Yamaha DX7") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x43, 0x20, 0x09, 0xF7]);
+            } else if (synthModel === "Korg M1") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x42, 0x30, 0x19, 0x10, 0xF7]);
+            } else {
+                // Default dump request command
+                dumpRequestCommand = new Uint8Array([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]); // Universal Identity Request
+            }
             
             if (synthModel === "Roland Juno-106") {
                 updateStatusOverlay(10, "Press manual WRITE button on Juno-106 to dump patches...", "0 B", "AWAITING SYNTH");
+                logMidiEvent("SYSTEM", "Juno-106 requires manual trigger. Press WRITE on the keyboard to dump SysEx.");
             } else {
                 updateStatusOverlay(10, "Sending dump request command...", "0 B", "HANDSHAKE");
+                logMidiEvent("SYSTEM", `Sending SysEx Bulk Dump Request command to ${synthModel}...`);
                 outputPort.send(dumpRequestCommand);
+                logMidiEvent("OUT", Array.from(dumpRequestCommand).map(b => b.toString(16).padStart(2, '0')).join(' '));
             }
             
             dumpTimeout = setTimeout(() => {
@@ -832,6 +939,9 @@
             if (!isIngesting) return;
             
             const dataBytes = event.data;
+            const hex = Array.from(dataBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
+            logMidiEvent("IN", hex.length > 50 ? hex.slice(0, 47) + "..." : hex);
+
             for (let i = 0; i < dataBytes.length; i++) {
                 ingestedBytes.push(dataBytes[i]);
             }
@@ -870,12 +980,16 @@
                 dumpTimeout = null;
             }
             
-            if (!saveData) return;
+            if (!saveData) {
+                logMidiEvent("SYSTEM", "MIDI Ingestion aborted or timed out.");
+                return;
+            }
             
             const hexString = Array.from(ingestedBytes).map(b => b.toString(16).padStart(2, '0')).join('');
             const synthModel = document.getElementById('pull-synth-model').value;
             const bankName = document.getElementById('pull-bank-name').value;
             
+            logMidiEvent("SYSTEM", `SysEx Stream completed. Received ${ingestedBytes.length} bytes. Parsing patch names...`);
             updateStatusOverlay(100, "Extracting patch names...", `${ingestedBytes.length} B`, "VERIFYING");
             
             const formData = new FormData();
@@ -944,10 +1058,12 @@
             
             if (!isSimulationMode && !selectedOutput) {
                 showToast("Flash Aborted", "Select a MIDI Output port first.", "warning");
+                logMidiEvent("SYSTEM", "Flash aborted: No output MIDI port selected.");
                 return;
             }
             
             showStatusOverlay("Flashing Synth Memory", `Writing soundbank to physical memory...`, false);
+            logMidiEvent("SYSTEM", `Retrieving bank '${bankName}' from storage...`);
             
             fetch(`/banks/${bankId}/hex`)
                 .then(res => {
@@ -957,6 +1073,7 @@
                 .then(data => {
                     const hex = data.sysex_hex;
                     const byteLen = hex.length / 2;
+                    logMidiEvent("SYSTEM", `Retrieved ${byteLen} bytes of raw SysEx from database.`);
                     
                     let progress = 0;
                     const interval = setInterval(() => {
@@ -977,6 +1094,8 @@
                             if (isSimulationMode) {
                                 completeStatusOverlay("Sync Finished", "Presets successfully loaded!");
                                 showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
+                                logMidiEvent("SYSTEM", `[SIMULATED] Transmitted ${byteLen} bytes of SysEx backup stream.`);
+                                logMidiEvent("OUT", hex.slice(0, 48) + " ... " + hex.slice(-8));
                             } else {
                                 executeMidiFlash(hex, bankName);
                             }
@@ -987,6 +1106,7 @@
                     console.error(err);
                     closeStatusOverlay();
                     showToast("Flash Failed", "Cannot retrieve SysEx dump from database.", "error");
+                    logMidiEvent("SYSTEM", `Flash error: Database fetch failed: ${err.message}`);
                 });
         }
 
@@ -997,16 +1117,21 @@
                 if (!outputPort) {
                     closeStatusOverlay();
                     showToast("Port Unavailable", "The target output MIDI device is disconnected.", "error");
+                    logMidiEvent("SYSTEM", "Flash aborted: Selected output port was lost.");
                     return;
                 }
                 
+                logMidiEvent("SYSTEM", `Sending ${bytes.length} bytes of raw SysEx dump to output port '${outputPort.name}'...`);
                 outputPort.send(bytes);
+                logMidiEvent("OUT", hexString.slice(0, 48) + " ... " + hexString.slice(-8));
+                
                 completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!");
                 showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
             } catch (err) {
                 console.error("Midi flash error:", err);
                 closeStatusOverlay();
                 showToast("Flash Failed", "Error transmitting MIDI data packet.", "error");
+                logMidiEvent("SYSTEM", `Flash transmission failed: ${err.message}`);
             }
         }
 
@@ -1070,17 +1195,21 @@
             
             // Program change to index
             outputPort.send(new Uint8Array([0xC0, index]));
+            logMidiEvent("OUT", `c0 ${index.toString(16).padStart(2, '0')} [Program Change to Preset ${index + 1}]`);
             
             // Volume
             const volume = parseInt(document.getElementById('midi-volume').value);
             outputPort.send(new Uint8Array([0xB0, 0x07, volume]));
+            logMidiEvent("OUT", `b0 07 ${volume.toString(16).padStart(2, '0')} [Control Change: Channel Volume]`);
             
             // Note On C4
             outputPort.send(new Uint8Array([0x90, 60, 100]));
+            logMidiEvent("OUT", "90 3c 64 [Note On C4, Velocity 100]");
             
             // Trigger automatic Note Off after 1 sec
             setTimeout(() => {
                 outputPort.send(new Uint8Array([0x80, 60, 0]));
+                logMidiEvent("OUT", "80 3c 00 [Note Off C4]");
                 // Reset buttons visually
                 const playIcon = document.getElementById('play-icon');
                 const stopIcon = document.getElementById('stop-icon');
@@ -1123,7 +1252,10 @@
                 if (outputPort) {
                     // Send Control Change 7 (Channel Volume)
                     outputPort.send(new Uint8Array([0xB0, 0x07, volValue]));
+                    logMidiEvent("OUT", `b0 07 ${volValue.toString(16).padStart(2, '0')} [Control Change: Channel Volume]`);
                 }
+            } else if (isSimulationMode) {
+                logMidiEvent("OUT", `b0 07 ${volValue.toString(16).padStart(2, '0')} [Simulated CC Volume]`);
             }
             
             setTimeout(() => {
@@ -1148,8 +1280,13 @@
             osc.frequency.setValueAtTime(freq, audioContext.currentTime);
             
             // Route volume slider value to local gain
-            const userVol = parseInt(document.getElementById('midi-volume').value) / 127;
-            const maxVol = userVol * 0.12; // Limit clipping
+            const userVol = parseInt(document.getElementById('midi-volume').value);
+            const maxVol = (userVol / 127) * 0.12; // Limit clipping
+            
+            // Log simulated MIDI equivalents
+            logMidiEvent("OUT", `c0 ${index.toString(16).padStart(2, '0')} [Simulated Program Change to Preset ${index + 1}]`);
+            logMidiEvent("OUT", `b0 07 ${userVol.toString(16).padStart(2, '0')} [Simulated CC Volume]`);
+            logMidiEvent("OUT", `90 3c 64 [Simulated Note On C4]`);
             
             // Oscillator style simulates DX7 voices
             if (index % 4 === 0) {
@@ -1197,6 +1334,9 @@
         }
 
         function stopWebAudioNote() {
+            if (activeOscillators.length > 0) {
+                logMidiEvent("OUT", "80 3c 00 [Simulated Note Off C4]");
+            }
             activeOscillators.forEach(item => {
                 try {
                     item.gain.gain.setValueAtTime(item.gain.gain.value, audioContext.currentTime);

@@ -117,14 +117,14 @@
             </nav>
 
             <div class="flex items-center gap-4">
-                <a href="#pricing"
+                <a href="/dashboard"
                     class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Get Started
+                    Launch Console
                 </a>
             </div>
         </div>
     </header>
-
+ 
     <!-- Hero Section -->
     <section class="max-w-6xl mx-auto px-6 pt-24 pb-16 text-center relative z-10">
         <!-- Badge Tag -->
@@ -133,26 +133,26 @@
             <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
             <span>Now supporting DX7, Juno-106 & Generic SysEx</span>
         </div>
-
+ 
         <h1
             class="text-3xl md:text-5xl font-pixel uppercase text-white leading-tight max-w-5xl mx-auto tracking-normal">
             The iCloud for your <br class="hidden sm:inline">
             <span class="text-zinc-550">vintage synthesizers.</span>
         </h1>
-
+ 
         <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed font-normal">
             Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No
             desktop software downloads or driver installations required.
         </p>
-
+ 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-            <a href="#pricing"
+            <a href="/dashboard?simulate=0"
                 class="w-full sm:w-auto bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
-                Connect Synth
+                Connect Hardware
             </a>
-            <a href="#demo"
+            <a href="/dashboard?simulate=1"
                 class="w-full sm:w-auto bg-transparent border border-zinc-700 hover:border-zinc-500 text-white px-8 py-3.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
-                Try Simulator
+                Try Virtual Simulator
             </a>
         </div>
 
@@ -205,7 +205,7 @@
 
             <!-- Right Card: Stylized Dashboard Mockup -->
             <div
-                class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-4 flex flex-col justify-between shadow-2xl backdrop-blur-md relative overflow-hidden">
+                class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-4 flex flex-col justify-between shadow-2xl backdrop-blur-md relative overflow-hidden group">
                 <!-- Mac window buttons -->
                 <div class="flex items-center gap-1.5 absolute top-5 left-6 z-20">
                     <span class="h-2 w-2 rounded-full bg-zinc-800"></span>
@@ -215,13 +215,13 @@
 
                 <div
                     class="w-full h-8 rounded border border-zinc-900 bg-zinc-900/30 mb-3 flex items-center justify-center flex-shrink-0">
-                    <span class="text-[10px] font-pixel text-zinc-550 uppercase tracking-widest">dashboard
-                        preview</span>
+                    <span class="text-[10px] font-pixel text-zinc-550 uppercase tracking-widest">dashboard preview</span>
                 </div>
 
-                <!-- Dashboard Live Demo IFrame -->
-                <div class="rounded-xl border border-zinc-900 bg-black overflow-hidden h-80 relative">
-                    <iframe src="/dashboard" class="w-full h-full border-none bg-black" style="color-scheme: dark;"></iframe>
+                <!-- Dashboard Preview Image -->
+                <div class="relative overflow-hidden aspect-[4/3] w-full border border-zinc-900 bg-black rounded-xl">
+                    <img src="/static/index_extraction.png" alt="Knob Monster Dashboard Interface"
+                        class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500 dithered">
                 </div>
             </div>
         </div>
@@ -406,39 +406,35 @@
                 <div class="space-y-5">
                     <div>
                         <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Knob Gremlin</h3>
-                        <p class="text-xs text-zinc-500 mt-1">For composers and multi-synth collectors</p>
+                        <p class="text-xs text-zinc-500 mt-1">For casual hobbyists and synthers</p>
                     </div>
 
-                    <div class="text-5xl font-lcd text-[#fb526b]">$12 <span
-                            class="text-xs font-pixel uppercase text-zinc-500">/ month</span></div>
+                    <div class="text-5xl font-lcd text-[#fb526b]">$0 <span
+                            class="text-xs font-pixel uppercase text-zinc-500">/ free</span></div>
 
                     <ul class="space-y-2.5 text-xs text-zinc-400">
                         <li class="flex items-center gap-2">
                             <img src="https://unpkg.com/pixelarticons@latest/svg/database.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Unlimited Soundbank slots
+                            Up to 3 Soundbank slots
                         </li>
                         <li class="flex items-center gap-2">
                             <img src="https://unpkg.com/pixelarticons@latest/svg/search.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Full Library ASCII search and filter
+                            Standard Library search
                         </li>
                         <li class="flex items-center gap-2">
                             <img src="https://unpkg.com/pixelarticons@latest/svg/binary.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Custom name parsers (DX7, Juno, M1)
+                            Yamaha DX7 name parsing
                         </li>
                         <li class="flex items-center gap-2">
                             <img src="https://unpkg.com/pixelarticons@latest/svg/headphone.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Web Audio patch auditor and simulator
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/zap.svg" class="h-3.5 w-3.5 text-emerald-400" style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Single-click MIDI flash recall
+                            Web Audio patch simulator
                         </li>
                     </ul>
                 </div>
 
                 <a href="/dashboard"
-                    class="w-full text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
-                    Start Preserving
+                    class="w-full text-center py-3 rounded-full bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white text-[10px] font-pixel uppercase tracking-wider transition-all duration-200">
+                    Get Started Free
                 </a>
             </div>
 
@@ -450,39 +446,39 @@
                 <div class="space-y-5">
                     <div>
                         <h3 class="text-sm font-pixel uppercase text-white tracking-wide">King of Knobs</h3>
-                        <p class="text-xs text-zinc-500 mt-1">For studios, repair labs, and museums</p>
+                        <p class="text-xs text-zinc-500 mt-1">For active producers and collectors</p>
                     </div>
 
-                    <div class="text-5xl font-lcd text-[#fb526b]">$49 <span
+                    <div class="text-5xl font-lcd text-[#fb526b]">$12 <span
                             class="text-xs font-pixel uppercase text-zinc-500">/ month</span></div>
 
                     <ul class="space-y-2.5 text-xs text-zinc-400">
                         <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/users.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            Up to 5 Studio team seats
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/database.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            Unlimited Soundbank slots
                         </li>
                         <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/keyboard-music.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            Custom hardware parsers on-demand
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/binary.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            All parsers (DX7, Juno, M1, Generic)
                         </li>
                         <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/cloud-server.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            Dedicated backup mirroring and API
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/headphone.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            Web Audio patch simulator
                         </li>
                         <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/human.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            1-on-1 MIDI hardware setup support
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/zap.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            Single-click MIDI flash recall
                         </li>
                         <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/shield.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            SLA recovery assistance
+                            <img src="https://unpkg.com/pixelarticons@latest/svg/download.svg" class="h-3.5 w-3.5 text-amber-400" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                            Direct backup downloads (.syx)
                         </li>
                     </ul>
                 </div>
 
-                <a href="mailto:vault@knob.monster?subject=King%20of%20Knobs%20Inquiry"
-                    class="w-full text-center py-3 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-pixel uppercase tracking-wider text-white hover:bg-zinc-800 transition-colors duration-200">
-                    Setup Studio Vault
+                <a href="/dashboard"
+                    class="w-full text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
+                    Upgrade to Pro
                 </a>
             </div>
         </div>

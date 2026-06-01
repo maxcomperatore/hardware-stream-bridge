@@ -366,7 +366,7 @@ async def create_checkout_session(request: Request, plan: str = "yearly"):
                 },
             ],
             mode='subscription',
-            allow_promotion_codes=True,
+            allow_promotion_codes=False,
             subscription_data={
                 'trial_period_days': 7,
             },

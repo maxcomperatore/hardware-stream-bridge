@@ -142,11 +142,14 @@
         selectPatch(0, currentActivePatches[0].name);
     }
     
+    let cachedPatchRows = null;
     function filterPatches() {
+        if (!cachedPatchRows) {
+            cachedPatchRows = document.querySelectorAll('.patch-row');
+        }
         const query = document.getElementById('patch-search').value.toLowerCase();
-        const items = document.querySelectorAll('.patch-row');
-        
-        items.forEach(item => {
+        for (let i = 0; i < cachedPatchRows.length; i++) {
+            const item = cachedPatchRows[i];
             const name = item.getAttribute('data-name');
             const index = item.getAttribute('data-index');
             if (name.includes(query) || index.includes(query)) {
@@ -154,6 +157,6 @@
             } else {
                 item.style.display = 'none';
             }
-        });
+        }
     }
 </script>

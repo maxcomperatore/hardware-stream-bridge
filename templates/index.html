@@ -142,6 +142,8 @@
             filter: grayscale(100%) contrast(130%) brightness(110%) url(#dither-filter);
             image-rendering: pixelated;
             will-change: filter;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         /* 1-bit style dither mesh with retro ASCII characters */
@@ -1536,17 +1538,28 @@
         }
 
         // --- Search & Sidebar UI Helpers ---
+        let cachedBankCards = null;
+        document.body.addEventListener('htmx:afterSwap', (evt) => {
+            if (evt.detail.target && evt.detail.target.id === 'bank-list-container') {
+                cachedBankCards = null;
+            }
+        });
+
         function filterBanks() {
+            if (!cachedBankCards) {
+                cachedBankCards = document.querySelectorAll('#bank-list-container > a');
+            }
             const query = document.getElementById('bank-search').value.toLowerCase();
-            const cards = document.querySelectorAll('#bank-list-container > a');
-            cards.forEach(card => {
-                const name = card.querySelector('span').textContent.toLowerCase();
+            for (let i = 0; i < cachedBankCards.length; i++) {
+                const card = cachedBankCards[i];
+                const span = card.querySelector('span');
+                const name = span ? span.textContent.toLowerCase() : "";
                 if (name.includes(query)) {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
                 }
-            });
+            }
         }
 
         function selectBank(bankId, bankName, synthModel) {

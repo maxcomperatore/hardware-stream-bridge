@@ -5,26 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="STOaPWGwgPycvNfxtzTRhyetLyvasi3uelnlo5SV_QA" />
-    <title>knob.monster | The iCloud for Vintage Synthesizers</title>
+    <title>{{ seo.title if seo else "knob.monster | The iCloud for Vintage Synthesizers" }}</title>
     <meta name="description"
-        content="Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.">
+        content="{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}">
     <meta name="keywords"
-        content="sysex librarian, dx7 editor, juno 106 patch editor, korg m1 backup, web midi sysex, synth bank manager">
+        content="{{ seo.keywords if seo else 'sysex librarian, dx7 editor, juno 106 patch editor, korg m1 backup, web midi sysex, synth bank manager' }}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://knob.monster/">
-    <meta property="og:title" content="knob.monster | The iCloud for Vintage Synthesizers">
+    <meta property="og:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <meta property="og:title" content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="og:description"
-        content="Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.">
+        content="{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}">
     <meta property="og:image" content="https://knob.monster/static/og_banner.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://knob.monster/">
-    <meta property="twitter:title" content="knob.monster | The iCloud for Vintage Synthesizers">
+    <meta property="twitter:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <meta property="twitter:title" content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="twitter:description"
-        content="Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.">
+        content="{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}">
     <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
 
     <!-- Favicon / Shortcut Icon -->
@@ -169,13 +169,21 @@
 
         <h1
             class="text-3xl md:text-5xl font-pixel uppercase text-white leading-tight max-w-5xl mx-auto tracking-normal">
+            {% if seo %}
+            {{ seo.hero_title | safe }}
+            {% else %}
             The iCloud for your <br class="hidden sm:inline">
             <span class="text-zinc-550">vintage synthesizers.</span>
+            {% endif %}
         </h1>
 
         <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed font-normal">
+            {% if seo %}
+            {{ seo.hero_subtitle }}
+            {% else %}
             Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No
             desktop software downloads or driver installations required.
+            {% endif %}
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">

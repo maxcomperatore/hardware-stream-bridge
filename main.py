@@ -96,6 +96,10 @@ async def startup_event():
         recall_src = os.path.join(src_dir, "recall_button_1780240735209.png")
         if os.path.exists(recall_src):
             shutil.copy(recall_src, os.path.join(dest_dir, "recall_button.png"))
+
+        og_src = os.path.join(src_dir, "og_banner_minimal_1780341452555.png")
+        if os.path.exists(og_src):
+            shutil.copy(og_src, os.path.join(dest_dir, "og_banner.png"))
     except Exception as e:
         print(f"Startup asset copy skipped: {e}")
 

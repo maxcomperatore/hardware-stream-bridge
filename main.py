@@ -26,7 +26,7 @@ STRIPE_SECRET_KEY = "sk_live_51TTj41LuSQGuB7eyG45SkLnMmWDGLRZwgaHe0ua7UZTJp2bFuL
 STRIPE_WEBHOOK_SECRET = "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
 stripe.api_key = STRIPE_SECRET_KEY
 
-STRIPE_PRICE_ID = "price_1TdIB8LuSQGuB7eywbBCPAmF"
+STRIPE_PRICE_ID = "price_1TdL2bLuSQGuB7eyOxJIdvzZ"
 BASE_URL = "https://knob.monster"
 
 # Initialize database and copy assets on startup
@@ -457,4 +457,15 @@ async def sitemap():
   </url>
 </urlset>"""
     return Response(content=xml_content, media_type="application/xml")
+
+@app.get("/robots.txt")
+async def robots():
+    content = """User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /banks/
+
+Sitemap: https://knob.monster/sitemap.xml"""
+    return Response(content=content, media_type="text/plain")
+
 

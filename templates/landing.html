@@ -162,7 +162,8 @@
         <!-- Badge Tag -->
         <div
             class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-pixel uppercase tracking-wider text-zinc-400 mb-8 shadow-sm">
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            <img src="https://unpkg.com/pixelarticons@latest/svg/music.svg" class="h-3.5 w-3.5 animate-pulse"
+                style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
             <span>Now supporting DX7, Juno-106 & Generic SysEx</span>
         </div>
 
@@ -241,8 +242,11 @@
                 class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group">
                 <div class="p-6">
                     <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">cloud librarian</span>
-                    <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure SysEx Database</h3>
-                    <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Store, search, and recall your backup soundbanks in a private cloud archive. Filter presets and restore them with a single click.</p>
+                    <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure SysEx Database
+                    </h3>
+                    <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Store, search, and recall your
+                        backup soundbanks in a private cloud archive. Filter presets and restore them with a single
+                        click.</p>
                 </div>
                 <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
                     <img src="/static/dashboard_preview.png" alt="Knob Monster Dashboard"
@@ -438,75 +442,69 @@
             </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto text-left">
-            <!-- Knob Gremlin Plan -->
-            <div
-                class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 flex flex-col justify-between h-[395px] relative overflow-hidden">
-                <div
-                    class="absolute top-6 right-6 border border-dashed border-[#00ff66]/30 p-2 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center">
-                    <img src="/static/troll_green.png" alt="Knob Gremlin Stamp" class="h-8 w-auto object-contain">
-                </div>
-                <div class="space-y-5">
-                    <div>
-                        <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Knob Gremlin</h3>
-                        <p class="text-xs text-zinc-500 mt-1">For casual hobbyists and synthers</p>
-                    </div>
+        <!-- Billing Toggle -->
+        <div
+            class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[280px] mx-auto mb-12 select-none">
+            <!-- Active sliding background highlight -->
+            <div id="billing-slider-bg"
+                class="absolute top-1 bottom-1 left-1 w-[134px] bg-white rounded-full transition-all duration-300 shadow-md"
+                style="transform: translateX(134px);"></div>
 
-                    <div class="text-5xl font-lcd text-[#fb526b]">$0 <span
-                            class="text-xs font-pixel uppercase text-zinc-500">/ free</span></div>
+            <!-- Tab buttons -->
+            <button onclick="setBillingPeriod('monthly')"
+                class="relative z-10 w-[134px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-500 focus:outline-none"
+                id="btn-monthly">
+                Monthly
+            </button>
+            <button onclick="setBillingPeriod('yearly')"
+                class="relative z-10 w-[134px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-black flex items-center justify-center gap-1 focus:outline-none"
+                id="btn-yearly">
+                Yearly
+                <span
+                    class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-pixel font-normal">-25%</span>
+            </button>
+        </div>
 
-                    <ul class="space-y-2.5 text-xs text-zinc-400">
-                        <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/database.svg"
-                                class="h-3.5 w-3.5 text-emerald-400"
-                                style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Up to 3 Soundbank slots
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/search.svg"
-                                class="h-3.5 w-3.5 text-emerald-400"
-                                style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Standard Library search
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/binary.svg"
-                                class="h-3.5 w-3.5 text-emerald-400"
-                                style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Yamaha DX7 name parsing
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://unpkg.com/pixelarticons@latest/svg/headphone.svg"
-                                class="h-3.5 w-3.5 text-emerald-400"
-                                style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-                            Web Audio patch simulator
-                        </li>
-                    </ul>
-                </div>
-
-                <a href="/dashboard"
-                    class="w-full text-center py-3 rounded-full bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white text-[10px] font-pixel uppercase tracking-wider transition-all duration-200">
-                    Get Started Free
-                </a>
-            </div>
-
+        <div class="max-w-md mx-auto text-left">
             <!-- King of Knobs Plan -->
             <div
-                class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between h-[395px] relative overflow-hidden">
+                class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+                <!-- Gold Stamp -->
                 <div
                     class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-2 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center">
                     <img src="/static/troll_gold.png" alt="King of Knobs Stamp" class="h-8 w-auto object-contain">
                 </div>
+
                 <div class="space-y-5">
                     <div>
                         <h3 class="text-sm font-pixel uppercase text-white tracking-wide">King of Knobs</h3>
-                        <p class="text-xs text-zinc-500 mt-1">For active producers and collectors</p>
+                        <p class="text-xs text-zinc-500 mt-1">For sound designers and collectors</p>
                     </div>
 
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-5xl font-lcd text-[#fb526b]">$15</span>
-                        <span class="text-3xl font-lcd text-zinc-600 line-through">$20</span>
-                        <span class="text-xs font-pixel uppercase text-zinc-500">/ month</span>
+                    <!-- Pricing Display -->
+                    <div class="h-16 flex flex-col justify-center">
+                        <div id="price-monthly" class="hidden">
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-5xl font-lcd text-[#fb526b]">$20</span>
+                                <span class="text-xs font-pixel uppercase text-zinc-500">/ month</span>
+                            </div>
+                        </div>
+                        <div id="price-yearly" class="block">
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-5xl font-lcd text-[#fb526b]">$15</span>
+                                <span class="text-3xl font-lcd text-zinc-600 line-through">$20</span>
+                                <span class="text-xs font-pixel uppercase text-zinc-500">/ month</span>
+                            </div>
+                            <div class="text-[9px] font-pixel text-zinc-600 uppercase tracking-wider mt-1">
+                                Billed annually ($180/year) • Save 25%
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Trial subtext explanation -->
+                    <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
+                        7 days free. To avoid yearly charges, cancel before the 7-day trial ends.
+                    </p>
 
                     <ul class="space-y-2.5 text-xs text-zinc-400">
                         <li class="flex items-center gap-2">
@@ -542,19 +540,84 @@
                     </ul>
                 </div>
 
-                {% if user %}
-                <a href="/checkout"
-                    class="w-full text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
-                    Upgrade to Pro
-                </a>
-                {% else %}
-                <a href="/signup"
-                    class="w-full text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
-                    Upgrade to Pro
-                </a>
-                {% endif %}
+                <div class="mt-8">
+                    <a id="pricing-cta-btn" href="/signup?plan=yearly"
+                        data-logged-in="{% if user %}true{% else %}false{% endif %}"
+                        class="w-full block text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-pixel uppercase tracking-wider transition-all duration-200 shadow-sm">
+                        Start 7-Day Free Trial
+                    </a>
+                </div>
             </div>
+
+            <p
+                class="text-center text-[9px] text-zinc-500 uppercase font-pixel tracking-wider mt-6 max-w-sm mx-auto leading-relaxed">
+                Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">25% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$60/year in savings</span>.
+            </p>
         </div>
+
+        <script>
+            function setBillingPeriod(period) {
+                const btnMonthly = document.getElementById('btn-monthly');
+                const btnYearly = document.getElementById('btn-yearly');
+                const yearlyBadge = btnYearly.querySelector('span');
+                const sliderBg = document.getElementById('billing-slider-bg');
+
+                const priceMonthly = document.getElementById('price-monthly');
+                const priceYearly = document.getElementById('price-yearly');
+                const trialSubtext = document.getElementById('trial-subtext');
+                const ctaButton = document.getElementById('pricing-cta-btn');
+
+                const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
+
+                if (period === 'monthly') {
+                    btnMonthly.classList.remove('text-zinc-500');
+                    btnMonthly.classList.add('text-black');
+                    btnYearly.classList.remove('text-black');
+                    btnYearly.classList.add('text-zinc-500');
+
+                    yearlyBadge.classList.remove('bg-emerald-500/20', 'text-emerald-600');
+                    yearlyBadge.classList.add('bg-emerald-500/10', 'text-emerald-400');
+
+                    sliderBg.style.transform = 'translateX(0px)';
+
+                    priceMonthly.classList.remove('hidden');
+                    priceYearly.classList.add('hidden');
+
+                    trialSubtext.textContent = '7 days free. To avoid monthly charges, cancel before the 7-day trial ends.';
+
+                    if (isLoggedIn) {
+                        ctaButton.href = '/checkout?plan=monthly';
+                    } else {
+                        ctaButton.href = '/signup?plan=monthly';
+                    }
+                } else {
+                    btnMonthly.classList.remove('text-black');
+                    btnMonthly.classList.add('text-zinc-500');
+                    btnYearly.classList.remove('text-zinc-500');
+                    btnYearly.classList.add('text-black');
+
+                    yearlyBadge.classList.remove('bg-emerald-500/10', 'text-emerald-400');
+                    yearlyBadge.classList.add('bg-emerald-500/20', 'text-emerald-600');
+
+                    sliderBg.style.transform = 'translateX(134px)';
+
+                    priceMonthly.classList.add('hidden');
+                    priceYearly.classList.remove('hidden');
+
+                    trialSubtext.textContent = '7 days free. To avoid yearly charges, cancel before the 7-day trial ends.';
+
+                    if (isLoggedIn) {
+                        ctaButton.href = '/checkout?plan=yearly';
+                    } else {
+                        ctaButton.href = '/signup?plan=yearly';
+                    }
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                setBillingPeriod('yearly');
+            });
+        </script>
     </section>
 
     <!-- FAQ Section -->
@@ -576,7 +639,8 @@
                     DX7II, TX7,
                     TX81Z). Our <strong>Generic Scan</strong> feature works with any synth that dumps standard SysEx
                     banks (like the
-                    Roland Juno-106 or Korg M1). We will capture the dump and scan the binary data for ASCII characters to
+                    Roland Juno-106 or Korg M1). We will capture the dump and scan the binary data for ASCII characters
+                    to
                     extract names automatically.
                 </p>
             </div>
@@ -617,10 +681,9 @@
             </div>
 
             <p class="text-[10px] text-zinc-655 font-mono">
-                &copy; 2026 Half Radiation LLC. <br
-                    class="md:hidden">
-                Troll icon by <a href="https://game-icons.net/1x1/skoll/troll.html" target="_blank" rel="noopener noreferrer"
-                    class="hover:text-white underline">Skoll</a> under <a
+                &copy; 2026 Half Radiation LLC. <br class="md:hidden">
+                Troll icon by <a href="https://game-icons.net/1x1/skoll/troll.html" target="_blank"
+                    rel="noopener noreferrer" class="hover:text-white underline">Skoll</a> under <a
                     href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer"
                     class="hover:text-white underline">CC BY 3.0</a>.
             </p>

@@ -26,7 +26,8 @@ STRIPE_SECRET_KEY = "sk_live_51TTj41LuSQGuB7eyG45SkLnMmWDGLRZwgaHe0ua7UZTJp2bFuL
 STRIPE_WEBHOOK_SECRET = "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
 stripe.api_key = STRIPE_SECRET_KEY
 
-STRIPE_PRICE_ID = "price_1TdL2bLuSQGuB7eyOxJIdvzZ"
+STRIPE_PRICE_ID_YEARLY = "price_1TdWxPLuSQGuB7eyZvIeKp7r"
+STRIPE_PRICE_ID_MONTHLY = "price_1TdWwjLuSQGuB7ey4hIhr44e"
 BASE_URL = "https://knob.monster"
 
 # Initialize database and copy assets on startup
@@ -152,26 +153,26 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
-async def signup_page(request: Request, error: str = None):
+async def signup_page(request: Request, error: str = None, plan: str = "yearly"):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
-    return render_template("signup.html", request, {"error": error})
+    return render_template("signup.html", request, {"error": error, "plan": plan})
 
 @app.post("/signup")
-async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...)):
+async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...), plan: str = "yearly"):
     if password != confirm_password:
-        return render_template("signup.html", request, {"error": "Passwords do not match"})
+        return render_template("signup.html", request, {"error": "Passwords do not match", "plan": plan})
     
     user = database.get_user_by_email(email)
     if user:
-        return render_template("signup.html", request, {"error": "Email is already registered"})
+        return render_template("signup.html", request, {"error": "Email is already registered", "plan": plan})
     
     try:
         database.create_user(email, hash_password(password))
     except Exception as e:
-        return render_template("signup.html", request, {"error": "Account registration failed."})
+        return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan})
         
-    response = RedirectResponse(url="/dashboard", status_code=303)
+    response = RedirectResponse(url=f"/checkout?plan={plan}", status_code=303)
     response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
     return response
 
@@ -344,7 +345,7 @@ async def get_bank_hex(request: Request, bank_id: int):
 
 # --- Stripe Monetization Endpoints ---
 @app.get("/checkout")
-async def create_checkout_session(request: Request):
+async def create_checkout_session(request: Request, plan: str = "yearly"):
     user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login")
@@ -353,16 +354,21 @@ async def create_checkout_session(request: Request):
     if not STRIPE_SECRET_KEY:
         return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}")
         
+    price_id = STRIPE_PRICE_ID_YEARLY if plan == "yearly" else STRIPE_PRICE_ID_MONTHLY
+    
     try:
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[
                 {
-                    'price': STRIPE_PRICE_ID,
+                    'price': price_id,
                     'quantity': 1,
                 },
             ],
             mode='subscription',
+            subscription_data={
+                'trial_period_days': 7,
+            },
             success_url=BASE_URL + "/dashboard?payment=success",
             cancel_url=BASE_URL + "/dashboard?payment=cancel",
             customer_email=user["email"],

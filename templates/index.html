@@ -1715,12 +1715,11 @@
             <span class="text-[9px] font-pixel text-amber-500 uppercase tracking-widest">KING OF KNOBS</span>
             <h3 class="text-sm font-pixel text-white uppercase mt-2">Unleash the Knob Monster</h3>
             <p class="text-xs text-zinc-450 mt-3.5 leading-relaxed font-sans font-normal">
-                You've hit the free tier limit of <strong>3 saved soundbanks</strong>. Upgrade to premium for unlimited
+                You have hit the limit of <strong>3 soundbanks</strong>. Start a 7-day free trial of King of Knobs for unlimited
                 cloud vaults, instant backups, and continuous hardware sync.
             </p>
 
-            <div
-                class="my-5 p-4 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5 text-left text-2xs font-pixel uppercase tracking-wider text-zinc-400">
+            <div class="my-5 p-4 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5 text-left text-2xs font-pixel uppercase tracking-wider text-zinc-400">
                 <div class="flex items-center gap-2">
                     <img src="https://unpkg.com/pixelarticons@latest/svg/check.svg" class="h-3.5 w-3.5"
                         style="filter: invert(0.6);" />
@@ -1738,13 +1737,16 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-2.5 mt-2">
-                <a href="/checkout"
+            <div class="flex flex-col gap-2 mt-2">
+                <a href="/checkout?plan=yearly"
                     class="w-full py-3 bg-white hover:bg-zinc-200 text-black text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
-                    Upgrade For $15/Mo (Normally $20)
+                    Start 7-Day Free Trial
                 </a>
+                <span class="text-[8px] text-zinc-550 uppercase font-pixel tracking-wider">
+                    To avoid charges, cancel before the 7-day trial ends.
+                </span>
                 <button onclick="closeUpgradeModal()"
-                    class="w-full py-2 bg-transparent text-zinc-550 hover:text-zinc-400 text-[10px] font-pixel uppercase tracking-wider transition-colors">
+                    class="w-full py-2 bg-transparent text-zinc-550 hover:text-zinc-400 text-[10px] font-pixel uppercase tracking-wider transition-colors mt-1">
                     No thanks, keep it limited
                 </button>
             </div>

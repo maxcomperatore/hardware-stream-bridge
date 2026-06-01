@@ -62,7 +62,7 @@
         </div>
         {% endif %}
 
-        <form action="/signup" method="POST" class="space-y-4">
+        <form action="/signup?plan={{ plan or 'yearly' }}" method="POST" class="space-y-4">
             <div>
                 <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email Address</label>
                 <input type="email" name="email" required placeholder="name@domain.com"

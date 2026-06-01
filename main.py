@@ -78,9 +78,15 @@ async def startup_event():
         if os.path.exists(handshake_src):
             shutil.copy(handshake_src, os.path.join(dest_dir, "midi_handshake.png"))
 
-        extraction_src = os.path.join(src_dir, "dashboard_preview_1780269292608.png")
-        if not os.path.exists(extraction_src):
-            extraction_src = os.path.join(src_dir, "media__1780266951702.png")
+        dashboard_src = os.path.join(src_dir, "dashboard_preview_1780269292608.png")
+        if not os.path.exists(dashboard_src):
+            dashboard_src = os.path.join(src_dir, "media__1780266951702.png")
+        if not os.path.exists(dashboard_src):
+            dashboard_src = os.path.join(src_dir, "index_extraction_1780240720083.png")
+        if os.path.exists(dashboard_src):
+            shutil.copy(dashboard_src, os.path.join(dest_dir, "dashboard_preview.png"))
+
+        extraction_src = os.path.join(src_dir, "index_extraction_artwork_1780272299586.png")
         if not os.path.exists(extraction_src):
             extraction_src = os.path.join(src_dir, "index_extraction_1780240720083.png")
         if os.path.exists(extraction_src):

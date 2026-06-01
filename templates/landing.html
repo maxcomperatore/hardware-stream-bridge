@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="STOaPWGwgPycvNfxtzTRhyetLyvasi3uelnlo5SV_QA" />
     <title>knob.monster | The iCloud for Vintage Synthesizers</title>
     <meta name="description"
         content="Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Read presets directly from hardware memory using browser-native Web MIDI.">
@@ -144,7 +145,7 @@
                 </a>
                 {% else %}
                 <a href="/login"
-                    class="border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center">
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
                     Sign In
                 </a>
                 <a href="/signup"
@@ -239,14 +240,12 @@
             <div
                 class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group">
                 <div class="p-6">
-                    <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">dashboard preview</span>
-                    <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Knob Monster Dashboard
-                        Interface</h3>
-                    <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Organize your vintage collection,
-                        query presets, and review active transmission hex logs in our retro-brutalist dashboard.</p>
+                    <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">cloud librarian</span>
+                    <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure SysEx Database</h3>
+                    <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Store, search, and recall your backup soundbanks in a private cloud archive. Filter presets and restore them with a single click.</p>
                 </div>
                 <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
-                    <img src="/static/index_extraction.png" alt="Knob Monster Dashboard Interface"
+                    <img src="/static/dashboard_preview.png" alt="Knob Monster Dashboard"
                         class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500 dithered">
                 </div>
             </div>
@@ -615,7 +614,7 @@
             </div>
 
             <p class="text-[10px] text-zinc-655 font-mono">
-                &copy; 2026 knob.monster. Powered by 1-bit logic and the MIDI Troll under the bridge. <br
+                &copy; 2026 Half Radiation LLC. <br
                     class="md:hidden">
                 Logo by <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer"
                     class="hover:text-white underline">Skoll</a> under <a

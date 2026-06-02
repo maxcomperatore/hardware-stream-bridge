@@ -27,7 +27,7 @@ try:
     set_logger_provider(logger_provider)
 
     exporter = OTLPLogExporter(
-        endpoint="https://us.i.posthog.com/otlp/v1/logs",
+        endpoint="https://us.i.posthog.com/i/v1/logs",
         headers={"Authorization": "Bearer phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m"},
     )
     logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))

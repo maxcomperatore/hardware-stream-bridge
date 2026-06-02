@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | knob.monster</title>
+
+    <!-- Favicon / Shortcut Icon -->
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+
+    <!-- Vercel Geist Fonts (Geist & Geist Mono) -->
+    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- Retro Pixel & Dot-Matrix Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+        }
+        .font-pixel {
+            font-family: 'Silkscreen', monospace;
+        }
+    </style>
+</head>
+<body class="bg-[#0b0b0f] text-zinc-300 min-h-screen selection:bg-zinc-800 selection:text-white">
+    <div class="max-w-4xl mx-auto px-6 py-20">
+        <!-- Logo -->
+        <div class="mb-12">
+            <a href="/" class="inline-flex items-center gap-2">
+                <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5 w-auto object-contain">
+                <span class="font-pixel uppercase text-xs text-white tracking-widest">knob.monster</span>
+            </a>
+        </div>
+
+        <h1 class="text-4xl font-bold text-white mb-4 uppercase tracking-tight font-pixel text-xs sm:text-2xl md:text-3xl leading-none">Privacy Policy</h1>
+        <p class="text-xs text-zinc-500 font-mono uppercase tracking-widest mb-10">Last updated: June 1, 2026</p>
+
+        <div class="space-y-8 text-sm leading-relaxed text-zinc-400">
+            <!-- 1. Introduction -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">1. Privacy Commitment</h2>
+                <p>
+                    At knob.monster, we respect your privacy and are committed to protecting the limited personal data you share with us. This policy describes what information we collect, how it is stored, and your control over it.
+                </p>
+            </section>
+
+            <!-- 2. Data We Collect -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">2. Data Collection and Usage</h2>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>
+                        <strong>Account Credentials:</strong> We store your email address and a securely hashed representation of your password to manage authentication. We never store passwords in plain text.
+                    </li>
+                    <li>
+                        <strong>SysEx and Patch Data:</strong> When you backup patches or banks, the raw binary content (`.syx` format) and parsed names are stored in our secure database. This data is exclusively accessible by your authenticated user account.
+                    </li>
+                    <li>
+                        <strong>Payment Information:</strong> All payment transactions are securely handled directly by <strong>Stripe, Inc.</strong> We never collect, process, or store your credit card details or bank account information on our servers.
+                    </li>
+                </ul>
+            </section>
+
+            <!-- 3. Cookies -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">3. Session Cookies</h2>
+                <p>
+                    We use simple local cookies strictly for authentication purposes (keeping you logged into your dashboard). We do not run third-party advertising or cross-site tracking cookies.
+                </p>
+            </section>
+
+            <!-- 4. Data Sharing and Security -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">4. Security and Data Protection</h2>
+                <p class="mb-3">
+                    We do not sell, rent, or trade user database entries to anyone. All traffic between your browser and our servers is encrypted using industry-standard TLS.
+                </p>
+                <p>
+                    Our databases are stored behind security firewalls with periodic backups.
+                </p>
+            </section>
+
+            <!-- 5. User Rights (GDPR / CCPA) -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">5. Data Deletion and Portability</h2>
+                <p>
+                    Under modern privacy frameworks, you have the right to request deletion of your account and all associated MIDI SysEx banks at any time. To request full deletion of your record, email us at <span class="font-mono text-white">halfradiationllc@gmail.com</span>, and your account files will be purged from our database within 30 days.
+                </p>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

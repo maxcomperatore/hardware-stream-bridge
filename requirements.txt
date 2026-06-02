@@ -4,3 +4,5 @@ jinja2>=3.1.2
 python-multipart>=0.0.6
 stripe>=8.0.0
 psycopg2-binary>=2.9.9
+opentelemetry-sdk
+opentelemetry-exporter-otlp-proto-http

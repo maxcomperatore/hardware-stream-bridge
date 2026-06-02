@@ -9,6 +9,35 @@ import hashlib
 import stripe
 import database
 import parser
+import logging
+
+# Initialize standard logging
+logger = logging.getLogger("knob_monster")
+logging.basicConfig(level=logging.INFO)
+
+try:
+    from opentelemetry._logs import set_logger_provider
+    from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
+    from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
+    from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
+    from opentelemetry.sdk.resources import Resource
+
+    resource = Resource(attributes={"service.name": "knob-monster"})
+    logger_provider = LoggerProvider(resource=resource)
+    set_logger_provider(logger_provider)
+
+    exporter = OTLPLogExporter(
+        endpoint="https://us.i.posthog.com/otlp/v1/logs",
+        headers={"Authorization": "Bearer phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m"},
+    )
+    logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
+
+    # Bridge standard library logging to OTel
+    handler = LoggingHandler(logger_provider=logger_provider)
+    logging.getLogger().addHandler(handler)
+    logger.info("PostHog OTLP Logging initialized successfully.")
+except Exception as e:
+    logger.error(f"Failed to initialize PostHog OTLP Logging: {e}")
 
 app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
 
@@ -182,6 +211,14 @@ async def korg_seo(request: Request):
     user = get_current_user(request)
     return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["korg-m1"], "seo_slug": "korg-m1"})
 
+@app.get("/terms", response_class=HTMLResponse)
+async def terms_page(request: Request):
+    return render_template("terms.html", request)
+
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy_page(request: Request):
+    return render_template("privacy.html", request)
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request, error: str = None):
     if get_current_user(request):
@@ -196,6 +233,7 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     
     response = RedirectResponse(url="/dashboard", status_code=303)
     response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
+    logger.info(f"User logged in: {email}", extra={"email": email, "event_type": "login"})
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
@@ -215,6 +253,7 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
     
     try:
         database.create_user(email, hash_password(password))
+        logger.info(f"User registered: {email}", extra={"email": email, "plan": plan, "event_type": "signup"})
     except Exception as e:
         return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan})
         
@@ -299,6 +338,7 @@ async def create_bank(
         
     # Save to database scoped to user
     database.save_bank(name, synth_model, clean_hex, patch_names, user["id"])
+    logger.info(f"SysEx bank created: {name} ({synth_model}) for user {user['email']}", extra={"email": user["email"], "synth_model": synth_model, "patches_count": len(patch_names), "event_type": "sysex_upload"})
     
     # Return updated bank list
     banks = database.get_all_banks(user["id"])
@@ -337,6 +377,7 @@ async def upload_bank_file(
         patch_names = parser.parse_generic_sysex(sysex_bytes)
         
     database.save_bank(name, synth_model, sysex_hex, patch_names, user["id"])
+    logger.info(f"SysEx file uploaded: {name} ({synth_model}) for user {user['email']}", extra={"email": user["email"], "synth_model": synth_model, "patches_count": len(patch_names), "event_type": "sysex_upload"})
     
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
@@ -478,11 +519,13 @@ async def stripe_webhook(request: Request):
         customer_id = session.get('customer')
         if customer_email:
             database.update_user_tier(customer_email, "premium", customer_id)
+            logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_activated"})
             
     elif event['type'] == 'customer.subscription.deleted':
         session = event['data']['object']
         customer_id = session.get('customer')
         database.update_user_tier_by_customer_id(customer_id, "free")
+        logger.info(f"Subscription cancelled via Stripe: {customer_id}", extra={"customer_id": customer_id, "event_type": "subscription_deleted"})
         
     return {"status": "success"}
 

@@ -14,7 +14,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
-    <meta property="og:title" content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
+    <meta property="og:title"
+        content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="og:description"
         content="{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}">
     <meta property="og:image" content="https://knob.monster/static/og_banner.png">
@@ -22,7 +23,8 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
-    <meta property="twitter:title" content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
+    <meta property="twitter:title"
+        content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="twitter:description"
         content="{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}">
     <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
@@ -102,7 +104,7 @@
     </style>
     <!-- PostHog Tracking -->
     <script>
-        !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Di ji init en nn Ar tn an Ki capture calculateEventProperties dn register register_once register_for_session unregister unregister_for_session gn getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync mn identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fn hn createPersonProfile setInternalOrTestUser pn Ji opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing un debug $r vn getPageViewId captureTraceFeedback captureTraceMetric Zi".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "Di ji init en nn Ar tn an Ki capture calculateEventProperties dn register register_once register_for_session unregister unregister_for_session gn getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync mn identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fn hn createPersonProfile setInternalOrTestUser pn Ji opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing un debug $r vn getPageViewId captureTraceFeedback captureTraceMetric Zi".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
         posthog.init('phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m', {
             api_host: 'https://us.i.posthog.com',
             defaults: '2026-05-30',
@@ -568,7 +570,10 @@
 
             <p
                 class="text-center text-[9px] text-zinc-500 uppercase font-pixel tracking-wider mt-6 max-w-sm mx-auto leading-relaxed">
-                Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">25% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$60/year in savings</span>.
+                Subscriptions with annual billing instead of monthly billing periods receive a <span
+                    class="text-emerald-400 font-semibold">25% discount</span> valuing up to <span
+                    class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$60/year in
+                    savings</span>.
             </p>
         </div>
 
@@ -698,13 +703,14 @@
             </div>
 
             <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
-                <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service & Refund Policy</a>
+                <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service & Refund
+                    Policy</a>
                 <span class="hidden md:inline text-zinc-800">•</span>
                 <a href="/privacy" class="hover:text-white underline transition-colors">Privacy Policy</a>
             </div>
 
             <p class="text-[10px] text-zinc-655 font-mono text-center md:text-right">
-                &copy; 2026 Half Radiation LLC. <br class="md:hidden">
+                &copy; 2026 Half Radiation. <br class="md:hidden">
                 Troll icon by <a href="https://game-icons.net/1x1/skoll/troll.html" target="_blank"
                     rel="noopener noreferrer" class="hover:text-white underline">Skoll</a> under <a
                     href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer"

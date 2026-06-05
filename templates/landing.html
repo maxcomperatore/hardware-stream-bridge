@@ -111,6 +111,26 @@
             person_profiles: 'identified_only',
         })
     </script>
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}",
+      "description": "{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}",
+      "operatingSystem": "Windows, macOS, Linux, Android, iOS",
+      "applicationCategory": "MultimediaApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "4.99",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "knob.monster"
+      }
+    }
+    </script>
 </head>
 
 <body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">

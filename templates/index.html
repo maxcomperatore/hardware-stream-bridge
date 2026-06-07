@@ -105,7 +105,7 @@
 
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.2);
-            background: #fb526b;
+            background: #10b981;
         }
 
         /* LCD Screen Ambient Glow */
@@ -113,11 +113,11 @@
 
             0%,
             100% {
-                text-shadow: 0 0 6px rgba(251, 82, 107, 0.2);
+                text-shadow: 0 0 6px rgba(16, 185, 129, 0.2);
             }
 
             50% {
-                text-shadow: 0 0 14px rgba(251, 82, 107, 0.6);
+                text-shadow: 0 0 14px rgba(16, 185, 129, 0.6);
             }
         }
 
@@ -187,9 +187,9 @@
         }
 
         .tactical-pink-button {
-            border: 1px solid #fb526b;
-            border-bottom: 3px solid #be123c;
-            border-right: 3px solid #be123c;
+            border: 1px solid #10b981;
+            border-bottom: 3px solid #047857;
+            border-right: 3px solid #047857;
             transition: all 0.05s ease;
         }
 
@@ -219,7 +219,7 @@
 </head>
 
 <body
-    class="bg-[#0b0b0d] text-zinc-300 font-sans min-h-screen flex flex-col antialiased selection:bg-[#fb526b]/30 selection:text-white overflow-hidden relative">
+    class="bg-[#0b0b0d] text-zinc-300 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-white overflow-hidden relative">
 
     <!-- Global Dither Overlay -->
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
@@ -290,14 +290,14 @@
                     SYSTEM RDY
                 </p>
                 <p id="lcd-patch-title"
-                    class="text-base font-lcd font-semibold text-[#fb526b] lcd-glow tracking-widest truncate leading-none mt-0.5">
+                    class="text-base font-lcd font-semibold text-emerald-400 lcd-glow tracking-widest truncate leading-none mt-0.5">
                     SELECT PRESET BANK
                 </p>
             </div>
 
             <!-- LCD progress line -->
             <div class="w-full bg-[#111115] h-[2px] rounded-full mt-1.5 overflow-hidden z-10">
-                <div id="lcd-progress-bar" class="bg-[#fb526b] h-full rounded-full transition-all duration-150"
+                <div id="lcd-progress-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-150"
                     style="width: 0%"></div>
             </div>
         </div>
@@ -311,7 +311,7 @@
                 <input type="checkbox" id="simulated-midi-toggle" checked onchange="toggleMidiMode()"
                     class="sr-only peer">
                 <div
-                    class="relative w-6 h-3 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-zinc-400 after:rounded-full after:h-2.5 after:w-2.5 after:transition-all peer-checked:after:bg-[#fb526b] peer-checked:bg-[#fb526b]/10 peer-checked:border-[#fb526b]/20">
+                    class="relative w-6 h-3 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-zinc-400 after:rounded-full after:h-2.5 after:w-2.5 after:transition-all peer-checked:after:bg-emerald-500 peer-checked:bg-emerald-500/10 peer-checked:border-emerald-500/20">
                 </div>
                 <span class="text-zinc-400 font-semibold font-mono" id="sim-status-label">Simulate Synth</span>
             </label>
@@ -377,10 +377,10 @@
                             title="{{ user.email }}">{{ user.email }}</span>
                         {% if user.tier == 'premium' %}
                         <a href="/portal"
-                            class="text-[7px] font-pixel px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase hover:bg-amber-500 hover:text-black transition-all">PRO</a>
+                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase hover:bg-amber-500 hover:text-black transition-all">PRO</a>
                         {% else %}
                         <button onclick="showUpgradeModal()"
-                            class="text-[7px] font-pixel px-1.5 py-0.5 rounded bg-[#fb526b]/10 text-[#fb526b] border border-[#fb526b]/20 uppercase hover:bg-[#fb526b] hover:text-white transition-all">UPGRADE</button>
+                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase hover:bg-emerald-500 hover:text-white transition-all">UPGRADE</button>
                         {% endif %}
                     </div>
                 </div>
@@ -392,7 +392,7 @@
                     <a href="#"
                         class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-white bg-zinc-900/60 border border-zinc-850">
                         <img src="https://unpkg.com/pixelarticons@latest/svg/folder.svg" class="h-4 w-4"
-                            style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                            style="filter: invert(60%) sepia(43%) saturate(1352%) hue-rotate(124deg) brightness(97%) contrast(92%);" />
                         All Saved Banks
                     </a>
                 </div>
@@ -432,7 +432,7 @@
                         </div>
 
                         <button type="submit"
-                            class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-white font-pixel uppercase text-[8px] tracking-wider transition-colors bg-[#fb526b] hover:bg-[#ff697e] border border-[#be123c]/20 tactical-pink-button">
+                            class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-white font-roman uppercase text-[8px] tracking-wider transition-colors bg-[#10b981] hover:bg-[#34d399] border border-emerald-700/20 tactical-pink-button">
                             <img src="https://unpkg.com/pixelarticons@latest/svg/download.svg" class="h-3 w-3"
                                 style="filter: invert(1);" />
                             Capture Soundbank
@@ -546,15 +546,15 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="p-3 bg-zinc-950 rounded-lg border border-[#fb526b]/15 bg-[#fb526b]/2 flex flex-col justify-between">
+                                    class="p-3 bg-zinc-950 rounded-lg border border-emerald-500/15 bg-emerald-500/2 flex flex-col justify-between">
                                     <div>
                                         <div class="flex items-center justify-between">
-                                            <span class="text-[8px] font-pixel text-[#fb526b]">SANDBOX</span>
+                                            <span class="text-[8px] font-roman text-emerald-400">SANDBOX</span>
                                             <img src="https://unpkg.com/pixelarticons@latest/svg/zap.svg"
                                                 class="h-4 w-4 opacity-60"
-                                                style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                                                style="filter: invert(60%) sepia(43%) saturate(1352%) hue-rotate(124deg) brightness(97%) contrast(92%);" />
                                         </div>
-                                        <h4 class="text-2xs font-pixel text-[#fb526b] uppercase mt-2.5">NO HARDWARE?
+                                        <h4 class="text-2xs font-roman text-emerald-400 uppercase mt-2.5">NO HARDWARE?
                                         </h4>
                                         <p class="text-[9px] text-zinc-500 mt-1 font-mono leading-relaxed">Keep
                                             'Simulate Synth' checked above to test features using virtual keyboards.</p>
@@ -569,9 +569,9 @@
             <!-- MIDI System Monitor / Log Panel -->
             <div class="h-28 border-t border-zinc-900 bg-[#0e0e11] flex flex-col font-mono text-[9px] select-none">
                 <div
-                    class="px-4 py-1.5 border-b border-zinc-900/60 bg-[#0b0b0d] flex items-center justify-between text-zinc-500 font-pixel uppercase tracking-wider text-[7px]">
+                    class="px-4 py-1.5 border-b border-zinc-900/60 bg-[#0b0b0d] flex items-center justify-between text-zinc-500 font-roman uppercase tracking-wider text-[7px]">
                     <div class="flex items-center gap-1.5">
-                        <span class="h-1.5 w-1.5 rounded-full bg-[#fb526b] animate-ping"></span>
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping"></span>
                         <span>MIDI SYSTEM MONITOR</span>
                     </div>
                     <button onclick="clearMidiLog()"
@@ -675,8 +675,8 @@
                 logLine.className = 'text-emerald-500/80';
                 logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-emerald-400">MIDI IN:</span> <span class="tracking-wide">${dataHex.toUpperCase()}</span>`;
             } else if (direction === 'OUT') {
-                logLine.className = 'text-[#fb526b]/80';
-                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-rose-400">MIDI OUT:</span> <span class="tracking-wide">${dataHex.toUpperCase()}</span>`;
+                logLine.className = 'text-emerald-400/80';
+                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-emerald-300">MIDI OUT:</span> <span class="tracking-wide">${dataHex.toUpperCase()}</span>`;
             } else if (direction === 'SYSTEM') {
                 logLine.className = 'text-amber-500/80';
                 logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-amber-400">[SYS]</span> ${dataHex}`;

@@ -153,6 +153,23 @@
         </filter>
     </svg>
 
+    <!-- Top Announcement Banner -->
+    <div id="announcement-banner" class="w-full bg-zinc-900 border-b border-zinc-800 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-pixel tracking-wide">
+        <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
+            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-[#fb526b]/10 border border-[#fb526b]/20 text-[#fb526b] uppercase tracking-wider">
+                New
+            </span>
+            <span class="text-zinc-400">
+                Now supporting DX7, Juno-106 & Generic SysEx
+            </span>
+        </div>
+        <button onclick="document.getElementById('announcement-banner').style.display='none'" class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center" aria-label="Close Announcement">
+            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
     <header
         class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
@@ -189,15 +206,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="max-w-6xl mx-auto px-6 pt-24 pb-16 text-center relative z-10">
-        <!-- Badge Tag -->
-        <div
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-pixel uppercase tracking-wider text-zinc-400 mb-8 shadow-sm">
-            <img src="https://unpkg.com/pixelarticons@latest/svg/music.svg" class="h-3.5 w-3.5 animate-pulse"
-                style="filter: invert(61%) sepia(80%) saturate(498%) hue-rotate(84deg) brightness(95%) contrast(92%);" />
-            <span>Now supporting DX7, Juno-106 & Generic SysEx</span>
-        </div>
-
+    <section class="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center relative z-10">
         <h1
             class="text-3xl md:text-5xl font-pixel uppercase text-white leading-tight max-w-5xl mx-auto tracking-normal">
             {% if seo %}

@@ -44,6 +44,26 @@ app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
 # Absolute path of the directory containing main.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# Force immediate module-level copy of new static images to override cache
+try:
+    import shutil
+    src_dir = "C:/Users/Usuario/.gemini/antigravity/brain/21cc624c-71d6-4620-83a8-f77a95f2af34"
+    dest_dir = os.path.join(BASE_DIR, "static")
+    os.makedirs(dest_dir, exist_ok=True)
+    for src_name, dest_name in [
+        ("vintage_synth_hero_user_1780849554157.png", "vintage_synth_hero.png"),
+        ("studio_detail_user_1780849586288.png", "studio_detail.png"),
+        ("midi_handshake_user_1780849568376.png", "midi_handshake.png"),
+        ("index_extraction_candid_1780849725170.png", "index_extraction.png"),
+        ("dashboard_candid_1780849740378.png", "dashboard.png"),
+        ("dashboard_candid_1780849740378.png", "dashboard_preview.png")
+    ]:
+        src_path = os.path.join(src_dir, src_name)
+        if os.path.exists(src_path):
+            shutil.copy(src_path, os.path.join(dest_dir, dest_name))
+except Exception as e:
+    print(f"Module-level copy failed: {e}")
+
 # Templates
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
@@ -71,11 +91,11 @@ async def startup_event():
         dest_dir = os.path.join(BASE_DIR, "static")
         os.makedirs(dest_dir, exist_ok=True)
         
-        hero_src = os.path.join(src_dir, "vintage_synth_hero_1780240317485.png")
+        hero_src = os.path.join(src_dir, "vintage_synth_hero_user_1780849554157.png")
         if os.path.exists(hero_src):
             shutil.copy(hero_src, os.path.join(dest_dir, "vintage_synth_hero.png"))
             
-        detail_src = os.path.join(src_dir, "studio_detail_1780240351621.png")
+        detail_src = os.path.join(src_dir, "studio_detail_user_1780849586288.png")
         if os.path.exists(detail_src):
             shutil.copy(detail_src, os.path.join(dest_dir, "studio_detail.png"))
 
@@ -104,21 +124,16 @@ async def startup_event():
             elif os.path.exists(path_src):
                 shutil.copy(path_src, os.path.join(dest_dir, dest_filename))
 
-        handshake_src = os.path.join(src_dir, "midi_handshake_1780240701609.png")
+        handshake_src = os.path.join(src_dir, "midi_handshake_user_1780849568376.png")
         if os.path.exists(handshake_src):
             shutil.copy(handshake_src, os.path.join(dest_dir, "midi_handshake.png"))
 
-        dashboard_src = os.path.join(src_dir, "dashboard_preview_1780269292608.png")
-        if not os.path.exists(dashboard_src):
-            dashboard_src = os.path.join(src_dir, "media__1780266951702.png")
-        if not os.path.exists(dashboard_src):
-            dashboard_src = os.path.join(src_dir, "index_extraction_1780240720083.png")
+        dashboard_src = os.path.join(src_dir, "dashboard_candid_1780849740378.png")
         if os.path.exists(dashboard_src):
+            shutil.copy(dashboard_src, os.path.join(dest_dir, "dashboard.png"))
             shutil.copy(dashboard_src, os.path.join(dest_dir, "dashboard_preview.png"))
 
-        extraction_src = os.path.join(src_dir, "index_extraction_artwork_1780272299586.png")
-        if not os.path.exists(extraction_src):
-            extraction_src = os.path.join(src_dir, "index_extraction_1780240720083.png")
+        extraction_src = os.path.join(src_dir, "index_extraction_candid_1780849725170.png")
         if os.path.exists(extraction_src):
             shutil.copy(extraction_src, os.path.join(dest_dir, "index_extraction.png"))
 

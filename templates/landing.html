@@ -486,8 +486,7 @@
     <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-20">
             <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">PRICING</span>
-            <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for producers.
-            </h2>
+            <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for fellow synth heads.</h2>
         </div>
 
         <!-- Billing Toggle -->
@@ -754,22 +753,31 @@
     </footer>
 
     <script>
-        // Dynamic IP Geolocation for Genius Tag
+        // Dynamic IP Geolocation for Genius Tag & Pricing Title
         fetch('https://ipapi.co/json/')
             .then(res => res.json())
             .then(data => {
                 if (data.country_name && data.country) {
                     const country = data.country_name;
                     const code = data.country.toLowerCase();
+                    
                     const tag = document.getElementById('visitor-geo-tag');
                     if (tag) {
-                        tag.innerHTML = `Made for geniuses in ${country} <img src="https://api.iconify.design/flag:${code}-4x3.svg" class="h-3 w-auto inline-block align-middle ml-1" alt="${country}" />`;
+                        tag.innerHTML = `Made for geniuses in ${country} <img src="https://api.iconify.design/flagpack:${code}.svg" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${country}" />`;
+                    }
+                    
+                    const pricingTitle = document.getElementById('pricing-title');
+                    if (pricingTitle) {
+                        pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${country} <img src="https://api.iconify.design/flagpack:${code}.svg" class="h-6 w-auto inline-block align-middle ml-1.5" alt="${country}" />`;
                     }
                 }
             })
             .catch(() => {
                 const tag = document.getElementById('visitor-geo-tag');
                 if (tag) tag.textContent = 'Made for geniuses everywhere';
+                
+                const pricingTitle = document.getElementById('pricing-title');
+                if (pricingTitle) pricingTitle.textContent = 'A pricing system built for fellow synth heads.';
             });
     </script>
 

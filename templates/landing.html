@@ -726,9 +726,14 @@
     <!-- Footer -->
     <footer class="border-t border-zinc-900 bg-black py-16 relative z-10 text-center select-none">
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-2">
-                <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5 w-auto object-contain">
-                <span class="font-pixel uppercase text-xs text-white tracking-widest">knob.monster</span>
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <div class="flex items-center gap-2">
+                    <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5 w-auto object-contain">
+                    <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
+                </div>
+                <div id="visitor-geo-tag" class="text-[9px] text-zinc-650 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
+                    <!-- Dynamic IP Geolocation -->
+                </div>
             </div>
 
             <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
@@ -747,6 +752,26 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        // Dynamic IP Geolocation for Genius Tag
+        fetch('https://ipapi.co/json/')
+            .then(res => res.json())
+            .then(data => {
+                if (data.country_name && data.country) {
+                    const country = data.country_name;
+                    const code = data.country.toLowerCase();
+                    const tag = document.getElementById('visitor-geo-tag');
+                    if (tag) {
+                        tag.innerHTML = `Made for geniuses in ${country} <img src="https://api.iconify.design/flag:${code}-4x3.svg" class="h-3 w-auto inline-block align-middle ml-1" alt="${country}" />`;
+                    }
+                }
+            })
+            .catch(() => {
+                const tag = document.getElementById('visitor-geo-tag');
+                if (tag) tag.textContent = 'Made for geniuses everywhere';
+            });
+    </script>
 
 </body>
 

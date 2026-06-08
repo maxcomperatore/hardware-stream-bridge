@@ -38,7 +38,7 @@
         rel="stylesheet">
 
     <!-- Retro Pixel & Dot-Matrix Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&family=Nabla&display=swap"
         rel="stylesheet">
 
     <!-- Tailwind CSS -->
@@ -68,6 +68,7 @@
                         mono: ['Geist Mono', 'monospace'],
                         pixel: ['Silkscreen', 'monospace'],
                         lcd: ['VT323', 'monospace'],
+                        nabla: ['Nabla', 'system-ui'],
                     },
                     fontSize: {
                         '2xs': '0.68rem',
@@ -79,6 +80,23 @@
     </script>
 
     <style>
+        @font-palette-values --synth-nabla {
+            font-family: "Nabla";
+            base-palette: 0;
+            override-colors:
+                0 #ffffff, /* front face - clean white */
+                1 #10b981, /* primary side - emerald green */
+                2 #059669, /* secondary side - dark emerald */
+                3 #3b82f6, /* highlights - electric blue */
+                4 #064e3b, /* shadow - deep green */
+                5 #047857;
+        }
+
+        .font-nabla-synth {
+            font-family: 'Nabla', system-ui;
+            font-palette: --synth-nabla;
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -208,7 +226,7 @@
     <!-- Hero Section -->
     <section class="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center relative z-10">
         <h1
-            class="text-3xl md:text-5xl font-pixel uppercase text-white leading-tight max-w-5xl mx-auto tracking-normal">
+            class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal">
             {% if seo %}
             {{ seo.hero_title | safe }}
             {% else %}
@@ -761,14 +779,71 @@
                     const country = data.country_name;
                     const code = data.country.toLowerCase();
                     
+                    let countryName = country;
+                    if (code === 'us') countryName = 'the USA';
+                    else if (code === 'gb') countryName = 'the UK';
+                    else if (code === 'nl') countryName = 'the Netherlands';
+                    else if (code === 'uae') countryName = 'the UAE';
+                    else if (code === 'ph') countryName = 'the Philippines';
+
                     const tag = document.getElementById('visitor-geo-tag');
                     if (tag) {
-                        tag.innerHTML = `Made for geniuses in ${country} <img src="https://api.iconify.design/flagpack:${code}.svg" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${country}" />`;
+                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
                     }
                     
                     const pricingTitle = document.getElementById('pricing-title');
                     if (pricingTitle) {
-                        pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${country} <img src="https://api.iconify.design/flagpack:${code}.svg" class="h-6 w-auto inline-block align-middle ml-1.5" alt="${country}" />`;
+                        pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" class="h-6 w-auto inline-block align-middle ml-1.5" alt="${countryName}" />`;
+                    }
+
+                    // Dynamically match Nabla font colors to the country flag
+                    const flagColors = {
+                        us: { face: '#ffffff', side1: '#ff0000', side2: '#002868', shadow: '#00153a' },
+                        ca: { face: '#ffffff', side1: '#ff0000', side2: '#ff0000', shadow: '#800000' },
+                        gb: { face: '#ffffff', side1: '#012169', side2: '#c8102e', shadow: '#000f3a' },
+                        de: { face: '#ffcf00', side1: '#dd0000', side2: '#111111', shadow: '#000000' },
+                        fr: { face: '#ffffff', side1: '#00209f', side2: '#f10f29', shadow: '#000a3a' },
+                        it: { face: '#ffffff', side1: '#008c45', side2: '#cd212a', shadow: '#003a1d' },
+                        es: { face: '#f1bf00', side1: '#aa151b', side2: '#aa151b', shadow: '#400000' },
+                        jp: { face: '#ffffff', side1: '#bc002d', side2: '#bc002d', shadow: '#5c0010' },
+                        br: { face: '#ffdf00', side1: '#009c3b', side2: '#002776', shadow: '#003c16' },
+                        mx: { face: '#ffffff', side1: '#006847', side2: '#ce1126', shadow: '#002c1e' },
+                        nl: { face: '#ffffff', side1: '#ae1c28', side2: '#21468b', shadow: '#0b1e3f' },
+                        ar: { face: '#75aadb', side1: '#ffffff', side2: '#fcbf49', shadow: '#3a6a9b' },
+                        se: { face: '#fecc00', side1: '#006aa7', side2: '#006aa7', shadow: '#002a43' },
+                        no: { face: '#ffffff', side1: '#ef2b2d', side2: '#002868', shadow: '#00103a' },
+                        fi: { face: '#ffffff', side1: '#002f6c', side2: '#002f6c', shadow: '#001030' },
+                        ch: { face: '#ffffff', side1: '#da291c', side2: '#da291c', shadow: '#6b1008' },
+                        at: { face: '#ffffff', side1: '#ed2939', side2: '#ed2939', shadow: '#7b1016' },
+                        be: { face: '#fdda24', side1: '#ef3340', side2: '#111111', shadow: '#000000' },
+                        pl: { face: '#ffffff', side1: '#dc143c', side2: '#dc143c', shadow: '#6b0416' },
+                        kr: { face: '#ffffff', side1: '#cd2e3a', side2: '#0047a0', shadow: '#001a40' },
+                        ru: { face: '#ffffff', side1: '#0039a6', side2: '#d52b1e', shadow: '#0f172a' },
+                        in: { face: '#ff9933', side1: '#ffffff', side2: '#138808', shadow: '#022c22' },
+                        cn: { face: '#ffde00', side1: '#de2910', side2: '#de2910', shadow: '#500800' },
+                        tw: { face: '#ffffff', side1: '#000095', side2: '#fe0000', shadow: '#500000' },
+                        sg: { face: '#ffffff', side1: '#ef3340', side2: '#ef3340', shadow: '#500000' },
+                        nz: { face: '#ffffff', side1: '#00247d', side2: '#cc142b', shadow: '#000b2b' },
+                        dk: { face: '#ffffff', side1: '#c60c30', side2: '#c60c30', shadow: '#500000' },
+                        ie: { face: '#ffffff', side1: '#169b62', side2: '#ff883e', shadow: '#052e16' },
+                        za: { face: '#ffb612', side1: '#007a3d', side2: '#e03c31', shadow: '#000c3a' },
+                        ua: { face: '#ffd700', side1: '#0057b7', side2: '#0057b7', shadow: '#002450' },
+                        ro: { face: '#fcd116', side1: '#002b7f', side2: '#ce1126', shadow: '#000f3f' },
+                        hu: { face: '#ffffff', side1: '#c8102e', side2: '#436f4d', shadow: '#0f2613' },
+                        gr: { face: '#ffffff', side1: '#0d5eaf', side2: '#0d5eaf', shadow: '#021e3c' },
+                        pt: { face: '#ffff00', side1: '#ff0000', side2: '#006600', shadow: '#002a00' },
+                        co: { face: '#fcd116', side1: '#003893', side2: '#ce1126', shadow: '#000f3f' },
+                        cl: { face: '#ffffff', side1: '#0039a6', side2: '#d52b1e', shadow: '#00103a' },
+                        pe: { face: '#ffffff', side1: '#d91414', side2: '#d91414', shadow: '#5c0000' },
+                        ve: { face: '#fcd116', side1: '#003893', side2: '#cf142b', shadow: '#000f3f' },
+                        tr: { face: '#ffffff', side1: '#e30a17', side2: '#e30a17', shadow: '#5c0000' }
+                    };
+
+                    if (flagColors[code]) {
+                        const colors = flagColors[code];
+                        const styleEl = document.createElement('style');
+                        styleEl.textContent = '@font-palette-values --synth-nabla { font-family: "Nabla"; base-palette: 0; override-colors: 0 ' + colors.face + ', 1 ' + colors.side1 + ', 2 ' + colors.side2 + ', 3 ' + colors.side1 + ', 4 ' + colors.shadow + ', 5 ' + colors.shadow + '; }';
+                        document.head.appendChild(styleEl);
                     }
                 }
             })

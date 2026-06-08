@@ -249,18 +249,18 @@
             <div class="flex items-center gap-1.5 p-1 bg-zinc-950 border border-zinc-900 rounded-lg">
                 <button onclick="navigatePatch(-1)" title="Previous sound preset"
                     class="p-2 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors active:scale-95 flex items-center justify-center tactical-button">
-                    <img src="https://api.iconify.design/dinkie-icons:left-arrow-circled.svg" class="h-3.5 w-3.5"
+                    <img src="https://api.iconify.design/dinkie-icons/left-arrow-circled.svg" class="h-3.5 w-3.5"
                         style="filter: invert(1);" />
                 </button>
                 <button onclick="toggleAuditionPlay()" id="player-play-btn" title="Play sound preset"
                     class="p-2 bg-white text-black rounded hover:bg-zinc-200 transition-all active:scale-95 flex items-center justify-center tactical-button">
-                    <img id="play-icon" src="https://api.iconify.design/dinkie-icons:play-button-filled.svg" class="h-4 w-4" />
-                    <img id="stop-icon" src="https://api.iconify.design/dinkie-icons:stop-button-filled.svg"
+                    <img id="play-icon" src="https://api.iconify.design/dinkie-icons/right-black-triangle-filled.svg" class="h-4 w-4" />
+                    <img id="stop-icon" src="https://api.iconify.design/dinkie-icons/black-square-for-stop-filled.svg"
                         class="h-4 w-4 hidden" />
                 </button>
                 <button onclick="navigatePatch(1)" title="Next sound preset"
                     class="p-2 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors active:scale-95 flex items-center justify-center tactical-button">
-                    <img src="https://api.iconify.design/dinkie-icons:right-arrow-circled.svg" class="h-3.5 w-3.5"
+                    <img src="https://api.iconify.design/dinkie-icons/right-arrow-circled.svg" class="h-3.5 w-3.5"
                         style="filter: invert(1);" />
                 </button>
             </div>
@@ -368,9 +368,8 @@
 
                 <!-- Logo Badge Plate -->
                 <div class="p-3 rounded-lg border border-zinc-850 bg-zinc-900/10">
-                    <h2 class="font-pixel uppercase text-xs text-white tracking-widest flex items-center gap-2">
-                        <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5.5 w-5.5 shrink-0 object-contain">
-
+                    <h2 class="font-pixel uppercase text-[10px] text-white tracking-widest flex items-center justify-center">
+                        <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5.5 w-5.5 shrink-0 object-contain mx-auto">
                     </h2>
                     <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-zinc-850">
                         <span class="text-[7.5px] font-mono text-zinc-500 truncate max-w-[110px]"
@@ -379,8 +378,8 @@
                         <a href="/portal"
                             class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase hover:bg-amber-500 hover:text-black transition-all">PRO</a>
                         {% else %}
-                        <button onclick="showUpgradeModal()"
-                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase hover:bg-emerald-500 hover:text-white transition-all">UPGRADE</button>
+                        <a href="/portal"
+                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase hover:bg-emerald-500 hover:text-white transition-all">TRIAL</a>
                         {% endif %}
                     </div>
                 </div>
@@ -1711,7 +1710,7 @@
             <!-- Close btn -->
             <button onclick="closeUpgradeModal()"
                 class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
-                <img src="https://api.iconify.design/dinkie-icons:diagonal-cross.svg" class="h-4.5 w-4.5"
+                <img src="https://api.iconify.design/dinkie-icons/diagonal-cross.svg" class="h-4.5 w-4.5"
                     style="filter: invert(0.6);" />
             </button>
 
@@ -1730,17 +1729,17 @@
 
              <div class="my-5 p-4 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5 text-left text-2xs font-pixel uppercase tracking-wider text-zinc-400">
                 <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:checkmark-circled-small.svg" class="h-3.5 w-3.5"
+                    <img src="https://api.iconify.design/dinkie-icons/checkmark-circled-small.svg" class="h-3.5 w-3.5"
                         style="filter: invert(0.6);" />
                     <span>Unlimited Cloud Sync Storage</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:checkmark-circled-small.svg" class="h-3.5 w-3.5"
+                    <img src="https://api.iconify.design/dinkie-icons/checkmark-circled-small.svg" class="h-3.5 w-3.5"
                         style="filter: invert(0.6);" />
                     <span>Real-time Live MIDI Monitor Log</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:checkmark-circled-small.svg" class="h-3.5 w-3.5"
+                    <img src="https://api.iconify.design/dinkie-icons/checkmark-circled-small.svg" class="h-3.5 w-3.5"
                         style="filter: invert(0.6);" />
                     <span>DX7, Juno-106 & Korg M1 Support</span>
                 </div>

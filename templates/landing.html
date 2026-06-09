@@ -119,6 +119,36 @@
             background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
             background-repeat: repeat;
         }
+
+        /* Scroll Reveal System */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        
+        .reveal.reveal-left {
+            transform: translateX(-32px);
+        }
+        
+        .reveal.reveal-right {
+            transform: translateX(32px);
+        }
+        
+        .reveal.reveal-scale {
+            transform: scale(0.96);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+        
+        /* Delays for staggered fades */
+        .reveal.active[style*="--delay"] {
+            transition-delay: var(--delay);
+        }
     </style>
     <!-- PostHog Tracking -->
     <script>
@@ -226,7 +256,7 @@
     <!-- Hero Section -->
     <section class="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center relative z-10">
         <h1
-            class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal">
+            class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal reveal">
             {% if seo %}
             {{ seo.hero_title | safe }}
             {% else %}
@@ -235,7 +265,7 @@
             {% endif %}
         </h1>
 
-        <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed font-normal">
+        <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed font-normal reveal" style="--delay: 150ms;">
             {% if seo %}
             {{ seo.hero_subtitle }}
             {% else %}
@@ -244,7 +274,7 @@
             {% endif %}
         </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 reveal" style="--delay: 300ms;">
             <a href="/dashboard?simulate=0"
                 class="w-full sm:w-auto bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
                 Connect Hardware
@@ -255,13 +285,13 @@
             </a>
         </div>
 
-        <p class="text-[9px] text-zinc-500 font-mono mt-5 uppercase tracking-widest">
+        <p class="text-[9px] text-zinc-500 font-mono mt-5 uppercase tracking-widest reveal" style="--delay: 450ms;">
             Requires Standard USB-to-MIDI Cable & Chrome/Edge Browser
         </p>
 
         <!-- Real Technical Specs Banner -->
         <div
-            class="border-t border-zinc-900 py-10 mt-24 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            class="border-t border-zinc-900 py-10 mt-24 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center reveal" style="--delay: 200ms;">
             <div>
                 <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">3+</span>
                 <span class="text-[10px] font-roman uppercase text-zinc-500 mt-1 block tracking-wider">SYNTH
@@ -284,12 +314,12 @@
             </div>
         </div>
 
-        <!-- Symmetric Preview Grid (Physical Synth vs. Virtual App) -->
+         <!-- Symmetric Preview Grid (Physical Synth vs. Virtual App) -->
         <div id="demo" class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch text-left">
 
             <!-- Left Card: 4K Physical Hardware Photography -->
             <div
-                class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group">
+                class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-left">
                 <div class="p-6">
                     <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">physical hardware</span>
                     <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Connection via Web MIDI
@@ -305,7 +335,7 @@
 
             <!-- Right Card: Stylized Dashboard Mockup -->
             <div
-                class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group">
+                class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-right" style="--delay: 150ms;">
                 <div class="p-6">
                     <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">cloud librarian</span>
                     <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure SysEx Database
@@ -324,7 +354,7 @@
 
     <!-- The Problem Section -->
     <section id="problem" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
-        <div class="text-center max-w-2xl mx-auto mb-20">
+        <div class="text-center max-w-2xl mx-auto mb-20 reveal">
             <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">THE FRICTION</span>
             <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Why backups feel stuck in 1995.</h2>
             <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans">Synthesizers are built to last
@@ -333,7 +363,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <!-- Archaic Tools -->
-            <div class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-8 space-y-6">
+            <div class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-8 space-y-6 reveal reveal-left">
                 <div class="h-8 w-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
                     <img src="https://api.iconify.design/dinkie-icons:diagonal-cross.svg" class="h-4 w-4"
                         style="filter: invert(0.4);" />
@@ -360,7 +390,7 @@
             </div>
 
             <!-- knob.monster -->
-            <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 space-y-6">
+            <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 space-y-6 reveal reveal-right" style="--delay: 150ms;">
                 <div
                     class="h-8 w-8 rounded-full bg-blue-650/10 border border-blue-500/20 flex items-center justify-center">
                     <img src="https://api.iconify.design/dinkie-icons:checkmark-circled.svg" class="h-4 w-4"
@@ -395,7 +425,7 @@
     <section class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-12 relative z-10">
         <div
             class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 grid grid-cols-1 md:grid-cols-2 items-center gap-0 shadow-xl">
-            <div class="p-8 md:p-16 space-y-6 text-left">
+            <div class="p-8 md:p-16 space-y-6 text-left reveal reveal-left">
                 <span class="text-[11px] font-pixel text-blue-500 uppercase tracking-widest font-semibold">lossless
                     preservation</span>
                 <h3 class="text-2xl md:text-3xl font-pixel uppercase text-white tracking-wide">Every byte preserved
@@ -406,7 +436,7 @@
                 </p>
             </div>
             <div
-                class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black">
+                class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black reveal reveal-right" style="--delay: 150ms;">
                 <img src="/static/studio_detail.png" alt="Studio Synthesizer Cables close-up"
                     class="w-full h-full object-cover dithered">
             </div>
@@ -416,7 +446,7 @@
     <!-- Three Core Pillars (Visual Steps) -->
     <section id="features" class="border-t border-zinc-900 bg-zinc-950/20 py-24 relative z-10">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-20">
+            <div class="text-center max-w-2xl mx-auto mb-20 reveal">
                 <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">HOW IT WORKS</span>
                 <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Abstracting 40 years of hardware
                     friction.</h2>
@@ -425,7 +455,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div
-                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group">
+                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group reveal">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
                         <img src="/static/midi_handshake.png" alt="MIDI Din Connection Handshake"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
@@ -450,7 +480,7 @@
 
                 <!-- Step 2 -->
                 <div
-                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group">
+                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group reveal" style="--delay: 150ms;">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
                         <img src="/static/index_extraction.png" alt="Auto-naming Hexadecimal Parser"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
@@ -474,7 +504,7 @@
 
                 <!-- Step 3 -->
                 <div
-                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group">
+                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group reveal" style="--delay: 300ms;">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
                         <img src="/static/recall_button.png" alt="Single Click Preset Flash Sync"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
@@ -502,14 +532,14 @@
 
     <!-- Pricing Grid -->
     <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
-        <div class="text-center max-w-2xl mx-auto mb-20">
+        <div class="text-center max-w-2xl mx-auto mb-20 reveal">
             <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">PRICING</span>
             <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for fellow synth heads.</h2>
         </div>
 
         <!-- Billing Toggle -->
         <div
-            class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[280px] mx-auto mb-12 select-none">
+            class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[280px] mx-auto mb-12 select-none reveal" style="--delay: 100ms;">
             <!-- Active sliding background highlight -->
             <div id="billing-slider-bg"
                 class="absolute top-1 bottom-1 left-1 w-[134px] bg-white rounded-full transition-all duration-300 shadow-md"
@@ -533,7 +563,7 @@
         <div class="max-w-md mx-auto text-left">
             <!-- King of Knobs Plan -->
             <div
-                class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+                class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl reveal reveal-scale" style="--delay: 200ms;">
                 <!-- Gold Stamp -->
                 <div
                     class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-2 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center">
@@ -690,13 +720,13 @@
 
     <!-- FAQ Section -->
     <section id="faq" class="border-t border-zinc-900 max-w-3xl mx-auto px-6 py-24 relative z-10 text-left">
-        <div class="text-center mb-16">
+        <div class="text-center mb-16 reveal">
             <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">FAQ</span>
             <h2 class="text-2xl font-pixel uppercase text-white mt-3 text-center">Frequently Asked Questions</h2>
         </div>
 
         <div class="space-y-6">
-            <div class="border-b border-zinc-900 pb-6">
+            <div class="border-b border-zinc-900 pb-6 reveal">
                 <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
                     <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" class="h-4.5 w-4.5"
                         style="filter: invert(1);" />
@@ -713,7 +743,7 @@
                 </p>
             </div>
 
-            <div class="border-b border-zinc-900 pb-6">
+            <div class="border-b border-zinc-900 pb-6 reveal" style="--delay: 100ms;">
                 <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
                     <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" class="h-4.5 w-4.5"
                         style="filter: invert(1);" />
@@ -726,7 +756,7 @@
                 </p>
             </div>
 
-            <div class="border-b border-zinc-900 pb-6">
+            <div class="border-b border-zinc-900 pb-6 reveal" style="--delay: 200ms;">
                 <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
                     <img src="https://api.iconify.design/dinkie-icons:shield.svg" class="h-4.5 w-4.5"
                         style="filter: invert(1);" />
@@ -854,6 +884,24 @@
                 const pricingTitle = document.getElementById('pricing-title');
                 if (pricingTitle) pricingTitle.textContent = 'A pricing system built for fellow synth heads.';
             });
+
+        // Scroll animation observer
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // stop observing to run the animation only once
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.05,
+                rootMargin: "0px 0px -40px 0px"
+            });
+            reveals.forEach(el => observer.observe(el));
+        });
     </script>
 
 </body>

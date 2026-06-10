@@ -30,7 +30,7 @@
     <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
 
     <!-- Favicon / Shortcut Icon -->
-    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+    <link id="favicon" rel="shortcut icon" href="/static/logo.png" type="image/png">
 
     <!-- Vercel Geist Fonts (Geist & Geist Mono) -->
     <link
@@ -558,38 +558,33 @@
             <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans">We refused to invent fake reviews from stock-photo humans. Here is the exact feedback we have so far.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="max-w-xl mx-auto flex justify-center">
             <!-- Testimonial 1 -->
-            <div class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-8 flex flex-col justify-between reveal reveal-left">
-                <p class="text-xs text-zinc-300 leading-relaxed font-normal italic">
-                    "Finding editors like this back in the day was always super exciting… glad that devs continue to support these old boards."
-                </p>
-                <div class="flex items-center gap-3 border-t border-zinc-900 pt-4 mt-6">
-                    <div class="h-8 w-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center font-pixel text-zinc-500 text-xs">
-                        BG
+            <a href="https://gearspace.com/board/showpost.php?p=17816650&postcount=2" target="_blank"
+                class="block w-full group rounded-2xl border border-zinc-900 hover:border-zinc-800 bg-zinc-950/40 p-8 relative flex flex-col justify-between transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)] reveal reveal-scale">
+                
+                <div class="flex items-start justify-between gap-6">
+                    <p class="text-xs text-zinc-300 leading-relaxed font-normal italic flex-1">
+                        "Finding editors like this back in the day was always super exciting… glad that devs continue to support these old boards."
+                    </p>
+                    <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity shrink-0 pt-0.5">
+                        <span class="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">Gearspace</span>
+                        <svg class="h-3.5 w-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 border-t border-zinc-900/60 pt-4 mt-6">
+                    <div class="h-8 w-8 rounded-full border border-zinc-800 overflow-hidden flex items-center justify-center bg-zinc-900">
+                        <img src="/static/bgood.png" alt="bgood avatar" class="w-full h-full object-cover">
                     </div>
                     <div class="text-left">
                         <h4 class="text-2xs font-pixel uppercase text-white tracking-wide">bgood</h4>
-                        <p class="text-[9px] text-zinc-500 font-mono uppercase mt-0.5">Gearspace Guru • 10k+ Posts</p>
+                        <p class="text-[9px] text-zinc-500 font-mono uppercase mt-0.5">BrothersBrim Studios • Gear Guru</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Testimonial 2 -->
-            <div class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-8 flex flex-col justify-between reveal reveal-right" style="--delay: 150ms;">
-                <p class="text-xs text-zinc-300 leading-relaxed font-normal italic">
-                    "We were going to copy-paste ten more fake reviews here, but we figured you're smart enough to realize they'd be bullshit. If you hate it, complain on the forums. If you love it, start a trial."
-                </p>
-                <div class="flex items-center gap-3 border-t border-zinc-900 pt-4 mt-6">
-                    <div class="h-8 w-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center font-pixel text-zinc-500 text-xs">
-                        KM
-                    </div>
-                    <div class="text-left">
-                        <h4 class="text-2xs font-pixel uppercase text-white tracking-wide">knob_monster team</h4>
-                        <p class="text-[9px] text-zinc-500 font-mono uppercase mt-0.5">The Developers • 0% marketing fluff</p>
-                    </div>
-                </div>
-            </div>
+            </a>
         </div>
     </section>
 
@@ -661,7 +656,7 @@
 
                     <!-- Trial subtext explanation -->
                     <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
-                        7 days free. To avoid yearly charges, cancel before the 7-day trial ends.
+                        7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid yearly charges, cancel before the 7-day trial ends.
                     </p>
 
                     <ul class="space-y-2.5 text-xs text-zinc-400">
@@ -701,14 +696,16 @@
                 <div class="mt-8">
                     <a id="pricing-cta-btn" href="/signup?plan=yearly"
                         data-logged-in="{% if user %}true{% else %}false{% endif %}"
-                        class="w-full block text-center py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-[10px] font-roman uppercase tracking-wider transition-all duration-200 shadow-sm">
-                        Start 7-Day Free Trial
+                        class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm">
+                        <span>Hell Yes, Start My</span>
+                        <span class="font-bold text-sm md:text-base text-emerald-600 font-pixel tracking-wide uppercase">FREE</span>
+                        <span>Week</span>
                     </a>
                 </div>
             </div>
 
-            <p
-                class="text-center text-[9px] text-zinc-500 uppercase font-roman tracking-wider mt-6 max-w-sm mx-auto leading-relaxed">
+            <p id="billing-discount-notice"
+                class="text-center text-[9px] text-zinc-500 uppercase font-roman tracking-wider mt-6 max-w-sm mx-auto leading-relaxed transition-all duration-200">
                 Subscriptions with annual billing instead of monthly billing periods receive a <span
                     class="text-emerald-400 font-semibold">25% discount</span> valuing up to <span
                     class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$60/year in
@@ -727,6 +724,7 @@
                 const priceYearly = document.getElementById('price-yearly');
                 const trialSubtext = document.getElementById('trial-subtext');
                 const ctaButton = document.getElementById('pricing-cta-btn');
+                const discountNotice = document.getElementById('billing-discount-notice');
 
                 const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
 
@@ -744,7 +742,11 @@
                     priceMonthly.classList.remove('hidden');
                     priceYearly.classList.add('hidden');
 
-                    trialSubtext.textContent = '7 days free. To avoid monthly charges, cancel before the 7-day trial ends.';
+                    trialSubtext.innerHTML = '7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid monthly charges, cancel before the 7-day trial ends.';
+
+                    discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">25% more ($60/year extra)</span>. Switch to annual to stop bleeding money.';
+                    discountNotice.classList.remove('text-zinc-500');
+                    discountNotice.classList.add('text-rose-450');
 
                     if (isLoggedIn) {
                         ctaButton.href = '/checkout?plan=monthly';
@@ -765,7 +767,11 @@
                     priceMonthly.classList.add('hidden');
                     priceYearly.classList.remove('hidden');
 
-                    trialSubtext.textContent = '7 days free. To avoid yearly charges, cancel before the 7-day trial ends.';
+                    trialSubtext.innerHTML = '7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid yearly charges, cancel before the 7-day trial ends.';
+
+                    discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">25% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$60/year in savings</span>.';
+                    discountNotice.classList.remove('text-rose-450');
+                    discountNotice.classList.add('text-zinc-500');
 
                     if (isLoggedIn) {
                         ctaButton.href = '/checkout?plan=yearly';
@@ -1081,6 +1087,30 @@
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('spam') === 'true' || urlParams.get('subscribe') === 'true') {
                 showSpamModal(true);
+            }
+
+            // Animated Rotating Favicon
+            const favIconElement = document.getElementById('favicon');
+            if (favIconElement) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 32;
+                canvas.height = 32;
+                const ctx = canvas.getContext('2d');
+                const favImg = new Image();
+                favImg.src = '/static/logo.png';
+                favImg.onload = () => {
+                    let angle = 0;
+                    setInterval(() => {
+                        ctx.clearRect(0, 0, 32, 32);
+                        ctx.save();
+                        ctx.translate(16, 16);
+                        ctx.rotate((angle * Math.PI) / 180);
+                        ctx.drawImage(favImg, -16, -16, 32, 32);
+                        ctx.restore();
+                        favIconElement.href = canvas.toDataURL('image/png');
+                        angle = (angle + 6) % 360;
+                    }, 66); // ~15 FPS to keep background footprint negligible
+                };
             }
         });
     </script>

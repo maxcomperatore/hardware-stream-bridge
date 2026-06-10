@@ -294,20 +294,26 @@
             {% endif %}
         </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 reveal" style="--delay: 300ms;">
-            <a href="/dashboard?simulate=0"
-                class="w-full sm:w-auto bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
-                Connect Hardware
-            </a>
-            <a href="/dashboard?simulate=1"
-                class="w-full sm:w-auto bg-transparent border border-zinc-700 hover:border-zinc-500 text-white px-8 py-3.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
-                Try Virtual Simulator
-            </a>
+        <!-- Interactive MIDI Detector (SaaS Style) -->
+        <div class="max-w-md mx-auto mt-10 reveal" style="--delay: 300ms;">
+            <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shadow-2xl relative">
+                <!-- Status Area: MIDI Icon + Text -->
+                <div class="flex-1 flex items-center gap-3 px-4 py-3 sm:py-0">
+                    <span id="midi-icon" class="h-5 w-5 bg-zinc-500 shrink-0 transition-colors duration-200" style="mask: url('https://api.iconify.design/dinkie-icons:musical-keyboard.svg') no-repeat center; -webkit-mask: url('https://api.iconify.design/dinkie-icons:musical-keyboard.svg') no-repeat center; mask-size: contain; -webkit-mask-size: contain;"></span>
+                    <div id="midi-status-text" class="text-xs font-mono text-zinc-400 text-left truncate w-full select-none">
+                        Waiting for MIDI connection...
+                    </div>
+                </div>
+                <!-- Scan Button -->
+                <button id="midi-scan-btn" onclick="initiateMIDIScan()" 
+                    class="bg-white hover:bg-zinc-200 text-black px-6 py-3.5 rounded-xl text-2xs font-pixel uppercase tracking-wider transition-all duration-150 active:scale-[0.97] shrink-0 flex items-center justify-center gap-1.5 shadow-sm">
+                    <span>Scan MIDI</span>
+                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
         </div>
-
-        <p class="text-[9px] text-zinc-500 font-mono mt-5 uppercase tracking-widest reveal" style="--delay: 450ms;">
-            Requires Standard USB-to-MIDI Cable & Chrome/Edge Browser
-        </p>
 
         <!-- Real Technical Specs Banner -->
         <div
@@ -549,7 +555,6 @@
             </div>
         </div>
     </section>
-
     <!-- Testimonials Section -->
     <section id="testimonials" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-20 reveal">
@@ -1111,6 +1116,71 @@
                         angle = (angle + 6) % 360;
                     }, 66); // ~15 FPS to keep background footprint negligible
                 };
+            }
+        });
+
+        // Web MIDI Access Scanner
+        function initiateMIDIScan() {
+            const statusText = document.getElementById('midi-status-text');
+            const midiIcon = document.getElementById('midi-icon');
+
+            if (!navigator.requestMIDIAccess) {
+                statusText.innerText = "Error: Web MIDI not supported.";
+                statusText.className = "text-xs font-mono text-rose-400 text-left truncate w-full select-none";
+                if (midiIcon) {
+                    midiIcon.className = "h-5 w-5 bg-rose-500 shrink-0 transition-colors duration-200";
+                }
+                return;
+            }
+
+            statusText.innerText = "Querying Web MIDI system...";
+            statusText.className = "text-xs font-mono text-zinc-400 text-left truncate w-full select-none";
+            if (midiIcon) {
+                midiIcon.className = "h-5 w-5 bg-amber-500 shrink-0 transition-colors duration-200 animate-pulse";
+            }
+
+            navigator.requestMIDIAccess({ sysex: true })
+                .then(midiAccess => {
+                    function updateDevices() {
+                        const inputs = Array.from(midiAccess.inputs.values());
+                        const outputs = Array.from(midiAccess.outputs.values());
+                        
+                        if (inputs.length === 0 && outputs.length === 0) {
+                            statusText.innerText = "No MIDI hardware detected.";
+                            statusText.className = "text-xs font-mono text-rose-400 text-left truncate w-full select-none";
+                            if (midiIcon) {
+                                midiIcon.className = "h-5 w-5 bg-rose-500 shrink-0 transition-colors duration-200";
+                            }
+                        } else {
+                            const devName = inputs[0]?.name || outputs[0]?.name || "MIDI Port";
+                            statusText.innerText = `Connected: ${devName}`;
+                            statusText.className = "text-xs font-mono text-emerald-400 text-left truncate w-full select-none font-semibold";
+                            if (midiIcon) {
+                                midiIcon.className = "h-5 w-5 bg-emerald-400 shrink-0 transition-colors duration-200";
+                            }
+                        }
+                    }
+
+                    updateDevices();
+                    midiAccess.onstatechange = updateDevices;
+                })
+                .catch(err => {
+                    statusText.innerText = "Access denied: check permissions.";
+                    statusText.className = "text-xs font-mono text-rose-400 text-left truncate w-full select-none";
+                    if (midiIcon) {
+                        midiIcon.className = "h-5 w-5 bg-rose-500 shrink-0 transition-colors duration-200";
+                    }
+                });
+        }
+        // Auto-scan on load if permission is already granted
+        document.addEventListener('DOMContentLoaded', () => {
+            if (navigator.permissions && navigator.permissions.query) {
+                navigator.permissions.query({ name: 'midi', sysex: true })
+                    .then(permissionStatus => {
+                        if (permissionStatus.state === 'granted') {
+                            initiateMIDIScan();
+                        }
+                    }).catch(() => {});
             }
         });
     </script>

@@ -35,7 +35,6 @@ try:
     # Bridge standard library logging to OTel
     handler = LoggingHandler(logger_provider=logger_provider)
     logging.getLogger().addHandler(handler)
-    logger.info("PostHog OTLP Logging initialized successfully.")
 except Exception as e:
     logger.error(f"Failed to initialize PostHog OTLP Logging: {e}")
 

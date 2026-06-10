@@ -107,6 +107,21 @@
             color: #ffffff;
         }
 
+        /* Minecraft-style 3D spinning item animation */
+        @keyframes minecraft-spin {
+            0% {
+                transform: rotateY(0deg);
+            }
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+        .spin-minecraft {
+            animation: minecraft-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
         /* Dither effect on images */
         .dithered {
             filter: grayscale(100%) contrast(130%) brightness(110%) url(#dither-filter);
@@ -222,7 +237,12 @@
         class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-                <img src="/static/logo.png" alt="Knob Monster Logo" class="h-6 w-auto object-contain">
+                <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                    <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                    <img src="/static/logo.png" alt="" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                    <img src="/static/logo.png" alt="" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                    <img src="/static/logo.png" alt="" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                </div>
                 <span class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</span>
             </div>
 
@@ -818,7 +838,12 @@
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex flex-col items-center md:items-start gap-1">
                 <div class="flex items-center gap-2">
-                    <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5 w-auto object-contain">
+                    <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
+                        <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-5 h-5 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.png" alt="" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.png" alt="" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.png" alt="" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
                     <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
                 </div>
                 <div id="visitor-geo-tag" class="text-[9px] text-zinc-650 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
@@ -950,8 +975,8 @@
         });
 
         // Nihilistic Spam Modal trigger logic
-        function showSpamModal() {
-            if (localStorage.getItem('spam-dismissed') === 'true' || localStorage.getItem('spam-subscribed') === 'true') {
+        function showSpamModal(force = false) {
+            if (!force && (localStorage.getItem('spam-dismissed') === 'true' || localStorage.getItem('spam-subscribed') === 'true')) {
                 return;
             }
             const modal = document.getElementById('spam-modal');
@@ -1028,6 +1053,36 @@
                 triggerModal();
             }
         });
+
+        // Hyper-realistic 3D tilt physics for the Troll Logo
+        document.addEventListener("DOMContentLoaded", () => {
+            const logo = document.getElementById('spam-modal-logo');
+            if (logo) {
+                logo.addEventListener('mousemove', (e) => {
+                    const rect = logo.getBoundingClientRect();
+                    const x = e.clientX - rect.left - (rect.width / 2);
+                    const y = e.clientY - rect.top - (rect.height / 2);
+                    
+                    // Max tilt of 35 degrees
+                    const rotX = -(y / (rect.height / 2)) * 35;
+                    const rotY = (x / (rect.width / 2)) * 35;
+                    
+                    logo.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.25)`;
+                    logo.style.filter = `drop-shadow(${rotY * -0.6}px ${rotX * 0.6}px 12px rgba(255, 255, 255, 0.15)) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8))`;
+                });
+                
+                logo.addEventListener('mouseleave', () => {
+                    logo.style.transform = `perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)`;
+                    logo.style.filter = `none`;
+                });
+            }
+
+            // Check query param for testing / force display
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('spam') === 'true' || urlParams.get('subscribe') === 'true') {
+                showSpamModal(true);
+            }
+        });
     </script>
 
     <!-- Spam Modal Popup -->
@@ -1040,7 +1095,7 @@
 
             <!-- Troll Logo -->
             <div class="flex justify-center">
-                <img src="/static/logo.png" alt="Ogre Logo" class="h-20 md:h-24 w-auto object-contain hover:rotate-12 transition-transform duration-300 dithered">
+                <img src="/static/logo.png" id="spam-modal-logo" alt="Ogre Logo" class="h-20 md:h-24 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out" style="transform-style: preserve-3d; backface-visibility: hidden;">
             </div>
             
             <div class="space-y-4 text-center">

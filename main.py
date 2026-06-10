@@ -41,6 +41,99 @@ except Exception as e:
 
 app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
 
+from datetime import datetime
+
+@app.middleware("http")
+async def earth_day_middleware(request: Request, call_next):
+    # Support testing/preview via query param (?earthday=true) or environment variable
+    query_param_trigger = False
+    try:
+        query_param_trigger = request.query_params.get("earthday") == "true"
+    except Exception:
+        pass
+        
+    force_earth_day = query_param_trigger or os.environ.get("FORCE_EARTH_DAY") == "true"
+    
+    # Check date: April 22nd
+    now = datetime.now()
+    is_earth_day = (now.month == 4 and now.day == 22) or force_earth_day
+    
+    # Don't block static files or favicon so assets render properly on the landing page
+    if is_earth_day and not request.url.path.startswith("/static") and request.url.path != "/favicon.ico":
+        html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNOB.MONSTER | Closed for Earth Day</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Geist', sans-serif; }
+        .font-pixel { font-family: 'Silkscreen', monospace; }
+        .dithered {
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body class="bg-black text-zinc-400 flex flex-col items-center justify-center min-h-screen p-6 text-center select-none selection:bg-zinc-800 selection:text-white">
+    <div class="max-w-md space-y-8">
+        <!-- Troll Logo -->
+        <div class="flex justify-center">
+            <img src="/static/logo.png" id="earth-day-logo" alt="Ogre Logo" class="h-28 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out opacity-60" style="transform-style: preserve-3d; backface-visibility: hidden;">
+        </div>
+        
+        <div class="space-y-4">
+            <h1 class="text-xl font-pixel uppercase tracking-widest text-emerald-500">GO TOUCH GRASS.</h1>
+            <p class="text-sm text-zinc-300 leading-relaxed max-w-sm mx-auto">
+                Today is Earth Day. We have temporarily disabled our platform to save a negligible amount of coal-fired electricity and pull off a cheap corporate PR stunt.
+            </p>
+            <p class="text-sm text-zinc-300 leading-relaxed max-w-sm mx-auto">
+                But more importantly: you have spent far too many consecutive hours staring at Web MIDI transfer logs and hoarding digital soundbanks for vintage synthesizers.
+            </p>
+            <p class="text-sm font-bold text-white leading-relaxed max-w-sm mx-auto">
+                Go outside. Touch some actual grass. Try to interact with a real plant or another biological organism.
+            </p>
+        </div>
+        
+        <div class="pt-6 border-t border-zinc-900 text-[10px] font-mono text-zinc-650">
+            knob.monster will wake up automatically tomorrow. Enjoy your temporary eviction from the cloud.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const logo = document.getElementById('earth-day-logo');
+            if (logo) {
+                logo.addEventListener('mousemove', (e) => {
+                    const rect = logo.getBoundingClientRect();
+                    const x = e.clientX - rect.left - (rect.width / 2);
+                    const y = e.clientY - rect.top - (rect.height / 2);
+                    
+                    const rotX = -(y / (rect.height / 2)) * 35;
+                    const rotY = (x / (rect.width / 2)) * 35;
+                    
+                    logo.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.25)`;
+                    logo.style.filter = `drop-shadow(${rotY * -0.6}px ${rotX * 0.6}px 12px rgba(255, 255, 255, 0.15)) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8))`;
+                    logo.style.opacity = "1";
+                });
+                
+                logo.addEventListener('mouseleave', () => {
+                    logo.style.transform = `perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)`;
+                    logo.style.filter = `none`;
+                    logo.style.opacity = "0.6";
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+"""
+        return HTMLResponse(content=html_content, status_code=503)
+        
+    return await call_next(request)
+
 # Absolute path of the directory containing main.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

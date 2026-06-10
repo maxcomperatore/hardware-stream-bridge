@@ -234,6 +234,23 @@ async def terms_page(request: Request):
 async def privacy_page(request: Request):
     return render_template("privacy.html", request)
 
+@app.post("/subscribe")
+async def subscribe(request: Request, email: str = Form(...)):
+    email_clean = email.lower().strip()
+    database.create_subscriber(email_clean)
+    
+    # Send custom OTel log that propagates to PostHog
+    logger.info(
+        f"Mailing list subscription: {email_clean}",
+        extra={
+            "email": email_clean,
+            "event_type": "newsletter_signup",
+            "referrer": request.headers.get("referer", ""),
+            "ip_address": request.client.host if request.client else "unknown"
+        }
+    )
+    return Response(status_code=200)
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request, error: str = None):
     if get_current_user(request):

@@ -74,6 +74,14 @@ def init_db():
             name VARCHAR(255) NOT NULL
         )
         """)
+        # Create subscribers
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS subscribers (
+            id SERIAL PRIMARY KEY,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            created_at VARCHAR(100) NOT NULL
+        )
+        """)
     else:
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
@@ -103,6 +111,13 @@ def init_db():
             patch_index INTEGER NOT NULL,
             name TEXT NOT NULL,
             FOREIGN KEY (bank_id) REFERENCES banks (id) ON DELETE CASCADE
+        )
+        """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS subscribers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT UNIQUE NOT NULL,
+            created_at TEXT NOT NULL
         )
         """)
         
@@ -292,3 +307,20 @@ def delete_bank(bank_id: int, user_id: int):
     cursor.execute(q2, (bank_id,))
     conn.commit()
     conn.close()
+
+def create_subscriber(email: str) -> bool:
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    created_at = datetime.now().isoformat()
+    try:
+        query = "INSERT INTO subscribers (email, created_at) VALUES (?, ?)"
+        if IS_POSTGRES:
+            query = query.replace("?", "%s")
+        cursor.execute(query, (email.lower().strip(), created_at))
+        conn.commit()
+        return True
+    except Exception as e:
+        # Ignore unique constraint violations (already subscribed)
+        return True
+    finally:
+        conn.close()

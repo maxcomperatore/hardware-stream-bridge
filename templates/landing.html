@@ -948,7 +948,126 @@
             });
             reveals.forEach(el => observer.observe(el));
         });
+
+        // Nihilistic Spam Modal trigger logic
+        function showSpamModal() {
+            if (localStorage.getItem('spam-dismissed') === 'true' || localStorage.getItem('spam-subscribed') === 'true') {
+                return;
+            }
+            const modal = document.getElementById('spam-modal');
+            const content = document.getElementById('spam-modal-content');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+
+        function closeSpamModal() {
+            const modal = document.getElementById('spam-modal');
+            const content = document.getElementById('spam-modal-content');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            localStorage.setItem('spam-dismissed', 'true');
+        }
+
+        function submitModalSpamForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const email = form.email.value;
+            const statusDiv = document.getElementById('modal-spam-status');
+            const submitBtn = form.querySelector('button');
+            
+            statusDiv.textContent = "Transmitting current to database...";
+            statusDiv.className = "text-[9px] font-mono text-zinc-500 mt-2 text-center";
+            submitBtn.disabled = true;
+            
+            fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `email=${encodeURIComponent(email)}`
+            })
+            .then(res => {
+                if (res.ok) {
+                    statusDiv.textContent = "Success. You are officially in the system. Prepare to be targeted.";
+                    statusDiv.className = "text-[9px] font-mono text-emerald-500 mt-2 text-center";
+                    localStorage.setItem('spam-subscribed', 'true');
+                    form.reset();
+                    setTimeout(closeSpamModal, 2000);
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(() => {
+                statusDiv.textContent = "Error. Connection refused. Enjoy your temporary privacy.";
+                statusDiv.className = "text-[9px] font-mono text-rose-500 mt-2 text-center";
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Trigger rules: Show after 10 seconds or when user scrolls 400px down
+        let modalTriggered = false;
+        
+        function triggerModal() {
+            if (modalTriggered) return;
+            modalTriggered = true;
+            showSpamModal();
+        }
+
+        // Time trigger
+        setTimeout(triggerModal, 10000);
+
+        // Scroll trigger
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                triggerModal();
+            }
+        });
     </script>
+
+    <!-- Spam Modal Popup -->
+    <div id="spam-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="relative max-w-lg md:max-w-xl w-full bg-zinc-950 border border-zinc-900 rounded-3xl p-8 md:p-12 space-y-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] transform scale-95 transition-transform duration-300" id="spam-modal-content">
+            <!-- Close Button -->
+            <button onclick="closeSpamModal()" class="absolute top-6 right-6 text-zinc-600 hover:text-white transition-colors cursor-pointer text-3xl leading-none font-sans font-thin">
+                &times;
+            </button>
+
+            <!-- Troll Logo -->
+            <div class="flex justify-center">
+                <img src="/static/logo.png" alt="Ogre Logo" class="h-20 md:h-24 w-auto object-contain hover:rotate-12 transition-transform duration-300 dithered">
+            </div>
+            
+            <div class="space-y-4 text-center">
+                <h3 class="text-2xl md:text-4xl font-pixel uppercase text-white tracking-tight leading-none">Feed the Database.</h3>
+                <p class="text-sm md:text-base text-zinc-300 leading-relaxed font-sans max-w-md mx-auto">
+                    Give us your address so we can target you when we get mad at old hardware or need to pump our spreadsheet metrics. You will probably ignore the emails (or don't, whatever), we will eventually die, and the server will get shut down. But for now, <span class="font-bold text-white">type it <span class="italic">in.</span></span>
+                </p>
+            </div>
+
+            <form id="modal-spam-form" class="space-y-6 max-w-md mx-auto" onsubmit="submitModalSpamForm(event)">
+                <div class="space-y-4">
+                    <input type="email" name="email" required placeholder="future_target@colony.com"
+                        class="w-full px-6 py-4 bg-zinc-950 border border-zinc-900 rounded-xl text-sm font-mono text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors text-center">
+                    <button type="submit" 
+                        class="w-full px-8 py-4 bg-white hover:bg-zinc-200 text-black rounded-xl text-sm font-pixel uppercase tracking-widest transition-colors">
+                        Submit to Hive
+                    </button>
+                </div>
+                <div id="modal-spam-status" class="text-[10px] font-mono text-zinc-500 mt-2 text-center min-h-[16px]"></div>
+                
+                <!-- Footnote -->
+                <p class="text-[10px] md:text-xs font-mono text-zinc-500 leading-relaxed text-center max-w-sm mx-auto pt-4 border-t border-zinc-800">
+                    By submitting this form you agree to be targeted by our direct marketing experiments. Consent is not a condition of synth backup, but resisting is futile. Unsubscribe whenever you want to reclaim your insignificance.
+                </p>
+            </form>
+        </div>
+    </div>
 
 </body>
 

@@ -397,6 +397,8 @@ async def dashboard(request: Request):
     user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        return RedirectResponse(url="/checkout")
         
     banks = database.get_all_banks(user["id"])
     return render_template("index.html", request, {"banks": banks, "user": user})
@@ -408,6 +410,10 @@ async def get_banks(request: Request):
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
+        return RedirectResponse(url="/checkout")
         
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
@@ -419,6 +425,10 @@ async def get_bank_details(request: Request, bank_id: int):
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
+        return RedirectResponse(url="/checkout")
         
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
@@ -437,12 +447,10 @@ async def create_bank(
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
-
-    # Paywall verification: free users are capped at 3 soundbanks
-    if user["tier"] == "free":
-        current_banks = database.get_all_banks(user["id"])
-        if len(current_banks) >= 3:
-            return Response(status_code=402, headers={"HX-Trigger": "triggerUpgradeModal"})
+    if user["tier"] != "premium":
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
+        return RedirectResponse(url="/checkout")
 
     try:
         clean_hex = sysex_hex.strip().replace(" ", "").replace("\n", "").replace("\r", "")
@@ -480,12 +488,10 @@ async def upload_bank_file(
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
-
-    # Paywall verification: free users are capped at 3 soundbanks
-    if user["tier"] == "free":
-        current_banks = database.get_all_banks(user["id"])
-        if len(current_banks) >= 3:
-            return Response(status_code=402, headers={"HX-Trigger": "triggerUpgradeModal"})
+    if user["tier"] != "premium":
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
+        return RedirectResponse(url="/checkout")
 
     sysex_bytes = await file.read()
     sysex_hex = sysex_bytes.hex()
@@ -513,6 +519,10 @@ async def delete_bank(request: Request, bank_id: int):
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
+        return RedirectResponse(url="/checkout")
         
     database.delete_bank(bank_id, user["id"])
     banks = database.get_all_banks(user["id"])
@@ -523,6 +533,8 @@ async def download_bank(request: Request, bank_id: int):
     user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        return RedirectResponse(url="/checkout")
         
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
@@ -548,6 +560,8 @@ async def get_bank_hex(request: Request, bank_id: int):
     user = get_current_user(request)
     if not user:
         raise HTTPException(status_code=401, detail="Unauthorized")
+    if user["tier"] != "premium":
+        raise HTTPException(status_code=402, detail="Payment Required")
         
     bank = database.get_bank(bank_id, user["id"])
     if not bank:

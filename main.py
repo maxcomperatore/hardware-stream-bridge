@@ -272,28 +272,28 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
 
 SEO_DATA = {
     "dx7": {
-        "title": "Yamaha DX7 SysEx Librarian & Patch Backup | knob.monster",
-        "description": "The ultimate browser-native Yamaha DX7 SysEx librarian. Back up, search, and recall DX7 soundbanks in 1-click via Web MIDI. No drivers required.",
-        "keywords": "yamaha dx7 sysex librarian, dx7 patch manager, dx7 editor online, dx7 web midi, dx7 patches",
+        "title": "Yamaha DX7 Online Librarian & SysEx Backup | knob.monster",
+        "description": "The ultimate browser-native Yamaha DX7 online librarian and SysEx manager. Back up, search, and recall DX7 soundbanks in 1-click via Web MIDI. No drivers required.",
+        "keywords": "yamaha dx7 online librarian, dx7 patch manager, dx7 editor online, dx7 web midi, dx7 patches, yamaha dx7 sysex librarian",
         "synth_name": "Yamaha DX7",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Yamaha DX7.</span>",
-        "hero_subtitle": "Back up, search, and recall Yamaha DX7 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
+        "hero_subtitle": "The ultimate Yamaha DX7 online librarian. Back up, search, and recall Yamaha DX7 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
     },
     "juno-106": {
-        "title": "Roland Juno-106 Patch Librarian & Editor | knob.monster",
-        "description": "The ultimate browser-native Roland Juno-106 SysEx librarian. Back up, search, and recall Juno-106 soundbanks in 1-click via Web MIDI. No drivers required.",
-        "keywords": "roland juno-106 librarian, juno 106 patch manager, juno 106 sysex online, juno 106 editor",
+        "title": "Roland Juno-106 SysEx Backup & Patch Librarian | knob.monster",
+        "description": "The ultimate browser-native Roland Juno-106 SysEx backup utility. Back up, search, and recall Juno-106 soundbanks in 1-click via Web MIDI. No drivers required.",
+        "keywords": "juno-106 sysex backup, roland juno-106 librarian, juno 106 patch manager, juno 106 sysex online, juno 106 editor",
         "synth_name": "Roland Juno-106",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Juno-106.</span>",
-        "hero_subtitle": "Back up, search, and recall Roland Juno-106 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
+        "hero_subtitle": "The easiest way to manage Roland Juno-106 SysEx backup files directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
     },
     "korg-m1": {
-        "title": "Korg M1 SysEx Librarian & Preset Manager | knob.monster",
-        "description": "The ultimate browser-native Korg M1 SysEx librarian. Back up, search, and recall Korg M1 soundbanks in 1-click via Web MIDI. No drivers required.",
-        "keywords": "korg m1 sysex librarian, korg m1 patch manager, korg m1 editor online, korg m1 patches",
+        "title": "Korg M1 SysEx Librarian & Patch Recall | knob.monster",
+        "description": "The ultimate browser-native Korg M1 SysEx librarian and patch recall tool. Back up, search, and recall Korg M1 soundbanks in 1-click via Web MIDI. No drivers required.",
+        "keywords": "korg m1 patch recall, korg m1 sysex librarian, korg m1 patch manager, korg m1 editor online, korg m1 patches",
         "synth_name": "Korg M1",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Korg M1.</span>",
-        "hero_subtitle": "Back up, search, and recall Korg M1 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
+        "hero_subtitle": "A fast browser utility for Korg M1 patch recall. Back up, search, and recall Korg M1 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
     }
 }
 

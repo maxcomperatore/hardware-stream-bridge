@@ -421,6 +421,8 @@
                                 <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
                                 <option value="Roland Juno-106">Roland Juno-106 (Gen)</option>
                                 <option value="Korg M1">Korg M1 (Gen)</option>
+                                <option value="Roland Jupiter-6">Roland Jupiter-6 (Europa)</option>
+                                <option value="Casio CZ-101">Casio CZ-101 (Handshake)</option>
                                 <option value="Generic Synth">Generic Synth</option>
                             </select>
                         </div>
@@ -450,6 +452,8 @@
                             <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
                             <option value="Roland Juno-106">Roland Juno-106</option>
                             <option value="Korg M1">Korg M1</option>
+                            <option value="Roland Jupiter-6">Roland Jupiter-6 (Europa)</option>
+                            <option value="Casio CZ-101">Casio CZ-101</option>
                             <option value="Generic Synth">Generic Synth</option>
                         </select>
                         <input type="text" name="name" required placeholder="Import label..."
@@ -1028,6 +1032,12 @@
                 logMidiEvent("OUT", "F0 42 30 19 10 F7");
             } else if (synthModel === "Roland Juno-106") {
                 logMidiEvent("SYSTEM", "Awaiting manual WRITE message simulation from Juno-106 interface...");
+            } else if (synthModel === "Roland Jupiter-6") {
+                logMidiEvent("SYSTEM", "Requesting Jupiter-6 / Europa SysEx bulk dump...");
+                logMidiEvent("OUT", "F0 41 36 00 20 00 F7");
+            } else if (synthModel === "Casio CZ-101") {
+                logMidiEvent("SYSTEM", "Initiating Casio CZ-101 3-way handshake dialogue...");
+                logMidiEvent("OUT", "F0 44 00 00 70 10 F7");
             }
 
             const interval = setInterval(() => {
@@ -1106,6 +1116,10 @@
                 dumpRequestCommand = new Uint8Array([0xF0, 0x43, 0x20, 0x09, 0xF7]);
             } else if (synthModel === "Korg M1") {
                 dumpRequestCommand = new Uint8Array([0xF0, 0x42, 0x30, 0x19, 0x10, 0xF7]);
+            } else if (synthModel === "Roland Jupiter-6") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x41, 0x36, 0x00, 0x20, 0x00, 0xF7]);
+            } else if (synthModel === "Casio CZ-101") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x44, 0x00, 0x00, 0x70, 0x10, 0xF7]);
             } else {
                 // Default dump request command
                 dumpRequestCommand = new Uint8Array([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]); // Universal Identity Request

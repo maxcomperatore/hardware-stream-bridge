@@ -223,7 +223,7 @@
                 New
             </span>
             <span class="text-zinc-400">
-                Now supporting DX7, Juno-106 & Generic SysEx
+                Now supporting DX7, Juno-106 & Generic SysEx (Jupiter-6 & CZ-101 coming soon)
             </span>
         </div>
         <button onclick="document.getElementById('announcement-banner').style.display='none'" class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center" aria-label="Close Announcement">
@@ -799,6 +799,85 @@
         </script>
     </section>
 
+    <!-- Hardware Guides & Technical Troubleshooting Section -->
+    <section id="guides" class="border-t border-zinc-900 max-w-4xl mx-auto px-6 py-24 relative z-10 text-left">
+        <div class="text-center mb-16 reveal">
+            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">Lab Notes</span>
+            <h2 class="text-2xl font-pixel uppercase text-white mt-3 text-center">Hardware Diagnostics & Troubleshooting</h2>
+            <p class="text-xs text-zinc-500 font-mono mt-2 max-w-md mx-auto text-center">Hard-won hardware engineering solutions from the knob.monster bench.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Guide 1: Casio CZ-101 OLED Flicker & Startup Fix -->
+            <div class="p-6 bg-zinc-950/40 border border-zinc-900 rounded-2xl reveal space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg">
+                        <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" class="h-4.5 w-4.5" style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(90deg) brightness(95%) contrast(90%);" />
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-pixel uppercase text-white">Casio CZ-101 OLED Upgrade Guide</h3>
+                        <span class="text-[9px] font-mono text-zinc-500">Startup Power Rail Fix (RC Delay Circuit)</span>
+                    </div>
+                </div>
+                <p class="text-xs text-zinc-400 leading-relaxed font-sans font-normal">
+                    Upgrading your vintage CZ-101 to a modern OLED display often triggers screen flickering or failed boot sequences. This is because modern OLED logic initializes in <strong>&lt; 50ms</strong>, while the vintage Casio power-on reset (POR) cycle takes up to <strong>150ms</strong> to stabilize the 5V rails.
+                </p>
+                <div class="p-3.5 bg-black border border-zinc-900 rounded-xl font-mono text-[10px] text-zinc-500 leading-relaxed">
+                    <strong>Solution:</strong> Construct a simple RC delay circuit on the OLED reset (RES) pin. Connecting a 10k&ohm; resistor between +5V and RES, and a 10&mu;F electrolytic capacitor between RES and Ground delays display initialization until the power rail is fully stabilized.
+                </div>
+            </div>
+
+            <!-- Guide 2: Parasitic Battery Drain & Diodes -->
+            <div class="p-6 bg-zinc-950/40 border border-zinc-900 rounded-2xl reveal space-y-4" style="--delay: 100ms;">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-lg">
+                        <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" class="h-4.5 w-4.5" style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-pixel uppercase text-white">Preventing Memory Battery Drain</h3>
+                        <span class="text-[9px] font-mono text-zinc-500">Casio CZ Parasitic Leak Diagnostics</span>
+                    </div>
+                </div>
+                <p class="text-xs text-zinc-400 leading-relaxed font-sans font-normal">
+                    If your CZ-101 or CZ-1000 is eating AA batteries in under a week, you are dealing with a parasitic power leak. The battery backup circuit relies on a low-leakage switching diode (commonly D3 / 1S2473) to isolate the batteries when AC power is plugged in.
+                </p>
+                <div class="p-3.5 bg-black border border-zinc-900 rounded-xl font-mono text-[10px] text-zinc-500 leading-relaxed">
+                    <strong>Diagnostics:</strong> Check the circuit board for conductive electrolyte residue from old leaky batteries. Clean with isopropyl alcohol. If the leak persists, test the switching diode D3. Replace with a modern Schottky diode (e.g., BAT85) to restore automatic AC/DC isolation.
+                </div>
+            </div>
+            
+            <!-- Guide 3: Handshake Protocol -->
+            <div class="p-6 bg-zinc-950/40 border border-zinc-900 rounded-2xl reveal space-y-4 md:col-span-2" style="--delay: 200ms;">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-lg">
+                        <img src="https://api.iconify.design/dinkie-icons:loop.svg" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-pixel uppercase text-white">Casio CZ-series SysEx Handshake Protocol</h3>
+                        <span class="text-[9px] font-mono text-zinc-500">Understanding unidirectional vs bi-directional MIDI dialogue</span>
+                    </div>
+                </div>
+                <p class="text-xs text-zinc-400 leading-relaxed font-sans font-normal">
+                    Unlike standard synthesizers that accept direct SysEx dump files (like the Yamaha DX7), the Casio CZ-101 utilizes a non-standard <strong>3-way hardware handshake</strong>. If your librarian is unidirectional, the CZ will simply ignore the data transfer.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-[9px] text-zinc-500">
+                    <div class="p-3 bg-black border border-zinc-900 rounded-xl">
+                        <strong class="text-white block mb-1">01. REQUEST (Host &rarr; Synth)</strong>
+                        The host computer sends a SysEx "Open Communication Request" command to the CZ's MIDI input.
+                    </div>
+                    <div class="p-3 bg-black border border-zinc-900 rounded-xl">
+                        <strong class="text-white block mb-1">02. ACKNOWLEDGE (Synth &rarr; Host)</strong>
+                        The CZ responds with an "Acknowledge" sequence, signaling that it has opened its memory registers.
+                    </div>
+                    <div class="p-3 bg-black border border-zinc-900 rounded-xl">
+                        <strong class="text-white block mb-1">03. TRANSFER (Host &rarr; Synth)</strong>
+                        The host must verify the ACK payload and begin streaming the voices, followed by a final confirmation block.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- FAQ Section -->
     <section id="faq" class="border-t border-zinc-900 max-w-3xl mx-auto px-6 py-24 relative z-10 text-left">
         <div class="text-center mb-16 reveal">
@@ -820,7 +899,7 @@
                     banks (like the
                     Roland Juno-106 or Korg M1). We will capture the dump and scan the binary data for ASCII characters
                     to
-                    extract names automatically.
+                    extract names automatically. We are also actively developing dedicated support for the <strong>Roland Jupiter-6</strong> (both stock and Europa-modded) and the <strong>Casio CZ-101</strong> handshake protocol.
                 </p>
             </div>
 

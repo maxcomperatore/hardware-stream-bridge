@@ -294,6 +294,14 @@ SEO_DATA = {
         "synth_name": "Korg M1",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Korg M1.</span>",
         "hero_subtitle": "A fast browser utility for Korg M1 patch recall. Back up, search, and recall Korg M1 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
+    },
+    "jupiter-6": {
+        "title": "Roland Jupiter-6 Online SysEx Librarian & Europa Backup | knob.monster",
+        "description": "The ultimate browser-native Roland Jupiter-6 online librarian and SysEx manager. Back up, search, and recall Jupiter-6 patches (stock and Europa modded) in 1-click via Web MIDI. No drivers required.",
+        "keywords": "roland jupiter-6 sysex backup, jupiter 6 patch manager, jupiter-6 europa editor, jupiter-6 web midi, jupiter-6 patches",
+        "synth_name": "Roland Jupiter-6",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Jupiter-6.</span>",
+        "hero_subtitle": "The easiest way to manage Roland Jupiter-6 and Europa-modded SysEx backups directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
     }
 }
 
@@ -317,6 +325,11 @@ async def juno_seo(request: Request):
 async def korg_seo(request: Request):
     user = get_current_user(request)
     return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["korg-m1"], "seo_slug": "korg-m1"})
+
+@app.get("/jupiter-6", response_class=HTMLResponse)
+async def jupiter_seo(request: Request):
+    user = get_current_user(request)
+    return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["jupiter-6"], "seo_slug": "jupiter-6"})
 
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):
@@ -474,6 +487,10 @@ async def create_bank(
         patch_names = parser.parse_juno106_sysex(sysex_bytes)
     elif synth_model == "Korg M1":
         patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
+    elif synth_model == "Roland Jupiter-6":
+        patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
+    elif synth_model == "Casio CZ-101":
+        patch_names = parser.parse_cz101_sysex(sysex_bytes)
     else:
         patch_names = parser.parse_generic_sysex(sysex_bytes)
         
@@ -512,6 +529,10 @@ async def upload_bank_file(
         patch_names = parser.parse_juno106_sysex(sysex_bytes)
     elif synth_model == "Korg M1":
         patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
+    elif synth_model == "Roland Jupiter-6":
+        patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
+    elif synth_model == "Casio CZ-101":
+        patch_names = parser.parse_cz101_sysex(sysex_bytes)
     else:
         patch_names = parser.parse_generic_sysex(sysex_bytes)
         
@@ -701,6 +722,12 @@ async def sitemap():
   <url>
     <loc>https://knob.monster/korg-m1</loc>
     <lastmod>2026-06-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://knob.monster/jupiter-6</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>

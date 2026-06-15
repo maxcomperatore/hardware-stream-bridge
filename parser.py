@@ -210,6 +210,14 @@ def parse_generic_sysex(data: bytes) -> list[str]:
     if juno_patches:
         return juno_patches
 
+    jupiter_patches = parse_jupiter6_sysex(data)
+    if jupiter_patches:
+        return jupiter_patches
+
+    cz_patches = parse_cz101_sysex(data)
+    if cz_patches:
+        return cz_patches
+
     # Find printable ASCII segments of length 6 to 16
     patches = []
     temp_name = []
@@ -228,3 +236,124 @@ def parse_generic_sysex(data: bytes) -> list[str]:
         return patches
         
     return [f"Patch {i+1:02d}" for i in range(32)]
+
+def parse_jupiter6_sysex(data: bytes) -> list[str]:
+    """
+    Parses Roland Jupiter-6 SysEx dumps (Europa/Tauntek).
+    Since JP-6 patches have no digital names, we analyze DCO, VCF, and envelope settings
+    to dynamically name the patches.
+    """
+    patches = []
+    
+    # Roland SysEx starts with F0 41. Manufacturer ID 41.
+    idx = 0
+    while True:
+        start = data.find(b'\xF0\x41', idx)
+        if start == -1:
+            break
+        end = data.find(b'\xF7', start)
+        if end == -1:
+            break
+        
+        msg = data[start:end+1]
+        # Jupiter-6 program dump is typically around 32-128 bytes
+        if 32 <= len(msg) <= 128:
+            params = msg[8:-2] if len(msg) > 10 else msg
+            patches.append(analyze_jupiter6_patch(params, len(patches)))
+        idx = end + 1
+        
+    if patches:
+        return patches
+        
+    if b'\xF0\x41' in data:
+        return [f"P{((i%48)//8)+1}{((i%48)%8)+1} JP-6 Patch" for i in range(48)]
+        
+    return []
+
+def analyze_jupiter6_patch(p: bytes, index: int) -> str:
+    if len(p) < 20:
+        bank_num = (index // 8) + 1
+        patch_num = (index % 8) + 1
+        return f"P{bank_num}{patch_num} JP-6 Patch"
+        
+    cutoff = p[10] if len(p) > 10 else 64
+    resonance = p[11] if len(p) > 11 else 0
+    env_attack = p[18] if len(p) > 18 else 0
+    env_release = p[20] if len(p) > 20 else 20
+    
+    if cutoff < 45 and resonance > 55:
+        if env_attack < 20:
+            name = "EUROPA BASS"
+        else:
+            name = "ACID SWEEP"
+    elif env_attack > 60 and env_release > 60:
+        name = "SPACE PAD"
+    elif env_attack < 10 and env_release > 50:
+        name = "SH-PLUCK"
+    elif cutoff > 75 and resonance > 45:
+        name = "RESO LEAD"
+    elif cutoff > 60 and env_attack < 15:
+        name = "JP BRASS"
+    else:
+        name = "ANALOG POLY"
+        
+    bank_num = (index // 8) + 1
+    patch_num = (index % 8) + 1
+    return f"P{bank_num}{patch_num} {name}"
+
+def parse_cz101_sysex(data: bytes) -> list[str]:
+    """
+    Parses Casio CZ-101 tone dumps (typically starts with F0 44 ... F7).
+    CZ tones do not have ASCII names, so we analyze DCO/DCW/DCA and envelopes.
+    """
+    patches = []
+    
+    # Casio manufacturer ID is 0x44
+    idx = 0
+    while True:
+        start = data.find(b'\xF0\x44', idx)
+        if start == -1:
+            break
+        end = data.find(b'\xF7', start)
+        if end == -1:
+            break
+        
+        msg = data[start:end+1]
+        # CZ tone SysEx blocks can vary.
+        if 80 <= len(msg) <= 300:
+            params = msg[6:-1]
+            patches.append(analyze_cz101_patch(params, len(patches)))
+        idx = end + 1
+        
+    if patches:
+        return patches
+        
+    if b'\xF0\x44' in data:
+        return [f"INT-{i+1:02d} CZ Tone" for i in range(16)]
+        
+    return []
+
+def analyze_cz101_patch(p: bytes, index: int) -> str:
+    if len(p) < 30:
+        bank = "INT" if index < 16 else "CRT"
+        num = (index % 16) + 1
+        return f"{bank}-{num:02d} CZ Tone"
+        
+    wave = p[10] if len(p) > 10 else 0
+    dcw_level = p[18] if len(p) > 18 else 50
+    dca_release = p[26] if len(p) > 26 else 30
+    
+    if dcw_level < 30:
+        name = "PD SOFT BASS"
+    elif dcw_level > 70 and wave > 2:
+        name = "SYN LEAD"
+    elif dca_release > 70:
+        name = "COSMIC PAD"
+    elif wave == 1 and dcw_level > 50:
+        name = "CZ BRASS"
+    else:
+        name = "PD SYNTH"
+        
+    bank = "INT" if index < 16 else "CRT"
+    num = (index % 16) + 1
+    return f"{bank}-{num:02d} {name}"

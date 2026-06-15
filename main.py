@@ -705,6 +705,12 @@ async def sitemap():
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://knob.monster/sysex-librarian-alternatives</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://knob.monster/login</loc>
     <lastmod>2026-06-05</lastmod>
     <changefreq>monthly</changefreq>

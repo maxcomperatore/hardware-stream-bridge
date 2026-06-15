@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 Best SysEx Librarian Alternatives for Windows & macOS (2026)</title>
+    <meta name="description"
+        content="Compare the best SysEx librarian software and alternatives for vintage synthesizers. Find the best MIDI dump tool for Yamaha DX7, Roland Juno, and Korg M1.">
+    <meta name="keywords"
+        content="sysex librarian, sysex librarian windows, snoize alternative, midi-ox alternative, sysex dump tool, midi sysex software, yamaha dx7 librarian">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://knob.monster/sysex-librarian-alternatives">
+    <meta property="og:title" content="5 Best SysEx Librarian Alternatives for Windows & macOS (2026)">
+    <meta property="og:description"
+        content="Compare the best SysEx librarian software and alternatives for vintage synthesizers. Find the best MIDI dump tool for Yamaha DX7, Roland Juno, and Korg M1.">
+    <meta property="og:image" content="https://knob.monster/static/og_banner.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://knob.monster/sysex-librarian-alternatives">
+    <meta property="twitter:title" content="5 Best SysEx Librarian Alternatives for Windows & macOS (2026)">
+    <meta property="twitter:description"
+        content="Compare the best SysEx librarian software and alternatives for vintage synthesizers. Find the best MIDI dump tool for Yamaha DX7, Roland Juno, and Korg M1.">
+    <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
+
+    <!-- Favicon -->
+    <link id="favicon" rel="shortcut icon" href="/static/logo.png" type="image/png">
+
+    <!-- Fonts -->
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            450: '#7e7e8a',
+                            555: '#52525c',
+                            650: '#43434c',
+                            655: '#3e3e46',
+                            850: '#1c1c21',
+                        },
+                        blue: {
+                            650: '#1d4ed8',
+                        },
+                        rose: {
+                            450: '#fb7185',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* 3D spin animation for logo */
+        @keyframes logo-spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        /* 1-bit dither mesh overlay */
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        /* Hover glows */
+        .glow-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .glow-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -15px rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-active {
+            background-color: #ffffff;
+            color: #000000;
+        }
+    </style>
+
+    <!-- Schema.org JSON-LD for Search Engine Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "5 Best SysEx Librarian Alternatives for Windows & macOS (2026)",
+      "description": "A comprehensive review and ranking of the top MIDI SysEx librarian tools and alternatives for vintage synthesizers like the DX7, Juno, and M1.",
+      "image": "https://knob.monster/static/og_banner.png",
+      "author": {
+        "@type": "Organization",
+        "name": "knob.monster"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "knob.monster",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://knob.monster/static/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://knob.monster/sysex-librarian-alternatives"
+      }
+    }
+    </script>
+</head>
+
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                    <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-6 h-6 object-contain" style="image-rendering: pixelated;">
+                </div>
+                <a href="/" class="font-pixel uppercase text-sm text-white tracking-widest hover:text-emerald-400 transition-colors">knob.monster</a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <a href="/#faq" class="hover:text-white transition-colors duration-200">FAQ</a>
+                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/dashboard" id="nav-dashboard-link-user"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Launch Console
+                </a>
+                {% else %}
+                <a href="/login" id="nav-login-link"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
+                    Sign In
+                </a>
+                <a href="/signup" id="nav-signup-link"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Launch Console
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-16 relative z-10">
+        <!-- Hero Title -->
+        <article class="space-y-6 text-center">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+                Technical Review
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto">
+                The Best SysEx Librarian Alternatives for Windows & macOS
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
+                Dumping patches from classic hardware synthesizers shouldn't require setting up a driver from 1995. Compare the top MIDI SysEx manager utilities below.
+            </p>
+        </article>
+
+        <!-- OS Filter Tabs -->
+        <section class="flex justify-center mt-12 mb-8">
+            <div class="inline-flex p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1" id="filter-container">
+                <button onclick="filterOS('all')" id="btn-filter-all" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg transition-colors tab-active">
+                    All
+                </button>
+                <button onclick="filterOS('windows')" id="btn-filter-win" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                    Windows
+                </button>
+                <button onclick="filterOS('macos')" id="btn-filter-mac" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                    macOS
+                </button>
+                <button onclick="filterOS('web')" id="btn-filter-web" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                    Web Native
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Alternatives Cards -->
+        <section class="space-y-6 mt-8" id="cards-container">
+            
+            <!-- knob.monster Card (Editor's Choice) -->
+            <div class="glow-card border-2 border-emerald-500/30 bg-zinc-950/40 rounded-2xl p-6 md:p-8 space-y-4" data-os="web">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="inline-block px-2 py-0.5 rounded text-[8px] font-pixel bg-emerald-500/20 text-emerald-400 uppercase tracking-widest mb-2">Editor's Choice</span>
+                        <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">1. knob.monster</h2>
+                    </div>
+                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Web Browser Native</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    knob.monster is a modern cloud librarian that runs directly in your web browser. Using the Web MIDI API, it connects to your MIDI interfaces without needing local software installs or driver setups. It automatically parses, indexes, and normalizes patch banks.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Zero installation required</li>
+                            <li>Instant 1-click cloud backups</li>
+                            <li>Auto-decodes patch names from raw binary</li>
+                            <li>Integrated search across your entire vault</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Requires Chrome, Edge, or Opera</li>
+                            <li>Premium features require subscription</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900 flex justify-between items-center">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free to try / $4.99/mo premium</span>
+                    <a href="/signup" id="card-cta-knobmonster" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-lg text-3xs font-pixel uppercase tracking-widest transition-colors">
+                        Try Browser MIDI
+                    </a>
+                </div>
+            </div>
+
+            <!-- Snoize Card -->
+            <div class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="macos">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">2. Snoize SysEx Librarian</h2>
+                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">macOS Native</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    The undisputed standard for Mac users. Snoize SysEx Librarian has been the default choice for macOS synthesists for over two decades. It is highly stable, lightweight, and handles massive byte transfers without dropping packets.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Free and open-source</li>
+                            <li>Auto-detects connected MIDI ports</li>
+                            <li>Excellent packet timing buffers</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>macOS only</li>
+                            <li>No built-in patch metadata search</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free / Open-Source</span>
+                </div>
+            </div>
+
+            <!-- MIDI-OX Card -->
+            <div class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="windows">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">3. MIDI-OX</h2>
+                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows Native</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    The classic Windows workhorse. MIDI-OX remains one of the most powerful utilities for monitoring MIDI data streams, filtering commands, and executing SysEx data dumps. 
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Incredibly deep diagnostic tools</li>
+                            <li>Custom buffer size adjustments</li>
+                            <li>Advanced MIDI routing matrix</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Windows only</li>
+                            <li>Complex, outdated interface</li>
+                            <li>Requires manual buffer settings for older synths</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free for non-commercial use</span>
+                </div>
+            </div>
+
+            <!-- Bome SendSX Card -->
+            <div class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="windows macos">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">4. Bome SendSX</h2>
+                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows / macOS</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    If you just need to send a single file quickly without setting up a full library configuration, SendSX is the easiest utility available. It focuses purely on sending and receiving raw hex strings.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Extremely lightweight</li>
+                            <li>Real-time raw hex output display</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>No bank database search or structure</li>
+                            <li>No automatic parsing options</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Donationware</span>
+                </div>
+            </div>
+
+            <!-- Dexed Card -->
+            <div class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="windows macos">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">5. Dexed (Virtual Cartridge)</h2>
+                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Cross-Platform VST / Standalone</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    While primarily a software synth clone of the DX7, Dexed includes a built-in virtual cartridge page that acts as a dedicated 6-operator SysEx librarian. It can load 32-voice bank files, reorder patches, and dump them to hardware.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Free and cross-platform</li>
+                            <li>Lets you preview the sounds locally</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Strictly limited to 6-operator DX7 patches</li>
+                            <li>No support for Juno, M1, or generic dumps</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free / Open-Source</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Technical Deep Dive Section (Authoritative Content for Search Ranking) -->
+        <section class="mt-20 border-t border-zinc-900 pt-16 space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase tracking-wide">
+                Why Modern USB Interfaces Drop SysEx Packets
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
+                If you have ever tried to send a 4104-byte bulk dump file to a vintage synthesizer only to receive a <code>Buffer Overflow</code> or <code>MIDI Communication Error</code> on the screen, the issue is not the file format. It is packet timing.
+            </p>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
+                Vintage synthesizers from the 1980s run on slow internal microprocessors (like the 2MHz Motorola 6809 or Intel 8031). They receive MIDI data at the standard hardware speed of <strong>31,250 bits per second (31.25 kbaud)</strong>. 
+            </p>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
+                Modern USB-to-MIDI cable interfaces send data at high-speed USB rates. Without strict software throttling, the interface throws thousands of bytes at the synth faster than its memory buffers can write them.
+            </p>
+            <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 md:p-6 space-y-3 font-mono text-2xs md:text-xs">
+                <span class="text-emerald-400 font-semibold block uppercase tracking-wider">How to Fix Timing Errors:</span>
+                <ul class="list-decimal list-inside space-y-2 text-zinc-300">
+                    <li><strong>Set output buffers:</strong> Configure your librarian to send data in blocks of 256 bytes.</li>
+                    <li><strong>Configure delay times:</strong> Add a delay of 60 milliseconds between packets. This gives the synth time to write the received data to memory.</li>
+                    <li><strong>Avoid cheap cables:</strong> Low-cost USB-to-MIDI cables lack internal memory buffers and will consistently discard messages over 100 bytes long.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Call To Action -->
+        <section class="mt-20 border-t border-zinc-900 pt-16 text-center space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">
+                Want to Skip the Driver Configuration?
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">
+                Connect your interface, select your synthesizer model, and back up your sounds directly to the cloud in one click.
+            </p>
+            <div>
+                <a href="/signup" id="footer-cta-signup" class="bg-white hover:bg-zinc-200 text-black px-6 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-150 inline-block">
+                    Launch Your Vault
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 bg-black py-16 relative z-10 text-center select-none mt-20">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <div class="flex items-center gap-2">
+                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
+                        <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-5 h-5 object-contain" style="image-rendering: pixelated;">
+                    </div>
+                    <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
+                </div>
+                <p class="text-[10px] text-zinc-500 max-w-sm mt-3 text-center md:text-left font-sans leading-relaxed">
+                    knob.monster is the browser-native cloud database that automatically decodes and backs up vintage SysEx patches in 1-click.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
+                <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service & Refund Policy</a>
+                <span class="hidden md:inline text-zinc-800">•</span>
+                <a href="/privacy" class="hover:text-white underline transition-colors">Privacy Policy</a>
+                <span class="hidden md:inline text-zinc-800">•</span>
+                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white underline transition-colors">Contact Support</a>
+            </div>
+
+            <p class="text-[10px] text-zinc-655 font-mono text-center md:text-right">
+                &copy; 2026 Half Radiation. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Interactive Filter Script
+        function filterOS(os) {
+            const cards = document.querySelectorAll('#cards-container > div');
+            const buttons = document.querySelectorAll('#filter-container button');
+            
+            // Toggle active tab styling
+            buttons.forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-zinc-400');
+            });
+            
+            if (os === 'all') {
+                document.getElementById('btn-filter-all').classList.add('tab-active');
+                document.getElementById('btn-filter-all').classList.remove('text-zinc-400');
+            } else if (os === 'windows') {
+                document.getElementById('btn-filter-win').classList.add('tab-active');
+                document.getElementById('btn-filter-win').classList.remove('text-zinc-400');
+            } else if (os === 'macos') {
+                document.getElementById('btn-filter-mac').classList.add('tab-active');
+                document.getElementById('btn-filter-mac').classList.remove('text-zinc-400');
+            } else if (os === 'web') {
+                document.getElementById('btn-filter-web').classList.add('tab-active');
+                document.getElementById('btn-filter-web').classList.remove('text-zinc-400');
+            }
+
+            // Show/Hide matching cards
+            cards.forEach(card => {
+                const supportedOS = card.getAttribute('data-os').split(' ');
+                if (os === 'all' || supportedOS.includes(os)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

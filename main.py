@@ -318,6 +318,15 @@ async def korg_seo(request: Request):
     user = get_current_user(request)
     return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["korg-m1"], "seo_slug": "korg-m1"})
 
+@app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
+async def sysex_librarian_alternatives(request: Request):
+    user = get_current_user(request)
+    return render_template("sysex_librarian.html", request, {"user": user})
+
+@app.get("/sysex-librarian", response_class=HTMLResponse)
+async def sysex_librarian_redirect():
+    return RedirectResponse(url="/sysex-librarian-alternatives", status_code=301)
+
 @app.get("/terms", response_class=HTMLResponse)
 async def terms_page(request: Request):
     return render_template("terms.html", request)

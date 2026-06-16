@@ -348,6 +348,11 @@ async def terms_page(request: Request):
 async def privacy_page(request: Request):
     return render_template("privacy.html", request)
 
+@app.get("/roadmap", response_class=HTMLResponse)
+async def roadmap_page(request: Request):
+    user = get_current_user(request)
+    return render_template("roadmap.html", request, {"user": user})
+
 @app.post("/subscribe")
 async def subscribe(request: Request, email: str = Form(...)):
     email_clean = email.lower().strip()

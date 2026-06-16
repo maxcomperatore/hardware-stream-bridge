@@ -182,6 +182,20 @@
             background-size: auto, 200px 200px, 160px 160px;
             animation: confetti-loop 7s linear infinite;
         }
+        .glow-card {
+            position: relative;
+            box-shadow: 4px 4px 0px 0px #18181b; /* Hard zinc-900 shadow */
+            transition: none !important; /* Instant 8-bit response */
+        }
+        .glow-card:hover {
+            transform: translate(-2px, -2px) !important;
+            border-color: #10b981 !important; /* Emerald-500 border */
+            box-shadow: 6px 6px 0px 0px #10b981 !important; /* Hard emerald shadow */
+        }
+        .glow-card:active {
+            transform: translate(2px, 2px) !important;
+            box-shadow: 2px 2px 0px 0px #10b981 !important;
+        }
     </style>
     <!-- PostHog Tracking -->
     <script>
@@ -265,18 +279,18 @@
             </div>
 
             <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
-                <a href="#problem" class="hover:text-white transition-colors duration-200">The Problem</a>
+                <a href="#problem" class="hover:text-white transition-colors duration-200">Problem</a>
                 <a href="#features" class="hover:text-white transition-colors duration-200">Features</a>
                 <a href="#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
-                <a href="#faq" class="hover:text-white transition-colors duration-200">FAQ</a>
+                <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
                 <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
             </nav>
 
-            <div class="flex items-center gap-4">
+             <div class="flex items-center gap-4">
                 {% if user %}
                 <a href="/dashboard"
                     class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Launch Console
+                    Open Vault
                 </a>
                 {% else %}
                 <a href="/login"
@@ -285,7 +299,7 @@
                 </a>
                 <a href="/signup"
                     class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Launch Console
+                    Open Vault
                 </a>
                 {% endif %}
             </div>
@@ -499,7 +513,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div
-                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group reveal">
+                    class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
                         <img src="/static/midi_handshake.png" alt="MIDI Din Connection Handshake"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
@@ -524,7 +538,7 @@
 
                 <!-- Step 2 -->
                 <div
-                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group reveal" style="--delay: 150ms;">
+                    class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal" style="--delay: 150ms;">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
                         <img src="/static/index_extraction.png" alt="Auto-naming Hexadecimal Parser"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
@@ -548,7 +562,7 @@
 
                 <!-- Step 3 -->
                 <div
-                    class="rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between shadow-lg group reveal" style="--delay: 300ms;">
+                    class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal" style="--delay: 300ms;">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
                         <img src="/static/recall_button.png" alt="Single Click Preset Flash Sync"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
@@ -643,7 +657,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                 <!-- King of Knobs Plan -->
                 <div
-                    class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl reveal reveal-scale" style="--delay: 200ms;">
+                    class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale" style="--delay: 200ms;">
                     <!-- Gold Stamp -->
                     <div
                         class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-2 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center">

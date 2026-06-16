@@ -375,11 +375,9 @@
                         <span class="text-[7.5px] font-mono text-zinc-500 truncate max-w-[110px]"
                             title="{{ user.email }}">{{ user.email }}</span>
                         {% if user.tier == 'premium' %}
-                        <a href="/portal"
-                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase hover:bg-amber-500 hover:text-black transition-all">PRO</a>
+                        <span class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none">PRO</span>
                         {% else %}
-                        <a href="/portal"
-                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase hover:bg-emerald-500 hover:text-white transition-all">TRIAL</a>
+                        <span class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">TRIAL</span>
                         {% endif %}
                     </div>
                 </div>

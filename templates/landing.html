@@ -164,6 +164,24 @@
         .reveal.active[style*="--delay"] {
             transition-delay: var(--delay);
         }
+        
+        /* Looping Confetti Banner Effect */
+        @keyframes confetti-loop {
+            0% {
+                background-position: 0 0, 0 0, 0 0;
+            }
+            100% {
+                background-position: 0 0, 200px 200px, -160px 320px;
+            }
+        }
+        .confetti-banner-bg {
+            background-image: 
+                linear-gradient(to right, rgba(20, 20, 23, 0.8) 0%, rgba(9, 9, 11, 0.85) 100%),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%2310b981%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%2310b981%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E"),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%2310b981%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%2310b981%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+            background-size: auto, 200px 200px, 160px 160px;
+            animation: confetti-loop 7s linear infinite;
+        }
     </style>
     <!-- PostHog Tracking -->
     <script>
@@ -217,7 +235,7 @@
     </svg>
 
     <!-- Top Announcement Banner -->
-    <div id="announcement-banner" class="w-full bg-zinc-900 border-b border-zinc-800 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+    <div id="announcement-banner" class="w-full confetti-banner-bg border-b border-zinc-800 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
         <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
             <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-roman bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider">
                 New

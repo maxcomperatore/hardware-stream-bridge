@@ -639,98 +639,103 @@
                 <span
                     class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-roman font-normal">-25%</span>
             </button>
-        </div>
-
-        <div class="max-w-md mx-auto text-left">
-            <!-- King of Knobs Plan -->
-            <div
-                class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl reveal reveal-scale" style="--delay: 200ms;">
-                <!-- Gold Stamp -->
+        </div>        <div class="max-w-4xl mx-auto text-left">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <!-- King of Knobs Plan -->
                 <div
-                    class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-2 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center">
-                    <img src="/static/troll_gold.png" alt="King of Knobs Stamp" class="h-8 w-auto object-contain">
-                </div>
-
-                <div class="space-y-5">
-                    <div>
-                        <h3 class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs</h3>
-                        <p class="text-xs text-zinc-500 mt-1">For sound designers and collectors</p>
+                    class="rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl reveal reveal-scale" style="--delay: 200ms;">
+                    <!-- Gold Stamp -->
+                    <div
+                        class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-2 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center">
+                        <img src="/static/troll_gold.png" alt="King of Knobs Stamp" class="h-8 w-auto object-contain">
                     </div>
 
-                    <!-- Pricing Display -->
-                    <div class="h-16 flex flex-col justify-center">
-                        <div id="price-monthly" class="hidden">
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-5xl font-lcd text-emerald-400">$20</span>
-                                <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
+                    <div class="space-y-5">
+                        <div>
+                            <h3 class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs</h3>
+                            <p class="text-xs text-zinc-500 mt-1">For sound designers and collectors</p>
+                        </div>
+
+                        <!-- Pricing Display -->
+                        <div class="h-16 flex flex-col justify-center">
+                            <div id="price-monthly" class="hidden">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-lcd text-emerald-400">$20</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
+                                </div>
+                                <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1">
+                                    Roughly 1 fast-food meal or 4 coffees per month
+                                </div>
                             </div>
-                            <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1">
-                                Roughly 1 fast-food meal or 4 coffees per month
+                            <div id="price-yearly" class="block">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-lcd text-emerald-400">$15</span>
+                                    <span class="text-3xl font-lcd text-zinc-600 line-through">$20</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
+                                </div>
+                                <div class="text-[9px] font-roman text-zinc-600 uppercase tracking-wider mt-1">
+                                    Billed annually ($180/year) • Equivalent to $3.75/week (less than 1 coffee per week)
+                                </div>
                             </div>
                         </div>
-                        <div id="price-yearly" class="block">
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-5xl font-lcd text-emerald-400">$15</span>
-                                <span class="text-3xl font-lcd text-zinc-600 line-through">$20</span>
-                                <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
-                            </div>
-                            <div class="text-[9px] font-roman text-zinc-600 uppercase tracking-wider mt-1">
-                                Billed annually ($180/year) • Equivalent to $3.75/week (less than 1 coffee per week)
-                            </div>
-                        </div>
+
+                        <!-- Trial subtext explanation -->
+                        <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
+                            7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid yearly charges, cancel before the 7-day trial ends.
+                        </p>
+
+                        <ul class="space-y-2.5 text-xs text-zinc-400">
+                            <li class="flex items-center gap-2">
+                                <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg"
+                                    class="h-3.5 w-3.5 text-amber-400"
+                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                Unlimited Soundbank slots
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <img src="https://api.iconify.design/dinkie-icons:code.svg"
+                                    class="h-3.5 w-3.5 text-amber-400"
+                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                All parsers (DX7, Juno, M1, Generic)
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <img src="https://api.iconify.design/dinkie-icons:headphone-filled.svg"
+                                    class="h-3.5 w-3.5 text-amber-400"
+                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                Web Audio patch simulator
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg"
+                                    class="h-3.5 w-3.5 text-amber-400"
+                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                Single-click MIDI flash recall
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <img src="https://api.iconify.design/dinkie-icons:download.svg"
+                                    class="h-3.5 w-3.5 text-amber-400"
+                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                Direct backup downloads (.syx)
+                            </li>
+                        </ul>
                     </div>
 
-                    <!-- Trial subtext explanation -->
-                    <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
-                        7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid yearly charges, cancel before the 7-day trial ends.
-                    </p>
-
-                    <ul class="space-y-2.5 text-xs text-zinc-400">
-                        <li class="flex items-center gap-2">
-                            <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg"
-                                class="h-3.5 w-3.5 text-amber-400"
-                                style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            Unlimited Soundbank slots
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://api.iconify.design/dinkie-icons:code.svg"
-                                class="h-3.5 w-3.5 text-amber-400"
-                                style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            All parsers (DX7, Juno, M1, Generic)
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://api.iconify.design/dinkie-icons:headphone-filled.svg"
-                                class="h-3.5 w-3.5 text-amber-400"
-                                style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            Web Audio patch simulator
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg"
-                                class="h-3.5 w-3.5 text-amber-400"
-                                style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            Single-click MIDI flash recall
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <img src="https://api.iconify.design/dinkie-icons:download.svg"
-                                class="h-3.5 w-3.5 text-amber-400"
-                                style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                            Direct backup downloads (.syx)
-                        </li>
-                    </ul>
+                    <div class="mt-8 text-center">
+                        <a id="pricing-cta-btn" href="/signup?plan=yearly"
+                            data-logged-in="{% if user %}true{% else %}false{% endif %}"
+                            class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
+                            <span>Hell Yes, Start My</span>
+                            <span class="font-bold text-sm md:text-base text-emerald-600 font-pixel tracking-wide uppercase">FREE</span>
+                            <span>Week</span>
+                        </a>
+                        <span class="inline-flex items-center gap-1.5 text-[9px] text-zinc-500 uppercase font-roman tracking-wider select-none">
+                            <img src="https://api.iconify.design/pixelarticons:heart.svg" class="h-3 w-auto opacity-50 inline-block align-middle" style="filter: invert(1);" />
+                            30-day love it or full refund
+                        </span>
+                    </div>
                 </div>
 
-                <div class="mt-8 text-center">
-                    <a id="pricing-cta-btn" href="/signup?plan=yearly"
-                        data-logged-in="{% if user %}true{% else %}false{% endif %}"
-                        class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
-                        <span>Hell Yes, Start My</span>
-                        <span class="font-bold text-sm md:text-base text-emerald-600 font-pixel tracking-wide uppercase">FREE</span>
-                        <span>Week</span>
-                    </a>
-                    <span class="inline-flex items-center gap-1.5 text-[9px] text-zinc-500 uppercase font-roman tracking-wider select-none">
-                        <img src="https://api.iconify.design/pixelarticons:heart.svg" class="h-3 w-auto opacity-50 inline-block align-middle" style="filter: invert(1);" />
-                        30-day love it or full refund
-                    </span>
+                <!-- Meme Image -->
+                <div class="flex items-center justify-center reveal reveal-scale" style="--delay: 300ms;">
+                    <img src="/static/trade_offer.jpg" alt="Trade Offer Meme" class="w-full max-w-[340px] rounded-2xl border border-zinc-900 shadow-2xl">
                 </div>
             </div>
 

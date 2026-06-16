@@ -196,6 +196,19 @@
             transform: translate(2px, 2px) !important;
             box-shadow: 2px 2px 0px 0px #10b981 !important;
         }
+
+        /* Subtle breathing/floating animation for the trade offer image */
+        @keyframes breathing {
+            0%, 100% {
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                transform: scale(1.02) translateY(-4px);
+            }
+        }
+        .animate-breathing {
+            animation: breathing 4s ease-in-out infinite;
+        }
     </style>
     <!-- PostHog Tracking -->
     <script>
@@ -630,6 +643,11 @@
         <div class="text-center max-w-2xl mx-auto mb-20 reveal">
             <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">PRICING</span>
             <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for fellow synth heads.</h2>
+            <div class="mt-4 flex justify-center">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-pixel bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 select-none uppercase tracking-wider">
+                    Early Adopter: Price Locked Forever
+                </span>
+            </div>
         </div>
 
         <!-- Billing Toggle -->
@@ -651,7 +669,7 @@
                 id="btn-yearly">
                 Yearly
                 <span
-                    class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-roman font-normal">-25%</span>
+                    class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-roman font-normal">-37%</span>
             </button>
         </div>        <div class="max-w-4xl mx-auto text-left">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
@@ -674,28 +692,28 @@
                         <div class="h-16 flex flex-col justify-center">
                             <div id="price-monthly" class="hidden">
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400">$20</span>
+                                    <span class="text-5xl font-lcd text-emerald-400">$8</span>
                                     <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1">
-                                    Roughly 1 fast-food meal or 4 coffees per month
+                                    ☕☕ per month
                                 </div>
                             </div>
                             <div id="price-yearly" class="block">
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400">$15</span>
-                                    <span class="text-3xl font-lcd text-zinc-600 line-through">$20</span>
+                                    <span class="text-5xl font-lcd text-emerald-400">$5</span>
+                                    <span class="text-3xl font-lcd text-zinc-600 line-through">$8</span>
                                     <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-600 uppercase tracking-wider mt-1">
-                                    Billed annually ($180/year) • Equivalent to $3.75/week (less than 1 coffee per week)
+                                    ☕ per month (billed annually)
                                 </div>
                             </div>
                         </div>
 
                         <!-- Trial subtext explanation -->
                         <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
-                            7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid yearly charges, cancel before the 7-day trial ends.
+                            Cancel anytime with a single click. 30-day money-back guarantee.
                         </p>
 
                         <ul class="space-y-2.5 text-xs text-zinc-400">
@@ -736,9 +754,7 @@
                         <a id="pricing-cta-btn" href="/signup?plan=yearly"
                             data-logged-in="{% if user %}true{% else %}false{% endif %}"
                             class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
-                            <span>Hell Yes, Start My</span>
-                            <span class="font-bold text-sm md:text-base text-emerald-600 font-pixel tracking-wide uppercase">FREE</span>
-                            <span>Week</span>
+                            <span>Hell Yes, Let's Do It</span>
                         </a>
                         <span class="inline-flex items-center gap-1.5 text-[9px] text-zinc-500 uppercase font-roman tracking-wider select-none">
                             <img src="https://api.iconify.design/pixelarticons:heart.svg" class="h-3 w-auto opacity-50 inline-block align-middle" style="filter: invert(1);" />
@@ -749,15 +765,15 @@
 
                 <!-- Meme Image -->
                 <div class="flex items-center justify-center reveal reveal-scale" style="--delay: 300ms;">
-                    <img src="/static/trade_offer.jpg" alt="Trade Offer Meme" class="w-full max-w-[340px] rounded-2xl border border-zinc-900 shadow-2xl">
+                    <img src="/static/trade_offer.jpg" alt="Trade Offer Meme" class="w-full max-w-[340px] rounded-2xl border border-zinc-900 shadow-2xl animate-breathing">
                 </div>
             </div>
 
             <p id="billing-discount-notice"
                 class="text-center text-[9px] text-zinc-500 uppercase font-roman tracking-wider mt-6 max-w-sm mx-auto leading-relaxed transition-all duration-200">
                 Subscriptions with annual billing instead of monthly billing periods receive a <span
-                    class="text-emerald-400 font-semibold">25% discount</span> valuing up to <span
-                    class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$60/year in
+                    class="text-emerald-400 font-semibold">37% discount</span> valuing up to <span
+                    class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$36/year in
                     savings</span>.
             </p>
         </div>
@@ -791,9 +807,9 @@
                     priceMonthly.classList.remove('hidden');
                     priceYearly.classList.add('hidden');
 
-                    trialSubtext.innerHTML = '7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid monthly charges, cancel before the 7-day trial ends.';
+                    trialSubtext.innerHTML = 'Cancel anytime with a single click. 30-day money-back guarantee.';
 
-                    discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">25% more ($60/year extra)</span>. Switch to annual to stop bleeding money.';
+                    discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">37% more ($36/year extra)</span>. Switch to annual to stop bleeding money.';
                     discountNotice.classList.remove('text-zinc-500');
                     discountNotice.classList.add('text-rose-450');
 
@@ -816,9 +832,9 @@
                     priceMonthly.classList.add('hidden');
                     priceYearly.classList.remove('hidden');
 
-                    trialSubtext.innerHTML = '7 days <span class="text-emerald-400 font-bold text-xs md:text-sm font-pixel tracking-wide uppercase">FREE</span>. To avoid yearly charges, cancel before the 7-day trial ends.';
+                    trialSubtext.innerHTML = 'Cancel anytime with a single click. 30-day money-back guarantee.';
 
-                    discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">25% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$60/year in savings</span>.';
+                    discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">37% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$36/year in savings</span>.';
                     discountNotice.classList.remove('text-rose-450');
                     discountNotice.classList.add('text-zinc-500');
 

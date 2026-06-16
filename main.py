@@ -167,8 +167,8 @@ STRIPE_SECRET_KEY = "sk_live_51TTj41LuSQGuB7eyG45SkLnMmWDGLRZwgaHe0ua7UZTJp2bFuL
 STRIPE_WEBHOOK_SECRET = "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
 stripe.api_key = STRIPE_SECRET_KEY
 
-STRIPE_PRICE_ID_YEARLY = "price_1TdWxPLuSQGuB7eyZvIeKp7r"
-STRIPE_PRICE_ID_MONTHLY = "price_1TdWwjLuSQGuB7ey4hIhr44e"
+STRIPE_PRICE_ID_YEARLY = "price_1Tj3wRLuSQGuB7eyeLFUuCSS"
+STRIPE_PRICE_ID_MONTHLY = "price_1Tj3w8LuSQGuB7ey5ZhEjwri"
 BASE_URL = "https://knob.monster"
 
 # Initialize database and copy assets on startup
@@ -627,9 +627,6 @@ async def create_checkout_session(request: Request, plan: str = "yearly"):
             ],
             mode='subscription',
             allow_promotion_codes=False,
-            subscription_data={
-                'trial_period_days': 7,
-            },
             success_url=BASE_URL + "/dashboard?payment=success",
             cancel_url=BASE_URL + "/dashboard?payment=cancel",
             customer_email=user["email"],

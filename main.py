@@ -751,6 +751,24 @@ async def sitemap():
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://knob.monster/roadmap</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://knob.monster/terms</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://knob.monster/privacy</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>"""
     return Response(content=xml_content, media_type="application/xml")
 
@@ -762,6 +780,29 @@ Disallow: /dashboard
 Disallow: /banks/
 
 Sitemap: https://knob.monster/sitemap.xml"""
+    return Response(content=content, media_type="text/plain")
+
+
+@app.get("/llms.txt")
+async def llms_txt():
+    content = """# knob.monster
+
+> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.
+
+## Key Features
+- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.
+- **Instant Search:** Fuzzy search through soundbanks by preset name.
+- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
+- **Direct Pricing:** Simple plan options: $8/month (billed monthly) or $5/month (billed annually, $60 total). No trials.
+
+## Key Pages
+- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.
+- [DX7 Librarian](https://knob.monster/dx7): Specs and librarian details for Yamaha DX7.
+- [Juno-106 Librarian](https://knob.monster/juno-106): Setup and dump guide for Roland Juno-106.
+- [Korg M1 Librarian](https://knob.monster/korg-m1): Preset backup guide for Korg M1.
+- [Jupiter-6 Librarian](https://knob.monster/jupiter-6): SysEx library configuration for Roland Jupiter-6.
+- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.
+"""
     return Response(content=content, media_type="text/plain")
 
 

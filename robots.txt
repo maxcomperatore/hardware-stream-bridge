@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /banks/
+
+Sitemap: https://knob.monster/sitemap.xml

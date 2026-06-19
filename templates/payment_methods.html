@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Methods & Options | knob.monster</title>
+    <meta name="description" content="All the ways you can transfer us your hard-earned cash to backup and manage your vintage synthesizers.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            450: '#7e7e8a',
+                            555: '#52525c',
+                            650: '#43434c',
+                            655: '#3e3e46',
+                            850: '#1c1c21',
+                        },
+                        blue: {
+                            650: '#1d4ed8',
+                        },
+                        rose: {
+                            450: '#fb7185',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* 3D spin animation for logo */
+        @keyframes logo-spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        /* 1-bit dither mesh overlay */
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .payment-card {
+            background-color: #09090b;
+            border: 1px solid #18181b;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .payment-card:hover {
+            border-color: #3f3f46;
+            background-color: #0c0c0e;
+            transform: translateY(-2px);
+        }
+    </style>
+    <!-- PostHog Tracking -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Di ji init en nn Ar tn an Ki capture calculateEventProperties dn register register_once register_for_session unregister unregister_for_session gn getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync mn identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fn hn createPersonProfile setInternalOrTestUser pn Ji opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing un debug $r vn getPageViewId captureTraceFeedback captureTraceMetric Zi".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m', {
+            api_host: 'https://us.i.posthog.com',
+            defaults: '2026-05-30',
+            person_profiles: 'identified_only',
+        })
+    </script>
+</head>
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                    <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-6 h-6 object-contain" style="image-rendering: pixelated;">
+                </div>
+                <a href="/" class="font-pixel uppercase text-sm text-white tracking-widest hover:text-emerald-400 transition-colors">knob.monster</a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
+                <a href="/changelog" class="hover:text-white transition-colors duration-200">Changelog</a>
+                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/dashboard"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Open Vault
+                </a>
+                {% else %}
+                <a href="/login"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
+                    Sign In
+                </a>
+                <a href="/signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Open Vault
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-20 relative z-10">
+        <!-- Title Header -->
+        <article class="space-y-6 text-center mb-20">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+                Stripe Payments
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
+                Accepted Payments
+            </h1>
+            <p class="text-xs font-mono text-zinc-500 max-w-lg mx-auto uppercase">
+                All the ways you can transfer us your hard-earned cash so we can keep paying our database storage bills.
+            </p>
+        </article>
+
+        <!-- Payment Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Visa & Mastercard -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-3">
+                    <img src="https://api.iconify.design/logos:visa.svg" class="h-4 w-auto" alt="Visa" />
+                    <img src="https://api.iconify.design/logos:mastercard.svg" class="h-4 w-auto" alt="Mastercard" />
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Visa &amp; Mastercard</h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    We accept the standard plastic duo. Fast, globally recognized, and completely boring. Put it on your card or use your company's corporate card if your boss is the one accidentally funding your synthesizer habit.
+                </p>
+            </div>
+
+            <!-- American Express -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="https://api.iconify.design/logos:amex.svg" class="h-4 w-auto" alt="Amex" />
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">American Express</h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    For high-rollers who love paying with heavy metal cards to feel important. Yes, we take Amex. Rack up airline miles while backing up patches for a synthesizer that hasn't left your bedroom since 1994.
+                </p>
+            </div>
+
+            <!-- Apple Pay -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="https://cdn.simpleicons.org/applepay/ffffff" class="h-4 w-auto" alt="Apple Pay" />
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Apple Pay</h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    Because manual card data entry is for chumps. Scan your face, authorize the transaction, and get back to staring at your oscilloscope. Fully supported natively on Safari.
+                </p>
+            </div>
+
+            <!-- Google Pay -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="https://api.iconify.design/logos:google-pay.svg" class="h-3.5 w-auto" alt="Google Pay" />
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Google Pay</h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    Express checkout for Android fans and Chrome users. Secure, fast, and requires exactly zero keypresses, which is great because you've already spent enough energy clicking mechanical keyboard switches today.
+                </p>
+            </div>
+
+            <!-- USDC -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="https://api.iconify.design/cryptocurrency-color:usdc.svg" class="h-5 w-5" alt="USDC" />
+                    <span class="text-[10px] font-pixel text-zinc-400">USDC</span>
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">USDC &amp; Stablecoins</h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    No energy-guzzling proof-of-work, no three-day transaction queues, and absolutely zero volatile meme-tokens. Just USD Coin (USDC) sent natively on Ethereum, Base, Polygon, or Solana. Pay via Stripe and pretend you're a decentralized finance wizard.
+                </p>
+            </div>
+
+            <!-- Pix -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="https://cdn.simpleicons.org/pix/32B3A6" class="h-4 w-auto" alt="Pix" />
+                    <span class="text-[10px] font-pixel text-[#32B3A6]">PIX</span>
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Pix <img src="https://api.iconify.design/flagpack/br.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="Brazil" /></h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    The absolute crown jewel of Brazilian central banking. Instant, zero processing friction, and runs faster than a Roland Juno-106 LFO at max speed. Scan the QR code, press confirm, and secure your database before your next coffee break.
+                </p>
+            </div>
+
+            <!-- Naver Pay -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="https://cdn.simpleicons.org/naver/03C75A" class="h-4 w-auto" alt="Naver Pay" />
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Naver Pay <img src="https://api.iconify.design/flagpack/kr.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="South Korea" /></h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    For our friends producing K-pop bangers in Seoul. One-click mobile checkout with zero currency conversion headaches. Fast enough to keep your creative flow going.
+                </p>
+            </div>
+
+            <!-- Cash App -->
+            <div class="payment-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="https://cdn.simpleicons.org/cashapp/00D632" class="h-4 w-auto" alt="Cash App Pay" />
+                </div>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Cash App Pay <img src="https://api.iconify.design/flagpack/us.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="US" /></h3>
+                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
+                    For when your synth budget is stuck inside the little green app. Tap to pay directly from your Cash App balance, avoiding the manual card entry dance.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Trust Note -->
+        <div class="mt-16 text-center space-y-3 border-t border-zinc-900 pt-12">
+            <h4 class="text-xs font-pixel uppercase text-white tracking-widest">A Note on Security</h4>
+            <p class="text-2xs font-mono text-zinc-500 max-w-md mx-auto leading-relaxed uppercase">
+                We do not store your credit card details or payment credentials on our servers. All transactions are securely processed by Stripe. We are simply too lazy to build a payment database, so we let the billions-dollar enterprise handle it.
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 bg-black py-12 relative z-10 text-left select-none font-sans">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
+                    <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-5 h-5 object-contain" style="image-rendering: pixelated;">
+                </div>
+                <span class="font-pixel uppercase text-2xs text-white tracking-widest">knob.monster</span>
+            </div>
+            
+            <nav class="flex flex-wrap items-center gap-6 text-[10px] font-pixel text-zinc-500 uppercase tracking-widest">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <a href="/roadmap" class="hover:text-white transition-colors">Roadmap</a>
+                <a href="/changelog" class="hover:text-white transition-colors">Changelog</a>
+                <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+                <a href="/privacy" class="hover:text-white transition-colors">Privacy</a>
+            </nav>
+
+            <p class="text-[9px] text-zinc-650 font-mono">
+                &copy; 2026 Half Radiation. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

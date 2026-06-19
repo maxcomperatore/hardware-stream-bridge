@@ -398,6 +398,11 @@ async def changelog_page(request: Request):
     user = get_current_user(request)
     return render_template("changelog.html", request, {"user": user})
 
+@app.get("/payment-methods", response_class=HTMLResponse)
+async def payment_methods_page(request: Request):
+    user = get_current_user(request)
+    return render_template("payment_methods.html", request, {"user": user})
+
 @app.get("/status")
 async def status_page():
     return {
@@ -827,6 +832,12 @@ async def sitemap():
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://knob.monster/payment-methods</loc>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>"""
     return Response(content=xml_content, media_type="application/xml")
 
@@ -860,6 +871,7 @@ async def llms_txt():
 - [Korg M1 Librarian](https://knob.monster/korg-m1): Preset backup guide for Korg M1.
 - [Jupiter-6 Librarian](https://knob.monster/jupiter-6): SysEx library configuration for Roland Jupiter-6.
 - [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.
+- [Payment Methods](https://knob.monster/payment-methods): Supported payment mechanisms and local options.
 """
     return Response(content=content, media_type="text/plain")
 

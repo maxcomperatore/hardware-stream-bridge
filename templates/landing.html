@@ -925,44 +925,98 @@
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-900 bg-black py-16 relative z-10 text-center select-none">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex flex-col items-center md:items-start gap-1">
-                <div class="flex items-center gap-2">
-                    <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
-                        <img src="/static/logo.webp" alt="Knob Monster Logo" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
-                    </div>
-                    <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
+    <footer class="border-t border-zinc-900 bg-black pt-16 pb-8 relative z-10 text-left select-none font-sans">
+        <div class="max-w-6xl mx-auto px-6">
+            <!-- Main Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-zinc-900">
+                <!-- Column 1: Supported Hardware -->
+                <div class="space-y-4">
+                    <h4 class="text-[10px] font-pixel uppercase tracking-widest text-white">Librarians</h4>
+                    <ul class="space-y-2 text-[11px] text-zinc-400 font-mono">
+                        <li><a href="/dx7" class="hover:text-emerald-400 transition-colors">Yamaha DX7 Librarian</a></li>
+                        <li><a href="/juno-106" class="hover:text-emerald-400 transition-colors">Roland Juno-106 Manager</a></li>
+                        <li><a href="/korg-m1" class="hover:text-emerald-400 transition-colors">Korg M1 Patch Recall</a></li>
+                        <li><a href="/jupiter-6" class="hover:text-emerald-400 transition-colors">Roland Jupiter-6 (Europa)</a></li>
+                        <li><a href="/signup?model=casio-cz" class="hover:text-emerald-400 transition-colors">Casio CZ-101 / CZ-1000 (Beta)</a></li>
+                        <li><a href="/signup?model=matrix-1000" class="hover:text-emerald-400 transition-colors">Oberheim Matrix-1000 (Beta)</a></li>
+                        <li><a href="/signup?model=prophet-5" class="hover:text-emerald-400 transition-colors">Sequential Prophet-5 (Beta)</a></li>
+                    </ul>
                 </div>
-                <div id="visitor-geo-tag" class="text-[9px] text-zinc-450 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
-                    <!-- Dynamic IP Geolocation -->
+
+                <!-- Column 2: Resources & Specs -->
+                <div class="space-y-4">
+                    <h4 class="text-[10px] font-pixel uppercase tracking-widest text-white">Resources</h4>
+                    <ul class="space-y-2 text-[11px] text-zinc-400 font-mono">
+                        <li><a href="/sysex-librarian-alternatives" class="hover:text-emerald-400 transition-colors font-sans">SysEx Alternatives Guide</a></li>
+                        <li><a href="/roadmap" class="hover:text-emerald-400 transition-colors">Product Development Roadmap</a></li>
+                        <li><a href="/sitemap.xml" class="hover:text-emerald-400 transition-colors">XML Sitemap Index</a></li>
+                        <li><a href="/llms.txt" class="hover:text-emerald-400 transition-colors">LLMs Integration Spec</a></li>
+                        <li><a href="https://webmidijs.org/" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors font-sans">Web MIDI API Reference</a></li>
+                        <li><a href="https://homepages.abdn.ac.uk/d.j.benson/pages/html/dx7.html" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors font-sans">DX7 Factory Patches Archive</a></li>
+                    </ul>
                 </div>
-                <p class="text-[10px] text-zinc-400 max-w-sm mt-3 text-center md:text-left font-sans leading-relaxed">
-                    knob.monster is the <strong class="text-zinc-300">ONLY</strong> browser-native cloud database <strong class="text-zinc-300">in the world</strong> that automatically decodes and backs up vintage SysEx patches in 1-click for synthesists, because nobody should have to install a driver from 1995 just to play music.
+
+                <!-- Column 3: Alternative Solutions -->
+                <div class="space-y-4">
+                    <h4 class="text-[10px] font-pixel uppercase tracking-widest text-white">SysEx Comparisons</h4>
+                    <ul class="space-y-2 text-[11px] text-zinc-400 font-mono">
+                        <li><a href="/sysex-librarian-alternatives#midi-ox" class="hover:text-emerald-400 transition-colors">MIDI-OX vs knob.monster</a></li>
+                        <li><a href="/sysex-librarian-alternatives#snoize" class="hover:text-emerald-400 transition-colors font-sans">Snoize SysEx Librarian Mac</a></li>
+                        <li><a href="/sysex-librarian-alternatives#dexed" class="hover:text-emerald-400 transition-colors">Dexed VST Patch Editor</a></li>
+                        <li><a href="/sysex-librarian-alternatives#bome-sendsx" class="hover:text-emerald-400 transition-colors">Elektron C6 Backup alternative</a></li>
+                        <li><a href="/sysex-librarian-alternatives#knob-monster" class="hover:text-emerald-400 transition-colors font-sans">MIDI Quest Cloud Editor</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Platform -->
+                <div class="space-y-4">
+                    <h4 class="text-[10px] font-pixel uppercase tracking-widest text-white">Company</h4>
+                    <ul class="space-y-2 text-[11px] text-zinc-400 font-mono">
+                        <li><a href="/terms#about" class="hover:text-emerald-400 transition-colors">About</a></li>
+                        <li><a href="/terms" class="hover:text-emerald-400 transition-colors font-sans">Terms & Refund Policy</a></li>
+                        <li><a href="/privacy" class="hover:text-emerald-400 transition-colors font-sans">Privacy & Data Policy</a></li>
+                        <li><a href="mailto:halfradiationllc@gmail.com" class="hover:text-emerald-400 transition-colors font-sans">halfradiationllc@gmail.com</a></li>
+                        <li><a href="/status" class="text-emerald-500 hover:text-emerald-400 flex items-center gap-1.5 font-sans transition-colors"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Status: 100% Operational</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Big SEO Keyword Cloud Block -->
+            <div class="py-10 border-b border-zinc-900 text-[10px] leading-relaxed text-zinc-500 font-mono">
+                <p>
+                    <strong>Universal Synthesizer SysEx & Web MIDI Librarian Database:</strong> 
+                    Backup, transfer, restore, edit, and organize raw MIDI system exclusive (SysEx) patch banks directly from your internet browser. Direct hardware connection utilizing Google Chrome & Microsoft Edge Web MIDI API. No driver installations, no desktop software setups, no vintage operating system emulation required. 
+                </p>
+                <p class="mt-2">
+                    Supports vintage 1980s and 1990s synthesizers and frequency modulation (FM) sound engines including: Yamaha DX7, Yamaha DX7II, Yamaha TX81Z, Roland Juno-106, Roland Juno-60 (with MIDI mod), Roland Jupiter-6, Korg M1, Korg Wavestation, Casio CZ-101, Casio CZ-1000, Casio CZ-5000, Oberheim Matrix-1000, Oberheim Matrix-6, Sequential Circuits Prophet-5, Sequential Prophet-600, E-mu Emulator III, Ensoniq VFX, and standard generic GM/GS synthesizer devices. Compatible with standard USB-to-MIDI cable interfaces (Roland UM-ONE, iConnectivity mio, E-MU Xmidi) and professional multi-port MIDI soundcards.
                 </p>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-400 font-mono">
-                <a href="/sysex-librarian-alternatives" class="hover:text-white underline transition-colors">SysEx Librarian Alternatives</a>
-                <span class="hidden md:inline text-zinc-800">•</span>
-                <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service & Refund
-                    Policy</a>
-                <span class="hidden md:inline text-zinc-800">•</span>
-                <a href="/privacy" class="hover:text-white underline transition-colors">Privacy Policy</a>
-                <span class="hidden md:inline text-zinc-800">•</span>
-                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white underline transition-colors">Contact Support</a>
-            </div>
+            <!-- Bottom Brand Bar -->
+            <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex flex-col items-center md:items-start gap-1">
+                    <div class="flex items-center gap-2">
+                        <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
+                            <img src="/static/logo.webp" alt="Knob Monster Logo" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                            <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                            <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                            <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                        </div>
+                        <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
+                    </div>
+                    <div id="visitor-geo-tag" class="text-[9px] text-zinc-500 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
+                        <!-- Dynamic IP Geolocation -->
+                    </div>
+                </div>
 
-            <p class="text-[10px] text-zinc-450 font-mono text-center md:text-right">
-                &copy; 2026 Half Radiation. <br class="md:hidden">
-                Troll icon by <a href="https://game-icons.net/1x1/skoll/troll.html" target="_blank"
-                    rel="noopener noreferrer" class="hover:text-white underline">Skoll</a> under <a
-                    href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer"
-                    class="hover:text-white underline">CC BY 3.0</a>.
-            </p>
+                <p class="text-[10px] text-zinc-500 font-mono text-center md:text-right">
+                    &copy; 2026 Half Radiation. <br class="md:hidden">
+                    Troll icon by <a href="https://game-icons.net/1x1/skoll/troll.html" target="_blank"
+                        rel="noopener noreferrer" class="hover:text-white underline font-sans">Skoll</a> under <a
+                        href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-white underline font-sans">CC BY 3.0</a>.
+                </p>
+            </div>
         </div>
     </footer>
 

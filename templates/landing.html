@@ -927,6 +927,32 @@
     <!-- Footer -->
     <footer class="border-t border-zinc-900 bg-black pt-16 pb-8 relative z-10 text-left select-none font-sans">
         <div class="max-w-6xl mx-auto px-6">
+            <!-- Subscription Section (Tony's style, tailored for synths) -->
+            <div class="pb-12 border-b border-zinc-900 mb-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+                <div class="max-w-xl space-y-3">
+                    <h3 class="text-2xl md:text-3xl font-pixel uppercase text-white tracking-tight leading-none">WE PROMISE WE'RE TOO LAZY TO CLUTTER YOUR INBOX</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed font-sans font-normal">
+                        We only send emails when we launch new librarians (CZ-101, Prophet-5, Matrix-1000 in progress), drop free vintage sound banks, or need to vent about Web MIDI. We don't do newsletters. We just send the files.
+                    </p>
+                </div>
+                <div class="w-full lg:max-w-md">
+                    <form id="footer-subscribe-form" onsubmit="submitFooterSubscribe(event)" class="space-y-3" novalidate>
+                        <div class="space-y-2">
+                            <span class="text-[10px] font-mono text-zinc-500 block uppercase tracking-wider">and your email address will go here</span>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input type="email" id="footer-subscribe-email" name="email" required placeholder="sys_engineer@knob.monster"
+                                    class="flex-1 px-4 py-3 bg-zinc-950 border border-zinc-900 rounded-xl text-xs font-mono text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-500 transition-colors">
+                                <button type="submit" id="footer-subscribe-btn"
+                                    class="px-6 py-3 bg-white hover:bg-zinc-200 text-black rounded-xl text-2xs font-pixel uppercase tracking-widest transition-colors shrink-0">
+                                    Connect
+                                </button>
+                            </div>
+                        </div>
+                        <div id="footer-subscribe-status" class="text-xs font-mono text-zinc-450 min-h-[18px]"></div>
+                    </form>
+                </div>
+            </div>
+
             <!-- Main Grid -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-zinc-900">
                 <!-- Column 1: Supported Hardware -->
@@ -1006,6 +1032,22 @@
                     </div>
                     <div id="visitor-geo-tag" class="text-[9px] text-zinc-500 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
                         <!-- Dynamic IP Geolocation -->
+                    </div>
+                    <!-- Accepted Payments -->
+                    <div class="flex flex-col gap-2 mt-4 items-center md:items-start">
+                        <span class="text-[9px] uppercase tracking-wider text-zinc-500 font-mono">Accepted Payments:</span>
+                        <div class="flex flex-wrap items-center gap-3.5 justify-center md:justify-start">
+                            <img src="https://api.iconify.design/logos:visa.svg" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Visa" />
+                            <img src="https://api.iconify.design/logos:mastercard.svg" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Mastercard" />
+                            <img src="https://api.iconify.design/logos:amex.svg" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Amex" />
+                            <img src="https://cdn.simpleicons.org/applepay/ffffff" class="h-4 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Apple Pay" />
+                            <img src="https://api.iconify.design/logos:google-pay.svg" class="h-3 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Google Pay" />
+                            <img src="https://cdn.simpleicons.org/cashapp/00D632" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Cash App Pay" />
+                            <img src="https://api.iconify.design/logos:stripe.svg" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Link" />
+                            <img src="https://cdn.simpleicons.org/pix/32B3A6" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Pix" />
+                            <img src="https://cdn.simpleicons.org/naver/03C75A" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Naver Pay" />
+                            <img src="https://api.iconify.design/logos:bitcoin.svg" class="h-4 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Stablecoins & Crypto" />
+                        </div>
                     </div>
                 </div>
 
@@ -1123,38 +1165,25 @@
             reveals.forEach(el => observer.observe(el));
         });
 
-        // Nihilistic Spam Modal trigger logic
-        function showSpamModal(force = false) {
-            if (!force && (localStorage.getItem('spam-dismissed') === 'true' || localStorage.getItem('spam-subscribed') === 'true')) {
-                return;
-            }
-            const modal = document.getElementById('spam-modal');
-            const content = document.getElementById('spam-modal-content');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.classList.add('opacity-100');
-            content.classList.remove('scale-95');
-            content.classList.add('scale-100');
-        }
-
-        function closeSpamModal() {
-            const modal = document.getElementById('spam-modal');
-            const content = document.getElementById('spam-modal-content');
-            modal.classList.remove('opacity-100');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
-            localStorage.setItem('spam-dismissed', 'true');
-        }
-
-        function submitModalSpamForm(event) {
+        // Footer email subscription logic (Tony's style validation)
+        function submitFooterSubscribe(event) {
             event.preventDefault();
             const form = event.target;
-            const email = form.email.value;
-            const statusDiv = document.getElementById('modal-spam-status');
-            const submitBtn = form.querySelector('button');
+            const emailInput = document.getElementById('footer-subscribe-email');
+            const email = emailInput.value.trim();
+            const statusDiv = document.getElementById('footer-subscribe-status');
+            const submitBtn = document.getElementById('footer-subscribe-btn');
             
-            statusDiv.textContent = "Transmitting current to database...";
-            statusDiv.className = "text-[9px] font-mono text-zinc-500 mt-2 text-center";
+            // Email Regex Validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                statusDiv.textContent = "that.. doesn't look like an email address. Want to double check?";
+                statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                return;
+            }
+            
+            statusDiv.textContent = "Connecting to preset database...";
+            statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
             submitBtn.disabled = true;
             
             fetch('/subscribe', {
@@ -1166,70 +1195,29 @@
             })
             .then(res => {
                 if (res.ok) {
-                    statusDiv.textContent = "Success. You are officially in the system. Prepare to be targeted.";
-                    statusDiv.className = "text-[9px] font-mono text-emerald-500 mt-2 text-center";
-                    localStorage.setItem('spam-subscribed', 'true');
+                    statusDiv.textContent = "Success! Vault connection established. You're on the list.";
+                    statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
                     form.reset();
-                    setTimeout(closeSpamModal, 2000);
                 } else {
                     throw new Error();
                 }
             })
             .catch(() => {
                 statusDiv.textContent = "Error. Connection refused. Enjoy your temporary privacy.";
-                statusDiv.className = "text-[9px] font-mono text-rose-500 mt-2 text-center";
+                statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
             })
             .finally(() => {
                 submitBtn.disabled = false;
             });
         }
 
-        // Trigger rules: Show after 10 seconds or when user scrolls 400px down
-        let modalTriggered = false;
-        
-        function triggerModal() {
-            if (modalTriggered) return;
-            modalTriggered = true;
-            showSpamModal();
-        }
-
-        // Time trigger
-        setTimeout(triggerModal, 10000);
-
-        // Scroll trigger
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) {
-                triggerModal();
-            }
-        });
-
-        // Hyper-realistic 3D tilt physics for the Troll Logo
         document.addEventListener("DOMContentLoaded", () => {
-            const logo = document.getElementById('spam-modal-logo');
-            if (logo) {
-                logo.addEventListener('mousemove', (e) => {
-                    const rect = logo.getBoundingClientRect();
-                    const x = e.clientX - rect.left - (rect.width / 2);
-                    const y = e.clientY - rect.top - (rect.height / 2);
-                    
-                    // Max tilt of 35 degrees
-                    const rotX = -(y / (rect.height / 2)) * 35;
-                    const rotY = (x / (rect.width / 2)) * 35;
-                    
-                    logo.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.25)`;
-                    logo.style.filter = `drop-shadow(${rotY * -0.6}px ${rotX * 0.6}px 12px rgba(255, 255, 255, 0.15)) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8))`;
+            const emailInput = document.getElementById('footer-subscribe-email');
+            const statusDiv = document.getElementById('footer-subscribe-status');
+            if (emailInput && statusDiv) {
+                emailInput.addEventListener('input', () => {
+                    statusDiv.textContent = "";
                 });
-                
-                logo.addEventListener('mouseleave', () => {
-                    logo.style.transform = `perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)`;
-                    logo.style.filter = `none`;
-                });
-            }
-
-            // Check query param for testing / force display
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('spam') === 'true' || urlParams.get('subscribe') === 'true') {
-                showSpamModal(true);
             }
 
             // Animated Rotating Favicon
@@ -1361,45 +1349,6 @@
     </script>
 
     </main>
-
-    <!-- Spam Modal Popup -->
-    <div id="spam-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="relative max-w-lg md:max-w-xl w-full bg-zinc-950 border border-zinc-900 rounded-3xl p-8 md:p-12 space-y-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] transform scale-95 transition-transform duration-300" id="spam-modal-content">
-            <!-- Close Button -->
-            <button onclick="closeSpamModal()" class="absolute top-6 right-6 text-zinc-600 hover:text-white transition-colors cursor-pointer text-3xl leading-none font-sans font-thin">
-                &times;
-            </button>
-
-            <!-- Troll Logo -->
-            <div class="flex justify-center">
-                <img src="/static/logo.webp" id="spam-modal-logo" alt="Ogre Logo" width="96" height="96" class="h-20 md:h-24 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out" style="transform-style: preserve-3d; backface-visibility: hidden;">
-            </div>
-            
-            <div class="space-y-4 text-center">
-                <h3 class="text-2xl md:text-4xl font-pixel uppercase text-white tracking-tight leading-none">Feed the Database.</h3>
-                <p class="text-sm md:text-base text-zinc-300 leading-relaxed font-sans max-w-md mx-auto">
-                    Give us your address so we can target you when we get mad at old hardware or need to pump our spreadsheet metrics. You will probably ignore the emails (or don't, whatever), we will eventually die, and the server will get shut down. But for now, <span class="font-bold text-white">type it <span class="italic">in.</span></span>
-                </p>
-            </div>
-
-            <form id="modal-spam-form" class="space-y-6 max-w-md mx-auto" onsubmit="submitModalSpamForm(event)">
-                <div class="space-y-4">
-                    <input type="email" name="email" required placeholder="future_target@colony.com"
-                        class="w-full px-6 py-4 bg-zinc-950 border border-zinc-900 rounded-xl text-sm font-mono text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors text-center">
-                    <button type="submit" 
-                        class="w-full px-8 py-4 bg-white hover:bg-zinc-200 text-black rounded-xl text-sm font-pixel uppercase tracking-widest transition-colors">
-                        Submit to Hive
-                    </button>
-                </div>
-                <div id="modal-spam-status" class="text-[10px] font-mono text-zinc-400 mt-2 text-center min-h-[16px]"></div>
-                
-                <!-- Footnote -->
-                <p class="text-[10px] md:text-xs font-mono text-zinc-400 leading-relaxed text-center max-w-sm mx-auto pt-4 border-t border-zinc-800">
-                    By submitting this form you agree to be targeted by our direct marketing experiments. Consent is not a condition of synth backup, but resisting is futile. Unsubscribe whenever you want to reclaim your insignificance.
-                </p>
-            </form>
-        </div>
-    </div>
 
 </body>
 

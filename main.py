@@ -393,10 +393,14 @@ async def roadmap_page(request: Request):
     user = get_current_user(request)
     return render_template("roadmap.html", request, {"user": user})
 
-@app.get("/changelog", response_class=HTMLResponse)
-async def changelog_page(request: Request):
+@app.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
     user = get_current_user(request)
-    return render_template("changelog.html", request, {"user": user})
+    return render_template("about.html", request, {"user": user})
+
+@app.get("/changelog")
+async def changelog_redirect():
+    return RedirectResponse(url="/about", status_code=301)
 
 @app.get("/payment-methods", response_class=HTMLResponse)
 async def payment_methods_page(request: Request):

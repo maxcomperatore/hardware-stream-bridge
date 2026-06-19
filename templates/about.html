@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Methods & Options | knob.monster</title>
-    <meta name="description" content="All the ways you can transfer us your hard-earned cash to backup and manage your vintage synthesizers.">
+    <title>About & Founder Story | knob.monster</title>
+    <meta name="description" content="Discover the story behind knob.monster. Built by vintage synthesizer wizards who hate lost patches, dead batteries, and bloated desktop editor setups.">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
@@ -88,17 +88,19 @@
             border-color: #10b981 !important;
             color: #10b981 !important;
         }
-
-        .payment-card {
-            background-color: #09090b;
-            border: 1px solid #27272a; /* Sleek, visible hairline border in mobile */
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    </style>
+    <style>
+        .changelog-line::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            bottom: 0;
+            left: 15px;
+            width: 1px;
+            background: #18181b; /* zinc-900 line */
         }
-
-        .payment-card:hover {
-            border-color: #3f3f46;
-            background-color: #0c0c0e;
-            transform: translateY(-2px);
+        .changelog-item:last-child .changelog-line::before {
+            display: none;
         }
     </style>
     <!-- PostHog Tracking -->
@@ -131,7 +133,7 @@
                 <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
                 <span class="text-zinc-600 select-none">/</span>
                 <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
-                <a href="/about" class="hover:text-white transition-colors duration-200">About</a>
+                <a href="/about" class="text-white transition-colors duration-200">About</a>
                 <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
             </nav>
 
@@ -155,122 +157,66 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 py-20 relative z-10">
+    <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
         <!-- Title Header -->
         <article class="space-y-6 text-center mb-20">
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
-                Stripe Payments
+                About
             </span>
             <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
-                Accepted Payments
+                About
             </h1>
-            <p class="text-xs font-mono text-zinc-500 max-w-lg mx-auto uppercase">
-                All the ways you can transfer us your hard-earned cash so we can keep paying our database storage bills.
+            <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
+                What we've been hacking on. Built directly by developers who hate broken backups and bloated desktop MIDI apps.
             </p>
         </article>
 
-        <!-- Payment Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <!-- Visa & Mastercard -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-3">
-                    <img src="https://api.iconify.design/logos:visa.svg" class="h-4 w-auto" alt="Visa" />
-                    <img src="https://api.iconify.design/logos:mastercard.svg" class="h-4 w-auto" alt="Mastercard" />
+        <!-- Timeline -->
+        <div class="space-y-12">
+
+            <!-- Item: Next Milestone -->
+            <div class="relative flex gap-6 changelog-item">
+                <div class="flex flex-col items-center relative changelog-line">
+                    <div class="w-8 h-8 rounded-full border border-emerald-500/35 bg-zinc-950 flex items-center justify-center shrink-0">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    </div>
                 </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Visa &amp; Mastercard</h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    We accept the standard plastic duo. Fast, globally recognized, and completely boring. Put it on your card or use your company's corporate card if your boss is the one accidentally funding your synthesizer habit.
-                </p>
+                <div class="flex-1 pb-10 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 class="text-base font-pixel text-white uppercase tracking-tight">GET ONE PAYING CUSTOMER</h3>
+                        <span class="text-2xs font-mono text-zinc-500 font-semibold uppercase">Pending</span>
+                    </div>
+                    <p class="text-xs text-zinc-300 font-sans leading-relaxed">
+                        We need exactly one paying customer so we can stop eating discount instant noodles and actually pay the server bills. If knob.monster keeps your vintage Juno from forgetting its patches when the battery dies, click upgrade and make us a real business.
+                    </p>
+                </div>
             </div>
 
-            <!-- American Express -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/logos:amex.svg" class="h-4 w-auto" alt="Amex" />
+            <!-- Item: May 31, 2026 -->
+            <div class="relative flex gap-6 changelog-item">
+                <div class="flex flex-col items-center relative changelog-line">
+                    <div class="w-8 h-8 rounded-full border border-zinc-800 bg-zinc-950 flex items-center justify-center shrink-0">
+                        <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                    </div>
                 </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">American Express</h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    For high-rollers who love paying with heavy metal cards to feel important. Yes, we take Amex. Rack up airline miles while backing up patches for a synthesizer that hasn't left your bedroom since 1994.
-                </p>
-            </div>
-
-            <!-- Apple Pay -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/applepay/ffffff" class="h-4 w-auto" alt="Apple Pay" />
+                <div class="flex-1 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 class="text-base font-pixel text-white uppercase tracking-tight">HELLO WORLD</h3>
+                        <span class="text-2xs font-mono text-zinc-500 font-semibold uppercase">May 31, 2026 <span id="launch-days-ago"></span></span>
+                    </div>
+                    <p class="text-xs text-zinc-300 font-sans leading-relaxed">
+                        Bought the domain name for way too much money, stayed up until 4 AM writing code we barely understand, and built Web MIDI decoders for the Yamaha DX7, Roland Juno-106, Korg M1, and Roland Jupiter-6. It works, somehow.
+                    </p>
                 </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Apple Pay</h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    Because manual card data entry is for chumps. Scan your face, authorize the transaction, and get back to staring at your oscilloscope. Fully supported natively on Safari.
-                </p>
-            </div>
-
-            <!-- Google Pay -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/logos:google-pay.svg" class="h-3.5 w-auto" alt="Google Pay" />
-                </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Google Pay</h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    Express checkout for Android fans and Chrome users. Secure, fast, and requires exactly zero keypresses, which is great because you've already spent enough energy clicking mechanical keyboard switches today.
-                </p>
-            </div>
-
-            <!-- USDC -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/cryptocurrency-color:usdc.svg" class="h-5 w-5" alt="USDC" />
-                    <span class="text-[10px] font-pixel text-zinc-400">USDC</span>
-                </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">USDC &amp; Stablecoins</h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    No energy-guzzling proof-of-work, no three-day transaction queues, and absolutely zero volatile meme-tokens. Just USD Coin (USDC) sent natively on Ethereum, Base, Polygon, or Solana. Pay via Stripe and pretend you're a decentralized finance wizard.
-                </p>
-            </div>
-
-            <!-- Pix -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/pix/32B3A6" class="h-4 w-auto" alt="Pix" />
-                    <span class="text-[10px] font-pixel text-[#32B3A6]">PIX</span>
-                </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Pix <img src="https://api.iconify.design/flagpack/br.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="Brazil" /></h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    The absolute crown jewel of Brazilian central banking. Instant, zero processing friction, and runs faster than a Roland Juno-106 LFO at max speed. Scan the QR code, press confirm, and secure your database before your next coffee break.
-                </p>
-            </div>
-
-            <!-- Naver Pay -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/naver/03C75A" class="h-4 w-auto" alt="Naver Pay" />
-                </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Naver Pay <img src="https://api.iconify.design/flagpack/kr.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="South Korea" /></h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    For our friends producing K-pop bangers in Seoul. One-click mobile checkout with zero currency conversion headaches. Fast enough to keep your creative flow going.
-                </p>
-            </div>
-
-            <!-- Cash App -->
-            <div class="payment-card rounded-2xl p-6 space-y-4">
-                <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/cashapp/00D632" class="h-4 w-auto" alt="Cash App Pay" />
-                </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Cash App Pay <img src="https://api.iconify.design/flagpack/us.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="US" /></h3>
-                <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    For when your synth budget is stuck inside the little green app. Tap to pay directly from your Cash App balance, avoiding the manual card entry dance.
-                </p>
             </div>
 
         </div>
 
-        <!-- Trust Note -->
-        <div class="mt-16 text-center space-y-3 border-t border-zinc-900 pt-12">
-            <h4 class="text-xs font-pixel uppercase text-white tracking-widest">A Note on Security</h4>
-            <p class="text-2xs font-mono text-zinc-500 max-w-md mx-auto leading-relaxed uppercase">
-                We do not store your credit card details or payment credentials on our servers. All transactions are securely processed by Stripe. We are simply too lazy to build a payment database, so we let the billions-dollar enterprise handle it.
-            </p>
+        <!-- Back Link -->
+        <div class="mt-20 pt-12 border-t border-zinc-900 text-center">
+            <a href="/" class="inline-flex border border-zinc-800 hover:border-zinc-500 text-white px-6 py-3 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95">
+                &larr; Back to home
+            </a>
         </div>
     </main>
 
@@ -402,7 +348,7 @@
                             <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://api.iconify.design/logos:mastercard.svg" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Mastercard" /></a>
                             <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://api.iconify.design/logos:amex.svg" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Amex" /></a>
                             <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://cdn.simpleicons.org/applepay/ffffff" class="h-4 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Apple Pay" /></a>
-                            <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://api.iconify.design/logos:google-pay.svg" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Google Pay" /></a>
+                            <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://api.iconify.design/logos:google-pay.svg" class="h-3 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Google Pay" /></a>
                             <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://cdn.simpleicons.org/cashapp/00D632" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Cash App Pay" /></a>
                             <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://cdn.simpleicons.org/pix/32B3A6" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Pix" /></a>
                             <a href="/payment-methods" title="Accepted Payment Methods"><img src="https://cdn.simpleicons.org/naver/03C75A" class="h-3.5 w-auto transition-opacity duration-200 opacity-90 hover:opacity-100" alt="Naver Pay" /></a>
@@ -464,7 +410,7 @@
     </footer>
 
     <script>
-        // Dynamic IP Geolocation for Visitor Geo Tag
+        // Dynamic IP Geolocation for Genius Tag
         fetch('https://ipapi.co/json/')
             .then(res => res.json())
             .then(data => {
@@ -524,7 +470,20 @@
                 submitBtn.disabled = false;
             });
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const launchDate = new Date('2026-05-31T00:00:00');
+            const today = new Date();
+            const diffTime = today - launchDate;
+            const daysAgo = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            const targetElement = document.getElementById('launch-days-ago');
+            if (targetElement) {
+                targetElement.textContent = `(${daysAgo > 0 ? daysAgo : 0} days ago)`;
+            }
+        });
     </script>
+
     <!-- AI Hype Goblin Widget -->
     <div class="fixed bottom-6 right-6 z-50 group flex flex-col items-end">
         <!-- Panel -->

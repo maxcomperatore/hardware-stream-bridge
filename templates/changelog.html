@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vision & Roadmap | knob.monster</title>
-    <meta name="description" content="Explore the mission, vision, values, and product roadmap of knob.monster—the default operating system for vintage synthesizers.">
+    <title>Changelog & Dev Logs | knob.monster</title>
+    <meta name="description" content="Track the latest features, hardware support additions, Web MIDI upgrades, and changes to knob.monster.">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
@@ -72,19 +72,17 @@
             background-repeat: repeat;
         }
 
-        .glow-card {
-            position: relative;
-            box-shadow: 4px 4px 0px 0px #18181b; /* Hard zinc-900 shadow */
-            transition: none; /* Instant 8-bit response */
+        .changelog-line::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            bottom: 0;
+            left: 15px;
+            width: 1px;
+            background: #18181b; /* zinc-900 line */
         }
-        .glow-card:hover {
-            transform: translate(-2px, -2px);
-            border-color: #10b981; /* Emerald-500 border */
-            box-shadow: 6px 6px 0px 0px #10b981; /* Hard emerald shadow */
-        }
-        .glow-card:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px 0px #10b981;
+        .changelog-item:last-child .changelog-line::before {
+            display: none;
         }
     </style>
     <!-- PostHog Tracking -->
@@ -116,8 +114,8 @@
                 <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
                 <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
                 <span class="text-zinc-600 select-none">/</span>
-                <a href="/roadmap" class="text-white transition-colors duration-200">Roadmap</a>
-                <a href="/changelog" class="hover:text-white transition-colors duration-200">Changelog</a>
+                <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
+                <a href="/changelog" class="text-white transition-colors duration-200">Changelog</a>
                 <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
             </nav>
 
@@ -141,105 +139,65 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 py-20 relative z-10">
+    <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
         <!-- Title Header -->
         <article class="space-y-6 text-center mb-20">
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
-                Our Blueprint
+                Dev Log
             </span>
-            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel text-xs sm:text-2xl md:text-3xl uppercase">
-                The Product Vision <br class="hidden sm:inline"> &amp; Roadmap
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
+                Changelog &amp; Updates
             </h1>
             <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
-                Building the default operating system for vintage gear. No driver directories, no floppy disks, no legacy software downloads. Just the web.
+                What we've been hacking on. Built directly by developers who hate broken backups and bloated desktop MIDI apps.
             </p>
         </article>
 
-        <!-- Core Vision Sections -->
-        <div class="space-y-16">
-            
-            <!-- Section 1: The Product Pillars -->
-            <section class="space-y-8">
-                <h2 class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-800 pb-3">I. The Product Pillars</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Universal Support -->
-                    <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-6 glow-card">
-                        <div class="h-8 w-8 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center font-pixel text-xs mb-4">
-                            01
-                        </div>
-                        <h3 class="text-sm font-pixel text-white uppercase mb-2">Universal Support</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                            Support for over 50 classic synths (including the Roland D-50, Casio CZ series, Yamaha TX81Z, E-mu Proteus, Korg Wavestation, and more). One console to rule them all.
-                        </p>
-                    </div>
+        <!-- Changelog Timeline -->
+        <div class="space-y-12">
 
-                    <!-- Crowd-Sourced Database -->
-                    <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-6 glow-card">
-                        <div class="h-8 w-8 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center font-pixel text-xs mb-4">
-                            02
-                        </div>
-                        <h3 class="text-sm font-pixel text-white uppercase mb-2">Clean database</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                            Say goodbye to searching shady, dead 90s websites for corrupted <code class="bg-zinc-900 px-1 py-0.5 rounded text-[10px] text-zinc-300">.syx</code> soundbanks. knob.monster hosts a secure, crowdsourced digital repository of clean patches.
-                        </p>
-                    </div>
-
-                    <!-- Mobile & iPad Setup -->
-                    <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-6 glow-card">
-                        <div class="h-8 w-8 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center font-pixel text-xs mb-4">
-                            03
-                        </div>
-                        <h3 class="text-sm font-pixel text-white uppercase mb-2">Stage Integration</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                            Designed for active performers. Musicians use Web MIDI on their iPads on stage via Bluetooth MIDI or USB-C adapters to load presets in real-time between songs.
-                        </p>
+            <!-- Item: Next Milestone -->
+            <div class="relative flex gap-6 changelog-item">
+                <div class="flex flex-col items-center relative changelog-line">
+                    <div class="w-8 h-8 rounded-full border border-emerald-500/35 bg-zinc-950 flex items-center justify-center shrink-0">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     </div>
                 </div>
-            </section>
-
-            <!-- Section 2: How We Keep It Running -->
-            <section class="space-y-8">
-                <h2 class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-800 pb-3">II. How We Keep It Running</h2>
-                
-                <div class="bg-zinc-950 border border-zinc-900 rounded-3xl p-8 md:p-12 space-y-8 relative overflow-hidden">
-                    <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                    
-                    <div class="space-y-4 max-w-2xl relative z-10">
-                        <h3 class="text-lg md:text-xl font-pixel text-emerald-400 uppercase tracking-tight leading-none">
-                            No corporate bloat. Just direct utility.
-                        </h3>
-                        <p class="text-sm text-zinc-300 leading-relaxed font-sans">
-                            We do not sell ads, we do not track your behavior, and we do not lock your data. You get a secure, fast vault for your classic synthesizers, and we get the resources to keep the servers online.
-                        </p>
-                        <p class="text-sm text-zinc-300 leading-relaxed font-sans">
-                            Synthesizers built in the 80s and 90s are physical art, but their memory is fragile. Backup batteries die, storage gets corrupted, and original soundbanks get lost. We built knob.monster to make patch backup and recovery as simple as plugging in a USB cable. 
-                        </p>
+                <div class="flex-1 pb-10 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 class="text-base font-pixel text-white uppercase tracking-tight">GET ONE PAYING CUSTOMER</h3>
+                        <span class="text-2xs font-mono text-zinc-500 font-semibold uppercase">Pending</span>
                     </div>
+                    <p class="text-xs text-zinc-300 font-sans leading-relaxed">
+                        We need exactly one paying customer so we can stop eating discount instant noodles and actually pay the server bills. If knob.monster keeps your vintage Juno from forgetting its patches when the battery dies, click upgrade and make us a real business.
+                    </p>
+                </div>
+            </div>
 
-                    <div class="border-t border-zinc-900 pt-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6 relative z-10">
-                        <div class="flex-1 space-y-2">
-                            <h4 class="font-pixel text-white uppercase text-xs tracking-wider">A Win-Win Transaction</h4>
-                            <p class="text-xs text-zinc-400 leading-relaxed font-sans max-w-xl">
-                                Your knob.monster subscription gives you instant cloud recall and stage-ready iPad transfers. In return, your funding keeps the platform fast, secure, and continuously updated with new synth profiles. Win-win.
-                            </p>
-                        </div>
-                        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center shrink-0 min-w-[200px]">
-                            <span class="text-xs font-pixel text-emerald-400 uppercase tracking-widest mb-1">Status</span>
-                            <span class="text-lg font-pixel text-white uppercase tracking-tight">Active Platform</span>
-                            <span class="text-[10px] font-mono text-zinc-500 mt-2">100% Ad-Free Utility</span>
-                        </div>
+            <!-- Item: May 31, 2026 -->
+            <div class="relative flex gap-6 changelog-item">
+                <div class="flex flex-col items-center relative changelog-line">
+                    <div class="w-8 h-8 rounded-full border border-zinc-800 bg-zinc-950 flex items-center justify-center shrink-0">
+                        <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
                     </div>
                 </div>
-            </section>
+                <div class="flex-1 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 class="text-base font-pixel text-white uppercase tracking-tight">HELLO WORLD</h3>
+                        <span class="text-2xs font-mono text-zinc-500 font-semibold uppercase">May 31, 2026 <span id="launch-days-ago"></span></span>
+                    </div>
+                    <p class="text-xs text-zinc-300 font-sans leading-relaxed">
+                        Bought the domain name for way too much money, stayed up until 4 AM writing code we barely understand, and built Web MIDI decoders for the Yamaha DX7, Roland Juno-106, Korg M1, and Roland Jupiter-6. It works, somehow.
+                    </p>
+                </div>
+            </div>
 
         </div>
 
-        <!-- Call to Action -->
-        <div class="mt-20 pt-12 border-t border-zinc-900 text-center space-y-6">
-            <h3 class="text-sm font-pixel uppercase text-white tracking-wider">Ready to back up your hardware?</h3>
-            <a href="/signup" class="inline-flex bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 shadow-lg">
-                Open Vault
+        <!-- Back Link -->
+        <div class="mt-20 pt-12 border-t border-zinc-900 text-center">
+            <a href="/" class="inline-flex border border-zinc-800 hover:border-zinc-500 text-white px-6 py-3 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95">
+                &larr; Back to home
             </a>
         </div>
 
@@ -261,11 +219,11 @@
             <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
                 <a href="/sysex-librarian-alternatives" class="hover:text-white underline transition-colors">SysEx Alternatives</a>
                 <span class="hidden md:inline text-zinc-800">•</span>
+                <a href="/roadmap" class="hover:text-white underline transition-colors">Roadmap</a>
+                <span class="hidden md:inline text-zinc-800">•</span>
                 <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service</a>
                 <span class="hidden md:inline text-zinc-800">•</span>
                 <a href="/privacy" class="hover:text-white underline transition-colors">Privacy Policy</a>
-                <span class="hidden md:inline text-zinc-800">•</span>
-                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white underline transition-colors">Contact Support</a>
             </div>
 
             <p class="text-[10px] text-zinc-655 font-mono text-center md:text-right">
@@ -273,5 +231,19 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const launchDate = new Date('2026-05-31T00:00:00');
+            const today = new Date();
+            const diffTime = today - launchDate;
+            const daysAgo = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            const targetElement = document.getElementById('launch-days-ago');
+            if (targetElement) {
+                targetElement.textContent = `(${daysAgo > 0 ? daysAgo : 0} days ago)`;
+            }
+        });
+    </script>
 </body>
 </html>

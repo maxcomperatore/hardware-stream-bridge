@@ -393,6 +393,11 @@ async def roadmap_page(request: Request):
     user = get_current_user(request)
     return render_template("roadmap.html", request, {"user": user})
 
+@app.get("/changelog", response_class=HTMLResponse)
+async def changelog_page(request: Request):
+    user = get_current_user(request)
+    return render_template("changelog.html", request, {"user": user})
+
 @app.get("/status")
 async def status_page():
     return {

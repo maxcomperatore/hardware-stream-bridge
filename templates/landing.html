@@ -311,7 +311,9 @@
                 <a href="#problem" class="hover:text-white transition-colors duration-200">Problem</a>
                 <a href="#features" class="hover:text-white transition-colors duration-200">Features</a>
                 <a href="#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
                 <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
+                <a href="/changelog" class="hover:text-white transition-colors duration-200">Changelog</a>
                 <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
             </nav>
 
@@ -665,7 +667,7 @@
             <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for fellow synth heads.</h2>
             <div class="mt-4 flex justify-center">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-pixel bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 select-none uppercase tracking-wider">
-                    Early Adopter: Price Locked Forever
+                    FIRST 100 MONSTERS: PRICE LOCKED FOREVER
                 </span>
             </div>
         </div>
@@ -975,6 +977,7 @@
                     <ul class="space-y-2 text-[11px] text-zinc-400 font-mono">
                         <li><a href="/sysex-librarian-alternatives" class="hover:text-emerald-400 transition-colors font-sans">SysEx Alternatives Guide</a></li>
                         <li><a href="/roadmap" class="hover:text-emerald-400 transition-colors">Product Development Roadmap</a></li>
+                        <li><a href="/changelog" class="hover:text-emerald-400 transition-colors font-sans">Product Dev Changelog</a></li>
                         <li><a href="/sitemap.xml" class="hover:text-emerald-400 transition-colors">XML Sitemap Index</a></li>
                         <li><a href="/llms.txt" class="hover:text-emerald-400 transition-colors">LLMs Integration Spec</a></li>
                         <li><a href="https://webmidijs.org/" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors font-sans">Web MIDI API Reference</a></li>
@@ -1233,7 +1236,7 @@
                 });
             }
 
-            // Animated Rotating Favicon
+            // Animated Pulsing & Rotating Favicon
             const favIconElement = document.getElementById('favicon');
             if (favIconElement) {
                 const canvas = document.createElement('canvas');
@@ -1244,15 +1247,22 @@
                 favImg.src = '/static/logo.png';
                 favImg.onload = () => {
                     let angle = 0;
+                    let tick = 0;
                     setInterval(() => {
                         ctx.clearRect(0, 0, 32, 32);
                         ctx.save();
                         ctx.translate(16, 16);
                         ctx.rotate((angle * Math.PI) / 180);
+                        
+                        // LFO status LED pulse (opacity cycles between 0.35 and 1.0)
+                        ctx.globalAlpha = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(tick));
+                        
                         ctx.drawImage(favImg, -16, -16, 32, 32);
                         ctx.restore();
                         favIconElement.href = canvas.toDataURL('image/png');
-                        angle = (angle + 6) % 360;
+                        
+                        angle = (angle + 2) % 360; // Slower, premium spin
+                        tick += 0.12; // Pulse LFO speed
                     }, 66); // ~15 FPS to keep background footprint negligible
                 };
             }

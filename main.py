@@ -236,6 +236,46 @@ async def startup_event():
         og_src = os.path.join(src_dir, "og_banner_minimal_1780341452555.png")
         if os.path.exists(og_src):
             shutil.copy(og_src, os.path.join(dest_dir, "og_banner.png"))
+            
+        # Optimize assets to WebP
+        if not os.environ.get("VERCEL"):
+            try:
+                try:
+                    from PIL import Image
+                except ImportError:
+                    import subprocess
+                    import sys
+                    subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
+                    from PIL import Image
+
+                images_to_convert = [
+                    ("studio_detail.png", "studio_detail.webp", 800),
+                    ("midi_handshake.png", "midi_handshake.webp", 800),
+                    ("index_extraction.png", "index_extraction.webp", 800),
+                    ("recall_button.png", "recall_button.webp", 800),
+                    ("bgood.png", "bgood.webp", 120),
+                    ("troll_gold.png", "troll_gold.webp", 64),
+                    ("logo.png", "logo.webp", 120),
+                    ("trade_offer.jpg", "trade_offer.webp", 400),
+                ]
+                for src_name, dest_name, max_width in images_to_convert:
+                    src_path = os.path.join(dest_dir, src_name)
+                    dest_path = os.path.join(dest_dir, dest_name)
+                    if os.path.exists(src_path):
+                        with Image.open(src_path) as img:
+                            w, h = img.size
+                            if w > max_width:
+                                ratio = max_width / float(w)
+                                new_h = int(float(h) * ratio)
+                                img = img.resize((max_width, new_h), Image.Resampling.LANCZOS)
+                            
+                            if img.mode in ("RGBA", "LA") or dest_name in ("troll_gold.webp", "logo.webp"):
+                                img.save(dest_path, "WEBP", quality=80)
+                            else:
+                                img.convert("RGB").save(dest_path, "WEBP", quality=80)
+                print("Startup image optimization completed successfully.")
+            except Exception as img_err:
+                print(f"Startup image optimization failed: {img_err}")
     except Exception as e:
         print(f"Startup asset copy skipped: {e}")
 

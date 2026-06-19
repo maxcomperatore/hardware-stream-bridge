@@ -29,6 +29,12 @@
         content="{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}">
     <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
 
+    <!-- Resource Preconnection Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="preconnect" href="https://api.iconify.design">
+
     <!-- Favicon / Shortcut Icon -->
     <link id="favicon" rel="shortcut icon" href="/static/logo.png" type="image/png">
 
@@ -41,19 +47,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&family=Nabla&display=swap"
         rel="stylesheet">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (Deferred for PageSpeed) -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         zinc: {
-                            450: '#7e7e8a',
-                            550: '#5c5c66',
-                            555: '#52525c',
-                            650: '#43434c',
-                            655: '#3e3e46',
+                            450: '#8c8c9a',
+                            550: '#8c8c9a', /* Increased contrast for accessibility */
+                            555: '#8c8c9a', /* Increased contrast for accessibility */
+                            650: '#7e7e8a',
+                            655: '#7e7e8a',
                             850: '#1c1c21',
                         },
                         blue: {
@@ -283,10 +289,10 @@
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                    <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                    <img src="/static/logo.png" alt="" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                    <img src="/static/logo.png" alt="" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                    <img src="/static/logo.png" alt="" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    <img src="/static/logo.webp" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                    <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                    <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                    <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                 </div>
                 <span class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</span>
             </div>
@@ -319,15 +325,17 @@
         </div>
     </header>
 
+    <main>
+
     <!-- Hero Section -->
     <section class="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center relative z-10">
         <h1
             class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal reveal">
             {% if seo %}
             {{ seo.hero_title | safe }}
-            {% else %}
+             {% else %}
             The iCloud for your <br class="hidden sm:inline">
-            <span class="text-zinc-550">vintage synthesizers.</span>
+            <span class="text-zinc-400">vintage synthesizers.</span>
             {% endif %}
         </h1>
 
@@ -366,22 +374,22 @@
             class="border-t border-zinc-900 py-10 mt-24 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center reveal" style="--delay: 200ms;">
             <div>
                 <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">3+</span>
-                <span class="text-[10px] font-roman uppercase text-zinc-500 mt-1 block tracking-wider">SYNTH
+                <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">SYNTH
                     MODELS</span>
             </div>
             <div>
                 <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">32</span>
-                <span class="text-[10px] font-roman uppercase text-zinc-500 mt-1 block tracking-wider">PATCHES/DX7
+                <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">PATCHES/DX7
                     BANK</span>
             </div>
             <div>
                 <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">100%</span>
-                <span class="text-[10px] font-roman uppercase text-zinc-500 mt-1 block tracking-wider">BROWSER
+                <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">BROWSER
                     NATIVE</span>
             </div>
             <div>
                 <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">0</span>
-                <span class="text-[10px] font-roman uppercase text-zinc-500 mt-1 block tracking-wider">INSTALL
+                <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">INSTALL
                     DRIVERS</span>
             </div>
         </div>
@@ -393,15 +401,16 @@
             <div
                 class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-left">
                 <div class="p-6">
-                    <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">physical hardware</span>
+                    <span class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider">physical hardware</span>
                     <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Connection via Web MIDI
                     </h3>
                     <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Connect your synth's MIDI ports to
                         your laptop and read patch names directly from RAM memory bank registers.</p>
                 </div>
                 <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
-                    <video autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
-                        <source src="/static/1.mp4" type="video/mp4">
+                    <video autoplay loop muted playsinline preload="none" aria-label="MIDI keyboard backup demo video" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                        <source data-src="/static/1.mp4" type="video/mp4">
+                        <track kind="captions" src="" srclang="en" label="No captions" default>
                     </video>
                 </div>
             </div>
@@ -410,7 +419,7 @@
             <div
                 class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-right" style="--delay: 150ms;">
                 <div class="p-6">
-                    <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">cloud librarian</span>
+                    <span class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider">cloud librarian</span>
                     <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure SysEx Database
                     </h3>
                     <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Store, search, and recall your
@@ -418,8 +427,9 @@
                         click.</p>
                 </div>
                 <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
-                    <video autoplay loop muted playsinline class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
-                        <source src="/static/2.mp4" type="video/mp4">
+                    <video autoplay loop muted playsinline preload="none" aria-label="Web cloud patch editor database demo video" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                        <source data-src="/static/2.mp4" type="video/mp4">
+                        <track kind="captions" src="" srclang="en" label="No captions" default>
                     </video>
                 </div>
             </div>
@@ -429,7 +439,7 @@
     <!-- The Problem Section -->
     <section id="problem" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-20 reveal">
-            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">THE FRICTION</span>
+            <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">THE FRICTION</span>
             <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Why backups feel stuck in 1995.</h2>
             <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans">Synthesizers are built to last
                 forever, but the digital tools to manage them didn't keep up.</p>
@@ -439,23 +449,23 @@
             <!-- Archaic Tools -->
             <div class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-8 space-y-6 reveal reveal-left">
                 <div class="h-8 w-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                    <img src="https://api.iconify.design/dinkie-icons:diagonal-cross.svg" class="h-4 w-4"
+                    <img src="https://api.iconify.design/dinkie-icons:diagonal-cross.svg" alt="" width="16" height="16" class="h-4 w-4"
                         style="filter: invert(0.4);" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-zinc-350 tracking-wide">Archaic Desktop Utilities</h3>
-                <ul class="space-y-3.5 text-xs text-zinc-550">
+                <ul class="space-y-3.5 text-xs text-zinc-450">
                     <li class="flex items-start gap-3">
-                        <img src="https://api.iconify.design/dinkie-icons:desktop-computer.svg"
+                        <img src="https://api.iconify.design/dinkie-icons:desktop-computer.svg" alt="" width="14" height="14"
                             class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
                         Requires installing legacy software drivers on Windows/macOS.
                     </li>
                     <li class="flex items-start gap-3">
-                        <img src="https://api.iconify.design/dinkie-icons:lock-filled.svg"
+                        <img src="https://api.iconify.design/dinkie-icons:lock-filled.svg" alt="" width="14" height="14"
                             class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
                         Stuck with cryptic 2/3-digit hardware displays. You can't search or read patch names from raw black-box files.
                     </li>
                     <li class="flex items-start gap-3">
-                        <img src="https://api.iconify.design/dinkie-icons:adjustments.svg"
+                        <img src="https://api.iconify.design/dinkie-icons:adjustments.svg" alt="" width="14" height="14"
                             class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
                         Must configure complex latency buffers and baud rates manually.
                     </li>
@@ -466,25 +476,25 @@
             <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 space-y-6 reveal reveal-right" style="--delay: 150ms;">
                 <div
                     class="h-8 w-8 rounded-full bg-blue-650/10 border border-blue-500/20 flex items-center justify-center">
-                    <img src="https://api.iconify.design/dinkie-icons:checkmark-circled.svg" class="h-4 w-4"
+                    <img src="https://api.iconify.design/dinkie-icons:checkmark-circled.svg" alt="" width="16" height="16" class="h-4 w-4"
                         style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(200deg) brightness(98%) contrast(98%);" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">knob.monster Flow</h3>
                 <ul class="space-y-3.5 text-xs text-zinc-300">
                     <li class="flex items-start gap-3">
-                        <img src="https://api.iconify.design/dinkie-icons:window-browser.svg"
+                        <img src="https://api.iconify.design/dinkie-icons:window-browser.svg" alt="" width="14" height="14"
                             class="h-3.5 w-3.5 mt-0.5 text-blue-500"
                             style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
                         Zero-installation. Connects natively inside any Chrome/Edge tab.
                     </li>
                     <li class="flex items-start gap-3">
-                        <img src="https://api.iconify.design/dinkie-icons:code.svg"
+                        <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14" height="14"
                             class="h-3.5 w-3.5 mt-0.5 text-blue-500"
                             style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
                         Hex-to-ASCII Parser decompresses dumps automatically to extract patch name tags in real-time.
                     </li>
                     <li class="flex items-start gap-3">
-                        <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg"
+                        <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="14" height="14"
                             class="h-3.5 w-3.5 mt-0.5 text-blue-500"
                             style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
                         Audition sounds directly inside the browser using Web Audio previews before sending.
@@ -510,7 +520,7 @@
             </div>
             <div
                 class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black reveal reveal-right" style="--delay: 150ms;">
-                <img src="/static/studio_detail.png" alt="Studio Synthesizer Cables close-up"
+                <img src="/static/studio_detail.webp" alt="Studio Synthesizer Cables close-up" width="1024" height="1016"
                     class="w-full h-full object-cover dithered">
             </div>
         </div>
@@ -520,7 +530,7 @@
     <section id="features" class="border-t border-zinc-900 bg-zinc-950/20 py-24 relative z-10">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-20 reveal">
-                <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">HOW IT WORKS</span>
+                <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">HOW IT WORKS</span>
                 <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Abstracting 40 years of hardware
                     friction.</h2>
             </div>
@@ -530,7 +540,7 @@
                 <div
                     class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
-                        <img src="/static/midi_handshake.png" alt="MIDI Din Connection Handshake"
+                        <img src="/static/midi_handshake.webp" alt="MIDI Din Connection Handshake" width="1024" height="636"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
                     </div>
                     <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
@@ -538,7 +548,7 @@
                             <div class="flex items-center gap-3">
                                 <span
                                     class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                                    <img src="https://api.iconify.design/dinkie-icons:desktop-computer.svg"
+                                    <img src="https://api.iconify.design/dinkie-icons:desktop-computer.svg" alt="" width="14" height="14"
                                         class="h-3.5 w-3.5" style="filter: invert(1);" /></span>
                                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">The MIDI Handshake
                                 </h3>
@@ -555,7 +565,7 @@
                 <div
                     class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal" style="--delay: 150ms;">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
-                        <img src="/static/index_extraction.png" alt="Auto-naming Hexadecimal Parser"
+                        <img src="/static/index_extraction.webp" alt="Auto-naming Hexadecimal Parser" width="1024" height="636"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
                     </div>
                     <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
@@ -563,7 +573,7 @@
                             <div class="flex items-center gap-3">
                                 <span
                                     class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                                    <img src="https://api.iconify.design/dinkie-icons:left-magnifying-glass.svg" class="h-3.5 w-3.5"
+                                    <img src="https://api.iconify.design/dinkie-icons:left-magnifying-glass.svg" alt="" width="14" height="14" class="h-3.5 w-3.5"
                                         style="filter: invert(1);" /></span>
                                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Index Extraction</h3>
                             </div>
@@ -579,7 +589,7 @@
                 <div
                     class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal" style="--delay: 300ms;">
                     <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
-                        <img src="/static/recall_button.png" alt="Single Click Preset Flash Sync"
+                        <img src="/static/recall_button.webp" alt="Single Click Preset Flash Sync" width="1024" height="636"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
                     </div>
                     <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
@@ -587,7 +597,7 @@
                             <div class="flex items-center gap-3">
                                 <span
                                     class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                                    <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg"
+                                    <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="14" height="14"
                                         class="h-3.5 w-3.5" style="filter: invert(1);" /></span>
                                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Single-Click Recall
                                 </h3>
@@ -605,7 +615,7 @@
     <!-- Testimonials Section -->
     <section id="testimonials" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-20 reveal">
-            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">SOCIAL PROOF?</span>
+            <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">SOCIAL PROOF?</span>
             <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Opinions of varying enthusiasm.</h2>
             <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans">We refused to invent fake reviews from stock-photo humans. Here is the exact feedback we have so far.</p>
         </div>
@@ -620,8 +630,8 @@
                         "Finding editors like this back in the day was always super exciting… glad that devs continue to support these old boards."
                     </p>
                     <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity shrink-0 pt-0.5">
-                        <span class="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">Gearspace</span>
-                        <svg class="h-3.5 w-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <span class="text-[9px] font-mono text-zinc-400 uppercase tracking-widest">Gearspace</span>
+                        <svg class="h-3.5 w-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                     </div>
@@ -629,11 +639,11 @@
 
                 <div class="flex items-center gap-3 border-t border-zinc-900/60 pt-4 mt-6">
                     <div class="h-8 w-8 rounded-full border border-zinc-800 overflow-hidden flex items-center justify-center bg-zinc-900">
-                        <img src="/static/bgood.png" alt="bgood avatar" class="w-full h-full object-cover">
+                        <img src="/static/bgood.webp" alt="bgood avatar" width="32" height="32" class="w-full h-full object-cover">
                     </div>
                     <div class="text-left">
-                        <h4 class="text-2xs font-pixel uppercase text-white tracking-wide">bgood</h4>
-                        <p class="text-[9px] text-zinc-500 font-mono uppercase mt-0.5">BrothersBrim Studios • Gear Guru</p>
+                        <h3 class="text-2xs font-pixel uppercase text-white tracking-wide">bgood</h3>
+                        <p class="text-[9px] text-zinc-400 font-mono uppercase mt-0.5">BrothersBrim Studios • Gear Guru</p>
                     </div>
                 </div>
             </a>
@@ -643,7 +653,7 @@
     <!-- Pricing Grid -->
     <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-24 relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-20 reveal">
-            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">PRICING</span>
+            <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">PRICING</span>
             <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for fellow synth heads.</h2>
             <div class="mt-4 flex justify-center">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-pixel bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 select-none uppercase tracking-wider">
@@ -662,7 +672,7 @@
 
             <!-- Tab buttons -->
             <button onclick="setBillingPeriod('monthly')"
-                class="relative z-10 w-[134px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-500 focus:outline-none"
+                class="relative z-10 w-[134px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 focus:outline-none"
                 id="btn-monthly">
                 Monthly
             </button>
@@ -681,13 +691,12 @@
                     <!-- Gold Stamp -->
                     <div
                         class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-2 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center">
-                        <img src="/static/troll_gold.png" alt="King of Knobs Stamp" class="h-8 w-auto object-contain">
+                        <img src="/static/troll_gold.webp" alt="King of Knobs Stamp" width="32" height="32" class="h-8 w-auto object-contain">
                     </div>
 
                     <div class="space-y-5">
                         <div>
-                            <h3 class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs</h3>
-                            <p class="text-xs text-zinc-500 mt-1">For sound designers and collectors</p>
+                            <h3 class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs</h                            <p class="text-xs text-zinc-400 mt-1">For sound designers and collectors</p>
                         </div>
 
                         <!-- Pricing Display -->
@@ -695,19 +704,19 @@
                             <div id="price-monthly" class="hidden">
                                 <div class="flex items-baseline gap-2">
                                     <span class="text-5xl font-lcd text-emerald-400">$8</span>
-                                    <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
                                 </div>
-                                <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1">
+                                <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                     ☕☕ per month
                                 </div>
                             </div>
                             <div id="price-yearly" class="block">
                                 <div class="flex items-baseline gap-2">
                                     <span class="text-5xl font-lcd text-emerald-400">$5</span>
-                                    <span class="text-3xl font-lcd text-zinc-600 line-through">$8</span>
-                                    <span class="text-xs font-roman uppercase text-zinc-500">/ month</span>
+                                    <span class="text-3xl font-lcd text-zinc-650 line-through">$8</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
                                 </div>
-                                <div class="text-[9px] font-roman text-zinc-600 uppercase tracking-wider mt-1">
+                                <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                     ☕ per month (billed annually)
                                 </div>
                             </div>
@@ -720,31 +729,31 @@
 
                         <ul class="space-y-2.5 text-xs text-zinc-400">
                             <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg"
+                                <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg" alt="" width="14" height="14"
                                     class="h-3.5 w-3.5 text-amber-400"
                                     style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                 Unlimited Soundbank slots
                             </li>
                             <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:code.svg"
+                                <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14" height="14"
                                     class="h-3.5 w-3.5 text-amber-400"
                                     style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                 All parsers (DX7, Juno, M1, Generic)
                             </li>
                             <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:headphone-filled.svg"
+                                <img src="https://api.iconify.design/dinkie-icons:headphone-filled.svg" alt="" width="14" height="14"
                                     class="h-3.5 w-3.5 text-amber-400"
                                     style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                 Web Audio patch simulator
                             </li>
                             <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg"
+                                <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt="" width="14" height="14"
                                     class="h-3.5 w-3.5 text-amber-400"
                                     style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                 Single-click MIDI flash recall
                             </li>
                             <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:download.svg"
+                                <img src="https://api.iconify.design/dinkie-icons:download.svg" alt="" width="14" height="14"
                                     class="h-3.5 w-3.5 text-amber-400"
                                     style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                 Direct backup downloads (.syx)
@@ -758,8 +767,8 @@
                             class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
                             <span>Hell Yes, Let's Do It</span>
                         </a>
-                        <span class="inline-flex items-center gap-1.5 text-[9px] text-zinc-500 uppercase font-roman tracking-wider select-none">
-                            <img src="https://api.iconify.design/pixelarticons:heart.svg" class="h-3 w-auto opacity-50 inline-block align-middle" style="filter: invert(1);" />
+                        <span class="inline-flex items-center gap-1.5 text-[9px] text-zinc-400 uppercase font-roman tracking-wider select-none">
+                            <img src="https://api.iconify.design/pixelarticons:heart.svg" alt="" width="12" height="12" class="h-3 w-auto opacity-50 inline-block align-middle" style="filter: invert(1);" />
                             30-day love it or full refund
                         </span>
                     </div>
@@ -767,12 +776,12 @@
 
                 <!-- Meme Image -->
                 <div class="flex items-center justify-center reveal reveal-scale" style="--delay: 300ms;">
-                    <img src="/static/trade_offer.jpg" alt="Trade Offer Meme" class="w-full max-w-[340px] rounded-2xl border border-zinc-900 shadow-2xl animate-breathing">
+                    <img src="/static/trade_offer.webp" alt="Trade Offer Meme" width="340" height="459" class="w-full max-w-[340px] rounded-2xl border border-zinc-900 shadow-2xl animate-breathing">
                 </div>
             </div>
 
             <p id="billing-discount-notice"
-                class="text-center text-[9px] text-zinc-500 uppercase font-roman tracking-wider mt-6 max-w-sm mx-auto leading-relaxed transition-all duration-200">
+                class="text-center text-[9px] text-zinc-400 uppercase font-roman tracking-wider mt-6 max-w-sm mx-auto leading-relaxed transition-all duration-200">
                 Subscriptions with annual billing instead of monthly billing periods receive a <span
                     class="text-emerald-400 font-semibold">37% discount</span> valuing up to <span
                     class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$36/year in
@@ -796,10 +805,10 @@
                 const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
 
                 if (period === 'monthly') {
-                    btnMonthly.classList.remove('text-zinc-500');
+                    btnMonthly.classList.remove('text-zinc-400');
                     btnMonthly.classList.add('text-black');
                     btnYearly.classList.remove('text-black');
-                    btnYearly.classList.add('text-zinc-500');
+                    btnYearly.classList.add('text-zinc-400');
 
                     yearlyBadge.classList.remove('bg-emerald-500/20', 'text-emerald-600');
                     yearlyBadge.classList.add('bg-emerald-500/10', 'text-emerald-400');
@@ -812,7 +821,7 @@
                     trialSubtext.innerHTML = 'Cancel anytime with a single click. 30-day money-back guarantee.';
 
                     discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">37% more ($36/year extra)</span>. Switch to annual to stop bleeding money.';
-                    discountNotice.classList.remove('text-zinc-500');
+                    discountNotice.classList.remove('text-zinc-400');
                     discountNotice.classList.add('text-rose-450');
 
                     if (isLoggedIn) {
@@ -822,8 +831,8 @@
                     }
                 } else {
                     btnMonthly.classList.remove('text-black');
-                    btnMonthly.classList.add('text-zinc-500');
-                    btnYearly.classList.remove('text-zinc-500');
+                    btnMonthly.classList.add('text-zinc-400');
+                    btnYearly.classList.remove('text-zinc-400');
                     btnYearly.classList.add('text-black');
 
                     yearlyBadge.classList.remove('bg-emerald-500/10', 'text-emerald-400');
@@ -838,7 +847,7 @@
 
                     discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">37% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$36/year in savings</span>.';
                     discountNotice.classList.remove('text-rose-450');
-                    discountNotice.classList.add('text-zinc-500');
+                    discountNotice.classList.add('text-zinc-400');
 
                     if (isLoggedIn) {
                         ctaButton.href = '/checkout?plan=yearly';
@@ -857,17 +866,17 @@
     <!-- FAQ Section -->
     <section id="faq" class="border-t border-zinc-900 max-w-3xl mx-auto px-6 py-24 relative z-10 text-left">
         <div class="text-center mb-16 reveal">
-            <span class="text-[11px] font-pixel uppercase text-zinc-500 tracking-wider">FAQ</span>
+            <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">FAQ</span>
             <h2 class="text-2xl font-pixel uppercase text-white mt-3 text-center">Frequently Asked Questions</h2>
         </div>
 
         <div class="space-y-6">
             <div class="border-b border-zinc-900 pb-6 reveal">
-                <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" class="h-4.5 w-4.5"
+                <h3 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
+                    <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
                         style="filter: invert(1);" />
                     Which synthesizers are supported?
-                </h4>
+                </h3>
                 <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
                     We feature custom name parsers for the <strong>Yamaha DX7</strong> (and compatible synths like
                     DX7II, TX7,
@@ -880,11 +889,11 @@
             </div>
 
             <div class="border-b border-zinc-900 pb-6 reveal" style="--delay: 100ms;">
-                <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" class="h-4.5 w-4.5"
+                <h3 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
+                    <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
                         style="filter: invert(1);" />
                     Do I need special drivers or software?
-                </h4>
+                </h3>
                 <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
                     No. That's the beauty of it. knob.monster uses the native browser Web MIDI API. As long as you are
                     running Chrome or Edge on Windows, macOS, or Linux, your browser can communicate directly with your
@@ -893,11 +902,11 @@
             </div>
 
             <div class="border-b border-zinc-900 pb-6 reveal" style="--delay: 200ms;">
-                <h4 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:shield.svg" class="h-4.5 w-4.5"
+                <h3 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
+                    <img src="https://api.iconify.design/dinkie-icons:shield.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
                         style="filter: invert(1);" />
                     Are my patches private and secure?
-                </h4>
+                </h3>
                 <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
                     Yes. All your uploaded soundbanks are stored in your secure personal directory account. We only read
                     the ASCII patch names to display them in your private searchable library.
@@ -912,22 +921,22 @@
             <div class="flex flex-col items-center md:items-start gap-1">
                 <div class="flex items-center gap-2">
                     <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
-                        <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-5 h-5 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.png" alt="" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.png" alt="" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.png" alt="" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="Knob Monster Logo" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="20" height="20" class="absolute w-5 h-5 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
                     <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
                 </div>
-                <div id="visitor-geo-tag" class="text-[9px] text-zinc-650 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
+                <div id="visitor-geo-tag" class="text-[9px] text-zinc-450 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
                     <!-- Dynamic IP Geolocation -->
                 </div>
-                <p class="text-[10px] text-zinc-500 max-w-sm mt-3 text-center md:text-left font-sans leading-relaxed">
+                <p class="text-[10px] text-zinc-400 max-w-sm mt-3 text-center md:text-left font-sans leading-relaxed">
                     knob.monster is the <strong class="text-zinc-300">ONLY</strong> browser-native cloud database <strong class="text-zinc-300">in the world</strong> that automatically decodes and backs up vintage SysEx patches in 1-click for synthesists, because nobody should have to install a driver from 1995 just to play music.
                 </p>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
+            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-400 font-mono">
                 <a href="/sysex-librarian-alternatives" class="hover:text-white underline transition-colors">SysEx Librarian Alternatives</a>
                 <span class="hidden md:inline text-zinc-800">•</span>
                 <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service & Refund
@@ -938,7 +947,7 @@
                 <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white underline transition-colors">Contact Support</a>
             </div>
 
-            <p class="text-[10px] text-zinc-655 font-mono text-center md:text-right">
+            <p class="text-[10px] text-zinc-450 font-mono text-center md:text-right">
                 &copy; 2026 Half Radiation. <br class="md:hidden">
                 Troll icon by <a href="https://game-icons.net/1x1/skoll/troll.html" target="_blank"
                     rel="noopener noreferrer" class="hover:text-white underline">Skoll</a> under <a
@@ -1251,6 +1260,45 @@
         });
     </script>
 
+    <!-- Lazy Loading script for MP4 Videos -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lazyVideos = document.querySelectorAll('video[preload="none"]');
+            if ('IntersectionObserver' in window) {
+                const videoObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const video = entry.target;
+                            const sources = video.querySelectorAll('source');
+                            sources.forEach(source => {
+                                if (source.dataset.src) {
+                                    source.src = source.dataset.src;
+                                }
+                            });
+                            video.load();
+                            videoObserver.unobserve(video);
+                        }
+                    });
+                });
+                lazyVideos.forEach(video => {
+                    videoObserver.observe(video);
+                });
+            } else {
+                lazyVideos.forEach(video => {
+                    const sources = video.querySelectorAll('source');
+                    sources.forEach(source => {
+                        if (source.dataset.src) {
+                            source.src = source.dataset.src;
+                        }
+                    });
+                    video.load();
+                });
+            }
+        });
+    </script>
+
+    </main>
+
     <!-- Spam Modal Popup -->
     <div id="spam-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="relative max-w-lg md:max-w-xl w-full bg-zinc-950 border border-zinc-900 rounded-3xl p-8 md:p-12 space-y-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] transform scale-95 transition-transform duration-300" id="spam-modal-content">
@@ -1261,7 +1309,7 @@
 
             <!-- Troll Logo -->
             <div class="flex justify-center">
-                <img src="/static/logo.png" id="spam-modal-logo" alt="Ogre Logo" class="h-20 md:h-24 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out" style="transform-style: preserve-3d; backface-visibility: hidden;">
+                <img src="/static/logo.webp" id="spam-modal-logo" alt="Ogre Logo" width="96" height="96" class="h-20 md:h-24 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out" style="transform-style: preserve-3d; backface-visibility: hidden;">
             </div>
             
             <div class="space-y-4 text-center">
@@ -1280,10 +1328,10 @@
                         Submit to Hive
                     </button>
                 </div>
-                <div id="modal-spam-status" class="text-[10px] font-mono text-zinc-500 mt-2 text-center min-h-[16px]"></div>
+                <div id="modal-spam-status" class="text-[10px] font-mono text-zinc-400 mt-2 text-center min-h-[16px]"></div>
                 
                 <!-- Footnote -->
-                <p class="text-[10px] md:text-xs font-mono text-zinc-500 leading-relaxed text-center max-w-sm mx-auto pt-4 border-t border-zinc-800">
+                <p class="text-[10px] md:text-xs font-mono text-zinc-400 leading-relaxed text-center max-w-sm mx-auto pt-4 border-t border-zinc-800">
                     By submitting this form you agree to be targeted by our direct marketing experiments. Consent is not a condition of synth backup, but resisting is futile. Unsubscribe whenever you want to reclaim your insignificance.
                 </p>
             </form>

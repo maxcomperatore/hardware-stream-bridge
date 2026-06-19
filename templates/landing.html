@@ -28,6 +28,13 @@
     <meta property="twitter:description"
         content="{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}">
     <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
+    <!-- Prevent Flash of Unstyled Content (FOUC) and set default background early -->
+    <style>
+        html, body {
+            background-color: #000000 !important;
+            color: #f4f4f5 !important;
+        }
+    </style>
 
     <!-- Resource Preconnection Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,17 +45,20 @@
     <!-- Favicon / Shortcut Icon -->
     <link id="favicon" rel="shortcut icon" href="/static/logo.png" type="image/png">
 
-    <!-- Vercel Geist Fonts (Geist & Geist Mono) -->
-    <link
-        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
-        rel="stylesheet">
+    <!-- Vercel Geist Fonts (Geist & Geist Mono) - Loaded Asynchronously -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap">
+    </noscript>
 
-    <!-- Retro Pixel & Dot-Matrix Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&family=Nabla&display=swap"
-        rel="stylesheet">
+    <!-- Retro Pixel & Dot-Matrix Fonts - Loaded Asynchronously -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&family=Nabla&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&family=Nabla&display=swap">
+    </noscript>
 
-    <!-- Tailwind CSS (Deferred for PageSpeed) -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -402,8 +412,7 @@
                 class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-left">
                 <div class="p-6">
                     <span class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider">physical hardware</span>
-                    <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Connection via Web MIDI
-                    </h3>
+                    <h2 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Connection via Web MIDI</h2>
                     <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Connect your synth's MIDI ports to
                         your laptop and read patch names directly from RAM memory bank registers.</p>
                 </div>
@@ -420,8 +429,7 @@
                 class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-right" style="--delay: 150ms;">
                 <div class="p-6">
                     <span class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider">cloud librarian</span>
-                    <h3 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure SysEx Database
-                    </h3>
+                    <h2 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure SysEx Database</h2>
                     <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Store, search, and recall your
                         backup soundbanks in a private cloud archive. Filter presets and restore them with a single
                         click.</p>
@@ -511,8 +519,8 @@
             <div class="p-8 md:p-16 space-y-6 text-left reveal reveal-left">
                 <span class="text-[11px] font-pixel text-blue-500 uppercase tracking-widest font-semibold">lossless
                     preservation</span>
-                <h3 class="text-2xl md:text-3xl font-pixel uppercase text-white tracking-wide">Every byte preserved
-                    exactly as it left the CPU.</h3>
+                <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white tracking-wide">Every byte preserved
+                    exactly as it left the CPU.</h2>
                 <p class="text-xs text-zinc-400 leading-relaxed font-normal">
                     Our SysEx engine records standard MIDI dumps byte-for-byte. There is no compression, translation, or
                     loss of high-resolution patch data. Retrieve your settings exactly as they were 40 years ago.
@@ -696,7 +704,8 @@
 
                     <div class="space-y-5">
                         <div>
-                            <h3 class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs</h                            <p class="text-xs text-zinc-400 mt-1">For sound designers and collectors</p>
+                            <h3 class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs</h3>
+                            <p class="text-xs text-zinc-400 mt-1">For sound designers and collectors</p>
                         </div>
 
                         <!-- Pricing Display -->
@@ -975,12 +984,12 @@
 
                     const tag = document.getElementById('visitor-geo-tag');
                     if (tag) {
-                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
+                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
                     }
                     
                     const pricingTitle = document.getElementById('pricing-title');
                     if (pricingTitle) {
-                        pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" class="h-6 w-auto inline-block align-middle ml-1.5" alt="${countryName}" />`;
+                        pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" width="32" height="24" class="h-6 w-auto inline-block align-middle ml-1.5" alt="${countryName}" />`;
                     }
 
                     // Dynamically match Nabla font colors to the country flag

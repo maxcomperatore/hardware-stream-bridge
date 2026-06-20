@@ -77,6 +77,32 @@
                         },
                         rose: {
                             450: '#fb7185',
+                        },
+                        emerald: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b83f6',
+                            600: '#1d4ed8',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        },
+                        green: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b83f6',
+                            600: '#1d4ed8',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
                         }
                     },
                     fontFamily: {
@@ -101,11 +127,11 @@
             base-palette: 0;
             override-colors:
                 0 #ffffff, /* front face - clean white */
-                1 #10b981, /* primary side - emerald green */
-                2 #059669, /* secondary side - dark emerald */
-                3 #3b82f6, /* highlights - electric blue */
-                4 #064e3b, /* shadow - deep green */
-                5 #047857;
+                1 #3b83f6, /* primary side - blue */
+                2 #1d4ed8, /* secondary side - dark blue */
+                3 #93c5fd, /* highlights - light blue */
+                4 #172554, /* shadow - deep blue */
+                5 #1e40af;
         }
 
         .font-nabla-synth {
@@ -193,8 +219,8 @@
         .confetti-banner-bg {
             background-image: 
                 linear-gradient(to right, rgba(20, 20, 23, 0.8) 0%, rgba(9, 9, 11, 0.85) 100%),
-                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%2310b981%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%2310b981%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E"),
-                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%2310b981%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%2310b981%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%233b83f6%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%233b83f6%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E"),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%233b83f6%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%233b83f6%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
             background-size: auto, 200px 200px, 160px 160px;
             animation: confetti-loop 7s linear infinite;
         }
@@ -205,12 +231,12 @@
         }
         .glow-card:hover {
             transform: translate(-2px, -2px) !important;
-            border-color: #10b981 !important; /* Emerald-500 border */
-            box-shadow: 6px 6px 0px 0px #10b981 !important; /* Hard emerald shadow */
+            border-color: #3b83f6 !important; /* Blue-500 border */
+            box-shadow: 6px 6px 0px 0px #3b83f6 !important; /* Hard blue shadow */
         }
         .glow-card:active {
             transform: translate(2px, 2px) !important;
-            box-shadow: 2px 2px 0px 0px #10b981 !important;
+            box-shadow: 2px 2px 0px 0px #3b83f6 !important;
         }
 
         /* Subtle breathing/floating animation for the trade offer image */
@@ -238,9 +264,27 @@
         }
         .wonky-hover:hover {
             animation: wobble-wonky 0.4s infinite alternate;
-            filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.6));
-            border-color: #10b981 !important;
-            color: #10b981 !important;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.6));
+            border-color: #3b83f6 !important;
+            color: #3b83f6 !important;
+        }
+
+        /* Custom FAQ Accordion Toggles */
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary {
+            list-style: none;
+        }
+        details[open] summary .faq-icon {
+            transform: rotate(45deg);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        details[open] .faq-answer {
+            animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>
     <!-- PostHog Tracking -->
@@ -898,48 +942,210 @@
             <h2 class="text-2xl font-pixel uppercase text-white mt-3 text-center">Frequently Asked Questions</h2>
         </div>
 
-        <div class="space-y-6">
-            <div class="border-b border-zinc-900 pb-6 reveal">
-                <h3 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
-                        style="filter: invert(1);" />
-                    Which synthesizers are supported?
-                </h3>
-                <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                    We feature custom name parsers for the <strong>Yamaha DX7</strong> (and compatible synths like
-                    DX7II, TX7,
-                    TX81Z). Our <strong>Generic Scan</strong> feature works with any synth that dumps standard SysEx
-                    banks (like the
-                    Roland Juno-106 or Korg M1). We will capture the dump and scan the binary data for ASCII characters
-                    to
-                    extract names automatically. We are also actively developing dedicated support for the <strong>Roland Jupiter-6</strong> (both stock and Europa-modded) and the <strong>Casio CZ-101</strong> handshake protocol.
-                </p>
-            </div>
+        <div class="space-y-4">
+            <!-- FAQ 1 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 0ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        What is knob.monster?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        knob.monster is a browser-native cloud SysEx librarian and patch manager designed for vintage synthesizers from the 1980s and 90s. It eliminates the need for legacy drivers, desktop software, or complicated MIDI-OX configurations by connecting your instruments directly to the web.
+                    </p>
+                </div>
+            </details>
 
-            <div class="border-b border-zinc-900 pb-6 reveal" style="--delay: 100ms;">
-                <h3 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
-                        style="filter: invert(1);" />
-                    Do I need special drivers or software?
-                </h3>
-                <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                    No. That's the beauty of it. knob.monster uses the native browser Web MIDI API. As long as you are
-                    running Chrome or Edge on Windows, macOS, or Linux, your browser can communicate directly with your
-                    USB-to-MIDI cable interfaces.
-                </p>
-            </div>
+            <!-- FAQ 2 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 50ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        How does browser-native Web MIDI work?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Modern browsers like Google Chrome, Microsoft Edge, and Opera support the Web MIDI API. This allows our website to communicate directly with your physical USB-to-MIDI interface cables and hardware synths without running any local background utilities or installing manual USB drivers.
+                    </p>
+                </div>
+            </details>
 
-            <div class="border-b border-zinc-900 pb-6 reveal" style="--delay: 200ms;">
-                <h3 class="text-sm font-pixel uppercase text-white mb-2 tracking-wide flex items-center gap-2">
-                    <img src="https://api.iconify.design/dinkie-icons:shield.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
-                        style="filter: invert(1);" />
-                    Are my patches private and secure?
-                </h3>
-                <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                    Yes. All your uploaded soundbanks are stored in your secure personal directory account. We only read
-                    the ASCII patch names to display them in your private searchable library.
-                </p>
-            </div>
+            <!-- FAQ 3 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 100ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Which synthesizers are fully supported?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        We feature dedicated name-decoding parsers for the <strong>Yamaha DX7</strong> (and compatible synths like DX7II, TX7, TX81Z), <strong>Roland Juno-106</strong>, <strong>Korg M1</strong>, <strong>Roland Jupiter-6</strong> (Europa-modded), and the <strong>Casio CZ series</strong>. We also feature a universal <strong>Generic Scan</strong> that works with almost any vintage synthesizer by scanning raw SysEx bulk dumps for readable ASCII character arrays to extract patch names automatically.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 150ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Do I need a special MIDI interface or cable?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Any standard, class-compliant USB-to-MIDI interface will work. However, we highly recommend avoiding low-cost, unbranded interface cables, as they lack internal timing buffers and frequently drop or corrupt long SysEx byte blocks during large memory dumps.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 5 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 200ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        How do I prevent "Buffer Overflow" errors?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB data. knob.monster's MIDI transmission protocol is fine-tuned to throttle outbound dumps into small packages with 60ms pauses, ensuring your physical hardware can write the data to memory without dropping packets.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 6 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 250ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:shield.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Are my patches private and secure?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Yes. All soundbanks and SysEx dumps uploaded to knob.monster are stored securely in your private cloud account. We only read the ASCII patch names to display them in your private searchable library, and your raw `.syx` binary files are never shared.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 7 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 300ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:shield.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Can I export and download my SysEx files?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Absolutely. Every backup captured using knob.monster can be downloaded as a standard `.syx` binary file at any time. Your data is never locked in, allowing you to use your backups with classic tools like Snoize, MIDI-OX, or hardware sequencers.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 8 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 350ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Is knob.monster better than Snoize or MIDI-OX?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Snoize (macOS) and MIDI-OX (Windows) are fantastic, time-tested tools. However, they require local software installation, manual buffer setting adjustments, and do not offer cloud backup or metadata indexing. knob.monster runs instantly on any machine and lets you search and recall patches in seconds.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 9 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 400ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Does it support editing patches in real time?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        knob.monster is primarily a librarian for backup, storage, organization, and quick retrieval of patch banks. While it does not feature a graphical synthesizer editor (with virtual sliders for every parameter), it allows you to audition and swap banks in one click.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 10 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 450ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:shield.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        What is the price of a knob.monster subscription?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        We offer a simple, transparent pricing structure: $8/month (billed monthly) or $5/month (billed annually at $60/year). Our pricing is locked in forever for early users and doubles after the first 100 members.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 11 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 500ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:shield.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Do you support browser-native MIDI on iOS or Android?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Yes! Android Chrome natively supports Web MIDI out of the box. On iOS, you can use specialized Web MIDI browsers (like WebMIDI Browser or WebBLE) to connect your iPhone or iPad to your synthesizers via USB-MIDI or Bluetooth-MIDI adapters.
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 12 -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 550ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Who is behind knob.monster?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        knob.monster is built by Half Radiation LLC, a small independent team of vintage synthesizer enthusiasts and software developers. We built this tool to solve the frustration of backing up and organizing our own classic hardware rigs.
+                    </p>
+                </div>
+            </details>
         </div>
     </section>
 

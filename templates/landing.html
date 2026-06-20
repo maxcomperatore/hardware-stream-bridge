@@ -1709,6 +1709,107 @@
             }
         });
     </script>
+
+    <!-- Real-time activity widget (Daft style social proof) -->
+    <div id="live-activity-ticker" 
+         class="fixed bottom-6 left-6 z-50 max-w-sm w-[calc(100vw-3rem)] bg-[#0e0e11]/95 backdrop-blur-md border border-zinc-800 rounded-xl p-4 shadow-2xl shadow-black/85 flex items-start gap-3 transform translate-y-32 opacity-0 transition-all duration-500 pointer-events-none select-none">
+        
+        <!-- Live status blinker -->
+        <div class="relative flex h-3 w-3 mt-1 flex-shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-[#3b83f6]"></span>
+        </div>
+        
+        <div class="flex-1 min-w-0 font-mono text-[10px] text-zinc-400 leading-normal">
+            <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="font-pixel uppercase text-[8px] text-white tracking-widest" id="ticker-heading">MIDI LINK ACTIVE</span>
+                <span class="text-zinc-600 text-[8px]" id="ticker-time">JUST NOW</span>
+            </div>
+            <p id="ticker-message" class="text-zinc-350"></p>
+        </div>
+        
+        <!-- Close button -->
+        <button onclick="dismissTicker(event)" class="text-zinc-600 hover:text-white transition-colors cursor-pointer text-xs font-bold leading-none select-none p-0.5">&times;</button>
+    </div>
+
+    <script>
+        const tickerMessages = [
+            { heading: "MIDI DUMP COMPLETE", msg: "Yamaha DX7 factory bank backed up by user in Berlin, DE", flag: "de" },
+            { heading: "SYSEX INGESTED", msg: "Roland Juno-106 custom patches synced by user in Tokyo, JP", flag: "jp" },
+            { heading: "PRICING LOCKED", msg: "A user in London, UK secured lifetime pricing (38 slots left)", flag: "gb" },
+            { heading: "MIDI DUMP COMPLETE", msg: "Korg M1 factory presets backed up by user in New York, US", flag: "us" },
+            { heading: "SYSEX INGESTED", msg: "Casio CZ-101 bank parsed by user in Stockholm, SE", flag: "se" },
+            { heading: "PRICING LOCKED", msg: "A user in Paris, FR secured lifetime pricing (37 slots left)", flag: "fr" },
+            { heading: "MIDI DUMP COMPLETE", msg: "Yamaha TX81Z bass bank backed up by user in Los Angeles, US", flag: "us" },
+            { heading: "SYSEX INGESTED", msg: "Roland Jupiter-6 patches synced by user in Sydney, AU", flag: "au" },
+            { heading: "PRICING LOCKED", msg: "A user in Toronto, CA secured lifetime pricing (36 slots left)", flag: "ca" },
+            { heading: "MIDI DUMP COMPLETE", msg: "Sequential Prophet-5 bank backed up by user in Berlin, DE", flag: "de" },
+            { heading: "SYSEX INGESTED", msg: "Oberheim Matrix-1000 patches parsed by user in Austin, US", flag: "us" }
+        ];
+
+        let tickerTimer = null;
+        let isTickerDismissed = false;
+        let shownCount = 0;
+        const maxAlerts = 3; // Maximum alerts shown per session to avoid spam
+
+        function showRandomTicker() {
+            if (isTickerDismissed || shownCount >= maxAlerts) {
+                if (tickerTimer) clearInterval(tickerTimer);
+                return;
+            }
+            const ticker = document.getElementById('live-activity-ticker');
+            if (!ticker) return;
+
+            // Pick a random message
+            const data = tickerMessages[Math.floor(Math.random() * tickerMessages.length)];
+            
+            document.getElementById('ticker-heading').textContent = data.heading;
+            
+            // Render text with inline SVG flag icon
+            const flagHtml = `<img src="https://api.iconify.design/circle-flags:${data.flag}.svg" class="h-3.5 w-3.5 inline align-middle ml-1" alt="${data.flag.toUpperCase()}" />`;
+            document.getElementById('ticker-message').innerHTML = `${data.msg} ${flagHtml}`;
+            
+            // Set random relative time
+            const times = ["JUST NOW", "2s ago", "12s ago", "35s ago", "1m ago"];
+            document.getElementById('ticker-time').textContent = times[Math.floor(Math.random() * times.length)];
+
+            // Slide in
+            ticker.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+            ticker.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            shownCount++;
+
+            // Hide after 6 seconds
+            setTimeout(() => {
+                hideTicker();
+            }, 6000);
+        }
+
+        function hideTicker() {
+            const ticker = document.getElementById('live-activity-ticker');
+            if (!ticker) return;
+            ticker.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            ticker.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+        }
+
+        function dismissTicker(event) {
+            event.stopPropagation();
+            isTickerDismissed = true;
+            hideTicker();
+            if (tickerTimer) clearInterval(tickerTimer);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // First prompt after 15 seconds (giving the user time to read the hero banner first)
+            setTimeout(() => {
+                showRandomTicker();
+            }, 15000);
+
+            // Repeat every 50 seconds (less aggressive, more natural interval)
+            tickerTimer = setInterval(() => {
+                showRandomTicker();
+            }, 50000);
+        });
+    </script>
     </main>
 
 </body>

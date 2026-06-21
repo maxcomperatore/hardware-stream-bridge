@@ -342,6 +342,70 @@ SEO_DATA = {
         "synth_name": "Roland Jupiter-6",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Jupiter-6.</span>",
         "hero_subtitle": "The easiest way to manage Roland Jupiter-6 and Europa-modded SysEx backups directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
+    },
+    "casio-cz-101": {
+        "title": "Casio CZ-101 Online SysEx Librarian & Patch Editor | knob.monster",
+        "description": "The ultimate browser-native Casio CZ-101 online librarian and SysEx manager. Back up, search, and recall CZ-101 Phase Distortion patches in 1-click via Web MIDI.",
+        "keywords": "casio cz-101 librarian, cz-101 sysex backup, casio cz101 patch editor, phase distortion sysex online",
+        "synth_name": "Casio CZ-101",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Casio CZ-101.</span>",
+        "hero_subtitle": "Back up, organize, and restore CZ-101 Phase Distortion patches directly from your web browser. Zero setup, zero drivers, instant MIDI dumps."
+    },
+    "yamaha-tx81z": {
+        "title": "Yamaha TX81Z SysEx Librarian & Online Editor | knob.monster",
+        "description": "Back up and manage your Yamaha TX81Z 4-operator FM patches online. Decode voice parameters and factory presets directly over Web MIDI. No drivers required.",
+        "keywords": "yamaha tx81z librarian, tx81z sysex dump, tx81z patch editor, tx81z lately bass backup, tx81z editor online",
+        "synth_name": "Yamaha TX81Z",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Yamaha TX81Z.</span>",
+        "hero_subtitle": "Quickly manage your TX81Z patches and that legendary Lately Bass patch directly from your browser. Zero setup, zero drivers, instant Web MIDI dump."
+    },
+    "roland-d-50": {
+        "title": "Roland D-50 SysEx Librarian & Patch Manager | knob.monster",
+        "description": "Online browser-native SysEx librarian for the classic Roland D-50 Linear Arithmetic synthesizer. Backup, search, and restore D-50 soundbanks over Web MIDI.",
+        "keywords": "roland d-50 librarian, d-50 sysex backup, roland d50 patch manager, d-50 editor online, linear arithmetic sysex",
+        "synth_name": "Roland D-50",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland D-50.</span>",
+        "hero_subtitle": "Manage your classic Linear Arithmetic soundbanks and patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
+    },
+    "prophet-600": {
+        "title": "Prophet-600 SysEx Librarian & GliGli Patch Backup | knob.monster",
+        "description": "The ultimate online librarian for the Sequential Circuits Prophet-600. Support for stock and GliGli firmware patch backups via Web MIDI. No installation required.",
+        "keywords": "prophet-600 sysex librarian, prophet 600 patch editor, gligli firmware backup, sequential prophet 600 online",
+        "synth_name": "Prophet-600",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Prophet-600.</span>",
+        "hero_subtitle": "Back up, organize, and recall Prophet-600 patches (stock or GliGli modded) directly from your browser. Zero setup, zero drivers."
+    },
+    "oberheim-matrix-1000": {
+        "title": "Oberheim Matrix-1000 SysEx Librarian & Patch Manager | knob.monster",
+        "description": "Online librarian and patch backup tool for Oberheim Matrix-1000 and Matrix-6. Search, organize, and upload your 1000 patches directly in your web browser.",
+        "keywords": "oberheim matrix-1000 librarian, matrix-1000 sysex dump, matrix 6 patch manager, oberheim sysex backup online",
+        "synth_name": "Oberheim Matrix-1000",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Matrix-1000.</span>",
+        "hero_subtitle": "The easiest way to manage Oberheim Matrix-1000 and Matrix-6 soundbanks directly from your browser. Zero setup, zero drivers."
+    },
+    "yamaha-fb-01": {
+        "title": "Yamaha FB-01 SysEx Librarian & Online Editor | knob.monster",
+        "description": "Online browser-native SysEx manager for the vintage Yamaha FB-01 FM sound module. Backup, search, and recall FB-01 soundbanks in 1-click via Web MIDI.",
+        "keywords": "yamaha fb-01 librarian, fb-01 sysex backup, fb01 patch manager, fb-01 editor online, fm sound module sysex",
+        "synth_name": "Yamaha FB-01",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Yamaha FB-01.</span>",
+        "hero_subtitle": "The easiest way to manage Yamaha FB-01 patches and soundbanks directly from your browser. Zero setup, zero drivers."
+    },
+    "roland-juno-60": {
+        "title": "Roland Juno-60 SysEx Librarian (MIDI Modded) | knob.monster",
+        "description": "Online browser-native SysEx librarian for MIDI-retrofitted Roland Juno-60 synthesizers. Backup, search, and recall Juno-60 patches in 1-click via Web MIDI.",
+        "keywords": "juno-60 sysex backup, roland juno-60 librarian, juno 60 patch manager, juno 60 midi mod backup",
+        "synth_name": "Roland Juno-60",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Juno-60.</span>",
+        "hero_subtitle": "For MIDI-modded Juno-60 synths, manage and backup your patch libraries directly from your browser. Zero setup, zero drivers."
+    },
+    "korg-wavestation": {
+        "title": "Korg Wavestation SysEx Librarian & Online Editor | knob.monster",
+        "description": "Online browser-native SysEx librarian for Korg Wavestation, Wavestation EX, and Wavestation A/D. Backup, search, and recall wave sequences over Web MIDI.",
+        "keywords": "korg wavestation librarian, wavestation sysex backup, wavestation patch manager, wavestation a/d editor online",
+        "synth_name": "Korg Wavestation",
+        "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Korg Wavestation.</span>",
+        "hero_subtitle": "The easiest way to manage Korg Wavestation soundbanks and wave sequences directly from your browser. Zero setup, zero drivers."
     }
 }
 
@@ -350,26 +414,6 @@ SEO_DATA = {
 async def index(request: Request):
     user = get_current_user(request)
     return render_template("landing.html", request, {"user": user})
-
-@app.get("/dx7", response_class=HTMLResponse)
-async def dx7_seo(request: Request):
-    user = get_current_user(request)
-    return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["dx7"], "seo_slug": "dx7"})
-
-@app.get("/juno-106", response_class=HTMLResponse)
-async def juno_seo(request: Request):
-    user = get_current_user(request)
-    return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["juno-106"], "seo_slug": "juno-106"})
-
-@app.get("/korg-m1", response_class=HTMLResponse)
-async def korg_seo(request: Request):
-    user = get_current_user(request)
-    return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["korg-m1"], "seo_slug": "korg-m1"})
-
-@app.get("/jupiter-6", response_class=HTMLResponse)
-async def jupiter_seo(request: Request):
-    user = get_current_user(request)
-    return render_template("landing.html", request, {"user": user, "seo": SEO_DATA["jupiter-6"], "seo_slug": "jupiter-6"})
 
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):
@@ -778,94 +822,39 @@ async def stripe_webhook(request: Request):
 
 @app.get("/sitemap.xml")
 async def sitemap():
-    xml_content = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://knob.monster/</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/dx7</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/juno-106</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/korg-m1</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/jupiter-6</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/sysex-librarian-alternatives</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/knob-monster-vs-snoize-sysex-librarian</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/knob-monster-vs-midi-ox</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/login</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/signup</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/roadmap</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/terms</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/privacy</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://knob.monster/payment-methods</loc>
-    <lastmod>2026-06-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-</urlset>"""
-    return Response(content=xml_content, media_type="application/xml")
+    urls = [
+        ("https://knob.monster/", "2026-06-21", "weekly", "1.0"),
+        ("https://knob.monster/sysex-librarian-alternatives", "2026-06-21", "weekly", "0.9"),
+        ("https://knob.monster/knob-monster-vs-snoize-sysex-librarian", "2026-06-21", "weekly", "0.9"),
+        ("https://knob.monster/knob-monster-vs-midi-ox", "2026-06-21", "weekly", "0.9"),
+        ("https://knob.monster/login", "2026-06-21", "monthly", "0.8"),
+        ("https://knob.monster/signup", "2026-06-21", "monthly", "0.8"),
+        ("https://knob.monster/roadmap", "2026-06-21", "weekly", "0.85"),
+        ("https://knob.monster/terms", "2026-06-21", "monthly", "0.5"),
+        ("https://knob.monster/privacy", "2026-06-21", "monthly", "0.5"),
+        ("https://knob.monster/payment-methods", "2026-06-21", "monthly", "0.6"),
+    ]
+    
+    # Dynamically add all synths from SEO_DATA
+    for slug in SEO_DATA.keys():
+        urls.append((f"https://knob.monster/{slug}", "2026-06-21", "weekly", "0.9"))
+        
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    ]
+    
+    for loc, lastmod, changefreq, priority in urls:
+        xml_lines.append("  <url>")
+        xml_lines.append(f"    <loc>{loc}</loc>")
+        xml_lines.append(f"    <lastmod>{lastmod}</lastmod>")
+        xml_lines.append(f"    <changefreq>{changefreq}</changefreq>")
+        xml_lines.append(f"    <priority>{priority}</priority>")
+        xml_lines.append("  </url>")
+        
+    xml_lines.append("</urlset>")
+    
+    return Response(content="\n".join(xml_lines), media_type="application/xml")
 
 @app.get("/robots.txt")
 async def robots():
@@ -877,30 +866,41 @@ Disallow: /banks/
 Sitemap: https://knob.monster/sitemap.xml"""
     return Response(content=content, media_type="text/plain")
 
-
 @app.get("/llms.txt")
 async def llms_txt():
-    content = """# knob.monster
+    lines = [
+        "# knob.monster",
+        "",
+        "> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.",
+        "",
+        "## Key Features",
+        "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
+        "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
+        "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
+        "- **Direct Pricing:** Simple plan options: $8/month (billed monthly) or $5/month (billed annually, $60 total). No trials.",
+        "",
+        "## Key Pages",
+        "- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.",
+        "- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.",
+        "- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): Detailed comparison with Snoize SysEx Librarian.",
+        "- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): Technical comparison with Windows MIDI-OX.",
+        "- [Payment Methods](https://knob.monster/payment-methods): Supported payment mechanisms and local options.",
+        ""
+    ]
+    
+    lines.append("## Synthesizer Librarians")
+    for slug, data in SEO_DATA.items():
+        synth_name = data.get("synth_name", slug)
+        lines.append(f"- [{synth_name} Librarian](https://knob.monster/{slug}): {data.get('description', '')}")
+        
+    return Response(content="\n".join(lines), media_type="text/plain")
 
-> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.
-
-## Key Features
-- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.
-- **Instant Search:** Fuzzy search through soundbanks by preset name.
-- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
-- **Direct Pricing:** Simple plan options: $8/month (billed monthly) or $5/month (billed annually, $60 total). No trials.
-
-## Key Pages
-- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.
-- [DX7 Librarian](https://knob.monster/dx7): Specs and librarian details for Yamaha DX7.
-- [Juno-106 Librarian](https://knob.monster/juno-106): Setup and dump guide for Roland Juno-106.
-- [Korg M1 Librarian](https://knob.monster/korg-m1): Preset backup guide for Korg M1.
-- [Jupiter-6 Librarian](https://knob.monster/jupiter-6): SysEx library configuration for Roland Jupiter-6.
-- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.
-- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): Detailed comparison with Snoize SysEx Librarian.
-- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): Technical comparison with Windows MIDI-OX.
-- [Payment Methods](https://knob.monster/payment-methods): Supported payment mechanisms and local options.
-"""
-    return Response(content=content, media_type="text/plain")
+# Wildcard fallback route for Programmatic SEO Synthesizer landing pages
+@app.get("/{synth_slug}", response_class=HTMLResponse)
+async def dynamic_synth_seo(synth_slug: str, request: Request):
+    if synth_slug in SEO_DATA:
+        user = get_current_user(request)
+        return render_template("landing.html", request, {"user": user, "seo": SEO_DATA[synth_slug], "seo_slug": synth_slug})
+    raise HTTPException(status_code=404)
 
 

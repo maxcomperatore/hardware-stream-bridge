@@ -293,6 +293,37 @@ def render_template(template_name: str, request: Request, context: dict = None, 
         context = {}
     context["request"] = request
     
+    # Check if we are in Knob Monster's Birthday Week (May 31st to June 6th)
+    query_birthday = False
+    query_christmas = False
+    query_halloween = False
+    try:
+        query_birthday = request.query_params.get("birthday") == "true"
+        query_christmas = request.query_params.get("christmas") == "true"
+        query_halloween = request.query_params.get("halloween") == "true"
+    except Exception:
+        pass
+    force_birthday = query_birthday or os.environ.get("FORCE_BIRTHDAY") == "true"
+    force_christmas = query_christmas or os.environ.get("FORCE_CHRISTMAS") == "true"
+    force_halloween = query_halloween or os.environ.get("FORCE_HALLOWEEN") == "true"
+    
+    now = datetime.now()
+    is_birthday = (now.month == 5 and now.day == 31) or (now.month == 6 and 1 <= now.day <= 6) or force_birthday
+    context["is_birthday_week"] = is_birthday
+    context["birthday_code"] = os.environ.get("BIRTHDAY_DISCOUNT_CODE", "KNOB20")
+    
+    is_christmas = (now.month == 12 and 18 <= now.day <= 31) or (now.month == 1 and now.day == 1) or force_christmas
+    context["is_christmas_week"] = is_christmas
+    context["christmas_code"] = os.environ.get("CHRISTMAS_DISCOUNT_CODE", "XMAS20")
+    
+    is_halloween = (now.month == 10 and 24 <= now.day <= 31) or force_halloween
+    context["is_halloween_week"] = is_halloween
+    
+    # Dynamically calculate the site's age (founded in 2026)
+    # 2026 = Launch, 2027 = Turning 1, etc.
+    birthday_age = now.year - 2026
+    context["birthday_age"] = birthday_age
+    
     import inspect
     sig = inspect.signature(templates.TemplateResponse)
     if "request" in sig.parameters:
@@ -741,6 +772,22 @@ async def create_checkout_session(request: Request, plan: str = "yearly"):
         
     price_id = STRIPE_PRICE_ID_YEARLY if plan == "yearly" else STRIPE_PRICE_ID_MONTHLY
     
+    # Check if we are in an active promotion week to allow coupon codes
+    query_birthday = False
+    query_christmas = False
+    try:
+        query_birthday = request.query_params.get("birthday") == "true"
+        query_christmas = request.query_params.get("christmas") == "true"
+    except Exception:
+        pass
+    force_birthday = query_birthday or os.environ.get("FORCE_BIRTHDAY") == "true"
+    force_christmas = query_christmas or os.environ.get("FORCE_CHRISTMAS") == "true"
+    
+    now = datetime.now()
+    is_birthday = (now.month == 5 and now.day == 31) or (now.month == 6 and 1 <= now.day <= 6) or force_birthday
+    is_christmas = (now.month == 12 and 18 <= now.day <= 31) or (now.month == 1 and now.day == 1) or force_christmas
+    allow_promo = is_birthday or is_christmas
+    
     try:
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -751,7 +798,7 @@ async def create_checkout_session(request: Request, plan: str = "yearly"):
                 },
             ],
             mode='subscription',
-            allow_promotion_codes=False,
+            allow_promotion_codes=allow_promo,
             success_url=BASE_URL + "/dashboard?payment=success",
             cancel_url=BASE_URL + "/dashboard?payment=cancel",
             customer_email=user["email"],
@@ -825,6 +872,7 @@ async def stripe_webhook(request: Request):
     return {"status": "success"}
 
 @app.get("/sitemap.xml")
+@app.get("/sitemap.xml/")
 async def sitemap():
     urls = [
         ("https://knob.monster/", "2026-06-21", "weekly", "1.0"),
@@ -861,6 +909,7 @@ async def sitemap():
     return Response(content="\n".join(xml_lines), media_type="application/xml")
 
 @app.get("/robots.txt")
+@app.get("/robots.txt/")
 async def robots():
     content = """User-agent: *
 Allow: /
@@ -871,6 +920,7 @@ Sitemap: https://knob.monster/sitemap.xml"""
     return Response(content=content, media_type="text/plain")
 
 @app.get("/llms.txt")
+@app.get("/llms.txt/")
 async def llms_txt():
     lines = [
         "# knob.monster",

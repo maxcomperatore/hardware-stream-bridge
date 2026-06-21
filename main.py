@@ -57,8 +57,12 @@ async def earth_day_middleware(request: Request, call_next):
     now = datetime.now()
     is_earth_day = (now.month == 4 and now.day == 22) or force_earth_day
     
-    # Don't block static files or favicon so assets render properly on the landing page
-    if is_earth_day and not request.url.path.startswith("/static") and request.url.path != "/favicon.ico":
+    # Don't block static files, favicon, robots.txt, sitemap.xml, or llms.txt so crawlers and assets work
+    is_excluded = (
+        request.url.path.startswith("/static") or 
+        request.url.path in ["/favicon.ico", "/robots.txt", "/sitemap.xml", "/llms.txt"]
+    )
+    if is_earth_day and not is_excluded:
         html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>

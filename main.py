@@ -380,6 +380,16 @@ async def sysex_librarian_alternatives(request: Request):
 async def sysex_librarian_redirect():
     return RedirectResponse(url="/sysex-librarian-alternatives", status_code=301)
 
+@app.get("/knob-monster-vs-snoize-sysex-librarian", response_class=HTMLResponse)
+async def snoize_comparison(request: Request):
+    user = get_current_user(request)
+    return render_template("snoize_alternatives.html", request, {"user": user})
+
+@app.get("/knob-monster-vs-midi-ox", response_class=HTMLResponse)
+async def midi_ox_comparison(request: Request):
+    user = get_current_user(request)
+    return render_template("midi_ox_alternatives.html", request, {"user": user})
+
 @app.get("/terms", response_class=HTMLResponse)
 async def terms_page(request: Request):
     return render_template("terms.html", request)
@@ -807,6 +817,18 @@ async def sitemap():
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://knob.monster/knob-monster-vs-snoize-sysex-librarian</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://knob.monster/knob-monster-vs-midi-ox</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://knob.monster/login</loc>
     <lastmod>2026-06-05</lastmod>
     <changefreq>monthly</changefreq>
@@ -875,6 +897,8 @@ async def llms_txt():
 - [Korg M1 Librarian](https://knob.monster/korg-m1): Preset backup guide for Korg M1.
 - [Jupiter-6 Librarian](https://knob.monster/jupiter-6): SysEx library configuration for Roland Jupiter-6.
 - [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.
+- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): Detailed comparison with Snoize SysEx Librarian.
+- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): Technical comparison with Windows MIDI-OX.
 - [Payment Methods](https://knob.monster/payment-methods): Supported payment mechanisms and local options.
 """
     return Response(content=content, media_type="text/plain")

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIDI-OX vs Knob Monster: The Best Windows SysEx Utility in 2026?</title>
+    <meta name="description"
+        content="A detailed comparison of MIDI-OX and Knob Monster on Windows 10 & 11. Learn why browser-native Web MIDI is replacing archaic desktop MIDI utilities.">
+    <meta name="keywords"
+        content="midi-ox alternative, midi-ox windows 11, sysex utility windows, midi sysex dump windows, yamaha dx7 librarian windows, browser midi dump">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://knob.monster/knob-monster-vs-midi-ox">
+    <meta property="og:title" content="MIDI-OX vs Knob Monster: The Best Windows SysEx Utility in 2026?">
+    <meta property="og:description"
+        content="A detailed comparison of MIDI-OX and Knob Monster on Windows 10 & 11. Learn why browser-native Web MIDI is replacing archaic desktop MIDI utilities.">
+    <meta property="og:image" content="https://knob.monster/static/og_banner.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://knob.monster/knob-monster-vs-midi-ox">
+    <meta property="twitter:title" content="MIDI-OX vs Knob Monster: The Best Windows SysEx Utility in 2026?">
+    <meta property="twitter:description"
+        content="A detailed comparison of MIDI-OX and Knob Monster on Windows 10 & 11. Learn why browser-native Web MIDI is replacing archaic desktop MIDI utilities.">
+    <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
+
+    <!-- Favicon -->
+    <link id="favicon" rel="shortcut icon" href="/static/logo.png" type="image/png">
+
+    <!-- Fonts -->
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            450: '#7e7e8a',
+                            555: '#52525c',
+                            650: '#43434c',
+                            655: '#3e3e46',
+                            850: '#1c1c21',
+                        },
+                        blue: {
+                            650: '#1d4ed8',
+                        },
+                        rose: {
+                            450: '#fb7185',
+                        },
+                        emerald: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b83f6',
+                            600: '#1d4ed8',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        @keyframes logo-spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .glow-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .glow-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -15px rgba(255, 255, 255, 0.05);
+        }
+    </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "MIDI-OX vs Knob Monster: The Best Windows SysEx Utility in 2026?",
+      "description": "A detailed comparison of MIDI-OX and Knob Monster on Windows 10 & 11. Learn why browser-native Web MIDI is replacing archaic desktop MIDI utilities.",
+      "image": "https://knob.monster/static/og_banner.png",
+      "author": {
+        "@type": "Organization",
+        "name": "knob.monster"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "knob.monster",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://knob.monster/static/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://knob.monster/knob-monster-vs-midi-ox"
+      }
+    }
+    </script>
+</head>
+
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                    <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-6 h-6 object-contain" style="image-rendering: pixelated;">
+                </div>
+                <a href="/" class="font-pixel uppercase text-sm text-white tracking-widest hover:text-emerald-400 transition-colors">knob.monster</a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
+                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/dashboard" id="nav-dashboard-link-user"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Open Vault
+                </a>
+                {% else %}
+                <a href="/login" id="nav-login-link"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
+                    Sign In
+                </a>
+                <a href="/signup" id="nav-signup-link"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Open Vault
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-16 relative z-10">
+        <!-- Hero Title -->
+        <article class="space-y-6 text-center">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+                VS Comparison
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto">
+                MIDI-OX vs Knob Monster
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
+                MIDI-OX has been the legendary Windows MIDI utility since the Windows 95 era. But in 2026, does a complex desktop diagnostic tool make sense for backup management?
+            </p>
+        </article>
+
+        <!-- Quick Summary Table -->
+        <section class="mt-16 overflow-x-auto border border-zinc-900 rounded-xl bg-zinc-950/20">
+            <table class="w-full text-left text-xs font-mono">
+                <thead class="border-b border-zinc-900 bg-zinc-900/40 text-zinc-400">
+                    <tr>
+                        <th class="p-4 uppercase tracking-wider">Feature</th>
+                        <th class="p-4 uppercase tracking-wider text-emerald-400">knob.monster</th>
+                        <th class="p-4 uppercase tracking-wider text-zinc-400">MIDI-OX</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-900 text-zinc-300">
+                    <tr>
+                        <td class="p-4 font-bold">Platform Support</td>
+                        <td class="p-4">Windows, macOS, Linux, ChromeOS</td>
+                        <td class="p-4">Windows Only (Win 95 to Win 11)</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-bold">Driver Dependencies</td>
+                        <td class="p-4">None (Uses Web MIDI API via Browser)</td>
+                        <td class="p-4">Needs active Windows MIDI drivers</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-bold">Auto-Pacing / Delay</td>
+                        <td class="p-4">✅ Auto-calibrated packet pacing</td>
+                        <td class="p-4">⚠️ Manual buffer size & delay configuration</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-bold">Preset Naming</td>
+                        <td class="p-4">✅ Decoded automatically in real-time</td>
+                        <td class="p-4">❌ Raw binary/hex only</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-bold">Cloud Synced Vault</td>
+                        <td class="p-4">✅ Yes (Backup once, recall anywhere)</td>
+                        <td class="p-4">❌ No (Stored locally on your disk)</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-bold">Cost</td>
+                        <td class="p-4">Free to try / $8.00/mo premium subscription</td>
+                        <td class="p-4">Free for non-commercial use</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Deep Dive Section 1: Setup & Interface -->
+        <section class="mt-16 space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase tracking-wide">
+                1. The Modern Web Workflow vs Windows Legacy UI
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                MIDI-OX has a dense, menu-heavy interface that hasn't changed in two decades. To send a SysEx file, you must navigate to <code>View -> SysEx...</code>, then open the SysEx scratchpad window, click <code>File -> Send SysEx File...</code>, and select the file. If you make a mistake with routing, your device won't respond, and diagnosing which of the 12 virtual MIDI ports is active can be a nightmare.
+            </p>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                <strong>knob.monster</strong> completely removes the complexity. Once you grant MIDI access in your browser, the dashboard automatically scans your active USB ports, shows the models connected, and provides a large, friendly 1-click button to dump or restore. No menu digging, no floating child windows.
+            </p>
+        </section>
+
+        <!-- Deep Dive Section 2: Buffer Overflow Prevention -->
+        <section class="mt-12 space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase tracking-wide">
+                2. Pacing calibration: Manual config vs Automatic calibration
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                Windows users trying to load patches onto a vintage synthesizer (like the Korg M1 or Casio CZ-101) with MIDI-OX often run into buffer overflows. This is because modern PC processors send data down the USB pipe faster than the synth's 8-bit chip can handle. To fix this in MIDI-OX, you must manually edit the low-level buffer parameters:
+            </p>
+            <pre class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 text-3xs md:text-2xs font-mono text-zinc-350 overflow-x-auto">
+Configure Buffers:
+- Low Level Input Buffers: Size=256, Num=32
+- Low Level Output Buffers: Size=256, Num=32
+Configure SysEx Delay:
+- Delay between buffers: 60 milliseconds
+- Delay after F7: 100 milliseconds</pre>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                If your settings are slightly off, the transfer fails midway. Knob Monster completely automates this. The app utilizes model-specific transmission calibrations. When you request a Jupiter-6 restore, Knob Monster adjusts the packet spacing dynamically, pacing the bytes automatically so your vintage gear receives every patch flawlessly.
+            </p>
+        </section>
+
+        <!-- Deep Dive Section 3: Cloud Vault and Organization -->
+        <section class="mt-12 space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase tracking-wide">
+                3. File Organization & Real-time Decoding
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                MIDI-OX writes raw binary <code>.syx</code> files. Since they have no text decoding, your PC has no way to preview the contents of a bank without sending it to a synth. If you have 50 backup files on your hard drive, finding the specific one with your favorite brass sounds requires manual notes or trial and error.
+            </p>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                Knob Monster parses ASCII characters from the raw dump in real-time. The moment you backup your synthesizer, Knob Monster auto-labels every individual patch in the cloud database. You can search, edit patch names, tag favorites, and build custom cartridges from a unified, modern web browser interface.
+            </p>
+        </section>
+
+        <!-- Call To Action -->
+        <section class="mt-20 border-t border-zinc-900 pt-16 text-center space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">
+                Skip the Driver Setup and Buffering Nightmares
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">
+                Backup your synthesizers to the cloud instantly. Free to get started, premium features for power users.
+            </p>
+            <div>
+                <a href="/signup" id="footer-cta-signup-midi-ox" class="bg-white hover:bg-zinc-200 text-black px-6 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-150 inline-block">
+                    Try Browser MIDI Now
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 bg-black py-16 relative z-10 text-center select-none mt-20">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <div class="flex items-center gap-2">
+                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
+                        <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-5 h-5 object-contain" style="image-rendering: pixelated;">
+                    </div>
+                    <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
+                </div>
+                <p class="text-[10px] text-zinc-500 max-w-sm mt-3 text-center md:text-left font-sans leading-relaxed">
+                    knob.monster is the browser-native cloud database that automatically decodes and backs up vintage SysEx patches in 1-click.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
+                <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service & Refund Policy</a>
+                <span class="hidden md:inline text-zinc-800">•</span>
+                <a href="/privacy" class="hover:text-white underline transition-colors">Privacy Policy</a>
+                <span class="hidden md:inline text-zinc-800">•</span>
+                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white underline transition-colors">Contact Support</a>
+            </div>
+
+            <p class="text-[10px] text-zinc-655 font-mono text-center md:text-right">
+                &copy; 2026 Half Radiation. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>

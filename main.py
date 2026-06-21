@@ -153,7 +153,7 @@ try:
         ("index_extraction_candid_1780849725170.png", "index_extraction.png"),
         ("dashboard_candid_1780849740378.png", "dashboard.png"),
         ("dashboard_candid_1780849740378.png", "dashboard_preview.png"),
-        ("og_image_monochrome_1782079984045.png", "og_banner.png")
+        ("og_image_cta_landscape_1782080333896.png", "og_banner.png")
     ]:
         src_path = os.path.join(src_dir, src_name)
         if os.path.exists(src_path):
@@ -238,7 +238,7 @@ async def startup_event():
         if os.path.exists(recall_src):
             shutil.copy(recall_src, os.path.join(dest_dir, "recall_button.png"))
 
-        og_src = os.path.join(src_dir, "og_image_monochrome_1782079984045.png")
+        og_src = os.path.join(src_dir, "og_image_cta_landscape_1782080333896.png")
         if os.path.exists(og_src):
             shutil.copy(og_src, os.path.join(dest_dir, "og_banner.png"))
             

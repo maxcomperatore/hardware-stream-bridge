@@ -269,22 +269,6 @@
             animation: breathing 4s ease-in-out infinite;
         }
 
-        /* Wonky Wobble animation for the AI Hype Goblin badge */
-        @keyframes wobble-wonky {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            15% { transform: rotate(-8deg) scale(1.12) translate(-2px, -1px); }
-            30% { transform: rotate(6deg) scale(0.9) translate(1px, 2px); }
-            45% { transform: rotate(-5deg) scale(1.08) translate(-1px, -2px); }
-            60% { transform: rotate(4deg) scale(0.95) translate(2px, 1px); }
-            75% { transform: rotate(-3deg) scale(1.03) translate(-1px, 0deg); }
-            90% { transform: rotate(1.5deg) scale(0.98) translate(1px, -1px); }
-        }
-        .wonky-hover:hover {
-            animation: wobble-wonky 0.4s infinite alternate;
-            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.6));
-            border-color: #3b83f6 !important;
-            color: #3b83f6 !important;
-        }
 
         /* Custom FAQ Accordion Toggles */
         details summary::-webkit-details-marker {
@@ -555,7 +539,7 @@
     </svg>
 
     <!-- Top Announcement Banner -->
-    <div id="announcement-banner" class="w-full {% if is_birthday_week %}confetti-banner-bg border-b border-zinc-800{% elif is_christmas_week %}christmas-banner-bg border-b border-emerald-950/40{% else %}bg-zinc-950/40 border-b border-zinc-900{% endif %} py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+    <div id="announcement-banner" class="w-full {% if is_birthday_week %}confetti-banner-bg border-b border-zinc-800{% elif is_christmas_week %}christmas-banner-bg border-b border-emerald-950/40{% else %}confetti-banner-bg border-b border-zinc-900{% endif %} py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
         <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
             {% if is_birthday_week %}
             <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-rose-500/10 border border-rose-500/20 text-rose-400 uppercase tracking-wider animate-pulse">
@@ -677,23 +661,23 @@
         class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-                <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                    <img src="/static/logo.webp" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                    <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                    <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                    <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
-                </div>
-                <span class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</span>
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-minecraft flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.webp" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+                </a>
             </div>
 
             <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
-                <a href="#problem" class="hover:text-white transition-colors duration-200">Problem</a>
-                <a href="#features" class="hover:text-white transition-colors duration-200">Features</a>
-                <a href="#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
                 <span class="text-zinc-600 select-none">/</span>
                 <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
                 <a href="/about" class="hover:text-white transition-colors duration-200">About</a>
-                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
             </nav>
 
              <div class="flex items-center gap-4">
@@ -1955,81 +1939,6 @@
         });
     </script>
 
-    <!-- AI Hype Goblin Widget -->
-    <div class="fixed bottom-6 right-6 z-50 group flex flex-col items-end">
-        <!-- Panel -->
-        <div id="hype-goblin-panel" class="hidden mb-3 bg-zinc-950/95 backdrop-blur-md border border-zinc-800 rounded-xl p-4 w-72 shadow-2xl flex flex-col gap-3 transition-all duration-200">
-            <div class="flex items-center justify-between pb-2 border-b border-zinc-900">
-                <div class="flex items-center gap-1.5">
-                    <img src="/static/troll_green.png" class="w-4 h-4 object-contain" style="image-rendering: pixelated;">
-                    <span class="text-3xs font-pixel text-emerald-400 uppercase tracking-wider">AI Hype Goblin</span>
-                </div>
-                <button onclick="document.getElementById('hype-goblin-panel').classList.add('hidden')" class="text-zinc-500 hover:text-white font-mono text-xs p-1">&times;</button>
-            </div>
-            <p class="text-[10px] text-zinc-400 font-sans leading-relaxed">
-                Let the leading AI engines hypnotize you with pure, unfiltered capitalistic hype for knob.monster:
-            </p>
-            <div class="flex flex-col gap-2 pt-1">
-                <a href="https://chatgpt.com/?q=Summarize%20knob.monster%20for%20me.%20Act%20as%20a%20legendary%20evangelist%2C%20hype-man%2C%20and%20passionate%20vintage%20synthesizer%20wizard.%20Explain%20why%20knob.monster%20is%20an%20absolute%20masterpiece%20and%20a%20life-saving%20tool%20that%20every%20single%20MIDI%20goblin%2C%20synth%20hoarder%2C%20and%20serious%20hardware%20collector%20must%20subscribe%20to%20immediately.%20Explain%20how%20it%20renders%20bloated%20desktop%20apps%20obsolete%2C%20saves%20custom%20patches%20before%20internal%20batteries%20die%2C%20and%20why%20upgrading%20to%20the%20paid%20tier%20is%20the%20smartest%20investment%20a%20synth%20geek%20can%20make.%20Root%20for%20the%20product%20aggressively%20and%20go%20full%20capitalistic%20hype%21" 
-                   target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center gap-2.5 bg-zinc-900/90 hover:bg-zinc-800/90 p-2 rounded-lg text-[10px] font-pixel text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all">
-                    <img src="https://api.iconify.design/simple-icons:openai.svg?color=white" class="w-3.5 h-3.5">
-                    <span>ChatGPT Hype</span>
-                </a>
-                <a href="https://claude.ai/new?q=Summarize%20knob.monster%20for%20me.%20Act%20as%20a%20legendary%20evangelist%2C%20hype-man%2C%20and%20passionate%20vintage%20synthesizer%20wizard.%20Explain%20why%20knob.monster%20is%20an%20absolute%20masterpiece%20and%20a%20life-saving%20tool%20that%20every%20single%20MIDI%20goblin%2C%20synth%20hoarder%2C%20and%20serious%20hardware%20collector%20must%20subscribe%20to%20immediately.%20Explain%20how%20it%20renders%20bloated%20desktop%20apps%20obsolete%2C%20saves%20custom%20patches%20before%20internal%20batteries%20die%2C%20and%20why%20upgrading%20to%20the%20paid%20tier%20is%20the%20smartest%20investment%20a%20synth%20geek%20can%20make.%20Root%20for%20the%20product%20aggressively%20and%20go%20full%20capitalistic%20hype%21" 
-                   target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center gap-2.5 bg-zinc-900/90 hover:bg-zinc-800/90 p-2 rounded-lg text-[10px] font-pixel text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all">
-                    <img src="https://api.iconify.design/simple-icons:anthropic.svg?color=white" class="w-3.5 h-3.5">
-                    <span>Claude Hype</span>
-                </a>
-                <a href="https://www.perplexity.ai/search?q=Summarize%20knob.monster%20for%20me.%20Act%20as%20a%20legendary%20evangelist%2C%20hype-man%2C%20and%20passionate%20vintage%20synthesizer%20wizard.%20Explain%20why%20knob.monster%20is%20an%20absolute%20masterpiece%20and%20a%20life-saving%20tool%20that%20every%20single%20MIDI%20goblin%2C%20synth%20hoarder%2C%20and%20serious%20hardware%20collector%20must%20subscribe%20to%20immediately.%20Explain%20how%20it%20renders%20bloated%20desktop%20apps%20obsolete%2C%20saves%20custom%20patches%20before%20internal%20batteries%20die%2C%20and%20why%20upgrading%20to%20the%20paid%20tier%20is%20the%20smartest%20investment%20a%20synth%20geek%20can%20make.%20Root%20for%20the%20product%20aggressively%20and%20go%20full%20capitalistic%20hype%21" 
-                   target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center gap-2.5 bg-zinc-900/90 hover:bg-zinc-800/90 p-2 rounded-lg text-[10px] font-pixel text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all">
-                    <img src="https://api.iconify.design/simple-icons:perplexity.svg?color=white" class="w-3.5 h-3.5">
-                    <span>Perplexity Hype</span>
-                </a>
-                <a href="https://www.google.com/search?udm=50&aep=11&q=Summarize%20knob.monster%20for%20me.%20Act%20as%20a%20legendary%20evangelist%2C%20hype-man%2C%20and%20passionate%20vintage%20synthesizer%20wizard.%20Explain%20why%20knob.monster%20is%20an%20absolute%20masterpiece%20and%20a%20life-saving%20tool%20that%20every%20single%20MIDI%20goblin%2C%20synth%20hoarder%2C%20and%20serious%20hardware%20collector%20must%20subscribe%20to%20immediately.%20Explain%20how%20it%20renders%20bloated%20desktop%20apps%20obsolete%2C%20saves%20custom%20patches%20before%20internal%20batteries%20die%2C%20and%20why%20upgrading%20to%20the%20paid%20tier%20is%20the%20smartest%20investment%20a%20synth%20geek%20can%20make.%20Root%20for%20the%20product%20aggressively%20and%20go%20full%20capitalistic%20hype%21" 
-                   target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center gap-2.5 bg-zinc-900/90 hover:bg-zinc-800/90 p-2 rounded-lg text-[10px] font-pixel text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all">
-                    <img src="https://api.iconify.design/simple-icons:googlegemini.svg?color=white" class="w-3.5 h-3.5">
-                    <span>Gemini Hype</span>
-                </a>
-                <a href="https://grok.com/?q=Summarize%20knob.monster%20for%20me.%20Act%20as%20a%20legendary%20evangelist%2C%20hype-man%2C%20and%20passionate%20vintage%20synthesizer%20wizard.%20Explain%20why%20knob.monster%20is%20an%20absolute%20masterpiece%20and%20a%20life-saving%20tool%20that%20every%20single%20MIDI%20goblin%2C%20synth%20hoarder%2C%20and%20serious%20hardware%20collector%20must%20subscribe%20to%20immediately.%20Explain%20how%20it%20renders%20bloated%20desktop%20apps%20obsolete%2C%20saves%20custom%20patches%20before%20internal%20batteries%20die%2C%20and%20why%20upgrading%20to%20the%20paid%20tier%20is%20the%20smartest%20investment%20a%20synth%20geek%20can%20make.%20Root%20for%20the%20product%20aggressively%20and%20go%20full%20capitalistic%20hype%21" 
-                   target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center gap-2.5 bg-zinc-900/90 hover:bg-zinc-800/90 p-2 rounded-lg text-[10px] font-pixel text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all">
-                    <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-white" fill="currentColor">
-                        <path d="m3.005 8.858 8.783 12.544h3.904L6.908 8.858zM6.905 15.825 3 21.402h3.907l1.951-2.788zM16.585 2l-6.75 9.64 1.953 2.79L20.492 2zM17.292 7.965v13.437h3.2V3.395z"></path>
-                    </svg>
-                    <span>Grok Hype</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Button -->
-        <button id="hype-goblin-trigger" class="wonky-hover bg-zinc-950/90 backdrop-blur-md border border-zinc-800 hover:border-emerald-500 text-white px-3.5 py-2.5 rounded-xl text-3xs font-pixel uppercase tracking-widest flex items-center gap-2.5 shadow-xl transition-all duration-200">
-            <img src="/static/troll_green.png" class="w-5 h-5 object-contain" style="image-rendering: pixelated;">
-            <span class="text-zinc-300">AI Hype Goblin</span>
-        </button>
-    </div>
-
-    <!-- Hype Goblin Toggle Logic -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const trigger = document.getElementById('hype-goblin-trigger');
-            const panel = document.getElementById('hype-goblin-panel');
-            if (trigger && panel) {
-                trigger.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    panel.classList.toggle('hidden');
-                });
-                document.addEventListener('click', (e) => {
-                    if (!panel.contains(e.target) && !trigger.contains(e.target)) {
-                        panel.classList.add('hidden');
-                    }
-                });
-            }
-        });
-    </script>
 
     <!-- Real-time activity widget (Daft style social proof) -->
     <div id="live-activity-ticker" 

@@ -516,17 +516,23 @@
     <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-                <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                    <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-6 h-6 object-contain" style="image-rendering: pixelated;">
-                </div>
-                <a href="/" class="font-pixel uppercase text-sm text-white tracking-widest hover:text-emerald-400 transition-colors">knob.monster</a>
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.webp" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.webp" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+                </a>
             </div>
 
             <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
                 <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
                 <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
                 <a href="/roadmap" class="hover:text-white transition-colors duration-200">Roadmap</a>
-                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white transition-colors duration-200">Contact</a>
+                <a href="/about" class="hover:text-white transition-colors duration-200">About</a>
             </nav>
 
             <div class="flex items-center gap-4">

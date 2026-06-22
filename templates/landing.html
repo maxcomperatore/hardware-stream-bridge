@@ -271,6 +271,46 @@
             animation: breathing 4s ease-in-out infinite;
         }
 
+        /* Animated Looping Wavy Underlines */
+        @keyframes waveFlow {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 24px; }
+        }
+        .animated-wave-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .animated-wave-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 6px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'><path d='M0 3 C 3 0, 9 0, 12 3 C 15 6, 21 6, 24 3' fill='none' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round'/></svg>");
+            background-repeat: repeat-x;
+            background-size: 24px 6px;
+            animation: waveFlow 1.2s linear infinite;
+            filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.7));
+        }
+        .animated-wave-underline-halloween {
+            position: relative;
+            display: inline-block;
+        }
+        .animated-wave-underline-halloween::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 6px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'><path d='M0 3 C 3 0, 9 0, 12 3 C 15 6, 21 6, 24 3' fill='none' stroke='%23f97316' stroke-width='2' stroke-linecap='round'/></svg>");
+            background-repeat: repeat-x;
+            background-size: 24px 6px;
+            animation: waveFlow 1.2s linear infinite;
+            filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6));
+        }
+
 
         /* Custom FAQ Accordion Toggles */
         details summary::-webkit-details-marker {
@@ -936,12 +976,20 @@
         <h1
             class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal reveal">
             {% if is_halloween_week %}
-            The Haunted Vault for your <br class="hidden sm:inline">
+            The Haunted Vault for <span class="animated-wave-underline-halloween">your</span> 
+            <span class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-orange-500/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(249,115,22,0.2)]">
+                <img id="hero-visitor-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" alt="Your Avatar" class="w-full h-full object-cover">
+            </span>
+            <br class="hidden sm:inline">
             <span class="text-zinc-400">cemetery of vintage synths.</span>
             {% elif seo %}
             {{ seo.hero_title | safe }}
              {% else %}
-            The iCloud for your <br class="hidden sm:inline">
+            The iCloud for <span class="animated-wave-underline">your</span> 
+            <span class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-emerald-500/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(96,165,250,0.3)]">
+                <img id="hero-visitor-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" alt="Your Avatar" class="w-full h-full object-cover">
+            </span>
+            <br class="hidden sm:inline">
             <span class="text-zinc-400">vintage synthesizers.</span>
             {% endif %}
         </h1>

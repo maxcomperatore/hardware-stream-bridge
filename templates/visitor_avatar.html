@@ -79,6 +79,12 @@
                 landingAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
             }
 
+            // Update landing page hero inline avatar
+            const heroAvatarImg = document.getElementById('hero-visitor-avatar');
+            if (heroAvatarImg) {
+                heroAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+            }
+
             // Update dashboard upgrade paywall avatar
             const upgradeAvatarImg = document.getElementById('dashboard-upgrade-avatar');
             if (upgradeAvatarImg) {

@@ -1049,9 +1049,28 @@
             });
         }
 
-        // Dynamic IP Geolocation for Genius Tag & Pricing Title
-        fetch('https://ipapi.co/json/')
-            .then(res => res.json())
+        // Robust fallback geolocation helper (tries ipapi.co, falls back to ipwho.is on CORS/errors)
+        const fetchGeoData = () => {
+            return fetch('https://ipapi.co/json/')
+                .then(res => {
+                    if (!res.ok) throw new Error();
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data.country_name || !data.country) throw new Error();
+                    return { country_name: data.country_name, country: data.country, ip: data.ip };
+                })
+                .catch(() => {
+                    return fetch('https://ipwho.is/')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.success) throw new Error();
+                            return { country_name: data.country, country: data.country_code, ip: data.ip };
+                        });
+                });
+        };
+
+        fetchGeoData()
             .then(data => {
                 if (data.country_name && data.country) {
                     const country = data.country_name;

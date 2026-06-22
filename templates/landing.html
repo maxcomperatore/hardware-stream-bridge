@@ -1305,7 +1305,8 @@
                     class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale" style="--delay: 200ms;">
                     <!-- Gold Stamp -->
                     <div
-                        class="absolute top-6 right-6 border border-dashed border-[#ffd700]/30 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11">
+                        class="absolute top-6 right-6 border border-dashed border-[#ffd700]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
+                        style="box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);">
                         <img id="landing-upgrade-avatar" src="" class="h-full w-full object-cover rounded-md" alt="King of Knobs Stamp">
                     </div>
 
@@ -1909,9 +1910,28 @@
     </footer>
 
     <script>
-        // Dynamic IP Geolocation for Genius Tag & Pricing Title
-        fetch('https://ipapi.co/json/')
-            .then(res => res.json())
+        // Robust fallback geolocation helper (tries ipapi.co, falls back to ipwho.is on CORS/errors)
+        const fetchGeoData = () => {
+            return fetch('https://ipapi.co/json/')
+                .then(res => {
+                    if (!res.ok) throw new Error();
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data.country_name || !data.country) throw new Error();
+                    return { country_name: data.country_name, country: data.country, ip: data.ip };
+                })
+                .catch(() => {
+                    return fetch('https://ipwho.is/')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.success) throw new Error();
+                            return { country_name: data.country, country: data.country_code, ip: data.ip };
+                        });
+                });
+        };
+
+        fetchGeoData()
             .then(data => {
                 if (data.country_name && data.country) {
                     const country = data.country_name;

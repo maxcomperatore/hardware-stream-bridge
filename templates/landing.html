@@ -323,6 +323,228 @@
       }
     }
     </script>
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Web MIDI SysEx Connection Demo",
+        "description": "Connecting vintage hardware synthesizers directly to a browser using native Web MIDI to back up patch names and RAM registers.",
+        "thumbnailUrl": "https://knob.monster/static/og_banner.png",
+        "uploadDate": "2026-05-30T08:00:00+00:00",
+        "duration": "PT0M10S",
+        "contentUrl": "https://knob.monster/static/1.mp4",
+        "embedUrl": "https://knob.monster/"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Knob Monster Cloud Librarian Walkthrough",
+        "description": "A demonstration of storing, searching, and restoring backup SysEx patch banks directly from a private cloud librarian vault.",
+        "thumbnailUrl": "https://knob.monster/static/og_banner.png",
+        "uploadDate": "2026-05-30T08:00:00+00:00",
+        "duration": "PT0M10S",
+        "contentUrl": "https://knob.monster/static/2.mp4",
+        "embedUrl": "https://knob.monster/"
+      }
+    ]
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is knob.monster?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "knob.monster is a browser-native cloud SysEx librarian and patch manager designed for vintage synthesizers from the 1980s and 90s. It eliminates the need for legacy drivers, desktop software, or complicated MIDI-OX configurations by connecting your instruments directly to the web."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does browser-native Web MIDI work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Modern browsers like Google Chrome, Microsoft Edge, and Opera support the Web MIDI API. This allows our website to communicate directly with your physical USB-to-MIDI interface cables and hardware synths without running any local background utilities or installing manual USB drivers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which synthesizers are fully supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We feature dedicated name-decoding parsers for the Yamaha DX7 (and compatible synths like DX7II, TX7, TX81Z), Roland Juno-106, Korg M1, Roland Jupiter-6 (Europa-modded), and the Casio CZ series. We also feature a universal Generic Scan that works with almost any vintage synthesizer by scanning raw SysEx bulk dumps for readable ASCII character arrays to extract patch names automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a special MIDI interface or cable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any standard, class-compliant USB-to-MIDI interface will work. However, we highly recommend avoiding low-cost, unbranded interface cables, as they lack internal timing buffers and frequently drop or corrupt long SysEx byte blocks during large memory dumps."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I prevent 'Buffer Overflow' errors?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB data. knob.monster's MIDI transmission protocol is fine-tuned to throttle outbound dumps into small packages with 60ms pauses, ensuring your physical hardware can write the data to memory without dropping packets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my patches private and secure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. All soundbanks and SysEx dumps uploaded to knob.monster are stored securely in your private cloud account. We only read the ASCII patch names to display them in your private searchable library, and your raw .syx binary files are never shared."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export and download my SysEx files?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. Every backup captured using knob.monster can be downloaded as a standard .syx binary file at any time. Your data is never locked in, allowing you to use your backups with classic tools like Snoize, MIDI-OX, or hardware sequencers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is knob.monster better than Snoize or MIDI-OX?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Snoize (macOS) and MIDI-OX (Windows) are fantastic, time-tested tools. However, they require local software installation, manual buffer setting adjustments, and do not offer cloud backup or metadata indexing. knob.monster runs instantly on any machine and lets you search and recall patches in seconds."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why use this instead of free utilities or MIDI Quest?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Regardless of whether you understand the complex binary details of SysEx or have no clue what that even is, knob.monster just works without any local installation or setup. It saves you time so you can focus on exploring soundbanks and making music. Plus, you get zero setup, no app sprawl, a secure cloud library, and transparent, fair pricing compared to legacy solutions like SoundQuest/MIDI Quest or SoundTower which cost hundreds of dollars."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it support editing patches in real time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "knob.monster is primarily a librarian for backup, storage, organization, and quick retrieval of patch banks. While it does not feature a graphical synthesizer editor (with virtual sliders for every parameter), it allows you to audition and swap banks in one click."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the price of a knob.monster subscription?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer a simple, transparent pricing structure: $8/month (billed monthly) or $5/month (billed annually at $60/year). Our pricing is locked in forever for early users and doubles after the first 100 members."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you support browser-native MIDI on iOS or Android?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Android Chrome natively supports Web MIDI out of the box. On iOS, you can use specialized Web MIDI browsers (like WebMIDI Browser or WebBLE) to connect your iPhone or iPad to your synthesizers via USB-MIDI or Bluetooth-MIDI adapters."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who is behind knob.monster?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "knob.monster is built by Half Radiation LLC, a small independent team of vintage synthesizer enthusiasts and software developers. We built this tool to solve the frustration of backing up and organizing our own classic hardware rigs."
+          }
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "https://knob.monster/static/logo.webp",
+        "license": "https://knob.monster/terms",
+        "acquireLicensePage": "https://knob.monster/#pricing",
+        "creditText": "knob.monster",
+        "creator": {
+          "@type": "Organization",
+          "name": "knob.monster"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "https://knob.monster/static/studio_detail.webp",
+        "license": "https://knob.monster/terms",
+        "acquireLicensePage": "https://knob.monster/#pricing",
+        "creditText": "knob.monster",
+        "creator": {
+          "@type": "Organization",
+          "name": "knob.monster"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "https://knob.monster/static/midi_handshake.webp",
+        "license": "https://knob.monster/terms",
+        "acquireLicensePage": "https://knob.monster/#pricing",
+        "creditText": "knob.monster",
+        "creator": {
+          "@type": "Organization",
+          "name": "knob.monster"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "https://knob.monster/static/index_extraction.webp",
+        "license": "https://knob.monster/terms",
+        "acquireLicensePage": "https://knob.monster/#pricing",
+        "creditText": "knob.monster",
+        "creator": {
+          "@type": "Organization",
+          "name": "knob.monster"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "https://knob.monster/static/recall_button.webp",
+        "license": "https://knob.monster/terms",
+        "acquireLicensePage": "https://knob.monster/#pricing",
+        "creditText": "knob.monster",
+        "creator": {
+          "@type": "Organization",
+          "name": "knob.monster"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "https://knob.monster/static/trade_offer.webp",
+        "license": "https://knob.monster/terms",
+        "acquireLicensePage": "https://knob.monster/#pricing",
+        "creditText": "knob.monster",
+        "creator": {
+          "@type": "Organization",
+          "name": "knob.monster"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      }
+    ]
+    </script>
+
+
     {% if is_halloween_week %}
     <!-- Google Spooky Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Kablammo&display=swap" rel="stylesheet">
@@ -1397,6 +1619,29 @@
                     <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
                         Snoize (macOS) and MIDI-OX (Windows) are fantastic, time-tested tools. However, they require local software installation, manual buffer setting adjustments, and do not offer cloud backup or metadata indexing. knob.monster runs instantly on any machine and lets you search and recall patches in seconds.
                     </p>
+                </div>
+            </details>
+
+            <!-- FAQ 8.5: Why choose knob.monster -->
+            <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 375ms;">
+                <summary class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                    <span class="flex items-center gap-2.5">
+                        <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="18" height="18" class="h-4.5 w-4.5"
+                            style="filter: invert(1);" />
+                        Why use this instead of free utilities or MIDI Quest?
+                    </span>
+                    <span class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                </summary>
+                <div class="faq-answer mt-3 pl-7 pr-4">
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                        Regardless of whether you understand the complex binary details of SysEx or have no clue what that even is, knob.monster just works without any local installation or setup. It saves you time so you can focus on exploring soundbanks and making music.
+                    </p>
+                    <ul class="text-xs text-zinc-400 leading-relaxed font-normal font-sans list-disc pl-5 mt-2.5 space-y-1.5">
+                        <li><strong>No setup:</strong> Runs instantly inside your browser without configuring legacy drivers or emulators.</li>
+                        <li><strong>No app sprawl:</strong> No need to download, update, and manage multiple OS-specific desktop applications.</li>
+                        <li><strong>Cloud library:</strong> No more searching through nested local folders for missing <code class="bg-zinc-900 px-1 py-0.5 rounded font-mono text-[10px]">.syx</code> archives—your vaults are accessible from any device.</li>
+                        <li><strong>Fair pricing:</strong> Legacy editors like SoundQuest / MIDI Quest or SoundTower demand hundreds of dollars for outdated, clunky experiences. knob.monster offers premium cloud convenience at a fraction of the cost.</li>
+                    </ul>
                 </div>
             </details>
 

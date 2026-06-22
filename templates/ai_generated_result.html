@@ -1,0 +1,81 @@
+<div class="w-full h-full flex flex-col justify-between select-none bg-zinc-950/40 rounded-xl overflow-hidden border border-zinc-900 animate-fade-in">
+    <!-- Result Header / Floppy Card -->
+    <div class="p-5 border-b border-zinc-900 bg-zinc-950/60 flex items-start gap-4">
+        <!-- AI Floppy Disk -->
+        <div class="h-16 w-16 rounded bg-zinc-900 border border-zinc-800 flex flex-col justify-between p-1.5 shadow-inner relative flex-shrink-0">
+            <div class="h-5 w-8 bg-zinc-700 border border-zinc-650 rounded-xs self-center flex items-center justify-center text-[4px] font-roman text-zinc-400 select-none">
+                AI CHIP
+            </div>
+            <div class="bg-emerald-500 text-black rounded-xs p-0.5 flex-1 flex flex-col justify-center text-[6px] font-pixel select-none tracking-normal leading-tight mt-1 overflow-hidden">
+                <span class="truncate uppercase font-bold text-center block tracking-widest text-[5px] text-zinc-950">
+                    GENERATED
+                </span>
+                <span class="text-[4px] text-zinc-900 font-mono text-center block leading-none">
+                    32 VOICES
+                </span>
+            </div>
+        </div>
+        
+        <div class="flex-1 min-w-0">
+            <span class="text-[8px] font-pixel text-emerald-400 uppercase tracking-widest block">Synthesis Completed</span>
+            <h4 class="text-xs font-pixel text-white uppercase truncate mt-0.5">{{ name }}</h4>
+            <p class="text-[9px] text-zinc-500 font-mono mt-0.5">
+                {{ synth_model }} &bull; 32 Voices compiled in real-time.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Voices Grid List -->
+    <div class="flex-1 p-4 overflow-y-auto max-h-[160px] custom-scrollbar bg-zinc-950/20">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {% for patch in patches %}
+            <div class="flex items-center gap-1.5 p-1.5 rounded bg-zinc-900/60 border border-zinc-850">
+                <span class="text-[8.5px] font-lcd text-zinc-600 tracking-wider font-semibold">{{ "%02d" | format(loop.index) }}</span>
+                <span class="text-[9px] font-mono text-zinc-300 truncate uppercase tracking-wide">{{ patch }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Actions Bar -->
+    <div class="p-4 border-t border-zinc-900 bg-zinc-950/60 flex flex-wrap items-center justify-between gap-3">
+        <!-- Left: Sync and download -->
+        <div class="flex items-center gap-2">
+            <button onclick="flashBank({{ bank_id }}, '{{ name }}')" 
+                    class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[8px] font-pixel uppercase tracking-widest transition-all active:scale-95 tactical-pink-button">
+                Sync to Synth
+            </button>
+            
+            <a href="/banks/{{ bank_id }}/download" 
+               class="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 rounded text-[8px] font-pixel uppercase tracking-widest transition-all active:scale-95 tactical-button">
+                Download .SYX
+            </a>
+        </div>
+        
+        <!-- Right: Reset / Generate another -->
+        <button onclick="resetAIGenerator()" 
+                class="text-[7.5px] font-pixel text-zinc-550 hover:text-white uppercase tracking-wider transition-colors">
+            &larr; Generate Another
+        </button>
+    </div>
+</div>
+
+<script>
+    function resetAIGenerator() {
+        const pane = document.getElementById('ai-result-pane');
+        pane.innerHTML = `
+            <div class="max-w-xs space-y-3.5">
+                <div class="h-10 w-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto shadow-inner text-zinc-600">
+                    <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" class="h-5 w-5 opacity-40" style="filter: invert(1);" />
+                </div>
+                <h3 class="text-2xs font-pixel text-zinc-400 uppercase">Awaiting Synthesis Command</h3>
+                <p class="text-[10px] text-zinc-550 font-mono leading-relaxed">
+                    Configure the mutation settings on the left and select 'Generate Novel Cartridge' to compile a brand new preset bank.
+                </p>
+            </div>
+        `;
+    }
+    
+    // Automatically trigger visual sync of side navigation list to show the new bank
+    htmx.ajax('GET', '/banks', { target: '#bank-list-container', swap: 'innerHTML' });
+</script>

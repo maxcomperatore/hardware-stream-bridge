@@ -762,6 +762,145 @@ async def get_bank_hex(request: Request, bank_id: int):
         raise HTTPException(status_code=404, detail="Bank not found")
     return {"sysex_hex": bank["sysex_hex"]}
 
+# --- Sound Shop & Generative AI Endpoints ---
+@app.get("/marketplace", response_class=HTMLResponse)
+async def get_marketplace(request: Request):
+    user = get_current_user(request)
+    if not user:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/login"})
+        return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
+        return RedirectResponse(url="/checkout")
+        
+    packs = [
+        {
+            "id": "m1_matrix",
+            "name": "Korg M1: Off the Matrix",
+            "synth": "Korg M1",
+            "price": "$9.00",
+            "description": "Premium overrides of sample keymaps carefully programmed over 20 years. Features Trident Strings and analog emulations.",
+            "patches_count": 32,
+            "demo_patches": ["Cyber Gate", "HousePiano", "Ethereal", "TridentStr", "Glassy Pad", "Obese Poly"],
+        },
+        {
+            "id": "dx7_retro",
+            "name": "Yamaha DX7: Classic FM Leads & Basses",
+            "synth": "Yamaha DX7",
+            "price": "$9.00",
+            "description": "Punchy FM basses, crystal-clear bell leads, and classic 80s electric pianos. Optimized for live MIDI performance.",
+            "patches_count": 32,
+            "demo_patches": ["Super Bass", "Chime Bell", "FM Rhodes", "Synth Brass", "Sitar Glide", "Atmosphere"],
+        },
+        {
+            "id": "juno_nostalgia",
+            "name": "Roland Juno-106: Nostalgia Plucks & Pads",
+            "synth": "Roland Juno-106",
+            "price": "$9.00",
+            "description": "Warm, chorus-drenched analog pads, snap plucks, and classic 80s sci-fi SFX. Relive the golden age of ambient.",
+            "patches_count": 32,
+            "demo_patches": ["Nostalgia", "Chorused Pad", "Snap Pluck", "Space Wind", "Analog Sweep", "Sub Bass"],
+        }
+    ]
+    return render_template("marketplace.html", request, {"packs": packs, "user": user})
+
+@app.post("/api/generate-ai-bank", response_class=HTMLResponse)
+async def generate_ai_bank(request: Request, synth_model: str = Form(...), chaos_level: int = Form(...)):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401)
+    if user["tier"] != "premium":
+        raise HTTPException(status_code=402, detail="Premium Tier Required")
+        
+    import random
+    
+    # Funny synth preset word lists
+    prefixes = ["PLUCK", "MEGA", "FAT", "SWEET", "SINE", "OBXA", "JX", "FM", "POLY", "MINI", "MOOG", "SPACE", "COSMIC", "DEEP", "EP", "DX", "TRID", "PPG", "GLAS", "B3", "ROT", "CARO", "LIVE", "UP", "DECE"]
+    suffixes = ["PAD", "BASS", "PIANO", "BELL", "LEAD", "WAVE", "STR", "CHM", "BRASS", "KARB", "SAX", "GATE", "WIND", "RHODES", "SIREN", "COWBEL", "PROBE", "CLAV", "HARM", "OBOE", "FLUT", "SITAR"]
+    
+    generated_patches = []
+    for i in range(32):
+        name = f"{random.choice(prefixes)} {random.choice(suffixes)}"
+        name = name.upper()[:10].ljust(10)
+        generated_patches.append(name.strip())
+        
+    # Generate random raw DX7 SysEx bytes (approx 4104 bytes) or model-specific hex
+    data = bytearray(4104)
+    data[0] = 0xF0
+    data[1] = 0x43
+    data[2] = 0x00
+    data[3] = 0x09
+    data[4] = 0x20
+    data[5] = 0x00
+    
+    for i in range(32):
+        voice_offset = 6 + (i * 128)
+        # Fill parameters with pseudo-random numbers
+        for j in range(118):
+            data[voice_offset + j] = random.randint(0, 127)
+        # Format name
+        name_bytes = generated_patches[i].ljust(10)[:10].encode('ascii', errors='ignore')
+        for j in range(len(name_bytes)):
+            data[voice_offset + 118 + j] = name_bytes[j]
+            
+    # Checksum
+    checksum = 0
+    for i in range(6, 4102):
+        checksum += data[i]
+    data[4102] = (-checksum) & 0x7F
+    data[4103] = 0xF7
+    
+    sysex_hex = data.hex()
+    
+    bank_id = database.save_bank("AI Generated Cartridge", "Yamaha DX7", sysex_hex, generated_patches, user["id"])
+    
+    return render_template("ai_generated_result.html", request, {
+        "bank_id": bank_id,
+        "name": "AI Generated Cartridge",
+        "synth_model": "Yamaha DX7",
+        "patches": generated_patches,
+        "sysex_hex": sysex_hex,
+        "user": user
+    })
+
+@app.get("/checkout-pack/{pack_id}")
+async def checkout_pack(request: Request, pack_id: str):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        return RedirectResponse(url="/checkout")
+        
+    packs_data = {
+        "m1_matrix": {
+            "name": "Korg M1: Off the Matrix",
+            "synth": "Korg M1",
+            "hex": "f042301910" + "00" * 4000 + "f7",
+            "patches": ["Cyber Gate", "HousePiano", "Ethereal", "TridentStr", "Glassy Pad", "Obese Poly", "Karimba!", "Narnia"]
+        },
+        "dx7_retro": {
+            "name": "Yamaha DX7: Classic FM Leads & Basses",
+            "synth": "Yamaha DX7",
+            "hex": "f04300092000" + "3f" * 4096 + "f7",
+            "patches": ["Super Bass", "Chime Bell", "FM Rhodes", "Synth Brass", "Sitar Glide", "Atmosphere", "Digi Bass", "Church Org"]
+        },
+        "juno_nostalgia": {
+            "name": "Roland Juno-106: Nostalgia Plucks & Pads",
+            "synth": "Roland Juno-106",
+            "hex": "f0413600" + "1a" * 2000 + "f7",
+            "patches": ["Nostalgia", "Chorused Pad", "Snap Pluck", "Space Wind", "Analog Sweep", "Sub Bass", "Euro Bass", "PPG Wave"]
+        }
+    }
+    
+    if pack_id not in packs_data:
+        raise HTTPException(status_code=404, detail="Pack not found")
+        
+    pack = packs_data[pack_id]
+    database.save_bank(f"{pack['name']} (Purchased)", pack["synth"], pack["hex"], pack["patches"], user["id"])
+    return RedirectResponse(url="/dashboard?payment=pack_success", status_code=303)
+
 # --- Stripe Monetization Endpoints ---
 @app.get("/checkout")
 async def create_checkout_session(request: Request, plan: str = "yearly"):

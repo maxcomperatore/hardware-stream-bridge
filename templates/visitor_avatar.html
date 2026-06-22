@@ -92,15 +92,9 @@
             }
 
             // Update sidebar user avatar
-            const sidebarAvatarImg = document.getElementById('sidebar-user-avatar');
-            if (sidebarAvatarImg) {
-                sidebarAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
-            }
-
-            // Update sidebar logo avatar (replacing the goblin)
-            const sidebarLogoAvatarImg = document.getElementById('sidebar-logo-avatar');
-            if (sidebarLogoAvatarImg) {
-                sidebarLogoAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+            const sidebarUserAvatarImg = document.getElementById('sidebar-user-avatar');
+            if (sidebarUserAvatarImg) {
+                sidebarUserAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
             }
 
             // Inject mini avatar into footer if visitor-geo-tag exists

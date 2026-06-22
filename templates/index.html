@@ -415,11 +415,18 @@
                 <div class="space-y-1.5">
                     <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider pl-1.5">Library</h3>
 
-                    <a href="#"
-                        class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-white bg-zinc-900/60 border border-zinc-855">
+                    <a href="#" onclick="showSavedBanks(event)" id="nav-saved-banks-btn"
+                        class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-white bg-zinc-900/60 border border-zinc-855 transition-all">
                         <img src="https://api.iconify.design/dinkie-icons:file-folder-filled.svg" class="h-4 w-4"
                             style="filter: invert(60%) sepia(43%) saturate(1352%) hue-rotate(124deg) brightness(97%) contrast(92%);" />
                         All Saved Banks
+                    </a>
+
+                    <a href="#" onclick="showMarketplace(event)" id="nav-marketplace-btn"
+                        class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-zinc-400 hover:text-white hover:bg-zinc-900/40 border border-transparent transition-all">
+                        <img src="https://api.iconify.design/lucide:shopping-bag.svg" class="h-4 w-4"
+                            style="filter: invert(0.6);" />
+                        Sound Shop
                     </a>
                 </div>
 
@@ -1739,8 +1746,44 @@
                 showToast("Upgrade Cancelled", "Billing process was cancelled.", "info");
             } else if (params.get('mock_portal') === '1') {
                 showToast("Pro Subscription Toggle", "Mock billing portal active: subscription changed.", "success");
+            } else if (params.get('payment') === 'pack_success') {
+                showToast("Expansion Unlocked", "Sound pack added to your library!", "success");
             }
         });
+
+        // Sound Shop Navigation & Integration
+        function showMarketplace(e) {
+            if (e) e.preventDefault();
+            
+            // Highlight nav button, unhighlight saved banks button
+            const navMarketplace = document.getElementById('nav-marketplace-btn');
+            const navSavedBanks = document.getElementById('nav-saved-banks-btn');
+            
+            navMarketplace.className = "flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-white bg-zinc-900/60 border border-zinc-855 transition-all";
+            navSavedBanks.className = "flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-zinc-400 hover:text-white hover:bg-zinc-900/40 border border-transparent transition-all";
+            
+            // Unselect active banks in the sidebar list
+            document.querySelectorAll('#bank-list-container > a').forEach(a => {
+                a.classList.remove('bg-[#141417]', 'text-white');
+                a.classList.add('text-zinc-400');
+            });
+            
+            // Load the marketplace HTML
+            const content = document.getElementById('patch-explorer-content');
+            content.innerHTML = `
+                <div class="flex-1 flex flex-col items-center justify-center p-8 text-center select-none">
+                    <img src="https://api.iconify.design/dinkie-icons:revert.svg" class="h-5 w-5 animate-spin mb-2" style="filter: invert(0.4);" />
+                    <span class="block text-2xs font-semibold text-zinc-500 font-mono">Loading Sound Shop...</span>
+                </div>
+            `;
+            
+            htmx.ajax('GET', '/marketplace', { target: '#patch-explorer-content', swap: 'innerHTML' });
+        }
+
+        function showSavedBanks(e) {
+            if (e) e.preventDefault();
+            window.location.reload();
+        }
     </script>
 
     <!-- Premium Upgrade Paywall Modal -->

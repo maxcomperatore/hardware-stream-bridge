@@ -880,7 +880,7 @@ async def stripe_webhook(request: Request):
 @app.get("/sitemap.xml")
 @app.get("/sitemap.xml/")
 async def sitemap():
-    sitemap_path = os.path.join(BASE_DIR, "sitemap.xml")
+    sitemap_path = os.path.join(BASE_DIR, "static", "sitemap.xml")
     if os.path.exists(sitemap_path):
         try:
             with open(sitemap_path, "r", encoding="utf-8") as f:
@@ -926,6 +926,15 @@ async def sitemap():
 @app.get("/robots.txt")
 @app.get("/robots.txt/")
 async def robots():
+    robots_path = os.path.join(BASE_DIR, "static", "robots.txt")
+    if os.path.exists(robots_path):
+        try:
+            with open(robots_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            return Response(content=content, media_type="text/plain")
+        except Exception as e:
+            logger.error(f"Failed to read static robots.txt: {e}")
+
     content = """User-agent: *
 Allow: /
 Disallow: /dashboard
@@ -937,6 +946,15 @@ Sitemap: https://knob.monster/sitemap.xml"""
 @app.get("/llms.txt")
 @app.get("/llms.txt/")
 async def llms_txt():
+    llms_path = os.path.join(BASE_DIR, "static", "llms.txt")
+    if os.path.exists(llms_path):
+        try:
+            with open(llms_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            return Response(content=content, media_type="text/plain")
+        except Exception as e:
+            logger.error(f"Failed to read static llms.txt: {e}")
+
     lines = [
         "# knob.monster",
         "",

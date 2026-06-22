@@ -1,0 +1,30 @@
+# knob.monster
+
+> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.
+
+## Key Features
+- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.
+- **Instant Search:** Fuzzy search through soundbanks by preset name.
+- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
+- **Direct Pricing:** Simple plan options: $8/month (billed monthly) or $5/month (billed annually, $60 total). No trials.
+
+## Key Pages
+- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.
+- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.
+- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): Detailed comparison with Snoize SysEx Librarian.
+- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): Technical comparison with Windows MIDI-OX.
+- [Payment Methods](https://knob.monster/payment-methods): Supported payment mechanisms and local options.
+
+## Synthesizer Librarians
+- [Yamaha DX7 Librarian](https://knob.monster/dx7): The ultimate browser-native Yamaha DX7 online librarian and SysEx manager.
+- [Roland Juno-106 Librarian](https://knob.monster/juno-106): The ultimate browser-native Roland Juno-106 SysEx backup utility.
+- [Korg M1 Librarian](https://knob.monster/korg-m1): The ultimate browser-native Korg M1 SysEx librarian and patch recall tool.
+- [Roland Jupiter-6 Librarian](https://knob.monster/jupiter-6): The ultimate browser-native Roland Jupiter-6 online librarian and SysEx manager.
+- [Casio CZ-101 Librarian](https://knob.monster/casio-cz-101): The ultimate browser-native Casio CZ-101 online librarian and SysEx manager.
+- [Yamaha TX81Z Librarian](https://knob.monster/yamaha-tx81z): Back up and manage your Yamaha TX81Z 4-operator FM patches online.
+- [Roland D-50 Librarian](https://knob.monster/roland-d-50): Online browser-native SysEx librarian for the classic Roland D-50 Linear Arithmetic synthesizer.
+- [Prophet-600 Librarian](https://knob.monster/prophet-600): The ultimate online librarian for the Sequential Circuits Prophet-600.
+- [Oberheim Matrix-1000 Librarian](https://knob.monster/oberheim-matrix-1000): Online librarian and patch backup tool for Oberheim Matrix-1000 and Matrix-6.
+- [Yamaha FB-01 Librarian](https://knob.monster/yamaha-fb-01): Online browser-native SysEx manager for the vintage Yamaha FB-01 FM sound module.
+- [Roland Juno-60 Librarian](https://knob.monster/roland-juno-60): Online browser-native SysEx librarian for MIDI-retrofitted Roland Juno-60 synthesizers.
+- [Korg Wavestation Librarian](https://knob.monster/korg-wavestation): Online browser-native SysEx librarian for Korg Wavestation, Wavestation EX, and Wavestation A/D.

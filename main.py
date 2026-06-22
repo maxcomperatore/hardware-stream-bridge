@@ -420,6 +420,75 @@ async def status_page():
         }
     }
 
+@app.get("/api/geoip")
+async def get_geoip(request: Request):
+    # Try to find the client IP
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    
+    # Check headers for reverse proxy IPs
+    x_forwarded_for = request.headers.get("x-forwarded-for")
+    if x_forwarded_for:
+        # Get the first IP in the list
+        client_ip = x_forwarded_for.split(",")[0].strip()
+    else:
+        cf_connecting_ip = request.headers.get("cf-connecting-ip")
+        if cf_connecting_ip:
+            client_ip = cf_connecting_ip.strip()
+        else:
+            x_real_ip = request.headers.get("x-real-ip")
+            if x_real_ip:
+                client_ip = x_real_ip.strip()
+                
+    # Detect if loopback/private
+    is_private = False
+    if client_ip in ["127.0.0.1", "localhost", "::1"]:
+        is_private = True
+    elif client_ip.startswith("192.168.") or client_ip.startswith("10."):
+        is_private = True
+    elif client_ip.startswith("172.16.") or client_ip.startswith("172.17.") or client_ip.startswith("172.18.") or client_ip.startswith("172.19.") or client_ip.startswith("172.20.") or client_ip.startswith("172.21.") or client_ip.startswith("172.22.") or client_ip.startswith("172.23.") or client_ip.startswith("172.24.") or client_ip.startswith("172.25.") or client_ip.startswith("172.26.") or client_ip.startswith("172.27.") or client_ip.startswith("172.28.") or client_ip.startswith("172.29.") or client_ip.startswith("172.30.") or client_ip.startswith("172.31."):
+        is_private = True
+        
+    # Perform server-side geolocation
+    import urllib.request
+    import json
+    
+    # Try ipapi.co first, then fallback to ipwho.is, then standard fallback
+    try:
+        url = "https://ipapi.co/json/" if is_private else f"https://ipapi.co/{client_ip}/json/"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
+        with urllib.request.urlopen(req, timeout=3) as response:
+            data = json.loads(response.read().decode())
+            if "country_name" in data and "country" in data:
+                return {
+                    "country_name": data.get("country_name"),
+                    "country": data.get("country"),
+                    "ip": data.get("ip") if not is_private else "127.0.0.1"
+                }
+    except Exception as e:
+        logger.error(f"Server-side ipapi.co geoip lookup failed: {e}")
+        
+    try:
+        url = "https://ipwho.is/" if is_private else f"https://ipwho.is/{client_ip}"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
+        with urllib.request.urlopen(req, timeout=3) as response:
+            data = json.loads(response.read().decode())
+            if data.get("success"):
+                return {
+                    "country_name": data.get("country"),
+                    "country": data.get("country_code"),
+                    "ip": data.get("ip") if not is_private else "127.0.0.1"
+                }
+    except Exception as e:
+        logger.error(f"Server-side ipwho.is geoip lookup failed: {e}")
+        
+    # Default fallback
+    return {
+        "country_name": "everywhere",
+        "country": "US",
+        "ip": "127.0.0.1"
+    }
+
+
 @app.post("/subscribe")
 async def subscribe(request: Request, email: str = Form(...)):
     email_clean = email.lower().strip()

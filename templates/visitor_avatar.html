@@ -180,24 +180,12 @@
 
         // Try to fetch IP if not logged in to use as a better seed
         if (!userEmail) {
-            // Robust fallback geolocation helper (tries ipapi.co, falls back to ipwho.is on CORS/errors)
+            // Call the secure same-origin server-side proxy to get geoip details
             const fetchGeoData = () => {
-                return fetch('https://ipapi.co/json/')
+                return fetch('/api/geoip')
                     .then(res => {
                         if (!res.ok) throw new Error();
                         return res.json();
-                    })
-                    .then(data => {
-                        if (!data.ip) throw new Error();
-                        return { ip: data.ip };
-                    })
-                    .catch(() => {
-                        return fetch('https://ipwho.is/')
-                            .then(res => res.json())
-                            .then(data => {
-                                if (!data.success) throw new Error();
-                                return { ip: data.ip };
-                            });
                     });
             };
 

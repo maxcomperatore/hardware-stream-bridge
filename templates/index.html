@@ -403,7 +403,7 @@
                         {% if user.tier == 'premium' %}
                         <span class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none">PRO</span>
                         {% else %}
-                        <span class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">TRIAL</span>
+                        <span class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">FREE</span>
                         {% endif %}
                     </div>
                 </div>
@@ -1761,7 +1761,7 @@
             <span class="text-[9px] font-pixel text-amber-500 uppercase tracking-widest">KING OF KNOBS</span>
             <h3 class="text-sm font-pixel text-white uppercase mt-2">Unleash the Knob Monster</h3>
             <p class="text-xs text-zinc-450 mt-3.5 leading-relaxed font-sans font-normal">
-                You have hit the limit of <strong>3 soundbanks</strong>. Start a 7-day free trial of King of Knobs for unlimited
+                You have hit the limit of <strong>3 soundbanks</strong>. Upgrade to King of Knobs PRO for unlimited
                 cloud vaults, instant backups, and continuous hardware sync.
             </p>
 
@@ -1786,13 +1786,14 @@
             <div class="flex flex-col gap-2 mt-2">
                 <a href="/checkout?plan=yearly"
                     class="w-full py-3 bg-white hover:bg-zinc-200 text-black text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
-                    Start 7-Day Free Trial
+                    Upgrade to PRO ($5/mo, billed annually)
                 </a>
-                <span class="text-[8px] text-zinc-555 uppercase font-pixel tracking-wider">
-                    To avoid charges, cancel before the 7-day trial ends.
-                </span>
+                <a href="/checkout?plan=monthly"
+                    class="w-full py-3 bg-[#0e0e11] border border-zinc-800 hover:bg-zinc-900 text-white text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
+                    Upgrade to PRO ($8/mo, billed monthly)
+                </a>
                 <span class="text-[8px] text-zinc-500 uppercase font-sans tracking-wide mt-1 block">
-                    Only $3.75/week (less than 1 coffee per week)
+                    No commitments. Manage/cancel subscription anytime in your billing portal.
                 </span>
                 <button onclick="closeUpgradeModal()"
                     class="w-full py-2 bg-transparent text-zinc-550 hover:text-zinc-400 text-[10px] font-pixel uppercase tracking-wider transition-colors mt-1">

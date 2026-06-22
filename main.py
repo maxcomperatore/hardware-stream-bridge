@@ -473,6 +473,13 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
     if password != confirm_password:
         return render_template("signup.html", request, {"error": "Passwords do not match", "plan": plan})
     
+    if (len(password) < 10 or 
+        not any(c.islower() for c in password) or 
+        not any(c.isupper() for c in password) or 
+        not any(c.isdigit() for c in password) or 
+        not any(not c.isalnum() and not c.isspace() for c in password)):
+        return render_template("signup.html", request, {"error": "Password must be at least 10 characters long and contain uppercase, lowercase, numbers, and special symbols", "plan": plan})
+    
     user = database.get_user_by_email(email)
     if user:
         return render_template("signup.html", request, {"error": "Email is already registered", "plan": plan})

@@ -140,27 +140,6 @@ async def earth_day_middleware(request: Request, call_next):
 # Absolute path of the directory containing main.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Force immediate module-level copy of new static images to override cache
-try:
-    import shutil
-    src_dir = "C:/Users/Usuario/.gemini/antigravity/brain/21cc624c-71d6-4620-83a8-f77a95f2af34"
-    dest_dir = os.path.join(BASE_DIR, "static")
-    os.makedirs(dest_dir, exist_ok=True)
-    for src_name, dest_name in [
-        ("vintage_synth_hero_user_1780849554157.png", "vintage_synth_hero.png"),
-        ("studio_detail_user_1780849586288.png", "studio_detail.png"),
-        ("midi_handshake_user_1780849568376.png", "midi_handshake.png"),
-        ("index_extraction_candid_1780849725170.png", "index_extraction.png"),
-        ("dashboard_candid_1780849740378.png", "dashboard.png"),
-        ("dashboard_candid_1780849740378.png", "dashboard_preview.png"),
-        ("og_image_cta_landscape_1782080333896.png", "og_banner.png")
-    ]:
-        src_path = os.path.join(src_dir, src_name)
-        if os.path.exists(src_path):
-            shutil.copy(src_path, os.path.join(dest_dir, dest_name))
-except Exception as e:
-    print(f"Module-level copy failed: {e}")
-
 # Templates
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
@@ -180,109 +159,6 @@ BASE_URL = "https://knob.monster"
 @app.on_event("startup")
 async def startup_event():
     database.init_db()
-    
-    # Try copying files locally, skip/fail silently on serverless read-only environments
-    try:
-        import shutil
-        src_dir = "C:/Users/Usuario/.gemini/antigravity/brain/21cc624c-71d6-4620-83a8-f77a95f2af34"
-        dest_dir = os.path.join(BASE_DIR, "static")
-        os.makedirs(dest_dir, exist_ok=True)
-        
-        hero_src = os.path.join(src_dir, "vintage_synth_hero_user_1780849554157.png")
-        if os.path.exists(hero_src):
-            shutil.copy(hero_src, os.path.join(dest_dir, "vintage_synth_hero.png"))
-            
-        detail_src = os.path.join(src_dir, "studio_detail_user_1780849586288.png")
-        if os.path.exists(detail_src):
-            shutil.copy(detail_src, os.path.join(dest_dir, "studio_detail.png"))
-
-        camera_src = os.path.join(src_dir, "vintage_camera_404_1780240561882.png")
-        if os.path.exists(camera_src):
-            shutil.copy(camera_src, os.path.join(dest_dir, "vintage_camera_404.png"))
-
-        troll_src = os.path.join(src_dir, "troll.png")
-        troll_dest = os.path.join(dest_dir, "troll.png")
-        if os.path.exists(troll_src):
-            shutil.copy(troll_src, troll_dest)
-            
-        if os.path.exists(troll_dest):
-            shutil.copy(troll_dest, os.path.join(dest_dir, "logo.png"))
-        else:
-            logo_src = os.path.join(src_dir, "vaultsynth_logo_1780240683932.png")
-            if os.path.exists(logo_src):
-                shutil.copy(logo_src, os.path.join(dest_dir, "logo.png"))
-
-        # Copy green and gold trolls
-        for filename, dest_filename in [("troll (1).png", "troll_green.png"), ("troll (2).png", "troll_gold.png")]:
-            path_dest = os.path.join(dest_dir, filename)
-            path_src = os.path.join(src_dir, filename)
-            if os.path.exists(path_dest):
-                shutil.copy(path_dest, os.path.join(dest_dir, dest_filename))
-            elif os.path.exists(path_src):
-                shutil.copy(path_src, os.path.join(dest_dir, dest_filename))
-
-        handshake_src = os.path.join(src_dir, "midi_handshake_user_1780849568376.png")
-        if os.path.exists(handshake_src):
-            shutil.copy(handshake_src, os.path.join(dest_dir, "midi_handshake.png"))
-
-        dashboard_src = os.path.join(src_dir, "dashboard_candid_1780849740378.png")
-        if os.path.exists(dashboard_src):
-            shutil.copy(dashboard_src, os.path.join(dest_dir, "dashboard.png"))
-            shutil.copy(dashboard_src, os.path.join(dest_dir, "dashboard_preview.png"))
-
-        extraction_src = os.path.join(src_dir, "index_extraction_candid_1780849725170.png")
-        if os.path.exists(extraction_src):
-            shutil.copy(extraction_src, os.path.join(dest_dir, "index_extraction.png"))
-
-        recall_src = os.path.join(src_dir, "recall_button_1780240735209.png")
-        if os.path.exists(recall_src):
-            shutil.copy(recall_src, os.path.join(dest_dir, "recall_button.png"))
-
-        og_src = os.path.join(src_dir, "og_image_cta_landscape_1782080333896.png")
-        if os.path.exists(og_src):
-            shutil.copy(og_src, os.path.join(dest_dir, "og_banner.png"))
-            
-        # Optimize assets to WebP
-        if not os.environ.get("VERCEL"):
-            try:
-                try:
-                    from PIL import Image
-                except ImportError:
-                    import subprocess
-                    import sys
-                    subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
-                    from PIL import Image
-
-                images_to_convert = [
-                    ("studio_detail.png", "studio_detail.webp", 800),
-                    ("midi_handshake.png", "midi_handshake.webp", 800),
-                    ("index_extraction.png", "index_extraction.webp", 800),
-                    ("recall_button.png", "recall_button.webp", 800),
-                    ("bgood.png", "bgood.webp", 120),
-                    ("troll_gold.png", "troll_gold.webp", 64),
-                    ("logo.png", "logo.webp", 120),
-                    ("trade_offer.jpg", "trade_offer.webp", 400),
-                ]
-                for src_name, dest_name, max_width in images_to_convert:
-                    src_path = os.path.join(dest_dir, src_name)
-                    dest_path = os.path.join(dest_dir, dest_name)
-                    if os.path.exists(src_path):
-                        with Image.open(src_path) as img:
-                            w, h = img.size
-                            if w > max_width:
-                                ratio = max_width / float(w)
-                                new_h = int(float(h) * ratio)
-                                img = img.resize((max_width, new_h), Image.Resampling.LANCZOS)
-                            
-                            if img.mode in ("RGBA", "LA") or dest_name in ("troll_gold.webp", "logo.webp"):
-                                img.save(dest_path, "WEBP", quality=80)
-                            else:
-                                img.convert("RGB").save(dest_path, "WEBP", quality=80)
-                print("Startup image optimization completed successfully.")
-            except Exception as img_err:
-                print(f"Startup image optimization failed: {img_err}")
-    except Exception as e:
-        print(f"Startup asset copy skipped: {e}")
 
 # Password hashing helper
 def hash_password(password: str) -> str:

@@ -37,6 +37,30 @@ def init_db():
         except Exception as e:
             print(f"Failed to delete leftover changelog template: {e}")
 
+    # Cleanup unused raw high-resolution PNGs and GIFs in static folder
+    unused_assets = [
+        "d:/crew/experiment/static/dashboard_preview.gif",
+        "d:/crew/experiment/static/index_extraction.gif",
+        "d:/crew/experiment/static/index_extraction.png",
+        "d:/crew/experiment/static/dashboard.png",
+        "d:/crew/experiment/static/dashboard_preview.png",
+        "d:/crew/experiment/static/midi_handshake.png",
+        "d:/crew/experiment/static/recall_button.png",
+        "d:/crew/experiment/static/studio_detail.png",
+        "d:/crew/experiment/static/vintage_synth_hero.png",
+        "d:/crew/experiment/static/bgood.png",
+        "d:/crew/experiment/static/troll (1).png",
+        "d:/crew/experiment/static/troll (2).png",
+        "d:/crew/experiment/static/troll_green.png",
+        "d:/crew/experiment/static/troll_gold.png"
+    ]
+    for asset in unused_assets:
+        if os.path.exists(asset):
+            try:
+                os.remove(asset)
+            except Exception as e:
+                print(f"Failed to delete unused asset {asset}: {e}")
+
     conn = get_db_connection()
     cursor = conn.cursor()
     

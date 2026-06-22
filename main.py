@@ -880,6 +880,15 @@ async def stripe_webhook(request: Request):
 @app.get("/sitemap.xml")
 @app.get("/sitemap.xml/")
 async def sitemap():
+    sitemap_path = os.path.join(BASE_DIR, "sitemap.xml")
+    if os.path.exists(sitemap_path):
+        try:
+            with open(sitemap_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            return Response(content=content, media_type="application/xml")
+        except Exception as e:
+            logger.error(f"Failed to read static sitemap.xml: {e}")
+
     urls = [
         ("https://knob.monster/", "2026-06-21", "weekly", "1.0"),
         ("https://knob.monster/sysex-librarian-alternatives", "2026-06-21", "weekly", "0.9"),

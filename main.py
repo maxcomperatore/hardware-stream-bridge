@@ -886,6 +886,13 @@ async def llms_txt():
         
     return Response(content="\n".join(lines), media_type="text/plain")
 
+INDEXNOW_KEY = "7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f"
+
+@app.get(f"/{INDEXNOW_KEY}.txt")
+async def indexnow_key():
+    return Response(content=INDEXNOW_KEY, media_type="text/plain")
+
+
 # Wildcard fallback route for Programmatic SEO Synthesizer landing pages
 @app.get("/{synth_slug}", response_class=HTMLResponse)
 async def dynamic_synth_seo(synth_slug: str, request: Request):

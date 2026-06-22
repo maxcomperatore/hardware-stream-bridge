@@ -11,7 +11,7 @@
     <div class="flex-1 min-w-0 font-sans text-xs text-zinc-300 leading-normal">
         <div class="flex items-center justify-between gap-2 mb-0.5">
             <span class="font-pixel uppercase text-[8px] text-white tracking-widest" id="visitor-avatar-title">IDENTIFYING...</span>
-            <span class="text-zinc-500 text-[8px] font-mono" id="visitor-avatar-ip">DETECTING IP...</span>
+            <span class="text-zinc-500 text-[8px] font-mono hidden" id="visitor-avatar-ip">DETECTING IP...</span>
         </div>
         <p id="visitor-avatar-message" class="text-zinc-400 font-sans font-normal text-2xs leading-relaxed"></p>
     </div>
@@ -70,6 +70,12 @@
                 sidebarAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
             }
 
+            // Update sidebar logo avatar (replacing the goblin)
+            const sidebarLogoAvatarImg = document.getElementById('sidebar-logo-avatar');
+            if (sidebarLogoAvatarImg) {
+                sidebarLogoAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+            }
+
             // Inject mini avatar into footer if visitor-geo-tag exists
             const geoTag = document.getElementById('visitor-geo-tag');
             if (geoTag) {
@@ -85,7 +91,7 @@
                     const footerAvatarImg = document.createElement('img');
                     footerAvatarImg.id = 'footer-visitor-avatar';
                     footerAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
-                    footerAvatarImg.className = 'w-5 h-5 rounded-full border border-zinc-850 bg-zinc-900 object-cover shrink-0 select-none';
+                    footerAvatarImg.className = 'w-5 h-5 rounded-full border border-zinc-855 bg-zinc-900 object-cover shrink-0 select-none';
                     footerAvatarImg.alt = 'Visitor Footer Avatar';
                     
                     wrapper.appendChild(footerAvatarImg);
@@ -97,22 +103,54 @@
             const messageP = document.getElementById('visitor-avatar-message');
             const ipSpan = document.getElementById('visitor-avatar-ip');
 
+            // Arrays for dynamic variety of returning text using hearts, smileys, text emoticons and synth-friendly emojis
+            const guestReturningMsgs = [
+                "We missed you! <3 Good to see you back! 🎹",
+                "Guess who's back! :) So happy to see you! 👾",
+                "Look who it is! Welcome back, legend! 🚀",
+                "Our favorite knob twister is back! <3 Ready for presets?",
+                "Oh my god, you returned! We're so excited! 🎉"
+            ];
+            const guestReturningTitles = [
+                "WELCOME BACK ❤️",
+                "GUESS WHO'S BACK :)",
+                "LOOK WHO IT IS 👾",
+                "HELL YEAH 🚀",
+                "WELCOME HOME <3"
+            ];
+            const userReturningMsgs = [
+                "You're back! We missed you so much. <3 Let's secure some presets! 🛸",
+                "Welcome home, legend! :) Ready to vault some vintage presets?",
+                "Oh my god, you're back! We missed you so much. <3 Let's cook some patches! 🎹",
+                "Guess who's back! 🚀 Ready to backup your Yamaha DX7?",
+                "A perfect day to load some soundbanks. :) Welcome back! 🎉"
+            ];
+            const userReturningTitles = [
+                "WELCOME HOME <3",
+                "PRESET MASTER INBOUND ✨",
+                "SYSTEM ACTIVE 👾",
+                "SIGN IN COMPLETE :)"
+            ];
+
+            const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
             if (userEmail) {
-                if (titleSpan) titleSpan.textContent = "PILOT IDENTIFIED";
                 if (ipSpan) ipSpan.textContent = "USER ACCOUNT";
                 if (isReturning) {
-                    if (messageP) messageP.textContent = "Hey man, good to see you back!";
+                    if (titleSpan) titleSpan.textContent = getRandomItem(userReturningTitles);
+                    if (messageP) messageP.textContent = getRandomItem(userReturningMsgs);
                 } else {
-                    if (messageP) messageP.textContent = "In the future, this is your avatar, it will always be this. Thanks for visiting!";
+                    if (titleSpan) titleSpan.textContent = "MATCH DETECTED ✨";
+                    if (messageP) messageP.textContent = "Look at how cute you are! :) This is your official avatar now. Welcome! 🚀";
                     localStorage.setItem('visitor-returning', 'true');
                 }
             } else {
                 if (isReturning) {
-                    if (titleSpan) titleSpan.textContent = "WELCOME BACK";
-                    if (messageP) messageP.textContent = "Hey man, good to see you back!";
+                    if (titleSpan) titleSpan.textContent = getRandomItem(guestReturningTitles);
+                    if (messageP) messageP.textContent = getRandomItem(guestReturningMsgs);
                 } else {
-                    if (titleSpan) titleSpan.textContent = "NEW SIGNAL DETECTED";
-                    if (messageP) messageP.textContent = "In the future, this is your avatar, it will always be this. Thanks for visiting!";
+                    if (titleSpan) titleSpan.textContent = "NEW SIGNAL DETECTED ✨";
+                    if (messageP) messageP.textContent = "This is your official avatar from now on. Look at how cute you are! <3";
                     localStorage.setItem('visitor-returning', 'true');
                 }
 
@@ -178,6 +216,11 @@
                             const sidebarAvatarImg = document.getElementById('sidebar-user-avatar');
                             if (sidebarAvatarImg) {
                                 sidebarAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(ip)}`;
+                            }
+
+                            const sidebarLogoAvatarImg = document.getElementById('sidebar-logo-avatar');
+                            if (sidebarLogoAvatarImg) {
+                                sidebarLogoAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(ip)}`;
                             }
                         }
                     }

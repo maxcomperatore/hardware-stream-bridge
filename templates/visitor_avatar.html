@@ -1,0 +1,195 @@
+<!-- Visitor Welcome Avatar Toast (Dicebear Open Peeps) -->
+<div id="visitor-avatar-toast" 
+     class="fixed bottom-6 right-6 z-50 max-w-[340px] w-[calc(100vw-3rem)] bg-zinc-950/90 backdrop-blur-md border border-zinc-800 rounded-xl p-4 shadow-2xl flex items-center gap-4 transition-all duration-500 ease-out transform translate-y-32 opacity-0 pointer-events-none select-none">
+    
+    <!-- Avatar Container -->
+    <div class="relative w-12 h-12 rounded-full border border-emerald-500/30 overflow-hidden bg-zinc-900 flex-shrink-0 flex items-center justify-center">
+        <img id="visitor-avatar-img" src="" alt="Visitor Avatar" class="w-full h-full object-cover">
+    </div>
+    
+    <!-- Message Container -->
+    <div class="flex-1 min-w-0 font-sans text-xs text-zinc-300 leading-normal">
+        <div class="flex items-center justify-between gap-2 mb-0.5">
+            <span class="font-pixel uppercase text-[8px] text-white tracking-widest" id="visitor-avatar-title">IDENTIFYING...</span>
+            <span class="text-zinc-500 text-[8px] font-mono" id="visitor-avatar-ip">DETECTING IP...</span>
+        </div>
+        <p id="visitor-avatar-message" class="text-zinc-400 font-sans font-normal text-2xs leading-relaxed"></p>
+    </div>
+    
+    <!-- Close button -->
+    <button onclick="dismissAvatarToast(event)" class="text-zinc-500 hover:text-white transition-colors cursor-pointer text-xs font-bold leading-none select-none p-1 shrink-0">&times;</button>
+</div>
+
+<script>
+    function dismissAvatarToast(event) {
+        if (event) event.stopPropagation();
+        const toast = document.getElementById('visitor-avatar-toast');
+        if (!toast) return;
+        toast.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        toast.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+    }
+
+    (function() {
+        const userEmail = "{{ user.email if user else '' }}";
+        
+        function initVisitorAvatar() {
+            const toast = document.getElementById('visitor-avatar-toast');
+            if (!toast) return;
+
+            const isReturning = localStorage.getItem('visitor-returning');
+            let seed = localStorage.getItem('visitor-avatar-seed');
+            
+            // Set up initial seed if not present
+            if (userEmail) {
+                seed = userEmail;
+            } else if (!seed) {
+                seed = Math.random().toString(36).substring(2, 15);
+                localStorage.setItem('visitor-avatar-seed', seed);
+            }
+
+            const avatarImg = document.getElementById('visitor-avatar-img');
+            if (avatarImg) {
+                avatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+            }
+
+            // Update landing pricing card stamp avatar
+            const landingAvatarImg = document.getElementById('landing-upgrade-avatar');
+            if (landingAvatarImg) {
+                landingAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+            }
+
+            // Update dashboard upgrade paywall avatar
+            const upgradeAvatarImg = document.getElementById('dashboard-upgrade-avatar');
+            if (upgradeAvatarImg) {
+                upgradeAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+            }
+
+            // Update sidebar user avatar
+            const sidebarAvatarImg = document.getElementById('sidebar-user-avatar');
+            if (sidebarAvatarImg) {
+                sidebarAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+            }
+
+            // Inject mini avatar into footer if visitor-geo-tag exists
+            const geoTag = document.getElementById('visitor-geo-tag');
+            if (geoTag) {
+                if (!document.getElementById('footer-visitor-avatar')) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = "flex items-center gap-2 mt-1 justify-center md:justify-start";
+                    
+                    geoTag.classList.remove('mt-1', 'justify-center', 'md:justify-start');
+                    geoTag.classList.add('flex', 'items-center', 'gap-1.5');
+                    
+                    geoTag.parentNode.insertBefore(wrapper, geoTag);
+                    
+                    const footerAvatarImg = document.createElement('img');
+                    footerAvatarImg.id = 'footer-visitor-avatar';
+                    footerAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+                    footerAvatarImg.className = 'w-5 h-5 rounded-full border border-zinc-850 bg-zinc-900 object-cover shrink-0 select-none';
+                    footerAvatarImg.alt = 'Visitor Footer Avatar';
+                    
+                    wrapper.appendChild(footerAvatarImg);
+                    wrapper.appendChild(geoTag);
+                }
+            }
+
+            const titleSpan = document.getElementById('visitor-avatar-title');
+            const messageP = document.getElementById('visitor-avatar-message');
+            const ipSpan = document.getElementById('visitor-avatar-ip');
+
+            if (userEmail) {
+                if (titleSpan) titleSpan.textContent = "PILOT IDENTIFIED";
+                if (ipSpan) ipSpan.textContent = "USER ACCOUNT";
+                if (isReturning) {
+                    if (messageP) messageP.textContent = "Hey man, good to see you back!";
+                } else {
+                    if (messageP) messageP.textContent = "In the future, this is your avatar, it will always be this. Thanks for visiting!";
+                    localStorage.setItem('visitor-returning', 'true');
+                }
+            } else {
+                if (isReturning) {
+                    if (titleSpan) titleSpan.textContent = "WELCOME BACK";
+                    if (messageP) messageP.textContent = "Hey man, good to see you back!";
+                } else {
+                    if (titleSpan) titleSpan.textContent = "NEW SIGNAL DETECTED";
+                    if (messageP) messageP.textContent = "In the future, this is your avatar, it will always be this. Thanks for visiting!";
+                    localStorage.setItem('visitor-returning', 'true');
+                }
+
+                if (seed && seed.includes('.')) {
+                    if (ipSpan) ipSpan.textContent = `IP: ${seed}`;
+                }
+            }
+
+            // Animate in on page startup after a 2-second delay
+            setTimeout(() => {
+                toast.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+                toast.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            }, 2000);
+
+            // Auto dismiss after 12 seconds
+            setTimeout(() => {
+                dismissAvatarToast();
+            }, 12000);
+        }
+
+        // Run on DOM load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initVisitorAvatar);
+        } else {
+            initVisitorAvatar();
+        }
+
+        // Try to fetch IP if not logged in to use as a better seed
+        if (!userEmail) {
+            fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ip) {
+                        const ip = data.ip;
+                        const savedSeed = localStorage.getItem('visitor-avatar-seed');
+                        const ipSpan = document.getElementById('visitor-avatar-ip');
+                        if (ipSpan) ipSpan.textContent = `IP: ${ip}`;
+                        
+                        // Update seed to the actual IP for next time / current page update
+                        if (savedSeed !== ip) {
+                            localStorage.setItem('visitor-avatar-seed', ip);
+                            
+                            const avatarImg = document.getElementById('visitor-avatar-img');
+                            if (avatarImg) {
+                                avatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(ip)}`;
+                            }
+                            
+                            const footerAvatarImg = document.getElementById('footer-visitor-avatar');
+                            if (footerAvatarImg) {
+                                footerAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(ip)}`;
+                            }
+
+                            const landingAvatarImg = document.getElementById('landing-upgrade-avatar');
+                            if (landingAvatarImg) {
+                                landingAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(ip)}`;
+                            }
+
+                            const upgradeAvatarImg = document.getElementById('dashboard-upgrade-avatar');
+                            if (upgradeAvatarImg) {
+                                upgradeAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(ip)}`;
+                            }
+
+                            const sidebarAvatarImg = document.getElementById('sidebar-user-avatar');
+                            if (sidebarAvatarImg) {
+                                sidebarAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(ip)}`;
+                            }
+                        }
+                    }
+                })
+                .catch(() => {
+                    // Fallback to random seed or current seed
+                    const seed = localStorage.getItem('visitor-avatar-seed') || 'visitor';
+                    const ipSpan = document.getElementById('visitor-avatar-ip');
+                    if (ipSpan && ipSpan.textContent === 'DETECTING IP...') {
+                        ipSpan.textContent = 'SECURE CLIENT';
+                    }
+                });
+        }
+    })();
+</script>

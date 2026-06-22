@@ -397,9 +397,12 @@
                     <h2 class="font-pixel uppercase text-[10px] text-white tracking-widest flex items-center justify-center">
                         <img src="/static/logo.png" alt="Knob Monster Logo" class="h-5.5 w-5.5 shrink-0 object-contain mx-auto">
                     </h2>
-                    <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-zinc-850">
-                        <span class="text-[7.5px] font-mono text-zinc-500 truncate max-w-[110px]"
-                            title="{{ user.email }}">{{ user.email }}</span>
+                    <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-zinc-850 gap-2">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <img id="sidebar-user-avatar" src="" class="h-4.5 w-4.5 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none" />
+                            <span class="text-[7.5px] font-mono text-zinc-500 truncate max-w-[85px]"
+                                title="{{ user.email }}">{{ user.email }}</span>
+                        </div>
                         {% if user.tier == 'premium' %}
                         <span class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none">PRO</span>
                         {% else %}
@@ -1754,8 +1757,8 @@
 
             <!-- Mascot Badge -->
             <div
-                class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-4">
-                <img src="/static/troll_gold.webp" class="h-9 w-9 object-contain" />
+                class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-4 overflow-hidden">
+                <img id="dashboard-upgrade-avatar" src="" class="h-full w-full object-cover" />
             </div>
 
             <span class="text-[9px] font-pixel text-amber-500 uppercase tracking-widest">KING OF KNOBS</span>
@@ -1802,6 +1805,7 @@
             </div>
         </div>
     </div>
+    {% include 'visitor_avatar.html' %}
 </body>
 
 </html>

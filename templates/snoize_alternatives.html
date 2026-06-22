@@ -702,6 +702,9 @@ F7 (End of System Exclusive message)</pre>
                 <p class="text-[10px] text-zinc-500 max-w-sm mt-3 text-center md:text-left font-sans leading-relaxed">
                     knob.monster is the browser-native cloud database that automatically decodes and backs up vintage SysEx patches in 1-click.
                 </p>
+                <div id="visitor-geo-tag" class="text-[9px] text-zinc-500 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
+                    <!-- Dynamic IP Geolocation -->
+                </div>
             </div>
 
             <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
@@ -872,6 +875,7 @@ F7 (End of System Exclusive message)</pre>
         })();
     </script>
     {% endif %}
+    {% include 'visitor_avatar.html' %}
 </body>
 
 </html>

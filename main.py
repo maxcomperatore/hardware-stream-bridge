@@ -761,6 +761,9 @@ async def create_portal_session(request: Request):
 
 @app.get("/mock-checkout-success")
 async def mock_checkout_success(email: str):
+    # Protect against production payment bypass
+    if os.environ.get("VERCEL") or (STRIPE_SECRET_KEY and not STRIPE_SECRET_KEY.startswith("sk_test_")):
+        raise HTTPException(status_code=403, detail="Mock checkout is disabled in production")
     database.update_user_tier(email, "premium", "mock_customer_id")
     return RedirectResponse(url="/dashboard?payment=success")
 

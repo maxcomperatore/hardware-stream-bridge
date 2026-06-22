@@ -5,6 +5,7 @@ python-multipart>=0.0.6
 stripe>=8.0.0
 psycopg2-binary>=2.9.9
 bcrypt>=4.0.0
+itsdangerous>=2.1.0
 opentelemetry-api
 opentelemetry-sdk
 opentelemetry-exporter-otlp-proto-http

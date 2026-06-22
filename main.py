@@ -6,6 +6,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import io
 import os
 import hashlib
+import bcrypt
+from itsdangerous import Signer, BadSignature
 import stripe
 import database
 import parser
@@ -147,22 +149,51 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # Configure Stripe key & fallback mock mode
-STRIPE_SECRET_KEY = "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"
-STRIPE_WEBHOOK_SECRET = "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
+STRIPE_SECRET_KEY = os.environ.get(
+    "STRIPE_SECRET_KEY",
+    "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"
+)
+STRIPE_WEBHOOK_SECRET = os.environ.get(
+    "STRIPE_WEBHOOK_SECRET",
+    "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
+)
 stripe.api_key = STRIPE_SECRET_KEY
 
 STRIPE_PRICE_ID_YEARLY = "price_1Tj3wRLuSQGuB7eyeLFUuCSS"
 STRIPE_PRICE_ID_MONTHLY = "price_1Tj3w8LuSQGuB7ey5ZhEjwri"
 BASE_URL = "https://knob.monster"
 
-# Initialize database and copy assets on startup
+# Initialize database on startup
 @app.on_event("startup")
 async def startup_event():
     database.init_db()
 
-# Password hashing helper
+# Secure Cookie Session signing key
+SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "knob_monster_super_secure_default_session_secret_998822")
+cookie_signer = Signer(SESSION_SECRET_KEY)
+
+def sign_session_cookie(email: str) -> str:
+    return cookie_signer.sign(email.encode('utf-8')).decode('utf-8')
+
+def verify_session_cookie(signed_cookie: str) -> str:
+    try:
+        return cookie_signer.unsign(signed_cookie.encode('utf-8')).decode('utf-8')
+    except BadSignature:
+        return None
+
+# Password hashing helpers
 def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    if hashed_password.startswith("$2b$") or hashed_password.startswith("$2a$"):
+        try:
+            return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+        except Exception:
+            return False
+    # Fallback to old unsalted SHA-256 for existing users
+    old_hash = hashlib.sha256(plain_password.encode()).hexdigest()
+    return old_hash == hashed_password
 
 # Version-safe TemplateResponse wrapper to support both Starlette >= 0.28 and Starlette < 0.28
 def render_template(template_name: str, request: Request, context: dict = None, status_code: int = 200):
@@ -210,7 +241,10 @@ def render_template(template_name: str, request: Request, context: dict = None, 
 
 # Session resolver
 def get_current_user(request: Request):
-    email = request.cookies.get("session_user")
+    signed_cookie = request.cookies.get("session_user")
+    if not signed_cookie:
+        return None
+    email = verify_session_cookie(signed_cookie)
     if not email:
         return None
     return database.get_user_by_email(email)
@@ -412,11 +446,19 @@ async def login_page(request: Request, error: str = None):
 @app.post("/login")
 async def do_login(request: Request, email: str = Form(...), password: str = Form(...)):
     user = database.get_user_by_email(email)
-    if not user or user["hashed_password"] != hash_password(password):
+    if not user or not verify_password(password, user["hashed_password"]):
         return render_template("login.html", request, {"error": "Invalid email or password"})
     
     response = RedirectResponse(url="/dashboard", status_code=303)
-    response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
+    response.set_cookie(
+        key="session_user",
+        value=sign_session_cookie(email.lower().strip()),
+        max_age=86400 * 30,
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="lax"
+    )
     logger.info(f"User logged in: {email}", extra={"email": email, "event_type": "login"})
     return response
 
@@ -442,7 +484,15 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
         return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan})
         
     response = RedirectResponse(url=f"/checkout?plan={plan}", status_code=303)
-    response.set_cookie(key="session_user", value=email.lower().strip(), max_age=86400 * 30, path="/")
+    response.set_cookie(
+        key="session_user",
+        value=sign_session_cookie(email.lower().strip()),
+        max_age=86400 * 30,
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="lax"
+    )
     return response
 
 @app.get("/logout")

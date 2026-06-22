@@ -3,8 +3,11 @@ from datetime import datetime
 import psycopg2
 import psycopg2.extras
 
-# Hardcoded Production Neon PostgreSQL Configuration
-DATABASE_URL = "postgresql://neondb_owner:npg_pS5QZYe0Nwyr@ep-empty-night-ajgmosjt-pooler.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+# Load database connection string from environment variables in production
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql://neondb_owner:npg_pS5QZYe0Nwyr@ep-empty-night-ajgmosjt-pooler.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+)
 
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)

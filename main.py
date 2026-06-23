@@ -457,21 +457,7 @@ async def get_geoip(request: Request):
     import urllib.request
     import json
     
-    # Try ipapi.co first, then fallback to ipwho.is, then standard fallback
-    try:
-        url = "https://ipapi.co/json/" if is_private else f"https://ipapi.co/{client_ip}/json/"
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
-        with urllib.request.urlopen(req, timeout=3) as response:
-            data = json.loads(response.read().decode())
-            if "country_name" in data and "country" in data:
-                return {
-                    "country_name": data.get("country_name"),
-                    "country": data.get("country"),
-                    "ip": data.get("ip") if not is_private else "127.0.0.1"
-                }
-    except Exception as e:
-        logger.error(f"Server-side ipapi.co geoip lookup failed: {e}")
-        
+    # Try ipwho.is first (free, fast, no auth key required)
     try:
         url = "https://ipwho.is/" if is_private else f"https://ipwho.is/{client_ip}"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})

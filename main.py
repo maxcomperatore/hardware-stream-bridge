@@ -398,6 +398,11 @@ async def about_page(request: Request):
     user = get_current_user(request)
     return render_template("about.html", request, {"user": user})
 
+@app.get("/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", response_class=HTMLResponse)
+async def blog_web_midi_page(request: Request):
+    user = get_current_user(request)
+    return render_template("blog_web_midi.html", request, {"user": user})
+
 @app.get("/changelog")
 async def changelog_redirect():
     return RedirectResponse(url="/about", status_code=301)
@@ -1039,6 +1044,7 @@ async def sitemap():
         ("https://knob.monster/terms", "2026-06-21", "monthly", "0.5"),
         ("https://knob.monster/privacy", "2026-06-21", "monthly", "0.5"),
         ("https://knob.monster/payment-methods", "2026-06-21", "monthly", "0.6"),
+        ("https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", "2026-06-23", "weekly", "0.9"),
     ]
     
     # Dynamically add all synths from SEO_DATA

@@ -39,7 +39,7 @@ def ping_indexnow(local=False):
     payload = {
         "host": "knob.monster" if not local else "127.0.0.1:8000",
         "key": "7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f",
-        "keyLocation": "https://knob.monster/knob_monster_indexnow_key.txt" if not local else "http://127.0.0.1:8000/knob_monster_indexnow_key.txt",
+        "keyLocation": "https://knob.monster/7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f.txt" if not local else "http://127.0.0.1:8000/7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f.txt",
         "urlList": urls
     }
 

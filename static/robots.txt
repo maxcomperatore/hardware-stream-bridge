@@ -4,3 +4,5 @@ Disallow: /dashboard
 Disallow: /banks/
 
 Sitemap: https://knob.monster/sitemap.xml
+
+Content-Signal: ai-train=no, search=yes, ai-input=no

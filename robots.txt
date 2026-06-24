@@ -4,3 +4,7 @@ Disallow: /dashboard
 Disallow: /banks/
 
 Sitemap: https://knob.monster/sitemap.xml
+
+# Content Signals (https://contentsignals.org/)
+# Declares content usage preferences for AI crawlers per draft-romm-aipref-contentsignals
+Content-Signal: ai-train=no, search=yes, ai-input=no

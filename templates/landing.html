@@ -2516,6 +2516,74 @@
     </script>
     {% endif %}
     {% include 'visitor_avatar.html' %}
+
+    <!-- WebMCP: Expose site tools to AI agents in the browser (https://webmachinelearning.github.io/webmcp/) -->
+    <script>
+    (function() {
+        if (typeof navigator === 'undefined' || !navigator.modelContext) return;
+        try {
+            navigator.modelContext.provideContext({
+                tools: [
+                    {
+                        name: "search_patches",
+                        description: "Search for synthesizer patch names across stored SysEx banks. Returns matching patch names and their bank IDs.",
+                        inputSchema: {
+                            type: "object",
+                            properties: {
+                                query: {
+                                    type: "string",
+                                    description: "Patch name or keyword to search for (e.g. 'bass', 'pad', 'FM Rhodes')"
+                                }
+                            },
+                            required: ["query"]
+                        },
+                        execute: async function(args) {
+                            const res = await fetch('/banks', { credentials: 'include' });
+                            if (!res.ok) return { error: "Authentication required. Please log in at /login." };
+                            return { result: "Search requires a premium account. Visit knob.monster/signup to get started." };
+                        }
+                    },
+                    {
+                        name: "get_pricing",
+                        description: "Get current pricing plans for knob.monster subscriptions",
+                        inputSchema: { type: "object", properties: {} },
+                        execute: async function() {
+                            return {
+                                plans: [
+                                    { name: "Monthly", price: "$8/month", billing: "monthly" },
+                                    { name: "Annual", price: "$5/month ($60/year)", billing: "annual", savings: "37%" }
+                                ],
+                                signup_url: "https://knob.monster/signup",
+                                payment_methods: ["Visa", "Mastercard", "Amex", "Apple Pay", "Google Pay", "Cash App Pay", "Pix", "Naver Pay", "USDC"]
+                            };
+                        }
+                    },
+                    {
+                        name: "get_supported_synthesizers",
+                        description: "Get the list of vintage synthesizers supported by knob.monster for SysEx backup and recall",
+                        inputSchema: { type: "object", properties: {} },
+                        execute: async function() {
+                            return {
+                                synthesizers: [
+                                    "Yamaha DX7", "Roland Juno-106", "Korg M1",
+                                    "Roland Jupiter-6 (+ Europa mod)", "Casio CZ-101",
+                                    "Yamaha TX81Z", "Roland D-50", "Prophet-600",
+                                    "Oberheim Matrix-1000", "Yamaha FB-01",
+                                    "Roland Juno-60 (MIDI modded)", "Korg Wavestation",
+                                    "Generic (universal ASCII patch name scanner)"
+                                ],
+                                api_docs: "https://knob.monster/openapi.json",
+                                llms_txt: "https://knob.monster/llms.txt"
+                            };
+                        }
+                    }
+                ]
+            });
+        } catch (e) {
+            // WebMCP not available — silently ignore
+        }
+    })();
+    </script>
 </body>
 
 </html>

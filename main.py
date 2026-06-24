@@ -1193,7 +1193,517 @@ async def indexnow_key():
     return Response(content=INDEXNOW_KEY, media_type="text/plain")
 
 
+# ============================================================
+# AGENT / AI DISCOVERY INFRASTRUCTURE
+# ============================================================
+
+SITE_BASE = "https://knob.monster"
+
+# --- Middleware: RFC 8288 Link Headers + Markdown Content Negotiation ---
+@app.middleware("http")
+async def agent_discovery_middleware(request: Request, call_next):
+    """
+    1. Injects RFC 8288 Link response headers on every HTML page.
+    2. Handles Accept: text/markdown content negotiation for the homepage.
+    """
+    accept = request.headers.get("accept", "")
+    path = request.url.path
+
+    # Markdown content negotiation (homepage only, text/markdown or text/x-markdown)
+    if path == "/" and ("text/markdown" in accept or "text/x-markdown" in accept):
+        markdown_body = """# knob.monster — The iCloud for Vintage Synthesizers
+
+> Back up, organize, and search SysEx patch banks from your 1980s and 90s hardware directly in your web browser. No desktop software or USB drivers required.
+
+## What It Does
+- **Browser-Native Web MIDI**: Direct connection to physical synth memory banks over SysEx
+- **Instant Search**: Fuzzy search through soundbanks by preset name
+- **1-Click Recall**: Flash entire patch banks back to hardware RAM in one click
+- **Universal Support**: Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers
+
+## Pricing
+| Plan | Price |
+|------|-------|
+| Monthly | $8/month |
+| Annual | $5/month ($60/year, save 37%) |
+
+## API
+- **API Catalog**: </well-known/api-catalog>
+- **OpenAPI Spec**: /openapi.json
+- **Status**: /status
+
+## Authentication
+See /auth.md for agent registration instructions.
+
+## Links
+- [Sign Up](https://knob.monster/signup)
+- [Log In](https://knob.monster/login)
+- [Payment Methods](https://knob.monster/payment-methods)
+- [Roadmap](https://knob.monster/roadmap)
+- [Terms](https://knob.monster/terms)
+- [Privacy](https://knob.monster/privacy)
+"""
+        token_count = len(markdown_body.split())
+        return Response(
+            content=markdown_body,
+            media_type="text/markdown",
+            headers={
+                "Content-Type": "text/markdown; charset=utf-8",
+                "x-markdown-tokens": str(token_count),
+                "Vary": "Accept",
+            }
+        )
+
+    response = await call_next(request)
+
+    # Inject Link headers on HTML responses
+    content_type = response.headers.get("content-type", "")
+    if "text/html" in content_type:
+        link_parts = [
+            f'<{SITE_BASE}/.well-known/api-catalog>; rel="api-catalog"',
+            f'<{SITE_BASE}/openapi.json>; rel="service-desc"',
+            f'<{SITE_BASE}/llms.txt>; rel="service-doc"',
+            f'<{SITE_BASE}/.well-known/oauth-authorization-server>; rel="describedby"',
+        ]
+        response.headers["Link"] = ", ".join(link_parts)
+
+    return response
+
+
+# --- RFC 9727: API Catalog ---
+@app.get("/.well-known/api-catalog")
+async def api_catalog():
+    """RFC 9727 — API catalog in application/linkset+json format."""
+    catalog = {
+        "linkset": [
+            {
+                "anchor": f"{SITE_BASE}/api",
+                "service-desc": [{"href": f"{SITE_BASE}/openapi.json", "type": "application/openapi+json"}],
+                "service-doc": [{"href": f"{SITE_BASE}/llms.txt", "type": "text/plain"}],
+                "status": [{"href": f"{SITE_BASE}/status"}]
+            }
+        ]
+    }
+    return Response(
+        content=__import__("json").dumps(catalog, indent=2),
+        media_type="application/linkset+json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# --- RFC 8414: OAuth 2.0 Authorization Server Metadata ---
+@app.get("/.well-known/oauth-authorization-server")
+async def oauth_authorization_server():
+    """OAuth 2.0 AS metadata per RFC 8414. knob.monster uses Stripe for payments and
+    email/password auth — this document describes what agents need to know."""
+    metadata = {
+        "issuer": SITE_BASE,
+        "authorization_endpoint": f"{SITE_BASE}/login",
+        "token_endpoint": f"{SITE_BASE}/api/token",
+        "registration_endpoint": f"{SITE_BASE}/signup",
+        "scopes_supported": ["read:banks", "write:banks", "read:patches"],
+        "response_types_supported": ["code"],
+        "grant_types_supported": ["authorization_code", "client_credentials"],
+        "token_endpoint_auth_methods_supported": ["client_secret_post", "client_secret_basic"],
+        "service_documentation": f"{SITE_BASE}/llms.txt",
+        "ui_locales_supported": ["en"],
+        "op_policy_uri": f"{SITE_BASE}/privacy",
+        "op_tos_uri": f"{SITE_BASE}/terms",
+        # auth.md agent_auth extension block
+        "agent_auth": {
+            "skill": "https://workos.com/auth.md",
+            "register_uri": f"{SITE_BASE}/signup",
+            "identity_types_supported": ["anonymous"],
+            "anonymous": {
+                "credential_types_supported": ["bearer"],
+                "claim_uri": f"{SITE_BASE}/api/token"
+            }
+        }
+    }
+    return Response(
+        content=__import__("json").dumps(metadata, indent=2),
+        media_type="application/json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# --- RFC 9728: OAuth Protected Resource Metadata ---
+@app.get("/.well-known/oauth-protected-resource")
+async def oauth_protected_resource():
+    """OAuth Protected Resource Metadata per RFC 9728."""
+    metadata = {
+        "resource": SITE_BASE,
+        "authorization_servers": [SITE_BASE],
+        "scopes_supported": ["read:banks", "write:banks", "read:patches"],
+        "bearer_methods_supported": ["header"],
+        "resource_documentation": f"{SITE_BASE}/llms.txt",
+        "resource_policy_uri": f"{SITE_BASE}/privacy"
+    }
+    return Response(
+        content=__import__("json").dumps(metadata, indent=2),
+        media_type="application/json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# --- auth.md: Agent Registration Discovery ---
+@app.get("/auth.md")
+async def auth_md():
+    """auth.md — agent registration instructions per workos/auth.md spec."""
+    content = """# auth.md
+
+This document describes how AI agents can register and authenticate with **knob.monster**.
+
+## Service Overview
+
+knob.monster is a browser-native cloud SysEx librarian for vintage synthesizers. Agents can use the API to manage patch banks and SysEx dumps.
+
+## Authentication
+
+knob.monster uses email/password authentication with session cookies. For agent access, use the REST API endpoints below.
+
+### Registration
+
+To create an account as an agent:
+
+```
+POST https://knob.monster/signup
+Content-Type: application/x-www-form-urlencoded
+
+email=agent@example.com&password=YourPassword123!&confirm_password=YourPassword123!&plan=yearly
+```
+
+### Login / Token Acquisition
+
+```
+POST https://knob.monster/login
+Content-Type: application/x-www-form-urlencoded
+
+email=agent@example.com&password=YourPassword123!
+```
+
+The server sets a `session_user` cookie on successful login. Include this cookie in subsequent API requests.
+
+## API Endpoints
+
+| Endpoint | Method | Description | Auth Required |
+|---|---|---|---|
+| /status | GET | Health check | No |
+| /api/geoip | GET | GeoIP lookup | No |
+| /banks | GET | List patch banks | Yes (premium) |
+| /banks | POST | Upload SysEx bank | Yes (premium) |
+| /banks/{id} | GET | Get bank patches | Yes (premium) |
+| /banks/{id}/download | GET | Download .syx file | Yes (premium) |
+| /banks/{id}/hex | GET | Get hex dump | Yes (premium) |
+| /banks/{id} | DELETE | Delete bank | Yes (premium) |
+
+## Payments
+
+Premium access costs $8/month or $60/year. Agents must subscribe via Stripe checkout at `/checkout`.
+
+## Discovery Documents
+
+- OAuth AS Metadata: `/.well-known/oauth-authorization-server`
+- OAuth Protected Resource: `/.well-known/oauth-protected-resource`
+- API Catalog: `/.well-known/api-catalog`
+- OpenAPI Spec: `/openapi.json`
+- Agent Skills: `/.well-known/agent-skills/index.json`
+- MCP Server Card: `/.well-known/mcp/server-card.json`
+"""
+    return Response(content=content, media_type="text/markdown; charset=utf-8")
+
+
+# --- MCP Server Card (SEP-1649) ---
+@app.get("/.well-known/mcp/server-card.json")
+async def mcp_server_card():
+    """MCP Server Card per SEP-1649 draft standard."""
+    import json
+    card = {
+        "schemaVersion": "1.0",
+        "serverInfo": {
+            "name": "knob.monster",
+            "version": "1.0.0",
+            "description": "Cloud SysEx librarian for vintage synthesizers. Back up, organize, and recall MIDI patch banks via Web MIDI.",
+            "homepage": SITE_BASE,
+            "logo": f"{SITE_BASE}/static/logo.webp"
+        },
+        "transport": {
+            "type": "http",
+            "endpoint": f"{SITE_BASE}/mcp"
+        },
+        "capabilities": {
+            "tools": True,
+            "resources": True,
+            "prompts": False,
+            "sampling": False
+        },
+        "tools": [
+            {
+                "name": "list_banks",
+                "description": "List all SysEx patch banks in the authenticated user's library",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            {
+                "name": "get_bank",
+                "description": "Get the patches in a specific SysEx bank by ID",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "bank_id": {"type": "integer", "description": "The bank ID to retrieve"}
+                    },
+                    "required": ["bank_id"]
+                }
+            }
+        ],
+        "authentication": {
+            "type": "session_cookie",
+            "loginEndpoint": f"{SITE_BASE}/login",
+            "registerEndpoint": f"{SITE_BASE}/signup"
+        },
+        "contact": {
+            "url": f"{SITE_BASE}/about"
+        }
+    }
+    return Response(
+        content=json.dumps(card, indent=2),
+        media_type="application/json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# --- Agent Skills Discovery Index (Cloudflare RFC v0.2.0) ---
+@app.get("/.well-known/agent-skills/index.json")
+async def agent_skills_index():
+    """Agent Skills Discovery Index per Cloudflare RFC v0.2.0."""
+    import json
+    index = {
+        "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+        "skills": [
+            {
+                "name": "sysex-backup",
+                "type": "skill-md",
+                "description": "Back up SysEx patch banks from vintage synthesizers to the cloud via Web MIDI",
+                "url": f"{SITE_BASE}/llms.txt",
+                "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+                "name": "patch-search",
+                "type": "skill-md",
+                "description": "Search and retrieve specific named patches from stored SysEx bank archives",
+                "url": f"{SITE_BASE}/llms.txt",
+                "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+                "name": "bank-recall",
+                "type": "skill-md",
+                "description": "Flash a complete SysEx bank back to synthesizer hardware RAM in one operation",
+                "url": f"{SITE_BASE}/llms.txt",
+                "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        ]
+    }
+    return Response(
+        content=json.dumps(index, indent=2),
+        media_type="application/json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# --- MPP / OpenAPI spec with x-payment-info extensions ---
+@app.get("/openapi.json")
+async def openapi_spec():
+    """OpenAPI 3.1 spec with MPP x-payment-info extensions on premium endpoints."""
+    import json
+    spec = {
+        "openapi": "3.1.0",
+        "info": {
+            "title": "knob.monster API",
+            "version": "1.0.0",
+            "description": "Cloud SysEx librarian API for vintage synthesizers. Manage MIDI patch banks and SysEx dumps.",
+            "contact": {"url": SITE_BASE},
+            "license": {"name": "Proprietary", "url": f"{SITE_BASE}/terms"}
+        },
+        "servers": [{"url": SITE_BASE, "description": "Production"}],
+        "paths": {
+            "/status": {
+                "get": {
+                    "operationId": "getStatus",
+                    "summary": "Health check",
+                    "description": "Returns operational status of all services",
+                    "responses": {
+                        "200": {"description": "Service is operational"}
+                    }
+                }
+            },
+            "/banks": {
+                "get": {
+                    "operationId": "listBanks",
+                    "summary": "List all SysEx patch banks",
+                    "description": "Returns all SysEx banks in the authenticated user's library. Requires premium subscription.",
+                    "x-payment-info": {
+                        "intent": "session",
+                        "method": "stripe",
+                        "amount": 800,
+                        "currency": "USD",
+                        "description": "Premium subscription required ($8/month)"
+                    },
+                    "security": [{"sessionCookie": []}],
+                    "responses": {
+                        "200": {"description": "List of banks"},
+                        "401": {"description": "Not authenticated"},
+                        "402": {"description": "Premium subscription required"}
+                    }
+                },
+                "post": {
+                    "operationId": "createBank",
+                    "summary": "Upload a SysEx patch bank",
+                    "description": "Upload a new SysEx bank (hex string). Requires premium subscription.",
+                    "x-payment-info": {
+                        "intent": "session",
+                        "method": "stripe",
+                        "amount": 800,
+                        "currency": "USD",
+                        "description": "Premium subscription required ($8/month)"
+                    },
+                    "security": [{"sessionCookie": []}],
+                    "requestBody": {
+                        "content": {
+                            "application/x-www-form-urlencoded": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {"type": "string"},
+                                        "synth_model": {"type": "string"},
+                                        "sysex_hex": {"type": "string"}
+                                    },
+                                    "required": ["name", "synth_model", "sysex_hex"]
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "200": {"description": "Bank created"},
+                        "402": {"description": "Premium subscription required"}
+                    }
+                }
+            },
+            "/banks/{bank_id}": {
+                "get": {
+                    "operationId": "getBank",
+                    "summary": "Get patches in a SysEx bank",
+                    "security": [{"sessionCookie": []}],
+                    "parameters": [{"name": "bank_id", "in": "path", "required": True, "schema": {"type": "integer"}}],
+                    "responses": {"200": {"description": "Bank patches"}, "404": {"description": "Not found"}}
+                },
+                "delete": {
+                    "operationId": "deleteBank",
+                    "summary": "Delete a SysEx bank",
+                    "security": [{"sessionCookie": []}],
+                    "parameters": [{"name": "bank_id", "in": "path", "required": True, "schema": {"type": "integer"}}],
+                    "responses": {"200": {"description": "Deleted"}}
+                }
+            },
+            "/banks/{bank_id}/download": {
+                "get": {
+                    "operationId": "downloadBank",
+                    "summary": "Download bank as .syx binary file",
+                    "security": [{"sessionCookie": []}],
+                    "parameters": [{"name": "bank_id", "in": "path", "required": True, "schema": {"type": "integer"}}],
+                    "responses": {"200": {"description": "SysEx binary file"}}
+                }
+            },
+            "/api/geoip": {
+                "get": {
+                    "operationId": "getGeoip",
+                    "summary": "GeoIP country lookup",
+                    "responses": {"200": {"description": "Country info"}}
+                }
+            }
+        },
+        "components": {
+            "securitySchemes": {
+                "sessionCookie": {
+                    "type": "apiKey",
+                    "in": "cookie",
+                    "name": "session_user",
+                    "description": "Signed session cookie obtained via POST /login"
+                }
+            }
+        }
+    }
+    return Response(
+        content=json.dumps(spec, indent=2),
+        media_type="application/openapi+json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# --- UCP: Universal Commerce Protocol discovery ---
+@app.get("/.well-known/ucp")
+async def ucp_discovery():
+    """Universal Commerce Protocol discovery document."""
+    import json
+    doc = {
+        "protocol": "ucp",
+        "version": "1.0",
+        "services": ["checkout", "subscription"],
+        "capabilities": ["stripe_checkout", "recurring_billing"],
+        "endpoints": {
+            "checkout": f"{SITE_BASE}/checkout",
+            "portal": f"{SITE_BASE}/portal",
+            "status": f"{SITE_BASE}/status"
+        },
+        "spec": "https://ucp.dev/specification/overview/"
+    }
+    return Response(
+        content=json.dumps(doc, indent=2),
+        media_type="application/json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# --- ACP: Agentic Commerce Protocol discovery ---
+@app.get("/.well-known/acp.json")
+async def acp_discovery():
+    """Agentic Commerce Protocol discovery document per agenticcommerce.dev."""
+    import json
+    doc = {
+        "protocol": {
+            "name": "acp",
+            "version": "1.0"
+        },
+        "api_base_url": SITE_BASE,
+        "transports": ["https"],
+        "capabilities": {
+            "services": ["subscription"],
+            "payment_methods": ["card", "apple_pay", "google_pay", "cashapp", "pix", "naver_pay", "usdc"],
+            "currencies": ["USD", "BRL", "KRW"],
+            "billing_periods": ["monthly", "annual"]
+        },
+        "endpoints": {
+            "checkout": f"{SITE_BASE}/checkout",
+            "portal": f"{SITE_BASE}/portal",
+            "status": f"{SITE_BASE}/status"
+        },
+        "pricing": {
+            "monthly": {"amount": 800, "currency": "USD", "interval": "month"},
+            "annual": {"amount": 6000, "currency": "USD", "interval": "year"}
+        }
+    }
+    return Response(
+        content=json.dumps(doc, indent=2),
+        media_type="application/json",
+        headers={"Cache-Control": "public, max-age=3600"}
+    )
+
+
+# ============================================================
 # Wildcard fallback route for Programmatic SEO Synthesizer landing pages
+# MUST remain the last route
+# ============================================================
 @app.get("/{synth_slug}", response_class=HTMLResponse)
 async def dynamic_synth_seo(synth_slug: str, request: Request):
     if synth_slug in SEO_DATA:

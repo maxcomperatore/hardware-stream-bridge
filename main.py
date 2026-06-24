@@ -1055,8 +1055,12 @@ async def stripe_webhook(request: Request):
         
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        customer_email = session.get('customer_email') or session.get('metadata', {}).get('user_email')
-        customer_id = session.get('customer')
+        # Use getattr() — Stripe SDK returns typed objects, not plain dicts
+        customer_email = getattr(session, 'customer_email', None)
+        if not customer_email:
+            metadata = getattr(session, 'metadata', None) or {}
+            customer_email = metadata.get('user_email') if isinstance(metadata, dict) else getattr(metadata, 'user_email', None)
+        customer_id = getattr(session, 'customer', None)
         if customer_email:
             existing_user = database.get_user_by_email(customer_email)
             if existing_user:
@@ -1069,9 +1073,10 @@ async def stripe_webhook(request: Request):
             
     elif event['type'] == 'customer.subscription.deleted':
         session = event['data']['object']
-        customer_id = session.get('customer')
-        database.update_user_tier_by_customer_id(customer_id, "free")
-        logger.info(f"Subscription cancelled via Stripe: {customer_id}", extra={"customer_id": customer_id, "event_type": "subscription_deleted"})
+        customer_id = getattr(session, 'customer', None)
+        if customer_id:
+            database.update_user_tier_by_customer_id(customer_id, "free")
+            logger.info(f"Subscription cancelled via Stripe: {customer_id}", extra={"customer_id": customer_id, "event_type": "subscription_deleted"})
         
     return {"status": "success"}
 

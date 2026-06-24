@@ -186,7 +186,9 @@
             api_host: 'https://us.i.posthog.com',
             person_profiles: 'identified_only'
         })
+    </script>
     {% if is_halloween_week %}
+
     <!-- Google Spooky Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Kablammo&display=swap" rel="stylesheet">
     <style>
@@ -659,6 +661,26 @@ Configure SysEx Delay:
             </p>
             <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
                 Knob Monster parses ASCII characters from the raw dump in real-time. The moment you backup your synthesizer, Knob Monster auto-labels every individual patch in the cloud database. You can search, edit patch names, tag favorites, and build custom cartridges from a unified, modern web browser interface.
+            </p>
+        </section>
+
+        <!-- Deep Dive Section 4: Actively Maintained vs Abandoned -->
+        <section class="mt-12 space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase tracking-wide">
+                4. Actively Maintained vs. Effectively Abandoned
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                This one matters more than people think. MIDI-OX's website still lists its system requirements as <strong class="text-zinc-300">Windows 95, 98, Me, 2000, XP, and Vista</strong>. The last public news update on midiox.com? <strong class="text-zinc-300">January 29, 2011</strong>. The page itself was last modified in 2018. The site doesn't even have an SSL certificate &mdash; your browser will warn you before you can download it.
+            </p>
+            <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 font-mono text-3xs md:text-2xs text-zinc-400 space-y-1">
+                <div class="flex gap-3"><span class="text-rose-400">✗</span><span>Last news item: <strong class="text-zinc-300">29-JAN-11</strong></span></div>
+                <div class="flex gap-3"><span class="text-rose-400">✗</span><span>Page last modified: <strong class="text-zinc-300">10-26-2018</strong></span></div>
+                <div class="flex gap-3"><span class="text-rose-400">✗</span><span>No HTTPS / no SSL certificate</span></div>
+                <div class="flex gap-3"><span class="text-rose-400">✗</span><span>Targets Windows 95, 98, Me, XP, Vista</span></div>
+                <div class="flex gap-3"><span class="text-rose-400">✗</span><span>Contact email obfuscated with "_REMOVE_" anti-spam workaround from the early 2000s</span></div>
+            </div>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
+                MIDI-OX is respected freeware with a long history, and that history is exactly the problem. It was built for an era when 56k modems were fast, vintage synths were just used synths, and "cloud" meant weather. Knob Monster ships updates continuously. If your synth isn't supported yet, you can request it and it gets added.
             </p>
         </section>
 

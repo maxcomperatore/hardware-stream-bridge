@@ -12,6 +12,7 @@ import stripe
 import database
 import parser
 import logging
+import traceback
 
 # Initialize standard logging
 logger = logging.getLogger("knob_monster")
@@ -40,9 +41,48 @@ try:
 except Exception as e:
     logger.error(f"Failed to initialize PostHog OTLP Logging: {e}")
 
+# PostHog Python SDK — Error Tracking & Exception Capture
+try:
+    from posthog import Posthog
+    posthog_client = Posthog(
+        project_api_key="phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m",
+        host="https://us.i.posthog.com",
+        enable_exception_autocapture=True,
+    )
+except Exception as e:
+    posthog_client = None
+    logger.error(f"Failed to initialize PostHog SDK: {e}")
+
 app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
 
 from datetime import datetime
+
+@app.exception_handler(Exception)
+async def posthog_exception_handler(request: Request, exc: Exception):
+    """Capture all unhandled exceptions and send to PostHog error tracking."""
+    if posthog_client:
+        try:
+            # Extract user email from session cookie for context
+            distinct_id = "anonymous"
+            session_cookie = request.cookies.get("session_user")
+            if session_cookie:
+                try:
+                    distinct_id = cookie_signer.unsign(session_cookie.encode()).decode()
+                except Exception:
+                    pass
+            posthog_client.capture_exception(
+                exc,
+                distinct_id=distinct_id,
+                properties={
+                    "url": str(request.url),
+                    "method": request.method,
+                    "traceback": traceback.format_exc(),
+                }
+            )
+        except Exception:
+            pass
+    logger.error(f"Unhandled exception on {request.method} {request.url}: {exc}", exc_info=True)
+    return HTMLResponse(content="<h1>500 Internal Server Error</h1>", status_code=500)
 
 @app.middleware("http")
 async def earth_day_middleware(request: Request, call_next):

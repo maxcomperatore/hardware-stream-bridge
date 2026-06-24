@@ -106,6 +106,15 @@ def init_db():
         created_at VARCHAR(100) NOT NULL
     )
     """)
+    # Pending premiums: holds paid-but-not-yet-registered users
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS pending_premiums (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        stripe_customer_id VARCHAR(255),
+        created_at VARCHAR(100) NOT NULL
+    )
+    """)
     
     conn.commit()
     conn.close()
@@ -164,6 +173,35 @@ def update_user_tier_by_customer_id(stripe_customer_id: str, tier: str):
     cursor.execute("UPDATE users SET tier = %s WHERE stripe_customer_id = %s", (tier, stripe_customer_id))
     conn.commit()
     conn.close()
+
+def upsert_pending_premium(email: str, stripe_customer_id: str = None):
+    """Park a premium grant for an email that hasn't registered yet."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    created_at = datetime.now().isoformat()
+    cursor.execute(
+        """
+        INSERT INTO pending_premiums (email, stripe_customer_id, created_at)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (email) DO UPDATE SET stripe_customer_id = EXCLUDED.stripe_customer_id
+        """,
+        (email.lower().strip(), stripe_customer_id, created_at)
+    )
+    conn.commit()
+    conn.close()
+
+def consume_pending_premium(email: str) -> dict:
+    """Check if there's a pending premium for this email. Returns the record and deletes it."""
+    conn = get_db_connection()
+    cursor = get_db_cursor(conn)
+    cursor.execute("SELECT * FROM pending_premiums WHERE email = %s", (email.lower().strip(),))
+    row = cursor.fetchone()
+    if row:
+        dc = conn.cursor()
+        dc.execute("DELETE FROM pending_premiums WHERE email = %s", (email.lower().strip(),))
+        conn.commit()
+    conn.close()
+    return dict(row) if row else None
 
 # --- Bank & Patch scoped operations ---
 def save_bank(name: str, synth_model: str, sysex_hex: str, patch_names: list[str], user_id: int) -> int:

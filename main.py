@@ -549,8 +549,16 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
         logger.info(f"User registered: {email}", extra={"email": email, "plan": plan, "event_type": "signup"})
     except Exception as e:
         return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan})
-        
-    response = RedirectResponse(url=f"/checkout?plan={plan}", status_code=303)
+
+    # Check if this email paid before registering — auto-upgrade instantly
+    pending = database.consume_pending_premium(email)
+    if pending:
+        database.update_user_tier(email, "premium", pending.get("stripe_customer_id"))
+        logger.info(f"Pending premium applied on registration: {email}", extra={"email": email, "event_type": "pending_premium_applied"})
+        response = RedirectResponse(url="/dashboard?payment=success", status_code=303)
+    else:
+        response = RedirectResponse(url=f"/checkout?plan={plan}", status_code=303)
+
     response.set_cookie(
         key="session_user",
         value=sign_session_cookie(email.lower().strip()),
@@ -973,6 +981,20 @@ async def mock_checkout_success(email: str):
     database.update_user_tier(email, "premium", "mock_customer_id")
     return RedirectResponse(url="/dashboard?payment=success")
 
+@app.get("/admin/grant-premium")
+async def admin_grant_premium(email: str, secret: str):
+    """Emergency admin endpoint to manually upgrade a user to premium.
+    Requires ADMIN_SECRET env var to match the secret query param."""
+    admin_secret = os.environ.get("ADMIN_SECRET", "")
+    if not admin_secret or secret != admin_secret:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    user = database.get_user_by_email(email)
+    if not user:
+        raise HTTPException(status_code=404, detail=f"No account found for {email}. Ask them to register first.")
+    database.update_user_tier(email, "premium")
+    logger.info(f"Admin manually granted premium: {email}", extra={"email": email, "event_type": "admin_grant_premium"})
+    return {"status": "ok", "message": f"{email} upgraded to premium successfully."}
+
 @app.post("/stripe-webhook")
 async def stripe_webhook(request: Request):
     payload = await request.body()
@@ -996,8 +1018,14 @@ async def stripe_webhook(request: Request):
         customer_email = session.get('customer_email') or session.get('metadata', {}).get('user_email')
         customer_id = session.get('customer')
         if customer_email:
-            database.update_user_tier(customer_email, "premium", customer_id)
-            logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_activated"})
+            existing_user = database.get_user_by_email(customer_email)
+            if existing_user:
+                database.update_user_tier(customer_email, "premium", customer_id)
+                logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_activated"})
+            else:
+                # User paid before registering — park it, apply on registration
+                database.upsert_pending_premium(customer_email, customer_id)
+                logger.info(f"Pending premium parked (no account yet): {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_pending"})
             
     elif event['type'] == 'customer.subscription.deleted':
         session = event['data']['object']

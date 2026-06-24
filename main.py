@@ -53,6 +53,88 @@ except Exception as e:
     posthog_client = None
     logger.error(f"Failed to initialize PostHog SDK: {e}")
 
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1519380424550256660/VetDI5944BLsDv8bJx-1zWC55EPpVsUaQbFykMbUgWj7O_9K9_q7xWzwxQaziXCC3Fg_"
+
+def _sync_send_alert(event_type: str, message: str, properties: dict = None, distinct_id: str = "system"):
+    # 1. PostHog client capture
+    if posthog_client:
+        try:
+            posthog_client.capture(
+                distinct_id=distinct_id,
+                event=event_type,
+                properties=properties or {}
+            )
+        except Exception as e:
+            logger.error(f"PostHog capture failed: {e}")
+
+    # 2. Discord Webhook
+    try:
+        import urllib.request
+        import json
+        from datetime import datetime
+
+        # Determine color based on event type
+        color = 0x3498db  # Default info blue
+        if any(w in event_type for w in ["signup", "register", "activated", "success"]):
+            color = 0x2ecc71  # Green
+        elif any(w in event_type for w in ["failed", "error", "exception", "unauthorized"]):
+            color = 0xe74c3c  # Red
+        elif any(w in event_type for w in ["delete", "cancel"]):
+            color = 0xe67e22  # Orange
+
+        embed = {
+            "title": event_type.replace("_", " ").title(),
+            "description": message,
+            "color": color,
+            "fields": [],
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "footer": {
+                "text": "knob.monster alerts",
+                "icon_url": "https://knob.monster/static/logo.png"
+            }
+        }
+
+        if properties:
+            for k, v in properties.items():
+                val_str = str(v) if v is not None else "N/A"
+                if len(val_str) > 1024:
+                    val_str = val_str[:1021] + "..."
+                embed["fields"].append({
+                    "name": k.replace("_", " ").title(),
+                    "value": val_str,
+                    "inline": len(val_str) < 40
+                })
+
+        payload = {
+            "username": "Knob Monster Bot",
+            "avatar_url": "https://knob.monster/static/logo.png",
+            "embeds": [embed]
+        }
+
+        req = urllib.request.Request(
+            DISCORD_WEBHOOK_URL,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": "Mozilla/5.0"
+            },
+            method="POST"
+        )
+        with urllib.request.urlopen(req, timeout=5) as response:
+            response.read()
+    except Exception as e:
+        logger.error(f"Discord webhook notification failed: {e}")
+
+def trigger_alert(event_type: str, message: str, properties: dict = None, distinct_id: str = "system"):
+    """
+    Fire-and-forget alert to PostHog and Discord.
+    Runs in a background thread to prevent blocking the request.
+    """
+    import threading
+    thread = threading.Thread(target=_sync_send_alert, args=(event_type, message, properties, distinct_id))
+    thread.daemon = True
+    thread.start()
+
 app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
 
 from datetime import datetime
@@ -60,16 +142,15 @@ from datetime import datetime
 @app.exception_handler(Exception)
 async def posthog_exception_handler(request: Request, exc: Exception):
     """Capture all unhandled exceptions and send to PostHog error tracking."""
+    distinct_id = "anonymous"
+    session_cookie = request.cookies.get("session_user")
+    if session_cookie:
+        try:
+            distinct_id = cookie_signer.unsign(session_cookie.encode()).decode()
+        except Exception:
+            pass
     if posthog_client:
         try:
-            # Extract user email from session cookie for context
-            distinct_id = "anonymous"
-            session_cookie = request.cookies.get("session_user")
-            if session_cookie:
-                try:
-                    distinct_id = cookie_signer.unsign(session_cookie.encode()).decode()
-                except Exception:
-                    pass
             posthog_client.capture_exception(
                 exc,
                 distinct_id=distinct_id,
@@ -81,6 +162,18 @@ async def posthog_exception_handler(request: Request, exc: Exception):
             )
         except Exception:
             pass
+    trigger_alert(
+        "unhandled_exception",
+        f"Unhandled Exception in request: `{exc.__class__.__name__}: {str(exc)}`",
+        {
+            "url": str(request.url),
+            "method": request.method,
+            "exception": exc.__class__.__name__,
+            "error_message": str(exc),
+            "traceback": traceback.format_exc()
+        },
+        distinct_id=distinct_id
+    )
     logger.error(f"Unhandled exception on {request.method} {request.url}: {exc}", exc_info=True)
     return HTMLResponse(content="<h1>500 Internal Server Error</h1>", status_code=500)
 
@@ -105,6 +198,16 @@ async def earth_day_middleware(request: Request, call_next):
         request.url.path in ["/favicon.ico", "/robots.txt", "/sitemap.xml", "/llms.txt"]
     )
     if is_earth_day and not is_excluded:
+        trigger_alert(
+            "earth_day_warning",
+            f"User with IP `{request.client.host if request.client else 'unknown'}` blocked by Earth Day middleware.",
+            {
+                "ip_address": request.client.host if request.client else "unknown",
+                "path": request.url.path,
+                "user_agent": request.headers.get("user-agent", "")
+            },
+            distinct_id="earth_day_block"
+        )
         html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -535,6 +638,16 @@ async def subscribe(request: Request, email: str = Form(...)):
             "ip_address": request.client.host if request.client else "unknown"
         }
     )
+    trigger_alert(
+        "newsletter_signup",
+        f"New newsletter subscription: `{email_clean}`",
+        {
+            "email": email_clean,
+            "referrer": request.headers.get("referer", ""),
+            "ip_address": request.client.host if request.client else "unknown"
+        },
+        distinct_id=email_clean
+    )
     return Response(status_code=200)
 
 @app.get("/login", response_class=HTMLResponse)
@@ -547,6 +660,12 @@ async def login_page(request: Request, error: str = None):
 async def do_login(request: Request, email: str = Form(...), password: str = Form(...)):
     user = database.get_user_by_email(email)
     if not user or not verify_password(password, user["hashed_password"]):
+        trigger_alert(
+            "login_failed",
+            f"Failed login attempt for user `{email}`.",
+            {"email": email, "reason": "invalid_credentials"},
+            distinct_id=email or "anonymous"
+        )
         return render_template("login.html", request, {"error": "Invalid email or password"})
     
     response = RedirectResponse(url="/dashboard", status_code=303)
@@ -560,6 +679,12 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
         samesite="lax"
     )
     logger.info(f"User logged in: {email}", extra={"email": email, "event_type": "login"})
+    trigger_alert(
+        "user_login", 
+        f"User `{email}` logged in successfully.",
+        {"email": email},
+        distinct_id=email
+    )
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
@@ -571,6 +696,12 @@ async def signup_page(request: Request, error: str = None, plan: str = "yearly")
 @app.post("/signup")
 async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...), plan: str = "yearly"):
     if password != confirm_password:
+        trigger_alert(
+            "user_signup_failed",
+            f"Sign up failed for `{email}`: passwords do not match",
+            {"email": email, "reason": "password_mismatch"},
+            distinct_id="anonymous"
+        )
         return render_template("signup.html", request, {"error": "Passwords do not match", "plan": plan})
     
     if (len(password) < 10 or 
@@ -578,16 +709,40 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
         not any(c.isupper() for c in password) or 
         not any(c.isdigit() for c in password) or 
         not any(not c.isalnum() and not c.isspace() for c in password)):
+        trigger_alert(
+            "user_signup_failed",
+            f"Sign up failed for `{email}`: weak password",
+            {"email": email, "reason": "weak_password"},
+            distinct_id="anonymous"
+        )
         return render_template("signup.html", request, {"error": "Password must be at least 10 characters long and contain uppercase, lowercase, numbers, and special symbols", "plan": plan})
     
     user = database.get_user_by_email(email)
     if user:
+        trigger_alert(
+            "user_signup_failed",
+            f"Sign up failed for `{email}`: email already registered",
+            {"email": email, "reason": "email_registered"},
+            distinct_id=email
+        )
         return render_template("signup.html", request, {"error": "Email is already registered", "plan": plan})
     
     try:
         database.create_user(email, hash_password(password))
         logger.info(f"User registered: {email}", extra={"email": email, "plan": plan, "event_type": "signup"})
+        trigger_alert(
+            "user_signup",
+            f"New user registered: `{email}` with plan `{plan}`.",
+            {"email": email, "plan": plan},
+            distinct_id=email
+        )
     except Exception as e:
+        trigger_alert(
+            "user_signup_failed",
+            f"Account registration failed for `{email}`: {str(e)}",
+            {"email": email, "plan": plan, "error": str(e)},
+            distinct_id=email or "anonymous"
+        )
         return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan})
 
     # Check if this email paid before registering — auto-upgrade instantly
@@ -595,6 +750,12 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
     if pending:
         database.update_user_tier(email, "premium", pending.get("stripe_customer_id"))
         logger.info(f"Pending premium applied on registration: {email}", extra={"email": email, "event_type": "pending_premium_applied"})
+        trigger_alert(
+            "pending_premium_applied",
+            f"Pending premium applied for `{email}` upon registration.",
+            {"email": email, "customer_id": pending.get("stripe_customer_id")},
+            distinct_id=email
+        )
         response = RedirectResponse(url="/dashboard?payment=success", status_code=303)
     else:
         response = RedirectResponse(url=f"/checkout?plan={plan}", status_code=303)
@@ -700,6 +861,12 @@ async def create_bank(
     # Save to database scoped to user
     database.save_bank(name, synth_model, clean_hex, patch_names, user["id"])
     logger.info(f"SysEx bank created: {name} ({synth_model}) for user {user['email']}", extra={"email": user["email"], "synth_model": synth_model, "patches_count": len(patch_names), "event_type": "sysex_upload"})
+    trigger_alert(
+        "sysex_bank_created",
+        f"SysEx bank `{name}` created for user `{user['email']}`.",
+        {"email": user["email"], "synth_model": synth_model, "patches_count": len(patch_names)},
+        distinct_id=user["email"]
+    )
     
     # Return updated bank list
     banks = database.get_all_banks(user["id"])
@@ -741,6 +908,12 @@ async def upload_bank_file(
         
     database.save_bank(name, synth_model, sysex_hex, patch_names, user["id"])
     logger.info(f"SysEx file uploaded: {name} ({synth_model}) for user {user['email']}", extra={"email": user["email"], "synth_model": synth_model, "patches_count": len(patch_names), "event_type": "sysex_upload"})
+    trigger_alert(
+        "sysex_file_uploaded",
+        f"SysEx file `{name}` uploaded for user `{user['email']}`.",
+        {"email": user["email"], "synth_model": synth_model, "patches_count": len(patch_names)},
+        distinct_id=user["email"]
+    )
     
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
@@ -894,6 +1067,12 @@ async def generate_ai_bank(request: Request, synth_model: str = Form(...), chaos
     sysex_hex = data.hex()
     
     bank_id = database.save_bank("AI Generated Cartridge", "Yamaha DX7", sysex_hex, generated_patches, user["id"])
+    trigger_alert(
+        "ai_bank_generated",
+        f"AI Generated Cartridge created for `{user['email']}`.",
+        {"email": user["email"], "synth_model": "Yamaha DX7", "patches_count": len(generated_patches)},
+        distinct_id=user["email"]
+    )
     
     return render_template("ai_generated_result.html", request, {
         "bank_id": bank_id,
@@ -938,6 +1117,12 @@ async def checkout_pack(request: Request, pack_id: str):
         
     pack = packs_data[pack_id]
     database.save_bank(f"{pack['name']} (Purchased)", pack["synth"], pack["hex"], pack["patches"], user["id"])
+    trigger_alert(
+        "marketplace_pack_purchased",
+        f"Marketplace pack `{pack['name']}` purchased/added for user `{user['email']}`.",
+        {"email": user["email"], "pack_id": pack_id, "pack_name": pack["name"], "synth_model": pack["synth"]},
+        distinct_id=user["email"]
+    )
     return RedirectResponse(url="/dashboard?payment=pack_success", status_code=303)
 
 # --- Stripe Monetization Endpoints ---
@@ -985,8 +1170,20 @@ async def create_checkout_session(request: Request, plan: str = "yearly"):
             customer_email=user["email"],
             metadata={"user_email": user["email"]}
         )
+        trigger_alert(
+            "stripe_checkout_initiated",
+            f"Stripe checkout initiated by `{user['email']}` for plan `{plan}`.",
+            {"email": user["email"], "plan": plan, "checkout_session_id": checkout_session.id},
+            distinct_id=user["email"]
+        )
         return RedirectResponse(url=checkout_session.url, status_code=303)
     except Exception as e:
+        trigger_alert(
+            "stripe_checkout_failed",
+            f"Stripe checkout session creation failed for `{user['email']}`: {str(e)}",
+            {"email": user["email"], "plan": plan, "error": str(e)},
+            distinct_id=user["email"]
+        )
         raise HTTPException(status_code=500, detail=f"Stripe integration session error: {str(e)}")
 
 @app.get("/portal")
@@ -1009,8 +1206,20 @@ async def create_portal_session(request: Request):
             customer=user["stripe_customer_id"],
             return_url=BASE_URL + "/dashboard"
         )
+        trigger_alert(
+            "stripe_portal_opened",
+            f"Stripe customer billing portal opened by `{user['email']}`.",
+            {"email": user["email"], "customer_id": user["stripe_customer_id"]},
+            distinct_id=user["email"]
+        )
         return RedirectResponse(url=portal_session.url, status_code=303)
     except Exception as e:
+        trigger_alert(
+            "stripe_portal_failed",
+            f"Stripe billing portal opening failed for `{user['email']}`: {str(e)}",
+            {"email": user["email"], "error": str(e)},
+            distinct_id=user["email"]
+        )
         raise HTTPException(status_code=500, detail=f"Billing portal connection error: {str(e)}")
 
 @app.get("/mock-checkout-success")
@@ -1027,12 +1236,24 @@ async def admin_grant_premium(email: str, secret: str):
     Requires ADMIN_SECRET env var to match the secret query param."""
     admin_secret = os.environ.get("ADMIN_SECRET", "")
     if not admin_secret or secret != admin_secret:
+        trigger_alert(
+            "unauthorized_admin_access",
+            f"Unauthorized attempt to grant premium to `{email}` using secret `{secret}`.",
+            {"email": email, "provided_secret": secret},
+            distinct_id="admin_attacker"
+        )
         raise HTTPException(status_code=403, detail="Forbidden")
     user = database.get_user_by_email(email)
     if not user:
         raise HTTPException(status_code=404, detail=f"No account found for {email}. Ask them to register first.")
     database.update_user_tier(email, "premium")
     logger.info(f"Admin manually granted premium: {email}", extra={"email": email, "event_type": "admin_grant_premium"})
+    trigger_alert(
+        "admin_grant_premium",
+        f"Admin manually granted premium status to `{email}`.",
+        {"email": email},
+        distinct_id=email
+    )
     return {"status": "ok", "message": f"{email} upgraded to premium successfully."}
 
 @app.post("/stripe-webhook")
@@ -1066,10 +1287,22 @@ async def stripe_webhook(request: Request):
             if existing_user:
                 database.update_user_tier(customer_email, "premium", customer_id)
                 logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_activated"})
+                trigger_alert(
+                    "subscription_activated",
+                    f"Subscription activated via Stripe for `{customer_email}`.",
+                    {"email": customer_email, "customer_id": customer_id},
+                    distinct_id=customer_email
+                )
             else:
                 # User paid before registering — park it, apply on registration
                 database.upsert_pending_premium(customer_email, customer_id)
                 logger.info(f"Pending premium parked (no account yet): {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_pending"})
+                trigger_alert(
+                    "subscription_pending",
+                    f"Subscription paid but pending registration for `{customer_email}`.",
+                    {"email": customer_email, "customer_id": customer_id},
+                    distinct_id=customer_email
+                )
             
     elif event['type'] == 'customer.subscription.deleted':
         session = event['data']['object']
@@ -1077,6 +1310,12 @@ async def stripe_webhook(request: Request):
         if customer_id:
             database.update_user_tier_by_customer_id(customer_id, "free")
             logger.info(f"Subscription cancelled via Stripe: {customer_id}", extra={"customer_id": customer_id, "event_type": "subscription_deleted"})
+            trigger_alert(
+                "subscription_deleted",
+                f"Subscription cancelled via Stripe for customer ID `{customer_id}`.",
+                {"customer_id": customer_id},
+                distinct_id=customer_id
+            )
         
     return {"status": "success"}
 

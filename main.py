@@ -46,7 +46,7 @@ try:
     from posthog import Posthog
     posthog_client = Posthog(
         project_api_key="phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m",
-        host="https://us.i.posthog.com",
+        host="https://e.knob.monster",
         enable_exception_autocapture=True,
     )
 except Exception as e:

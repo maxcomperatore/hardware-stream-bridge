@@ -502,7 +502,17 @@ SEO_DATA = {
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     user = get_current_user(request)
-    return render_template("landing.html", request, {"user": user})
+    user_count = 6
+    try:
+        conn = database.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM users;")
+        user_count = cursor.fetchone()[0]
+        conn.close()
+    except Exception as e:
+        logger.error(f"Failed to query user count: {e}")
+    remaining_slots = max(0, 105 - user_count)
+    return render_template("landing.html", request, {"user": user, "remaining_slots": remaining_slots})
 
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):

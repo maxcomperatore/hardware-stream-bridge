@@ -142,7 +142,7 @@
         selectPatch(0, currentActivePatches[0].name);
     }
     
-    let cachedPatchRows = null;
+    var cachedPatchRows = null;
     function filterPatches() {
         if (!cachedPatchRows) {
             cachedPatchRows = document.querySelectorAll('.patch-row');

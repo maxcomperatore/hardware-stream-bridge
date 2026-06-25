@@ -87,9 +87,10 @@ def parse_juno106_sysex(data: bytes) -> list[str]:
             break
         
         msg = data[start:end+1]
-        # Juno-106 patch dump is around 40-42 bytes
-        if 30 <= len(msg) <= 50:
-            # Parameters are the last 34 bytes before checksum (usually at len-2)
+        # Juno-106 individual program dump: 5 header bytes + 34 params + 1 checksum + F7
+        # Total is typically 41–56 bytes depending on firmware/channel byte; widen to 30–80 to be safe
+        if 30 <= len(msg) <= 80:
+            # Parameters are the 34 bytes before checksum (len-2 is checksum, len-1 is F7)
             params = msg[len(msg)-36:len(msg)-2]
             patches.append(analyze_juno106_patch(params, len(patches)))
         idx = end + 1
@@ -97,10 +98,8 @@ def parse_juno106_sysex(data: bytes) -> list[str]:
     if patches:
         return patches
         
-    # If nothing was found, but it has Roland headers, generate dummy list
-    if b'\xF0\x41' in data:
-        return [f"A{((i%64)//8)+1}{((i%64)%8)+1} Juno Patch" for i in range(128)]
-        
+    # Return empty — do NOT generate fake names. If we have no valid messages,
+    # the frontend should show 0 patches so the user knows capture was incomplete.
     return []
 
 def analyze_juno106_patch(p: bytes, index: int) -> str:

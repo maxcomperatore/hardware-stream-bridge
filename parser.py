@@ -59,73 +59,56 @@ def parse_dx7_sysex(data: bytes) -> list[str]:
 
 def parse_juno106_sysex(data: bytes) -> list[str]:
     """
-    Parses Roland Juno-106 Sysex patch parameters.
+    Parses Roland Juno-106 SysEx patch parameters.
+    APR format: F0 41 30 0n pp [16 sliders] [sw1] [sw2] F7 (23 bytes total).
     Since Juno-106 patches have no digital name tags, we analyze VCF, DCO, VCA,
     and envelope parameters to dynamically generate descriptive name tags (e.g., 'A11 ACID BASS').
     """
-    patches = []
-    
-    # Juno-106 patch parameters are typically 34 bytes
-    # If the length of the file matches exactly 128 patches * 34 bytes
-    if len(data) == 4352:
-        for i in range(128):
-            offset = i * 34
-            if offset + 34 <= len(data):
-                p = data[offset:offset+34]
-                patches.append(analyze_juno106_patch(p, i))
-        return patches
-        
-    # Standard Roland SysEx format: F0 41 [operation] 36 [program/parameters] ... F7
-    # Let's search for F0 41 ... F7
+    patches_by_number: dict[int, str] = {}
+
     idx = 0
-    while True:
+    while idx < len(data):
         start = data.find(b'\xF0\x41', idx)
         if start == -1:
             break
         end = data.find(b'\xF7', start)
         if end == -1:
             break
-        
-        msg = data[start:end+1]
-        # Juno-106 individual program dump: 5 header bytes + 34 params + 1 checksum + F7
-        # Total is typically 41–56 bytes depending on firmware/channel byte; widen to 30–80 to be safe
-        if 30 <= len(msg) <= 80:
-            # Parameters are the 34 bytes before checksum (len-2 is checksum, len-1 is F7)
-            params = msg[len(msg)-36:len(msg)-2]
-            patches.append(analyze_juno106_patch(params, len(patches)))
+
+        msg = data[start:end + 1]
+        # Juno-106 APR: F0 41 30 0n pp + 16 slider bytes + 2 switch bytes + F7
+        if len(msg) >= 24 and msg[2] == 0x30:
+            patch_num = msg[4]
+            if patch_num < 128:
+                sliders = msg[5:21]
+                if len(sliders) == 16:
+                    patches_by_number[patch_num] = analyze_juno106_patch(sliders, patch_num)
         idx = end + 1
-        
-    if patches:
-        return patches
-        
-    # Return empty — do NOT generate fake names. If we have no valid messages,
-    # the frontend should show 0 patches so the user knows capture was incomplete.
+
+    if patches_by_number:
+        return [patches_by_number[i] for i in sorted(patches_by_number.keys())]
+
     return []
 
 def analyze_juno106_patch(p: bytes, index: int) -> str:
-    if len(p) < 30:
-        group = "A" if index < 64 else "B"
-        local_idx = index % 64
-        bank = (local_idx // 8) + 1
-        patch = (local_idx % 8) + 1
-        return f"{group}{bank}{patch} JUNO PATCH"
-        
-    # Extract sliders
-    # In Juno-106 patch layout:
-    # VCF Cutoff is at offset 13 (0-127)
-    # VCF Resonance is at offset 14 (0-127)
-    # Attack is at offset 21 (0-127)
-    # Sustain is at offset 23 (0-127)
-    # Release is at offset 24 (0-127)
-    # Sub Level is at offset 25 (0-127)
-    # Noise Level is at offset 26 (0-127)
-    cutoff = p[13] if 13 < len(p) else 64
-    resonance = p[14] if 14 < len(p) else 0
-    attack = p[21] if 21 < len(p) else 0
-    sustain = p[23] if 23 < len(p) else 64
-    release = p[24] if 24 < len(p) else 30
-    sub_level = p[25] if 25 < len(p) else 0
-    noise_level = p[26] if 26 < len(p) else 0
+    group = "A" if index < 64 else "B"
+    local_idx = index % 64
+    bank = (local_idx // 8) + 1
+    patch = (local_idx % 8) + 1
+    prefix = f"{group}{bank}{patch}"
+
+    if len(p) < 16:
+        return f"{prefix} JUNO PATCH"
+
+    # 16 slider bytes: LFO rate, LFO delay, DCO LFO, DCO PWM, Noise, VCF Freq,
+    # VCF Res, VCF Env, VCF LFO, VCF KYBD, VCA Level, A, D, S, R, Sub Osc
+    noise_level = p[4]
+    cutoff = p[5]
+    resonance = p[6]
+    attack = p[11]
+    sustain = p[13]
+    release = p[14]
+    sub_level = p[15]
     
     # Sound naming logic
     if cutoff < 40 and resonance > 60:
@@ -148,13 +131,8 @@ def analyze_juno106_patch(p: bytes, index: int) -> str:
         name = "JUNO BRASS"
     else:
         name = "POLY SYNTH"
-        
-    group = "A" if index < 64 else "B"
-    local_idx = index % 64
-    bank = (local_idx // 8) + 1
-    patch = (local_idx % 8) + 1
-    
-    return f"{group}{bank}{patch} {name}"
+
+    return f"{prefix} {name}"
 
 def parse_korg_m1_sysex(data: bytes) -> list[str]:
     """

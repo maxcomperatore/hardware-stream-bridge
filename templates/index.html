@@ -513,74 +513,50 @@
             <!-- Center/Right Pane: Song/Patch Table (iTunes Grid) -->
             <section class="flex-1 bg-[#09090b] flex flex-col overflow-hidden" id="patch-explorer-content">
                 <!-- Retro test-bench diagnostics computer terminal onboarding -->
-                <div class="flex-1 flex flex-col items-center justify-center p-8 select-none max-w-xl mx-auto">
-
-                    <!-- Diagnostics deck header -->
-                    <div
-                        class="w-full border border-zinc-850 rounded-xl overflow-hidden bg-zinc-900/5 shadow-2xl flex flex-col">
-                        <div
-                            class="bg-zinc-950 border-b border-zinc-850 px-4 py-2 flex items-center justify-between text-[7px] font-pixel text-zinc-500 uppercase tracking-widest">
-                            <div class="flex items-center gap-1.5">
-                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                <span>SYS DECK: ACTIVE</span>
+                <div class="flex-1 flex flex-col items-center justify-center p-8 select-none max-w-2xl mx-auto w-full">
+                    <div class="w-full border border-zinc-800 rounded-2xl overflow-hidden bg-zinc-900/40 shadow-2xl flex flex-col backdrop-blur-sm">
+                        <div class="bg-zinc-950/80 border-b border-zinc-800 px-5 py-3 flex items-center justify-between text-[10px] font-pixel text-zinc-400 uppercase tracking-widest">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span>SYSTEM READY</span>
                             </div>
-                            <span>VOLTAGE: 5.04V &bull; INT: INTERNAL</span>
                         </div>
 
-                        <div class="p-6 text-center">
-                            <div
-                                class="h-12 w-12 rounded-xl bg-zinc-950 border border-zinc-850 flex items-center justify-center mx-auto mb-4 shadow-inner">
-                                <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg"
-                                    class="h-6 w-6"
-                                    style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
-                            </div>
-
-                            <h3 class="text-sm font-pixel text-white uppercase tracking-wider">Your Vintage Sounds,
-                                Cloud-Vaulted</h3>
-                            <p class="text-[11px] text-zinc-500 mt-2.5 max-w-sm mx-auto leading-relaxed font-mono">
-                                Connect hardware synth models directly. Read and transfer preset voice parameters over
-                                MIDI System Exclusive (SysEx) channels.
+                        <div class="p-8 text-center">
+                            <h3 class="text-xl font-pixel text-white uppercase tracking-wider mb-2">Welcome to Knob Monster</h3>
+                            <p class="text-sm text-zinc-400 max-w-md mx-auto leading-relaxed font-sans mb-8">
+                                Follow these 3 simple steps to backup your first synthesizer soundbank.
                             </p>
 
                             <!-- Onboarding Step Cards -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-8 text-left">
-                                <div
-                                    class="p-3 bg-zinc-950 rounded-lg border border-zinc-900 flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[8px] font-pixel text-zinc-600">STEP 01</span>
-                                            <img src="https://api.iconify.design/dinkie-icons:laptop.svg"
-                                                class="h-4 w-4 opacity-30" style="filter: invert(1);" />
-                                        </div>
-                                        <h4 class="text-2xs font-pixel text-zinc-300 uppercase mt-2.5">PLUG CABLE</h4>
-                                        <p class="text-[9px] text-zinc-550 mt-1 font-mono leading-relaxed">Plug standard
-                                            USB-to-MIDI cable to laptop and synth ports.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mt-4">
+                                <!-- Step 1 -->
+                                <div class="p-5 bg-zinc-950/60 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors flex flex-col relative">
+                                    <div class="absolute -top-4 -left-4 h-9 w-9 rounded-full bg-[#09090b] border-2 border-emerald-500 text-emerald-400 flex items-center justify-center font-pixel text-xs shadow-[0_0_10px_rgba(16,185,129,0.2)]">1</div>
+                                    <div class="flex-1 mt-1">
+                                        <img src="https://api.iconify.design/dinkie-icons:laptop.svg" class="h-6 w-6 mb-3 text-white opacity-80" style="filter: invert(1);" />
+                                        <h4 class="text-[11px] font-pixel text-zinc-200 uppercase mb-2">Connect Cable</h4>
+                                        <p class="text-xs text-zinc-400 font-sans leading-relaxed">Plug your standard USB-MIDI cable into your computer and your synthesizer.</p>
                                     </div>
                                 </div>
-                                <div
-                                    class="p-3 bg-zinc-950 rounded-lg border border-zinc-900 flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[8px] font-pixel text-zinc-600">STEP 02</span>
-                                            <img src="https://api.iconify.design/dinkie-icons:download.svg"
-                                                class="h-4 w-4 opacity-30" style="filter: invert(1);" />
-                                        </div>
-                                        <h4 class="text-2xs font-pixel text-zinc-300 uppercase mt-2.5">DUMP BANK</h4>
-                                        <p class="text-[9px] text-zinc-550 mt-1 font-mono leading-relaxed">Name backup
-                                            and hit 'Capture Soundbank' to query memory bank registers.</p>
+
+                                <!-- Step 2 -->
+                                <div class="p-5 bg-zinc-950/60 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors flex flex-col relative">
+                                    <div class="absolute -top-4 -left-4 h-9 w-9 rounded-full bg-[#09090b] border-2 border-blue-500 text-blue-400 flex items-center justify-center font-pixel text-xs shadow-[0_0_10px_rgba(59,130,246,0.2)]">2</div>
+                                    <div class="flex-1 mt-1">
+                                        <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" class="h-6 w-6 mb-3 text-white opacity-80" style="filter: invert(1);" />
+                                        <h4 class="text-[11px] font-pixel text-zinc-200 uppercase mb-2"><span id="step-2-highlight">Select Ports</span></h4>
+                                        <p class="text-xs text-zinc-400 font-sans leading-relaxed">Click <strong class="text-white bg-zinc-800 px-1 py-0.5 rounded text-[10px]">Devices</strong> (top right) to select your MIDI Input and Output.</p>
                                     </div>
                                 </div>
-                                <div
-                                    class="p-3 bg-zinc-950 rounded-lg border border-zinc-900 flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[8px] font-pixel text-zinc-600">STEP 03</span>
-                                            <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg"
-                                                class="h-4 w-4 opacity-30" style="filter: invert(1);" />
-                                        </div>
-                                        <h4 class="text-2xs font-pixel text-zinc-300 uppercase mt-2.5">SELECT PORTS</h4>
-                                        <p class="text-[9px] text-zinc-550 mt-1 font-mono leading-relaxed">Open Devices,
-                                            pick your MIDI input and output ports, then capture.</p>
+
+                                <!-- Step 3 -->
+                                <div class="p-5 bg-zinc-950/60 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors flex flex-col relative">
+                                    <div class="absolute -top-4 -left-4 h-9 w-9 rounded-full bg-[#09090b] border-2 border-rose-500 text-rose-400 flex items-center justify-center font-pixel text-xs shadow-[0_0_10px_rgba(244,63,94,0.2)]">3</div>
+                                    <div class="flex-1 mt-1">
+                                        <img src="https://api.iconify.design/dinkie-icons:download.svg" class="h-6 w-6 mb-3 text-white opacity-80" style="filter: invert(1);" />
+                                        <h4 class="text-[11px] font-pixel text-zinc-200 uppercase mb-2"><span id="step-3-highlight">Capture Bank</span></h4>
+                                        <p class="text-xs text-zinc-400 font-sans leading-relaxed">Select synth model (left), name it, and hit <strong class="text-white text-[10px] bg-blue-600 px-1 py-0.5 rounded">Capture Soundbank</strong>.</p>
                                     </div>
                                 </div>
                             </div>

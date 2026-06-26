@@ -279,11 +279,11 @@
         <div class="flex items-center gap-5 w-1/4">
             <!-- Transport Buttons styled as Tactile Hardware Keys -->
             <div class="flex items-center gap-1.5 p-1 bg-zinc-950 border border-zinc-900 rounded-lg">
-                <button onclick="navigatePatch(-1)" title="Previous sound preset"
-                    class="p-2 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors active:scale-95 flex items-center justify-center tactical-button">
-                    <img src="https://api.iconify.design/dinkie-icons/left-arrow-circled.svg" class="h-3.5 w-3.5"
+                <!-- Backhand Index Pointing Right -->
+                <div class="pl-2 pr-1 flex items-center justify-center select-none">
+                    <img src="https://api.iconify.design/dinkie-icons:backhand-index-pointing-right.svg" class="h-4 w-4" width="16" height="16"
                         style="filter: invert(1);" />
-                </button>
+                </div>
                 <button onclick="toggleAuditionPlay()" id="player-play-btn" title="Play sound preset"
                     class="p-2 bg-white text-black rounded hover:bg-zinc-200 transition-all active:scale-95 flex items-center justify-center tactical-button">
                     <img id="play-icon" src="https://api.iconify.design/dinkie-icons/right-black-triangle-filled.svg"
@@ -291,19 +291,6 @@
                     <img id="stop-icon" src="https://api.iconify.design/dinkie-icons/black-square-for-stop-filled.svg"
                         class="h-4 w-4 hidden" />
                 </button>
-                <button onclick="navigatePatch(1)" title="Next sound preset"
-                    class="p-2 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors active:scale-95 flex items-center justify-center tactical-button">
-                    <img src="https://api.iconify.design/dinkie-icons/right-arrow-circled.svg" class="h-3.5 w-3.5"
-                        style="filter: invert(1);" />
-                </button>
-            </div>
-
-            <!-- Audition Volume with physical tick-mark bezel -->
-            <div class="flex items-center gap-2 flex-1 max-w-[110px]">
-                <img src="https://api.iconify.design/dinkie-icons:speaker-medium-volume.svg"
-                    class="h-3.5 w-3.5 opacity-60" style="filter: invert(1);" />
-                <input type="range" id="midi-volume" min="0" max="127" value="100" oninput="sendMidiVolume(this.value)"
-                    class="w-full cursor-col-resize">
             </div>
         </div>
 
@@ -388,29 +375,14 @@
         <aside class="w-56 border-r border-zinc-900 bg-[#0a0a0d] flex flex-col justify-between select-none">
             <div class="p-4 space-y-6">
 
-                <!-- Logo Badge Plate -->
-                <div class="p-3 rounded-lg border border-zinc-850 bg-zinc-900/10">
-                    <h2
-                        class="font-pixel uppercase text-[10px] text-white tracking-widest flex items-center justify-center">
-                        <img id="sidebar-logo-avatar" src="/static/logo.avif" alt="Knob Monster Logo"
-                            class="h-11 w-11 shrink-0 object-cover mx-auto rounded-full border border-zinc-800 bg-zinc-950">
-                    </h2>
-                    <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-zinc-850 gap-2">
-                        <div class="flex items-center gap-1.5 min-w-0">
-                            <img id="sidebar-user-avatar" src=""
-                                class="h-4.5 w-4.5 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none" />
-                            <span class="text-[7.5px] font-mono text-zinc-500 truncate max-w-[85px]"
-                                title="{{ user.email }}">{{ user.email }}</span>
-                        </div>
-                        {% if user.tier == 'premium' %}
-                        <button onclick="showUnsubscribeModal()"
-                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none cursor-pointer hover:bg-amber-500/20 transition-colors">PRO</button>
-                        {% else %}
-                        <span
-                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">FREE</span>
-                        {% endif %}
-                    </div>
+                <!-- Brand Logo Header -->
+                <div class="flex items-center gap-2.5 px-1 pb-1">
+                    <img src="/static/logo.avif" alt="Knob Monster Logo"
+                        class="h-7 w-7 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none" style="image-rendering: pixelated;">
+                    <span class="font-pixel uppercase text-[10px] text-white tracking-wider">knob.monster</span>
                 </div>
+
+
 
                 <!-- Library Menu -->
                 <div class="space-y-1.5">
@@ -510,14 +482,32 @@
             </div>
 
             <!-- Sidebar Bottom Info -->
-            <div
-                class="p-4 border-t border-zinc-900 text-[8px] font-pixel text-zinc-655 flex flex-col gap-1 uppercase tracking-wider">
-                <span>Midi: <span id="midi-port-lbl" class="font-mono">Not connected</span></span>
-                <span>Security: SysEx enabled</span>
-                <div class="flex items-center justify-between mt-1.5 border-t border-zinc-900/40 pt-1.5">
-                    <a href="/logout" class="text-zinc-500 hover:text-white underline transition-colors">LOG OUT
-                        &rarr;</a>
-                    <span class="text-zinc-600">Logo: Skoll</span>
+            <div class="p-4 border-t border-zinc-900 flex flex-col gap-3">
+                <!-- User Profile Card -->
+                <div class="p-2.5 rounded-xl border border-zinc-850 bg-zinc-900/10 flex items-center justify-between gap-2 shadow-sm">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <img id="sidebar-user-avatar" src=""
+                            class="h-5.5 w-5.5 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none" width="22" height="22" />
+                        <span class="text-[8px] font-mono text-zinc-400 truncate max-w-[90px]"
+                            title="{{ user.email }}">{{ user.email.split('@')[0] }}</span>
+                    </div>
+                    {% if user.tier == 'premium' %}
+                    <button onclick="showUnsubscribeModal()"
+                        class="text-[7.5px] font-pixel px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none cursor-pointer hover:bg-amber-500/20 transition-colors">PRO</button>
+                    {% else %}
+                    <span
+                        class="text-[7.5px] font-pixel px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">FREE</span>
+                    {% endif %}
+                </div>
+
+                <div class="text-[8px] font-pixel text-zinc-655 flex flex-col gap-1 uppercase tracking-wider">
+                    <span>Midi: <span id="midi-port-lbl" class="font-mono">Not connected</span></span>
+                    <span>Security: SysEx enabled</span>
+                    <div class="flex items-center justify-between mt-1.5 border-t border-zinc-900/40 pt-1.5">
+                        <a href="/logout" class="text-zinc-500 hover:text-white underline transition-colors">LOG OUT
+                            &rarr;</a>
+                        <span class="text-zinc-600">Logo: Skoll</span>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -1742,7 +1732,7 @@
             <!-- Close btn -->
             <button onclick="closeUpgradeModal()"
                 class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
-                <img src="https://api.iconify.design/dinkie-icons/diagonal-cross.svg" class="h-4.5 w-4.5"
+                <img src="https://api.iconify.design/dinkie-icons/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
                     style="filter: invert(0.6);" />
             </button>
 
@@ -1806,7 +1796,7 @@
             <!-- Close btn -->
             <button onclick="closeUnsubscribeModal()"
                 class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
-                <img src="https://api.iconify.design/dinkie-icons/diagonal-cross.svg" class="h-4.5 w-4.5"
+                <img src="https://api.iconify.design/dinkie-icons/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
                     style="filter: invert(0.6);" />
             </button>
 

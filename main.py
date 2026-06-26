@@ -503,16 +503,20 @@ SEO_DATA = {
 async def index(request: Request):
     user = get_current_user(request)
     user_count = 6
+    total_patches = 1000
     try:
         conn = database.get_db_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM users;")
         user_count = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM patches;")
+        total_patches = cursor.fetchone()[0]
         conn.close()
     except Exception as e:
-        logger.error(f"Failed to query user count: {e}")
+        logger.error(f"Failed to query user and patches count: {e}")
     remaining_slots = max(0, 105 - user_count)
-    return render_template("landing.html", request, {"user": user, "remaining_slots": remaining_slots})
+    return render_template("landing.html", request, {"user": user, "remaining_slots": remaining_slots, "total_patches": total_patches})
 
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):
@@ -1971,7 +1975,23 @@ async def acp_discovery():
 async def dynamic_synth_seo(synth_slug: str, request: Request):
     if synth_slug in SEO_DATA:
         user = get_current_user(request)
-        return render_template("landing.html", request, {"user": user, "seo": SEO_DATA[synth_slug], "seo_slug": synth_slug})
+
+        user_count = 6
+        total_patches = 1000
+        try:
+            conn = database.get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM users;")
+            user_count = cursor.fetchone()[0]
+
+            cursor.execute("SELECT COUNT(*) FROM patches;")
+            total_patches = cursor.fetchone()[0]
+            conn.close()
+        except Exception as e:
+            logger.error(f"Failed to query user and patches count: {e}")
+        remaining_slots = max(0, 105 - user_count)
+
+        return render_template("landing.html", request, {"user": user, "seo": SEO_DATA[synth_slug], "seo_slug": synth_slug, "remaining_slots": remaining_slots, "total_patches": total_patches})
     raise HTTPException(status_code=404)
 
 

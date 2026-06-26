@@ -1239,7 +1239,7 @@
                 <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">{% if is_halloween_week
                     %}THE CURSE{% else %}THE FRICTION{% endif %}</span>
                 <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if is_halloween_week %}Why
-                    backups feel trapped in 1995.{% else %}Why backups feel stuck in 1995.{% endif %}</h2>
+                    backups feel <span id="rn-1995" class="inline-block" data-color="#ef4444">trapped in 1995</span>.{% else %}Why backups feel <span id="rn-1995" class="inline-block" data-color="#ef4444">stuck in 1995</span>.{% endif %}</h2>
                 <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans">{% if is_halloween_week
                     %}Synthesizers are immortal, but the archaic floppy drives and editors have returned to the grave.{%
                     else %}Synthesizers are built to last forever, but the digital tools to manage them didn't keep
@@ -2679,6 +2679,36 @@
                         });
                     }, { threshold: 0.5 });
                     observer.observe(frictionElem);
+                } else {
+                    setTimeout(() => {
+                        annotation.show();
+                    }, 1000);
+                }
+            }
+
+            const rn1995Elem = document.querySelector('#rn-1995');
+            if (rn1995Elem) {
+                const color = rn1995Elem.getAttribute('data-color') || '#ef4444';
+                const annotation = annotate(rn1995Elem, {
+                    type: 'underline',
+                    color: color,
+                    multiline: true,
+                    iterations: 1,
+                    animationDuration: 800
+                });
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries, obs) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    annotation.show();
+                                }, 300);
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    observer.observe(rn1995Elem);
                 } else {
                     setTimeout(() => {
                         annotation.show();

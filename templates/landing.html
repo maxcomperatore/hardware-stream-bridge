@@ -302,56 +302,6 @@
             animation: breathing 4s ease-in-out infinite;
         }
 
-        /* Animated Looping Wavy Underlines */
-        @keyframes waveFlow {
-            0% {
-                background-position-x: 0;
-            }
-
-            100% {
-                background-position-x: 24px;
-            }
-        }
-
-        .animated-wave-underline {
-            position: relative;
-            display: inline-block;
-        }
-
-        .animated-wave-underline::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -6px;
-            width: 100%;
-            height: 6px;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'><path d='M0 3 C 3 0, 9 0, 12 3 C 15 6, 21 6, 24 3' fill='none' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round'/></svg>");
-            background-repeat: repeat-x;
-            background-size: 24px 6px;
-            animation: waveFlow 1.2s linear infinite;
-            filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.7));
-        }
-
-        .animated-wave-underline-halloween {
-            position: relative;
-            display: inline-block;
-        }
-
-        .animated-wave-underline-halloween::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -6px;
-            width: 100%;
-            height: 6px;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'><path d='M0 3 C 3 0, 9 0, 12 3 C 15 6, 21 6, 24 3' fill='none' stroke='%23f97316' stroke-width='2' stroke-linecap='round'/></svg>");
-            background-repeat: repeat-x;
-            background-size: 24px 6px;
-            animation: waveFlow 1.2s linear infinite;
-            filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6));
-        }
-
-
         /* Custom FAQ Accordion Toggles */
         details summary::-webkit-details-marker {
             display: none;
@@ -1130,7 +1080,7 @@
             <h1
                 class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal reveal">
                 {% if is_halloween_week %}
-                The Haunted Vault for <span class="animated-wave-underline-halloween">your</span>
+                The Haunted Vault for <span id="hero-your-text" class="inline-block" data-color="#f97316">your</span>
                 <span
                     class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-orange-500/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(249,115,22,0.2)]">
                     <img id="hero-visitor-avatar"
@@ -1142,7 +1092,7 @@
                 {% elif seo %}
                 {{ seo.hero_title | safe }}
                 {% else %}
-                The iCloud for <span class="animated-wave-underline">your</span>
+                The iCloud for <span id="hero-your-text" class="inline-block" data-color="#60a5fa">your</span>
                 <span
                     class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-emerald-500/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(96,165,250,0.3)]">
                     <img id="hero-visitor-avatar"
@@ -2668,6 +2618,30 @@
     </script>
     {% endif %}
     {% include 'visitor_avatar.html' %}
+
+    <script type="module">
+        import { annotate } from 'https://unpkg.com/rough-notation?module';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const e = document.querySelector('#hero-your-text');
+            if (e) {
+                const color = e.getAttribute('data-color') || '#60a5fa';
+                const annotation = annotate(e, {
+                    type: 'circle',
+                    color: color,
+                    strokeWidth: 2,
+                    padding: 5,
+                    iterations: 2,
+                    animationDuration: 800
+                });
+
+                // Add a small delay for better entrance effect alongside other reveal animations
+                setTimeout(() => {
+                    annotation.show();
+                }, 800);
+            }
+        });
+    </script>
 
     <!-- WebMCP: Expose site tools to AI agents in the browser (https://webmachinelearning.github.io/webmcp/) -->
     <script>

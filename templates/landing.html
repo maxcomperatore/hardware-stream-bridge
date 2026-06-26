@@ -1150,10 +1150,15 @@
                     <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">SYNTH
                         MODELS</span>
                 </div>
-                <div>
-                    <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">32</span>
-                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">PATCHES/DX7
-                        BANK</span>
+                <div class="relative group">
+                    <span id="live-patch-counter" data-initial="{{ total_patches | default(1000) }}" class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{ total_patches | default(1000) }}</span>
+                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider flex items-center justify-center gap-1.5">
+                        <span class="relative flex h-1.5 w-1.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                        </span>
+                        PATCHES BACKED UP
+                    </span>
                 </div>
                 <div>
                     <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">100%</span>

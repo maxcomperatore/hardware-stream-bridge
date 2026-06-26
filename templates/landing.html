@@ -1367,8 +1367,8 @@
                 <div class="text-center max-w-2xl mx-auto mb-20 reveal">
                     <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">HOW IT WORKS</span>
                     <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Abstracting 40 years of
-                        hardware
-                        friction.</h2>
+                        <span id="rn-friction" class="inline-block" data-color="#ef4444">hardware
+                        friction</span>.</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -2653,6 +2653,37 @@
                 setTimeout(() => {
                     annotation.show();
                 }, 800);
+            }
+
+            const frictionElem = document.querySelector('#rn-friction');
+            if (frictionElem) {
+                const color = frictionElem.getAttribute('data-color') || '#ef4444';
+                const annotation = annotate(frictionElem, {
+                    type: 'highlight',
+                    color: color,
+                    multiline: true,
+                    iterations: 1,
+                    animationDuration: 800
+                });
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries, obs) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                // Add a small delay so user actually sees the drawing animation
+                                setTimeout(() => {
+                                    annotation.show();
+                                }, 300);
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    observer.observe(frictionElem);
+                } else {
+                    setTimeout(() => {
+                        annotation.show();
+                    }, 1000);
+                }
             }
         });
     </script>

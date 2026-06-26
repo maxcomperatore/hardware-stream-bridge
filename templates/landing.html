@@ -2355,7 +2355,7 @@
 
         <!-- Real-time activity widget (Daft style social proof) -->
         <div id="live-activity-ticker"
-            class="fixed bottom-6 left-6 z-50 max-w-sm w-[calc(100vw-3rem)] bg-[#0e0e11]/95 backdrop-blur-md border border-zinc-800 rounded-xl p-4 shadow-2xl shadow-black/85 flex items-start gap-3 transform translate-y-32 opacity-0 transition-all duration-500 pointer-events-none select-none">
+            class="fixed bottom-6 left-6 z-50 max-w-sm w-[calc(100vw-3rem)] bg-[#0e0e11]/95 backdrop-blur-md border border-zinc-800 rounded-xl p-4 shadow-2xl shadow-black/85 hidden md:flex items-start gap-3 transform translate-y-32 opacity-0 transition-all duration-500 pointer-events-none select-none">
 
             <!-- Live status blinker -->
             <div class="relative flex h-3 w-3 mt-1 flex-shrink-0">
@@ -2428,6 +2428,7 @@
             const maxAlerts = 3; // Maximum alerts shown per session to avoid spam
 
             function showRandomTicker() {
+                if (window.innerWidth < 768) return;
                 if (isTickerDismissed || shownCount >= maxAlerts) {
                     if (tickerTimer) clearInterval(tickerTimer);
                     return;

@@ -2258,46 +2258,51 @@
                     scanBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 }
 
-                setTimeout(() => {
-                    navigator.requestMIDIAccess({ sysex: true })
-                        .then(midiAccess => {
-                            function updateDevices() {
-                                const inputs = Array.from(midiAccess.inputs.values());
-                                const outputs = Array.from(midiAccess.outputs.values());
+                const midiPromise = navigator.requestMIDIAccess({ sysex: true });
+                const delayPromise = new Promise(resolve => setTimeout(resolve, 600));
 
-                                if (inputs.length === 0 && outputs.length === 0) {
-                                    statusText.innerText = "No MIDI hardware detected.";
-                                    statusText.className = "text-xs font-mono text-rose-400 text-left truncate w-full select-none";
-                                    if (midiIcon) {
-                                        midiIcon.className = "h-5 w-5 bg-rose-500 shrink-0 transition-colors duration-200";
-                                    }
-                                } else {
-                                    const devName = inputs[0]?.name || outputs[0]?.name || "MIDI Port";
-                                    statusText.innerText = `Connected: ${devName}`;
-                                    statusText.className = "text-xs font-mono text-emerald-400 text-left truncate w-full select-none font-semibold";
-                                    if (midiIcon) {
-                                        midiIcon.className = "h-5 w-5 bg-emerald-400 shrink-0 transition-colors duration-200";
-                                    }
+                Promise.all([midiPromise, delayPromise])
+                    .then(([midiAccess]) => {
+                        function updateDevices() {
+                            const inputs = Array.from(midiAccess.inputs.values());
+                            const outputs = Array.from(midiAccess.outputs.values());
+
+                            if (inputs.length === 0 && outputs.length === 0) {
+                                statusText.innerText = "No MIDI hardware plugged in.";
+                                statusText.className = "text-xs font-mono text-amber-400 text-left truncate w-full select-none";
+                                if (midiIcon) {
+                                    midiIcon.className = "h-5 w-5 bg-amber-500 shrink-0 transition-colors duration-200";
+                                }
+                            } else {
+                                const devName = inputs[0]?.name || outputs[0]?.name || "MIDI Port";
+                                statusText.innerText = `Connected: ${devName}`;
+                                statusText.className = "text-xs font-mono text-emerald-400 text-left truncate w-full select-none font-semibold";
+                                if (midiIcon) {
+                                    midiIcon.className = "h-5 w-5 bg-emerald-400 shrink-0 transition-colors duration-200";
                                 }
                             }
+                        }
 
-                            updateDevices();
-                            midiAccess.onstatechange = updateDevices;
-                        })
-                        .catch(err => {
+                        updateDevices();
+                        midiAccess.onstatechange = updateDevices;
+                    })
+                    .catch(err => {
+                        delayPromise.then(() => {
                             statusText.innerText = "Access denied: check permissions.";
                             statusText.className = "text-xs font-mono text-rose-400 text-left truncate w-full select-none";
                             if (midiIcon) {
                                 midiIcon.className = "h-5 w-5 bg-rose-500 shrink-0 transition-colors duration-200";
                             }
-                        })
-                        .finally(() => {
+                        });
+                    })
+                    .finally(() => {
+                        delayPromise.then(() => {
                             if (scanBtn) {
                                 scanBtn.disabled = false;
                                 scanBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                             }
                         });
-                }, 600);
+                    });
             }
             // Auto-scan on load if permission is already granted
             document.addEventListener('DOMContentLoaded', () => {

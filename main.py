@@ -556,6 +556,21 @@ async def blog_web_midi_page(request: Request):
     user = get_current_user(request)
     return render_template("blog_web_midi.html", request, {"user": user})
 
+@app.get("/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide", response_class=HTMLResponse)
+async def guide_dx7_page(request: Request):
+    user = get_current_user(request)
+    return render_template("guide_dx7.html", request, {"user": user})
+
+@app.get("/how-to-backup-roland-juno-106-presets-sysex-transfer-guide", response_class=HTMLResponse)
+async def guide_juno106_page(request: Request):
+    user = get_current_user(request)
+    return render_template("guide_juno106.html", request, {"user": user})
+
+@app.get("/how-to-backup-korg-m1-presets-sysex-transfer-guide", response_class=HTMLResponse)
+async def guide_m1_page(request: Request):
+    user = get_current_user(request)
+    return render_template("guide_m1.html", request, {"user": user})
+
 @app.get("/changelog")
 async def changelog_redirect():
     return RedirectResponse(url="/about", status_code=301)
@@ -1367,6 +1382,9 @@ async def sitemap():
         ("https://knob.monster/privacy", "2026-06-21", "monthly", "0.5"),
         ("https://knob.monster/payment-methods", "2026-06-21", "monthly", "0.6"),
         ("https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", "2026-06-23", "weekly", "0.9"),
+        ("https://knob.monster/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide", "2026-06-25", "weekly", "0.9"),
+        ("https://knob.monster/how-to-backup-roland-juno-106-presets-sysex-transfer-guide", "2026-06-25", "weekly", "0.9"),
+        ("https://knob.monster/how-to-backup-korg-m1-presets-sysex-transfer-guide", "2026-06-25", "weekly", "0.9"),
     ]
     
     # Dynamically add all synths from SEO_DATA

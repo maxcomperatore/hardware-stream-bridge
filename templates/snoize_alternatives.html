@@ -684,36 +684,7 @@ F7 (End of System Exclusive message)</pre>
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-900 bg-black py-16 relative z-10 text-center select-none mt-20">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex flex-col items-center md:items-start gap-1">
-                <div class="flex items-center gap-2">
-                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 20px; height: 20px;">
-                        <img src="/static/logo.png" alt="Knob Monster Logo" class="absolute w-5 h-5 object-contain" style="image-rendering: pixelated;">
-                    </div>
-                    <span class="font-roman uppercase text-xs text-white tracking-widest">knob.monster</span>
-                </div>
-                <p class="text-[10px] text-zinc-500 max-w-sm mt-3 text-center md:text-left font-sans leading-relaxed">
-                    knob.monster is the browser-native cloud database that automatically decodes and backs up vintage SysEx patches in 1-click.
-                </p>
-                <div id="visitor-geo-tag" class="text-[9px] text-zinc-500 font-roman tracking-wider uppercase mt-1 min-h-[14px] flex items-center gap-1.5 justify-center md:justify-start">
-                    <!-- Dynamic IP Geolocation -->
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-[10px] text-zinc-500 font-mono">
-                <a href="/terms" class="hover:text-white underline transition-colors">Terms of Service & Refund Policy</a>
-                <span class="hidden md:inline text-zinc-800">•</span>
-                <a href="/privacy" class="hover:text-white underline transition-colors">Privacy Policy</a>
-                <span class="hidden md:inline text-zinc-800">•</span>
-                <a href="mailto:halfradiationllc@gmail.com" class="hover:text-white underline transition-colors">Contact Support</a>
-            </div>
-
-            <p class="text-[10px] text-zinc-655 font-mono text-center md:text-right">
-                &copy; 2026 Half Radiation. All rights reserved.
-            </p>
-        </div>
-    </footer>
+        {% include "footer.html" %}
 
     {% if is_christmas_week %}
     <!-- Dynamic falling snow canvas overlay for Christmas week -->

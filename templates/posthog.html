@@ -6,5 +6,6 @@
         ui_host: 'https://us.posthog.com', // necessary because you're using a proxy, this way links will point back to PostHog properly
         defaults: '2026-05-30',
         person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+        disable_conversations: window.innerWidth < 768
     })
 </script>

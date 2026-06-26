@@ -1200,10 +1200,15 @@
                     <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">SYNTH
                         MODELS</span>
                 </div>
-                <div>
-                    <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">32</span>
-                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">PATCHES/DX7
-                        BANK</span>
+                <div class="relative group">
+                    <span id="live-patch-counter" data-initial="{{ total_patches | default(1000) }}" class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{ total_patches | default(1000) }}</span>
+                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider flex items-center justify-center gap-1.5">
+                        <span class="relative flex h-1.5 w-1.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                        </span>
+                        PATCHES BACKED UP
+                    </span>
                 </div>
                 <div>
                     <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">100%</span>
@@ -1216,6 +1221,28 @@
                         DRIVERS</span>
                 </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const counterEl = document.getElementById('live-patch-counter');
+                    if (!counterEl) return;
+
+                    let count = parseInt(counterEl.getAttribute('data-initial')) || 1000;
+
+                    setInterval(() => {
+                        // Increment by a small random amount (1-3)
+                        const increment = Math.floor(Math.random() * 3) + 1;
+                        count += increment;
+                        counterEl.textContent = count;
+
+                        // Add a subtle flash effect when incrementing
+                        counterEl.classList.add('text-white', 'scale-110');
+                        setTimeout(() => {
+                            counterEl.classList.remove('text-white', 'scale-110');
+                        }, 200);
+                    }, 4500); // Update every 4.5 seconds
+                });
+            </script>
 
             <!-- Symmetric Preview Grid (Physical Synth vs. Virtual App) -->
             <div id="demo"
@@ -1742,46 +1769,6 @@
 
                 document.addEventListener('DOMContentLoaded', () => {
                     setBillingPeriod('yearly');
-                });
-            </script>
-        </section>
-
-        <!-- Live Counter Section -->
-        <section class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-16 relative z-10 text-center">
-            <div class="reveal flex flex-col items-center justify-center">
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[9px] font-pixel bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 select-none uppercase tracking-wider mb-4">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    Live Battle Tested
-                </span>
-                <div class="flex items-baseline gap-2 justify-center">
-                    <span id="live-patch-counter" data-initial="{{ total_patches | default(1000) }}" class="text-5xl md:text-6xl font-lcd text-white tracking-widest drop-shadow-[0_0_12px_rgba(255,255,255,0.2)]">
-                        {{ total_patches | default(1000) }}
-                    </span>
-                </div>
-                <span class="text-xs font-pixel uppercase text-zinc-500 tracking-wider mt-2 block">TOTAL PATCHES BACKED UP</span>
-            </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const counterEl = document.getElementById('live-patch-counter');
-                    if (!counterEl) return;
-
-                    let count = parseInt(counterEl.getAttribute('data-initial')) || 1000;
-
-                    setInterval(() => {
-                        // Increment by a small random amount (1-3)
-                        const increment = Math.floor(Math.random() * 3) + 1;
-                        count += increment;
-                        counterEl.textContent = count;
-
-                        // Add a subtle flash effect when incrementing
-                        counterEl.classList.add('text-emerald-400');
-                        setTimeout(() => {
-                            counterEl.classList.remove('text-emerald-400');
-                        }, 200);
-                    }, 4500); // Update every 4.5 seconds
                 });
             </script>
         </section>

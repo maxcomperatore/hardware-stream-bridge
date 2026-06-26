@@ -556,10 +556,10 @@ async def terms_page(request: Request):
 async def privacy_page(request: Request):
     return render_template("privacy.html", request)
 
-@app.get("/roadmap", response_class=HTMLResponse)
-async def roadmap_page(request: Request):
+@app.get("/guides", response_class=HTMLResponse)
+async def guides_page(request: Request):
     user = get_current_user(request)
-    return render_template("roadmap.html", request, {"user": user})
+    return render_template("guides.html", request, {"user": user})
 
 @app.get("/about", response_class=HTMLResponse)
 async def about_page(request: Request):
@@ -1392,7 +1392,7 @@ async def sitemap():
         ("https://knob.monster/knob-monster-vs-midi-ox", "2026-06-21", "weekly", "0.9"),
         ("https://knob.monster/login", "2026-06-21", "monthly", "0.8"),
         ("https://knob.monster/signup", "2026-06-21", "monthly", "0.8"),
-        ("https://knob.monster/roadmap", "2026-06-21", "weekly", "0.85"),
+        ("https://knob.monster/guides", "2026-06-21", "weekly", "0.85"),
         ("https://knob.monster/terms", "2026-06-21", "monthly", "0.5"),
         ("https://knob.monster/privacy", "2026-06-21", "monthly", "0.5"),
         ("https://knob.monster/payment-methods", "2026-06-21", "monthly", "0.6"),

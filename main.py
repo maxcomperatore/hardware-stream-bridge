@@ -229,7 +229,7 @@ async def earth_day_middleware(request: Request, call_next):
     <div class="max-w-md space-y-8">
         <!-- Troll Logo -->
         <div class="flex justify-center">
-            <img src="/static/logo.png" id="earth-day-logo" alt="Ogre Logo" class="h-28 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out opacity-60" style="transform-style: preserve-3d; backface-visibility: hidden;">
+            <img src="/static/logo.avif" id="earth-day-logo" alt="Ogre Logo" class="h-28 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out opacity-60" style="transform-style: preserve-3d; backface-visibility: hidden;">
         </div>
         
         <div class="space-y-4">
@@ -1674,7 +1674,7 @@ async def mcp_server_card():
             "version": "1.0.0",
             "description": "Cloud SysEx librarian for vintage synthesizers. Back up, organize, and recall MIDI patch banks via Web MIDI.",
             "homepage": SITE_BASE,
-            "logo": f"{SITE_BASE}/static/logo.webp"
+            "logo": f"{SITE_BASE}/static/logo.avif"
         },
         "transport": {
             "type": "http",

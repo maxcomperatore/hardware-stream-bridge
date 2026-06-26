@@ -848,6 +848,10 @@ async def create_bank(
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
 
+    if len(sysex_hex) > 4194304: # 2MB limit (each byte is 2 hex chars)
+        trigger_alert("security_limit_exceeded", f"User `{user['email']}` attempted to upload a massive hex payload ({len(sysex_hex)} chars).", {"email": user["email"]}, distinct_id=user["email"])
+        raise HTTPException(status_code=413, detail="Payload too large: SysEx hex data exceeds 2MB limit")
+
     try:
         clean_hex = sysex_hex.strip().replace(" ", "").replace("\n", "").replace("\r", "")
         sysex_bytes = bytes.fromhex(clean_hex)
@@ -899,7 +903,17 @@ async def upload_bank_file(
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
 
+    # Enforce 2MB size limit
+    MAX_SIZE = 2 * 1024 * 1024 # 2MB
+    if file.size and file.size > MAX_SIZE:
+        trigger_alert("security_limit_exceeded", f"User `{user['email']}` attempted to upload a massive file: {file.filename} ({file.size} bytes).", {"email": user["email"]}, distinct_id=user["email"])
+        raise HTTPException(status_code=413, detail="File too large: SysEx files must be under 2MB")
+
     sysex_bytes = await file.read()
+    if len(sysex_bytes) > MAX_SIZE:
+        trigger_alert("security_limit_exceeded", f"User `{user['email']}` attempted to upload a massive file: {file.filename} ({len(sysex_bytes)} bytes).", {"email": user["email"]}, distinct_id=user["email"])
+        raise HTTPException(status_code=413, detail="File too large: SysEx files must be under 2MB")
+
     sysex_hex = sysex_bytes.hex()
     
     # Parse voices

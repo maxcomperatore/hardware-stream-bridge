@@ -1106,7 +1106,11 @@
                 {% elif seo %}
                 {{ seo.hero_title | safe }}
                 {% else %}
-                The iCloud for <span id="hero-your-text" class="inline-block" data-color="#60a5fa">your</span>
+                The iCloud
+                <span class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 shrink-0 relative top-[-1px] md:top-[-2px]">
+                    <img src="https://api.iconify.design/dinkie-icons/cloud.svg" alt="Cloud" class="w-full h-full object-contain" style="filter: invert(1);">
+                </span>
+                for <span id="hero-your-text" class="inline-block" data-color="#60a5fa">your</span>
                 <span
                     class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-emerald-500/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(96,165,250,0.3)]">
                     <img id="hero-visitor-avatar"

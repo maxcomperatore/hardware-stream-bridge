@@ -401,101 +401,112 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
 
 SEO_DATA = {
     "dx7": {
-        "title": "Yamaha DX7 Online Librarian & SysEx Backup | knob.monster",
-        "description": "The ultimate browser-native Yamaha DX7 online librarian and SysEx manager. Back up, search, and recall DX7 soundbanks in 1-click via Web MIDI. No drivers required.",
-        "keywords": "yamaha dx7 online librarian, dx7 patch manager, dx7 editor online, dx7 web midi, dx7 patches, yamaha dx7 sysex librarian",
+        "title": "How to Turn Off Memory Protect on Yamaha DX7 | knob.monster",
+        "description": "Learn how to turn off memory protect on the Yamaha DX7 and enable SysEx data reception to back up your patches.",
+        "keywords": "how to turn off memory protect on yamaha dx7, disable memory protect dx7, yamaha dx7 sysex settings, dx7 internal memory protection",
         "synth_name": "Yamaha DX7",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Yamaha DX7.</span>",
         "hero_subtitle": "The ultimate Yamaha DX7 online librarian. Back up, search, and recall Yamaha DX7 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on the Yamaha DX7", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Yamaha DX7 requires you to explicitly disable internal memory protection and enable SysEx data reception before you can back up or restore patches.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">FUNCTION</strong> button on the front panel.</li>\n    <li>Press button <strong class=\"text-white\">8</strong> (labeled MEMORY PROTECT INTERNAL).</li>\n    <li>The LCD screen will display <code>MEMORY PROTECT INTERNAL: ON</code>.</li>\n    <li>Press the <strong class=\"text-white\">-1/NO</strong> button to change it to <code>OFF</code>.</li>\n    <li>Press button <strong class=\"text-white\">8</strong> again to access the SYS INFO screen.</li>\n    <li>Ensure the screen says <code>SYS INFO: AVAIL</code>. If it says <code>UNAVAIL</code>, press <strong class=\"text-white\">+1/YES</strong> to toggle it.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your DX7 is now ready to send and receive SysEx dumps.</p>"}    },
     "juno-106": {
-        "title": "Roland Juno-106 SysEx Backup & Patch Librarian | knob.monster",
-        "description": "The ultimate browser-native Roland Juno-106 SysEx backup utility. Back up, search, and recall Juno-106 soundbanks in 1-click via Web MIDI. No drivers required.",
-        "keywords": "juno-106 sysex backup, roland juno-106 librarian, juno 106 patch manager, juno 106 sysex online, juno 106 editor",
+        "title": "How to Turn Off Memory Protect & Enable SysEx on Roland Juno-106",
+        "description": "Learn the secret rear panel switch settings to turn off memory protect and enable SysEx MIDI dumps on the Roland Juno-106.",
+        "keywords": "how to turn off memory protect on roland juno 106, roland juno 106 sysex switch, juno 106 midi channel 3, juno 106 patch dump",
         "synth_name": "Roland Juno-106",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Juno-106.</span>",
         "hero_subtitle": "The easiest way to manage Roland Juno-106 SysEx backup files directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
-    },
+,
+        "docs": {"title": "How to Enable SysEx & Turn Off Memory Protect on Roland Juno-106", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Roland Juno-106 uses a hidden function switch on the rear panel to enable SysEx communication.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Locate the <strong class=\"text-white\">MEMORY PROTECT</strong> switch on the rear panel of the synthesizer and slide it to the <strong class=\"text-white\">OFF</strong> position.</li>\n    <li>Locate the <strong class=\"text-white\">MIDI CH</strong> switch (Function Switch) on the rear panel.</li>\n    <li>Slide the MIDI CH switch to position <strong class=\"text-white\">III (3)</strong>. This is the secret mode that enables the Juno-106 to transmit and receive exclusive SysEx patch data.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Juno-106 is now ready to dump and load patches.</p>"}    },
     "korg-m1": {
-        "title": "Korg M1 SysEx Librarian & Patch Recall | knob.monster",
-        "description": "The ultimate browser-native Korg M1 SysEx librarian and patch recall tool. Back up, search, and recall Korg M1 soundbanks in 1-click via Web MIDI. No drivers required.",
-        "keywords": "korg m1 patch recall, korg m1 sysex librarian, korg m1 patch manager, korg m1 editor online, korg m1 patches",
+        "title": "How to Turn Off Memory Protect on Korg M1",
+        "description": "Step-by-step guide to disabling memory protection for programs and combinations on the Korg M1 to receive SysEx patches.",
+        "keywords": "how to turn off memory protect on korg m1, korg m1 global midi settings, korg m1 exclusive allow, disable memory protect korg m1",
         "synth_name": "Korg M1",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Korg M1.</span>",
         "hero_subtitle": "A fast browser utility for Korg M1 patch recall. Back up, search, and recall Korg M1 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Korg M1", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Korg M1 protects its internal programs and combinations by default. You must disable this in the Global menu.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">GLOBAL</strong> button to enter the Global mode.</li>\n    <li>Press the <strong class=\"text-white\">PAGE +</strong> button until you reach Page 5 (MIDI GLOBAL).</li>\n    <li>Use the cursor buttons and value slider to set <strong class=\"text-white\">MIDI EXA</strong> (Exclusive Allow) to <strong class=\"text-white\">ENA</strong> (Enabled).</li>\n    <li>Press the <strong class=\"text-white\">PAGE +</strong> button to reach Page 6 (MEMORY PROTECT).</li>\n    <li>Set both <strong class=\"text-white\">PROG</strong> (Program) and <strong class=\"text-white\">COMBI</strong> (Combination) to <strong class=\"text-white\">OFF</strong>.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Korg M1 can now receive SysEx patch banks.</p>"}    },
     "jupiter-6": {
-        "title": "Roland Jupiter-6 Online SysEx Librarian & Europa Backup | knob.monster",
-        "description": "The ultimate browser-native Roland Jupiter-6 online librarian and SysEx manager. Back up, search, and recall Jupiter-6 patches (stock and Europa modded) in 1-click via Web MIDI. No drivers required.",
-        "keywords": "roland jupiter-6 sysex backup, jupiter 6 patch manager, jupiter-6 europa editor, jupiter-6 web midi, jupiter-6 patches",
+        "title": "How to Turn Off Memory Protect on Roland Jupiter-6",
+        "description": "How to disable tape memory protect on the Roland Jupiter-6 (and Europa mod) to send and receive SysEx patch data.",
+        "keywords": "how to turn off memory protect on roland jupiter 6, jupiter 6 tape memory protect, europa mod jupiter 6 sysex",
         "synth_name": "Roland Jupiter-6",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Jupiter-6.</span>",
         "hero_subtitle": "The easiest way to manage Roland Jupiter-6 and Europa-modded SysEx backups directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Roland Jupiter-6", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">For the stock Roland Jupiter-6 and Europa-modded units, memory protection must be bypassed to write new patches via SysEx.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Locate the <strong class=\"text-white\">TAPE MEMORY PROTECT</strong> switch on the rear panel of the Jupiter-6.</li>\n    <li>Slide the switch to the <strong class=\"text-white\">OFF</strong> position.</li>\n    <li>If you have the <strong class=\"text-white\">Europa</strong> modification, enter the Europa menu and navigate to the MIDI configuration page to ensure SysEx (System Exclusive) Rx/Tx is set to ON.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Jupiter-6 is now unprotected and ready for MIDI SysEx transfers.</p>"}    },
     "casio-cz-101": {
-        "title": "Casio CZ-101 Online SysEx Librarian & Patch Editor | knob.monster",
-        "description": "The ultimate browser-native Casio CZ-101 online librarian and SysEx manager. Back up, search, and recall CZ-101 Phase Distortion patches in 1-click via Web MIDI.",
-        "keywords": "casio cz-101 librarian, cz-101 sysex backup, casio cz101 patch editor, phase distortion sysex online",
+        "title": "How to Turn Off Memory Protect on Casio CZ-101",
+        "description": "Learn how to toggle the physical memory protect switch on the Casio CZ-101 to enable Phase Distortion patch dumps.",
+        "keywords": "how to turn off memory protect on casio cz 101, casio cz-101 protect button, cz-101 sysex settings",
         "synth_name": "Casio CZ-101",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Casio CZ-101.</span>",
         "hero_subtitle": "Back up, organize, and restore CZ-101 Phase Distortion patches directly from your web browser. Zero setup, zero drivers, instant MIDI dumps."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Casio CZ-101", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Casio CZ-101 uses a physical button on the front panel to toggle memory protection.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Locate the small <strong class=\"text-white\">PROTECT</strong> button on the bottom left or rear of the CZ-101 (depending on the revision).</li>\n    <li>Press the button to toggle memory protection. Some units have a recessed switch that requires a pen or small screwdriver to switch to <strong class=\"text-white\">OFF</strong>.</li>\n    <li>Press the <strong class=\"text-white\">MIDI</strong> button to enter MIDI settings and ensure that the basic channel is set correctly and SysEx is not filtered.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Casio CZ-101 can now accept Phase Distortion patch dumps.</p>"}    },
     "yamaha-tx81z": {
-        "title": "Yamaha TX81Z SysEx Librarian & Online Editor | knob.monster",
-        "description": "Back up and manage your Yamaha TX81Z 4-operator FM patches online. Decode voice parameters and factory presets directly over Web MIDI. No drivers required.",
-        "keywords": "yamaha tx81z librarian, tx81z sysex dump, tx81z patch editor, tx81z lately bass backup, tx81z editor online",
+        "title": "How to Turn Off Memory Protect on Yamaha TX81Z",
+        "description": "Step-by-step guide to disabling memory protect in the Utility menu of the Yamaha TX81Z to receive FM patches like Lately Bass.",
+        "keywords": "how to turn off memory protect on yamaha tx81z, disable mem protect tx81z, tx81z utility menu sysex",
         "synth_name": "Yamaha TX81Z",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Yamaha TX81Z.</span>",
         "hero_subtitle": "Quickly manage your TX81Z patches and that legendary Lately Bass patch directly from your browser. Zero setup, zero drivers, instant Web MIDI dump."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Yamaha TX81Z", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">To restore your Lately Bass and other FM patches, you need to disable memory protection in the Utility menu.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">PLAY/PERFORM</strong> button to ensure you are in normal play mode.</li>\n    <li>Press the <strong class=\"text-white\">UTILITY</strong> button multiple times until you see <code>Mem Protect</code> on the LCD screen.</li>\n    <li>The screen will likely show <code>Mem Protect: ON</code>.</li>\n    <li>Press the <strong class=\"text-white\">-1/NO/OFF</strong> button to change the setting to <code>OFF</code>.</li>\n    <li>Press the <strong class=\"text-white\">UTILITY</strong> button until you reach the <code>MIDI</code> settings page, and ensure <code>Exclusive</code> is set to <code>ON</code>.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your TX81Z is now ready to receive SysEx data.</p>"}    },
     "roland-d-50": {
-        "title": "Roland D-50 SysEx Librarian & Patch Manager | knob.monster",
-        "description": "Online browser-native SysEx librarian for the classic Roland D-50 Linear Arithmetic synthesizer. Backup, search, and restore D-50 soundbanks over Web MIDI.",
-        "keywords": "roland d-50 librarian, d-50 sysex backup, roland d50 patch manager, d-50 editor online, linear arithmetic sysex",
+        "title": "How to Turn Off Memory Protect on Roland D-50",
+        "description": "How to turn off memory protection and enable system exclusive (Exclu) messages on the Roland D-50.",
+        "keywords": "how to turn off memory protect on roland d-50, d-50 exclu setting, disable memory protect d50",
         "synth_name": "Roland D-50",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland D-50.</span>",
         "hero_subtitle": "Manage your classic Linear Arithmetic soundbanks and patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Roland D-50", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">Before transferring Linear Arithmetic patches, the D-50 requires memory protect to be turned off.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press and hold the <strong class=\"text-white\">TUNE/FUNCTION</strong> button.</li>\n    <li>While holding, press the <strong class=\"text-white\">MIDI</strong> button.</li>\n    <li>Use the joystick or value buttons to navigate to the <strong class=\"text-white\">Protect</strong> setting.</li>\n    <li>Change the memory protect setting to <strong class=\"text-white\">OFF</strong>.</li>\n    <li>Ensure that the <strong class=\"text-white\">Exclu</strong> (System Exclusive) setting is set to <strong class=\"text-white\">ON</strong> so the synth accepts MIDI dumps.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your D-50 is now ready for patch transfers.</p>"}    },
     "prophet-600": {
-        "title": "Prophet-600 SysEx Librarian & GliGli Patch Backup | knob.monster",
-        "description": "The ultimate online librarian for the Sequential Circuits Prophet-600. Support for stock and GliGli firmware patch backups via Web MIDI. No installation required.",
-        "keywords": "prophet-600 sysex librarian, prophet 600 patch editor, gligli firmware backup, sequential prophet 600 online",
+        "title": "How to Turn Off Memory Protect on Prophet-600",
+        "description": "Guide to disabling the memory protect switch on the Sequential Circuits Prophet-600 (stock and GliGli firmware) for SysEx transfers.",
+        "keywords": "how to turn off memory protect on prophet 600, prophet 600 gligli sysex, disable memory protect prophet-600",
         "synth_name": "Prophet-600",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Prophet-600.</span>",
         "hero_subtitle": "Back up, organize, and recall Prophet-600 patches (stock or GliGli modded) directly from your browser. Zero setup, zero drivers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Prophet-600", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Prophet-600 (both stock and GliGli-modded) requires memory protect to be disabled before receiving SysEx.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Locate the <strong class=\"text-white\">MEMORY PROTECT</strong> switch on the front panel (often near the preset/keypad section).</li>\n    <li>Flick the switch to the <strong class=\"text-white\">OFF</strong> position.</li>\n    <li>If you are using the <strong class=\"text-white\">GliGli</strong> firmware, press the <strong class=\"text-white\">TUNE</strong> button and use the keypad to ensure MIDI SysEx RX is enabled according to the GliGli manual.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Prophet-600 is now ready to receive presets.</p>"}    },
     "oberheim-matrix-1000": {
-        "title": "Oberheim Matrix-1000 SysEx Librarian & Patch Manager | knob.monster",
-        "description": "Online librarian and patch backup tool for Oberheim Matrix-1000 and Matrix-6. Search, organize, and upload your 1000 patches directly in your web browser.",
-        "keywords": "oberheim matrix-1000 librarian, matrix-1000 sysex dump, matrix 6 patch manager, oberheim sysex backup online",
+        "title": "How to Turn Off Memory Protect on Oberheim Matrix-1000",
+        "description": "Learn how to toggle memory protection for the RAM user banks on the Oberheim Matrix-1000.",
+        "keywords": "how to turn off memory protect on oberheim matrix 1000, matrix 1000 user bank protect, matrix 1000 sysex",
         "synth_name": "Oberheim Matrix-1000",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Matrix-1000.</span>",
         "hero_subtitle": "The easiest way to manage Oberheim Matrix-1000 and Matrix-6 soundbanks directly from your browser. Zero setup, zero drivers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Oberheim Matrix-1000", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Matrix-1000 has banks 0-199 available as RAM (user rewritable), while 200-999 are ROM (read-only). You must enable memory protect off for the RAM banks.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">Select</strong> button until the <strong class=\"text-white\">Bank/Protect</strong> LED is lit.</li>\n    <li>Press the <strong class=\"text-white\">+</strong> or <strong class=\"text-white\">-</strong> buttons to toggle the memory protect status. The display should read <code>U F</code> (Unprotected) instead of <code>P F</code> (Protected).</li>\n    <li>Ensure you are writing to a user bank (000-199).</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Matrix-1000 can now have its user banks overwritten via SysEx.</p>"}    },
     "yamaha-fb-01": {
-        "title": "Yamaha FB-01 SysEx Librarian & Online Editor | knob.monster",
-        "description": "Online browser-native SysEx manager for the vintage Yamaha FB-01 FM sound module. Backup, search, and recall FB-01 soundbanks in 1-click via Web MIDI.",
-        "keywords": "yamaha fb-01 librarian, fb-01 sysex backup, fb01 patch manager, fb-01 editor online, fm sound module sysex",
+        "title": "How to Turn Off Memory Protect on Yamaha FB-01",
+        "description": "How to enable system exclusive messages in the system setup of the Yamaha FB-01 sound module.",
+        "keywords": "how to turn off memory protect on yamaha fb 01, fb-01 system setup sysex, yamaha fb01 exclusive enable",
         "synth_name": "Yamaha FB-01",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Yamaha FB-01.</span>",
         "hero_subtitle": "The easiest way to manage Yamaha FB-01 patches and soundbanks directly from your browser. Zero setup, zero drivers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Yamaha FB-01", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Yamaha FB-01 requires system exclusive messages to be enabled in its system setup.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">SYSTEM SETUP</strong> button.</li>\n    <li>Use the data entry buttons to scroll through the system parameters until you find the <strong class=\"text-white\">SysEx</strong> or <strong class=\"text-white\">Exclusive</strong> setting.</li>\n    <li>Change the value to <strong class=\"text-white\">ON</strong> or <strong class=\"text-white\">ENA</strong> (Enabled).</li>\n    <li>Ensure that the memory protect setting (if present in your firmware revision) is turned <strong class=\"text-white\">OFF</strong>.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your FB-01 is now ready to receive FM patches.</p>"}    },
     "roland-juno-60": {
-        "title": "Roland Juno-60 SysEx Librarian (MIDI Modded) | knob.monster",
-        "description": "Online browser-native SysEx librarian for MIDI-retrofitted Roland Juno-60 synthesizers. Backup, search, and recall Juno-60 patches in 1-click via Web MIDI.",
-        "keywords": "juno-60 sysex backup, roland juno-60 librarian, juno 60 patch manager, juno 60 midi mod backup",
+        "title": "How to Turn Off Memory Protect on Roland Juno-60",
+        "description": "Guide to turning off memory protect on the Roland Juno-60, including settings for MIDI-retrofitted units (Minerva, Tubbutec).",
+        "keywords": "how to turn off memory protect on roland juno 60, juno 60 memory protect switch, tubbutec juno 60 sysex",
         "synth_name": "Roland Juno-60",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Juno-60.</span>",
         "hero_subtitle": "For MIDI-modded Juno-60 synths, manage and backup your patch libraries directly from your browser. Zero setup, zero drivers."
-    },
+,
+        "docs": {"title": "How to Turn Off Memory Protect on Roland Juno-60", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The stock Juno-60 does not have MIDI, but if you have a MIDI retrofit (like Minerva or Tubbutec), you must disable the hardware memory protect.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Locate the <strong class=\"text-white\">MEMORY PROTECT</strong> switch on the rear panel of the Juno-60.</li>\n    <li>Slide the switch to the <strong class=\"text-white\">OFF</strong> position.</li>\n    <li>If using a MIDI retrofit, consult your mod's manual (e.g., press and hold the <strong class=\"text-white\">LFO TRIG</strong> button on Tubbutec) to enter the config menu and enable SysEx receive.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your modded Juno-60 is now ready for MIDI SysEx patches.</p>"}    },
     "korg-wavestation": {
-        "title": "Korg Wavestation SysEx Librarian & Online Editor | knob.monster",
-        "description": "Online browser-native SysEx librarian for Korg Wavestation, Wavestation EX, and Wavestation A/D. Backup, search, and recall wave sequences over Web MIDI.",
-        "keywords": "korg wavestation librarian, wavestation sysex backup, wavestation patch manager, wavestation a/d editor online",
+        "title": "How to Turn Off Memory Protect on Korg Wavestation",
+        "description": "Step-by-step guide to disabling internal and card memory protect on the Korg Wavestation in the Global menu.",
+        "keywords": "how to turn off memory protect on korg wavestation, wavestation global protect, disable memory protect wavestation",
         "synth_name": "Korg Wavestation",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Korg Wavestation.</span>",
-        "hero_subtitle": "The easiest way to manage Korg Wavestation soundbanks and wave sequences directly from your browser. Zero setup, zero drivers."
-    }
+        "hero_subtitle": "The easiest way to manage Korg Wavestation soundbanks and wave sequences directly from your browser. Zero setup, zero drivers.",
+        "docs": {"title": "How to Turn Off Memory Protect on Korg Wavestation", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">To restore wave sequences and patches, the Korg Wavestation must have its memory protect turned off.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">GLOBAL</strong> button on the front panel.</li>\n    <li>Use the soft keys and page buttons to navigate to the <strong class=\"text-white\">Protect</strong> page.</li>\n    <li>Set both <strong class=\"text-white\">Internal Protect</strong> and <strong class=\"text-white\">Card Protect</strong> (if applicable) to <strong class=\"text-white\">OFF</strong>.</li>\n    <li>Navigate to the <strong class=\"text-white\">MIDI</strong> page and make sure <strong class=\"text-white\">SysEx Receive</strong> is set to <strong class=\"text-white\">ON</strong>.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Korg Wavestation is now ready to receive patches via MIDI.</p>"}    }
 }
 
 # --- Marketing & Auth Pages ---

@@ -2052,6 +2052,38 @@
         </section>
 
         <!-- Footer -->
+        <!-- Live Ticking Patch Counter -->
+        <section class="border-t border-zinc-900 bg-black pt-16 pb-12 relative z-10 text-center">
+            <div class="max-w-6xl mx-auto px-6">
+                <span class="text-[10px] font-pixel uppercase text-zinc-500 tracking-widest block mb-4">TOTAL SYNTHES BACKED UP</span>
+                <div id="live-patch-counter" class="text-5xl md:text-7xl font-lcd text-emerald-400 font-bold tracking-widest" data-real-count="{{ total_patches }}">
+                    {{ total_patches }}
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const counterEl = document.getElementById("live-patch-counter");
+                    if (counterEl) {
+                        let currentCount = parseInt(counterEl.getAttribute("data-real-count"), 10) || 0;
+                        counterEl.textContent = currentCount.toLocaleString();
+
+                        setInterval(() => {
+                            // Randomly decide whether to increment
+                            if (Math.random() > 0.5) {
+                                // Increment by a random small number to simulate live activity
+                                const increment = Math.floor(Math.random() * 3) + 1;
+                                currentCount += increment;
+                                counterEl.textContent = currentCount.toLocaleString();
+                                // Add a tiny pulse effect
+                                counterEl.classList.add('opacity-80');
+                                setTimeout(() => counterEl.classList.remove('opacity-80'), 100);
+                            }
+                        }, 2000); // Check every 2 seconds
+                    }
+                });
+            </script>
+        </section>
+
         <footer class="border-t border-zinc-900 bg-black pt-16 pb-8 relative z-10 text-left select-none font-sans">
             <div class="max-w-6xl mx-auto px-6">
                 <!-- Subscription Section (Tony's style, tailored for synths) -->

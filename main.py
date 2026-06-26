@@ -503,16 +503,19 @@ SEO_DATA = {
 async def index(request: Request):
     user = get_current_user(request)
     user_count = 6
+    total_patches = 0
     try:
         conn = database.get_db_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM users;")
         user_count = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) FROM patches;")
+        total_patches = cursor.fetchone()[0]
         conn.close()
     except Exception as e:
-        logger.error(f"Failed to query user count: {e}")
+        logger.error(f"Failed to query database for index page: {e}")
     remaining_slots = max(0, 105 - user_count)
-    return render_template("landing.html", request, {"user": user, "remaining_slots": remaining_slots})
+    return render_template("landing.html", request, {"user": user, "remaining_slots": remaining_slots, "total_patches": total_patches})
 
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):

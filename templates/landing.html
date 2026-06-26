@@ -1077,6 +1077,49 @@
 
         <!-- Hero Section -->
         <section class="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center relative z-10">
+            <!-- Cairo Abstract Hero Background -->
+            <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none flex items-center justify-center" style="mask-image: radial-gradient(ellipse at center, black 10%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 70%);">
+                <canvas id="cairo-hero-canvas" class="w-full h-full opacity-80"></canvas>
+            </div>
+            <script>
+            (function() {
+                const canvas = document.getElementById('cairo-hero-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let time = 0;
+                function resize() {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = canvas.parentElement.clientHeight;
+                }
+                window.addEventListener('resize', resize);
+                resize();
+                function draw() {
+                    requestAnimationFrame(draw);
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.lineJoin = 'round';
+                    ctx.lineCap = 'round';
+                    const cx = width / 2;
+                    const cy = height / 2;
+                    for(let j = 0; j < 3; j++) {
+                        ctx.beginPath();
+                        const offset = j * Math.PI * 2 / 3;
+                        for(let i = 0; i <= 250; i++) {
+                            const t = time * 0.2 + i * 0.02;
+                            const x = cx + Math.sin(t * 3.1 + offset) * (300 + Math.sin(time*0.5)*50) * Math.cos(time * 0.1);
+                            const y = cy + Math.cos(t * 2.3 + offset) * (150 + Math.cos(time*0.5)*30) * Math.sin(time * 0.2);
+                            if (i === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeStyle = `rgba(52, 211, 153, ${0.1 + (j/3) * 0.25})`;
+                        ctx.stroke();
+                    }
+                    time += 0.02;
+                }
+                draw();
+            })();
+            </script>
             <h1
                 class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal reveal">
                 {% if is_halloween_week %}

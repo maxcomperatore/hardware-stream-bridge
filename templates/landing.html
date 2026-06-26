@@ -297,21 +297,18 @@
             box-shadow: 2px 2px 0px 0px #3b83f6 !important;
         }
 
-        /* Subtle breathing/floating animation for the trade offer image */
-        @keyframes breathing {
-
-            0%,
-            100% {
-                transform: scale(1) translateY(0);
+        /* Slow, zero-gravity levitation animation for the meme image */
+        @keyframes levitate {
+            0%, 100% {
+                transform: translateY(0);
             }
-
             50% {
-                transform: scale(1.02) translateY(-4px);
+                transform: translateY(-15px);
             }
         }
 
-        .animate-breathing {
-            animation: breathing 4s ease-in-out infinite;
+        .animate-levitate {
+            animation: levitate 6s ease-in-out infinite;
         }
 
         /* Custom FAQ Accordion Toggles */
@@ -1669,9 +1666,9 @@
 
                     <!-- Meme Image -->
                     <div class="flex items-center justify-center reveal reveal-scale" style="--delay: 300ms;">
-                        <img src="/static/trade_offer.avif" alt="Trade Offer Meme" width="340" height="459"
-                            loading="lazy" sizes="(max-width: 768px) 340px, 340px"
-                            class="w-full max-w-[340px] rounded-2xl border border-zinc-900 shadow-2xl animate-breathing">
+                        <img src="/static/trade_offer.avif" alt="Meme" width="380" height="513"
+                            loading="lazy" sizes="(max-width: 768px) 380px, 380px"
+                            class="w-full max-w-[380px] md:max-w-[400px] rounded-2xl border border-zinc-900 shadow-2xl">
                     </div>
                 </div>
 

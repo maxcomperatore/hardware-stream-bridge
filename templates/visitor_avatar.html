@@ -33,7 +33,6 @@
         const userEmail = "{{ user.email if user else '' }}";
         
         function initVisitorAvatar() {
-            if (window.innerWidth < 768) return;
             const toast = document.getElementById('visitor-avatar-toast');
             if (!toast) return;
 
@@ -182,15 +181,17 @@
             }
 
             // Animate in on page startup after a 2-second delay
-            setTimeout(() => {
-                toast.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
-                toast.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
-            }, 2000);
+            if (window.innerWidth >= 768) {
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+                    toast.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                }, 2000);
 
-            // Auto dismiss after 12 seconds
-            setTimeout(() => {
-                dismissAvatarToast();
-            }, 12000);
+                // Auto dismiss after 12 seconds
+                setTimeout(() => {
+                    dismissAvatarToast();
+                }, 12000);
+            }
         }
 
         // Web MIDI Browser Support Badge Injection

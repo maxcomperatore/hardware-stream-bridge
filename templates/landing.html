@@ -1142,6 +1142,13 @@
                 </div>
             </div>
 
+            <!-- Cable Warning -->
+            <p class="hidden lg:block text-zinc-500 text-[10px] font-mono mt-4 text-center reveal"
+                style="--delay: 400ms;">
+                We recommend a
+                high-quality interface like the Roland UM-ONE or iConnectivity mio.
+            </p>
+
             <!-- Real Technical Specs Banner -->
             <div class="border-t border-zinc-900 py-10 mt-24 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center reveal"
                 style="--delay: 200ms;">
@@ -1151,10 +1158,14 @@
                         MODELS</span>
                 </div>
                 <div class="relative group">
-                    <span id="live-patch-counter" data-initial="{{ total_patches | default(1000) }}" class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{ total_patches | default(1000) }}</span>
-                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider flex items-center justify-center gap-1.5">
+                    <span id="live-patch-counter" data-initial="{{ total_patches | default(1000) }}"
+                        class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{
+                        total_patches | default(1000) }}</span>
+                    <span
+                        class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider flex items-center justify-center gap-1.5">
                         <span class="relative flex h-1.5 w-1.5">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                         </span>
                         PATCHES BACKED UP
@@ -1314,7 +1325,8 @@
 
                 <div class="mt-16 text-center reveal" style="--delay: 300ms;">
                     <p class="text-zinc-400 mb-6 text-sm font-medium">Ready to back up your {{ seo.synth_name }}?</p>
-                    <a href="/signup" class="bg-emerald-500 hover:bg-emerald-400 text-black px-8 py-4 rounded-xl text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 inline-flex items-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                    <a href="/signup"
+                        class="bg-emerald-500 hover:bg-emerald-400 text-black px-8 py-4 rounded-xl text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 inline-flex items-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
                         <span>Get Premium Vault</span>
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -1506,7 +1518,10 @@
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
                     is_halloween_week %}A billing ritual for immortal synth souls.{% else %}A pricing system built for
                     fellow synth heads.{% endif %}</h2>
-                <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans max-w-lg mx-auto">If you don't use knob.monster, you will waste countless hours wrestling with legacy drivers, regret losing your custom patches when your synth's internal battery dies, and experience the pain of corrupted SysEx dumps. Protect your presets today.</p>
+                <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans max-w-lg mx-auto">If you
+                    don't use knob.monster, you will waste countless hours wrestling with legacy drivers, regret losing
+                    your custom patches when your synth's internal battery dies, and experience the pain of corrupted
+                    SysEx dumps. Protect your presets today.</p>
                 <div class="mt-4 flex justify-center">
                     <span
                         class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-pixel bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 select-none uppercase tracking-wider">
@@ -2379,7 +2394,7 @@
                 class="text-zinc-600 hover:text-white transition-colors cursor-pointer text-xs font-bold leading-none select-none p-0.5">&times;</button>
         </div>
 
-{% include "mobile_nav.html" %}
+        {% include "mobile_nav.html" %}
 
         <script>
             const tickerMessages = [

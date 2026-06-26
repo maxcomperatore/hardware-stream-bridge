@@ -1762,6 +1762,7 @@
             </div>
 
             <div class="space-y-4">
+                <!-- ==================== GENERAL INFORMATION ==================== -->
                 <!-- FAQ 1 -->
                 <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 0ms;">
                     <summary
@@ -1811,21 +1812,19 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
+                            <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt=""
                                 width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            Which synthesizers are fully supported?
+                            Is knob.monster better than Snoize or MIDI-OX?
                         </span>
                         <span
                             class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            We feature dedicated name-decoding parsers for the <strong>Yamaha DX7</strong> (and
-                            compatible synths like DX7II, TX7, TX81Z), <strong>Roland Juno-106</strong>, <strong>Korg
-                                M1</strong>, <strong>Roland Jupiter-6</strong> (Europa-modded), and the <strong>Casio CZ
-                                series</strong>. We also feature a universal <strong>Generic Scan</strong> that works
-                            with almost any vintage synthesizer by scanning raw SysEx bulk dumps for readable ASCII
-                            character arrays to extract patch names automatically.
+                            Snoize (macOS) and MIDI-OX (Windows) are fantastic, time-tested tools. However, they require
+                            local software installation, manual buffer setting adjustments, and do not offer cloud
+                            backup or metadata indexing. knob.monster runs instantly on any machine and lets you search
+                            and recall patches in seconds.
                         </p>
                     </div>
                 </details>
@@ -1835,19 +1834,32 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
+                            <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt=""
                                 width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            Do I need a special MIDI interface or cable?
+                            Why use this instead of free utilities or MIDI Quest?
                         </span>
                         <span
                             class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            Any standard, class-compliant USB-to-MIDI interface will work. However, we highly recommend
-                            avoiding low-cost, unbranded interface cables, as they lack internal timing buffers and
-                            frequently drop or corrupt long SysEx byte blocks during large memory dumps.
+                            Regardless of whether you understand the complex binary details of SysEx or have no clue
+                            what that even is, knob.monster just works without any local installation or setup. It saves
+                            you time so you can focus on exploring soundbanks and making music.
                         </p>
+                        <ul
+                            class="text-xs text-zinc-400 leading-relaxed font-normal font-sans list-disc pl-5 mt-2.5 space-y-1.5">
+                            <li><strong>No setup:</strong> Runs instantly inside your browser without configuring legacy
+                                drivers or emulators.</li>
+                            <li><strong>No app sprawl:</strong> No need to download, update, and manage multiple
+                                OS-specific desktop applications.</li>
+                            <li><strong>Cloud library:</strong> No more searching through nested local folders for
+                                missing <code class="bg-zinc-900 px-1 py-0.5 rounded font-mono text-[10px]">.syx</code>
+                                archives—your vaults are accessible from any device.</li>
+                            <li><strong>Fair pricing:</strong> Legacy editors like SoundQuest / MIDI Quest or SoundTower
+                                demand hundreds of dollars for outdated, clunky experiences. knob.monster offers premium
+                                cloud convenience at a fraction of the cost.</li>
+                        </ul>
                     </div>
                 </details>
 
@@ -1856,23 +1868,26 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
+                            <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt=""
                                 width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            How do I prevent "Buffer Overflow" errors?
+                            Who is behind knob.monster?
                         </span>
                         <span
                             class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB
-                            data. knob.monster's MIDI transmission protocol is fine-tuned to throttle outbound dumps
-                            into small packages with 60ms pauses, ensuring your physical hardware can write the data to
-                            memory without dropping packets.
+                            knob.monster is built by Half Radiation LLC, a small independent team of vintage synthesizer
+                            enthusiasts and software developers. We built this tool to solve the frustration of backing
+                            up and organizing our own classic hardware rigs.
                         </p>
                     </div>
                 </details>
 
+                <!-- Topic Spacer -->
+                <div class="h-6 reveal" style="--delay: 225ms;"></div>
+
+                <!-- ==================== SECURITY & SUBSCRIPTIONS ==================== -->
                 <!-- FAQ 6 -->
                 <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 250ms;">
                     <summary
@@ -1920,83 +1935,6 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt=""
-                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            Is knob.monster better than Snoize or MIDI-OX?
-                        </span>
-                        <span
-                            class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
-                    </summary>
-                    <div class="faq-answer mt-3 pl-7 pr-4">
-                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            Snoize (macOS) and MIDI-OX (Windows) are fantastic, time-tested tools. However, they require
-                            local software installation, manual buffer setting adjustments, and do not offer cloud
-                            backup or metadata indexing. knob.monster runs instantly on any machine and lets you search
-                            and recall patches in seconds.
-                        </p>
-                    </div>
-                </details>
-
-                <!-- FAQ 8.5: Why choose knob.monster -->
-                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 375ms;">
-                    <summary
-                        class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
-                        <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt=""
-                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            Why use this instead of free utilities or MIDI Quest?
-                        </span>
-                        <span
-                            class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
-                    </summary>
-                    <div class="faq-answer mt-3 pl-7 pr-4">
-                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            Regardless of whether you understand the complex binary details of SysEx or have no clue
-                            what that even is, knob.monster just works without any local installation or setup. It saves
-                            you time so you can focus on exploring soundbanks and making music.
-                        </p>
-                        <ul
-                            class="text-xs text-zinc-400 leading-relaxed font-normal font-sans list-disc pl-5 mt-2.5 space-y-1.5">
-                            <li><strong>No setup:</strong> Runs instantly inside your browser without configuring legacy
-                                drivers or emulators.</li>
-                            <li><strong>No app sprawl:</strong> No need to download, update, and manage multiple
-                                OS-specific desktop applications.</li>
-                            <li><strong>Cloud library:</strong> No more searching through nested local folders for
-                                missing <code class="bg-zinc-900 px-1 py-0.5 rounded font-mono text-[10px]">.syx</code>
-                                archives—your vaults are accessible from any device.</li>
-                            <li><strong>Fair pricing:</strong> Legacy editors like SoundQuest / MIDI Quest or SoundTower
-                                demand hundreds of dollars for outdated, clunky experiences. knob.monster offers premium
-                                cloud convenience at a fraction of the cost.</li>
-                        </ul>
-                    </div>
-                </details>
-
-                <!-- FAQ 9 -->
-                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 400ms;">
-                    <summary
-                        class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
-                        <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
-                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            Does it support editing patches in real time?
-                        </span>
-                        <span
-                            class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
-                    </summary>
-                    <div class="faq-answer mt-3 pl-7 pr-4">
-                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            knob.monster is primarily a librarian for backup, storage, organization, and quick retrieval
-                            of patch banks. While it does not feature a graphical synthesizer editor (with virtual
-                            sliders for every parameter), it allows you to audition and swap banks in one click.
-                        </p>
-                    </div>
-                </details>
-
-                <!-- FAQ 10 -->
-                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 450ms;">
-                    <summary
-                        class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
-                        <span class="flex items-center gap-2.5">
                             <img src="https://api.iconify.design/dinkie-icons:shield.svg" alt="" width="18" height="18"
                                 class="h-4.5 w-4.5" style="filter: invert(1);" />
                             What is the price of a knob.monster subscription?
@@ -2013,8 +1951,8 @@
                     </div>
                 </details>
 
-                <!-- FAQ 10.5 -->
-                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 475ms;">
+                <!-- FAQ 9 -->
+                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 400ms;">
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
@@ -2032,8 +1970,8 @@
                     </div>
                 </details>
 
-                <!-- FAQ 11 -->
-                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 500ms;">
+                <!-- FAQ 10 -->
+                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 450ms;">
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
@@ -2053,23 +1991,94 @@
                     </div>
                 </details>
 
-                <!-- FAQ 12 -->
-                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 550ms;">
+                <!-- Topic Spacer -->
+                <div class="h-6 reveal" style="--delay: 475ms;"></div>
+
+                <!-- ==================== SYNTHS & MIDI PERFORMANCE ==================== -->
+                <!-- FAQ 11 -->
+                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 500ms;">
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt=""
+                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
                                 width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            Who is behind knob.monster?
+                            Which synthesizers are fully supported?
                         </span>
                         <span
                             class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            knob.monster is built by Half Radiation LLC, a small independent team of vintage synthesizer
-                            enthusiasts and software developers. We built this tool to solve the frustration of backing
-                            up and organizing our own classic hardware rigs.
+                            We feature dedicated name-decoding parsers for the <strong>Yamaha DX7</strong> (and
+                            compatible synths like DX7II, TX7, TX81Z), <strong>Roland Juno-106</strong>, <strong>Korg
+                                M1</strong>, <strong>Roland Jupiter-6</strong> (Europa-modded), and the <strong>Casio CZ
+                                series</strong>. We also feature a universal <strong>Generic Scan</strong> that works
+                            with almost any vintage synthesizer by scanning raw SysEx bulk dumps for readable ASCII
+                            character arrays to extract patch names automatically.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 12 -->
+                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 550ms;">
+                    <summary
+                        class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                        <span class="flex items-center gap-2.5">
+                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            Do I need a special MIDI interface or cable?
+                        </span>
+                        <span
+                            class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                    </summary>
+                    <div class="faq-answer mt-3 pl-7 pr-4">
+                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                            Any standard, class-compliant USB-to-MIDI interface will work. However, we highly recommend
+                            avoiding low-cost, unbranded interface cables, as they lack internal timing buffers and
+                            frequently drop or corrupt long SysEx byte blocks during large memory dumps.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 13 -->
+                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 600ms;">
+                    <summary
+                        class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                        <span class="flex items-center gap-2.5">
+                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            How do I prevent "Buffer Overflow" errors?
+                        </span>
+                        <span
+                            class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                    </summary>
+                    <div class="faq-answer mt-3 pl-7 pr-4">
+                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                            Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB
+                            data. knob.monster's MIDI transmission protocol is fine-tuned to throttle outbound dumps
+                            into small packages with 60ms pauses, ensuring your physical hardware can write the data to
+                            memory without dropping packets.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 14 -->
+                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 650ms;">
+                    <summary
+                        class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                        <span class="flex items-center gap-2.5">
+                            <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            Does it support editing patches in real time?
+                        </span>
+                        <span
+                            class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                    </summary>
+                    <div class="faq-answer mt-3 pl-7 pr-4">
+                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                            knob.monster is primarily a librarian for backup, storage, organization, and quick retrieval
+                            of patch banks. While it does not feature a graphical synthesizer editor (with virtual
+                            sliders for every parameter), it allows you to audition and swap banks in one click.
                         </p>
                     </div>
                 </details>

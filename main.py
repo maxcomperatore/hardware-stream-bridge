@@ -556,6 +556,11 @@ async def blog_web_midi_page(request: Request):
     user = get_current_user(request)
     return render_template("blog_web_midi.html", request, {"user": user})
 
+@app.get("/how-to-back-up-your-roland-juno-106-presets-before-getting-it-serviced", response_class=HTMLResponse)
+async def guide_juno_106_backup_page(request: Request):
+    user = get_current_user(request)
+    return render_template("how_to_back_up_juno_106_presets.html", request, {"user": user})
+
 @app.get("/changelog")
 async def changelog_redirect():
     return RedirectResponse(url="/about", status_code=301)
@@ -1367,6 +1372,7 @@ async def sitemap():
         ("https://knob.monster/privacy", "2026-06-21", "monthly", "0.5"),
         ("https://knob.monster/payment-methods", "2026-06-21", "monthly", "0.6"),
         ("https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", "2026-06-23", "weekly", "0.9"),
+        ("https://knob.monster/how-to-back-up-your-roland-juno-106-presets-before-getting-it-serviced", "2026-06-26", "weekly", "0.9"),
     ]
     
     # Dynamically add all synths from SEO_DATA

@@ -1222,28 +1222,6 @@
                 </div>
             </div>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const counterEl = document.getElementById('live-patch-counter');
-                    if (!counterEl) return;
-
-                    let count = parseInt(counterEl.getAttribute('data-initial')) || 1000;
-
-                    setInterval(() => {
-                        // Increment by a small random amount (1-3)
-                        const increment = Math.floor(Math.random() * 3) + 1;
-                        count += increment;
-                        counterEl.textContent = count;
-
-                        // Add a subtle flash effect when incrementing
-                        counterEl.classList.add('text-white', 'scale-110');
-                        setTimeout(() => {
-                            counterEl.classList.remove('text-white', 'scale-110');
-                        }, 200);
-                    }, 4500); // Update every 4.5 seconds
-                });
-            </script>
-
             <!-- Symmetric Preview Grid (Physical Synth vs. Virtual App) -->
             <div id="demo"
                 class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch text-left">

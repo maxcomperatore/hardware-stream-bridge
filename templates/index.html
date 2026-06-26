@@ -272,7 +272,8 @@
                 </button>
                 <button onclick="toggleAuditionPlay()" id="player-play-btn" title="Play sound preset"
                     class="p-2 bg-white text-black rounded hover:bg-zinc-200 transition-all active:scale-95 flex items-center justify-center tactical-button">
-                    <img id="play-icon" src="https://api.iconify.design/dinkie-icons/right-black-triangle-filled.svg" class="h-4 w-4" />
+                    <img id="play-icon" src="https://api.iconify.design/dinkie-icons/right-black-triangle-filled.svg"
+                        class="h-4 w-4" />
                     <img id="stop-icon" src="https://api.iconify.design/dinkie-icons/black-square-for-stop-filled.svg"
                         class="h-4 w-4 hidden" />
                 </button>
@@ -285,8 +286,8 @@
 
             <!-- Audition Volume with physical tick-mark bezel -->
             <div class="flex items-center gap-2 flex-1 max-w-[110px]">
-                <img src="https://api.iconify.design/dinkie-icons:speaker-medium-volume.svg" class="h-3.5 w-3.5 opacity-60"
-                    style="filter: invert(1);" />
+                <img src="https://api.iconify.design/dinkie-icons:speaker-medium-volume.svg"
+                    class="h-3.5 w-3.5 opacity-60" style="filter: invert(1);" />
                 <input type="range" id="midi-volume" min="0" max="127" value="100" oninput="sendMidiVolume(this.value)"
                     class="w-full cursor-col-resize">
             </div>
@@ -328,8 +329,8 @@
                 class="flex items-center gap-1.5 px-3 py-1.5 bg-[#141417] border border-zinc-800/80 rounded-lg hover:bg-zinc-900 transition-all text-2xs text-white font-semibold font-mono tactical-button">
                 <span id="midi-status-dot" class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
                 <span>Devices</span>
-                <img src="https://api.iconify.design/dinkie-icons:backhand-index-pointing-down.svg" class="h-3 w-3 opacity-60"
-                    style="filter: invert(1);" />
+                <img src="https://api.iconify.design/dinkie-icons:backhand-index-pointing-down.svg"
+                    class="h-3 w-3 opacity-60" style="filter: invert(1);" />
             </button>
 
             <!-- Setup Popover Dropdown -->
@@ -375,19 +376,24 @@
 
                 <!-- Logo Badge Plate -->
                 <div class="p-3 rounded-lg border border-zinc-850 bg-zinc-900/10">
-                    <h2 class="font-pixel uppercase text-[10px] text-white tracking-widest flex items-center justify-center">
-                        <img id="sidebar-logo-avatar" src="/static/logo.avif" alt="Knob Monster Logo" class="h-11 w-11 shrink-0 object-cover mx-auto rounded-full border border-zinc-800 bg-zinc-950">
+                    <h2
+                        class="font-pixel uppercase text-[10px] text-white tracking-widest flex items-center justify-center">
+                        <img id="sidebar-logo-avatar" src="/static/logo.avif" alt="Knob Monster Logo"
+                            class="h-11 w-11 shrink-0 object-cover mx-auto rounded-full border border-zinc-800 bg-zinc-950">
                     </h2>
                     <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-zinc-850 gap-2">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <img id="sidebar-user-avatar" src="" class="h-4.5 w-4.5 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none" />
+                            <img id="sidebar-user-avatar" src=""
+                                class="h-4.5 w-4.5 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none" />
                             <span class="text-[7.5px] font-mono text-zinc-500 truncate max-w-[85px]"
                                 title="{{ user.email }}">{{ user.email }}</span>
                         </div>
                         {% if user.tier == 'premium' %}
-                        <button onclick="showUnsubscribeModal()" class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none cursor-pointer hover:bg-amber-500/20 transition-colors">PRO</button>
+                        <button onclick="showUnsubscribeModal()"
+                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none cursor-pointer hover:bg-amber-500/20 transition-colors">PRO</button>
                         {% else %}
-                        <span class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">FREE</span>
+                        <span
+                            class="text-[7px] font-roman px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">FREE</span>
                         {% endif %}
                     </div>
                 </div>
@@ -524,7 +530,8 @@
                         <div class="p-6 text-center">
                             <div
                                 class="h-12 w-12 rounded-xl bg-zinc-950 border border-zinc-850 flex items-center justify-center mx-auto mb-4 shadow-inner">
-                                <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg" class="h-6 w-6"
+                                <img src="https://api.iconify.design/dinkie-icons:multiple-musical-notes.svg"
+                                    class="h-6 w-6"
                                     style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(336deg) brightness(98%) contrast(98%);" />
                             </div>
 
@@ -600,7 +607,8 @@
                 <div id="midi-log-console"
                     class="flex-1 p-3 overflow-y-auto custom-scrollbar space-y-1 text-zinc-650 select-text">
                     <div class="text-zinc-600 font-mono">[SYSTEM] Initializing MIDI interface console... ready.</div>
-                    <div class="text-zinc-600 font-mono">[SYSTEM] Connect your synth via USB-to-MIDI and open Devices to select ports.</div>
+                    <div class="text-zinc-600 font-mono">[SYSTEM] Connect your synth via USB-to-MIDI and open Devices to
+                        select ports.</div>
                 </div>
             </div>
         </div>
@@ -1529,20 +1537,20 @@
         // Sound Shop Navigation & Integration
         function showMarketplace(e) {
             if (e) e.preventDefault();
-            
+
             // Highlight nav button, unhighlight saved banks button
             const navMarketplace = document.getElementById('nav-marketplace-btn');
             const navSavedBanks = document.getElementById('nav-saved-banks-btn');
-            
+
             navMarketplace.className = "flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-white bg-zinc-900/60 border border-zinc-855 transition-all";
             navSavedBanks.className = "flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-2xs font-semibold text-zinc-400 hover:text-white hover:bg-zinc-900/40 border border-transparent transition-all";
-            
+
             // Unselect active banks in the sidebar list
             document.querySelectorAll('#bank-list-container > a').forEach(a => {
                 a.classList.remove('bg-[#141417]', 'text-white');
                 a.classList.add('text-zinc-400');
             });
-            
+
             // Load the marketplace HTML
             const content = document.getElementById('patch-explorer-content');
             content.innerHTML = `
@@ -1551,7 +1559,7 @@
                     <span class="block text-2xs font-semibold text-zinc-500 font-mono">Loading Sound Shop...</span>
                 </div>
             `;
-            
+
             htmx.ajax('GET', '/marketplace', { target: '#patch-explorer-content', swap: 'innerHTML' });
         }
 
@@ -1586,7 +1594,8 @@
                 cloud vaults, instant backups, and continuous hardware sync.
             </p>
 
-             <div class="my-5 p-4 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5 text-left text-2xs font-pixel uppercase tracking-wider text-zinc-400">
+            <div
+                class="my-5 p-4 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5 text-left text-2xs font-pixel uppercase tracking-wider text-zinc-400">
                 <div class="flex items-center gap-2">
                     <img src="https://api.iconify.design/dinkie-icons/checkmark-circled-small.svg" class="h-3.5 w-3.5"
                         style="filter: invert(0.6);" />
@@ -1637,12 +1646,14 @@
             </button>
 
             <span class="text-[9px] font-pixel text-rose-500 uppercase tracking-widest">UNSUBSCRIBE</span>
-            <h3 class="text-sm font-pixel text-white uppercase mt-2">wish to unscicirbe ?</h3>
+            <h3 class="text-sm font-pixel text-white uppercase mt-2">wish to cancel your subscription?</h3>
             <p class="text-xs text-zinc-450 mt-3.5 leading-relaxed font-sans font-normal">
-                pelase shot me a mail at halfradiationllc@gmail.com 30 days form purchase so we can issue a refund otherwise not psisslbe
+                Please email us at <a href="mailto:halfradiationllc@gmail.com"
+                    class="text-blue-400 underline">halfradiationllc@gmail.com</a> within 30 days of purchase to request
+                a refund. Requests outside this window cannot be accommodated.
             </p>
             <p class="text-[10px] text-amber-500 mt-2 font-mono">
-                please don't charback that is very bad for our business thx
+                If you have any issues, please reach out directly rather than filing a chargeback.
             </p>
 
             <div class="flex flex-col gap-2 mt-5">

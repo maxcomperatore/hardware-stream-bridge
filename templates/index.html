@@ -679,6 +679,56 @@
 
     <!-- Web MIDI & Audio Library Script -->
     <script>
+        // --- PostHog Custom Telemetry Logging ---
+        function logToPostHog(eventName, properties = {}) {
+            if (window.posthog) {
+                try {
+                    window.posthog.capture(eventName, {
+                        ...properties,
+                        user_email: "{{ user.email if user else 'anonymous' }}",
+                        distinct_id: "{{ user.email if user else 'anonymous' }}",
+                        timestamp: new Date().toISOString()
+                    });
+                } catch (e) {
+                    console.error("Failed to capture PostHog telemetry:", e);
+                }
+            }
+        }
+
+        // Global uncaught error handling
+        window.addEventListener('error', (event) => {
+            logToPostHog('client_js_error', {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno,
+                stack: event.error ? event.error.stack : null
+            });
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            logToPostHog('client_unhandled_rejection', {
+                reason: event.reason ? (event.reason.stack || event.reason.toString()) : null
+            });
+        });
+
+        // Global HTMX response/send error tracking
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.addEventListener('htmx:responseError', (evt) => {
+                logToPostHog('htmx_response_error', {
+                    path: evt.detail.pathInfo ? evt.detail.pathInfo.path : null,
+                    status: evt.detail.xhr ? evt.detail.xhr.status : null,
+                    responseText: evt.detail.xhr ? evt.detail.xhr.responseText : null
+                });
+            });
+
+            document.body.addEventListener('htmx:sendError', (evt) => {
+                logToPostHog('htmx_send_error', {
+                    path: evt.detail.pathInfo ? evt.detail.pathInfo.path : null
+                });
+            });
+        });
+
         // --- Web MIDI & Audio API Core State ---
         let midiAccess = null;
         let selectedInput = null;
@@ -697,6 +747,12 @@
 
         // --- MIDI Console Logging ---
         function logMidiEvent(direction, dataHex) {
+            // Track all system & MIDI bus events in PostHog
+            logToPostHog('midi_system_event', {
+                direction: direction,
+                message: dataHex
+            });
+
             const consoleEl = document.getElementById('midi-log-console');
             if (!consoleEl) return;
 
@@ -780,9 +836,11 @@
 
         // Query browser MIDI API
         function initializeMidiAccess(interactive) {
+            logToPostHog('midi_access_request', { interactive: interactive });
             if (!navigator.requestMIDIAccess) {
                 updateMidiBadge("error", "Web MIDI API Un-supported");
                 logMidiEvent("SYSTEM", "Web MIDI API is unsupported in this browser.");
+                logToPostHog('midi_unsupported_browser', { interactive: interactive });
                 if (interactive) {
                     showToast("Compatibility Warning", "Your browser does not support Web MIDI API. Please switch to Google Chrome or Microsoft Edge.", "warning");
                 }
@@ -795,11 +853,17 @@
                     midiAccess = access;
                     updateMidiBadge("active", "Hardware MIDI Access Live");
                     logMidiEvent("SYSTEM", "Hardware MIDI access granted successfully.");
+                    logToPostHog('midi_access_granted', { interactive: interactive });
 
                     // Listen for hardware connections changes
                     midiAccess.onstatechange = (e) => {
                         updatePortsDropdowns();
                         logMidiEvent("SYSTEM", `MIDI Port State Change: ${e.port.name} is now ${e.port.state}`);
+                        logToPostHog('midi_port_state_change', {
+                            port_name: e.port.name,
+                            port_state: e.port.state,
+                            port_type: e.port.type
+                        });
                     };
 
                     updatePortsDropdowns();
@@ -813,6 +877,10 @@
                     console.error("MIDI access denied:", err);
                     updateMidiBadge("error", "Permission Denied / Failed");
                     logMidiEvent("SYSTEM", `MIDI Access Denied: ${err.message}`);
+                    logToPostHog('midi_access_denied', {
+                        error: err.message || err.toString(),
+                        interactive: interactive
+                    });
                     if (interactive) {
                         showToast("MIDI Access Blocked", "Please grant MIDI permission in your browser URL bar to talk to synths.", "warning");
                     }
@@ -887,10 +955,12 @@
             inputSelect.onchange = () => {
                 selectedInput = inputSelect.value;
                 updateMidiPortLabel();
+                logToPostHog('midi_input_port_selected', { port_id: selectedInput });
             };
             outputSelect.onchange = () => {
                 selectedOutput = outputSelect.value;
                 updateMidiPortLabel();
+                logToPostHog('midi_output_port_selected', { port_id: selectedOutput });
             };
             updateMidiPortLabel();
         }
@@ -1011,8 +1081,16 @@
             const synthModel = document.getElementById('pull-synth-model').value;
             const bankName = document.getElementById('pull-bank-name').value;
 
+            logToPostHog('dump_sequence_initiated', {
+                synth_model: synthModel,
+                bank_name: bankName,
+                input_port: selectedInput,
+                output_port: selectedOutput
+            });
+
             if (!selectedInput || !selectedOutput) {
                 showToast("Devices Not Connected", "Please select valid MIDI Input and Output ports first.", "warning");
+                logToPostHog('dump_sequence_aborted_no_ports');
                 return;
             }
 
@@ -1033,6 +1111,10 @@
                 closeStatusOverlay();
                 showToast("Connection Lost", "The MIDI interface was unplugged.", "error");
                 logMidiEvent("SYSTEM", "MIDI hardware error: interface disconnected.");
+                logToPostHog('dump_sequence_failed_interface_unplugged', {
+                    synth_model: synthModel,
+                    bank_name: bankName
+                });
                 return;
             }
 
@@ -1061,6 +1143,12 @@
                         stopMidiIngestion(false);
                         closeStatusOverlay();
                         showToast("No response from synth", "Press WRITE on the Juno-106 while this dialog is open.", "warning");
+                        logToPostHog('midi_dump_timeout', {
+                            synth_model: synthModel,
+                            bank_name: bankName,
+                            timeout_ms: 60000,
+                            reason: "No response from manual trigger"
+                        });
                     }
                 }, 60000);
             } else {
@@ -1074,6 +1162,12 @@
                         stopMidiIngestion(false);
                         closeStatusOverlay();
                         showToast("No response from synth", "Verify MIDI Cables (In to Out) and device MIDI channel.", "warning");
+                        logToPostHog('midi_dump_timeout', {
+                            synth_model: synthModel,
+                            bank_name: bankName,
+                            timeout_ms: 15000,
+                            reason: "No response to dump request command"
+                        });
                     }
                 }, 15000);
             }
@@ -1138,6 +1232,10 @@
         }
 
         function stopMidiIngestion(saveData) {
+            const synthModel = document.getElementById('pull-synth-model').value;
+            const bankName = document.getElementById('pull-bank-name').value;
+            const msgCount = countSysexMessages(ingestedBytes);
+
             isIngesting = false;
             currentIngestSynthModel = null;
 
@@ -1157,13 +1255,16 @@
 
             if (!saveData) {
                 logMidiEvent("SYSTEM", "MIDI Ingestion aborted or timed out.");
+                logToPostHog('midi_ingest_aborted', {
+                    synth_model: synthModel,
+                    bank_name: bankName,
+                    bytes_received: ingestedBytes.length,
+                    msg_count: msgCount
+                });
                 return;
             }
 
             const hexString = Array.from(ingestedBytes).map(b => b.toString(16).padStart(2, '0')).join('');
-            const synthModel = document.getElementById('pull-synth-model').value;
-            const bankName = document.getElementById('pull-bank-name').value;
-            const msgCount = countSysexMessages(ingestedBytes);
 
             logMidiEvent("SYSTEM", `SysEx Stream completed. Received ${ingestedBytes.length} bytes (${msgCount} messages). Parsing patch names...`);
             updateStatusOverlay(100, "Extracting patch names...", `${ingestedBytes.length} B`, "VERIFYING");
@@ -1181,25 +1282,47 @@
                 method: 'POST',
                 body: formData
             })
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`Server returned ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.text();
+                })
                 .then(html => {
                     completeStatusOverlay("Backup Completed", "Soundbank successfully archived and parsed.");
                     showToast("Bank Archived", `"${bankName}" saved in library.`, "success");
                     document.getElementById('bank-list-container').innerHTML = html;
                     document.getElementById('pull-bank-form').reset();
+                    logToPostHog('bank_backup_success', {
+                        synth_model: synthModel,
+                        bank_name: bankName,
+                        byte_count: ingestedBytes.length,
+                        msg_count: msgCount
+                    });
                 })
                 .catch(err => {
                     console.error(err);
                     closeStatusOverlay();
                     showToast("Save Failed", "Error processing SysEx dump.", "error");
+                    logToPostHog('bank_backup_failed', {
+                        synth_model: synthModel,
+                        bank_name: bankName,
+                        byte_count: ingestedBytes.length,
+                        msg_count: msgCount,
+                        error: err.message || err.toString()
+                    });
                 });
         }
 
         // --- Flashing SysEx to Synthesizer ---
         function flashBank(bankId, bankName) {
+            logToPostHog('flash_bank_initiated', { bank_id: bankId, bank_name: bankName });
             if (!selectedOutput) {
                 showToast("Flash Aborted", "Select a MIDI Output port first.", "warning");
                 logMidiEvent("SYSTEM", "Flash aborted: No output MIDI port selected.");
+                logToPostHog('flash_bank_aborted_no_output', { bank_id: bankId, bank_name: bankName });
                 return;
             }
 
@@ -1215,6 +1338,7 @@
                     const hex = data.sysex_hex;
                     const byteLen = hex.length / 2;
                     logMidiEvent("SYSTEM", `Retrieved ${byteLen} bytes of raw SysEx from database.`);
+                    logToPostHog('flash_data_fetched', { bank_id: bankId, bank_name: bankName, byte_count: byteLen });
 
                     let progress = 0;
                     const interval = setInterval(() => {
@@ -1240,6 +1364,11 @@
                     closeStatusOverlay();
                     showToast("Flash Failed", "Cannot retrieve SysEx dump from database.", "error");
                     logMidiEvent("SYSTEM", `Flash error: Database fetch failed: ${err.message}`);
+                    logToPostHog('flash_data_fetch_failed', {
+                        bank_id: bankId,
+                        bank_name: bankName,
+                        error: err.message || err.toString()
+                    });
                 });
         }
 
@@ -1251,6 +1380,7 @@
                     closeStatusOverlay();
                     showToast("Port Unavailable", "The target output MIDI device is disconnected.", "error");
                     logMidiEvent("SYSTEM", "Flash aborted: Selected output port was lost.");
+                    logToPostHog('flash_execution_aborted_port_lost', { bank_name: bankName });
                     return;
                 }
 
@@ -1260,17 +1390,27 @@
 
                 completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!");
                 showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
+                logToPostHog('flash_execution_success', {
+                    bank_name: bankName,
+                    output_port: selectedOutput,
+                    byte_count: bytes.length
+                });
             } catch (err) {
                 console.error("Midi flash error:", err);
                 closeStatusOverlay();
                 showToast("Flash Failed", "Error transmitting MIDI data packet.", "error");
                 logMidiEvent("SYSTEM", `Flash transmission failed: ${err.message}`);
+                logToPostHog('flash_execution_failed', {
+                    bank_name: bankName,
+                    error: err.message || err.toString()
+                });
             }
         }
 
         // --- Audition Patch Note ---
         function selectPatch(index, name) {
             currentPatchIndex = index;
+            logToPostHog('patch_selected', { index: index, name: name });
 
             // Set current playing patch layout details
             const lcdTitle = document.getElementById('lcd-patch-title');
@@ -1311,6 +1451,7 @@
         }
 
         function executeMidiNoteOn(index) {
+            logToPostHog('patch_play_triggered', { index: index, note: 60 });
             if (!selectedOutput) return;
             const outputPort = midiAccess.outputs.get(selectedOutput);
             if (!outputPort) return;
@@ -1351,6 +1492,7 @@
             if (nextIndex >= currentActivePatches.length) nextIndex = 0;
 
             selectPatch(nextIndex, currentActivePatches[nextIndex].name);
+            logToPostHog('patch_navigation_triggered', { direction: dir, next_index: nextIndex });
 
             // Play note on navigation if play was active
             const playIcon = document.getElementById('play-icon');
@@ -1359,8 +1501,10 @@
             }
         }
 
+        // Send MIDI volume slider value
         function sendMidiVolume(val) {
             const volValue = parseInt(val);
+            logToPostHog('midi_volume_changed', { value: volValue });
             const statusText = document.getElementById('lcd-status-text');
             statusText.textContent = `Synth Volume: ${Math.floor((volValue / 127) * 100)}%`;
 
@@ -1403,6 +1547,7 @@
         }
 
         function selectBank(bankId, bankName, synthModel) {
+            logToPostHog('bank_selected', { bank_id: bankId, bank_name: bankName, synth_model: synthModel });
             // Reset active sidebar items
             document.querySelectorAll('#bank-list-container > a').forEach(a => {
                 a.classList.remove('bg-[#141417]', 'text-white');
@@ -1431,6 +1576,11 @@
         }
 
         function showUploadProgress() {
+            const uploadForm = document.getElementById('upload-form');
+            const bankName = uploadForm ? uploadForm.querySelector('[name="name"]')?.value : null;
+            const synthModel = uploadForm ? uploadForm.querySelector('[name="synth_model"]')?.value : null;
+            logToPostHog('file_upload_initiated', { bank_name: bankName, synth_model: synthModel });
+
             showStatusOverlay("Uploading Backup File", "Transferring .SYX dump to cloud database...", false);
 
             document.body.addEventListener('htmx:afterOnLoad', function listener(evt) {
@@ -1439,6 +1589,7 @@
                     showToast("Import Successful", "Parsed and loaded to Vault Library.", "success");
                     document.getElementById('upload-form').reset();
                     document.getElementById('file-label').textContent = "Select .syx backup";
+                    logToPostHog('file_upload_success', { bank_name: bankName, synth_model: synthModel });
                     document.body.removeEventListener('htmx:afterOnLoad', listener);
                 }
             });

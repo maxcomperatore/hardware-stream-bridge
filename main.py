@@ -901,18 +901,59 @@ async def create_bank(
         raise HTTPException(status_code=400, detail="Invalid hexadecimal string data")
     
     # Parse voices
-    if synth_model == "Yamaha DX7":
-        patch_names = parser.parse_dx7_sysex(sysex_bytes)
-    elif synth_model == "Roland Juno-106":
-        patch_names = parser.parse_juno106_sysex(sysex_bytes)
-    elif synth_model == "Korg M1":
-        patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
-    elif synth_model == "Roland Jupiter-6":
-        patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
-    elif synth_model == "Casio CZ-101":
-        patch_names = parser.parse_cz101_sysex(sysex_bytes)
-    else:
-        patch_names = parser.parse_generic_sysex(sysex_bytes)
+    try:
+        if synth_model == "Yamaha DX7":
+            patch_names = parser.parse_dx7_sysex(sysex_bytes)
+        elif synth_model == "Roland Juno-106":
+            patch_names = parser.parse_juno106_sysex(sysex_bytes)
+        elif synth_model == "Korg M1":
+            patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
+        elif synth_model == "Roland Jupiter-6":
+            patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
+        elif synth_model == "Casio CZ-101":
+            patch_names = parser.parse_cz101_sysex(sysex_bytes)
+        else:
+            patch_names = parser.parse_generic_sysex(sysex_bytes)
+
+        if not patch_names:
+            trigger_alert(
+                "sysex_parser_empty",
+                f"SysEx parser returned 0 patches for `{name}` ({synth_model}) of user `{user['email']}`.",
+                {
+                    "email": user["email"],
+                    "synth_model": synth_model,
+                    "sysex_len_bytes": len(sysex_bytes),
+                    "sysex_hex_preview": sysex_bytes[:50].hex()
+                },
+                distinct_id=user["email"]
+            )
+        else:
+            trigger_alert(
+                "sysex_parser_success",
+                f"SysEx parser successfully extracted {len(patch_names)} patches for `{name}` ({synth_model}) of user `{user['email']}`.",
+                {
+                    "email": user["email"],
+                    "synth_model": synth_model,
+                    "sysex_len_bytes": len(sysex_bytes),
+                    "patches_count": len(patch_names),
+                    "patch_names_preview": patch_names[:5]
+                },
+                distinct_id=user["email"]
+            )
+    except Exception as exc:
+        trigger_alert(
+            "sysex_parser_failed",
+            f"SysEx parser failed with exception: `{exc.__class__.__name__}: {str(exc)}` for `{name}` ({synth_model}) of user `{user['email']}`.",
+            {
+                "email": user["email"],
+                "synth_model": synth_model,
+                "sysex_len_bytes": len(sysex_bytes),
+                "error": str(exc),
+                "traceback": traceback.format_exc()
+            },
+            distinct_id=user["email"]
+        )
+        patch_names = []
         
     # Save to database scoped to user
     database.save_bank(name, synth_model, clean_hex, patch_names, user["id"])
@@ -959,18 +1000,59 @@ async def upload_bank_file(
     sysex_hex = sysex_bytes.hex()
     
     # Parse voices
-    if synth_model == "Yamaha DX7":
-        patch_names = parser.parse_dx7_sysex(sysex_bytes)
-    elif synth_model == "Roland Juno-106":
-        patch_names = parser.parse_juno106_sysex(sysex_bytes)
-    elif synth_model == "Korg M1":
-        patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
-    elif synth_model == "Roland Jupiter-6":
-        patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
-    elif synth_model == "Casio CZ-101":
-        patch_names = parser.parse_cz101_sysex(sysex_bytes)
-    else:
-        patch_names = parser.parse_generic_sysex(sysex_bytes)
+    try:
+        if synth_model == "Yamaha DX7":
+            patch_names = parser.parse_dx7_sysex(sysex_bytes)
+        elif synth_model == "Roland Juno-106":
+            patch_names = parser.parse_juno106_sysex(sysex_bytes)
+        elif synth_model == "Korg M1":
+            patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
+        elif synth_model == "Roland Jupiter-6":
+            patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
+        elif synth_model == "Casio CZ-101":
+            patch_names = parser.parse_cz101_sysex(sysex_bytes)
+        else:
+            patch_names = parser.parse_generic_sysex(sysex_bytes)
+
+        if not patch_names:
+            trigger_alert(
+                "sysex_parser_empty",
+                f"SysEx parser returned 0 patches for uploaded file `{name}` ({synth_model}) of user `{user['email']}`.",
+                {
+                    "email": user["email"],
+                    "synth_model": synth_model,
+                    "sysex_len_bytes": len(sysex_bytes),
+                    "sysex_hex_preview": sysex_bytes[:50].hex()
+                },
+                distinct_id=user["email"]
+            )
+        else:
+            trigger_alert(
+                "sysex_parser_success",
+                f"SysEx parser successfully extracted {len(patch_names)} patches for uploaded file `{name}` ({synth_model}) of user `{user['email']}`.",
+                {
+                    "email": user["email"],
+                    "synth_model": synth_model,
+                    "sysex_len_bytes": len(sysex_bytes),
+                    "patches_count": len(patch_names),
+                    "patch_names_preview": patch_names[:5]
+                },
+                distinct_id=user["email"]
+            )
+    except Exception as exc:
+        trigger_alert(
+            "sysex_parser_failed",
+            f"SysEx parser failed with exception: `{exc.__class__.__name__}: {str(exc)}` for uploaded file `{name}` ({synth_model}) of user `{user['email']}`.",
+            {
+                "email": user["email"],
+                "synth_model": synth_model,
+                "sysex_len_bytes": len(sysex_bytes),
+                "error": str(exc),
+                "traceback": traceback.format_exc()
+            },
+            distinct_id=user["email"]
+        )
+        patch_names = []
         
     database.save_bank(name, synth_model, sysex_hex, patch_names, user["id"])
     logger.info(f"SysEx file uploaded: {name} ({synth_model}) for user {user['email']}", extra={"email": user["email"], "synth_model": synth_model, "patches_count": len(patch_names), "event_type": "sysex_upload"})
@@ -996,7 +1078,15 @@ async def delete_bank(request: Request, bank_id: int):
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
         
+    bank = database.get_bank(bank_id, user["id"])
+    bank_name = bank["name"] if bank else "Unknown"
     database.delete_bank(bank_id, user["id"])
+    trigger_alert(
+        "sysex_bank_deleted",
+        f"SysEx bank `{bank_name}` (ID: {bank_id}) deleted by user `{user['email']}`.",
+        {"email": user["email"], "bank_id": bank_id, "bank_name": bank_name},
+        distinct_id=user["email"]
+    )
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
 
@@ -1017,6 +1107,13 @@ async def download_bank(request: Request, bank_id: int):
     except ValueError:
         raise HTTPException(status_code=500, detail="Database data corruption: invalid hex")
         
+    trigger_alert(
+        "sysex_bank_downloaded",
+        f"SysEx bank `{bank['name']}` (ID: {bank_id}) downloaded by user `{user['email']}`.",
+        {"email": user["email"], "bank_id": bank_id, "bank_name": bank["name"], "synth_model": bank["synth_model"]},
+        distinct_id=user["email"]
+    )
+
     file_stream = io.BytesIO(sysex_bytes)
     safe_name = bank["name"].lower().replace(" ", "_")
     filename = f"{safe_name}.syx"
@@ -1038,6 +1135,13 @@ async def get_bank_hex(request: Request, bank_id: int):
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
+    
+    trigger_alert(
+        "sysex_bank_hex_requested",
+        f"SysEx bank `{bank['name']}` (ID: {bank_id}) hex requested for transmission by user `{user['email']}`.",
+        {"email": user["email"], "bank_id": bank_id, "bank_name": bank["name"], "synth_model": bank["synth_model"]},
+        distinct_id=user["email"]
+    )
     return {"sysex_hex": bank["sysex_hex"]}
 
 # --- Sound Shop & Generative AI Endpoints ---

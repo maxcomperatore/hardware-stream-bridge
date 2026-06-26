@@ -570,9 +570,13 @@ async def resources_page(request: Request):
     return render_template("resources.html", request, {"user": user})
 
 @app.get("/about", response_class=HTMLResponse)
-async def about_page(request: Request):
+async def about_redirect_page(request: Request):
+    return RedirectResponse(url="/milestones", status_code=301)
+
+@app.get("/milestones", response_class=HTMLResponse)
+async def milestones_page(request: Request):
     user = get_current_user(request)
-    return render_template("about.html", request, {"user": user})
+    return render_template("milestones.html", request, {"user": user})
 
 @app.get("/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", response_class=HTMLResponse)
 async def blog_web_midi_page(request: Request):
@@ -596,7 +600,7 @@ async def guide_m1_page(request: Request):
 
 @app.get("/changelog")
 async def changelog_redirect():
-    return RedirectResponse(url="/about", status_code=301)
+    return RedirectResponse(url="/milestones", status_code=301)
 
 @app.get("/payment-methods", response_class=HTMLResponse)
 async def payment_methods_page(request: Request):
@@ -1768,7 +1772,7 @@ async def mcp_server_card():
             "registerEndpoint": f"{SITE_BASE}/signup"
         },
         "contact": {
-            "url": f"{SITE_BASE}/about"
+            "url": f"{SITE_BASE}/milestones"
         }
     }
     return Response(

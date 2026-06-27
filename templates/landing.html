@@ -445,6 +445,14 @@
         },
         {
           "@type": "Question",
+          "name": "Is knob.monster secure from a cybersecurity standpoint?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. knob.monster is designed with a defense-in-depth security model. Because it is completely browser-native, you do not need to install local desktop executables, background drivers, or untrusted utilities, keeping your operating system completely isolated from security risks. On the backend, our processing engine runs in isolated environments with strict input sanitization on all uploaded binary data to prevent SSRF vulnerabilities or buffer exploit attempts. Additionally, all billing is securely managed via Stripe—no credit cards or payment credentials ever touch or reside on our servers."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Can I export and download my SysEx files?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -2110,6 +2118,28 @@
                             Yes. All soundbanks and SysEx dumps uploaded to knob.monster are stored securely in your
                             private cloud account. We only read the ASCII patch names to display them in your private
                             searchable library, and your raw `.syx` binary files are never shared.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ 6b (Security) -->
+                <details class="group border-b border-zinc-900 pb-5 reveal" style="--delay: 275ms;">
+                    <summary
+                        class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
+                        <span class="flex items-center gap-2.5">
+                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt="" width="18" height="18"
+                                class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            Is knob.monster secure from a cybersecurity standpoint?
+                        </span>
+                        <span
+                            class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
+                    </summary>
+                    <div class="faq-answer mt-3 pl-7 pr-4">
+                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                            Yes. knob.monster is designed with a defense-in-depth security model. Because it is completely browser-native, you do not need to install local desktop executables, background drivers, or untrusted utilities, keeping your operating system completely isolated from security risks.
+                        </p>
+                        <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans mt-2">
+                            On the backend, our processing engine runs in isolated environments with strict input sanitization on all uploaded binary data to prevent SSRF vulnerabilities or buffer exploit attempts. Additionally, all billing is securely managed via Stripe—no credit cards or payment credentials ever touch or reside on our servers.
                         </p>
                     </div>
                 </details>

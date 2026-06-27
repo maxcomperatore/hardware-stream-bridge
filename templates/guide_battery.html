@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why your vintage synth battery is killing your sounds | knob.monster</title>
+    <link rel="canonical" href="https://knob.monster/why-your-vintage-synth-battery-is-killing-your-sounds">
+    <meta name="description" content="Calculate your vintage synth internal battery lifespan. Learn how SRAM memory depends on CR2032 batteries and avoid instant patch data corruption.">
+    <meta name="keywords" content="vintage synth battery lifespan, yamaha dx7 battery replacement, roland juno 106 cr2032, restore patches dead battery, web midi sysex backup">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            450: '#7e7e8a',
+                            555: '#52525c',
+                            650: '#43434c',
+                            655: '#3e3e46',
+                            850: '#1c1c21',
+                        },
+                        emerald: {
+                            400: '#60a5fa',
+                            500: '#3b83f6',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        ::selection { background-color: rgba(41, 151, 255, 0.2); color: #ffffff; }
+        @keyframes logo-spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, block 15%, block 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, block 15%, block 85%, transparent 100%);
+        }
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+<body class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-blue-500/20 selection:text-white">
+
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="hover:text-white transition-colors duration-200">Resources</a>
+                <a href="/milestones" class="hover:text-white transition-colors duration-200">Milestones</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/dashboard" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Open Vault</a>
+                {% else %}
+                <a href="/login" class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">Sign In</a>
+                <a href="/signup" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
+        <article class="space-y-6 text-left mb-12">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-red-500/10 border border-red-500/25 text-red-400 uppercase tracking-widest">
+                Hardware Preservation
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
+                Why Your Vintage Synth Battery is Killing Your Sounds
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
+                Inside almost every synthesizer manufactured between 1980 and 1999 sits a tiny, ticking time-bomb: a 3V lithium coin cell battery. Learn how SRAM memory depends on it and calculate your risk.
+            </p>
+        </article>
+
+        <!-- INTERACTIVE CALCULATOR SECTION -->
+        <section class="bg-zinc-950 border border-zinc-900 rounded-3xl p-6 md:p-8 my-12 space-y-6 shadow-2xl relative">
+            <div class="space-y-2 text-center md:text-left border-b border-zinc-900 pb-4">
+                <h2 class="text-base font-pixel text-white uppercase tracking-wider flex items-center gap-2 justify-center md:justify-start">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                    Interactive Battery Lifespan &amp; Risk Calculator
+                </h2>
+                <p class="text-xs text-zinc-400 font-mono">Input your synthesizer setup parameters to calculate estimated battery voltage decay and data corruption risk.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Inputs -->
+                <div class="space-y-4 font-mono text-xs">
+                    <div>
+                        <label class="block text-zinc-400 uppercase tracking-wider mb-2 font-pixel text-3xs">1. Select Synth Model</label>
+                        <select id="calc-model" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono">
+                            <option value="dx7" data-drain="low" data-base="1983">Yamaha DX7 (Low SRAM drain - CR2032)</option>
+                            <option value="juno106" data-drain="medium" data-base="1984">Roland Juno-106 (Medium drain - CR2032)</option>
+                            <option value="m1" data-drain="high" data-base="1988">Korg M1 (High drain - CR2032)</option>
+                            <option value="prophet600" data-drain="medium" data-base="1982">Sequential Prophet-600 (Medium drain - CR2032)</option>
+                            <option value="other" data-drain="medium" data-base="1985">Generic / Other 80s Synth</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-zinc-400 uppercase tracking-wider mb-2 font-pixel text-3xs">2. Last Battery Replacement</label>
+                        <select id="calc-year" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono">
+                            <option value="never">Never (Original Battery)</option>
+                            <option value="5">Within last 5 Years</option>
+                            <option value="10">Within last 10 Years</option>
+                            <option value="15">More than 15 Years ago</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-zinc-400 uppercase tracking-wider mb-2 font-pixel text-3xs">3. Storage Condition</label>
+                        <select id="calc-temp" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono">
+                            <option value="normal">Climate-Controlled Studio (Normal)</option>
+                            <option value="hot">Hot Attic/Garage (Accelerates discharge)</option>
+                            <option value="cold">Damp/Cold Basement (Alters internal chemistry)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Results display -->
+                <div class="bg-black border border-zinc-900 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-zinc-900 pb-2">
+                            <span class="text-3xs font-pixel text-zinc-500 uppercase">Estimated Voltage</span>
+                            <span id="result-voltage" class="text-xl font-lcd text-emerald-400">3.00V</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-zinc-900 pb-2">
+                            <span class="text-3xs font-pixel text-zinc-500 uppercase">Battery Health</span>
+                            <span id="result-health" class="text-sm font-mono text-white">100%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-3xs font-pixel text-zinc-500 uppercase">Data Loss Risk</span>
+                            <span id="result-risk" class="text-xs font-pixel px-2 py-0.5 rounded uppercase bg-emerald-500/10 text-emerald-400">SAFE</span>
+                        </div>
+                    </div>
+
+                    <div id="result-alert-box" class="p-3.5 bg-emerald-950/20 border border-emerald-900/30 rounded-xl text-center">
+                        <p id="result-advice" class="text-2xs text-zinc-400 font-mono">Your battery is healthy. Regular backups recommended.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action inside tool -->
+            <div class="pt-4 border-t border-zinc-900 text-center">
+                <a href="/signup" class="inline-block bg-white hover:bg-zinc-200 text-black px-6 py-3 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 shadow-md">
+                    Secure Backup Vault
+                </a>
+            </div>
+        </section>
+
+        <!-- Static content -->
+        <section class="space-y-6 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal">
+            <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
+                The Technical Reality of SRAM Memory
+            </h2>
+            <p class="font-mono text-xs text-zinc-400">
+                Synthesizers like the Yamaha DX7 and Roland Juno-106 do not write preset patches to flash memory or EEPROM. Instead, they use static RAM (SRAM) chips that require continuous electrical voltage to retain memory registers. 
+            </p>
+            <p class="font-mono text-xs text-zinc-400">
+                When the synthesizer is switched off, the power supply isolates and a 3V lithium cell takes over the voltage load. The moment this cell drops below approximately **2.6V to 2.4V**, the memory logic gates fail. Next time you boot up the synth, you will see random ASCII garbage characters on the screen, followed by deafening digital feedback or absolute silence.
+            </p>
+
+            <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
+                Why standard backups fail
+            </h2>
+            <p class="font-mono text-xs text-zinc-400">
+                Many users think they can just backup their sounds using old desktop utilities when the battery gets weak. However, low-voltage battery lines often cause random bit-flips in the binary data. If you capture a SysEx dump while the battery is dying, you will save a corrupted file containing broken data structures. 
+            </p>
+            <p class="font-mono text-xs text-zinc-400">
+                Using a clean, browser-native Web MIDI librarian allows you to safely verify the integrity of your patches, view them in a readable list, and backup secure, checksum-validated soundbanks before desoldering any hardware.
+            </p>
+        </section>
+    </main>
+
+    {% include "footer.html" %}
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+
+    <!-- Script logic for calculator -->
+    <script>
+        const calcModel = document.getElementById('calc-model');
+        const calcYear = document.getElementById('calc-year');
+        const calcTemp = document.getElementById('calc-temp');
+
+        const resultVoltage = document.getElementById('result-voltage');
+        const resultHealth = document.getElementById('result-health');
+        const resultRisk = document.getElementById('result-risk');
+        const resultAdvice = document.getElementById('result-advice');
+        const resultAlertBox = document.getElementById('result-alert-box');
+
+        const updateCalculator = () => {
+            const modelVal = calcModel.value;
+            const yearVal = calcYear.value;
+            const tempVal = calcTemp.value;
+
+            let drainFactor = 0.05; // default low
+            const modelOption = calcModel.options[calcModel.selectedIndex];
+            const baseYear = parseInt(modelOption.getAttribute('data-base')) || 1985;
+            const drainRate = modelOption.getAttribute('data-drain');
+
+            if (drainRate === 'medium') drainFactor = 0.12;
+            else if (drainRate === 'high') drainFactor = 0.22;
+
+            // Age estimation
+            let yearsSinceChange = 0;
+            if (yearVal === 'never') {
+                const currentYear = new Date().getFullYear();
+                yearsSinceChange = currentYear - baseYear;
+            } else {
+                yearsSinceChange = parseInt(yearVal) || 5;
+            }
+
+            // Temp decay multiplier
+            let tempMultiplier = 1.0;
+            if (tempVal === 'hot') tempMultiplier = 1.6;
+            else if (tempVal === 'cold') tempMultiplier = 1.3;
+
+            // Simple battery voltage curve simulation: 3.2V down to 0V
+            let chargeRemaining = Math.max(0, 100 - (yearsSinceChange * drainFactor * 10 * tempMultiplier));
+            let voltage = 3.2 * (chargeRemaining / 100);
+
+            // Bounds checks
+            if (voltage > 3.2) voltage = 3.2;
+            if (voltage < 0) voltage = 0;
+
+            resultVoltage.textContent = `${voltage.toFixed(2)}V`;
+            resultHealth.textContent = `${Math.round(chargeRemaining)}%`;
+
+            // Reset styles
+            resultVoltage.className = "text-xl font-lcd text-emerald-400";
+            resultRisk.className = "text-xs font-pixel px-2 py-0.5 rounded uppercase bg-emerald-500/10 text-emerald-400";
+            resultRisk.textContent = "SAFE";
+            resultAlertBox.className = "p-3.5 bg-emerald-950/20 border border-emerald-900/30 rounded-xl text-center";
+            resultAdvice.textContent = "Your battery voltage is within safe operational limits. Regular backups recommended.";
+
+            // Risk Thresholds
+            if (voltage < 2.5) {
+                resultVoltage.className = "text-xl font-lcd text-red-500";
+                resultRisk.className = "text-xs font-pixel px-2 py-0.5 rounded uppercase bg-red-500/10 text-red-400 animate-pulse";
+                resultRisk.textContent = "CRITICAL RISK";
+                resultAlertBox.className = "p-3.5 bg-red-950/20 border border-red-900/30 rounded-xl text-center";
+                resultAdvice.textContent = "CRITICAL: Battery is likely flat. Any power loss or system shutdown will permanently delete your custom soundbanks. Perform an emergency SysEx backup immediately!";
+            } else if (voltage < 2.8) {
+                resultVoltage.className = "text-xl font-lcd text-yellow-500";
+                resultRisk.className = "text-xs font-pixel px-2 py-0.5 rounded uppercase bg-yellow-500/10 text-yellow-400";
+                resultRisk.textContent = "MODERATE RISK";
+                resultAlertBox.className = "p-3.5 bg-yellow-950/20 border border-yellow-900/30 rounded-xl text-center";
+                resultAdvice.textContent = "WARNING: Battery voltage is degrading below nominal SRAM requirements. Random bit-flips or checksum failures are imminent. Backup your files now.";
+            }
+        };
+
+        // Add event listeners
+        calcModel.addEventListener('change', updateCalculator);
+        calcYear.addEventListener('change', updateCalculator);
+        calcTemp.addEventListener('change', updateCalculator);
+
+        // Run initial calc
+        updateCalculator();
+    </script>
+</body>
+</html>

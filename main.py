@@ -622,6 +622,16 @@ async def guide_m1_page(request: Request):
     user = get_current_user(request)
     return render_template("guide_m1.html", request, {"user": user})
 
+@app.get("/why-your-vintage-synth-battery-is-killing-your-sounds", response_class=HTMLResponse)
+async def guide_battery_page(request: Request):
+    user = get_current_user(request)
+    return render_template("guide_battery.html", request, {"user": user})
+
+@app.get("/how-to-fix-juno-106-memory-loss-troubleshooting-guide", response_class=HTMLResponse)
+async def guide_juno_troubleshooting_page(request: Request):
+    user = get_current_user(request)
+    return render_template("guide_juno_troubleshooting.html", request, {"user": user})
+
 @app.get("/changelog")
 async def changelog_redirect():
     return RedirectResponse(url="/milestones", status_code=301)

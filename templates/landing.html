@@ -1799,21 +1799,27 @@
                 const ctaButton = document.getElementById('pricing-cta-btn');
                 const discountNotice = document.getElementById('billing-discount-notice');
 
-                const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
+                const isLoggedIn = ctaButton ? (ctaButton.getAttribute('data-logged-in') === 'true') : false;
 
-                const monthlyIcon = btnMonthly.querySelector('img');
-                const yearlyIcon = btnYearly.querySelector('img');
-                const lifetimeIcon = btnLifetime.querySelector('img');
+                const monthlyIcon = btnMonthly ? btnMonthly.querySelector('img') : null;
+                const yearlyIcon = btnYearly ? btnYearly.querySelector('img') : null;
+                const lifetimeIcon = btnLifetime ? btnLifetime.querySelector('img') : null;
                 const yearlyPopularBadge = document.getElementById('yearly-popular-badge');
                 const btnYearlyDiscount = document.getElementById('btn-yearly-discount');
 
                 // Reset text colors
-                btnMonthly.classList.remove('text-black');
-                btnMonthly.classList.add('text-zinc-400');
-                btnYearly.classList.remove('text-black');
-                btnYearly.classList.add('text-zinc-400');
-                btnLifetime.classList.remove('text-black');
-                btnLifetime.classList.add('text-zinc-400');
+                if (btnMonthly) {
+                    btnMonthly.classList.remove('text-black');
+                    btnMonthly.classList.add('text-zinc-400');
+                }
+                if (btnYearly) {
+                    btnYearly.classList.remove('text-black');
+                    btnYearly.classList.add('text-zinc-400');
+                }
+                if (btnLifetime) {
+                    btnLifetime.classList.remove('text-black');
+                    btnLifetime.classList.add('text-zinc-400');
+                }
 
                 // Reset icons opacity
                 if (monthlyIcon) monthlyIcon.style.filter = 'invert(0.6)';
@@ -1822,16 +1828,16 @@
 
                 if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'none';
 
-                priceMonthly.classList.add('hidden');
-                priceYearly.classList.add('hidden');
-                priceLifetime.classList.add('hidden');
+                if (priceMonthly) priceMonthly.classList.add('hidden');
+                if (priceYearly) priceYearly.classList.add('hidden');
+                if (priceLifetime) priceLifetime.classList.add('hidden');
 
                 if (featuresMonthly) featuresMonthly.classList.add('hidden');
                 if (featuresYearly) featuresYearly.classList.add('hidden');
                 if (featuresLife) featuresLife.classList.add('hidden');
 
-                stampGold.classList.add('hidden');
-                stampDiamond.classList.add('hidden');
+                if (stampGold) stampGold.classList.add('hidden');
+                if (stampDiamond) stampDiamond.classList.add('hidden');
 
                 if (btnYearlyDiscount) {
                     btnYearlyDiscount.classList.remove('bg-emerald-500/20', 'text-emerald-600');
@@ -1839,30 +1845,39 @@
                 }
 
                 if (period === 'monthly') {
-                    btnMonthly.classList.remove('text-zinc-400');
-                    btnMonthly.classList.add('text-black');
+                    if (btnMonthly) {
+                        btnMonthly.classList.remove('text-zinc-400');
+                        btnMonthly.classList.add('text-black');
+                    }
                     if (monthlyIcon) monthlyIcon.style.filter = 'invert(0)';
 
-                    sliderBg.style.transform = 'translateX(0px)';
+                    if (sliderBg) sliderBg.style.transform = 'translateX(0px)';
 
-                    priceMonthly.classList.remove('hidden');
+                    if (priceMonthly) priceMonthly.classList.remove('hidden');
                     if (featuresMonthly) featuresMonthly.classList.remove('hidden');
-                    stampGold.classList.remove('hidden');
+                    if (stampGold) stampGold.classList.remove('hidden');
 
-                    planTitle.innerHTML = 'King of Knobs™';
-                    planSubtitle.innerHTML = 'For sound designers and synth addicts';
+                    if (planTitle) planTitle.innerHTML = 'King of Knobs™';
+                    if (planSubtitle) planSubtitle.innerHTML = 'For sound designers and synth addicts';
 
-                    trialSubtext.innerHTML = 'Cancel anytime in one click.';
+                    if (trialSubtext) trialSubtext.innerHTML = 'Cancel anytime in one click.';
 
-                    discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">52% more ($119/year extra)</span>. Switch to annual to stop bleeding money.';
-                    discountNotice.classList.remove('text-zinc-400');
-                    discountNotice.classList.add('text-rose-450');
+                    if (discountNotice) {
+                        discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">52% more ($119/year extra)</span>. Switch to annual to stop bleeding money.';
+                        discountNotice.classList.remove('text-zinc-400');
+                        discountNotice.classList.add('text-rose-450');
+                    }
 
-                    ctaButton.href = isLoggedIn ? '/checkout?plan=monthly' : '/signup?plan=monthly';
-                    ctaButton.querySelector('span').innerHTML = "Hell Yes, Let's Do It";
+                    if (ctaButton) {
+                        ctaButton.href = isLoggedIn ? '/checkout?plan=monthly' : '/signup?plan=monthly';
+                        const textSpan = ctaButton.querySelector('span');
+                        if (textSpan) textSpan.innerHTML = "Hell Yes, Let's Do It";
+                    }
                 } else if (period === 'yearly') {
-                    btnYearly.classList.remove('text-zinc-400');
-                    btnYearly.classList.add('text-black');
+                    if (btnYearly) {
+                        btnYearly.classList.remove('text-zinc-400');
+                        btnYearly.classList.add('text-black');
+                    }
                     if (yearlyIcon) yearlyIcon.style.filter = 'invert(0)';
                     if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'inline-block';
 
@@ -1871,45 +1886,57 @@
                         btnYearlyDiscount.classList.add('bg-emerald-500/20', 'text-emerald-600');
                     }
 
-                    sliderBg.style.transform = 'translateX(120px)';
+                    if (sliderBg) sliderBg.style.transform = 'translateX(120px)';
 
-                    priceYearly.classList.remove('hidden');
+                    if (priceYearly) priceYearly.classList.remove('hidden');
                     if (featuresYearly) featuresYearly.classList.remove('hidden');
-                    stampGold.classList.remove('hidden');
+                    if (stampGold) stampGold.classList.remove('hidden');
 
-                    planTitle.innerHTML = 'King of Knobs™';
-                    planSubtitle.innerHTML = 'For sound designers and synth addicts';
+                    if (planTitle) planTitle.innerHTML = 'King of Knobs™';
+                    if (planSubtitle) planSubtitle.innerHTML = 'For sound designers and synth addicts';
 
-                    trialSubtext.innerHTML = 'Cancel anytime in one click.';
+                    if (trialSubtext) trialSubtext.innerHTML = 'Cancel anytime in one click.';
 
-                    discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year in savings</span>.';
-                    discountNotice.classList.remove('text-rose-450');
-                    discountNotice.classList.add('text-zinc-400');
+                    if (discountNotice) {
+                        discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year in savings</span>.';
+                        discountNotice.classList.remove('text-rose-450');
+                        discountNotice.classList.add('text-zinc-400');
+                    }
 
-                    ctaButton.href = isLoggedIn ? '/checkout?plan=yearly' : '/signup?plan=yearly';
-                    ctaButton.querySelector('span').innerHTML = "Hell Yes, Let's Do It";
+                    if (ctaButton) {
+                        ctaButton.href = isLoggedIn ? '/checkout?plan=yearly' : '/signup?plan=yearly';
+                        const textSpan = ctaButton.querySelector('span');
+                        if (textSpan) textSpan.innerHTML = "Hell Yes, Let's Do It";
+                    }
                 } else if (period === 'lifetime') {
-                    btnLifetime.classList.remove('text-zinc-400');
-                    btnLifetime.classList.add('text-black');
+                    if (btnLifetime) {
+                        btnLifetime.classList.remove('text-zinc-400');
+                        btnLifetime.classList.add('text-black');
+                    }
                     if (lifetimeIcon) lifetimeIcon.style.filter = 'invert(0)';
 
-                    sliderBg.style.transform = 'translateX(240px)';
+                    if (sliderBg) sliderBg.style.transform = 'translateX(240px)';
 
-                    priceLifetime.classList.remove('hidden');
+                    if (priceLifetime) priceLifetime.classList.remove('hidden');
                     if (featuresLife) featuresLife.classList.remove('hidden');
-                    stampDiamond.classList.remove('hidden');
+                    if (stampDiamond) stampDiamond.classList.remove('hidden');
 
-                    planTitle.innerHTML = 'Emperor of Knobs™';
-                    planSubtitle.innerHTML = 'For GAS sufferers';
+                    if (planTitle) planTitle.innerHTML = 'Emperor of Knobs™';
+                    if (planSubtitle) planSubtitle.innerHTML = 'For GAS sufferers';
 
-                    trialSubtext.innerHTML = 'Buy once, use forever. No recurring fees.';
+                    if (trialSubtext) trialSubtext.innerHTML = 'Buy once, use forever. No recurring fees.';
 
-                    discountNotice.innerHTML = '<span class="text-emerald-400 font-semibold">Own it forever.</span> Never pay a subscription again.';
-                    discountNotice.classList.remove('text-rose-450');
-                    discountNotice.classList.add('text-zinc-400');
+                    if (discountNotice) {
+                        discountNotice.innerHTML = '<span class="text-emerald-400 font-semibold">Own it forever.</span> Never pay a subscription again.';
+                        discountNotice.classList.remove('text-rose-450');
+                        discountNotice.classList.add('text-zinc-400');
+                    }
 
-                    ctaButton.href = isLoggedIn ? '/checkout?plan=lifetime' : '/signup?plan=lifetime';
-                    ctaButton.querySelector('span').innerHTML = "Get Lifetime Access";
+                    if (ctaButton) {
+                        ctaButton.href = isLoggedIn ? '/checkout?plan=lifetime' : '/signup?plan=lifetime';
+                        const textSpan = ctaButton.querySelector('span');
+                        if (textSpan) textSpan.innerHTML = "Get Lifetime Access";
+                    }
                 }
             }
 

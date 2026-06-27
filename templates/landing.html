@@ -1537,90 +1537,147 @@
             </div>
 
             <!-- Billing Toggle -->
-            <div class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[280px] mx-auto mb-12 select-none reveal"
+            <div class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[368px] mx-auto mb-12 select-none reveal"
                 style="--delay: 100ms;">
                 <!-- Active sliding background highlight -->
                 <div id="billing-slider-bg"
-                    class="absolute top-1 bottom-1 left-1 w-[134px] bg-white rounded-full transition-all duration-300 shadow-md"
-                    style="transform: translateX(134px);"></div>
+                    class="absolute top-1 bottom-1 left-1 w-[120px] bg-white rounded-full transition-all duration-300 shadow-md"
+                    style="transform: translateX(120px);"></div>
 
                 <!-- Tab buttons -->
                 <button onclick="setBillingPeriod('monthly')"
-                    class="relative z-10 w-[134px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 focus:outline-none flex items-center justify-center gap-1.5"
+                    class="relative z-10 w-[120px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 focus:outline-none flex items-center justify-center gap-1.5"
                     id="btn-monthly">
                     <img src="https://api.iconify.design/dinkie-icons:loudly-crying-face.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0.6);" />
                     Monthly
                 </button>
                 <button onclick="setBillingPeriod('yearly')"
-                    class="relative z-10 w-[134px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-black flex items-center justify-center gap-1.5 focus:outline-none"
+                    class="relative z-10 w-[120px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-black flex items-center justify-center gap-1 focus:outline-none"
                     id="btn-yearly">
                     <img src="https://api.iconify.design/dinkie-icons:squint-smiling-face.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0);" />
                     Yearly
-                    <span
+                    <span id="btn-yearly-discount"
                         class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-roman font-normal">-34%</span>
                 </button>
+                <button onclick="setBillingPeriod('lifetime')"
+                    class="relative z-10 w-[120px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 flex items-center justify-center gap-1.5 focus:outline-none"
+                    id="btn-lifetime">
+                    <img src="https://api.iconify.design/dinkie-icons:face-throwing-a-kiss.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0.6);" />
+                    Lifetime
+                </button>
             </div>
-            <div class="max-w-4xl mx-auto text-left">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-                    <!-- King of Knobs Plan -->
-                    <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
-                        style="--delay: 200ms;">
-                        <!-- Gold Stamp -->
-                        <div class="absolute top-6 right-6 border border-dashed border-[#ffd700]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
-                            style="box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);">
-                            <img id="landing-upgrade-avatar" src="" class="h-full w-full object-cover rounded-md"
-                                alt="King of Knobs Stamp">
+
+            <!-- Unified Pricing Card Container -->
+            <div class="max-w-md mx-auto text-left">
+                <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
+                    style="--delay: 200ms;">
+                    
+                    <!-- Dynamic Stamps -->
+                    <!-- Gold Stamp for King of Knobs -->
+                    <div id="stamp-gold" class="absolute top-6 right-6 border border-dashed border-[#ffd700]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
+                        style="box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);">
+                        <img id="landing-upgrade-avatar" src="" class="h-full w-full object-cover rounded-md"
+                            alt="King of Knobs Stamp">
+                    </div>
+                    <!-- Diamond Stamp for Emperor of Knobs -->
+                    <div id="stamp-diamond" class="absolute top-6 right-6 border border-dashed border-[#00f5ff]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11 hidden"
+                        style="box-shadow: 0 0 20px rgba(0, 245, 255, 0.35);">
+                        <img id="landing-lifetime-avatar" src="/static/logo.avif" class="h-full w-full object-cover rounded-md"
+                            alt="Emperor of Knobs Stamp">
+                    </div>
+
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 id="plan-title" class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs™</h3>
+                                <span id="yearly-popular-badge" class="text-[7px] bg-emerald-500/10 text-emerald-400 px-1 py-0.5 rounded font-pixel uppercase tracking-widest">MOST POPULAR</span>
+                            </div>
+                            <p id="plan-subtitle" class="text-xs text-zinc-400 mt-1">For sound designers and synth addicts</p>
                         </div>
 
-                        <div class="space-y-5">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <h3 class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs™</h3>
-                                    <span id="yearly-popular-badge" class="text-[7px] bg-emerald-500/10 text-emerald-400 px-1 py-0.5 rounded font-pixel uppercase tracking-widest">MOST POPULAR</span>
+                        <!-- Pricing Display -->
+                        <div class="h-16 flex flex-col justify-center">
+                            <!-- Monthly -->
+                            <div id="price-monthly" class="hidden">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-lcd text-emerald-400">$29</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
                                 </div>
-                                <p class="text-xs text-zinc-400 mt-1">For sound designers and synth addicts</p>
-                            </div>
-
-                            <!-- Pricing Display -->
-                            <div class="h-16 flex flex-col justify-center">
-                                <div id="price-monthly" class="hidden">
-                                    <div class="flex items-baseline gap-2">
-                                        <span class="text-5xl font-lcd text-emerald-400">$29</span>
-                                        <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
-                                    </div>
-                                    <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1 flex items-center gap-1 select-none">
-                                        About
-                                        <img src="https://api.iconify.design/dinkie-icons:hamburger.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
-                                        +
-                                        <img src="https://api.iconify.design/dinkie-icons:beer-mug.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
-                                        +
-                                        <img src="https://api.iconify.design/dinkie-icons:hot-beverage.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
-                                        per month.
-                                    </div>
-                                </div>
-                                <div id="price-yearly" class="block">
-                                    <div class="flex items-baseline gap-2">
-                                        <span class="text-5xl font-lcd text-emerald-400">$19</span>
-                                        <span class="text-3xl font-lcd text-zinc-650 line-through">$29</span>
-                                        <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
-                                    </div>
-                                    <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                        Billed annually ($229/year)
-                                    </div>
+                                <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1 flex items-center gap-1 select-none">
+                                    About
+                                    <img src="https://api.iconify.design/dinkie-icons:hamburger.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
+                                    +
+                                    <img src="https://api.iconify.design/dinkie-icons:beer-mug.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
+                                    +
+                                    <img src="https://api.iconify.design/dinkie-icons:hot-beverage.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
+                                    per month.
                                 </div>
                             </div>
+                            <!-- Yearly -->
+                            <div id="price-yearly" class="block">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-lcd text-emerald-400">$19</span>
+                                    <span class="text-3xl font-lcd text-zinc-655 line-through">$29</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
+                                </div>
+                                <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
+                                    Billed annually ($229/year)
+                                </div>
+                            </div>
+                            <!-- Lifetime -->
+                            <div id="price-lifetime" class="hidden">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-lcd text-emerald-400">$599</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-400">/ one-time</span>
+                                </div>
+                                <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
+                                    Own it forever. No renting.
+                                </div>
+                            </div>
+                        </div>
 
-                            <!-- Trial subtext explanation -->
-                            <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
-                                Cancel anytime in one click.
-                            </p>
+                        <!-- Trial subtext explanation -->
+                        <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
+                            Cancel anytime in one click.
+                        </p>
 
+                        <!-- Features lists -->
+                        <div id="features-monthly" class="hidden">
+                            <ul class="space-y-2.5 text-xs text-zinc-400">
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
+                                        height="14" class="h-3.5 w-3.5 text-amber-400"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    All parsers (DX7, Juno, M1, Generic)
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt=""
+                                        width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    Single-click MIDI flash recall
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:download.svg" alt="" width="14"
+                                        height="14" class="h-3.5 w-3.5 text-amber-400"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    Direct backup downloads (.syx)
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div id="features-yearly" class="block">
                             <ul class="space-y-2.5 text-xs text-zinc-400">
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg" alt=""
                                         width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
                                         style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    Unlimited Soundbank slots
+                                    <span class="text-white font-semibold">Unlimited Soundbank slots</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:adult-filled.svg" alt=""
+                                        width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    <span class="text-white font-semibold">16h/day live, human support</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
@@ -1629,12 +1686,6 @@
                                     All parsers (DX7, Juno, M1, Generic)
                                 </li>
                                 <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:adult-filled.svg" alt=""
-                                        width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    16h/day live, human support
-                                </li>
-                                <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt=""
                                         width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
                                         style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
@@ -1649,52 +1700,20 @@
                             </ul>
                         </div>
 
-                        <div class="mt-8 text-center">
-                            <a id="pricing-cta-btn" href="/signup?plan=yearly"
-                                data-logged-in="{% if user %}true{% else %}false{% endif %}"
-                                class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
-                                <span>Hell Yes, Let's Do It</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Emperor of Knobs Plan -->
-                    <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
-                        style="--delay: 300ms;">
-                        <!-- Diamond Stamp -->
-                        <div class="absolute top-6 right-6 border border-dashed border-[#00f5ff]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
-                            style="box-shadow: 0 0 20px rgba(0, 245, 255, 0.35);">
-                            <img id="landing-lifetime-avatar" src="/static/logo.avif" class="h-full w-full object-cover rounded-md"
-                                alt="Emperor of Knobs Stamp">
-                        </div>
-
-                        <div class="space-y-5">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <h3 class="text-sm font-roman uppercase text-white tracking-wide">Emperor of Knobs™</h3>
-                                </div>
-                                <p class="text-xs text-zinc-400 mt-1 font-sans">For GAS sufferers</p>
-                            </div>
-
-                            <!-- Pricing Display -->
-                            <div class="h-16 flex flex-col justify-center">
-                                <div>
-                                    <div class="flex items-baseline gap-2">
-                                        <span class="text-5xl font-lcd text-emerald-400">$599</span>
-                                        <span class="text-xs font-roman uppercase text-zinc-400">/ one-time</span>
-                                    </div>
-                                    <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                        Own it forever. No renting.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Trial subtext explanation -->
-                            <p class="text-[10px] text-zinc-400 font-sans leading-relaxed">
-                                Buy once, use forever. No recurring fees.
-                            </p>
-
+                        <div id="features-lifetime" class="hidden">
                             <ul class="space-y-2.5 text-xs text-zinc-400">
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="14"
+                                        height="14" class="h-3.5 w-3.5 text-amber-400"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    <span class="text-white font-semibold">Real-time preset name decoding</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt="" width="14"
+                                        height="14" class="h-3.5 w-3.5 text-amber-400"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    <span class="text-white font-semibold">Automatic pacing calibration</span>
+                                </li>
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg" alt=""
                                         width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
@@ -1702,16 +1721,16 @@
                                     Unlimited Soundbank slots
                                 </li>
                                 <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
-                                        height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    All current & future parsers
-                                </li>
-                                <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:adult-filled.svg" alt=""
                                         width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
                                         style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    Priority, direct email & chat support
+                                    16h/day live, human support
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
+                                        height="14" class="h-3.5 w-3.5 text-amber-400"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    All parsers (DX7, Juno, M1, Generic)
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt=""
@@ -1727,124 +1746,176 @@
                                 </li>
                             </ul>
                         </div>
-
-                        <div class="mt-8 text-center">
-                            <a id="lifetime-cta-btn" href="/signup?plan=lifetime"
-                                data-logged-in="{% if user %}true{% else %}false{% endif %}"
-                                class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
-                                <span>Get Lifetime Access</span>
-                            </a>
-                        </div>
                     </div>
-                </div>
 
-                <p id="billing-discount-notice"
-                    class="text-center text-[9px] text-zinc-400 uppercase font-roman tracking-wider mt-12 max-w-sm mx-auto leading-relaxed transition-all duration-200">
-                    Subscriptions with annual billing instead of monthly billing periods receive a <span
-                        class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span
-                        class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year
-                        in
-                        savings</span>.
-                </p>
-
-                <!-- Centered Meme Image -->
-                <div class="flex items-center justify-center mt-8 reveal reveal-scale" style="--delay: 350ms;">
-                    <img src="/static/trade_offer.avif" alt="Meme" width="380" height="513"
-                        loading="lazy" sizes="(max-width: 768px) 380px, 380px"
-                        class="w-full max-w-[380px] md:max-w-[400px] rounded-2xl border border-zinc-900 shadow-2xl">
+                    <div class="mt-8 text-center">
+                        <a id="pricing-cta-btn" href="/signup?plan=yearly"
+                            data-logged-in="{% if user %}true{% else %}false{% endif %}"
+                            class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
+                            <span>Hell Yes, Let's Do It</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <script>
-                function setBillingPeriod(period) {
-                    const btnMonthly = document.getElementById('btn-monthly');
-                    const btnYearly = document.getElementById('btn-yearly');
-                    const yearlyBadge = btnYearly.querySelector('span');
-                    const sliderBg = document.getElementById('billing-slider-bg');
+            <p id="billing-discount-notice"
+                class="text-center text-[9px] text-zinc-400 uppercase font-roman tracking-wider mt-12 max-w-sm mx-auto leading-relaxed transition-all duration-200">
+                Subscriptions with annual billing instead of monthly billing periods receive a <span
+                    class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span
+                    class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year
+                    in
+                    savings</span>.
+            </p>
 
-                    const priceMonthly = document.getElementById('price-monthly');
-                    const priceYearly = document.getElementById('price-yearly');
-                    const trialSubtext = document.getElementById('trial-subtext');
-                    const ctaButton = document.getElementById('pricing-cta-btn');
-                    const discountNotice = document.getElementById('billing-discount-notice');
+            <!-- Centered Meme Image -->
+            <div class="flex items-center justify-center mt-8 reveal reveal-scale" style="--delay: 350ms;">
+                <img src="/static/trade_offer.avif" alt="Meme" width="380" height="513"
+                    loading="lazy" sizes="(max-width: 768px) 380px, 380px"
+                    class="w-full max-w-[380px] md:max-w-[400px] rounded-2xl border border-zinc-900 shadow-2xl">
+            </div>
+        </section>
 
-                    const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
+        <script>
+            function setBillingPeriod(period) {
+                const btnMonthly = document.getElementById('btn-monthly');
+                const btnYearly = document.getElementById('btn-yearly');
+                const btnLifetime = document.getElementById('btn-lifetime');
+                const sliderBg = document.getElementById('billing-slider-bg');
 
-                    const monthlyIcon = btnMonthly.querySelector('img');
-                    const yearlyIcon = btnYearly.querySelector('img');
-                    const yearlyPopularBadge = document.getElementById('yearly-popular-badge');
+                const priceMonthly = document.getElementById('price-monthly');
+                const priceYearly = document.getElementById('price-yearly');
+                const priceLifetime = document.getElementById('price-lifetime');
 
-                    if (period === 'monthly') {
-                        btnMonthly.classList.remove('text-zinc-400');
-                        btnMonthly.classList.add('text-black');
-                        btnYearly.classList.remove('text-black');
-                        btnYearly.classList.add('text-zinc-400');
+                const planTitle = document.getElementById('plan-title');
+                const planSubtitle = document.getElementById('plan-subtitle');
+                const stampGold = document.getElementById('stamp-gold');
+                const stampDiamond = document.getElementById('stamp-diamond');
 
-                        if (monthlyIcon) monthlyIcon.style.filter = 'invert(0)';
-                        if (yearlyIcon) yearlyIcon.style.filter = 'invert(0.6)';
-                        if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'none';
+                const featuresMonthly = document.getElementById('features-monthly');
+                const featuresYearly = document.getElementById('features-yearly');
+                const featuresLife = document.getElementById('features-lifetime');
 
-                        yearlyBadge.classList.remove('bg-emerald-500/20', 'text-emerald-600');
-                        yearlyBadge.classList.add('bg-emerald-500/10', 'text-emerald-400');
+                const trialSubtext = document.getElementById('trial-subtext');
+                const ctaButton = document.getElementById('pricing-cta-btn');
+                const discountNotice = document.getElementById('billing-discount-notice');
 
-                        sliderBg.style.transform = 'translateX(0px)';
+                const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
 
-                        priceMonthly.classList.remove('hidden');
-                        priceYearly.classList.add('hidden');
+                const monthlyIcon = btnMonthly.querySelector('img');
+                const yearlyIcon = btnYearly.querySelector('img');
+                const lifetimeIcon = btnLifetime.querySelector('img');
+                const yearlyPopularBadge = document.getElementById('yearly-popular-badge');
+                const btnYearlyDiscount = document.getElementById('btn-yearly-discount');
 
-                        trialSubtext.innerHTML = 'Cancel anytime in one click.';
+                // Reset text colors
+                btnMonthly.classList.remove('text-black');
+                btnMonthly.classList.add('text-zinc-400');
+                btnYearly.classList.remove('text-black');
+                btnYearly.classList.add('text-zinc-400');
+                btnLifetime.classList.remove('text-black');
+                btnLifetime.classList.add('text-zinc-400');
 
-                        discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">52% more ($119/year extra)</span>. Switch to annual to stop bleeding money.';
-                        discountNotice.classList.remove('text-zinc-400');
-                        discountNotice.classList.add('text-rose-450');
+                // Reset icons opacity
+                if (monthlyIcon) monthlyIcon.style.filter = 'invert(0.6)';
+                if (yearlyIcon) yearlyIcon.style.filter = 'invert(0.6)';
+                if (lifetimeIcon) lifetimeIcon.style.filter = 'invert(0.6)';
 
-                        if (isLoggedIn) {
-                            ctaButton.href = '/checkout?plan=monthly';
-                        } else {
-                            ctaButton.href = '/signup?plan=monthly';
-                        }
-                    } else {
-                        btnMonthly.classList.remove('text-black');
-                        btnMonthly.classList.add('text-zinc-400');
-                        btnYearly.classList.remove('text-zinc-400');
-                        btnYearly.classList.add('text-black');
+                if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'none';
 
-                        if (monthlyIcon) monthlyIcon.style.filter = 'invert(0.6)';
-                        if (yearlyIcon) yearlyIcon.style.filter = 'invert(0)';
-                        if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'inline-block';
+                priceMonthly.classList.add('hidden');
+                priceYearly.classList.add('hidden');
+                priceLifetime.classList.add('hidden');
 
-                        yearlyBadge.classList.remove('bg-emerald-500/10', 'text-emerald-400');
-                        yearlyBadge.classList.add('bg-emerald-500/20', 'text-emerald-600');
+                if (featuresMonthly) featuresMonthly.classList.add('hidden');
+                if (featuresYearly) featuresYearly.classList.add('hidden');
+                if (featuresLife) featuresLife.classList.add('hidden');
 
-                        sliderBg.style.transform = 'translateX(134px)';
+                stampGold.classList.add('hidden');
+                stampDiamond.classList.add('hidden');
 
-                        priceMonthly.classList.add('hidden');
-                        priceYearly.classList.remove('hidden');
-
-                        trialSubtext.innerHTML = 'Cancel anytime in one click.';
-
-                        discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year in savings</span>.';
-                        discountNotice.classList.remove('text-rose-450');
-                        discountNotice.classList.add('text-zinc-400');
-
-                        if (isLoggedIn) {
-                            ctaButton.href = '/checkout?plan=yearly';
-                        } else {
-                            ctaButton.href = '/signup?plan=yearly';
-                        }
-                    }
+                if (btnYearlyDiscount) {
+                    btnYearlyDiscount.classList.remove('bg-emerald-500/20', 'text-emerald-600');
+                    btnYearlyDiscount.classList.add('bg-emerald-500/10', 'text-emerald-400');
                 }
 
-                document.addEventListener('DOMContentLoaded', () => {
-                    setBillingPeriod('yearly');
-                    
-                    const lifetimeBtn = document.getElementById('lifetime-cta-btn');
-                    if (lifetimeBtn) {
-                        const ctaButton = document.getElementById('pricing-cta-btn');
-                        const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
-                        lifetimeBtn.href = isLoggedIn ? '/checkout?plan=lifetime' : '/signup?plan=lifetime';
+                if (period === 'monthly') {
+                    btnMonthly.classList.remove('text-zinc-400');
+                    btnMonthly.classList.add('text-black');
+                    if (monthlyIcon) monthlyIcon.style.filter = 'invert(0)';
+
+                    sliderBg.style.transform = 'translateX(0px)';
+
+                    priceMonthly.classList.remove('hidden');
+                    if (featuresMonthly) featuresMonthly.classList.remove('hidden');
+                    stampGold.classList.remove('hidden');
+
+                    planTitle.innerHTML = 'King of Knobs™';
+                    planSubtitle.innerHTML = 'For sound designers and synth addicts';
+
+                    trialSubtext.innerHTML = 'Cancel anytime in one click.';
+
+                    discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">52% more ($119/year extra)</span>. Switch to annual to stop bleeding money.';
+                    discountNotice.classList.remove('text-zinc-400');
+                    discountNotice.classList.add('text-rose-450');
+
+                    ctaButton.href = isLoggedIn ? '/checkout?plan=monthly' : '/signup?plan=monthly';
+                    ctaButton.querySelector('span').innerHTML = "Hell Yes, Let's Do It";
+                } else if (period === 'yearly') {
+                    btnYearly.classList.remove('text-zinc-400');
+                    btnYearly.classList.add('text-black');
+                    if (yearlyIcon) yearlyIcon.style.filter = 'invert(0)';
+                    if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'inline-block';
+
+                    if (btnYearlyDiscount) {
+                        btnYearlyDiscount.classList.remove('bg-emerald-500/10', 'text-emerald-400');
+                        btnYearlyDiscount.classList.add('bg-emerald-500/20', 'text-emerald-600');
                     }
-                });
+
+                    sliderBg.style.transform = 'translateX(120px)';
+
+                    priceYearly.classList.remove('hidden');
+                    if (featuresYearly) featuresYearly.classList.remove('hidden');
+                    stampGold.classList.remove('hidden');
+
+                    planTitle.innerHTML = 'King of Knobs™';
+                    planSubtitle.innerHTML = 'For sound designers and synth addicts';
+
+                    trialSubtext.innerHTML = 'Cancel anytime in one click.';
+
+                    discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year in savings</span>.';
+                    discountNotice.classList.remove('text-rose-450');
+                    discountNotice.classList.add('text-zinc-400');
+
+                    ctaButton.href = isLoggedIn ? '/checkout?plan=yearly' : '/signup?plan=yearly';
+                    ctaButton.querySelector('span').innerHTML = "Hell Yes, Let's Do It";
+                } else if (period === 'lifetime') {
+                    btnLifetime.classList.remove('text-zinc-400');
+                    btnLifetime.classList.add('text-black');
+                    if (lifetimeIcon) lifetimeIcon.style.filter = 'invert(0)';
+
+                    sliderBg.style.transform = 'translateX(240px)';
+
+                    priceLifetime.classList.remove('hidden');
+                    if (featuresLife) featuresLife.classList.remove('hidden');
+                    stampDiamond.classList.remove('hidden');
+
+                    planTitle.innerHTML = 'Emperor of Knobs™';
+                    planSubtitle.innerHTML = 'For GAS sufferers';
+
+                    trialSubtext.innerHTML = 'Buy once, use forever. No recurring fees.';
+
+                    discountNotice.innerHTML = '<span class="text-emerald-400 font-semibold">Own it forever.</span> Never pay a subscription again.';
+                    discountNotice.classList.remove('text-rose-450');
+                    discountNotice.classList.add('text-zinc-400');
+
+                    ctaButton.href = isLoggedIn ? '/checkout?plan=lifetime' : '/signup?plan=lifetime';
+                    ctaButton.querySelector('span').innerHTML = "Get Lifetime Access";
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                setBillingPeriod('yearly');
+            });
             </script>
         </section>
 

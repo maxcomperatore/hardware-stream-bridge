@@ -912,7 +912,10 @@
                 inputs.forEach(input => {
                     const opt = document.createElement('option');
                     opt.value = input.id;
-                    opt.textContent = `${input.name} (${input.manufacturer || 'Generic'})`;
+                    const lowerName = input.name.toLowerCase();
+                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential'].some(kw => lowerName.includes(kw));
+                    const suffix = isSupported ? " (SUPPORTED!)" : " (unsupported)";
+                    opt.textContent = `${input.name}${suffix} (${input.manufacturer || 'Generic'})`;
                     inputSelect.appendChild(opt);
                 });
                 if (prevInput && inputs.some(input => input.id === prevInput)) {
@@ -930,7 +933,10 @@
                 outputs.forEach(output => {
                     const opt = document.createElement('option');
                     opt.value = output.id;
-                    opt.textContent = `${output.name} (${output.manufacturer || 'Generic'})`;
+                    const lowerName = output.name.toLowerCase();
+                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential'].some(kw => lowerName.includes(kw));
+                    const suffix = isSupported ? " (SUPPORTED!)" : " (unsupported)";
+                    opt.textContent = `${output.name}${suffix} (${output.manufacturer || 'Generic'})`;
                     outputSelect.appendChild(opt);
                 });
                 if (prevOutput && outputs.some(output => output.id === prevOutput)) {

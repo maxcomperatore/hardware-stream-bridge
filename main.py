@@ -1818,7 +1818,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access costs $8/month or $60/year. Agents must subscribe via Stripe checkout at `/checkout`.
+Premium access costs $29/month, $229/year, or $599 lifetime. Agents must subscribe via Stripe checkout at `/checkout`.
 
 ## Discovery Documents
 
@@ -1965,9 +1965,9 @@ async def openapi_spec():
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 800,
+                        "amount": 2900,
                         "currency": "USD",
-                        "description": "Premium subscription required ($8/month)"
+                        "description": "Premium subscription required ($29/month)"
                     },
                     "security": [{"sessionCookie": []}],
                     "responses": {
@@ -1983,9 +1983,9 @@ async def openapi_spec():
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 800,
+                        "amount": 2900,
                         "currency": "USD",
-                        "description": "Premium subscription required ($8/month)"
+                        "description": "Premium subscription required ($29/month)"
                     },
                     "security": [{"sessionCookie": []}],
                     "requestBody": {
@@ -2097,10 +2097,10 @@ async def acp_discovery():
         "api_base_url": SITE_BASE,
         "transports": ["https"],
         "capabilities": {
-            "services": ["subscription"],
+            "services": ["subscription", "one-time"],
             "payment_methods": ["card", "apple_pay", "google_pay", "cashapp", "pix", "naver_pay", "usdc"],
             "currencies": ["USD", "BRL", "KRW"],
-            "billing_periods": ["monthly", "annual"]
+            "billing_periods": ["monthly", "annual", "lifetime"]
         },
         "endpoints": {
             "checkout": f"{SITE_BASE}/checkout",
@@ -2108,8 +2108,9 @@ async def acp_discovery():
             "status": f"{SITE_BASE}/status"
         },
         "pricing": {
-            "monthly": {"amount": 800, "currency": "USD", "interval": "month"},
-            "annual": {"amount": 6000, "currency": "USD", "interval": "year"}
+            "monthly": {"amount": 2900, "currency": "USD", "interval": "month"},
+            "annual": {"amount": 22900, "currency": "USD", "interval": "year"},
+            "lifetime": {"amount": 59900, "currency": "USD", "interval": "one-time"}
         }
     }
     return Response(

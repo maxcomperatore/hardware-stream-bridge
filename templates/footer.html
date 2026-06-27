@@ -116,9 +116,11 @@
                                     class="hover:text-emerald-400 transition-colors font-sans">halfradiationllc@gmail.com</a>
                             </li>
                             <li><a href="/status"
-                                    class="text-emerald-500 hover:text-emerald-400 flex items-center gap-1.5 font-sans transition-colors"><span
-                                        class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Status:
+                                    class="text-emerald-500 hover:text-emerald-400 flex items-center gap-1.5 font-sans transition-colors"><img
+                                        src="https://api.iconify.design/dinkie-icons:thumbs-up-sign.svg?color=%2310b981" alt="Thumbs Up" width="14" height="14" class="h-3.5 w-3.5 shrink-0 led-flicker" /> Status:
                                     100% Operational</a></li>
+                            <li><span class="text-zinc-400 flex items-center gap-1.5 font-mono text-[11px]"><img
+                                        src="https://api.iconify.design/dinkie-icons:clock.svg?color=%23a1a1aa" alt="Clock" width="14" height="14" class="h-3.5 w-3.5 shrink-0" /> Uptime: <span id="uptime-hours">...</span>h <span id="uptime-minutes">..</span>m <span id="uptime-seconds">..</span>s</span></li>
                         </ul>
                     </div>
                 </div>
@@ -323,4 +325,43 @@
                 transform-style: preserve-3d;
                 backface-visibility: visible;
             }
+            @keyframes led-glow {
+                0%, 100% { opacity: 1; filter: brightness(1) drop-shadow(0 0 1px rgba(16, 185, 129, 0.4)); }
+                45%, 55% { opacity: 0.8; filter: brightness(0.85); }
+                50% { opacity: 0.7; filter: brightness(0.75); }
+            }
+            .led-flicker {
+                animation: led-glow 3s infinite ease-in-out;
+            }
         </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const hoursEl = document.getElementById('uptime-hours');
+                const minutesEl = document.getElementById('uptime-minutes');
+                const secondsEl = document.getElementById('uptime-seconds');
+                
+                if (hoursEl && minutesEl && secondsEl) {
+                    const startDate = new Date('2026-05-31T00:00:00Z');
+                    
+                    function updateUptime() {
+                        const now = new Date();
+                        const diffMs = now - startDate;
+                        
+                        const totalSeconds = Math.floor(diffMs / 1000);
+                        const totalMinutes = Math.floor(totalSeconds / 60);
+                        const totalHours = Math.floor(totalMinutes / 60);
+                        
+                        const displayMinutes = totalMinutes % 60;
+                        const displaySeconds = totalSeconds % 60;
+                        
+                        hoursEl.textContent = totalHours.toLocaleString();
+                        minutesEl.textContent = displayMinutes.toString().padStart(2, '0');
+                        secondsEl.textContent = displaySeconds.toString().padStart(2, '0');
+                    }
+                    
+                    updateUptime();
+                    setInterval(updateUptime, 1000);
+                }
+            });
+        </script>

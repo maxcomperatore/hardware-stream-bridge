@@ -2553,11 +2553,18 @@
                                 const devName = inputs[0]?.name || outputs[0]?.name || "MIDI Port";
                                 const devNameLower = (devName || "").toLowerCase();
                                 const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential'].some(kw => devNameLower.includes(kw));
-                                const suffix = isSupported ? " (SUPPORTED!)" : " (unsupported)";
-                                statusText.innerText = `Connected: ${devName}${suffix}`;
-                                statusText.className = "text-xs font-mono text-emerald-400 text-left truncate w-full select-none font-semibold";
-                                if (midiIcon) {
-                                    midiIcon.className = "h-5 w-5 bg-emerald-400 shrink-0 transition-colors duration-200";
+                                if (isSupported) {
+                                    statusText.innerText = `Connected: ${devName} (SUPPORTED!)`;
+                                    statusText.className = "text-xs font-mono text-emerald-400 text-left truncate w-full select-none font-semibold";
+                                    if (midiIcon) {
+                                        midiIcon.className = "h-5 w-5 bg-emerald-400 shrink-0 transition-colors duration-200";
+                                    }
+                                } else {
+                                    statusText.innerText = `Connected: ${devName} (unsupported)`;
+                                    statusText.className = "text-xs font-mono text-blue-400 text-left truncate w-full select-none font-semibold";
+                                    if (midiIcon) {
+                                        midiIcon.className = "h-5 w-5 bg-blue-400 shrink-0 transition-colors duration-200";
+                                    }
                                 }
                             }
                         }

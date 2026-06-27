@@ -464,7 +464,7 @@
           "name": "Is knob.monster better than Snoize or MIDI-OX?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Snoize (macOS) and MIDI-OX (Windows) are fantastic, time-tested tools. However, they require local software installation, manual buffer setting adjustments, and do not offer cloud backup or metadata indexing. knob.monster runs instantly on any machine and lets you search and recall patches in seconds."
+            "text": "Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics. MIDI-OX hasn't been updated since 2011, runs on Windows 95/XP, and its official website currently triggers invalid SSL certificate warnings. Beyond the security risks, manually adjusting buffer settings on ancient desktop software is a headache. knob.monster runs directly in your browser with zero installation, automatically manages buffer sizing to prevent transfer crashes, and keeps your library synced in the cloud."
           }
         },
         {
@@ -1135,7 +1135,7 @@
                 {% endif %}
             </h1>
 
-            <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed font-normal reveal"
+            <p class="text-xs md:text-sm font-mono text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed reveal tracking-wide"
                 style="--delay: 150ms;">
                 {% if is_halloween_week %}
                 Resurrect, exorcise, and summon lost patches from your 1980s and 90s hardware directly in your web
@@ -1143,8 +1143,8 @@
                 {% elif seo %}
                 {{ seo.hero_subtitle }}
                 {% else %}
-                Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No
-                desktop software downloads or driver installations required.
+                Back up, organize, and search vintage synth patches directly in your browser.
+                The zero-config <span class="relative inline-block px-1 select-none"><span class="text-zinc-500">MIDI-OX</span><span class="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none"><svg class="w-full h-2.5 text-red-500/80 overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 10"><line x1="-3" y1="8" x2="103" y2="2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" /></svg></span></span> alternative you deserve. No desktop downloads, abandonware quirks, or registry drivers.
                 {% endif %}
             </p>
 
@@ -2034,10 +2034,12 @@
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            Snoize (macOS) and MIDI-OX (Windows) are fantastic, time-tested tools. However, they require
-                            local software installation, manual buffer setting adjustments, and do not offer cloud
-                            backup or metadata indexing. knob.monster runs instantly on any machine and lets you search
-                            and recall patches in seconds.
+                            Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics. 
+                            MIDI-OX hasn't been updated since 2011, is designed for Windows 95/XP, and its official website 
+                            currently triggers invalid SSL certificate warnings. Beyond the security risks, manually 
+                            adjusting buffer settings on ancient desktop software is a massive headache. 
+                            knob.monster runs directly in your browser with zero installation, automatically manages 
+                            buffer pacing to prevent transfer crashes, and keeps your library synced in the cloud.
                         </p>
                     </div>
                 </details>

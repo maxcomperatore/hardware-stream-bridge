@@ -1,45 +1,12 @@
-<!-- Visitor Welcome Avatar Toast (Dicebear Pixel Art) -->
-<div id="visitor-avatar-toast" 
-     class="fixed bottom-6 right-6 z-50 max-w-[340px] w-[calc(100vw-3rem)] bg-zinc-950/90 backdrop-blur-md border border-zinc-800 rounded-xl p-4 shadow-2xl hidden md:flex items-center gap-4 transition-all duration-500 ease-out transform translate-y-32 opacity-0 pointer-events-none select-none">
-    
-    <!-- Avatar Container -->
-    <div class="relative w-12 h-12 rounded-full border border-emerald-500/30 overflow-hidden bg-zinc-900 flex-shrink-0 flex items-center justify-center">
-        <img id="visitor-avatar-img" src="" alt="Visitor Avatar" class="w-full h-full object-cover">
-    </div>
-    
-    <!-- Message Container -->
-    <div class="flex-1 min-w-0 font-sans text-xs text-zinc-300 leading-normal">
-        <div class="flex items-center justify-between gap-2 mb-0.5">
-            <span class="font-pixel uppercase text-[8px] text-white tracking-widest" id="visitor-avatar-title">IDENTIFYING...</span>
-            <span class="text-zinc-500 text-[8px] font-mono hidden" id="visitor-avatar-ip">DETECTING IP...</span>
-        </div>
-        <p id="visitor-avatar-message" class="text-zinc-400 font-sans font-normal text-2xs leading-relaxed"></p>
-    </div>
-    
-    <!-- Close button -->
-    <button onclick="dismissAvatarToast(event)" class="text-zinc-500 hover:text-white transition-colors cursor-pointer text-xs font-bold leading-none select-none p-1 shrink-0">&times;</button>
-</div>
-
+<!-- Visitor Avatar & Web MIDI Status Initializer -->
 <script>
-    function dismissAvatarToast(event) {
-        if (event) event.stopPropagation();
-        const toast = document.getElementById('visitor-avatar-toast');
-        if (!toast) return;
-        toast.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
-        toast.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
-    }
-
     (function() {
         const userEmail = "{{ user.email if user else '' }}";
         
         function initVisitorAvatar() {
-            const toast = document.getElementById('visitor-avatar-toast');
-            if (!toast) return;
-
-            const isReturning = localStorage.getItem('visitor-returning');
             let seed = localStorage.getItem('visitor-avatar-seed');
             
-            // Clean up legacy IP seeds and unhashed fingerprints to force-fingerprint
+            // Clean up legacy IP seeds and unhashed fingerprints
             if (seed && (seed.includes('.') || seed === '127.0.0.1' || seed === 'localhost' || seed === 'visitor' || !seed.startsWith('km-'))) {
                 seed = null;
                 localStorage.removeItem('visitor-avatar-seed');
@@ -66,11 +33,6 @@
                 
                 seed = 'km-' + Math.abs(hash).toString(16);
                 localStorage.setItem('visitor-avatar-seed', seed);
-            }
-
-            const avatarImg = document.getElementById('visitor-avatar-img');
-            if (avatarImg) {
-                avatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
             }
 
             // Update landing pricing card stamp avatar
@@ -119,79 +81,6 @@
                     wrapper.appendChild(geoTag);
                 }
             }
-
-            const titleSpan = document.getElementById('visitor-avatar-title');
-            const messageP = document.getElementById('visitor-avatar-message');
-            const ipSpan = document.getElementById('visitor-avatar-ip');
-
-            // Arrays for dynamic variety of returning text using hearts, smileys, text emoticons and synth-friendly emojis
-            const guestReturningMsgs = [
-                "We missed you! <3 Good to see you back! 🎹",
-                "Guess who's back! :) So happy to see you! 👾",
-                "Look who it is! Welcome back, legend! 🚀",
-                "Our favorite knob twister is back! <3 Ready for presets?",
-                "Oh my god, you returned! We're so excited! 🎉"
-            ];
-            const guestReturningTitles = [
-                "WELCOME BACK ❤️",
-                "GUESS WHO'S BACK :)",
-                "LOOK WHO IT IS 👾",
-                "HELL YEAH 🚀",
-                "WELCOME HOME <3"
-            ];
-            const userReturningMsgs = [
-                "You're back! We missed you so much. <3 Let's secure some presets! 🛸",
-                "Welcome home, legend! :) Ready to vault some vintage presets?",
-                "Oh my god, you're back! We missed you so much. <3 Let's cook some patches! 🎹",
-                "Guess who's back! 🚀 Ready to backup your Yamaha DX7?",
-                "A perfect day to load some soundbanks. :) Welcome back! 🎉"
-            ];
-            const userReturningTitles = [
-                "WELCOME HOME <3",
-                "PRESET MASTER INBOUND ✨",
-                "SYSTEM ACTIVE 👾",
-                "SIGN IN COMPLETE :)"
-            ];
-
-            const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-            if (userEmail) {
-                if (ipSpan) ipSpan.textContent = "USER ACCOUNT";
-                if (isReturning) {
-                    if (titleSpan) titleSpan.textContent = getRandomItem(userReturningTitles);
-                    if (messageP) messageP.textContent = getRandomItem(userReturningMsgs);
-                } else {
-                    if (titleSpan) titleSpan.textContent = "MATCH DETECTED ✨";
-                    if (messageP) messageP.textContent = "Look at how cute you are! :) This is your official avatar now. Welcome! 🚀";
-                    localStorage.setItem('visitor-returning', 'true');
-                }
-            } else {
-                if (isReturning) {
-                    if (titleSpan) titleSpan.textContent = getRandomItem(guestReturningTitles);
-                    if (messageP) messageP.textContent = getRandomItem(guestReturningMsgs);
-                } else {
-                    if (titleSpan) titleSpan.textContent = "NEW SIGNAL DETECTED ✨";
-                    if (messageP) messageP.textContent = "This is your official avatar from now on. Look at how cute you are! <3";
-                    localStorage.setItem('visitor-returning', 'true');
-                }
-
-                if (seed && seed.includes('.')) {
-                    if (ipSpan) ipSpan.textContent = `IP: ${seed}`;
-                }
-            }
-
-            // Animate in on page startup after a 2-second delay
-            if (window.innerWidth >= 768) {
-                setTimeout(() => {
-                    toast.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
-                    toast.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
-                }, 2000);
-
-                // Auto dismiss after 12 seconds
-                setTimeout(() => {
-                    dismissAvatarToast();
-                }, 12000);
-            }
         }
 
         // Web MIDI Browser Support Badge Injection
@@ -237,121 +126,5 @@
             initVisitorAvatar();
             injectMidiBadge();
         }
-
-        // Fetch IP and country details via secure same-origin proxy to update display/toast text only
-        fetch('/api/geoip')
-            .then(res => {
-                if (!res.ok) throw new Error();
-                return res.json();
-            })
-            .then(data => {
-                if (data.ip) {
-                    const ip = data.ip;
-                    const country = data.country_name || 'everywhere';
-                    const code = data.country ? data.country.toUpperCase() : 'US';
-                    const flag = getFlagEmoji(data.country);
-                    
-                    const ipSpan = document.getElementById('visitor-avatar-ip');
-                    if (ipSpan) {
-                        ipSpan.textContent = userEmail ? "USER ACCOUNT" : `IP: ${ip}`;
-                    }
-
-                    // Dynamically customize the welcome toast with country flag and active synth name
-                    const titleSpan = document.getElementById('visitor-avatar-title');
-                    const messageP = document.getElementById('visitor-avatar-message');
-                    
-                    // Parse synth from pathname
-                    const path = window.location.pathname;
-                    let synthName = "";
-                    if (path.includes("dx7")) synthName = "Yamaha DX7";
-                    else if (path.includes("juno-106")) synthName = "Roland Juno-106";
-                    else if (path.includes("korg-m1")) synthName = "Korg M1";
-                    else if (path.includes("jupiter-6")) synthName = "Roland Jupiter-6";
-                    else if (path.includes("casio-cz")) synthName = "Casio CZ-101";
-                    else if (path.includes("tx81z")) synthName = "Yamaha TX81Z";
-                    else if (path.includes("d-50")) synthName = "Roland D-50";
-                    else if (path.includes("prophet")) synthName = "Prophet-600";
-                    else if (path.includes("matrix")) synthName = "Matrix-1000";
-                    else if (path.includes("fb-01")) synthName = "Yamaha FB-01";
-                    else if (path.includes("juno-60")) synthName = "Roland Juno-60";
-                    else if (path.includes("wavestation")) synthName = "Korg Wavestation";
-
-                    let countryName = country;
-                    if (code === 'US') countryName = 'the USA';
-                    else if (code === 'GB') countryName = 'the UK';
-                    else if (code === 'NL') countryName = 'the Netherlands';
-                    else if (code === 'AE') countryName = 'the UAE';
-                    else if (code === 'PH') countryName = 'the Philippines';
-
-                    if (userEmail) {
-                        const loggedInTitles = [
-                            `WELCOME BACK ${flag}`,
-                            `SYSTEM ONLINE ${flag}`,
-                            `GENIUS INBOUND 🎹`
-                        ];
-                        const loggedInMsgs = synthName 
-                            ? [
-                                `Welcome back to your ${synthName} vault from ${countryName}! Ready to dump some raw presets? 🛸`,
-                                `Connected from ${countryName} ${flag} to secure your ${synthName} patches. Let's cook! 🎹`,
-                                `Your ${synthName} vault is synced in ${countryName}! Go backup your presets. :) <3`
-                            ]
-                            : [
-                                `Welcome back from ${countryName} ${flag}! Let's secure some vintage patches! 🛸`,
-                                `Connected from ${countryName} ${flag} to secure your synth vault. Ready? <3`,
-                                `Your presets are safe and sound here in ${countryName}! :)`
-                            ];
-                        if (titleSpan) titleSpan.textContent = loggedInTitles[Math.floor(Math.random() * loggedInTitles.length)];
-                        if (messageP) messageP.textContent = loggedInMsgs[Math.floor(Math.random() * loggedInMsgs.length)];
-                    } else {
-                        const isReturning = localStorage.getItem('visitor-returning');
-                        if (isReturning === 'true') {
-                            const guestTitles = [
-                                `GUEST DETECTED ${flag}`,
-                                `GUESS WHO'S BACK ${flag}`,
-                                `KNOB MONSTER IN ${code}`
-                            ];
-                            const guestMsgs = synthName
-                                ? [
-                                    `Our favorite ${synthName} wizard from ${countryName} is back! :) Ready to upgrade? <3`,
-                                    `Back for more ${synthName} librarian action? Hello from ${countryName}! 👾`,
-                                    `Oh my god, you're back to edit ${synthName} patches in ${countryName}! 🎹 <3`
-                                ]
-                                : [
-                                    `Welcome back! We missed you here in ${countryName} ${flag}! <3`,
-                                    `Guess who's back in ${countryName}! :) So good to see you! 🚀`,
-                                    `Our favorite knob twister from ${countryName} is back! Ready for presets? <3`
-                                ];
-                            if (titleSpan) titleSpan.textContent = guestTitles[Math.floor(Math.random() * guestTitles.length)];
-                            if (messageP) messageP.textContent = guestMsgs[Math.floor(Math.random() * guestMsgs.length)];
-                        } else {
-                            const guestTitles = [
-                                `NEW SIGNAL ${flag}`,
-                                `HELLO ${code} :)`,
-                                `GENIUS DETECTED ${flag}`
-                            ];
-                            const guestMsgs = synthName
-                                ? [
-                                    `A vintage ${synthName} owner in ${countryName}! 🎹 Save your patches before the internal battery dies! <3`,
-                                    `We detected a ${synthName} in ${countryName} ${flag}! Keep your presets safe and secure. :)`,
-                                    `Welcome! Keep your ${synthName} alive. Back up your soundbanks from ${countryName} now! 🚀`
-                                ]
-                                : [
-                                    `This is your official avatar from now on. Welcome from ${countryName}! <3`,
-                                    `Genius detected in ${countryName} ${flag}! Look at how cute your pixel-art avatar is! :)`,
-                                    `A brand new synth hoarder in ${countryName}! Save your patches before they're gone! 🎹 <3`
-                                ];
-                            if (titleSpan) titleSpan.textContent = guestTitles[Math.floor(Math.random() * guestTitles.length)];
-                            if (messageP) messageP.textContent = guestMsgs[Math.floor(Math.random() * guestMsgs.length)];
-                            localStorage.setItem('visitor-returning', 'true');
-                        }
-                    }
-                }
-            })
-            .catch(() => {
-                const ipSpan = document.getElementById('visitor-avatar-ip');
-                if (ipSpan && ipSpan.textContent === 'DETECTING IP...') {
-                    ipSpan.textContent = userEmail ? 'USER ACCOUNT' : 'SECURE CLIENT';
-                }
-            });
     })();
 </script>

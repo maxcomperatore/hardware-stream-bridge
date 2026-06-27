@@ -28,8 +28,8 @@ def parse_dx7_sysex(data: bytes) -> list[str]:
     # We can be slightly lenient on length because some dumps strip F0/F7 or have extra headers
     voices = []
     
-    # Standard format: starts with F0 43, length is ~4104
-    if len(data) >= 4100 and data[0] == 0xF0 and data[1] == 0x43:
+    # Standard format: starts with F0 43, length is ~4104, Format ID is 09
+    if len(data) >= 4104 and data[0] == 0xF0 and data[1] == 0x43 and data[3] == 0x09:
         # DX7 bulk dump voice data starts at offset 6
         start_offset = 6
     elif len(data) == 4096:
@@ -60,7 +60,7 @@ def parse_dx7_sysex(data: bytes) -> list[str]:
 def parse_juno106_sysex(data: bytes) -> list[str]:
     """
     Parses Roland Juno-106 SysEx patch parameters.
-    APR format: F0 41 30 0n pp [16 sliders] [sw1] [sw2] F7 (23 bytes total).
+    APR format: F0 41 30 0n pp [16 sliders] [sw1] [sw2] F7 (24 bytes total).
     Since Juno-106 patches have no digital name tags, we analyze VCF, DCO, VCA,
     and envelope parameters to dynamically generate descriptive name tags (e.g., 'A11 ACID BASS').
     """
@@ -80,9 +80,10 @@ def parse_juno106_sysex(data: bytes) -> list[str]:
         if len(msg) >= 24 and msg[2] == 0x30:
             patch_num = msg[4]
             if patch_num < 128:
-                sliders = msg[5:21]
-                if len(sliders) == 16:
-                    patches_by_number[patch_num] = analyze_juno106_patch(sliders, patch_num)
+                # Extract 16 sliders and 2 switches
+                params = msg[5:23]
+                if len(params) == 18:
+                    patches_by_number[patch_num] = analyze_juno106_patch(params, patch_num)
         idx = end + 1
 
     if patches_by_number:
@@ -97,7 +98,7 @@ def analyze_juno106_patch(p: bytes, index: int) -> str:
     patch = (local_idx % 8) + 1
     prefix = f"{group}{bank}{patch}"
 
-    if len(p) < 16:
+    if len(p) < 18:
         return f"{prefix} JUNO PATCH"
 
     # 16 slider bytes: LFO rate, LFO delay, DCO LFO, DCO PWM, Noise, VCF Freq,
@@ -110,10 +111,14 @@ def analyze_juno106_patch(p: bytes, index: int) -> str:
     release = p[14]
     sub_level = p[15]
     
+    # Switch status:SW1 at index 16, SW2 at index 17
+    sw2 = p[17]
+    chorus_on = (sw2 & 0x03) > 0  # Chorus bit mask (00 = off, 01 = chorus I, 10 = chorus II)
+    
     # Sound naming logic
     if cutoff < 40 and resonance > 60:
         if attack < 20:
-            name = "ACID BASS"
+            name = "ACID BASS" if not chorus_on else "CHORUS BASS"
         else:
             name = "REZ SWEEP"
     elif cutoff < 50 and sub_level > 60:
@@ -122,7 +127,7 @@ def analyze_juno106_patch(p: bytes, index: int) -> str:
         if noise_level > 40:
             name = "WIND PAD"
         else:
-            name = "WARM SHIMMER"
+            name = "WARM PAD" if chorus_on else "ANALOG SHIMMER"
     elif attack < 15 and release > 60 and sustain < 30:
         name = "PLUCK SYNTH"
     elif cutoff > 80 and resonance > 50:
@@ -138,13 +143,12 @@ def parse_korg_m1_sysex(data: bytes) -> list[str]:
     """
     Parses a Korg M1 100-program bulk dump.
     Standard dump size is ~16422 bytes. Each program contains 164 bytes of parameters,
-    with the first 10 bytes being the program name.
+    with the program name stored at parameters 133-142 (packed in 7-to-8 bit format).
     """
     voices = []
     
     # M1 format header starts with F0 42 [channel] 19 ...
-    # We look for a reasonable offset
-    if len(data) >= 16000 and data[0] == 0xF0 and data[1] == 0x42:
+    if len(data) >= 16000 and data[0] == 0xF0 and data[1] == 0x42 and data[3] == 0x19:
         start_offset = 6
         prog_size = 164
     else:
@@ -158,8 +162,13 @@ def parse_korg_m1_sysex(data: bytes) -> list[str]:
             
     for i in range(100):
         prog_offset = start_offset + (i * prog_size)
-        if prog_offset + 10 <= len(data):
-            name_bytes = data[prog_offset : prog_offset + 10]
+        if prog_offset + 164 <= len(data):
+            # M1 program name occupies parameters 133-142 (10 chars).
+            # When packed 7-to-8:
+            # - First 133 bytes pack to 152 bytes in stream (19 chunks of 7 bytes).
+            # - Byte 152 is collection byte for chunk 20. Chars 0-6 are at 153 to 159.
+            # - Byte 160 is collection byte for chunk 21. Chars 7-9 are at 161 to 163.
+            name_bytes = data[prog_offset + 153 : prog_offset + 160] + data[prog_offset + 161 : prog_offset + 164]
             patch_name = clean_ascii(name_bytes)
             if not patch_name:
                 patch_name = f"M1 Program {i:02d}"
@@ -174,7 +183,7 @@ def parse_generic_sysex(data: bytes) -> list[str]:
     Scans SysEx data for blocks of printable ASCII text.
     Many synths store patch names in ASCII sequences.
     """
-    # Fallback to DX7/M1/Juno parser if it looks like one of them
+    # Fallback to DX7/M1/Juno/Jupiter/CZ parser if it looks like one of them
     dx7_patches = parse_dx7_sysex(data)
     if dx7_patches:
         return dx7_patches
@@ -205,7 +214,7 @@ def parse_generic_sysex(data: bytes) -> list[str]:
         else:
             if len(temp_name) >= 6 and len(temp_name) <= 16:
                 name = "".join(temp_name).strip()
-                if re.match(r'^[A-Za-z0-9\s\-\.\_\+\*\/]{4,}$', name):
+                if re.match(r'^[A-Za-z0-9\s\-\.\_\+\*\/\[\]\!\#]{4,}$', name):
                     patches.append(name)
             temp_name = []
             
@@ -316,9 +325,13 @@ def analyze_cz101_patch(p: bytes, index: int) -> str:
         num = (index % 16) + 1
         return f"{bank}-{num:02d} CZ Tone"
         
-    wave = p[10] if len(p) > 10 else 0
-    dcw_level = p[18] if len(p) > 18 else 50
-    dca_release = p[26] if len(p) > 26 else 30
+    # CZ series tone parameters are nibblized (4 bits per byte, LSN first, then MSN)
+    # Parameter 5 (index 10 & 11 in p)
+    wave = (p[10] & 0x0F) | ((p[11] & 0x0F) << 4) if len(p) > 11 else 0
+    # Parameter 9 (index 18 & 19 in p)
+    dcw_level = (p[18] & 0x0F) | ((p[19] & 0x0F) << 4) if len(p) > 19 else 50
+    # Parameter 13 (index 26 & 27 in p)
+    dca_release = (p[26] & 0x0F) | ((p[27] & 0x0F) << 4) if len(p) > 27 else 30
     
     if dcw_level < 30:
         name = "PD SOFT BASS"

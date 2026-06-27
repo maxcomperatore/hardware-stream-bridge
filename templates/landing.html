@@ -1608,7 +1608,9 @@
                             <!-- Monthly -->
                             <div id="price-monthly" class="hidden">
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400">$29</span>
+                                    <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
+                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa" class="h-8 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />29
+                                    </span>
                                     <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1 flex items-center gap-1 select-none">
@@ -1624,18 +1626,24 @@
                             <!-- Yearly -->
                             <div id="price-yearly" class="block">
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400">$19</span>
-                                    <span class="text-3xl font-lcd text-zinc-655 line-through">$29</span>
+                                    <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
+                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa" class="h-8 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />19
+                                    </span>
+                                    <span class="text-3xl font-lcd text-zinc-655 line-through flex items-baseline gap-0.5">
+                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2352525b" class="h-5 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-1px);" alt="" />29
+                                    </span>
                                     <span class="text-xs font-roman uppercase text-zinc-400">/ month</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                    Billed annually ($229/year)
+                                    Billed annually (<img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%23a1a1aa" class="h-2.5 w-auto inline-block align-middle select-none" style="image-rendering: pixelated; margin-top: -2px;" alt="" />229/year)
                                 </div>
                             </div>
                             <!-- Lifetime -->
                             <div id="price-lifetime" class="hidden">
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400">$599</span>
+                                    <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
+                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa" class="h-8 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />599
+                                    </span>
                                     <span class="text-xs font-roman uppercase text-zinc-400">/ one-time</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
@@ -1685,7 +1693,7 @@
                                     <img src="https://api.iconify.design/dinkie-icons:adult-filled.svg" alt=""
                                         width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
                                         style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    <span class="text-white font-semibold">16h/day live, human support</span>
+                                    <span class="text-white font-semibold">16h/day live, human support (ET)</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
@@ -1732,7 +1740,7 @@
                                     <img src="https://api.iconify.design/dinkie-icons:adult-filled.svg" alt=""
                                         width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
                                         style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    16h/day live, human support
+                                    16h/day live, human support (ET)
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
@@ -2521,25 +2529,28 @@
                 }
             });
 
-            // Web MIDI Access Scanner
-            function initiateMIDIScan() {
+              function initiateMIDIScan() {
                 const statusText = document.getElementById('midi-status-text');
                 const midiIcon = document.getElementById('midi-icon');
                 const scanBtn = document.getElementById('midi-scan-btn');
 
                 if (!navigator.requestMIDIAccess) {
                     statusText.innerText = "Error: Web MIDI not supported.";
-                    statusText.className = "text-xs font-mono text-rose-400 text-left truncate w-full select-none";
+                    statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                    statusText.style.color = "#f43f5e";
                     if (midiIcon) {
-                        midiIcon.className = "h-5 w-5 bg-rose-500 shrink-0 transition-colors duration-200";
+                        midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                        midiIcon.style.backgroundColor = "#f43f5e";
                     }
                     return;
                 }
 
                 statusText.innerText = "Querying Web MIDI system...";
-                statusText.className = "text-xs font-mono text-zinc-400 text-left truncate w-full select-none";
+                statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                statusText.style.color = "#a1a1aa";
                 if (midiIcon) {
-                    midiIcon.className = "h-5 w-5 bg-amber-500 shrink-0 transition-colors duration-200 animate-pulse";
+                    midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200 animate-pulse";
+                    midiIcon.style.backgroundColor = "#f59e0b";
                 }
 
                 if (scanBtn) {
@@ -2557,9 +2568,11 @@
 
                             if (inputs.length === 0 && outputs.length === 0) {
                                 statusText.innerText = "No MIDI hardware plugged in.";
-                                statusText.className = "text-xs font-mono text-amber-400 text-left truncate w-full select-none";
+                                statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                                statusText.style.color = "#fbbf24";
                                 if (midiIcon) {
-                                    midiIcon.className = "h-5 w-5 bg-amber-500 shrink-0 transition-colors duration-200";
+                                    midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                                    midiIcon.style.backgroundColor = "#f59e0b";
                                 }
                             } else {
                                 const devName = inputs[0]?.name || outputs[0]?.name || "MIDI Port";
@@ -2567,15 +2580,19 @@
                                 const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential'].some(kw => devNameLower.includes(kw));
                                 if (isSupported) {
                                     statusText.innerText = `Connected: ${devName} (SUPPORTED!)`;
-                                    statusText.className = "text-xs font-mono text-emerald-400 text-left truncate w-full select-none font-semibold";
+                                    statusText.className = "text-xs font-mono text-left truncate w-full select-none font-semibold";
+                                    statusText.style.color = "#10b981";
                                     if (midiIcon) {
-                                        midiIcon.className = "h-5 w-5 bg-emerald-400 shrink-0 transition-colors duration-200";
+                                        midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                                        midiIcon.style.backgroundColor = "#10b981";
                                     }
                                 } else {
                                     statusText.innerText = `Connected: ${devName} (unsupported)`;
-                                    statusText.className = "text-xs font-mono text-blue-400 text-left truncate w-full select-none font-semibold";
+                                    statusText.className = "text-xs font-mono text-left truncate w-full select-none font-semibold";
+                                    statusText.style.color = "#60a5fa";
                                     if (midiIcon) {
-                                        midiIcon.className = "h-5 w-5 bg-blue-400 shrink-0 transition-colors duration-200";
+                                        midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                                        midiIcon.style.backgroundColor = "#60a5fa";
                                     }
                                 }
                             }
@@ -2586,9 +2603,11 @@
                     })
                     .catch(err => {
                         statusText.innerText = "Access denied: check permissions.";
-                        statusText.className = "text-xs font-mono text-rose-400 text-left truncate w-full select-none";
+                        statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                        statusText.style.color = "#f43f5e";
                         if (midiIcon) {
-                            midiIcon.className = "h-5 w-5 bg-rose-500 shrink-0 transition-colors duration-200";
+                            midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                            midiIcon.style.backgroundColor = "#f43f5e";
                         }
                     })
                     .finally(() => {

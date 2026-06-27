@@ -1,4 +1,4 @@
-<!-- Visitor Welcome Avatar Toast (Dicebear Open Peeps) -->
+<!-- Visitor Welcome Avatar Toast (Dicebear Pixel Art) -->
 <div id="visitor-avatar-toast" 
      class="fixed bottom-6 right-6 z-50 max-w-[340px] w-[calc(100vw-3rem)] bg-zinc-950/90 backdrop-blur-md border border-zinc-800 rounded-xl p-4 shadow-2xl hidden md:flex items-center gap-4 transition-all duration-500 ease-out transform translate-y-32 opacity-0 pointer-events-none select-none">
     
@@ -70,31 +70,31 @@
 
             const avatarImg = document.getElementById('visitor-avatar-img');
             if (avatarImg) {
-                avatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+                avatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
             }
 
             // Update landing pricing card stamp avatar
             const landingAvatarImg = document.getElementById('landing-upgrade-avatar');
             if (landingAvatarImg) {
-                landingAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+                landingAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
             }
 
             // Update landing page hero inline avatar
             const heroAvatarImg = document.getElementById('hero-visitor-avatar');
             if (heroAvatarImg) {
-                heroAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+                heroAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
             }
 
             // Update dashboard upgrade paywall avatar
             const upgradeAvatarImg = document.getElementById('dashboard-upgrade-avatar');
             if (upgradeAvatarImg) {
-                upgradeAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+                upgradeAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
             }
 
             // Update sidebar user avatar
             const sidebarUserAvatarImg = document.getElementById('sidebar-user-avatar');
             if (sidebarUserAvatarImg) {
-                sidebarUserAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+                sidebarUserAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
             }
 
             // Inject mini avatar into footer if visitor-geo-tag exists
@@ -111,7 +111,7 @@
                     
                     const footerAvatarImg = document.createElement('img');
                     footerAvatarImg.id = 'footer-visitor-avatar';
-                    footerAvatarImg.src = `https://api.dicebear.com/10.x/open-peeps/svg?seed=${encodeURIComponent(seed)}`;
+                    footerAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
                     footerAvatarImg.className = 'w-5 h-5 rounded-full border border-zinc-855 bg-zinc-900 object-cover shrink-0 select-none';
                     footerAvatarImg.alt = 'Visitor Footer Avatar';
                     
@@ -337,7 +337,7 @@
                                 ]
                                 : [
                                     `This is your official avatar from now on. Welcome from ${countryName}! <3`,
-                                    `Genius detected in ${countryName} ${flag}! Look at how cute your Open Peeps avatar is! :)`,
+                                    `Genius detected in ${countryName} ${flag}! Look at how cute your pixel-art avatar is! :)`,
                                     `A brand new synth hoarder in ${countryName}! Save your patches before they're gone! 🎹 <3`
                                 ];
                             if (titleSpan) titleSpan.textContent = guestTitles[Math.floor(Math.random() * guestTitles.length)];

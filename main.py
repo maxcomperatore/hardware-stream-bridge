@@ -313,7 +313,11 @@ async def startup_event():
     database.init_db()
 
 # Secure Cookie Session signing key
-SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "knob_monster_super_secure_default_session_secret_998822")
+SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY")
+if not SESSION_SECRET_KEY:
+    if os.environ.get("VERCEL") == "1":
+        raise RuntimeError("SESSION_SECRET_KEY environment variable is required in production!")
+    SESSION_SECRET_KEY = "knob_monster_super_secure_default_session_secret_998822"
 cookie_signer = Signer(SESSION_SECRET_KEY)
 
 def sign_session_cookie(email: str) -> str:
@@ -639,6 +643,14 @@ async def get_geoip(request: Request):
             x_real_ip = request.headers.get("x-real-ip")
             if x_real_ip:
                 client_ip = x_real_ip.strip()
+                
+    # Validate the IP format to prevent SSRF path traversal injections
+    if client_ip != "localhost":
+        import ipaddress
+        try:
+            ipaddress.ip_address(client_ip)
+        except ValueError:
+            client_ip = "127.0.0.1"
                 
     # Detect if loopback/private
     is_private = False

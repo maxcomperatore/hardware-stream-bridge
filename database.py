@@ -3,11 +3,10 @@ from datetime import datetime
 import psycopg2
 import psycopg2.extras
 
-# Load database connection string from environment variables in production
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql://neondb_owner:npg_pS5QZYe0Nwyr@ep-empty-night-ajgmosjt-pooler.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-)
+# Load database connection string from environment variables
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL environment variable is missing. Please set DATABASE_URL.")
 
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)

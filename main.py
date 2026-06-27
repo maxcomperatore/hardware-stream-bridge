@@ -302,8 +302,9 @@ STRIPE_WEBHOOK_SECRET = os.environ.get(
 )
 stripe.api_key = STRIPE_SECRET_KEY
 
-STRIPE_PRICE_ID_YEARLY = "price_1Tj3wRLuSQGuB7eyeLFUuCSS"
-STRIPE_PRICE_ID_MONTHLY = "price_1Tj3w8LuSQGuB7ey5ZhEjwri"
+STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
+STRIPE_PRICE_ID_MONTHLY = os.environ.get("STRIPE_PRICE_ID_MONTHLY", "price_1TmkUzLuSQGuB7eytGvepyWd")
+STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TmkVXLuSQGuB7eyShpu6eHe")
 BASE_URL = "https://knob.monster"
 
 # Initialize database on startup
@@ -1306,7 +1307,12 @@ async def create_checkout_session(request: Request, plan: str = "yearly"):
     if not STRIPE_SECRET_KEY:
         return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}")
         
-    price_id = STRIPE_PRICE_ID_YEARLY if plan == "yearly" else STRIPE_PRICE_ID_MONTHLY
+    if plan == "lifetime":
+        price_id = STRIPE_PRICE_ID_LIFETIME
+    elif plan == "yearly":
+        price_id = STRIPE_PRICE_ID_YEARLY
+    else:
+        price_id = STRIPE_PRICE_ID_MONTHLY
     
     # Check if we are in an active promotion week to allow coupon codes
     query_birthday = False
@@ -1333,7 +1339,7 @@ async def create_checkout_session(request: Request, plan: str = "yearly"):
                     'quantity': 1,
                 },
             ],
-            mode='subscription',
+            mode='payment' if plan == "lifetime" else 'subscription',
             allow_promotion_codes=allow_promo,
             success_url=BASE_URL + "/dashboard?payment=success",
             cancel_url=BASE_URL + "/dashboard?payment=cancel",
@@ -1580,7 +1586,7 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Direct Pricing:** Simple plan options: $8/month (billed monthly) or $5/month (billed annually, $60 total). No trials.",
+        "- **Direct Pricing:** Simple plan options: $29/month, $229/year, or $599 for lifetime access. All options grant full, unrestricted access.",
         "",
         "## Key Pages",
         "- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.",
@@ -1636,8 +1642,9 @@ async def agent_discovery_middleware(request: Request, call_next):
 ## Pricing
 | Plan | Price |
 |------|-------|
-| Monthly | $8/month |
-| Annual | $5/month ($60/year, save 37%) |
+| Monthly | $29/month |
+| Annual | $19/month ($229/year, save 34%) |
+| Lifetime | $599 one-time |
 
 ## API
 - **API Catalog**: </well-known/api-catalog>

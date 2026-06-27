@@ -227,9 +227,9 @@ async def earth_day_middleware(request: Request, call_next):
 </head>
 <body class="bg-black text-zinc-400 flex flex-col items-center justify-center min-h-screen p-6 text-center select-none selection:bg-zinc-800 selection:text-white">
     <div class="max-w-md space-y-8">
-        <!-- Troll Logo -->
+        <!-- Microbe Logo -->
         <div class="flex justify-center">
-            <img src="/static/logo.avif" id="earth-day-logo" alt="Ogre Logo" class="h-28 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out opacity-60" style="transform-style: preserve-3d; backface-visibility: hidden;">
+            <img src="/static/logo.svg" id="earth-day-logo" alt="Microbe Logo" class="h-28 w-auto object-contain dithered cursor-pointer transition-all duration-150 ease-out opacity-60" style="transform-style: preserve-3d; backface-visibility: hidden;">
         </div>
         
         <div class="space-y-4">
@@ -287,6 +287,25 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Templates
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+# Intercept logo requests to serve the microbe SVG
+@app.get("/static/logo.avif")
+async def get_logo_avif():
+    logo_path = os.path.join(BASE_DIR, "static", "logo.svg")
+    if os.path.exists(logo_path):
+        with open(logo_path, "r", encoding="utf-8") as f:
+            svg_content = f.read()
+        return Response(content=svg_content, media_type="image/svg+xml")
+    raise HTTPException(status_code=404)
+
+@app.get("/static/logo.png")
+async def get_logo_png():
+    logo_path = os.path.join(BASE_DIR, "static", "logo.svg")
+    if os.path.exists(logo_path):
+        with open(logo_path, "r", encoding="utf-8") as f:
+            svg_content = f.read()
+        return Response(content=svg_content, media_type="image/svg+xml")
+    raise HTTPException(status_code=404)
 
 # Mount Static Files
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")

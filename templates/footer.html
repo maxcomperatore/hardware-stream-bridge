@@ -151,16 +151,16 @@
                         <div class="flex items-center gap-2">
                             <div class="relative spin-minecraft flex items-center justify-center"
                                 style="transform-style: preserve-3d; width: 20px; height: 20px;">
-                                <img src="/static/logo.avif" alt="Knob Monster Logo" width="20" height="20"
+                                <img src="/static/logo.svg" alt="Knob Monster Logo" width="20" height="20"
                                     class="absolute w-5 h-5 object-contain"
                                     style="transform: translateZ(0px); image-rendering: pixelated;">
-                                <img src="/static/logo.avif" alt="" width="20" height="20"
+                                <img src="/static/logo.svg" alt="" width="20" height="20"
                                     class="absolute w-5 h-5 object-contain"
                                     style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                                <img src="/static/logo.avif" alt="" width="20" height="20"
+                                <img src="/static/logo.svg" alt="" width="20" height="20"
                                     class="absolute w-5 h-5 object-contain"
                                     style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                                <img src="/static/logo.avif" alt="" width="20" height="20"
+                                <img src="/static/logo.svg" alt="" width="20" height="20"
                                     class="absolute w-5 h-5 object-contain"
                                     style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                             </div>
@@ -302,13 +302,25 @@
                         </div>
 
                         <p class="text-[10px] text-zinc-500 font-mono text-center md:text-right">
-                            &copy; 2026 Half Radiation. <br class="md:hidden">
-                            Troll icon by <a href="https://game-icons.net/1x1/skoll/troll.html" target="_blank"
-                                rel="noopener noreferrer" class="hover:text-white underline font-sans">Skoll</a> under
-                            <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank"
-                                rel="noopener noreferrer" class="hover:text-white underline font-sans">CC BY 3.0</a>.
+                            &copy; 2026 Half Radiation.
                         </p>
                     </div>
                 </div>
             </div>
         </footer>
+
+        <style>
+            @keyframes minecraft-spin {
+                0% {
+                    transform: perspective(600px) rotateX(12deg) rotateY(0deg);
+                }
+                100% {
+                    transform: perspective(600px) rotateX(12deg) rotateY(360deg);
+                }
+            }
+            .spin-minecraft {
+                animation: minecraft-spin 8s linear infinite;
+                transform-style: preserve-3d;
+                backface-visibility: visible;
+            }
+        </style>

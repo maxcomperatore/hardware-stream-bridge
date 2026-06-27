@@ -167,11 +167,11 @@
         /* Minecraft-style 3D spinning item animation */
         @keyframes minecraft-spin {
             0% {
-                transform: rotateY(0deg);
+                transform: perspective(600px) rotateX(12deg) rotateY(0deg);
             }
 
             100% {
-                transform: rotateY(360deg);
+                transform: perspective(600px) rotateX(12deg) rotateY(360deg);
             }
         }
 
@@ -1046,16 +1046,16 @@
                 <a href="/" class="flex items-center gap-2.5 group">
                     <div class="relative spin-minecraft flex items-center justify-center"
                         style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24"
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
                             class="absolute w-6 h-6 object-contain"
                             style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24"
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
                             class="absolute w-6 h-6 object-contain"
                             style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24"
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
                             class="absolute w-6 h-6 object-contain"
                             style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24"
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
                             class="absolute w-6 h-6 object-contain"
                             style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
@@ -1590,7 +1590,7 @@
                     <!-- Diamond Stamp for Emperor of Knobs -->
                     <div id="stamp-diamond" class="absolute top-6 right-6 border border-dashed border-[#00f5ff]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11 hidden"
                         style="box-shadow: 0 0 20px rgba(0, 245, 255, 0.35);">
-                        <img id="landing-lifetime-avatar" src="/static/logo.avif" class="h-full w-full object-cover rounded-md"
+                        <img id="landing-lifetime-avatar" src="/static/logo.svg" class="h-full w-full object-cover rounded-md"
                             alt="Emperor of Knobs Stamp">
                     </div>
 
@@ -2485,24 +2485,36 @@
                     canvas.height = 32;
                     const ctx = canvas.getContext('2d');
                     const favImg = new Image();
-                    favImg.src = '/static/logo.avif';
+                    favImg.src = '/static/logo.svg';
                     favImg.onload = () => {
-                        let angle = 0;
                         let tick = 0;
                         setInterval(() => {
                             ctx.clearRect(0, 0, 32, 32);
+                            const pulse = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(tick));
+
                             ctx.save();
                             ctx.translate(16, 16);
-                            ctx.rotate((angle * Math.PI) / 180);
 
-                            // LFO status LED pulse (opacity cycles between 0.35 and 1.0)
-                            ctx.globalAlpha = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(tick));
+                            // 3D extrusion layers matching the main site logo
+                            // Deepest shadow layer
+                            ctx.globalAlpha = 0.2 * pulse;
+                            ctx.drawImage(favImg, -16 + 1.5, -16 + 1.5, 32, 32);
 
+                            // Mid shadow layer
+                            ctx.globalAlpha = 0.4 * pulse;
+                            ctx.drawImage(favImg, -16 + 1.0, -16 + 1.0, 32, 32);
+
+                            // Light shadow layer
+                            ctx.globalAlpha = 0.6 * pulse;
+                            ctx.drawImage(favImg, -16 + 0.5, -16 + 0.5, 32, 32);
+
+                            // Front face layer
+                            ctx.globalAlpha = 1.0 * pulse;
                             ctx.drawImage(favImg, -16, -16, 32, 32);
+
                             ctx.restore();
                             favIconElement.href = canvas.toDataURL('image/png');
 
-                            angle = (angle + 2) % 360; // Slower, premium spin
                             tick += 0.12; // Pulse LFO speed
                         }, 66); // ~15 FPS to keep background footprint negligible
                     };

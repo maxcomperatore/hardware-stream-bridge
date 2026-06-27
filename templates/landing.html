@@ -1762,9 +1762,7 @@
                 class="text-center text-[9px] text-zinc-400 uppercase font-roman tracking-wider mt-12 max-w-sm mx-auto leading-relaxed transition-all duration-200">
                 Subscriptions with annual billing instead of monthly billing periods receive a <span
                     class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span
-                    class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year
-                    in
-                    savings</span>.
+                    class="relative group cursor-pointer underline decoration-dotted underline-offset-2 font-semibold text-emerald-400">$119/year in savings<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-zinc-950 border border-zinc-800 text-zinc-300 text-[10px] rounded-xl shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50 text-center font-normal leading-normal font-sans tracking-normal normal-case"><span class="font-bold text-white block mb-1">THE MATH:</span>12 × $29/mo (Monthly) = $348/yr<br>12 × $19/mo (Yearly) = $229/yr<br><span class="text-emerald-400 font-bold block mt-1.5 border-t border-zinc-800 pt-1.5">$348 - $229 = $119 Saved!</span></span></span>.
             </p>
 
             <!-- Centered Meme Image -->
@@ -1863,7 +1861,7 @@
                     if (trialSubtext) trialSubtext.innerHTML = 'Cancel anytime in one click.';
 
                     if (discountNotice) {
-                        discountNotice.innerHTML = 'You are choosing to pay <span class="text-rose-500 font-bold underline decoration-dotted underline-offset-2">52% more ($119/year extra)</span>. Switch to annual to stop bleeding money.';
+                        discountNotice.innerHTML = 'You are choosing to pay <span class="relative group cursor-pointer underline decoration-dotted underline-offset-2 font-bold text-rose-500">52% more ($119/year extra)<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-zinc-950 border border-zinc-800 text-zinc-300 text-[10px] rounded-xl shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50 text-center font-normal leading-normal font-sans tracking-normal normal-case"><span class="font-bold text-white block mb-1">THE MATH:</span>12 × $29/mo (Monthly) = $348/yr<br>12 × $19/mo (Yearly) = $229/yr<br><span class="text-rose-500 font-bold block mt-1.5 border-t border-zinc-800 pt-1.5">$348 - $229 = $119 Extra!</span></span></span>. Switch to annual to stop bleeding money.';
                         discountNotice.classList.remove('text-zinc-400');
                         discountNotice.classList.add('text-rose-450');
                     }
@@ -1898,7 +1896,7 @@
                     if (trialSubtext) trialSubtext.innerHTML = 'Cancel anytime in one click.';
 
                     if (discountNotice) {
-                        discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span class="text-emerald-400 font-semibold underline decoration-dotted underline-offset-2">$119/year in savings</span>.';
+                        discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span class="relative group cursor-pointer underline decoration-dotted underline-offset-2 font-semibold text-emerald-400">$119/year in savings<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-zinc-950 border border-zinc-800 text-zinc-300 text-[10px] rounded-xl shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50 text-center font-normal leading-normal font-sans tracking-normal normal-case"><span class="font-bold text-white block mb-1">THE MATH:</span>12 × $29/mo (Monthly) = $348/yr<br>12 × $19/mo (Yearly) = $229/yr<br><span class="text-emerald-400 font-bold block mt-1.5 border-t border-zinc-800 pt-1.5">$348 - $229 = $119 Saved!</span></span></span>.';
                         discountNotice.classList.remove('text-rose-450');
                         discountNotice.classList.add('text-zinc-400');
                     }

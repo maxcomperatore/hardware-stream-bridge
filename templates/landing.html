@@ -1537,30 +1537,30 @@
             </div>
 
             <!-- Billing Toggle -->
-            <div class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[368px] mx-auto mb-12 select-none reveal"
+            <div class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[368px] w-[calc(100%-2rem)] md:w-full mx-auto mb-12 select-none reveal"
                 style="--delay: 100ms;">
                 <!-- Active sliding background highlight -->
                 <div id="billing-slider-bg"
-                    class="absolute top-1 bottom-1 left-1 w-[120px] bg-white rounded-full transition-all duration-300 shadow-md"
-                    style="transform: translateX(120px);"></div>
+                    class="absolute top-1 bottom-1 left-1 w-[calc((100%-8px)/3)] bg-white rounded-full transition-all duration-300 shadow-md"
+                    style="transform: translateX(100%);"></div>
 
                 <!-- Tab buttons -->
                 <button onclick="setBillingPeriod('monthly')"
-                    class="relative z-10 w-[120px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 focus:outline-none flex items-center justify-center gap-1.5"
+                    class="relative z-10 flex-1 py-2 text-center text-[9px] md:text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 focus:outline-none flex items-center justify-center gap-1.5 whitespace-nowrap"
                     id="btn-monthly">
                     <img src="https://api.iconify.design/dinkie-icons:loudly-crying-face.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0.6);" />
                     Monthly
                 </button>
                 <button onclick="setBillingPeriod('yearly')"
-                    class="relative z-10 w-[120px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-black flex items-center justify-center gap-1 focus:outline-none"
+                    class="relative z-10 flex-1 py-2 text-center text-[9px] md:text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-black flex items-center justify-center gap-1 focus:outline-none whitespace-nowrap"
                     id="btn-yearly">
                     <img src="https://api.iconify.design/dinkie-icons:squint-smiling-face.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0);" />
                     Yearly
                     <span id="btn-yearly-discount"
-                        class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-roman font-normal">-34%</span>
+                        class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-roman font-normal shrink-0">-34%</span>
                 </button>
                 <button onclick="setBillingPeriod('lifetime')"
-                    class="relative z-10 w-[120px] py-2 text-center text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 flex items-center justify-center gap-1.5 focus:outline-none"
+                    class="relative z-10 flex-1 py-2 text-center text-[9px] md:text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 flex items-center justify-center gap-1.5 focus:outline-none whitespace-nowrap"
                     id="btn-lifetime">
                     <img src="https://api.iconify.design/dinkie-icons:face-throwing-a-kiss.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0.6);" />
                     Lifetime
@@ -1851,7 +1851,7 @@
                     }
                     if (monthlyIcon) monthlyIcon.style.filter = 'invert(0)';
 
-                    if (sliderBg) sliderBg.style.transform = 'translateX(0px)';
+                    if (sliderBg) sliderBg.style.transform = 'translateX(0)';
 
                     if (priceMonthly) priceMonthly.classList.remove('hidden');
                     if (featuresMonthly) featuresMonthly.classList.remove('hidden');
@@ -1886,7 +1886,7 @@
                         btnYearlyDiscount.classList.add('bg-emerald-500/20', 'text-emerald-600');
                     }
 
-                    if (sliderBg) sliderBg.style.transform = 'translateX(120px)';
+                    if (sliderBg) sliderBg.style.transform = 'translateX(100%)';
 
                     if (priceYearly) priceYearly.classList.remove('hidden');
                     if (featuresYearly) featuresYearly.classList.remove('hidden');
@@ -1915,7 +1915,7 @@
                     }
                     if (lifetimeIcon) lifetimeIcon.style.filter = 'invert(0)';
 
-                    if (sliderBg) sliderBg.style.transform = 'translateX(240px)';
+                    if (sliderBg) sliderBg.style.transform = 'translateX(200%)';
 
                     if (priceLifetime) priceLifetime.classList.remove('hidden');
                     if (featuresLife) featuresLife.classList.remove('hidden');

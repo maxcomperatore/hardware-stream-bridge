@@ -44,6 +44,8 @@ VALID_LITERAL_PATHS = {
     "/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide",
     "/how-to-backup-roland-juno-106-presets-sysex-transfer-guide",
     "/how-to-backup-korg-m1-presets-sysex-transfer-guide",
+    "/why-your-vintage-synth-battery-is-killing-your-sounds",
+    "/how-to-fix-juno-106-memory-loss-troubleshooting-guide",
     "/changelog",
     "/payment-methods",
     "/status",

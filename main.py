@@ -347,6 +347,13 @@ STRIPE_PRICE_ID_MONTHLY = os.environ.get("STRIPE_PRICE_ID_MONTHLY", "price_1TmkU
 STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TmkVXLuSQGuB7eyShpu6eHe")
 BASE_URL = "https://knob.monster"
 
+# SMTP configuration with Resend defaults
+SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.resend.com")
+SMTP_PORT = os.environ.get("SMTP_PORT", "587")
+SMTP_USER = os.environ.get("SMTP_USER", "resend")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa")
+SMTP_FROM = os.environ.get("SMTP_FROM", "support@knob.monster")
+
 # Initialize database on startup
 @app.on_event("startup")
 async def startup_event():
@@ -2439,5 +2446,153 @@ async def dynamic_synth_seo(synth_slug: str, request: Request):
             "wiki": wiki_info
         })
     raise HTTPException(status_code=404)
+
+
+# --- Automated Drip Email Background Worker ---
+async def drip_email_worker():
+    """
+    Background worker that runs every 5 minutes.
+    It checks for free tier users created more than 1 hour ago
+    who haven't received the paywall drip email, and sends it.
+    """
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    import asyncio
+    
+    while True:
+        try:
+            # Check every 5 minutes
+            await asyncio.sleep(300)
+            
+            # Fetch pending users
+            users = database.get_pending_drip_users()
+            now = datetime.utcnow() # database dates are written in local/UTC mix, standardizing with ISO datetime comparisons
+            
+            for u in users:
+                try:
+                    # Parse created_at ISO string
+                    created_at = datetime.fromisoformat(u["created_at"])
+                    # Standardize timezone-naive datetimes
+                    elapsed = datetime.now() - created_at
+                    
+                    # If registered more than 1 hour ago (3600 seconds)
+                    if elapsed.total_seconds() >= 3600:
+                        email = u["email"]
+                        user_id = u["id"]
+                        
+                        # Prepare drip email contents in all small caps (lowercase)
+                        subject = "your studio vault is locked"
+                        body = f"""hey there,
+
+you signed up for knob monster, but you stopped before activating your account.
+
+right now, your vault is locked. you can't upload sysex banks, backup your presets, or organize your patches.
+
+we don't do free tiers or ad-supported accounts here. knob monster is a professional tool built exclusively for producers who want a bulletproof cloud archive for their vintage synthesizers.
+
+if you have a juno-106, dx7, or m1 sitting in your studio right now, those sounds are vulnerable. all it takes is one internal battery failure or local drive crash to wipe your custom patches forever.
+
+unlock your vault and get full, unlimited access to knob monster today:
+
+👉 https://knob.monster/dashboard
+
+keep the analog alive,
+
+knob monster support
+"""
+                        
+                        # Reference global SMTP configuration constants
+                        smtp_host = SMTP_HOST
+                        smtp_port = SMTP_PORT
+                        smtp_user = SMTP_USER
+                        smtp_pass = SMTP_PASSWORD
+                        smtp_from = SMTP_FROM
+                        
+                        sent_via_smtp = False
+                        if smtp_host and smtp_user and smtp_pass:
+                            try:
+                                msg = MIMEMultipart()
+                                msg['From'] = smtp_from
+                                msg['To'] = email
+                                msg['Subject'] = subject
+                                msg.attach(MIMEText(body, 'plain'))
+                                
+                                server = smtplib.SMTP(smtp_host, int(smtp_port))
+                                server.starttls()
+                                server.login(smtp_user, smtp_pass)
+                                server.sendmail(smtp_from, email, msg.as_string())
+                                server.quit()
+                                sent_via_smtp = True
+                                logger.info(f"drip email successfully sent via smtp to {email}")
+                            except Exception as smtp_err:
+                                logger.error(f"smtp send failed for {email}: {smtp_err}")
+                                
+                        # Log/Simulate and send Discord warning/alert
+                        if not sent_via_smtp:
+                            logger.info(f"[simulated drip email] to: {email}\nsubject: {subject}\nbody:\n{body}")
+                            
+                        # Send alert to Discord
+                        trigger_alert(
+                            "drip_email_sent",
+                            f"automated paywall drip email sent to `{email}` (via smtp: {sent_via_smtp}).",
+                            {
+                                "email": email,
+                                "elapsed_seconds": int(elapsed.total_seconds()),
+                                "smtp_active": bool(smtp_host),
+                                "simulated_only": not sent_via_smtp
+                            },
+                            distinct_id=email
+                        )
+                        
+                        # Mark as sent in DB
+                        database.mark_drip_sent(user_id)
+                except Exception as user_err:
+                    logger.error(f"failed processing drip email for user {u.get('email')}: {user_err}")
+        except Exception as e:
+            logger.error(f"error in drip_email_worker loop: {e}")
+
+@app.get("/api/test-drip-email")
+async def test_drip_email(to_email: str):
+    """
+    Test endpoint to instantly verify SMTP credentials.
+    Access it via: /api/test-drip-email?to_email=your-email@example.com
+    """
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    
+    subject = "your studio vault is locked (test)"
+    body = f"""hey there,
+
+this is a test email from knob monster to verify that your resend smtp configuration works!
+
+👉 https://knob.monster/dashboard
+
+keep the analog alive,
+
+knob monster support
+"""
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = SMTP_FROM
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+        
+        server = smtplib.SMTP(SMTP_HOST, int(SMTP_PORT))
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.sendmail(SMTP_FROM, to_email, msg.as_string())
+        server.quit()
+        return {"status": "success", "message": f"test email sent to {to_email} from {SMTP_FROM}"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.on_event("startup")
+async def start_drip_worker():
+    import asyncio
+    asyncio.create_task(drip_email_worker())
+    logger.info("automated paywall drip email background worker started.")
 
 

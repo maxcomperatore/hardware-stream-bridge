@@ -13,6 +13,10 @@ import database
 import parser
 import logging
 import traceback
+import re
+
+# Standard robust email validation pattern
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 # Clean up/delete any generated mockup assets in static folder
 def clean_old_assets():
     static_dir = r"d:\crew\experiment\static"
@@ -809,6 +813,8 @@ async def get_geoip(request: Request):
 @app.post("/subscribe")
 async def subscribe(request: Request, email: str = Form(...)):
     email_clean = email.lower().strip()
+    if not EMAIL_REGEX.match(email_clean):
+        return HTMLResponse(content="Invalid email format", status_code=400)
     database.create_subscriber(email_clean)
     
     # Send custom OTel log that propagates to PostHog
@@ -878,6 +884,16 @@ async def signup_page(request: Request, error: str = None, plan: str = "yearly")
 
 @app.post("/signup")
 async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...), plan: str = "yearly"):
+    email_clean = email.lower().strip()
+    if not EMAIL_REGEX.match(email_clean):
+        trigger_alert(
+            "user_signup_failed",
+            f"Sign up failed for `{email}`: invalid email format",
+            {"email": email, "reason": "invalid_email_format"},
+            distinct_id="anonymous"
+        )
+        return render_template("signup.html", request, {"error": "Invalid email address format", "plan": plan})
+
     if password != confirm_password:
         trigger_alert(
             "user_signup_failed",

@@ -31,13 +31,19 @@ def init_db():
         except Exception as e:
             print(f"Failed to delete SQLite leftovers: {e}")
             
-    # Cleanup unused, leftover templates/changelog.html (route is a redirect to /about)
-    changelog_file = "d:/crew/experiment/templates/changelog.html"
-    if os.path.exists(changelog_file):
-        try:
-            os.remove(changelog_file)
-        except Exception as e:
-            print(f"Failed to delete leftover changelog template: {e}")
+    # Cleanup unused, leftover templates
+    deprecated_templates = [
+        "d:/crew/experiment/templates/changelog.html",
+        "d:/crew/experiment/templates/about.html",
+        "d:/crew/experiment/templates/library.html",
+        "d:/crew/experiment/templates/roadmap.html"
+    ]
+    for temp_path in deprecated_templates:
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except Exception as e:
+                print(f"Failed to delete leftover template {temp_path}: {e}")
 
     conn = get_db_connection()
     cursor = conn.cursor()

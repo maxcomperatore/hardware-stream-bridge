@@ -2098,31 +2098,31 @@ async def openapi_spec():
                 "get": {
                     "operationId": "listBanks",
                     "summary": "List all SysEx patch banks",
-                    "description": "Returns all SysEx banks in the authenticated user's library. Requires premium subscription.",
+                    "description": "Returns all SysEx banks in the authenticated user's library. Requires premium lifetime access.",
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 2900,
+                        "amount": 3900,
                         "currency": "USD",
-                        "description": "Premium subscription required ($39/month)"
+                        "description": "Premium lifetime access required ($39 one-time)"
                     },
                     "security": [{"sessionCookie": []}],
                     "responses": {
                         "200": {"description": "List of banks"},
                         "401": {"description": "Not authenticated"},
-                        "402": {"description": "Premium subscription required"}
+                        "402": {"description": "Premium lifetime access required"}
                     }
                 },
                 "post": {
                     "operationId": "createBank",
                     "summary": "Upload a SysEx patch bank",
-                    "description": "Upload a new SysEx bank (hex string). Requires premium subscription.",
+                    "description": "Upload a new SysEx bank (hex string). Requires premium lifetime access.",
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 2900,
+                        "amount": 3900,
                         "currency": "USD",
-                        "description": "Premium subscription required ($39/month)"
+                        "description": "Premium lifetime access required ($39 one-time)"
                     },
                     "security": [{"sessionCookie": []}],
                     "requestBody": {
@@ -2142,7 +2142,7 @@ async def openapi_spec():
                     },
                     "responses": {
                         "200": {"description": "Bank created"},
-                        "402": {"description": "Premium subscription required"}
+                        "402": {"description": "Premium lifetime access required"}
                     }
                 }
             },

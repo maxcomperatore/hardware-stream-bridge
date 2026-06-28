@@ -67,5 +67,11 @@
         }
       ]
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/send-drips",
+      "schedule": "*/10 * * * *"
+    }
   ]
 }

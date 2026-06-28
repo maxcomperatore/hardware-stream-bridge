@@ -2464,42 +2464,37 @@ async def dynamic_synth_seo(synth_slug: str, request: Request):
     raise HTTPException(status_code=404)
 
 
-# --- Automated Drip Email Background Worker ---
-async def drip_email_worker():
+# --- Automated Drip Email Operations (Local & Vercel Cron compatible) ---
+async def run_drip_check() -> int:
     """
-    Background worker that runs every 5 minutes.
-    It checks for free tier users created more than 1 hour ago
-    who haven't received the paywall drip email, and sends it.
+    Checks for free tier users registered > 1 hour ago who haven't
+    received the drip email, sends the email via SMTP, triggers alerts,
+    and updates the database. Returns the number of emails sent.
     """
     import smtplib
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
-    import asyncio
     
-    while True:
-        try:
-            # Check every 5 minutes
-            await asyncio.sleep(300)
-            
-            # Fetch pending users
-            users = database.get_pending_drip_users()
-            now = datetime.utcnow() # database dates are written in local/UTC mix, standardizing with ISO datetime comparisons
-            
-            for u in users:
-                try:
-                    # Parse created_at ISO string
-                    created_at = datetime.fromisoformat(u["created_at"])
-                    # Standardize timezone-naive datetimes
-                    elapsed = datetime.now() - created_at
+    sent_count = 0
+    try:
+        # Fetch pending users
+        users = database.get_pending_drip_users()
+        now = datetime.utcnow()
+        
+        for u in users:
+            try:
+                # Parse created_at ISO string
+                created_at = datetime.fromisoformat(u["created_at"])
+                elapsed = datetime.now() - created_at
+                
+                # If registered more than 1 hour ago (3600 seconds)
+                if elapsed.total_seconds() >= 3600:
+                    email = u["email"]
+                    user_id = u["id"]
                     
-                    # If registered more than 1 hour ago (3600 seconds)
-                    if elapsed.total_seconds() >= 3600:
-                        email = u["email"]
-                        user_id = u["id"]
-                        
-                        # Prepare drip email contents in all small caps (lowercase)
-                        subject = "your studio vault is locked"
-                        body = f"""hey there,
+                    # Prepare drip email contents in all small caps (lowercase)
+                    subject = "your studio vault is locked"
+                    body = f"""hey there,
 
 you signed up for knob monster, but you stopped before activating your account.
 
@@ -2517,61 +2512,94 @@ keep the analog alive,
 
 knob monster support
 """
-                        
-                        # Reference global SMTP configuration constants
-                        smtp_host = SMTP_HOST
-                        smtp_port = SMTP_PORT
-                        smtp_user = SMTP_USER
-                        smtp_pass = SMTP_PASSWORD
-                        smtp_from = SMTP_FROM
-                        
-                        sent_via_smtp = False
-                        if smtp_host and smtp_user and smtp_pass:
-                            try:
-                                msg = MIMEMultipart()
-                                msg['From'] = smtp_from
-                                msg['To'] = email
-                                msg['Subject'] = subject
-                                msg.attach(MIMEText(body, 'plain'))
-                                
-                                server = smtplib.SMTP(smtp_host, int(smtp_port))
-                                server.starttls()
-                                server.login(smtp_user, smtp_pass)
-                                server.sendmail(smtp_from, email, msg.as_string())
-                                server.quit()
-                                sent_via_smtp = True
-                                logger.info(f"drip email successfully sent via smtp to {email}")
-                            except Exception as smtp_err:
-                                logger.error(f"smtp send failed for {email}: {smtp_err}")
-                                
-                        # Log/Simulate and send Discord warning/alert
-                        if not sent_via_smtp:
-                            logger.info(f"[simulated drip email] to: {email}\nsubject: {subject}\nbody:\n{body}")
+                    
+                    # Reference global SMTP configuration constants
+                    smtp_host = SMTP_HOST
+                    smtp_port = SMTP_PORT
+                    smtp_user = SMTP_USER
+                    smtp_pass = SMTP_PASSWORD
+                    smtp_from = SMTP_FROM
+                    
+                    sent_via_smtp = False
+                    if smtp_host and smtp_user and smtp_pass:
+                        try:
+                            msg = MIMEMultipart()
+                            msg['From'] = smtp_from
+                            msg['To'] = email
+                            msg['Subject'] = subject
+                            msg.attach(MIMEText(body, 'plain'))
                             
-                        # Send alert to Discord
-                        trigger_alert(
-                            "drip_email_sent",
-                            f"automated paywall drip email sent to `{email}` (via smtp: {sent_via_smtp}).",
-                            {
-                                "email": email,
-                                "elapsed_seconds": int(elapsed.total_seconds()),
-                                "smtp_active": bool(smtp_host),
-                                "simulated_only": not sent_via_smtp
-                            },
-                            distinct_id=email
-                        )
+                            server = smtplib.SMTP(smtp_host, int(smtp_port))
+                            server.starttls()
+                            server.login(smtp_user, smtp_pass)
+                            server.sendmail(smtp_from, email, msg.as_string())
+                            server.quit()
+                            sent_via_smtp = True
+                            logger.info(f"drip email successfully sent via smtp to {email}")
+                        except Exception as smtp_err:
+                            logger.error(f"smtp send failed for {email}: {smtp_err}")
+                            
+                    # Log/Simulate and send Discord warning/alert
+                    if not sent_via_smtp:
+                        logger.info(f"[simulated drip email] to: {email}\nsubject: {subject}\nbody:\n{body}")
                         
-                        # Mark as sent in DB
-                        database.mark_drip_sent(user_id)
-                except Exception as user_err:
-                    logger.error(f"failed processing drip email for user {u.get('email')}: {user_err}")
+                    # Send alert to Discord
+                    trigger_alert(
+                        "drip_email_sent",
+                        f"automated paywall drip email sent to `{email}` (via smtp: {sent_via_smtp}).",
+                        {
+                            "email": email,
+                            "elapsed_seconds": int(elapsed.total_seconds()),
+                            "smtp_active": bool(smtp_host),
+                            "simulated_only": not sent_via_smtp
+                        },
+                        distinct_id=email
+                    )
+                    
+                    # Mark as sent in DB
+                    database.mark_drip_sent(user_id)
+                    sent_count += 1
+            except Exception as user_err:
+                logger.error(f"failed processing drip email for user {u.get('email')}: {user_err}")
+    except Exception as e:
+        logger.error(f"error during run_drip_check: {e}")
+        
+    return sent_count
+
+async def drip_email_worker():
+    """
+    Background worker that runs every 5 minutes.
+    Used for local developer environments where Vercel Crons aren't active.
+    """
+    import asyncio
+    while True:
+        try:
+            # Check every 5 minutes
+            await asyncio.sleep(300)
+            await run_drip_check()
         except Exception as e:
             logger.error(f"error in drip_email_worker loop: {e}")
+
+@app.get("/api/cron/send-drips")
+async def trigger_drip_cron(request: Request):
+    """
+    Vercel Cron endpoint to run the drip campaign periodically.
+    """
+    cron_header = request.headers.get("x-vercel-cron")
+    if not cron_header and os.environ.get("VERCEL") == "1":
+        raise HTTPException(status_code=401, detail="Unauthorized to trigger cron manually")
+        
+    sent_count = await run_drip_check()
+    return {"status": "success", "emails_sent": sent_count}
 
 @app.on_event("startup")
 async def start_drip_worker():
     import asyncio
-    asyncio.create_task(drip_email_worker())
-    logger.info("automated paywall drip email background worker started.")
+    # Start the worker only if running locally (not on Vercel)
+    if os.environ.get("VERCEL") != "1":
+        asyncio.create_task(drip_email_worker())
+        logger.info("local automated paywall drip email background worker started.")
+    else:
+        logger.info("running in Vercel environment; local worker bypassed in favor of Vercel Cron.")
 
 

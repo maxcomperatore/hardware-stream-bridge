@@ -91,6 +91,9 @@ def init_db():
     )
     """)
     
+    # Add drip_email_sent tracking to users table
+    cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
+    
     conn.commit()
     conn.close()
 
@@ -283,3 +286,18 @@ def create_subscriber(email: str) -> bool:
         return True
     finally:
         conn.close()
+
+def get_pending_drip_users() -> list[dict]:
+    conn = get_db_connection()
+    cursor = get_db_cursor(conn)
+    cursor.execute("SELECT id, email, created_at FROM users WHERE tier = 'free' AND drip_email_sent = FALSE")
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def mark_drip_sent(user_id: int):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET drip_email_sent = TRUE WHERE id = %s", (user_id,))
+    conn.commit()
+    conn.close()

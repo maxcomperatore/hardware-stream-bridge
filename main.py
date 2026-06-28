@@ -13,6 +13,27 @@ import database
 import parser
 import logging
 import traceback
+# Clean up/delete any generated mockup assets in static folder
+def clean_old_assets():
+    static_dir = r"d:\crew\experiment\static"
+    targets = [
+        "holo_stickers.png",
+        "sram_patch.png",
+        "floppy_labels.png",
+        "preset_card_m1.png",
+        "preset_card_dx7.png",
+        "preset_card_juno.png"
+    ]
+    for target in targets:
+        dest_path = os.path.join(static_dir, target)
+        if os.path.exists(dest_path):
+            try:
+                os.remove(dest_path)
+                print(f"Deleted {dest_path}")
+            except Exception as del_err:
+                print(f"Error deleting {dest_path}: {del_err}")
+
+clean_old_assets()
 
 # Initialize standard logging
 logger = logging.getLogger("knob_monster")
@@ -619,12 +640,49 @@ async def resources_page(request: Request):
 
 @app.get("/about", response_class=HTMLResponse)
 async def about_redirect_page(request: Request):
-    return RedirectResponse(url="/milestones", status_code=301)
+    return RedirectResponse(url="/shop", status_code=301)
 
 @app.get("/milestones", response_class=HTMLResponse)
-async def milestones_page(request: Request):
+async def milestones_redirect_page(request: Request):
+    return RedirectResponse(url="/shop", status_code=301)
+
+@app.get("/shop", response_class=HTMLResponse)
+async def shop_page(request: Request):
+    try:
+        copy_assets()
+    except Exception as e:
+        print(f"Error copying assets on request: {e}")
     user = get_current_user(request)
-    return render_template("milestones.html", request, {"user": user})
+    packs = [
+        {
+            "id": "m1_matrix",
+            "name": "Korg M1: Off the Matrix",
+            "synth": "Korg M1",
+            "price": "$9.00",
+            "description": "Premium overrides of sample keymaps carefully programmed over 20 years. Features Trident Strings and analog emulations.",
+            "patches_count": 32,
+            "demo_patches": ["Cyber Gate", "HousePiano", "Ethereal", "TridentStr", "Glassy Pad", "Obese Poly"],
+        },
+        {
+            "id": "dx7_retro",
+            "name": "Yamaha DX7: Classic FM Leads & Basses",
+            "synth": "Yamaha DX7",
+            "price": "$9.00",
+            "description": "Punchy FM basses, crystal-clear bell leads, and classic 80s electric pianos. Optimized for live MIDI performance.",
+            "patches_count": 32,
+            "demo_patches": ["Super Bass", "Chime Bell", "FM Rhodes", "Synth Brass", "Sitar Glide", "Atmosphere"],
+        },
+        {
+            "id": "juno_nostalgia",
+            "name": "Roland Juno-106: Nostalgia Plucks & Pads",
+            "synth": "Roland Juno-106",
+            "price": "$9.00",
+            "description": "Warm, chorus-drenched analog pads, snap plucks, and classic 80s sci-fi SFX. Relive the golden age of ambient.",
+            "patches_count": 32,
+            "demo_patches": ["Nostalgia", "Chorused Pad", "Snap Pluck", "Space Wind", "Analog Sweep", "Sub Bass"],
+        }
+    ]
+    return render_template("shop.html", request, {"user": user, "packs": packs})
 
 @app.get("/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", response_class=HTMLResponse)
 async def blog_web_midi_page(request: Request):
@@ -658,7 +716,7 @@ async def guide_juno_troubleshooting_page(request: Request):
 
 @app.get("/changelog")
 async def changelog_redirect():
-    return RedirectResponse(url="/milestones", status_code=301)
+    return RedirectResponse(url="/shop", status_code=301)
 
 @app.get("/payment-methods", response_class=HTMLResponse)
 async def payment_methods_page(request: Request):
@@ -822,18 +880,14 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
         )
         return render_template("signup.html", request, {"error": "Passwords do not match", "plan": plan})
     
-    if (len(password) < 10 or 
-        not any(c.islower() for c in password) or 
-        not any(c.isupper() for c in password) or 
-        not any(c.isdigit() for c in password) or 
-        not any(not c.isalnum() and not c.isspace() for c in password)):
+    if len(password) < 8:
         trigger_alert(
             "user_signup_failed",
             f"Sign up failed for `{email}`: weak password",
             {"email": email, "reason": "weak_password"},
             distinct_id="anonymous"
         )
-        return render_template("signup.html", request, {"error": "Password must be at least 10 characters long and contain uppercase, lowercase, numbers, and special symbols", "plan": plan})
+        return render_template("signup.html", request, {"error": "Password must be at least 8 characters long", "plan": plan})
     
     user = database.get_user_by_email(email)
     if user:
@@ -1947,7 +2001,7 @@ async def mcp_server_card():
             "registerEndpoint": f"{SITE_BASE}/signup"
         },
         "contact": {
-            "url": f"{SITE_BASE}/milestones"
+            "url": f"{SITE_BASE}/shop"
         }
     }
     return Response(

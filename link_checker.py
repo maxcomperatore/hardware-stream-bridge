@@ -39,7 +39,7 @@ VALID_LITERAL_PATHS = {
     "/library",
     "/resources",
     "/about",
-    "/milestones",
+    "/shop",
     "/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer",
     "/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide",
     "/how-to-backup-roland-juno-106-presets-sysex-transfer-guide",

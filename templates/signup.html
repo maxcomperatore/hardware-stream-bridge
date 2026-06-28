@@ -127,19 +127,7 @@
             <div id="password-rules" class="bg-zinc-950/50 border border-zinc-900/80 rounded-lg p-3 space-y-1.5 text-[9px] font-mono hidden">
                 <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-length">
                     <span class="indicator font-pixel text-[8px]">•</span>
-                    <span>10+ characters</span>
-                </div>
-                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-case">
-                    <span class="indicator font-pixel text-[8px]">•</span>
-                    <span>Uppercase & lowercase letters</span>
-                </div>
-                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-number">
-                    <span class="indicator font-pixel text-[8px]">•</span>
-                    <span>At least one number</span>
-                </div>
-                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-special">
-                    <span class="indicator font-pixel text-[8px]">•</span>
-                    <span>At least one special symbol</span>
+                    <span>8+ characters</span>
                 </div>
                 <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-match">
                     <span class="indicator font-pixel text-[8px]">•</span>
@@ -168,9 +156,6 @@
         const submitBtn = document.getElementById('register-btn');
 
         const ruleLength = document.getElementById('rule-length');
-        const ruleCase = document.getElementById('rule-case');
-        const ruleNumber = document.getElementById('rule-number');
-        const ruleSpecial = document.getElementById('rule-special');
         const ruleMatch = document.getElementById('rule-match');
 
         function updateRule(element, isValid, typed) {
@@ -204,21 +189,13 @@
                 rulesContainer.classList.add('hidden');
             }
 
-            const isLengthValid = password.length >= 10;
-            const hasUpper = /[A-Z]/.test(password);
-            const hasLower = /[a-z]/.test(password);
-            const isCaseValid = hasUpper && hasLower;
-            const isNumberValid = /[0-9]/.test(password);
-            const isSpecialValid = /[^A-Za-z0-9\s]/.test(password);
+            const isLengthValid = password.length >= 8;
             const isMatchValid = password.length > 0 && password === confirmPassword;
 
             updateRule(ruleLength, isLengthValid, password.length > 0);
-            updateRule(ruleCase, isCaseValid, password.length > 0);
-            updateRule(ruleNumber, isNumberValid, password.length > 0);
-            updateRule(ruleSpecial, isSpecialValid, password.length > 0);
             updateRule(ruleMatch, isMatchValid, confirmPassword.length > 0);
 
-            const allValid = isLengthValid && isCaseValid && isNumberValid && isSpecialValid && isMatchValid;
+            const allValid = isLengthValid && isMatchValid;
 
             if (allValid) {
                 submitBtn.removeAttribute('disabled');

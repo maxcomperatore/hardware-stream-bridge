@@ -2511,6 +2511,8 @@ unlock your vault and get full, unlimited access to knob monster today:
 keep the analog alive,
 
 knob monster support
+
+p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
                     
                     # Reference global SMTP configuration constants
@@ -2527,6 +2529,7 @@ knob monster support
                             msg['From'] = smtp_from
                             msg['To'] = email
                             msg['Subject'] = subject
+                            msg['Reply-To'] = "halfradiationllc@gmail.com"
                             msg.attach(MIMEText(body, 'plain'))
                             
                             server = smtplib.SMTP(smtp_host, int(smtp_port))

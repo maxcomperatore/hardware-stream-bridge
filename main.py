@@ -348,7 +348,7 @@ stripe.api_key = STRIPE_SECRET_KEY
 
 STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
 STRIPE_PRICE_ID_MONTHLY = os.environ.get("STRIPE_PRICE_ID_MONTHLY", "price_1TmkUzLuSQGuB7eytGvepyWd")
-STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TnOLmLuSQGuB7eyV3Xi3aj4")
+STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TnPsgLuSQGuB7eyPbyJSarD")
 BASE_URL = "https://knob.monster"
 
 # SMTP configuration with Resend defaults
@@ -1727,7 +1727,7 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Direct Pricing:** $29 one-time payment for lifetime access. Own it forever. No subscriptions.",
+        "- **Direct Pricing:** $39 one-time payment for lifetime access. Own it forever. No subscriptions.",
         "",
         "## Key Pages",
         "- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.",
@@ -1781,7 +1781,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 - **Universal Support**: Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers
 
 ## Pricing
-- **Lifetime Access**: $29 one-time payment. Own it forever. No subscriptions.
+- **Lifetime Access**: $39 one-time payment. Own it forever. No subscriptions.
 
 ## API
 - **API Catalog**: </well-known/api-catalog>
@@ -1955,7 +1955,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access is a single $29 one-time payment. Agents can purchase via Stripe checkout at `/checkout`.
+Premium access is a single $39 one-time payment. Agents can purchase via Stripe checkout at `/checkout`.
 
 ## Discovery Documents
 
@@ -2104,7 +2104,7 @@ async def openapi_spec():
                         "method": "stripe",
                         "amount": 2900,
                         "currency": "USD",
-                        "description": "Premium subscription required ($29/month)"
+                        "description": "Premium subscription required ($39/month)"
                     },
                     "security": [{"sessionCookie": []}],
                     "responses": {
@@ -2122,7 +2122,7 @@ async def openapi_spec():
                         "method": "stripe",
                         "amount": 2900,
                         "currency": "USD",
-                        "description": "Premium subscription required ($29/month)"
+                        "description": "Premium subscription required ($39/month)"
                     },
                     "security": [{"sessionCookie": []}],
                     "requestBody": {

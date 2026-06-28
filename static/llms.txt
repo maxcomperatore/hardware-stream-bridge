@@ -6,7 +6,7 @@
 - **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.
 - **Instant Search:** Fuzzy search through soundbanks by preset name.
 - **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
-- **Direct Pricing:** $29 one-time payment for lifetime access. Own it forever. No subscriptions.
+- **Direct Pricing:** $39 one-time payment for lifetime access. Own it forever. No subscriptions.
 
 ## Key Pages
 - [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.

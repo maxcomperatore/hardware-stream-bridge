@@ -1561,9 +1561,8 @@
                     fellow synth heads.{% endif %}</h2>
                 <p
                     class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-mono tracking-wide max-w-lg mx-auto">
-                    Every vintage synthesizer is a <span id="rn-timebomb">ticking time bomb</span>. The soldered
-                    internal battery will die, erasing every custom patch you have ever made. <span
-                        id="rn-securesounds">Secure your irreplaceable sounds before your hardware turns silent.</span>
+                    Vintage synthesizers are musical history. Batteries fade, but <span id="rn-timebomb">your patches don't have to</span>. <span
+                        id="rn-securesounds">Protect your creative work with simple, reliable backups and keep your hardware alive.</span>
                 </p>
             </div>
 
@@ -2684,35 +2683,6 @@
                 }
             }
 
-            const timebombElem = document.querySelector('#rn-timebomb');
-            if (timebombElem) {
-                const annotation = annotate(timebombElem, {
-                    type: 'box',
-                    color: '#ef4444',
-                    strokeWidth: 1.5,
-                    padding: 4,
-                    iterations: 1,
-                    animationDuration: 800
-                });
-
-                if ('IntersectionObserver' in window) {
-                    const observer = new IntersectionObserver((entries, obs) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    annotation.show();
-                                }, 300);
-                                obs.unobserve(entry.target);
-                            }
-                        });
-                    }, { threshold: 0.5 });
-                    observer.observe(timebombElem);
-                } else {
-                    setTimeout(() => {
-                        annotation.show();
-                    }, 1000);
-                }
-            }
 
             const secureSoundsElem = document.querySelector('#rn-securesounds');
             if (secureSoundsElem) {

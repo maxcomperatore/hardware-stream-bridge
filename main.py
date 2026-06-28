@@ -2477,7 +2477,14 @@ async def run_drip_check() -> int:
     
     sent_count = 0
     try:
-        # Fetch pending users
+        # Fetch pending users (force dynamic reload if module has caching issues from startup)
+        if not hasattr(database, "get_pending_drip_users"):
+            try:
+                import importlib
+                importlib.reload(database)
+                logger.info("Programmatically reloaded database module to load new functions.")
+            except Exception as reload_err:
+                logger.error(f"Failed to programmatically reload database module: {reload_err}")
         users = database.get_pending_drip_users()
         now = datetime.utcnow()
         

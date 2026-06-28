@@ -314,7 +314,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # Intercept logo requests to serve the microbe SVG
-@app.get("/static/logo.avif")
+@app.get("/static/logo.svg")
 async def get_logo_avif():
     logo_path = os.path.join(BASE_DIR, "static", "logo.svg")
     if os.path.exists(logo_path):
@@ -1981,7 +1981,7 @@ async def mcp_server_card():
             "version": "1.0.0",
             "description": "Cloud SysEx librarian for vintage synthesizers. Back up, organize, and recall MIDI patch banks via Web MIDI.",
             "homepage": SITE_BASE,
-            "logo": f"{SITE_BASE}/static/logo.avif"
+            "logo": f"{SITE_BASE}/static/logo.svg"
         },
         "transport": {
             "type": "http",

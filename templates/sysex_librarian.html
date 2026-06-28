@@ -108,9 +108,15 @@
 
         /* 3D spin animation for logo */
         @keyframes logo-spin {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
         }
+
         .spin-logo {
             animation: logo-spin 8s linear infinite;
             transform-style: preserve-3d;
@@ -140,6 +146,7 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
         }
+
         .glow-card:hover {
             transform: translateY(-4px);
             border-color: rgba(255, 255, 255, 0.2);
@@ -156,29 +163,34 @@
             0% {
                 background-position: 0 0, 0 0, 0 0;
             }
+
             100% {
                 background-position: 0 0, 200px 200px, -160px 320px;
             }
         }
+
         .confetti-banner-bg {
-            background-image: 
+            background-image:
                 linear-gradient(to right, rgba(20, 20, 23, 0.8) 0%, rgba(9, 9, 11, 0.85) 100%),
                 url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%233b83f6%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%233b83f6%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E"),
                 url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%233b83f6%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%233b83f6%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
             background-size: auto, 200px 200px, 160px 160px;
             animation: confetti-loop 7s linear infinite;
         }
+
         /* Looping Christmas Snow Banner Effect */
         @keyframes snow-loop {
             0% {
                 background-position: 0 0, 0 0, 0 0;
             }
+
             100% {
                 background-position: 0 0, 150px 300px, -100px 150px;
             }
         }
+
         .christmas-banner-bg {
-            background-image: 
+            background-image:
                 linear-gradient(to right, rgba(12, 28, 18, 0.8) 0%, rgba(9, 9, 11, 0.85) 100%),
                 url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27150%27 height%3D%27150%27 viewBox%3D%270 0 150 150%27%3E%3Ccircle cx%3D%2720%27 cy%3D%2730%27 r%3D%272.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27120%27 cy%3D%2740%27 r%3D%271.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.6%27%2F%3E%3Ccircle cx%3D%2780%27 cy%3D%2790%27 r%3D%273%27 fill%3D%27%23ffffff%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2740%27 cy%3D%27120%27 r%3D%272%27 fill%3D%27%23ffffff%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27140%27 cy%3D%27110%27 r%3D%272%27 fill%3D%27%23ffffff%27 opacity%3D%270.7%27%2F%3E%3C%2Fsvg%3E"),
                 url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27100%27 height%3D%27100%27 viewBox%3D%270 0 100 100%27%3E%3Ccircle cx%3D%2715%27 cy%3D%2725%27 r%3D%271.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.5%27%2F%3E%3Ccircle cx%3D%2785%27 cy%3D%2775%27 r%3D%272.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.7%27%2F%3E%3Ccircle cx%3D%2750%27 cy%3D%2750%27 r%3D%271.2%27 fill%3D%27%23ffffff%27 opacity%3D%270.6%27%2F%3E%3C%2Fsvg%3E");
@@ -204,7 +216,7 @@
         "name": "knob.monster",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://knob.monster/static/logo.avif"
+          "url": "https://knob.monster/static/logo.svg"
         }
       },
       "mainEntityOfPage": {
@@ -218,57 +230,79 @@
     <link href="https://fonts.googleapis.com/css2?family=Kablammo&display=swap" rel="stylesheet">
     <style>
         /* Spooky Font & Color Overrides */
-        h1, h2, h3, .logo-text, .font-pixel {
+        h1,
+        h2,
+        h3,
+        .logo-text,
+        .font-pixel {
             font-family: 'Kablammo', cursive !important;
             letter-spacing: 0.05em !important;
         }
-        
+
         /* Spooky orange and violet/purple colors replacing emerald green theme */
         :root {
             --halloween-orange: #f97316;
             --halloween-purple: #8b5cf6;
         }
-        
+
         /* Border, Text, and Background overrides to transform Emerald -> Spooky Orange */
-        [class*="border-emerald"], [class*="border-teal"], [class*="border-zinc-800"] {
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
             border-color: rgba(249, 115, 22, 0.3) !important;
         }
-        [class*="text-emerald"], [class*="text-teal"], [class*="text-rose-400"] {
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
             color: #f97316 !important;
         }
-        [class*="bg-emerald-500/10"], [class*="bg-rose-500/10"] {
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
             background-color: rgba(249, 115, 22, 0.1) !important;
         }
-        [class*="bg-emerald-600"], [class*="bg-emerald-500"], [class*="bg-rose-600"], [class*="bg-rose-500"] {
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
             background-color: #f97316 !important;
             color: #000000 !important;
         }
-        
+
         /* Change hover backgrounds and colors */
-        .hover\:bg-emerald-600:hover, .hover\:bg-rose-600:hover {
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
             background-color: #ea580c !important;
         }
-        .hover\:text-emerald-400:hover, .hover\:text-rose-400:hover {
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
             color: #f97316 !important;
         }
-        .hover\:border-emerald-400:hover, .hover\:border-rose-400:hover {
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
             border-color: #f97316 !important;
         }
-        .focus\:ring-emerald-500:focus, .focus\:ring-rose-500:focus {
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
             --tw-ring-color: #f97316 !important;
         }
-        
+
         /* Spooky Card and Glow Hovering effects */
         .glow-card:hover {
             box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.4) !important;
             border-color: #f97316 !important;
         }
-        
+
         /* Spin Logo hue rotate to give a creepy alien green/orange look */
         .spin-logo img {
             filter: hue-rotate(60deg) saturate(1.8) !important;
         }
-        
+
         /* Creepy vignette overlay on body */
         body::before {
             content: '';
@@ -278,28 +312,58 @@
             pointer-events: none;
             z-index: 49;
         }
-        
+
         /* Floating title keyframes */
         @keyframes float-spooky {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-4px) rotate(0.5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-4px) rotate(0.5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
         }
-        h1, h2 {
+
+        h1,
+        h2 {
             animation: float-spooky 4s ease-in-out infinite;
             text-shadow: 0 0 12px rgba(249, 115, 22, 0.6) !important;
             color: #f97316 !important;
         }
-        
+
         /* Spooky blinking light effect in the background */
         @keyframes spooky-flicker {
-            0%, 100% { opacity: 1; }
-            95% { opacity: 1; }
-            96% { opacity: 0.8; }
-            97% { opacity: 1; }
-            98% { opacity: 0.7; }
-            99% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            96% {
+                opacity: 0.8;
+            }
+
+            97% {
+                opacity: 1;
+            }
+
+            98% {
+                opacity: 0.7;
+            }
+
+            99% {
+                opacity: 1;
+            }
         }
+
         .glow-card {
             animation: spooky-flicker 10s infinite;
         }
@@ -312,42 +376,60 @@
             --birthday-rose: #ec4899;
             --birthday-violet: #8b5cf6;
         }
-        
+
         /* Border, Text, and Background overrides to transform Emerald -> Party Pink/Purple */
-        [class*="border-emerald"], [class*="border-teal"], [class*="border-zinc-800"] {
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
             border-color: rgba(236, 72, 153, 0.3) !important;
         }
-        [class*="text-emerald"], [class*="text-teal"], [class*="text-rose-400"] {
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
             color: #ec4899 !important;
         }
-        [class*="bg-emerald-500/10"], [class*="bg-rose-500/10"] {
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
             background-color: rgba(236, 72, 153, 0.1) !important;
         }
-        [class*="bg-emerald-600"], [class*="bg-emerald-500"], [class*="bg-rose-600"], [class*="bg-rose-500"] {
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
             background-color: #ec4899 !important;
             color: #ffffff !important;
         }
-        
+
         /* Change hover backgrounds and colors */
-        .hover\:bg-emerald-600:hover, .hover\:bg-rose-600:hover {
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
             background-color: #db2777 !important;
         }
-        .hover\:text-emerald-400:hover, .hover\:text-rose-400:hover {
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
             color: #ec4899 !important;
         }
-        .hover\:border-emerald-400:hover, .hover\:border-rose-400:hover {
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
             border-color: #ec4899 !important;
         }
-        .focus\:ring-emerald-500:focus, .focus\:ring-rose-500:focus {
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
             --tw-ring-color: #ec4899 !important;
         }
-        
+
         /* Premium Glow Cards for birthday party night */
         .glow-card:hover {
             box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.4) !important;
             border-color: #ec4899 !important;
         }
-        
+
         /* Festive background radial gradient overlay */
         body::before {
             content: '';
@@ -366,42 +448,60 @@
             --christmas-red: #ef4444;
             --christmas-gold: #f59e0b;
         }
-        
+
         /* Border, Text, and Background overrides to transform Emerald -> Holiday Red/Gold */
-        [class*="border-emerald"], [class*="border-teal"], [class*="border-zinc-800"] {
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
             border-color: rgba(239, 68, 68, 0.3) !important;
         }
-        [class*="text-emerald"], [class*="text-teal"], [class*="text-rose-400"] {
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
             color: #ef4444 !important;
         }
-        [class*="bg-emerald-500/10"], [class*="bg-rose-500/10"] {
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
             background-color: rgba(239, 68, 68, 0.1) !important;
         }
-        [class*="bg-emerald-600"], [class*="bg-emerald-500"], [class*="bg-rose-600"], [class*="bg-rose-500"] {
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
             background-color: #ef4444 !important;
             color: #ffffff !important;
         }
-        
+
         /* Change hover backgrounds and colors */
-        .hover\:bg-emerald-600:hover, .hover\:bg-rose-600:hover {
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
             background-color: #dc2626 !important;
         }
-        .hover\:text-emerald-400:hover, .hover\:text-rose-400:hover {
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
             color: #ef4444 !important;
         }
-        .hover\:border-emerald-400:hover, .hover\:border-rose-400:hover {
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
             border-color: #ef4444 !important;
         }
-        .focus\:ring-emerald-500:focus, .focus\:ring-rose-500:focus {
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
             --tw-ring-color: #ef4444 !important;
         }
-        
+
         /* Premium Glow Cards for cozy Christmas night */
         .glow-card:hover {
             box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.4) !important;
             border-color: #ef4444 !important;
         }
-        
+
         /* Cozy fire glow radial gradient overlay */
         body::before {
             content: '';
@@ -424,137 +524,165 @@
 
     {% if is_birthday_week %}
     <!-- Birthday Announcement Banner -->
-    <div id="birthday-banner" class="w-full confetti-banner-bg border-b border-zinc-800 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+    <div id="birthday-banner"
+        class="w-full confetti-banner-bg border-b border-zinc-800 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
         <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
-            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-rose-500/10 border border-rose-500/20 text-rose-400 uppercase tracking-wider animate-pulse">
+            <span
+                class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-rose-500/10 border border-rose-500/20 text-rose-400 uppercase tracking-wider animate-pulse">
                 🎂 Birthday Week
             </span>
             <span class="text-zinc-250">
-                Knob Monster is {% if birthday_age > 0 %}turning {{ birthday_age }}{% else %}celebrating its launch{% endif %}! Get 20% off with code <span class="text-rose-400 px-1.5 py-0.5 bg-rose-950/40 rounded border border-rose-900/40 select-all font-mono font-bold">{{ birthday_code }}</span> at checkout (Ends in <span id="promo-timer" class="font-mono text-rose-400 font-bold bg-rose-950/20 px-1.5 py-0.5 rounded border border-rose-900/30">--h --m --s</span>)!
+                Knob Monster is {% if birthday_age > 0 %}turning {{ birthday_age }}{% else %}celebrating its launch{%
+                endif %}! Get 20% off with code <span
+                    class="text-rose-400 px-1.5 py-0.5 bg-rose-950/40 rounded border border-rose-900/40 select-all font-mono font-bold">{{
+                    birthday_code }}</span> at checkout (Ends in <span id="promo-timer"
+                    class="font-mono text-rose-400 font-bold bg-rose-950/20 px-1.5 py-0.5 rounded border border-rose-900/30">--h
+                    --m --s</span>)!
             </span>
         </div>
-        <button onclick="document.getElementById('birthday-banner').style.display='none'" class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center" aria-label="Close Announcement">
+        <button onclick="document.getElementById('birthday-banner').style.display='none'"
+            class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center"
+            aria-label="Close Announcement">
             <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
     </div>
     <script>
-        (function() {
-            const currentYear = new Date().getFullYear();
-            let targetDate = new Date(`June 6, ${currentYear} 23:59:59`).getTime();
-            const now = new Date().getTime();
-            
-            if (targetDate <= now) {
-                // Rolling 24h countdown for preview/testing
-                targetDate = now + 24 * 60 * 60 * 1000;
-            }
-            
-            function updateTimer() {
-                const timerElement = document.getElementById('promo-timer');
-                if (!timerElement) return;
-                
-                const currentNow = new Date().getTime();
-                const distance = targetDate - currentNow;
-                
-                if (distance < 0) {
-                    timerElement.innerHTML = "Expired";
-                    return;
+            (function () {
+                const currentYear = new Date().getFullYear();
+                let targetDate = new Date(`June 6, ${currentYear} 23:59:59`).getTime();
+                const now = new Date().getTime();
+
+                if (targetDate <= now) {
+                    // Rolling 24h countdown for preview/testing
+                    targetDate = now + 24 * 60 * 60 * 1000;
                 }
-                
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                let timeStr = "";
-                if (days > 0) {
-                    timeStr += days + "d ";
+
+                function updateTimer() {
+                    const timerElement = document.getElementById('promo-timer');
+                    if (!timerElement) return;
+
+                    const currentNow = new Date().getTime();
+                    const distance = targetDate - currentNow;
+
+                    if (distance < 0) {
+                        timerElement.innerHTML = "Expired";
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    let timeStr = "";
+                    if (days > 0) {
+                        timeStr += days + "d ";
+                    }
+                    timeStr += String(hours).padStart(2, '0') + "h " +
+                        String(minutes).padStart(2, '0') + "m " +
+                        String(seconds).padStart(2, '0') + "s";
+
+                    timerElement.innerHTML = timeStr;
                 }
-                timeStr += String(hours).padStart(2, '0') + "h " + 
-                           String(minutes).padStart(2, '0') + "m " + 
-                           String(seconds).padStart(2, '0') + "s";
-                           
-                timerElement.innerHTML = timeStr;
-            }
-            
-            updateTimer();
-            setInterval(updateTimer, 1000);
-        })();
+
+                updateTimer();
+                setInterval(updateTimer, 1000);
+            })();
     </script>
     {% elif is_christmas_week %}
     <!-- Christmas Holiday Announcement Banner -->
-    <div id="christmas-banner" class="w-full christmas-banner-bg border-b border-emerald-950/40 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+    <div id="christmas-banner"
+        class="w-full christmas-banner-bg border-b border-emerald-950/40 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
         <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
-            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider animate-pulse">
+            <span
+                class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider animate-pulse">
                 🎄 Holiday Sale
             </span>
             <span class="text-zinc-250">
-                Merry Christmas! Get 20% off with code <span class="text-emerald-400 px-1.5 py-0.5 bg-emerald-950/40 rounded border border-emerald-900/40 select-all font-mono font-bold">{{ christmas_code }}</span> at checkout (Ends in <span id="xmas-timer" class="font-mono text-emerald-400 font-bold bg-emerald-950/20 px-1.5 py-0.5 rounded border border-emerald-900/30">--h --m --s</span>)!
+                Merry Christmas! Get 20% off with code <span
+                    class="text-emerald-400 px-1.5 py-0.5 bg-emerald-950/40 rounded border border-emerald-900/40 select-all font-mono font-bold">{{
+                    christmas_code }}</span> at checkout (Ends in <span id="xmas-timer"
+                    class="font-mono text-emerald-400 font-bold bg-emerald-950/20 px-1.5 py-0.5 rounded border border-emerald-900/30">--h
+                    --m --s</span>)!
             </span>
         </div>
-        <button onclick="document.getElementById('christmas-banner').style.display='none'" class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center" aria-label="Close Announcement">
+        <button onclick="document.getElementById('christmas-banner').style.display='none'"
+            class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center"
+            aria-label="Close Announcement">
             <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
     </div>
     <script>
-        (function() {
+        (function () {
             const currentYear = new Date().getFullYear();
             let targetDate = new Date(`December 31, ${currentYear} 23:59:59`).getTime();
             const now = new Date().getTime();
-            
+
             if (targetDate <= now) {
                 // Rolling 24h countdown for preview/testing
                 targetDate = now + 24 * 60 * 60 * 1000;
             }
-            
+
             function updateTimer() {
                 const timerElement = document.getElementById('xmas-timer');
                 if (!timerElement) return;
-                
+
                 const currentNow = new Date().getTime();
                 const distance = targetDate - currentNow;
-                
+
                 if (distance < 0) {
                     timerElement.innerHTML = "Expired";
                     return;
                 }
-                
+
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
+
                 let timeStr = "";
                 if (days > 0) {
                     timeStr += days + "d ";
                 }
-                timeStr += String(hours).padStart(2, '0') + "h " + 
-                           String(minutes).padStart(2, '0') + "m " + 
-                           String(seconds).padStart(2, '0') + "s";
-                           
+                timeStr += String(hours).padStart(2, '0') + "h " +
+                    String(minutes).padStart(2, '0') + "m " +
+                    String(seconds).padStart(2, '0') + "s";
+
                 timerElement.innerHTML = timeStr;
             }
-            
+
             updateTimer();
             setInterval(updateTimer, 1000);
         })();
     </script>
     {% endif %}
 
-    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <a href="/" class="flex items-center gap-2.5 group">
-                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
-                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
                 </a>
             </div>
 
@@ -589,30 +717,37 @@
     <main class="max-w-4xl mx-auto px-6 py-16 relative z-10">
         <!-- Hero Title -->
         <article class="space-y-6 text-center">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+            <span
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
                 Technical Review
             </span>
             <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto">
                 The Best SysEx Librarian Alternatives for Windows & macOS
             </h1>
             <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
-                Dumping patches from classic hardware synthesizers shouldn't require setting up a driver from 1995. Compare the top MIDI SysEx manager utilities below.
+                Dumping patches from classic hardware synthesizers shouldn't require setting up a driver from 1995.
+                Compare the top MIDI SysEx manager utilities below.
             </p>
         </article>
 
         <!-- OS Filter Tabs -->
         <section class="flex justify-center mt-12 mb-8">
-            <div class="inline-flex flex-wrap items-center justify-center p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1 max-w-full" id="filter-container">
-                <button onclick="filterOS('all')" id="btn-filter-all" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg transition-colors tab-active">
+            <div class="inline-flex flex-wrap items-center justify-center p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1 max-w-full"
+                id="filter-container">
+                <button onclick="filterOS('all')" id="btn-filter-all"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg transition-colors tab-active">
                     All
                 </button>
-                <button onclick="filterOS('windows')" id="btn-filter-win" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                <button onclick="filterOS('windows')" id="btn-filter-win"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
                     Windows
                 </button>
-                <button onclick="filterOS('macos')" id="btn-filter-mac" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                <button onclick="filterOS('macos')" id="btn-filter-mac"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
                     macOS
                 </button>
-                <button onclick="filterOS('web')" id="btn-filter-web" class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                <button onclick="filterOS('web')" id="btn-filter-web"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
                     Web Native
                 </button>
             </div>
@@ -620,18 +755,26 @@
 
         <!-- Main Alternatives Cards -->
         <section class="space-y-6 mt-8" id="cards-container">
-            
+
             <!-- knob.monster Card (Editor's Choice) -->
-            <div id="knob-monster" class="glow-card border-2 border-emerald-500/30 bg-zinc-950/40 rounded-2xl p-6 md:p-8 space-y-4" data-os="windows macos web">
+            <div id="knob-monster"
+                class="glow-card border-2 border-emerald-500/30 bg-zinc-950/40 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows macos web">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <span class="inline-block px-2 py-0.5 rounded text-[8px] font-pixel bg-emerald-500/20 text-emerald-400 uppercase tracking-widest mb-2">Editor's Choice</span>
+                        <span
+                            class="inline-block px-2 py-0.5 rounded text-[8px] font-pixel bg-emerald-500/20 text-emerald-400 uppercase tracking-widest mb-2">Editor's
+                            Choice</span>
                         <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">1. knob.monster</h2>
                     </div>
-                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Web Browser Native</span>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Web
+                        Browser Native</span>
                 </div>
                 <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
-                    knob.monster is a modern cloud librarian that runs directly in your web browser. Using the Web MIDI API, it connects to your MIDI interfaces without needing local software installs or driver setups. It automatically parses, indexes, and normalizes patch banks.
+                    knob.monster is a modern cloud librarian that runs directly in your web browser. Using the Web MIDI
+                    API, it connects to your MIDI interfaces without needing local software installs or driver setups.
+                    It automatically parses, indexes, and normalizes patch banks.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
                     <div>
@@ -653,20 +796,25 @@
                 </div>
                 <div class="pt-4 border-t border-zinc-900 flex justify-between items-center">
                     <span class="text-2xs font-mono text-zinc-500">Cost: $29.00 one-time</span>
-                    <a href="/signup" id="card-cta-knobmonster" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-lg text-3xs font-pixel uppercase tracking-widest transition-colors">
+                    <a href="/signup" id="card-cta-knobmonster"
+                        class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-lg text-3xs font-pixel uppercase tracking-widest transition-colors">
                         Try Browser MIDI
                     </a>
                 </div>
             </div>
 
             <!-- Snoize Card -->
-            <div id="snoize" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="macos">
+            <div id="snoize" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="macos">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">2. Snoize SysEx Librarian</h2>
-                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">macOS Native</span>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">macOS
+                        Native</span>
                 </div>
                 <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
-                    The legacy standard for Mac users. Snoize SysEx Librarian is a basic local utility for macOS. It has stable packet timing, but lacks any modern database, naming, indexing, or backup features.
+                    The legacy standard for Mac users. Snoize SysEx Librarian is a basic local utility for macOS. It has
+                    stable packet timing, but lacks any modern database, naming, indexing, or backup features.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
                     <div>
@@ -689,18 +837,23 @@
                     </div>
                 </div>
                 <div class="pt-4 border-t border-zinc-900">
-                    <span class="text-2xs font-mono text-zinc-500">Cost: Free / Open-Source (Abandoned/Legacy local-only software)</span>
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free / Open-Source (Abandoned/Legacy local-only
+                        software)</span>
                 </div>
             </div>
 
             <!-- MIDI-OX Card -->
-            <div id="midi-ox" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="windows">
+            <div id="midi-ox" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">3. MIDI-OX</h2>
-                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows Native</span>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows
+                        Native</span>
                 </div>
                 <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
-                    The classic Windows utility. MIDI-OX is a deep monitoring tool, but it was designed in the Windows 95 era and suffers from a highly complex, outdated interface.
+                    The classic Windows utility. MIDI-OX is a deep monitoring tool, but it was designed in the Windows
+                    95 era and suffers from a highly complex, outdated interface.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
                     <div>
@@ -723,18 +876,24 @@
                     </div>
                 </div>
                 <div class="pt-4 border-t border-zinc-900">
-                    <span class="text-2xs font-mono text-zinc-500">Cost: Free for non-commercial use (Archaic desktop client)</span>
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free for non-commercial use (Archaic desktop
+                        client)</span>
                 </div>
             </div>
 
             <!-- Bome SendSX Card -->
-            <div id="bome-sendsx" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="windows macos">
+            <div id="bome-sendsx"
+                class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows macos">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">4. Bome SendSX</h2>
-                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows / macOS</span>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows
+                        / macOS</span>
                 </div>
                 <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
-                    A basic utility designed purely to send/receive raw hex strings. It is extremely lightweight but lacks any bank database, searching, or structure.
+                    A basic utility designed purely to send/receive raw hex strings. It is extremely lightweight but
+                    lacks any bank database, searching, or structure.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
                     <div>
@@ -761,13 +920,17 @@
             </div>
 
             <!-- Dexed Card -->
-            <div id="dexed" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4" data-os="windows macos">
+            <div id="dexed" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows macos">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">5. Dexed (Virtual Cartridge)</h2>
-                    <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Cross-Platform VST / Standalone</span>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Cross-Platform
+                        VST / Standalone</span>
                 </div>
                 <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
-                    A software plugin emulation of the DX7. While it features a cartridge loader for DX7 files, it is not a general-purpose librarian.
+                    A software plugin emulation of the DX7. While it features a cartridge loader for DX7 files, it is
+                    not a general-purpose librarian.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
                     <div>
@@ -788,7 +951,8 @@
                     </div>
                 </div>
                 <div class="pt-4 border-t border-zinc-900">
-                    <span class="text-2xs font-mono text-zinc-500">Cost: Free (Strictly limited to Yamaha DX7/TX81Z)</span>
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free (Strictly limited to Yamaha
+                        DX7/TX81Z)</span>
                 </div>
             </div>
 
@@ -800,20 +964,31 @@
                 Why Modern USB Interfaces Drop SysEx Packets
             </h2>
             <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
-                If you have ever tried to send a 4104-byte bulk dump file to a vintage synthesizer only to receive a <code>Buffer Overflow</code> or <code>MIDI Communication Error</code> on the screen, the issue is not the file format. It is packet timing.
+                If you have ever tried to send a 4104-byte bulk dump file to a vintage synthesizer only to receive a
+                <code>Buffer Overflow</code> or <code>MIDI Communication Error</code> on the screen, the issue is not
+                the file format. It is packet timing.
             </p>
             <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
-                Vintage synthesizers from the 1980s run on slow internal microprocessors (like the 2MHz Motorola 6809 or Intel 8031). They receive MIDI data at the standard hardware speed of <strong>31,250 bits per second (31.25 kbaud)</strong>. 
+                Vintage synthesizers from the 1980s run on slow internal microprocessors (like the 2MHz Motorola 6809 or
+                Intel 8031). They receive MIDI data at the standard hardware speed of <strong>31,250 bits per second
+                    (31.25 kbaud)</strong>.
             </p>
             <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
-                Modern USB-to-MIDI cable interfaces send data at high-speed USB rates. Without strict software throttling, the interface throws thousands of bytes at the synth faster than its memory buffers can write them.
+                Modern USB-to-MIDI cable interfaces send data at high-speed USB rates. Without strict software
+                throttling, the interface throws thousands of bytes at the synth faster than its memory buffers can
+                write them.
             </p>
-            <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 md:p-6 space-y-3 font-mono text-2xs md:text-xs">
-                <span class="text-emerald-400 font-semibold block uppercase tracking-wider">How to Fix Timing Errors:</span>
+            <div
+                class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 md:p-6 space-y-3 font-mono text-2xs md:text-xs">
+                <span class="text-emerald-400 font-semibold block uppercase tracking-wider">How to Fix Timing
+                    Errors:</span>
                 <ul class="list-decimal list-inside space-y-2 text-zinc-300">
-                    <li><strong>Set output buffers:</strong> Configure your librarian to send data in blocks of 256 bytes.</li>
-                    <li><strong>Configure delay times:</strong> Add a delay of 60 milliseconds between packets. This gives the synth time to write the received data to memory.</li>
-                    <li><strong>Avoid cheap cables:</strong> Low-cost USB-to-MIDI cables lack internal memory buffers and will consistently discard messages over 100 bytes long.</li>
+                    <li><strong>Set output buffers:</strong> Configure your librarian to send data in blocks of 256
+                        bytes.</li>
+                    <li><strong>Configure delay times:</strong> Add a delay of 60 milliseconds between packets. This
+                        gives the synth time to write the received data to memory.</li>
+                    <li><strong>Avoid cheap cables:</strong> Low-cost USB-to-MIDI cables lack internal memory buffers
+                        and will consistently discard messages over 100 bytes long.</li>
                 </ul>
             </div>
         </section>
@@ -824,10 +999,12 @@
                 Want to Skip the Driver Configuration?
             </h2>
             <p class="text-xs md:text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">
-                Connect your interface, select your synthesizer model, and back up your sounds directly to the cloud in one click.
+                Connect your interface, select your synthesizer model, and back up your sounds directly to the cloud in
+                one click.
             </p>
             <div>
-                <a href="/signup" id="footer-cta-signup" class="bg-white hover:bg-zinc-200 text-black px-6 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-150 inline-block">
+                <a href="/signup" id="footer-cta-signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-6 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-150 inline-block">
                     Launch Your Vault
                 </a>
             </div>
@@ -835,20 +1012,20 @@
     </main>
 
     <!-- Footer -->
-        {% include "footer.html" %}
+    {% include "footer.html" %}
 
     <script>
         // Interactive Filter Script
         function filterOS(os) {
             const cards = document.querySelectorAll('#cards-container > div');
             const buttons = document.querySelectorAll('#filter-container button');
-            
+
             // Toggle active tab styling
             buttons.forEach(btn => {
                 btn.classList.remove('tab-active');
                 btn.classList.add('text-zinc-400');
             });
-            
+
             if (os === 'all') {
                 document.getElementById('btn-filter-all').classList.add('tab-active');
                 document.getElementById('btn-filter-all').classList.remove('text-zinc-400');
@@ -888,7 +1065,7 @@
                 if (data.country_name && data.country) {
                     const country = data.country_name;
                     const code = data.country.toLowerCase();
-                    
+
                     let countryName = country;
                     if (code === 'us') countryName = 'the USA';
                     else if (code === 'gb') countryName = 'the UK';
@@ -915,7 +1092,7 @@
             const email = emailInput.value.trim();
             const statusDiv = document.getElementById('footer-subscribe-status');
             const submitBtn = document.getElementById('footer-subscribe-btn');
-            
+
             // Email Regex Validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email || !emailRegex.test(email)) {
@@ -923,11 +1100,11 @@
                 statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
                 return;
             }
-            
+
             statusDiv.textContent = "Connecting to preset database...";
             statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
             submitBtn.disabled = true;
-            
+
             fetch('/subscribe', {
                 method: 'POST',
                 headers: {
@@ -935,23 +1112,23 @@
                 },
                 body: `email=${encodeURIComponent(email)}`
             })
-            .then(res => {
-                if (res.ok) {
-                    statusDiv.textContent = "Success! Vault connection established. You're on the list.";
+                .then(res => {
+                    if (res.ok) {
+                        statusDiv.textContent = "Success! Vault connection established. You're on the list.";
+                        statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                        form.reset();
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    statusDiv.textContent = "Vault connection successful! You are now subscribed.";
                     statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
                     form.reset();
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(() => {
-                statusDiv.textContent = "Vault connection successful! You are now subscribed.";
-                statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
-                form.reset();
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-            });
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
         }
     </script>
 
@@ -959,22 +1136,22 @@
     <!-- Dynamic falling snow canvas overlay for Christmas week -->
     <canvas id="christmas-snow-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
     <script>
-        (function() {
+        (function () {
             const canvas = document.getElementById('christmas-snow-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            
+
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
-            
+
             window.addEventListener('resize', () => {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
             });
-            
+
             const numFlakes = 100;
             const flakes = [];
-            
+
             for (let i = 0; i < numFlakes; i++) {
                 flakes.push({
                     x: Math.random() * width,
@@ -985,7 +1162,7 @@
                     density: Math.random() * 20
                 });
             }
-            
+
             let angle = 0;
             function draw() {
                 ctx.clearRect(0, 0, width, height);
@@ -999,14 +1176,14 @@
                 ctx.fill();
                 update();
             }
-            
+
             function update() {
                 angle += 0.01;
                 for (let i = 0; i < numFlakes; i++) {
                     const f = flakes[i];
                     f.y += f.speed;
                     f.x += Math.sin(angle + f.density) * 0.5;
-                    
+
                     if (f.y > height) {
                         flakes[i] = {
                             x: Math.random() * width,
@@ -1019,7 +1196,7 @@
                     }
                 }
             }
-            
+
             function tick() {
                 draw();
                 requestAnimationFrame(tick);
@@ -1033,23 +1210,23 @@
     <!-- Dynamic floating confetti canvas overlay for Birthday week -->
     <canvas id="birthday-confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
     <script>
-        (function() {
+        (function () {
             const canvas = document.getElementById('birthday-confetti-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            
+
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
-            
+
             window.addEventListener('resize', () => {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
             });
-            
+
             const colors = ['#ec4899', '#3b82f6', '#10b981', '#eab308', '#a855f7', '#f97316'];
             const numParticles = 75;
             const particles = [];
-            
+
             for (let i = 0; i < numParticles; i++) {
                 particles.push({
                     x: Math.random() * width,
@@ -1063,7 +1240,7 @@
                     speed: Math.random() * 1.5 + 1
                 });
             }
-            
+
             function draw() {
                 ctx.clearRect(0, 0, width, height);
                 for (let i = 0; i < numParticles; i++) {
@@ -1077,14 +1254,14 @@
                 }
                 update();
             }
-            
+
             function update() {
                 for (let i = 0; i < numParticles; i++) {
                     const p = particles[i];
                     p.y += p.speed;
                     p.tiltAngle += p.tiltAngleIncremental;
                     p.tilt = Math.sin(p.tiltAngle) * 12;
-                    
+
                     if (p.y > height) {
                         particles[i] = {
                             x: Math.random() * width,
@@ -1100,7 +1277,7 @@
                     }
                 }
             }
-            
+
             function tick() {
                 draw();
                 requestAnimationFrame(tick);
@@ -1110,7 +1287,7 @@
     </script>
     {% endif %}
     {% include 'visitor_avatar.html' %}
-{% include "mobile_nav.html" %}
+    {% include "mobile_nav.html" %}
 </body>
 
 </html>

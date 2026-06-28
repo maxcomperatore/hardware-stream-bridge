@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How to fix Juno-106 memory loss | knob.monster</title>
     <link rel="canonical" href="https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide">
-    <meta name="description" content="Use our interactive Juno-106 memory loss troubleshooter. Diagnose garbled characters, write protect errors, and restore lost presets using Web MIDI.">
-    <meta name="keywords" content="juno 106 memory loss, roland juno 106 restore patches, juno 106 write error, voice chip failure, web midi sysex">
+    <meta name="description"
+        content="Use our interactive Juno-106 memory loss troubleshooter. Diagnose garbled characters, write protect errors, and restore lost presets using Web MIDI.">
+    <meta name="keywords"
+        content="juno 106 memory loss, roland juno 106 restore patches, juno 106 write error, voice chip failure, web midi sysex">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
 
     <!-- Fonts -->
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,17 +52,31 @@
     </script>
 
     <style>
-        html { scroll-behavior: smooth; }
-        ::selection { background-color: rgba(41, 151, 255, 0.2); color: #ffffff; }
-        @keyframes logo-spin {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+        html {
+            scroll-behavior: smooth;
         }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        @keyframes logo-spin {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
         .spin-logo {
             animation: logo-spin 8s linear infinite;
             transform-style: preserve-3d;
             backface-visibility: visible;
         }
+
         .mobile-bg-pattern {
             background-image:
                 radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -67,10 +87,12 @@
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
             mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
         }
+
         .dither-mesh {
             background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
             background-repeat: repeat;
         }
+
         .step-btn.active {
             border-color: #3b83f6;
             background-color: rgba(59, 131, 246, 0.05);
@@ -79,22 +101,35 @@
     </style>
     {% include 'posthog.html' %}
 </head>
-<body class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-blue-500/20 selection:text-white">
+
+<body
+    class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-blue-500/20 selection:text-white">
 
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
     <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
 
-    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <a href="/" class="flex items-center gap-2.5 group">
-                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
-                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
                 </a>
             </div>
 
@@ -108,10 +143,16 @@
 
             <div class="flex items-center gap-4">
                 {% if user %}
-                <a href="/dashboard" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Open Vault</a>
+                <a href="/dashboard"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Open
+                    Vault</a>
                 {% else %}
-                <a href="/login" class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">Sign In</a>
-                <a href="/signup" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Sign Up</a>
+                <a href="/login"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">Sign
+                    In</a>
+                <a href="/signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Sign
+                    Up</a>
                 {% endif %}
             </div>
         </div>
@@ -119,40 +160,48 @@
 
     <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
         <article class="space-y-6 text-left mb-12">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-blue-500/10 border border-blue-500/25 text-blue-400 uppercase tracking-widest">
+            <span
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-blue-500/10 border border-blue-500/25 text-blue-400 uppercase tracking-widest">
                 Troubleshooting
             </span>
             <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
                 How to Fix Juno-106 Memory Loss
             </h1>
             <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
-                Is your Roland Juno-106 losing its patches, showing weird symbols on the LCD, or throwing write protect errors when saving? Run our interactive diagnostic tool to discover the exact solution.
+                Is your Roland Juno-106 losing its patches, showing weird symbols on the LCD, or throwing write protect
+                errors when saving? Run our interactive diagnostic tool to discover the exact solution.
             </p>
         </article>
 
         <!-- DYNAMIC INTERACTIVE DIAGNOSTIC TOOL -->
         <section class="bg-zinc-950 border border-zinc-900 rounded-3xl p-6 md:p-8 my-12 space-y-6 shadow-2xl relative">
             <div class="space-y-2 text-center md:text-left border-b border-zinc-900 pb-4">
-                <h2 class="text-base font-pixel text-white uppercase tracking-wider flex items-center gap-2 justify-center md:justify-start">
+                <h2
+                    class="text-base font-pixel text-white uppercase tracking-wider flex items-center gap-2 justify-center md:justify-start">
                     <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
                     Juno-106 Memory Loss Diagnostic Tool
                 </h2>
-                <p class="text-xs text-zinc-400 font-mono">Click through the options to isolate hardware parameters and compile an immediate repair steps checklist.</p>
+                <p class="text-xs text-zinc-400 font-mono">Click through the options to isolate hardware parameters and
+                    compile an immediate repair steps checklist.</p>
             </div>
 
             <!-- STEP 1: SYMPTOMS -->
             <div class="space-y-3 font-mono text-xs">
-                <p class="text-zinc-400 font-pixel text-3xs uppercase tracking-wider">Step 1: Choose Your LCD Display Symptom</p>
+                <p class="text-zinc-400 font-pixel text-3xs uppercase tracking-wider">Step 1: Choose Your LCD Display
+                    Symptom</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <button onclick="selectSymptom('garbled')" id="sym-garbled" class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
+                    <button onclick="selectSymptom('garbled')" id="sym-garbled"
+                        class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
                         <strong class="block text-white mb-1">ASCII Garbage</strong>
                         Random symbols, weird letters, or blanks on screen.
                     </button>
-                    <button onclick="selectSymptom('silent')" id="sym-silent" class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
+                    <button onclick="selectSymptom('silent')" id="sym-silent"
+                        class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
                         <strong class="block text-white mb-1">Silence or Blanks</strong>
                         Display shows standard program numbers but emits no sound.
                     </button>
-                    <button onclick="selectSymptom('write_err')" id="sym-write_err" class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
+                    <button onclick="selectSymptom('write_err')" id="sym-write_err"
+                        class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
                         <strong class="block text-white mb-1">Write Protect</strong>
                         Cannot save patches. Display blinks when pressing WRITE.
                     </button>
@@ -162,8 +211,11 @@
             <!-- STEP 2: STATE INPUTS (DYNAMCIALLY REVEALED) -->
             <div id="step-2-container" class="space-y-4 font-mono text-xs hidden border-t border-zinc-900 pt-6">
                 <div>
-                    <label id="step-2-label" class="block text-zinc-400 uppercase tracking-wider mb-2 font-pixel text-3xs">Step 2: Check Hardware Configuration</label>
-                    <select id="diag-hw-state" onchange="runDiagnostic()" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono">
+                    <label id="step-2-label"
+                        class="block text-zinc-400 uppercase tracking-wider mb-2 font-pixel text-3xs">Step 2: Check
+                        Hardware Configuration</label>
+                    <select id="diag-hw-state" onchange="runDiagnostic()"
+                        class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono">
                         <!-- Options generated dynamically -->
                     </select>
                 </div>
@@ -187,7 +239,8 @@
 
             <!-- Call to Action inside tool -->
             <div class="pt-4 border-t border-zinc-900 text-center">
-                <a href="/signup" class="inline-block bg-white hover:bg-zinc-200 text-black px-6 py-3 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 shadow-md">
+                <a href="/signup"
+                    class="inline-block bg-white hover:bg-zinc-200 text-black px-6 py-3 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 shadow-md">
                     Connect via Web MIDI
                 </a>
             </div>
@@ -199,20 +252,30 @@
                 Understanding Roland SRAM Architecture
             </h2>
             <p class="font-mono text-xs text-zinc-400">
-                The Roland Juno-106 uses CMOS static RAM chips (usually type μPD444) to store patch data. These memory registers require a continuous feed of 2.0V or higher to keep their data gates closed. When the internal battery drops below this threshold, or if the write lines are interrupted, the memory instantly corrupts.
+                The Roland Juno-106 uses CMOS static RAM chips (usually type μPD444) to store patch data. These memory
+                registers require a continuous feed of 2.0V or higher to keep their data gates closed. When the internal
+                battery drops below this threshold, or if the write lines are interrupted, the memory instantly
+                corrupts.
             </p>
             <p class="font-mono text-xs text-zinc-400">
-                A common issue on the Juno-106 is the rear panel Protect Switch. If this physical switch is slide to the "ON" position, it puts an active pull-up voltage on the write-enable pin of the SRAM chips. This blocks the micro-controller from modifying the patch library, which throws the blinking write-protection error on the front display.
+                A common issue on the Juno-106 is the rear panel Protect Switch. If this physical switch is slide to the
+                "ON" position, it puts an active pull-up voltage on the write-enable pin of the SRAM chips. This blocks
+                the micro-controller from modifying the patch library, which throws the blinking write-protection error
+                on the front display.
             </p>
 
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
                 Factory restoring with zero-config Web MIDI
             </h2>
             <p class="font-mono text-xs text-zinc-400">
-                If your patches are lost or replaced by random characters, you need to execute a factory SysEx dump. Traditional MIDI-OX software requires setting up custom millisecond delay sizes to prevent buffer overruns on the Juno's slow 8-bit CPU.
+                If your patches are lost or replaced by random characters, you need to execute a factory SysEx dump.
+                Traditional MIDI-OX software requires setting up custom millisecond delay sizes to prevent buffer
+                overruns on the Juno's slow 8-bit CPU.
             </p>
             <p class="font-mono text-xs text-zinc-400">
-                knob.monster solves this with built-in pacing filters designed specifically for the Roland Juno-106 microchip specifications, allowing you to reload the full 64 factory preset patches in under 10 seconds directly inside your browser.
+                knob.monster solves this with built-in pacing filters designed specifically for the Roland Juno-106
+                microchip specifications, allowing you to reload the full 64 factory preset patches in under 10 seconds
+                directly inside your browser.
             </p>
         </section>
     </main>
@@ -345,4 +408,5 @@
         };
     </script>
 </body>
+
 </html>

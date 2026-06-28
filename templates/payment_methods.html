@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Methods & Options | knob.monster</title>
     <link rel="canonical" href="https://knob.monster/payment-methods">
-    <meta name="description" content="All the ways you can transfer us your hard-earned cash to backup and manage your vintage synthesizers.">
+    <meta name="description"
+        content="All the ways you can transfer us your hard-earned cash to backup and manage your vintage synthesizers.">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
 
     <!-- Fonts -->
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -84,9 +89,15 @@
 
         /* 3D spin animation for logo */
         @keyframes logo-spin {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
         }
+
         .spin-logo {
             animation: logo-spin 8s linear infinite;
             transform-style: preserve-3d;
@@ -115,7 +126,8 @@
 
         .payment-card {
             background-color: #09090b;
-            border: 1px solid #27272a; /* Sleek, visible hairline border in mobile */
+            border: 1px solid #27272a;
+            /* Sleek, visible hairline border in mobile */
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -127,6 +139,7 @@
     </style>
     {% include 'posthog.html' %}
 </head>
+
 <body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
 
     <!-- Global Dither Overlay -->
@@ -135,17 +148,28 @@
     <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
 
     <!-- Sticky Header -->
-    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <a href="/" class="flex items-center gap-2.5 group">
-                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
-                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
                 </a>
             </div>
 
@@ -180,10 +204,12 @@
     <main class="max-w-4xl mx-auto px-6 py-20 relative z-10">
         <!-- Title Header -->
         <article class="space-y-6 text-center mb-20">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+            <span
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
                 Stripe Payments
             </span>
-            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
+            <h1
+                class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
                 Accepted Payments
             </h1>
             <p class="text-xs font-mono text-zinc-500 max-w-lg mx-auto uppercase">
@@ -193,7 +219,7 @@
 
         <!-- Payment Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             <!-- Visa & Mastercard -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-3">
@@ -202,7 +228,9 @@
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Visa &amp; Mastercard</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    We accept the standard plastic duo. Fast, globally recognized, and completely boring. Put it on your card or use your company's corporate card if your boss is the one accidentally funding your synthesizer habit.
+                    We accept the standard plastic duo. Fast, globally recognized, and completely boring. Put it on your
+                    card or use your company's corporate card if your boss is the one accidentally funding your
+                    synthesizer habit.
                 </p>
             </div>
 
@@ -213,7 +241,9 @@
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">American Express</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    For high-rollers who love paying with heavy metal cards to feel important. Yes, we take Amex. Rack up airline miles while backing up patches for a synthesizer that hasn't left your bedroom since 1994.
+                    For high-rollers who love paying with heavy metal cards to feel important. Yes, we take Amex. Rack
+                    up airline miles while backing up patches for a synthesizer that hasn't left your bedroom since
+                    1994.
                 </p>
             </div>
 
@@ -224,7 +254,8 @@
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Apple Pay</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    Because manual card data entry is for chumps. Scan your face, authorize the transaction, and get back to staring at your oscilloscope. Fully supported natively on Safari.
+                    Because manual card data entry is for chumps. Scan your face, authorize the transaction, and get
+                    back to staring at your oscilloscope. Fully supported natively on Safari.
                 </p>
             </div>
 
@@ -235,7 +266,9 @@
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Google Pay</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    Express checkout for Android fans and Chrome users. Secure, fast, and requires exactly zero keypresses, which is great because you've already spent enough energy clicking mechanical keyboard switches today.
+                    Express checkout for Android fans and Chrome users. Secure, fast, and requires exactly zero
+                    keypresses, which is great because you've already spent enough energy clicking mechanical keyboard
+                    switches today.
                 </p>
             </div>
 
@@ -247,7 +280,9 @@
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">USDC &amp; Stablecoins</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    No energy-guzzling proof-of-work, no three-day transaction queues, and absolutely zero volatile meme-tokens. Just USD Coin (USDC) sent natively on Ethereum, Base, Polygon, or Solana. Pay via Stripe and pretend you're a decentralized finance wizard.
+                    No energy-guzzling proof-of-work, no three-day transaction queues, and absolutely zero volatile
+                    meme-tokens. Just USD Coin (USDC) sent natively on Ethereum, Base, Polygon, or Solana. Pay via
+                    Stripe and pretend you're a decentralized finance wizard.
                 </p>
             </div>
 
@@ -257,9 +292,13 @@
                     <img src="https://cdn.simpleicons.org/pix/32B3A6" class="h-4 w-auto" alt="Pix" />
                     <span class="text-[10px] font-pixel text-[#32B3A6]">PIX</span>
                 </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Pix <img src="https://api.iconify.design/flagpack/br.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="Brazil" /></h3>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Pix <img
+                        src="https://api.iconify.design/flagpack/br.svg" width="16" height="12"
+                        class="h-3 w-auto inline-block align-middle ml-1" alt="Brazil" /></h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    The absolute crown jewel of Brazilian central banking. Instant, zero processing friction, and runs faster than a Roland Juno-106 LFO at max speed. Scan the QR code, press confirm, and secure your database before your next coffee break.
+                    The absolute crown jewel of Brazilian central banking. Instant, zero processing friction, and runs
+                    faster than a Roland Juno-106 LFO at max speed. Scan the QR code, press confirm, and secure your
+                    database before your next coffee break.
                 </p>
             </div>
 
@@ -268,9 +307,12 @@
                 <div class="flex items-center gap-2">
                     <img src="https://cdn.simpleicons.org/naver/03C75A" class="h-4 w-auto" alt="Naver Pay" />
                 </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Naver Pay <img src="https://api.iconify.design/flagpack/kr.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="South Korea" /></h3>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Naver Pay <img
+                        src="https://api.iconify.design/flagpack/kr.svg" width="16" height="12"
+                        class="h-3 w-auto inline-block align-middle ml-1" alt="South Korea" /></h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    For our friends producing K-pop bangers in Seoul. One-click mobile checkout with zero currency conversion headaches. Fast enough to keep your creative flow going.
+                    For our friends producing K-pop bangers in Seoul. One-click mobile checkout with zero currency
+                    conversion headaches. Fast enough to keep your creative flow going.
                 </p>
             </div>
 
@@ -279,9 +321,12 @@
                 <div class="flex items-center gap-2">
                     <img src="https://cdn.simpleicons.org/cashapp/00D632" class="h-4 w-auto" alt="Cash App Pay" />
                 </div>
-                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Cash App Pay <img src="https://api.iconify.design/flagpack/us.svg" width="16" height="12" class="h-3 w-auto inline-block align-middle ml-1" alt="US" /></h3>
+                <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Cash App Pay <img
+                        src="https://api.iconify.design/flagpack/us.svg" width="16" height="12"
+                        class="h-3 w-auto inline-block align-middle ml-1" alt="US" /></h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
-                    For when your synth budget is stuck inside the little green app. Tap to pay directly from your Cash App balance, avoiding the manual card entry dance.
+                    For when your synth budget is stuck inside the little green app. Tap to pay directly from your Cash
+                    App balance, avoiding the manual card entry dance.
                 </p>
             </div>
 
@@ -291,13 +336,15 @@
         <div class="mt-16 text-center space-y-3 border-t border-zinc-900 pt-12">
             <h4 class="text-xs font-pixel uppercase text-white tracking-widest">A Note on Security</h4>
             <p class="text-2xs font-mono text-zinc-500 max-w-md mx-auto leading-relaxed uppercase">
-                We do not store your credit card details or payment credentials on our servers. All transactions are securely processed by Stripe. We are simply too lazy to build a payment database, so we let the billions-dollar enterprise handle it.
+                We do not store your credit card details or payment credentials on our servers. All transactions are
+                securely processed by Stripe. We are simply too lazy to build a payment database, so we let the
+                billions-dollar enterprise handle it.
             </p>
         </div>
     </main>
 
     <!-- Footer (Equal to Landing) -->
-        {% include "footer.html" %}
+    {% include "footer.html" %}
 
     <script>
         // Call the secure same-origin server-side proxy to get geoip details
@@ -314,7 +361,7 @@
                 if (data.country_name && data.country) {
                     const country = data.country_name;
                     const code = data.country.toLowerCase();
-                    
+
                     let countryName = country;
                     if (code === 'us') countryName = 'the USA';
                     else if (code === 'gb') countryName = 'the UK';
@@ -341,18 +388,18 @@
             const email = emailInput.value.trim();
             const statusDiv = document.getElementById('footer-subscribe-status');
             const submitBtn = document.getElementById('footer-subscribe-btn');
-            
+
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email || !emailRegex.test(email)) {
                 statusDiv.textContent = "that.. doesn't look like an email address. Want to double check?";
                 statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
                 return;
             }
-            
+
             statusDiv.textContent = "Connecting to preset database...";
             statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
             submitBtn.disabled = true;
-            
+
             fetch('/subscribe', {
                 method: 'POST',
                 headers: {
@@ -360,25 +407,26 @@
                 },
                 body: `email=${encodeURIComponent(email)}`
             })
-            .then(res => {
-                if (res.ok) {
-                    statusDiv.textContent = "Success! Vault connection established. You're on the list.";
-                    statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
-                    form.reset();
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(() => {
-                statusDiv.textContent = "Oops, connection dropped. Give it another shot?";
-                statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-            });
+                .then(res => {
+                    if (res.ok) {
+                        statusDiv.textContent = "Success! Vault connection established. You're on the list.";
+                        statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                        form.reset();
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    statusDiv.textContent = "Oops, connection dropped. Give it another shot?";
+                    statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
         }
     </script>
     {% include 'visitor_avatar.html' %}
-{% include "mobile_nav.html" %}
+    {% include "mobile_nav.html" %}
 </body>
+
 </html>

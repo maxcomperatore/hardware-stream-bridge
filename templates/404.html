@@ -135,7 +135,8 @@
     <!-- Header Navigation (Simple logo link) -->
     <header class="h-16 flex items-center justify-between px-6 border-b border-zinc-900/60 w-full flex-shrink-0 z-40">
         <a href="/" class="flex items-center gap-2.5 mx-auto max-w-6xl w-full">
-            <img src="/static/logo.avif" alt="Knob Monster Logo" class="h-6 w-auto object-contain" style="image-rendering: pixelated;">
+            <img src="/static/logo.svg" alt="Knob Monster Logo" class="h-6 w-auto object-contain"
+                style="image-rendering: pixelated;">
             <span class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</span>
         </a>
     </header>
@@ -180,9 +181,9 @@
     </main>
 
     <!-- Footer -->
-        {% include "footer.html" %}
+    {% include "footer.html" %}
     {% include 'visitor_avatar.html' %}
-{% include "mobile_nav.html" %}
+    {% include "mobile_nav.html" %}
 </body>
 
 </html>

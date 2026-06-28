@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ seo.title if seo else "Vintage Synth Wiki | knob.monster" }}</title>
     <link rel="canonical" href="https://knob.monster/{{ seo_slug }}">
-    <meta name="description" content="{{ seo.description if seo else 'Detailed vintage synth wiki, memory protect disable steps, factory presets, and interactive Web MIDI troubleshooting.' }}">
+    <meta name="description"
+        content="{{ seo.description if seo else 'Detailed vintage synth wiki, memory protect disable steps, factory presets, and interactive Web MIDI troubleshooting.' }}">
     <meta name="keywords" content="{{ seo.keywords if seo else 'sysex librarian, synth editor, midi setup' }}">
 
     <!-- Open Graph -->
@@ -20,8 +22,11 @@
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
 
     <!-- Fonts -->
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -50,25 +55,41 @@
     </script>
 
     <style>
-        html { scroll-behavior: smooth; }
-        ::selection { background-color: rgba(41, 151, 255, 0.2); color: #ffffff; }
-        @keyframes logo-spin {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+        html {
+            scroll-behavior: smooth;
         }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        @keyframes logo-spin {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
         .spin-logo {
             animation: logo-spin 8s linear infinite;
             transform-style: preserve-3d;
             backface-visibility: visible;
         }
+
         .dither-mesh {
             background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
             background-repeat: repeat;
         }
+
         .glow-card {
             box-shadow: 4px 4px 0px 0px #18181b;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
+
         .glow-card:hover {
             transform: translate(-2px, -2px);
             border-color: #3b83f6 !important;
@@ -77,20 +98,29 @@
     </style>
     {% include 'posthog.html' %}
 </head>
-<body class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-blue-500/20 selection:text-white">
+
+<body
+    class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-blue-500/20 selection:text-white">
 
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
 
     <!-- Navigation Header -->
-    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <a href="/" class="flex items-center gap-2.5 group">
-                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
                     </div>
-                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
                 </a>
             </div>
 
@@ -104,10 +134,16 @@
 
             <div class="flex items-center gap-4">
                 {% if user %}
-                <a href="/dashboard" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Open Vault</a>
+                <a href="/dashboard"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Open
+                    Vault</a>
                 {% else %}
-                <a href="/login" class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">Sign In</a>
-                <a href="/signup" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Sign Up</a>
+                <a href="/login"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">Sign
+                    In</a>
+                <a href="/signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Sign
+                    Up</a>
                 {% endif %}
             </div>
         </div>
@@ -115,7 +151,7 @@
 
     <!-- Main Container -->
     <main class="max-w-6xl mx-auto px-6 py-12 relative z-10">
-        
+
         <!-- Breadcrumbs -->
         <nav class="text-3xs font-pixel text-zinc-500 uppercase tracking-widest mb-6">
             <a href="/resources" class="hover:text-blue-400 transition-colors">Resources</a>
@@ -129,7 +165,8 @@
         <div class="border-b border-zinc-900 pb-8 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
                 <div class="flex items-center gap-3 mb-2">
-                    <span class="text-[9px] font-pixel px-2 py-0.5 rounded uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/25">
+                    <span
+                        class="text-[9px] font-pixel px-2 py-0.5 rounded uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/25">
                         {{ wiki.brand }}
                     </span>
                     <span class="text-zinc-500 font-mono text-[9px] uppercase tracking-wider">Wiki Profile</span>
@@ -138,21 +175,23 @@
                     {{ wiki.name }} Setup &amp; SysEx Wiki
                 </h1>
             </div>
-            
-            <a href="/signup" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-2xs font-pixel uppercase tracking-wider transition-all duration-150 active:scale-95 shadow-[0_0_15px_rgba(59,131,246,0.3)]">
+
+            <a href="/signup"
+                class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-2xs font-pixel uppercase tracking-wider transition-all duration-150 active:scale-95 shadow-[0_0_15px_rgba(59,131,246,0.3)]">
                 Connect Web MIDI Librarian
             </a>
         </div>
 
         <!-- 2-Column Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
+
             <!-- Left Column: Main Wiki Content -->
             <div class="lg:col-span-2 space-y-10">
-                
+
                 <!-- History & Architecture -->
                 <section class="bg-zinc-950/60 border border-zinc-900/80 rounded-2xl p-6 md:p-8 space-y-4">
-                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-900 pb-3 flex items-center gap-2">
+                    <h2
+                        class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-900 pb-3 flex items-center gap-2">
                         <span class="text-blue-500 font-bold">#</span> History &amp; Legacy
                     </h2>
                     <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
@@ -162,12 +201,17 @@
 
                 {% if wiki.funny_anecdote %}
                 <!-- Lore & Studio Anecdotes -->
-                <section class="bg-zinc-950/60 border border-zinc-900/80 rounded-2xl p-6 md:p-8 space-y-4 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 rounded-full blur-2xl pointer-events-none"></div>
-                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-900 pb-3 flex items-center gap-2">
+                <section
+                    class="bg-zinc-950/60 border border-zinc-900/80 rounded-2xl p-6 md:p-8 space-y-4 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 rounded-full blur-2xl pointer-events-none">
+                    </div>
+                    <h2
+                        class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-900 pb-3 flex items-center gap-2">
                         <span class="text-yellow-500 font-bold">#</span> Lore &amp; Studio Anecdotes
                     </h2>
-                    <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans italic border-l-2 border-yellow-500/50 pl-4 py-1">
+                    <p
+                        class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans italic border-l-2 border-yellow-500/50 pl-4 py-1">
                         "{{ wiki.funny_anecdote }}"
                     </p>
                 </section>
@@ -175,23 +219,28 @@
 
                 <!-- Hardware Setup Guide -->
                 <section class="bg-zinc-950/60 border border-zinc-900/80 rounded-2xl p-6 md:p-8 space-y-6">
-                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-900 pb-3 flex items-center gap-2">
+                    <h2
+                        class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-900 pb-3 flex items-center gap-2">
                         <span class="text-blue-500 font-bold">#</span> Memory Protect &amp; Setup Routine
                     </h2>
-                    
+
                     <p class="text-2xs font-mono text-zinc-500">
-                        Follow these precise steps on your physical hardware unit to bypass memory protection and allow SysEx backup operations:
+                        Follow these precise steps on your physical hardware unit to bypass memory protection and allow
+                        SysEx backup operations:
                     </p>
-                    
+
                     <div class="space-y-4">
                         {{ seo.docs.content | safe }}
                     </div>
                 </section>
 
                 <!-- Interactive Web MIDI Diagnostics Tool -->
-                <section class="bg-zinc-950/80 border border-blue-500/20 rounded-2xl p-6 md:p-8 space-y-6 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-                    
+                <section
+                    class="bg-zinc-950/80 border border-blue-500/20 rounded-2xl p-6 md:p-8 space-y-6 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none">
+                    </div>
+
                     <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
                         <h2 class="text-xs font-pixel uppercase text-white tracking-wider flex items-center gap-2">
                             <span class="text-blue-400 animate-pulse">●</span> Web MIDI Diagnostics Console
@@ -200,20 +249,25 @@
                     </div>
 
                     <p class="text-2xs text-zinc-400 leading-relaxed font-sans">
-                        Verify your USB-to-MIDI interface, cables, and hardware communication directly from this wiki page. Select your MIDI port, click test, and watch raw bytes flow.
+                        Verify your USB-to-MIDI interface, cables, and hardware communication directly from this wiki
+                        page. Select your MIDI port, click test, and watch raw bytes flow.
                     </p>
 
                     <!-- Midi Device Selectors -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[9px] font-pixel text-zinc-500 uppercase mb-2">MIDI Input Port</label>
-                            <select id="midi-input-select" class="w-full bg-black border border-zinc-800 text-zinc-300 text-xs font-mono rounded-xl p-3 focus:border-blue-500 outline-none">
+                            <label class="block text-[9px] font-pixel text-zinc-500 uppercase mb-2">MIDI Input
+                                Port</label>
+                            <select id="midi-input-select"
+                                class="w-full bg-black border border-zinc-800 text-zinc-300 text-xs font-mono rounded-xl p-3 focus:border-blue-500 outline-none">
                                 <option value="">Detecting devices...</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[9px] font-pixel text-zinc-500 uppercase mb-2">MIDI Output Port</label>
-                            <select id="midi-output-select" class="w-full bg-black border border-zinc-800 text-zinc-300 text-xs font-mono rounded-xl p-3 focus:border-blue-500 outline-none">
+                            <label class="block text-[9px] font-pixel text-zinc-500 uppercase mb-2">MIDI Output
+                                Port</label>
+                            <select id="midi-output-select"
+                                class="w-full bg-black border border-zinc-800 text-zinc-300 text-xs font-mono rounded-xl p-3 focus:border-blue-500 outline-none">
                                 <option value="">Detecting devices...</option>
                             </select>
                         </div>
@@ -221,13 +275,16 @@
 
                     <!-- Diagnostics Controls -->
                     <div class="flex flex-wrap gap-3">
-                        <button id="connect-midi-btn" onclick="startMidiDiagnostics()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white px-4 py-2.5 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors flex items-center gap-2">
+                        <button id="connect-midi-btn" onclick="startMidiDiagnostics()"
+                            class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white px-4 py-2.5 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors flex items-center gap-2">
                             Start MIDI Engine
                         </button>
-                        <button id="send-test-note-btn" onclick="sendTestNote()" disabled class="bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/20 text-blue-400 disabled:opacity-40 px-4 py-2.5 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors">
+                        <button id="send-test-note-btn" onclick="sendTestNote()" disabled
+                            class="bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/20 text-blue-400 disabled:opacity-40 px-4 py-2.5 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors">
                             Send MIDI Test Note
                         </button>
-                        <button onclick="clearConsoleLog()" class="bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 text-zinc-500 px-4 py-2.5 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors">
+                        <button onclick="clearConsoleLog()"
+                            class="bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 text-zinc-500 px-4 py-2.5 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors">
                             Clear Log
                         </button>
                     </div>
@@ -238,7 +295,8 @@
                             <span class="text-[9px] font-pixel text-zinc-500 uppercase">Live SysEx &amp; MIDI Log</span>
                             <span class="text-[9px] font-mono text-zinc-650">Baud: 31250 bps</span>
                         </div>
-                        <div id="midi-log-console" class="h-32 bg-black/95 border border-zinc-900 rounded-xl p-4 font-mono text-2xs text-zinc-400 overflow-y-auto space-y-1.5 scrollbar-thin">
+                        <div id="midi-log-console"
+                            class="h-32 bg-black/95 border border-zinc-900 rounded-xl p-4 font-mono text-2xs text-zinc-400 overflow-y-auto space-y-1.5 scrollbar-thin">
                             <div class="text-zinc-600">&gt; Click "Start MIDI Engine" to activate browser ports...</div>
                         </div>
                     </div>
@@ -250,17 +308,20 @@
                         <h2 class="text-xs font-pixel uppercase text-white tracking-wider flex items-center gap-2">
                             <span class="text-blue-500 font-bold">#</span> Factory Preset Library Explorer
                         </h2>
-                        <span class="text-zinc-650 font-mono text-2xs">{{ wiki.factory_presets|length }} Original Patches</span>
+                        <span class="text-zinc-650 font-mono text-2xs">{{ wiki.factory_presets|length }} Original
+                            Patches</span>
                     </div>
-                    
+
                     <p class="text-2xs text-zinc-400 leading-relaxed font-sans">
-                        Browse the legendary sound banks preloaded in the factory ROM of the {{ wiki.name }}. Click any patch name below to query details:
+                        Browse the legendary sound banks preloaded in the factory ROM of the {{ wiki.name }}. Click any
+                        patch name below to query details:
                     </p>
 
                     <!-- Interactive Patch Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                         {% for patch in wiki.factory_presets %}
-                        <button onclick="selectFactoryPatch('{{ patch }}')" class="bg-black hover:bg-zinc-900/60 border border-zinc-900 hover:border-zinc-800 text-zinc-355 hover:text-white rounded-xl p-3 text-left font-mono text-3xs transition-colors flex items-center justify-between group">
+                        <button onclick="selectFactoryPatch('{{ patch }}')"
+                            class="bg-black hover:bg-zinc-900/60 border border-zinc-900 hover:border-zinc-800 text-zinc-355 hover:text-white rounded-xl p-3 text-left font-mono text-3xs transition-colors flex items-center justify-between group">
                             <span class="truncate pr-2">{{ patch }}</span>
                             <span class="text-zinc-700 group-hover:text-blue-500 font-pixel text-[8px]">&gt;</span>
                         </button>
@@ -268,10 +329,13 @@
                     </div>
 
                     <!-- Selected Patch Card -->
-                    <div id="patch-details-card" class="hidden bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 space-y-3">
+                    <div id="patch-details-card"
+                        class="hidden bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 space-y-3">
                         <div class="flex items-center justify-between">
-                            <h4 id="patch-detail-name" class="text-xs font-pixel text-blue-400 uppercase">Patch Name</h4>
-                            <span id="patch-detail-slot" class="text-[9px] font-mono text-zinc-500 uppercase">Preset Slot</span>
+                            <h4 id="patch-detail-name" class="text-xs font-pixel text-blue-400 uppercase">Patch Name
+                            </h4>
+                            <span id="patch-detail-slot" class="text-[9px] font-mono text-zinc-500 uppercase">Preset
+                                Slot</span>
                         </div>
                         <p id="patch-detail-desc" class="text-xs text-zinc-400 leading-relaxed font-sans">
                             Detailed sonic analysis will render here.
@@ -283,13 +347,13 @@
 
             <!-- Right Column: Sidebar -->
             <div class="space-y-6">
-                
+
                 <!-- Spec Sheet Sidebar Card -->
                 <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-6 glow-card space-y-6">
                     <h3 class="text-xs font-pixel uppercase text-white tracking-wider border-b border-zinc-900 pb-3">
                         Hardware Specs
                     </h3>
-                    
+
                     <div class="space-y-4 font-mono text-2xs">
                         <div class="flex justify-between border-b border-zinc-900/40 pb-2">
                             <span class="text-zinc-550">Manufacturer</span>
@@ -328,7 +392,8 @@
                         Iconic Users
                     </h3>
                     <p class="text-2xs text-zinc-400 leading-relaxed font-sans">
-                        Synthesizers define the eras they inhabit. The {{ wiki.name }} left its sonic footprint on classics by:
+                        Synthesizers define the eras they inhabit. The {{ wiki.name }} left its sonic footprint on
+                        classics by:
                     </p>
                     <div class="space-y-3 font-mono text-2xs">
                         {% for artist in wiki.famous_tracks %}
@@ -343,11 +408,14 @@
                 <!-- Call to Action Vault Card -->
                 <div class="bg-zinc-950 border border-blue-600/30 rounded-2xl p-6 space-y-4 text-center">
                     <span class="text-4xl font-lcd text-blue-400 tracking-wider">31250 bps</span>
-                    <h4 class="text-2xs font-pixel text-white uppercase tracking-wider mt-2">SysEx Backup Cloud Librarian</h4>
+                    <h4 class="text-2xs font-pixel text-white uppercase tracking-wider mt-2">SysEx Backup Cloud
+                        Librarian</h4>
                     <p class="text-3xs text-zinc-400 leading-relaxed font-mono">
-                        Safely archive your custom patches, perform text search in preset names, and restore libraries in 1 click.
+                        Safely archive your custom patches, perform text search in preset names, and restore libraries
+                        in 1 click.
                     </p>
-                    <a href="/signup" class="block w-full bg-white hover:bg-zinc-200 text-black py-3 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors">
+                    <a href="/signup"
+                        class="block w-full bg-white hover:bg-zinc-200 text-black py-3 rounded-xl text-3xs font-pixel uppercase tracking-widest transition-colors">
                         Create Free Vault
                     </a>
                 </div>
@@ -373,13 +441,13 @@
         function logToConsole(message, type = 'info') {
             const consoleLog = document.getElementById('midi-log-console');
             if (!consoleLog) return;
-            
+
             const logLine = document.createElement('div');
             const now = new Date();
             const timeStr = `[${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}]`;
-            
+
             logLine.innerHTML = `<span class="text-zinc-650">${timeStr}</span> `;
-            
+
             if (type === 'error') {
                 logLine.innerHTML += `<span class="text-red-500 font-bold">[ERR] ${message}</span>`;
             } else if (type === 'success') {
@@ -389,7 +457,7 @@
             } else {
                 logLine.innerHTML += `<span class="text-zinc-400">${message}</span>`;
             }
-            
+
             consoleLog.appendChild(logLine);
             consoleLog.scrollTop = consoleLog.scrollHeight;
         }
@@ -403,12 +471,12 @@
 
         function startMidiDiagnostics() {
             logToConsole("Requesting Web MIDI access...");
-            
+
             if (!navigator.requestMIDIAccess) {
                 logToConsole("Your browser does not support the Web MIDI API. Please try Google Chrome or Microsoft Edge.", "error");
                 return;
             }
-            
+
             navigator.requestMIDIAccess({ sysex: true })
                 .then(onMidiSuccess, onMidiFailure);
         }
@@ -416,11 +484,11 @@
         function onMidiSuccess(access) {
             midiAccess = access;
             logToConsole("Web MIDI access granted successfully (SysEx enabled)", "success");
-            
+
             // Listen for device changes
             midiAccess.onstatechange = updateMidiPorts;
             updateMidiPorts();
-            
+
             document.getElementById('send-test-note-btn').disabled = false;
         }
 
@@ -430,14 +498,14 @@
 
         function updateMidiPorts() {
             if (!midiAccess) return;
-            
+
             const inputSelect = document.getElementById('midi-input-select');
             const outputSelect = document.getElementById('midi-output-select');
-            
+
             // Clear existing options
             inputSelect.innerHTML = '';
             outputSelect.innerHTML = '';
-            
+
             const inputs = midiAccess.inputs.values();
             let inputCount = 0;
             for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
@@ -445,12 +513,12 @@
                 opt.value = input.value.id;
                 opt.text = input.value.name || `MIDI Port ${inputCount + 1}`;
                 inputSelect.appendChild(opt);
-                
+
                 // Bind receiver event listener
                 input.value.onmidimessage = handleIncomingMidi;
                 inputCount++;
             }
-            
+
             const outputs = midiAccess.outputs.values();
             let outputCount = 0;
             for (let output = outputs.next(); output && !output.done; output = outputs.next()) {
@@ -460,7 +528,7 @@
                 outputSelect.appendChild(opt);
                 outputCount++;
             }
-            
+
             if (inputCount === 0) {
                 const opt = document.createElement('option');
                 opt.text = "No MIDI input devices detected";
@@ -468,7 +536,7 @@
             } else {
                 logToConsole(`Detected ${inputCount} MIDI inputs and ${outputCount} MIDI outputs.`);
             }
-            
+
             if (outputCount === 0) {
                 const opt = document.createElement('option');
                 opt.text = "No MIDI output devices detected";
@@ -482,36 +550,36 @@
             for (let i = 0; i < data.length; i++) {
                 hexString += data[i].toString(16).toUpperCase().padStart(2, '0') + ' ';
             }
-            
+
             // Limit output length for long bulk dumps to keep browser snappy
             if (data.length > 32) {
                 hexString = hexString.substring(0, 96) + '... (' + data.length + ' bytes)';
             }
-            
+
             logToConsole(`MIDI RX [${data.length} bytes]: ${hexString}`, 'midi');
         }
 
         function sendTestNote() {
             if (!midiAccess) return;
-            
+
             const outputSelect = document.getElementById('midi-output-select');
             const selectedOutputId = outputSelect.value;
             if (!selectedOutputId) {
                 logToConsole("No MIDI output port selected", "error");
                 return;
             }
-            
+
             const output = midiAccess.outputs.get(selectedOutputId);
             if (!output) {
                 logToConsole("Could not retrieve MIDI output interface", "error");
                 return;
             }
-            
+
             logToConsole(`Sending MIDI Test Note: Note ON C3 (60) Channel 1`);
-            
+
             // Note On (0x90), Note C3 (0x3C), Velocity 100 (0x64)
             output.send([0x90, 0x3C, 0x64]);
-            
+
             // Note Off (0x80) after 500ms
             setTimeout(() => {
                 output.send([0x80, 0x3C, 0x40]);
@@ -525,20 +593,20 @@
             const nameEl = document.getElementById('patch-detail-name');
             const slotEl = document.getElementById('patch-detail-slot');
             const descEl = document.getElementById('patch-detail-desc');
-            
+
             if (!card) return;
-            
+
             // Generate some plausible, rich details based on patchName to make it feel super premium
             nameEl.innerText = patchName;
-            
+
             // Extract slot number or index
             const slotNum = patchName.split(' - ')[0] || "ROM Slot";
             slotEl.innerText = `MIDI Program ${slotNum}`;
-            
+
             // Descriptive detail pool based on name matching
             let description = "This patch leverages the unique architectural characteristics of the synth. It is stored as standard binary format in the factory bank.";
             const nameLower = patchName.toLowerCase();
-            
+
             if (nameLower.includes('piano') || nameLower.includes('keys')) {
                 description = "Classic keyboard timbre. Features fast transient response, velocity sensitivity mapping, and expressive dynamic range popular on hit recordings of the 1980s.";
             } else if (nameLower.includes('strings') || nameLower.includes('pad')) {
@@ -554,11 +622,12 @@
             } else if (nameLower.includes('bell') || nameLower.includes('chime')) {
                 description = "Crisp, metallic bell timbre. Exhibits long, glassy sustain decays and high-frequency FM carrier harmonics that cut cleanly through complex arrangements.";
             }
-            
+
             descEl.innerText = description;
             card.classList.remove('hidden');
             card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     </script>
 </body>
+
 </html>

@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - knob.monster</title>
     <link rel="canonical" href="https://knob.monster/login">
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -85,7 +89,9 @@
     </style>
     {% include 'posthog.html' %}
 </head>
-<body class="bg-black text-zinc-100 font-sans antialiased overflow-hidden min-h-screen flex flex-col justify-center items-center relative">
+
+<body
+    class="bg-black text-zinc-100 font-sans antialiased overflow-hidden min-h-screen flex flex-col justify-center items-center relative">
     <!-- Global Dither Overlay -->
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
     <!-- Fancy Mobile Background Pattern -->
@@ -93,20 +99,23 @@
 
     <div class="w-full max-w-sm px-6 py-8 bg-zinc-950 border border-zinc-900 rounded-2xl shadow-2xl relative z-10">
         <div class="text-center mb-8">
-            <img src="/static/logo.avif" alt="Knob Monster Logo" class="h-10 w-auto mx-auto object-contain mb-3">
+            <img src="/static/logo.svg" alt="Knob Monster Logo" class="h-10 w-auto mx-auto object-contain mb-3">
             <h2 class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</h2>
-            <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Sign in to sync your synths</p>
+            <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Sign in to sync your synths
+            </p>
         </div>
 
         {% if error %}
-        <div class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">
+        <div
+            class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">
             {{ error }}
         </div>
         {% endif %}
 
         <form action="/login" method="POST" class="space-y-4">
             <div>
-                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email Address</label>
+                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email
+                    Address</label>
                 <input type="email" name="email" required placeholder="name@domain.com"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
             </div>
@@ -114,8 +123,8 @@
             <div>
                 <div class="flex justify-between items-center mb-1.5">
                     <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest">Password</label>
-                    <a href="mailto:halfradiationllc@gmail.com?subject=Password%20Reset%20-%20knob.monster&body=Hello%20support%2C%0A%0AI%20forgot%20my%20password%20for%20my%20knob.monster%20account.%20Please%20help%20me%20reset%20it.%0A%0AMy%20account%20email%3A%20" 
-                       class="text-[8px] font-pixel text-zinc-500 hover:text-white uppercase tracking-widest transition-colors">
+                    <a href="mailto:halfradiationllc@gmail.com?subject=Password%20Reset%20-%20knob.monster&body=Hello%20support%2C%0A%0AI%20forgot%20my%20password%20for%20my%20knob.monster%20account.%20Please%20help%20me%20reset%20it.%0A%0AMy%20account%20email%3A%20"
+                        class="text-[8px] font-pixel text-zinc-500 hover:text-white uppercase tracking-widest transition-colors">
                         Forgot?
                     </a>
                 </div>
@@ -133,6 +142,7 @@
             Don't have an account? <a href="/signup" class="text-white hover:underline">Register</a>
         </p>
     </div>
-{% include "mobile_nav.html" %}
+    {% include "mobile_nav.html" %}
 </body>
+
 </html>

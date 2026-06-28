@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resources | knob.monster</title>
     <link rel="canonical" href="https://knob.monster/resources">
-    <meta name="description" content="Access setup guides, deep-dives, protocol explanations, and software comparisons for vintage synthesizer SysEx backups.">
+    <meta name="description"
+        content="Access setup guides, deep-dives, protocol explanations, and software comparisons for vintage synthesizer SysEx backups.">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
 
     <!-- Fonts -->
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -68,9 +73,15 @@
 
         /* 3D spin animation for logo */
         @keyframes logo-spin {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
         }
+
         .spin-logo {
             animation: logo-spin 8s linear infinite;
             transform-style: preserve-3d;
@@ -96,14 +107,20 @@
 
         .glow-card {
             position: relative;
-            box-shadow: 4px 4px 0px 0px #18181b; /* Hard zinc-900 shadow */
-            transition: none; /* Instant 8-bit response */
+            box-shadow: 4px 4px 0px 0px #18181b;
+            /* Hard zinc-900 shadow */
+            transition: none;
+            /* Instant 8-bit response */
         }
+
         .glow-card:hover {
             transform: translate(-2px, -2px);
-            border-color: #3b83f6; /* Blue-500 border */
-            box-shadow: 6px 6px 0px 0px #3b83f6; /* Hard blue shadow */
+            border-color: #3b83f6;
+            /* Blue-500 border */
+            box-shadow: 6px 6px 0px 0px #3b83f6;
+            /* Hard blue shadow */
         }
+
         .glow-card:active {
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0px 0px #3b83f6;
@@ -111,6 +128,7 @@
     </style>
     {% include 'posthog.html' %}
 </head>
+
 <body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
 
     <!-- Global Dither Overlay -->
@@ -119,17 +137,28 @@
     <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
 
     <!-- Sticky Header -->
-    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <a href="/" class="flex items-center gap-2.5 group">
-                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
-                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
                 </a>
             </div>
 
@@ -164,14 +193,17 @@
     <main class="max-w-4xl mx-auto px-6 py-20 relative z-10">
         <!-- Title Header -->
         <article class="space-y-6 text-center mb-20">
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+            <span
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
                 Knowledge Base
             </span>
-            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
+            <h1
+                class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
                 Guides, Deep-Dives <br class="hidden sm:inline"> &amp; Resources
             </h1>
             <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
-                Everything you need to configure vintage synthesizer hardware, understand Web MIDI protocol engineering, and explore standard alternatives.
+                Everything you need to configure vintage synthesizer hardware, understand Web MIDI protocol engineering,
+                and explore standard alternatives.
             </p>
         </article>
 
@@ -185,58 +217,82 @@
                     <span class="text-zinc-600 font-mono text-2xs">3 Articles</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    
+
                     <!-- Yamaha DX7 Guide -->
-                    <a href="/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide" id="resources-guide-dx7" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide" id="resources-guide-dx7"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Hardware</span>
+                                <span
+                                    class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Hardware</span>
                                 <span class="text-zinc-600 font-mono text-2xs">1983</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">Yamaha DX7 Backup Guide</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Yamaha DX7 Backup Guide</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                Step-by-step physical configuration to disable internal Memory Protect and configure function registers for SysEx.
+                                Step-by-step physical configuration to disable internal Memory Protect and configure
+                                function registers for SysEx.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read Guide</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Guide</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
                     <!-- Roland Juno-106 Guide -->
-                    <a href="/how-to-backup-roland-juno-106-presets-sysex-transfer-guide" id="resources-guide-juno" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/how-to-backup-roland-juno-106-presets-sysex-transfer-guide" id="resources-guide-juno"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Hardware</span>
+                                <span
+                                    class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Hardware</span>
                                 <span class="text-zinc-600 font-mono text-2xs">1984</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">Juno-106 Preset Transfer</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Juno-106 Preset Transfer</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                Enable raw SysEx data transfer using the rear function switch and avoid filter/patch bank loading lockouts.
+                                Enable raw SysEx data transfer using the rear function switch and avoid filter/patch
+                                bank loading lockouts.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read Guide</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Guide</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
                     <!-- Korg M1 Guide -->
-                    <a href="/how-to-backup-korg-m1-presets-sysex-transfer-guide" id="resources-guide-m1" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/how-to-backup-korg-m1-presets-sysex-transfer-guide" id="resources-guide-m1"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Hardware</span>
+                                <span
+                                    class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Hardware</span>
                                 <span class="text-zinc-600 font-mono text-2xs">1988</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">Korg M1 Setup Routine</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Korg M1 Setup Routine</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                Configure page parameters, set MIDI filters, and switch memory protect status on classic Korg workstation units.
+                                Configure page parameters, set MIDI filters, and switch memory protect status on classic
+                                Korg workstation units.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read Guide</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Guide</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
@@ -246,44 +302,63 @@
             <!-- Section 2: Interactive Diagnostic Tools -->
             <section class="space-y-8">
                 <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
-                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">II. Interactive Tools &amp; Diagnostics</h2>
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">II. Interactive Tools &amp;
+                        Diagnostics</h2>
                     <span class="text-zinc-600 font-mono text-2xs">2 Tools</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
+
                     <!-- Battery Health Calculator -->
-                    <a href="/why-your-vintage-synth-battery-is-killing-your-sounds" id="resources-tool-battery" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/why-your-vintage-synth-battery-is-killing-your-sounds" id="resources-tool-battery"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-red-400 bg-red-500/10 border border-red-500/25 px-2 py-0.5 rounded-md uppercase">Interactive Calculator</span>
+                                <span
+                                    class="text-[9px] font-pixel text-red-400 bg-red-500/10 border border-red-500/25 px-2 py-0.5 rounded-md uppercase">Interactive
+                                    Calculator</span>
                                 <span class="text-zinc-600 font-mono text-2xs">SRAM Preserver</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">Internal Battery Health Calculator</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Internal Battery Health Calculator</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                Calculate your synthesizer's internal voltage decay rate and SRAM data corruption risk curves based on model age and temperature storage factors.
+                                Calculate your synthesizer's internal voltage decay rate and SRAM data corruption risk
+                                curves based on model age and temperature storage factors.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Launch Tool</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Launch
+                                Tool</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
                     <!-- Juno-106 Diagnostic Flowsheet -->
-                    <a href="/how-to-fix-juno-106-memory-loss-troubleshooting-guide" id="resources-tool-juno-diag" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/how-to-fix-juno-106-memory-loss-troubleshooting-guide" id="resources-tool-juno-diag"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Interactive Troubleshooter</span>
+                                <span
+                                    class="text-[9px] font-pixel text-blue-400 bg-blue-500/10 border border-blue-500/25 px-2 py-0.5 rounded-md uppercase">Interactive
+                                    Troubleshooter</span>
                                 <span class="text-zinc-600 font-mono text-2xs">Juno-106 Diagnostic</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">Juno-106 Memory Loss Diagnostic Flow</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Juno-106 Memory Loss Diagnostic Flow</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                Troubleshoot blank displays, garbled patch lists, and hardware protect write lockouts step-by-step to compile a custom repair protocol.
+                                Troubleshoot blank displays, garbled patch lists, and hardware protect write lockouts
+                                step-by-step to compile a custom repair protocol.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Launch Troubleshooter</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Launch
+                                Troubleshooter</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
@@ -296,25 +371,34 @@
                     <h2 class="text-xs font-pixel uppercase text-white tracking-wider">III. Technical Deep-Dives</h2>
                     <span class="text-zinc-600 font-mono text-2xs">1 Article</span>
                 </div>
-                
-                <a href="/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer" id="resources-deepdive-midi" class="block bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-3xl p-8 glow-card group relative overflow-hidden">
-                    <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+                <a href="/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer" id="resources-deepdive-midi"
+                    class="block bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-3xl p-8 glow-card group relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]">
+                    </div>
                     <div class="space-y-4 max-w-2xl relative z-10">
                         <div class="flex items-center gap-3">
-                            <span class="text-[9px] font-pixel text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-md uppercase">Blog Post</span>
+                            <span
+                                class="text-[9px] font-pixel text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-md uppercase">Blog
+                                Post</span>
                             <span class="text-zinc-600 font-mono text-2xs">5 Min Read</span>
                         </div>
-                        <h3 class="text-base md:text-lg font-pixel text-white uppercase tracking-tight leading-none group-hover:text-blue-400 transition-colors">
+                        <h3
+                            class="text-base md:text-lg font-pixel text-white uppercase tracking-tight leading-none group-hover:text-blue-400 transition-colors">
                             How we prevent Web MIDI from crashing a 1983 synthesizer
                         </h3>
                         <p class="text-xs text-zinc-300 leading-relaxed font-mono">
-                            We open-source our engineering protocol: packet throttling, millisecond buffer delays, and customized sysex framing engineered to bypass vintage CPU limitations.
+                            We open-source our engineering protocol: packet throttling, millisecond buffer delays, and
+                            customized sysex framing engineered to bypass vintage CPU limitations.
                         </p>
                     </div>
 
                     <div class="mt-8 border-t border-zinc-900/80 pt-6 flex items-center justify-between relative z-10">
-                        <span class="text-xs font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read Technical Article</span>
-                        <span class="text-zinc-600 font-pixel text-xs group-hover:translate-x-1.5 transition-transform">-></span>
+                        <span class="text-xs font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                            Technical Article</span>
+                        <span
+                            class="text-zinc-600 font-pixel text-xs group-hover:translate-x-1.5 transition-transform">-></span>
                     </div>
                 </a>
             </section>
@@ -322,63 +406,85 @@
             <!-- Section 4: Comparisons -->
             <section class="space-y-8">
                 <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
-                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">IV. Comparisons &amp; Alternatives</h2>
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">IV. Comparisons &amp;
+                        Alternatives</h2>
                     <span class="text-zinc-600 font-mono text-2xs">3 Articles</span>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    
+
                     <!-- General Alternatives Guide -->
-                    <a href="/sysex-librarian-alternatives" id="resources-alt-general" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/sysex-librarian-alternatives" id="resources-alt-general"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-zinc-400 bg-zinc-800/30 border border-zinc-700/50 px-2 py-0.5 rounded-md uppercase">Overview</span>
+                                <span
+                                    class="text-[9px] font-pixel text-zinc-400 bg-zinc-800/30 border border-zinc-700/50 px-2 py-0.5 rounded-md uppercase">Overview</span>
                                 <span class="text-zinc-600 font-mono text-2xs">Universal</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">Universal SysEx Alternatives</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Universal SysEx Alternatives</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                The ultimate review of classic desktop utilities, modern VSTs, and why cloud sync beats offline file directories.
+                                The ultimate review of classic desktop utilities, modern VSTs, and why cloud sync beats
+                                offline file directories.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
                     <!-- Snoize vs knob.monster -->
-                    <a href="/knob-monster-vs-snoize-sysex-librarian" id="resources-alt-snoize" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/knob-monster-vs-snoize-sysex-librarian" id="resources-alt-snoize"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-zinc-400 bg-zinc-800/30 border border-zinc-700/50 px-2 py-0.5 rounded-md uppercase">Comparison</span>
+                                <span
+                                    class="text-[9px] font-pixel text-zinc-400 bg-zinc-800/30 border border-zinc-700/50 px-2 py-0.5 rounded-md uppercase">Comparison</span>
                                 <span class="text-zinc-600 font-mono text-2xs">macOS</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">Snoize vs. knob.monster</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Snoize vs. knob.monster</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                Head-to-head comparison: Apple CoreMIDI offline utility versus cross-platform Web MIDI browser vaults.
+                                Head-to-head comparison: Apple CoreMIDI offline utility versus cross-platform Web MIDI
+                                browser vaults.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
                     <!-- MIDI-OX vs knob.monster -->
-                    <a href="/knob-monster-vs-midi-ox" id="resources-alt-midiox" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/knob-monster-vs-midi-ox" id="resources-alt-midiox"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-pixel text-zinc-400 bg-zinc-800/30 border border-zinc-700/50 px-2 py-0.5 rounded-md uppercase">Comparison</span>
+                                <span
+                                    class="text-[9px] font-pixel text-zinc-400 bg-zinc-800/30 border border-zinc-700/50 px-2 py-0.5 rounded-md uppercase">Comparison</span>
                                 <span class="text-zinc-600 font-mono text-2xs">Windows</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">MIDI-OX vs. knob.monster</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                MIDI-OX vs. knob.monster</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
-                                Comparing the legendary 32-bit Windows system software with instant, driver-less browser-native backups.
+                                Comparing the legendary 32-bit Windows system software with instant, driver-less
+                                browser-native backups.
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
 
@@ -388,13 +494,15 @@
             <!-- Section 5: The Vintage Synth Wiki -->
             <section class="space-y-8">
                 <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
-                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">V. Vintage Synth Wiki &amp; Database</h2>
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">V. Vintage Synth Wiki &amp;
+                        Database</h2>
                     <span class="text-zinc-600 font-mono text-2xs">{{ wiki_synths|length }} Hardware Profiles</span>
                 </div>
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {% for synth in wiki_synths %}
-                    <a href="/{{ synth.slug }}" id="resources-wiki-{{ synth.slug }}" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                    <a href="/{{ synth.slug }}" id="resources-wiki-{{ synth.slug }}"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <span class="text-[9px] font-pixel px-2 py-0.5 rounded-md uppercase 
@@ -409,14 +517,19 @@
                                 </span>
                                 <span class="text-zinc-650 font-mono text-[9px] uppercase">Wiki Profile</span>
                             </div>
-                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">{{ synth.name }}</h3>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                {{ synth.name }}</h3>
                             <p class="text-xs text-zinc-400 leading-relaxed font-sans">
                                 {{ synth.description }}
                             </p>
                         </div>
                         <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
-                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read Wiki &amp; Setup</span>
-                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Wiki &amp; Setup</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
                         </div>
                     </a>
                     {% endfor %}
@@ -428,7 +541,8 @@
         <!-- Call to Action -->
         <div class="mt-20 pt-12 border-t border-zinc-900 text-center space-y-6">
             <h3 class="text-sm font-pixel uppercase text-white tracking-wider">Ready to back up your hardware?</h3>
-            <a href="/signup" class="inline-flex bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 shadow-lg">
+            <a href="/signup"
+                class="inline-flex bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 shadow-lg">
                 Sign Up
             </a>
         </div>
@@ -453,7 +567,7 @@
                 if (data.country_name && data.country) {
                     const country = data.country_name;
                     const code = data.country.toLowerCase();
-                    
+
                     let countryName = country;
                     if (code === 'us') countryName = 'the USA';
                     else if (code === 'gb') countryName = 'the UK';
@@ -480,18 +594,18 @@
             const email = emailInput.value.trim();
             const statusDiv = document.getElementById('footer-subscribe-status');
             const submitBtn = document.getElementById('footer-subscribe-btn');
-            
+
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email || !emailRegex.test(email)) {
                 statusDiv.textContent = "that.. doesn't look like an email address. Want to double check?";
                 statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
                 return;
             }
-            
+
             statusDiv.textContent = "Connecting to preset database...";
             statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
             submitBtn.disabled = true;
-            
+
             fetch('/subscribe', {
                 method: 'POST',
                 headers: {
@@ -499,25 +613,26 @@
                 },
                 body: `email=${encodeURIComponent(email)}`
             })
-            .then(res => {
-                if (res.ok) {
-                    statusDiv.textContent = "Success! Vault connection established. You're on the list.";
-                    statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
-                    form.reset();
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(() => {
-                statusDiv.textContent = "Oops, connection dropped. Give it another shot?";
-                statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-            });
+                .then(res => {
+                    if (res.ok) {
+                        statusDiv.textContent = "Success! Vault connection established. You're on the list.";
+                        statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                        form.reset();
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    statusDiv.textContent = "Oops, connection dropped. Give it another shot?";
+                    statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
         }
     </script>
     {% include 'visitor_avatar.html' %}
     {% include "mobile_nav.html" %}
 </body>
+
 </html>

@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How do you keep Web MIDI from crashing a 1983 synthesizer? | knob.monster</title>
     <link rel="canonical" href="https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer">
-    <meta name="description" content="Why writing Web MIDI code for 8-bit CPUs from 1983 is a nightmare. Flow control, timing pacing, and proprietary vendor SysEx parsing in JavaScript.">
-    <meta name="keywords" content="web midi, sysex librarian, midi buffer full, yamaha dx7 midi, roland juno-106 sysex, retrocomputing, midi flow control">
+    <meta name="description"
+        content="Why writing Web MIDI code for 8-bit CPUs from 1983 is a nightmare. Flow control, timing pacing, and proprietary vendor SysEx parsing in JavaScript.">
+    <meta name="keywords"
+        content="web midi, sysex librarian, midi buffer full, yamaha dx7 midi, roland juno-106 sysex, retrocomputing, midi flow control">
 
     <!-- Open Graph Metadata -->
     <meta property="og:title" content="How do you keep Web MIDI from crashing a 1983 synthesizer? | knob.monster">
-    <meta property="og:description" content="Why writing Web MIDI code for 8-bit CPUs from 1983 is a nightmare. Flow control, timing pacing, and proprietary vendor SysEx parsing in JavaScript.">
+    <meta property="og:description"
+        content="Why writing Web MIDI code for 8-bit CPUs from 1983 is a nightmare. Flow control, timing pacing, and proprietary vendor SysEx parsing in JavaScript.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer">
     <meta property="og:image" content="https://knob.monster/static/og_banner.png">
@@ -19,8 +23,11 @@
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
 
     <!-- Fonts -->
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -92,9 +99,15 @@
 
         /* 3D spin animation for logo */
         @keyframes logo-spin {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
         }
+
         .spin-logo {
             animation: logo-spin 8s linear infinite;
             transform-style: preserve-3d;
@@ -121,7 +134,9 @@
     </style>
     {% include 'posthog.html' %}
 </head>
-<body class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-emerald-500/20 selection:text-white">
+
+<body
+    class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-emerald-500/20 selection:text-white">
 
     <!-- Global Dither Overlay -->
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
@@ -129,17 +144,28 @@
     <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
 
     <!-- Sticky Header -->
-    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <a href="/" class="flex items-center gap-2.5 group">
-                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.avif" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
-                        <img src="/static/logo.avif" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
-                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
                 </a>
             </div>
 
@@ -175,7 +201,8 @@
         <!-- Post Header -->
         <article class="space-y-6 text-left mb-16">
             <div class="flex items-center gap-3">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+                <span
+                    class="inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
                     Engineering
                 </span>
                 <span class="text-xs font-mono text-zinc-500">June 23, 2026</span>
@@ -184,39 +211,50 @@
                 How do you keep Web MIDI from crashing a 1983 synthesizer?
             </h1>
             <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
-                Why writing Web MIDI code for 8-bit CPUs from the 1980s is an absolute timing nightmare, and how to safely control data flows on vintage hardware directly from your browser.
+                Why writing Web MIDI code for 8-bit CPUs from the 1980s is an absolute timing nightmare, and how to
+                safely control data flows on vintage hardware directly from your browser.
             </p>
         </article>
 
         <!-- Post Content -->
         <section class="space-y-8 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal">
             <p>
-                Modern browsers run fast. Your system processor operates in gigahertz, handles multi-threaded operations, and loads gigabytes of data in milliseconds. 
+                Modern browsers run fast. Your system processor operates in gigahertz, handles multi-threaded
+                operations, and loads gigabytes of data in milliseconds.
             </p>
             <p>
-                The microprocessor inside a vintage 1983 <strong>Yamaha DX7</strong> is an 8-bit Hitachi 6305 running at a clock speed of 2 MHz, with a tiny 256-byte RAM buffer.
+                The microprocessor inside a vintage 1983 <strong>Yamaha DX7</strong> is an 8-bit Hitachi 6305 running at
+                a clock speed of 2 MHz, with a tiny 256-byte RAM buffer.
             </p>
             <p>
-                When you try to bridge these two eras using the modern <strong>Web MIDI API</strong>, you run headfirst into a classic retrocomputing bottleneck: <em>buffer overflow</em>. Send data too fast, and the synthesizer’s CPU hangs, drops packages, or corrupts the internal sound memory completely.
+                When you try to bridge these two eras using the modern <strong>Web MIDI API</strong>, you run headfirst
+                into a classic retrocomputing bottleneck: <em>buffer overflow</em>. Send data too fast, and the
+                synthesizer’s CPU hangs, drops packages, or corrupts the internal sound memory completely.
             </p>
-            
+
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
                 1. The Death of Flow Control (and the $5 Cable Problem)
             </h2>
             <p>
-                In the 80s, MIDI physical hardware operated over a current loop running at 31,250 bits per second. While slow, the bandwidth was constant and predictable. 
+                In the 80s, MIDI physical hardware operated over a current loop running at 31,250 bits per second. While
+                slow, the bandwidth was constant and predictable.
             </p>
             <p>
-                Today, most computer music setups use modern USB-to-MIDI adapters. Modern computers send USB packets at lightning-fast speeds. A cheap, bufferless adapter receives the data at high USB bandwidths, and instantly attempts to serialize and dump it down the MIDI out pin.
+                Today, most computer music setups use modern USB-to-MIDI adapters. Modern computers send USB packets at
+                lightning-fast speeds. A cheap, bufferless adapter receives the data at high USB bandwidths, and
+                instantly attempts to serialize and dump it down the MIDI out pin.
             </p>
             <p>
-                Because standard MIDI lacks hardware handshaking lines (no RTS/CTS pins), there's no physical way for the DX7 to tell the browser: <em>"Hey, stop sending data, I'm writing the last preset block to SRAM right now."</em>
+                Because standard MIDI lacks hardware handshaking lines (no RTS/CTS pins), there's no physical way for
+                the DX7 to tell the browser: <em>"Hey, stop sending data, I'm writing the last preset block to SRAM
+                    right now."</em>
             </p>
             <p>
                 To solve this in JavaScript, we have to enforce a custom software flow throttle:
             </p>
 
-            <pre class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 overflow-x-auto text-xs font-mono text-emerald-400">
+            <pre
+                class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 overflow-x-auto text-xs font-mono text-emerald-400">
 // Chunking and pacing SysEx transmission arrays
 async function sendSysExWithPacing(midiOutput, rawSysExBytes) {
     const CHUNK_SIZE = 256; // Limit blocks to prevent buffer floods
@@ -235,38 +273,55 @@ async function sendSysExWithPacing(midiOutput, rawSysExBytes) {
                 2. Vendor-Specific Hex Parsers
             </h2>
             <p>
-                Once you establish a reliable hardware communication link, the next hurdle is decoding the data. Back in the 80s, the MIDI spec defined how notes were triggered, but left the system exclusive (SysEx) parameter format entirely up to manufacturers.
+                Once you establish a reliable hardware communication link, the next hurdle is decoding the data. Back in
+                the 80s, the MIDI spec defined how notes were triggered, but left the system exclusive (SysEx) parameter
+                format entirely up to manufacturers.
             </p>
             <p>
                 This means every single vintage synthesizer has its own undocumented, proprietary byte structure:
             </p>
             <ul class="list-disc list-inside space-y-2 pl-4 text-xs font-mono text-zinc-400">
-                <li><strong class="text-white">Yamaha DX7:</strong> Spits out exactly 4104 bytes (6-byte header, 4096-byte parameter data, 1 checksum byte, 1 stop byte). The final 10 bytes of each of the 32 voice slots contain ASCII data representing the patch name.</li>
-                <li><strong class="text-white">Roland Juno-106:</strong> Does not even support remote dump requests. The synth only speaks when manually prompted: the user has to physically click the 'WRITE' key on the panel to stream its current patch memory.</li>
-                <li><strong class="text-white">Korg M1:</strong> Uses a packed 7-bit architecture. Because MIDI status bytes must have the highest bit set to 0, data words are grouped in blocks of 7, with the 8th bits unpacked and appended separately. We had to write custom bit-shifting array decoders in JS just to parse the characters.</li>
+                <li><strong class="text-white">Yamaha DX7:</strong> Spits out exactly 4104 bytes (6-byte header,
+                    4096-byte parameter data, 1 checksum byte, 1 stop byte). The final 10 bytes of each of the 32 voice
+                    slots contain ASCII data representing the patch name.</li>
+                <li><strong class="text-white">Roland Juno-106:</strong> Does not even support remote dump requests. The
+                    synth only speaks when manually prompted: the user has to physically click the 'WRITE' key on the
+                    panel to stream its current patch memory.</li>
+                <li><strong class="text-white">Korg M1:</strong> Uses a packed 7-bit architecture. Because MIDI status
+                    bytes must have the highest bit set to 0, data words are grouped in blocks of 7, with the 8th bits
+                    unpacked and appended separately. We had to write custom bit-shifting array decoders in JS just to
+                    parse the characters.</li>
             </ul>
 
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-6 border-b border-zinc-900 pb-2">
                 3. Browser Security Restrictions
             </h2>
             <p>
-                Because Web MIDI allows a website to flash firmware or write raw system-exclusive bytes directly to external physical USB hardware, browsers treat it with extreme security care. 
+                Because Web MIDI allows a website to flash firmware or write raw system-exclusive bytes directly to
+                external physical USB hardware, browsers treat it with extreme security care.
             </p>
             <p>
-                Browsers like Google Chrome and Microsoft Edge require explicit user approval via permissions before allowing websites to communicate over MIDI. Safari and Firefox block the Web MIDI API entirely out of caution regarding fingerprinting and hardware injection vulnerabilities.
+                Browsers like Google Chrome and Microsoft Edge require explicit user approval via permissions before
+                allowing websites to communicate over MIDI. Safari and Firefox block the Web MIDI API entirely out of
+                caution regarding fingerprinting and hardware injection vulnerabilities.
             </p>
 
             <!-- Call to Action Box -->
-            <div class="my-10 p-6 bg-zinc-950 border border-zinc-900 rounded-2xl relative overflow-hidden text-center space-y-4">
-                <span class="text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2 py-0.5 rounded uppercase tracking-wider">
+            <div
+                class="my-10 p-6 bg-zinc-950 border border-zinc-900 rounded-2xl relative overflow-hidden text-center space-y-4">
+                <span
+                    class="text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2 py-0.5 rounded uppercase tracking-wider">
                     Instant Cloud Backups
                 </span>
                 <h3 class="text-md font-pixel text-white uppercase">Tired of vintage SysEx headaches?</h3>
                 <p class="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
-                    We built <strong>knob.monster</strong> to replace dusty unsigned desktop utilities. Connect your hardware synthesizer directly to a browser tab, click back up, and organize your presets in a modern, searchable cloud library.
+                    We built <strong>knob.monster</strong> to replace dusty unsigned desktop utilities. Connect your
+                    hardware synthesizer directly to a browser tab, click back up, and organize your presets in a
+                    modern, searchable cloud library.
                 </p>
                 <div class="pt-2">
-                    <a href="/signup" class="inline-flex bg-white hover:bg-zinc-200 text-black px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 shadow-sm">
+                    <a href="/signup"
+                        class="inline-flex bg-white hover:bg-zinc-200 text-black px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 shadow-sm">
                         Connect Your Synth Now &rarr;
                     </a>
                 </div>
@@ -275,14 +330,15 @@ async function sendSysExWithPacing(midiOutput, rawSysExBytes) {
 
         <!-- Back Link -->
         <div class="mt-20 mb-10 text-center">
-            <a href="/" class="inline-flex border border-zinc-800 hover:border-zinc-500 text-white px-6 py-3 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95">
+            <a href="/"
+                class="inline-flex border border-zinc-800 hover:border-zinc-500 text-white px-6 py-3 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95">
                 &larr; Back to home
             </a>
         </div>
     </main>
 
     <!-- Footer -->
-        {% include "footer.html" %}
+    {% include "footer.html" %}
 
     <script>
         // Call the secure same-origin server-side proxy to get geoip details
@@ -299,7 +355,7 @@ async function sendSysExWithPacing(midiOutput, rawSysExBytes) {
                 if (data.country_name && data.country) {
                     const country = data.country_name;
                     const code = data.country.toLowerCase();
-                    
+
                     let countryName = country;
                     if (code === 'us') countryName = 'the USA';
                     else if (code === 'gb') countryName = 'the UK';
@@ -326,18 +382,18 @@ async function sendSysExWithPacing(midiOutput, rawSysExBytes) {
             const email = emailInput.value.trim();
             const statusDiv = document.getElementById('footer-subscribe-status');
             const submitBtn = document.getElementById('footer-subscribe-btn');
-            
+
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email || !emailRegex.test(email)) {
                 statusDiv.textContent = "that.. doesn't look like an email address. Want to double check?";
                 statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
                 return;
             }
-            
+
             statusDiv.textContent = "Connecting to preset database...";
             statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
             submitBtn.disabled = true;
-            
+
             fetch('/subscribe', {
                 method: 'POST',
                 headers: {
@@ -345,25 +401,26 @@ async function sendSysExWithPacing(midiOutput, rawSysExBytes) {
                 },
                 body: `email=${encodeURIComponent(email)}`
             })
-            .then(res => {
-                if (res.ok) {
-                    statusDiv.textContent = "Success! Vault connection established. You're on the list.";
-                    statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
-                    form.reset();
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(() => {
-                statusDiv.textContent = "Oops, connection dropped. Give it another shot?";
-                statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-            });
+                .then(res => {
+                    if (res.ok) {
+                        statusDiv.textContent = "Success! Vault connection established. You're on the list.";
+                        statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                        form.reset();
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    statusDiv.textContent = "Oops, connection dropped. Give it another shot?";
+                    statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
         }
     </script>
     {% include 'visitor_avatar.html' %}
-{% include "mobile_nav.html" %}
+    {% include "mobile_nav.html" %}
 </body>
+
 </html>

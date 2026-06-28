@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsubscribed | knob.monster</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+
+    <!-- Vercel Geist Fonts -->
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Retro Pixel Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+        }
+
+        .font-pixel {
+            font-family: 'Silkscreen', monospace;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-[#0b0b0f] text-zinc-300 min-h-screen flex flex-col justify-between selection:bg-zinc-800 selection:text-white">
+    <div class="flex-1 flex flex-col items-center justify-center px-6 py-20">
+        <!-- Logo -->
+        <div class="mb-8">
+            <a href="/" class="inline-flex items-center gap-2">
+                <img src="/static/logo.svg" alt="Knob Monster Logo" class="h-5 w-auto object-contain">
+                <span class="font-pixel uppercase text-xs text-white tracking-widest">knob.monster</span>
+            </a>
+        </div>
+
+        <div class="max-w-md w-full border border-zinc-900 bg-zinc-950/40 p-8 rounded-2xl text-center space-y-6">
+            <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-zinc-900 border border-zinc-800 text-lg">
+                👋
+            </span>
+            <div class="space-y-2">
+                <h1 class="text-xl font-pixel uppercase text-white tracking-tight">Unsubscribed</h1>
+                <p class="text-xs text-zinc-400 font-mono uppercase tracking-wider">
+                    {% if email %}{{ email }}{% else %}your email{% endif %} has been removed from our newsletter.
+                </p>
+            </div>
+            <p class="text-xs text-zinc-500 leading-relaxed font-sans">
+                You will no longer receive weekly hardware anecdotes, tips, or opinion pieces. You can still access your dashboard and use all free or premium features of the platform at any time.
+            </p>
+            <div class="pt-4">
+                <a href="/" class="inline-flex items-center justify-center px-6 py-2 rounded-full bg-white hover:bg-zinc-200 text-black text-2xs font-pixel uppercase tracking-wider transition-all duration-200">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

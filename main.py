@@ -356,7 +356,7 @@ SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.resend.com")
 SMTP_PORT = os.environ.get("SMTP_PORT", "587")
 SMTP_USER = os.environ.get("SMTP_USER", "resend")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa")
-SMTP_FROM = os.environ.get("SMTP_FROM", "support@knob.monster")
+SMTP_FROM = os.environ.get("SMTP_FROM", "knob.monster <vault@knob.monster>")
 
 # Initialize database on startup
 @app.on_event("startup")
@@ -2595,6 +2595,286 @@ async def trigger_drip_cron(request: Request):
         
     sent_count = await run_drip_check()
     return {"status": "success", "emails_sent": sent_count}
+
+NEWSLETTER_TOPICS = [
+    "why the DX7 FM synthesis is notoriously hard to program and how to think about operators",
+    "the ticking timebomb of NiCad batteries in vintage synths and the horror of ruined mainboards",
+    "how vintage floppy disk libraries were organized and the sound of a floppy drive seek",
+    "the charm of early digital-to-analog converters like 12-bit DACs in the DSS-1 or Prophet-VS",
+    "how Web MIDI communicates directly from the browser without any drivers",
+    "the legendary Lately Bass patch on the TX81Z and why it defined 90s dance music",
+    "the secret sauce of the Roland Juno-106 chorus circuit and its noisy buckets",
+    "the struggle of saving patches to cassette tapes in the early 80s and the high-pitched screech",
+    "why sysex dumps fail midway due to buffer overflows on old MIDI interfaces",
+    "the Korg M1 Universe preset and how PCM samples changed the industry overnight"
+]
+
+def generate_newsletter_content_via_gemini() -> dict:
+    import urllib.request
+    import urllib.error
+    import json
+    import random
+    
+    # Retrieve OpenRouter configuration from environment or fallback defaults
+    api_key = os.environ.get(
+        "OPENROUTER_API_KEY", 
+        "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"
+    )
+    model = os.environ.get("OPENROUTER_MODEL", "google/gemini-3.1-flash-lite")
+    
+    fallback_newsletter = {
+        "subject": "the ticking timebomb inside your 80s synthesizers",
+        "body": """hey there,
+
+if you own a roland juno-106, a korg poly-61, or a yamaha dx7, there is a silent killer sitting on the mainboard right now. it's the internal nickel-cadmium (NiCad) or lithium backup battery.
+
+over time, these old batteries leak corrosive acid that eats through copper traces, destroying mainboards beyond repair. and even if it doesn't leak, once that battery dies, all your custom patches are wiped instantly.
+
+protect your history. connect your synth to knob.monster, back up your custom patches to the cloud in one click, and rest easy knowing they are preserved forever.
+
+upload your patches now:
+👉 https://knob.monster/dashboard
+
+keep the analog alive,
+knob.monster preservation vault
+
+---
+to stop receiving these, you can unsubscribe instantly at:
+https://knob.monster/unsubscribe?email={{recipient_email}}
+"""
+    }
+
+    if not api_key:
+        logger.warning("OpenRouter API key is not set. Generating fallback mockup newsletter.")
+        return fallback_newsletter
+
+    url = "https://openrouter.ai/api/v1/chat/completions"
+    
+    selected_topic = random.choice(NEWSLETTER_TOPICS)
+    logger.info(f"Selected weekly newsletter topic: {selected_topic}")
+    
+    prompt = f"""
+    You are the automated email system for knob.monster, the premium cloud SysEx librarian for 1983-1995 vintage hardware synthesizers (Juno-106, DX7, Korg M1, etc.).
+    Every week you generate a highly engaging, raw, opinionated, or nostalgic email newsletter for vintage synth collectors and hardware musicians (our ICP).
+    The tone should be: raw, highly opinionated, nostalgic, slightly cynical about modern software, completely hardware-obsessed, and writing in a lowercase/conversational style.
+    Write like a seasoned vintage synth repair technician or a dedicated collector who has spent too many late nights soldering, breathing flux fumes, and dealing with flaky MIDI cables. Use gearhead terms like 'SysEx dumps', 'bucket-brigades', 'VCFs', 'FM hell', 'leaky batteries'. Avoid any happy marketing-speak or standard corporate introduction.
+
+    Generate a JSON object with:
+    1. "subject": A catchy, lower-case/conversational email subject line.
+    2. "body": A raw, conversational plain text email body.
+
+    Guidelines for "body":
+    - Do NOT use HTML tags. Keep it strictly raw plain text.
+    - Focus this week's newsletter specifically on this topic: {selected_topic}.
+    - Write a brief, punchy post (2 short paragraphs, around 100-150 words). Go deep into a fascinating anecdote, historical hardware fact, opinion, or tip & trick about this topic.
+    - Use manual line breaks and spacing between paragraphs. Keep everything clean and lowercase.
+    - Start the email with a very casual, lower-case greeting like 'hey,' or 'quick thought,' or just dive straight into the narrative without any greeting.
+    - NEVER end the email with a signature, placeholder names, sign-offs, or generic closing salutations like 'Cheers, [Your Name]', 'Sincerely', 'The knob.monster team', 'Best regards', or 'Keep making noise'. Just end with the core thoughts and the dashboard call-to-action.
+    - Include a clear link pointing to "https://knob.monster/dashboard" to upload new SysEx banks.
+    - Include the exact text at the bottom: "To stop receiving these, you can unsubscribe instantly at: https://knob.monster/unsubscribe?email={{{{recipient_email}}}}"
+    """
+
+    payload = {
+        "model": model,
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        "response_format": {
+            "type": "json_object"
+        }
+    }
+
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+            "HTTP-Referer": "https://knob.monster",
+            "X-Title": "knob.monster"
+        },
+        method="POST"
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as res:
+            response_data = json.loads(res.read().decode("utf-8"))
+            text_response = response_data["choices"][0]["message"]["content"]
+            try:
+                # Strip markdown code blocks if the model wrapped it
+                cleaned_response = text_response.strip()
+                if cleaned_response.startswith("```"):
+                    lines = cleaned_response.splitlines()
+                    if len(lines) > 2 and lines[-1].startswith("```"):
+                        cleaned_response = "\n".join(lines[1:-1]).strip()
+                    else:
+                        cleaned_response = cleaned_response.strip("`").strip()
+                parsed = json.loads(cleaned_response)
+                return {
+                    "subject": parsed.get("subject", "vintage synth preservation updates").lower(),
+                    "body": parsed.get("body", "")
+                }
+            except Exception as json_err:
+                logger.error(f"JSON parsing failed for OpenRouter response: {json_err}. Raw response was:\n{text_response}")
+                raise json_err
+    except Exception as e:
+        logger.error(f"Error calling OpenRouter API: {e}")
+        return fallback_newsletter
+
+def run_newsletter_broadcast_sync(override_subject: str = None, override_body: str = None):
+    try:
+        import importlib
+        try:
+            importlib.reload(database)
+        except Exception:
+            pass
+            
+        recipients = database.get_all_newsletter_recipients()
+        if not recipients:
+            logger.info("No recipients found for newsletter broadcast.")
+            return
+
+        if override_subject and override_body:
+            subject = override_subject
+            body = override_body
+        else:
+            logger.info("Generating newsletter via Gemini...")
+            content = generate_newsletter_content_via_gemini()
+            subject = content["subject"]
+            body = content["body"]
+
+        # Alert Discord: Broadcast Started
+        trigger_alert(
+            "newsletter_broadcast_started",
+            f"🚀 starting newsletter broadcast to {len(recipients)} recipients.\nsubject: `{subject}`",
+            {"recipient_count": len(recipients), "subject": subject},
+            distinct_id="newsletter_cron"
+        )
+
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+
+        smtp_host = SMTP_HOST
+        smtp_port = SMTP_PORT
+        smtp_user = SMTP_USER
+        smtp_pass = SMTP_PASSWORD
+        smtp_from = SMTP_FROM
+
+        sent_count = 0
+        failed_count = 0
+
+        server = None
+        if smtp_host and smtp_user and smtp_pass:
+            try:
+                server = smtplib.SMTP(smtp_host, int(smtp_port))
+                server.starttls()
+                server.login(smtp_user, smtp_pass)
+            except Exception as conn_err:
+                logger.error(f"Failed to connect to SMTP server for newsletter broadcast: {conn_err}")
+                server = None
+
+        for email in recipients:
+            personal_body = body.replace("{{recipient_email}}", email)
+            
+            sent_via_smtp = False
+            if server:
+                try:
+                    msg = MIMEMultipart()
+                    msg['From'] = smtp_from
+                    msg['To'] = email
+                    msg['Subject'] = subject
+                    msg['Reply-To'] = "halfradiationllc@gmail.com"
+                    msg['List-Unsubscribe'] = f"<https://knob.monster/unsubscribe?email={email}>"
+                    msg['Precedence'] = "bulk"
+                    msg.attach(MIMEText(personal_body, 'plain'))
+                    
+                    server.sendmail(smtp_from, email, msg.as_string())
+                    sent_via_smtp = True
+                    sent_count += 1
+                except Exception as send_err:
+                    logger.error(f"failed to send newsletter to {email}: {send_err}")
+                    failed_count += 1
+            else:
+                logger.info(f"[simulated newsletter email] to: {email}\nsubject: {subject}")
+                sent_count += 1
+
+        if server:
+            try:
+                server.quit()
+            except Exception:
+                pass
+
+        # Alert Discord: Broadcast Finished
+        trigger_alert(
+            "newsletter_broadcast_finished",
+            f"✅ finished newsletter broadcast. sent: {sent_count}, failed: {failed_count}.",
+            {
+                "sent_count": sent_count,
+                "failed_count": failed_count,
+                "subject": subject
+            },
+            distinct_id="newsletter_cron"
+        )
+    except Exception as e:
+        logger.error(f"Error during newsletter broadcast worker: {e}")
+        trigger_alert(
+            "newsletter_broadcast_error",
+            f"❌ error during newsletter broadcast: {e}",
+            {"error": str(e)},
+            distinct_id="newsletter_cron"
+        )
+
+@app.get("/api/cron/newsletter")
+async def trigger_newsletter_cron(request: Request):
+    """
+    Vercel Cron endpoint to run the weekly newsletter campaign.
+    """
+    cron_header = request.headers.get("x-vercel-cron")
+    if not cron_header and os.environ.get("VERCEL") == "1":
+        raise HTTPException(status_code=401, detail="Unauthorized to trigger cron manually")
+        
+    import threading
+    thread = threading.Thread(target=run_newsletter_broadcast_sync)
+    thread.start()
+    
+    return {"status": "broadcast_initiated"}
+
+@app.post("/admin/broadcast-override")
+async def admin_broadcast_override(secret: str, override_subject: str = None, override_body: str = None):
+    """
+    Manual override endpoint to trigger a newsletter broadcast immediately.
+    """
+    admin_secret = os.environ.get("ADMIN_SECRET", "")
+    if not admin_secret or secret != admin_secret:
+        raise HTTPException(status_code=403, detail="Forbidden")
+        
+    import threading
+    thread = threading.Thread(
+        target=run_newsletter_broadcast_sync,
+        args=(override_subject, override_body)
+    )
+    thread.start()
+    
+    return {"status": "broadcast_initiated"}
+
+@app.get("/unsubscribe", response_class=HTMLResponse)
+async def unsubscribe_page(request: Request, email: str = ""):
+    """
+    Unsubscribe page to allow users to opt-out from the newsletter.
+    """
+    if email:
+        database.add_to_unsubscribed(email)
+        trigger_alert(
+            "newsletter_unsubscribed",
+            f"User `{email}` has unsubscribed from the newsletter.",
+            {"email": email},
+            distinct_id=email
+        )
+    return render_template("unsubscribe.html", request, {"email": email})
 
 @app.on_event("startup")
 async def start_drip_worker():

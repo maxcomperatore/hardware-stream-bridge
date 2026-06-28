@@ -97,6 +97,15 @@ def init_db():
     )
     """)
     
+    # Create unsubscribed_emails table for tracking opt-outs
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS unsubscribed_emails (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        unsubscribed_at VARCHAR(100) NOT NULL
+    )
+    """)
+    
     # Add drip_email_sent tracking to users table
     cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
     
@@ -307,3 +316,40 @@ def mark_drip_sent(user_id: int):
     cursor.execute("UPDATE users SET drip_email_sent = TRUE WHERE id = %s", (user_id,))
     conn.commit()
     conn.close()
+
+def add_to_unsubscribed(email: str):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    unsubscribed_at = datetime.now().isoformat()
+    try:
+        cursor.execute(
+            "INSERT INTO unsubscribed_emails (email, unsubscribed_at) VALUES (%s, %s) ON CONFLICT (email) DO NOTHING",
+            (email.lower().strip(), unsubscribed_at)
+        )
+        conn.commit()
+    except Exception as e:
+        print(f"Error unsubscribing email: {e}")
+    finally:
+        conn.close()
+
+def get_all_newsletter_recipients() -> list[str]:
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    # Fetch all user emails
+    cursor.execute("SELECT email FROM users")
+    user_emails = [row[0].lower().strip() for row in cursor.fetchall()]
+    
+    # Fetch all newsletter subscribers
+    cursor.execute("SELECT email FROM subscribers")
+    sub_emails = [row[0].lower().strip() for row in cursor.fetchall()]
+    
+    # Fetch all unsubscribed emails
+    cursor.execute("SELECT email FROM unsubscribed_emails")
+    unsub_emails = set(row[0].lower().strip() for row in cursor.fetchall())
+    
+    conn.close()
+    
+    # Combine, de-duplicate and filter
+    all_emails = set(user_emails + sub_emails)
+    valid_recipients = [email for email in all_emails if email and email not in unsub_emails]
+    return valid_recipients

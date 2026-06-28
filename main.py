@@ -348,7 +348,7 @@ stripe.api_key = STRIPE_SECRET_KEY
 
 STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
 STRIPE_PRICE_ID_MONTHLY = os.environ.get("STRIPE_PRICE_ID_MONTHLY", "price_1TmkUzLuSQGuB7eytGvepyWd")
-STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TmkVXLuSQGuB7eyShpu6eHe")
+STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TnOLmLuSQGuB7eyV3Xi3aj4")
 BASE_URL = "https://knob.monster"
 
 # SMTP configuration with Resend defaults
@@ -877,13 +877,13 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
-async def signup_page(request: Request, error: str = None, plan: str = "yearly"):
+async def signup_page(request: Request, error: str = None, plan: str = "lifetime"):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
     return render_template("signup.html", request, {"error": error, "plan": plan})
 
 @app.post("/signup")
-async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...), plan: str = "yearly"):
+async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...), plan: str = "lifetime"):
     email_clean = email.lower().strip()
     if not EMAIL_REGEX.match(email_clean):
         trigger_alert(
@@ -1440,7 +1440,7 @@ async def checkout_pack(request: Request, pack_id: str):
 
 # --- Stripe Monetization Endpoints ---
 @app.get("/checkout")
-async def create_checkout_session(request: Request, plan: str = "yearly"):
+async def create_checkout_session(request: Request, plan: str = "lifetime"):
     user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login")
@@ -1727,7 +1727,7 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Direct Pricing:** Simple plan options: $29/month, $229/year, or $599 for lifetime access. All options grant full, unrestricted access.",
+        "- **Direct Pricing:** $29 one-time payment for lifetime access. Own it forever. No subscriptions.",
         "",
         "## Key Pages",
         "- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.",
@@ -1781,11 +1781,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 - **Universal Support**: Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers
 
 ## Pricing
-| Plan | Price |
-|------|-------|
-| Monthly | $29/month |
-| Annual | $19/month ($229/year, save 34%) |
-| Lifetime | $599 one-time |
+- **Lifetime Access**: $29 one-time payment. Own it forever. No subscriptions.
 
 ## API
 - **API Catalog**: </well-known/api-catalog>
@@ -1930,7 +1926,7 @@ To create an account as an agent:
 POST https://knob.monster/signup
 Content-Type: application/x-www-form-urlencoded
 
-email=agent@example.com&password=YourPassword123!&confirm_password=YourPassword123!&plan=yearly
+email=agent@example.com&password=YourPassword123!&confirm_password=YourPassword123!&plan=lifetime
 ```
 
 ### Login / Token Acquisition
@@ -1959,7 +1955,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access costs $29/month, $229/year, or $599 lifetime. Agents must subscribe via Stripe checkout at `/checkout`.
+Premium access is a single $29 one-time payment. Agents can purchase via Stripe checkout at `/checkout`.
 
 ## Discovery Documents
 
@@ -2238,10 +2234,10 @@ async def acp_discovery():
         "api_base_url": SITE_BASE,
         "transports": ["https"],
         "capabilities": {
-            "services": ["subscription", "one-time"],
+            "services": ["one-time"],
             "payment_methods": ["card", "apple_pay", "google_pay", "cashapp", "pix", "naver_pay", "usdc"],
             "currencies": ["USD", "BRL", "KRW"],
-            "billing_periods": ["monthly", "annual", "lifetime"]
+            "billing_periods": ["lifetime"]
         },
         "endpoints": {
             "checkout": f"{SITE_BASE}/checkout",
@@ -2249,9 +2245,7 @@ async def acp_discovery():
             "status": f"{SITE_BASE}/status"
         },
         "pricing": {
-            "monthly": {"amount": 2900, "currency": "USD", "interval": "month"},
-            "annual": {"amount": 22900, "currency": "USD", "interval": "year"},
-            "lifetime": {"amount": 59900, "currency": "USD", "interval": "one-time"}
+            "lifetime": {"amount": 2900, "currency": "USD", "interval": "one-time"}
         }
     }
     return Response(

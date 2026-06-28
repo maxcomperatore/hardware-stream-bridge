@@ -299,9 +299,12 @@
 
         /* Slow, zero-gravity levitation animation for the meme image */
         @keyframes levitate {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(-15px);
             }
@@ -485,10 +488,10 @@
         },
         {
           "@type": "Question",
-          "name": "What is the price of a knob.monster subscription?",
+          "name": "What is the price of knob.monster?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We offer a simple, transparent pricing structure: $29/month (billed monthly), $229/year (billed annually), or $599 for lifetime access. All options grant full, unrestricted access to the library and patch parsing tools."
+            "text": "We offer a simple, transparent pricing structure: a $29 one-time payment for lifetime access. This grants full, unrestricted access to the library and patch parsing tools."
           }
         },
         {
@@ -1120,8 +1123,10 @@
                 {{ seo.hero_title | safe }}
                 {% else %}
                 The iCloud
-                <span class="hidden md:inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 shrink-0 relative top-[-1px] md:top-[-2px]">
-                    <img src="https://api.iconify.design/dinkie-icons/cloud.svg" alt="Cloud" class="w-full h-full object-contain" style="filter: invert(1);">
+                <span
+                    class="hidden md:inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 shrink-0 relative top-[-1px] md:top-[-2px]">
+                    <img src="https://api.iconify.design/dinkie-icons/cloud.svg" alt="Cloud"
+                        class="w-full h-full object-contain" style="filter: invert(1);">
                 </span>
                 for <span id="hero-your-text" class="inline-block" data-color="#60a5fa">your</span>
                 <span
@@ -1144,7 +1149,15 @@
                 {{ seo.hero_subtitle }}
                 {% else %}
                 Back up, organize, and search vintage synth patches directly in your browser.
-                The zero-config <span class="relative inline-block px-1 select-none"><span class="text-zinc-500">MIDI-OX</span><span class="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none"><svg class="w-full h-2.5 text-red-500/80 overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 10"><line x1="-3" y1="8" x2="103" y2="2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" /></svg></span></span> alternative you deserve. No desktop downloads, abandonware quirks, or registry drivers.
+                The zero-config <span class="relative inline-block px-1 select-none"><span
+                        class="text-zinc-500">MIDI-OX</span><span
+                        class="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none"><svg
+                            class="w-full h-2.5 text-red-500/80 overflow-visible" preserveAspectRatio="none"
+                            viewBox="0 0 100 10">
+                            <line x1="-3" y1="8" x2="103" y2="2" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" />
+                        </svg></span></span> alternative you deserve. No desktop downloads, abandonware quirks, or
+                registry drivers.
                 {% endif %}
             </p>
 
@@ -1546,147 +1559,62 @@
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
                     is_halloween_week %}A billing ritual for immortal synth souls.{% else %}A pricing system built for
                     fellow synth heads.{% endif %}</h2>
-                <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-mono tracking-wide max-w-lg mx-auto">Every vintage synthesizer is a <span id="rn-timebomb">ticking time bomb</span>. The soldered internal battery will die, erasing every custom patch you have ever made. <span id="rn-securesounds">Secure your irreplaceable sounds before your hardware turns silent.</span></p>
-            </div>
-
-            <!-- Billing Toggle -->
-            <div class="relative flex bg-zinc-950 border border-zinc-900 rounded-full p-1 max-w-[368px] w-[calc(100%-2rem)] md:w-full mx-auto mb-12 select-none reveal"
-                style="--delay: 100ms;">
-                <!-- Active sliding background highlight -->
-                <div id="billing-slider-bg"
-                    class="absolute top-1 bottom-1 left-1 w-[calc((100%-8px)/3)] bg-white rounded-full transition-all duration-300 shadow-md"
-                    style="transform: translateX(100%);"></div>
-
-                <!-- Tab buttons -->
-                <button onclick="setBillingPeriod('monthly')"
-                    class="relative z-10 flex-1 py-2 text-center text-[9px] md:text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 focus:outline-none flex items-center justify-center gap-1.5 whitespace-nowrap"
-                    id="btn-monthly">
-                    <img src="https://api.iconify.design/dinkie-icons:loudly-crying-face.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0.6);" />
-                    Monthly
-                </button>
-                <button onclick="setBillingPeriod('yearly')"
-                    class="relative z-10 flex-1 py-2 text-center text-[9px] md:text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-black flex items-center justify-center gap-1 focus:outline-none whitespace-nowrap"
-                    id="btn-yearly">
-                    <img src="https://api.iconify.design/dinkie-icons:squint-smiling-face.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0);" />
-                    Yearly
-                    <span id="btn-yearly-discount"
-                        class="text-[7px] bg-emerald-500/20 text-emerald-600 px-1 py-0.5 rounded font-roman font-normal shrink-0">-34%</span>
-                </button>
-                <button onclick="setBillingPeriod('lifetime')"
-                    class="relative z-10 flex-1 py-2 text-center text-[9px] md:text-[10px] font-pixel uppercase tracking-wider transition-colors duration-300 text-zinc-400 flex items-center justify-center gap-1.5 focus:outline-none whitespace-nowrap"
-                    id="btn-lifetime">
-                    <img src="https://api.iconify.design/dinkie-icons:face-throwing-a-kiss.svg" alt="" width="12" height="12" class="h-3 w-3 shrink-0" style="filter: invert(0.6);" />
-                    Lifetime
-                </button>
+                <p
+                    class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-mono tracking-wide max-w-lg mx-auto">
+                    Every vintage synthesizer is a <span id="rn-timebomb">ticking time bomb</span>. The soldered
+                    internal battery will die, erasing every custom patch you have ever made. <span
+                        id="rn-securesounds">Secure your irreplaceable sounds before your hardware turns silent.</span>
+                </p>
             </div>
 
             <!-- Unified Pricing Card Container -->
             <div class="max-w-md mx-auto text-left">
                 <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/40 p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 200ms;">
-                    
-                    <!-- Dynamic Stamps -->
-                    <!-- Gold Stamp for King of Knobs -->
-                    <div id="stamp-gold" class="absolute top-6 right-6 border border-dashed border-[#ffd700]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
-                        style="box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);">
-                        <img id="landing-upgrade-avatar" src="" class="h-full w-full object-cover rounded-md"
-                            alt="King of Knobs Stamp">
-                    </div>
-                    <!-- Diamond Stamp for Emperor of Knobs -->
-                    <div id="stamp-diamond" class="absolute top-6 right-6 border border-dashed border-[#00f5ff]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11 hidden"
+
+                    <!-- Diamond Stamp for knob.monster+ -->
+                    <div id="stamp-diamond"
+                        class="absolute top-6 right-6 border border-dashed border-[#00f5ff]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
                         style="box-shadow: 0 0 20px rgba(0, 245, 255, 0.35);">
-                        <img id="landing-lifetime-avatar" src="/static/logo.svg" class="h-full w-full object-cover rounded-md"
-                            alt="Emperor of Knobs Stamp">
+                        <img id="landing-lifetime-avatar" src="/static/logo.svg"
+                            class="h-full w-full object-cover rounded-md" alt="knob.monster+ Stamp">
                     </div>
 
                     <div class="space-y-5">
                         <div>
                             <div class="flex items-center gap-2">
-                                <h3 id="plan-title" class="text-sm font-roman uppercase text-white tracking-wide">King of Knobs™</h3>
-                                <span id="yearly-popular-badge" class="text-[7px] bg-emerald-500/10 text-emerald-400 px-1 py-0.5 rounded font-pixel uppercase tracking-widest">MOST POPULAR</span>
+                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">knob.monster+</h3>
+                                <span
+                                    class="text-[7px] bg-emerald-500/10 text-emerald-400 px-1 py-0.5 rounded font-pixel uppercase tracking-widest">LIFETIME
+                                    ACCESS</span>
                             </div>
-                            <p id="plan-subtitle" class="text-xs text-zinc-400 mt-1">For sound designers and synth addicts</p>
+                            <p class="text-xs text-zinc-400 mt-1">For sound designers and synth addicts</p>
                         </div>
 
                         <!-- Pricing Display -->
                         <div class="h-16 flex flex-col justify-center">
-                            <!-- Monthly -->
-                            <div id="price-monthly" class="hidden">
+                            <div>
                                 <div class="flex items-baseline gap-2">
                                     <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
-                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa" class="h-8 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />29
+                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
+                                            class="h-8 w-auto select-none"
+                                            style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />29
                                     </span>
-                                    <span class="text-xs font-roman uppercase text-zinc-400">USD / month</span>
-                                </div>
-                                <div class="text-[9px] font-roman text-zinc-500 uppercase tracking-wider mt-1 flex items-center gap-1 select-none">
-                                    About
-                                    <img src="https://api.iconify.design/dinkie-icons:hamburger.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
-                                    +
-                                    <img src="https://api.iconify.design/dinkie-icons:beer-mug.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
-                                    +
-                                    <img src="https://api.iconify.design/dinkie-icons:hot-beverage.svg" alt="" class="w-2.5 h-2.5" style="filter: invert(0.5);" />
-                                    per month.
-                                </div>
-                            </div>
-                            <!-- Yearly -->
-                            <div id="price-yearly" class="block">
-                                <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
-                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa" class="h-8 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />19
-                                    </span>
-                                    <span class="text-3xl font-lcd text-zinc-655 line-through flex items-baseline gap-0.5">
-                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2352525b" class="h-5 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-1px);" alt="" />29
-                                    </span>
-                                    <span class="text-xs font-roman uppercase text-zinc-400">USD / month</span>
+                                    <span class="text-xs font-roman uppercase text-zinc-400">USD / ONE-TIME</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                    Billed annually (<img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%23a1a1aa" class="h-2.5 w-auto inline-block align-middle select-none" style="image-rendering: pixelated; margin-top: -2px;" alt="" />229 USD / year)
-                                </div>
-                            </div>
-                            <!-- Lifetime -->
-                            <div id="price-lifetime" class="hidden">
-                                <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
-                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa" class="h-8 w-auto select-none" style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />599
-                                    </span>
-                                    <span class="text-xs font-roman uppercase text-zinc-400">USD / one-time</span>
-                                </div>
-                                <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                    Own it forever. No renting.
+                                    Own it forever. No subscriptions. No renting.
                                 </div>
                             </div>
                         </div>
 
                         <!-- Trial subtext explanation -->
-                        <p id="trial-subtext" class="text-[10px] text-zinc-400 font-sans leading-relaxed">
-                            Cancel anytime in one click.
+                        <p class="text-[10px] text-zinc-400 font-sans leading-relaxed">
+                            Includes a 30-day money-back guarantee.
                         </p>
 
                         <!-- Features lists -->
-                        <div id="features-monthly" class="hidden">
-                            <ul class="space-y-2.5 text-xs text-zinc-400">
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
-                                        height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    All parsers (DX7, Juno, M1, Generic)
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt=""
-                                        width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    Single-click MIDI flash recall
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:download.svg" alt="" width="14"
-                                        height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    Direct backup downloads (.syx)
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div id="features-yearly" class="block">
+                        <div>
                             <ul class="space-y-2.5 text-xs text-zinc-400">
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg" alt=""
@@ -1695,51 +1623,16 @@
                                     <span class="text-white font-semibold">Unlimited Soundbank slots</span>
                                 </li>
                                 <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:adult-filled.svg" alt=""
-                                        width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
+                                    <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg"
+                                        alt="" width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
                                         style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    <span class="text-white font-semibold">16h/day live, human support (ET)</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
-                                        height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    All parsers (DX7, Juno, M1, Generic)
+                                    <span class="text-white font-semibold">Real-time preset name decoding</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt=""
                                         width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
                                         style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    Single-click MIDI flash recall
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:download.svg" alt="" width="14"
-                                        height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    Direct backup downloads (.syx)
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div id="features-lifetime" class="hidden">
-                            <ul class="space-y-2.5 text-xs text-zinc-400">
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt="" width="14"
-                                        height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    <span class="text-white font-semibold">Real-time preset name decoding</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt="" width="14"
-                                        height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                     <span class="text-white font-semibold">Automatic pacing calibration</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg" alt=""
-                                        width="14" height="14" class="h-3.5 w-3.5 text-amber-400"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                    Unlimited Soundbank slots
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="https://api.iconify.design/dinkie-icons:adult-filled.svg" alt=""
@@ -1770,10 +1663,10 @@
                     </div>
 
                     <div class="mt-8 text-center">
-                        <a id="pricing-cta-btn" href="/signup?plan=yearly"
+                        <a id="pricing-cta-btn" href="/signup?plan=lifetime"
                             data-logged-in="{% if user %}true{% else %}false{% endif %}"
                             class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
-                            <span>Hell Yes, Let's Do It</span>
+                            <span>Get Lifetime Access</span>
                         </a>
                     </div>
                 </div>
@@ -1781,188 +1674,26 @@
 
             <p id="billing-discount-notice"
                 class="text-center text-[9px] text-zinc-400 uppercase font-roman tracking-wider mt-12 max-w-sm mx-auto leading-relaxed transition-all duration-200">
-                Subscriptions with annual billing instead of monthly billing periods receive a <span
-                    class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span
-                    class="relative group cursor-pointer underline decoration-dotted underline-offset-2 font-semibold text-emerald-400">$119/year in savings<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-zinc-950 border border-zinc-800 text-zinc-300 text-[10px] rounded-xl shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50 text-center font-normal leading-normal font-sans tracking-normal normal-case"><span class="font-bold text-white block mb-1">THE MATH:</span>12 × $29/mo (Monthly) = $348/yr<br>12 × $19/mo (Yearly) = $229/yr<br><span class="text-emerald-400 font-bold block mt-1.5 border-t border-zinc-800 pt-1.5">$348 - $229 = $119 Saved!</span></span></span>.
+                <span class="text-emerald-400 font-semibold">Own it forever.</span> Never pay a subscription again.
             </p>
 
             <!-- Centered Meme Image -->
             <div class="flex items-center justify-center mt-8 reveal reveal-scale" style="--delay: 350ms;">
-                <img src="/static/trade_offer.avif" alt="Meme" width="380" height="513"
-                    loading="lazy" sizes="(max-width: 768px) 380px, 380px"
+                <img src="/static/trade_offer.avif" alt="Meme" width="380" height="513" loading="lazy"
+                    sizes="(max-width: 768px) 380px, 380px"
                     class="w-full max-w-[380px] md:max-w-[400px] rounded-2xl border border-zinc-900 shadow-2xl">
             </div>
         </section>
 
         <script>
-            function setBillingPeriod(period) {
-                const btnMonthly = document.getElementById('btn-monthly');
-                const btnYearly = document.getElementById('btn-yearly');
-                const btnLifetime = document.getElementById('btn-lifetime');
-                const sliderBg = document.getElementById('billing-slider-bg');
-
-                const priceMonthly = document.getElementById('price-monthly');
-                const priceYearly = document.getElementById('price-yearly');
-                const priceLifetime = document.getElementById('price-lifetime');
-
-                const planTitle = document.getElementById('plan-title');
-                const planSubtitle = document.getElementById('plan-subtitle');
-                const stampGold = document.getElementById('stamp-gold');
-                const stampDiamond = document.getElementById('stamp-diamond');
-
-                const featuresMonthly = document.getElementById('features-monthly');
-                const featuresYearly = document.getElementById('features-yearly');
-                const featuresLife = document.getElementById('features-lifetime');
-
-                const trialSubtext = document.getElementById('trial-subtext');
-                const ctaButton = document.getElementById('pricing-cta-btn');
-                const discountNotice = document.getElementById('billing-discount-notice');
-
-                const isLoggedIn = ctaButton ? (ctaButton.getAttribute('data-logged-in') === 'true') : false;
-
-                const monthlyIcon = btnMonthly ? btnMonthly.querySelector('img') : null;
-                const yearlyIcon = btnYearly ? btnYearly.querySelector('img') : null;
-                const lifetimeIcon = btnLifetime ? btnLifetime.querySelector('img') : null;
-                const yearlyPopularBadge = document.getElementById('yearly-popular-badge');
-                const btnYearlyDiscount = document.getElementById('btn-yearly-discount');
-
-                // Reset text colors
-                if (btnMonthly) {
-                    btnMonthly.classList.remove('text-black');
-                    btnMonthly.classList.add('text-zinc-400');
-                }
-                if (btnYearly) {
-                    btnYearly.classList.remove('text-black');
-                    btnYearly.classList.add('text-zinc-400');
-                }
-                if (btnLifetime) {
-                    btnLifetime.classList.remove('text-black');
-                    btnLifetime.classList.add('text-zinc-400');
-                }
-
-                // Reset icons opacity
-                if (monthlyIcon) monthlyIcon.style.filter = 'invert(0.6)';
-                if (yearlyIcon) yearlyIcon.style.filter = 'invert(0.6)';
-                if (lifetimeIcon) lifetimeIcon.style.filter = 'invert(0.6)';
-
-                if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'none';
-
-                if (priceMonthly) priceMonthly.classList.add('hidden');
-                if (priceYearly) priceYearly.classList.add('hidden');
-                if (priceLifetime) priceLifetime.classList.add('hidden');
-
-                if (featuresMonthly) featuresMonthly.classList.add('hidden');
-                if (featuresYearly) featuresYearly.classList.add('hidden');
-                if (featuresLife) featuresLife.classList.add('hidden');
-
-                if (stampGold) stampGold.classList.add('hidden');
-                if (stampDiamond) stampDiamond.classList.add('hidden');
-
-                if (btnYearlyDiscount) {
-                    btnYearlyDiscount.classList.remove('bg-emerald-500/20', 'text-emerald-600');
-                    btnYearlyDiscount.classList.add('bg-emerald-500/10', 'text-emerald-400');
-                }
-
-                if (period === 'monthly') {
-                    if (btnMonthly) {
-                        btnMonthly.classList.remove('text-zinc-400');
-                        btnMonthly.classList.add('text-black');
-                    }
-                    if (monthlyIcon) monthlyIcon.style.filter = 'invert(0)';
-
-                    if (sliderBg) sliderBg.style.transform = 'translateX(0)';
-
-                    if (priceMonthly) priceMonthly.classList.remove('hidden');
-                    if (featuresMonthly) featuresMonthly.classList.remove('hidden');
-                    if (stampGold) stampGold.classList.remove('hidden');
-
-                    if (planTitle) planTitle.innerHTML = 'King of Knobs™';
-                    if (planSubtitle) planSubtitle.innerHTML = 'For sound designers and synth addicts';
-
-                    if (trialSubtext) trialSubtext.innerHTML = 'Cancel anytime in one click.';
-
-                    if (discountNotice) {
-                        discountNotice.innerHTML = 'You are choosing to pay <span class="relative group cursor-pointer underline decoration-dotted underline-offset-2 font-bold text-rose-500">52% more ($119/year extra)<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-zinc-950 border border-zinc-800 text-zinc-300 text-[10px] rounded-xl shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50 text-center font-normal leading-normal font-sans tracking-normal normal-case"><span class="font-bold text-white block mb-1">THE MATH:</span>12 × $29/mo (Monthly) = $348/yr<br>12 × $19/mo (Yearly) = $229/yr<br><span class="text-rose-500 font-bold block mt-1.5 border-t border-zinc-800 pt-1.5">$348 - $229 = $119 Extra!</span></span></span>. Switch to annual to stop bleeding money.';
-                        discountNotice.classList.remove('text-zinc-400');
-                        discountNotice.classList.add('text-rose-450');
-                    }
-
-                    if (ctaButton) {
-                        ctaButton.href = isLoggedIn ? '/checkout?plan=monthly' : '/signup?plan=monthly';
-                        const textSpan = ctaButton.querySelector('span');
-                        if (textSpan) textSpan.innerHTML = "Hell Yes, Let's Do It";
-                    }
-                } else if (period === 'yearly') {
-                    if (btnYearly) {
-                        btnYearly.classList.remove('text-zinc-400');
-                        btnYearly.classList.add('text-black');
-                    }
-                    if (yearlyIcon) yearlyIcon.style.filter = 'invert(0)';
-                    if (yearlyPopularBadge) yearlyPopularBadge.style.display = 'inline-block';
-
-                    if (btnYearlyDiscount) {
-                        btnYearlyDiscount.classList.remove('bg-emerald-500/10', 'text-emerald-400');
-                        btnYearlyDiscount.classList.add('bg-emerald-500/20', 'text-emerald-600');
-                    }
-
-                    if (sliderBg) sliderBg.style.transform = 'translateX(100%)';
-
-                    if (priceYearly) priceYearly.classList.remove('hidden');
-                    if (featuresYearly) featuresYearly.classList.remove('hidden');
-                    if (stampGold) stampGold.classList.remove('hidden');
-
-                    if (planTitle) planTitle.innerHTML = 'King of Knobs™';
-                    if (planSubtitle) planSubtitle.innerHTML = 'For sound designers and synth addicts';
-
-                    if (trialSubtext) trialSubtext.innerHTML = 'Cancel anytime in one click.';
-
-                    if (discountNotice) {
-                        discountNotice.innerHTML = 'Subscriptions with annual billing instead of monthly billing periods receive a <span class="text-emerald-400 font-semibold">34% discount</span> valuing up to <span class="relative group cursor-pointer underline decoration-dotted underline-offset-2 font-semibold text-emerald-400">$119/year in savings<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-zinc-950 border border-zinc-800 text-zinc-300 text-[10px] rounded-xl shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50 text-center font-normal leading-normal font-sans tracking-normal normal-case"><span class="font-bold text-white block mb-1">THE MATH:</span>12 × $29/mo (Monthly) = $348/yr<br>12 × $19/mo (Yearly) = $229/yr<br><span class="text-emerald-400 font-bold block mt-1.5 border-t border-zinc-800 pt-1.5">$348 - $229 = $119 Saved!</span></span></span>.';
-                        discountNotice.classList.remove('text-rose-450');
-                        discountNotice.classList.add('text-zinc-400');
-                    }
-
-                    if (ctaButton) {
-                        ctaButton.href = isLoggedIn ? '/checkout?plan=yearly' : '/signup?plan=yearly';
-                        const textSpan = ctaButton.querySelector('span');
-                        if (textSpan) textSpan.innerHTML = "Hell Yes, Let's Do It";
-                    }
-                } else if (period === 'lifetime') {
-                    if (btnLifetime) {
-                        btnLifetime.classList.remove('text-zinc-400');
-                        btnLifetime.classList.add('text-black');
-                    }
-                    if (lifetimeIcon) lifetimeIcon.style.filter = 'invert(0)';
-
-                    if (sliderBg) sliderBg.style.transform = 'translateX(200%)';
-
-                    if (priceLifetime) priceLifetime.classList.remove('hidden');
-                    if (featuresLife) featuresLife.classList.remove('hidden');
-                    if (stampDiamond) stampDiamond.classList.remove('hidden');
-
-                    if (planTitle) planTitle.innerHTML = 'Emperor of Knobs™';
-                    if (planSubtitle) planSubtitle.innerHTML = 'For GAS sufferers';
-
-                    if (trialSubtext) trialSubtext.innerHTML = 'Buy once, use forever. No recurring fees.';
-
-                    if (discountNotice) {
-                        discountNotice.innerHTML = '<span class="text-emerald-400 font-semibold">Own it forever.</span> Never pay a subscription again.';
-                        discountNotice.classList.remove('text-rose-450');
-                        discountNotice.classList.add('text-zinc-400');
-                    }
-
-                    if (ctaButton) {
-                        ctaButton.href = isLoggedIn ? '/checkout?plan=lifetime' : '/signup?plan=lifetime';
-                        const textSpan = ctaButton.querySelector('span');
-                        if (textSpan) textSpan.innerHTML = "Get Lifetime Access";
-                    }
-                }
-            }
-
             document.addEventListener('DOMContentLoaded', () => {
-                setBillingPeriod('yearly');
+                const ctaButton = document.getElementById('pricing-cta-btn');
+                if (ctaButton) {
+                    const isLoggedIn = ctaButton.getAttribute('data-logged-in') === 'true';
+                    ctaButton.href = isLoggedIn ? '/checkout?plan=lifetime' : '/signup?plan=lifetime';
+                }
             });
-            </script>
+        </script>
         </section>
 
         <!-- FAQ Section -->
@@ -2031,11 +1762,12 @@
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics. 
-                            MIDI-OX hasn't been updated since 2011, is designed for Windows 95/XP, and its official website 
-                            currently triggers invalid SSL certificate warnings. Beyond the security risks, manually 
-                            adjusting buffer settings on ancient desktop software is a massive headache. 
-                            knob.monster runs directly in your browser with zero installation, automatically manages 
+                            Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics.
+                            MIDI-OX hasn't been updated since 2011, is designed for Windows 95/XP, and its official
+                            website
+                            currently triggers invalid SSL certificate warnings. Beyond the security risks, manually
+                            adjusting buffer settings on ancient desktop software is a massive headache.
+                            knob.monster runs directly in your browser with zero installation, automatically manages
                             buffer pacing to prevent transfer crashes, and keeps your library synced in the cloud.
                         </p>
                     </div>
@@ -2105,8 +1837,8 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt="" width="18" height="18"
-                                class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
                             Are my patches private and secure?
                         </span>
                         <span
@@ -2126,8 +1858,8 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt="" width="18" height="18"
-                                class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
                             Is knob.monster secure from a cybersecurity standpoint?
                         </span>
                         <span
@@ -2135,10 +1867,16 @@
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            Yes. knob.monster is designed with a defense-in-depth security model. Because it is completely browser-native, you do not need to install local desktop executables, background drivers, or untrusted utilities, keeping your operating system completely isolated from security risks.
+                            Yes. knob.monster is designed with a defense-in-depth security model. Because it is
+                            completely browser-native, you do not need to install local desktop executables, background
+                            drivers, or untrusted utilities, keeping your operating system completely isolated from
+                            security risks.
                         </p>
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans mt-2">
-                            On the backend, our processing engine runs in isolated environments with strict input sanitization on all uploaded binary data to prevent SSRF vulnerabilities or buffer exploit attempts. Additionally, all billing is securely managed via Stripe—no credit cards or payment credentials ever touch or reside on our servers.
+                            On the backend, our processing engine runs in isolated environments with strict input
+                            sanitization on all uploaded binary data to prevent SSRF vulnerabilities or buffer exploit
+                            attempts. Additionally, all billing is securely managed via Stripe—no credit cards or
+                            payment credentials ever touch or reside on our servers.
                         </p>
                     </div>
                 </details>
@@ -2148,8 +1886,8 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt="" width="18" height="18"
-                                class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
                             Can I export and download my SysEx files?
                         </span>
                         <span
@@ -2169,18 +1907,17 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt="" width="18" height="18"
-                                class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            What is the price of a knob.monster subscription?
+                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            What is the price of knob.monster?
                         </span>
                         <span
                             class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            We offer a simple, transparent pricing structure: $29/month (billed monthly), $229/year
-                            (billed annually), or a $599 one-time lifetime purchase. All options grant full,
-                            unrestricted access to our backup and editing toolkit.
+                            We offer a simple, transparent pricing structure: a single $29 one-time payment for lifetime
+                            access. There are no recurring fees or monthly subscriptions.
                         </p>
                     </div>
                 </details>
@@ -2190,16 +1927,17 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt="" width="18" height="18"
-                                class="h-4.5 w-4.5" style="filter: invert(1);" />
-                            What happens if I stop paying or cancel my subscription?
+                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            Will I ever lose access or be charged again?
                         </span>
                         <span
                             class="faq-icon transition-transform duration-200 text-zinc-500 font-pixel text-xs shrink-0 select-none group-open:text-[#3b83f6]">+</span>
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            If your subscription expires or you cancel, your account is locked out of the dashboard. You will not be able to view your library, search patch names, or download your `.syx` backups. Once you reactivate your subscription, access to your saved data and all editing features is immediately restored.
+                            No. Since this is a lifetime purchase, your account never expires and you will never be
+                            locked out of your dashboard. Your soundbanks will remain archived and accessible forever.
                         </p>
                     </div>
                 </details>
@@ -2209,8 +1947,8 @@
                     <summary
                         class="flex justify-between items-center font-pixel uppercase text-xs md:text-sm text-white tracking-wide cursor-pointer list-none select-none hover:text-[#3b83f6] transition-colors py-2">
                         <span class="flex items-center gap-2.5">
-                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt="" width="18" height="18"
-                                class="h-4.5 w-4.5" style="filter: invert(1);" />
+                            <img src="https://api.iconify.design/dinkie-icons/ballot-box-with-check.svg" alt=""
+                                width="18" height="18" class="h-4.5 w-4.5" style="filter: invert(1);" />
                             Do you support browser-native MIDI on iOS or Android?
                         </span>
                         <span
@@ -2331,15 +2069,26 @@
                     </summary>
                     <div class="faq-answer mt-3 pl-7 pr-4">
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                            The patch parser is built to be extremely robust. The specific defects identified in our analysis, including the Korg M1 name offset bugs, the Casio CZ-101 nibble-packing logic, the Roland Juno-106 switch parsing, and the Yamaha DX7 header validation, have been fully corrected and verified against standard synthesizer SysEx specifications.
+                            The patch parser is built to be extremely robust. The specific defects identified in our
+                            analysis, including the Korg M1 name offset bugs, the Casio CZ-101 nibble-packing logic, the
+                            Roland Juno-106 switch parsing, and the Yamaha DX7 header validation, have been fully
+                            corrected and verified against standard synthesizer SysEx specifications.
                         </p>
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans mt-2">
-                            While the parser is now robust against standard MIDI dumps for these machines, some edge cases always remain when dealing with vintage hardware:
+                            While the parser is now robust against standard MIDI dumps for these machines, some edge
+                            cases always remain when dealing with vintage hardware:
                         </p>
-                        <ul class="text-xs text-zinc-400 leading-relaxed font-normal font-sans list-disc pl-5 mt-2 space-y-1.5">
-                            <li>Corrupted Transfers: If a MIDI transmission is interrupted and bytes are dropped, checksum validation (where implemented) or structural boundaries might cause the file to be rejected.</li>
-                            <li>Custom Firmware: Modified synthesizer firmware (like some custom Jupiter-6 modifications or custom DX7 firmware) can change the memory map, causing dynamic parameter naming to yield inaccurate descriptors.</li>
-                            <li>Generic Heuristics: The generic parser relies on printable ASCII scans, which can still experience false positives if binary parameter sequences happen to fall into the ASCII character range.</li>
+                        <ul
+                            class="text-xs text-zinc-400 leading-relaxed font-normal font-sans list-disc pl-5 mt-2 space-y-1.5">
+                            <li>Corrupted Transfers: If a MIDI transmission is interrupted and bytes are dropped,
+                                checksum validation (where implemented) or structural boundaries might cause the file to
+                                be rejected.</li>
+                            <li>Custom Firmware: Modified synthesizer firmware (like some custom Jupiter-6 modifications
+                                or custom DX7 firmware) can change the memory map, causing dynamic parameter naming to
+                                yield inaccurate descriptors.</li>
+                            <li>Generic Heuristics: The generic parser relies on printable ASCII scans, which can still
+                                experience false positives if binary parameter sequences happen to fall into the ASCII
+                                character range.</li>
                         </ul>
                     </div>
                 </details>
@@ -2558,7 +2307,7 @@
                 }
             });
 
-              function initiateMIDIScan() {
+            function initiateMIDIScan() {
                 const statusText = document.getElementById('midi-status-text');
                 const midiIcon = document.getElementById('midi-icon');
                 const scanBtn = document.getElementById('midi-scan-btn');
@@ -3032,14 +2781,12 @@
                         },
                         {
                             name: "get_pricing",
-                            description: "Get current pricing plans for knob.monster subscriptions",
+                            description: "Get current pricing plans for knob.monster",
                             inputSchema: { type: "object", properties: {} },
                             execute: async function () {
                                 return {
                                     plans: [
-                                        { name: "Monthly", price: "$29/month", billing: "monthly" },
-                                        { name: "Annual", price: "$19/month ($229/year)", billing: "annual", savings: "34%" },
-                                        { name: "Lifetime", price: "$599 one-time", billing: "lifetime", savings: "unlimited" }
+                                        { name: "Lifetime Access", price: "$29 one-time", billing: "lifetime", savings: "100% forever" }
                                     ],
                                     signup_url: "https://knob.monster/signup",
                                     payment_methods: ["Visa", "Mastercard", "Amex", "Apple Pay", "Google Pay", "Cash App Pay", "Pix", "Naver Pay", "USDC"]

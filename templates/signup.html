@@ -113,17 +113,41 @@
 
             <div>
                 <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Password</label>
-                <input type="password" name="password" required placeholder="••••••••"
+                <input type="password" name="password" id="password" required placeholder="••••••••"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
             </div>
 
             <div>
                 <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Confirm Password</label>
-                <input type="password" name="confirm_password" required placeholder="••••••••"
+                <input type="password" name="confirm_password" id="confirm_password" required placeholder="••••••••"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
             </div>
 
-            <button type="submit"
+            <!-- Password Validation Rules -->
+            <div id="password-rules" class="bg-zinc-950/50 border border-zinc-900/80 rounded-lg p-3 space-y-1.5 text-[9px] font-mono hidden">
+                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-length">
+                    <span class="indicator font-pixel text-[8px]">•</span>
+                    <span>10+ characters</span>
+                </div>
+                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-case">
+                    <span class="indicator font-pixel text-[8px]">•</span>
+                    <span>Uppercase & lowercase letters</span>
+                </div>
+                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-number">
+                    <span class="indicator font-pixel text-[8px]">•</span>
+                    <span>At least one number</span>
+                </div>
+                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-special">
+                    <span class="indicator font-pixel text-[8px]">•</span>
+                    <span>At least one special symbol</span>
+                </div>
+                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-match">
+                    <span class="indicator font-pixel text-[8px]">•</span>
+                    <span>Passwords match</span>
+                </div>
+            </div>
+
+            <button type="submit" id="register-btn"
                 class="w-full py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-[0.98]">
                 Register
             </button>
@@ -137,6 +161,81 @@
             By registering, you agree to our <a href="/terms" target="_blank" class="hover:text-zinc-500 underline">Terms of Service</a> <br class="hidden sm:inline"> and <a href="/privacy" target="_blank" class="hover:text-zinc-500 underline">Privacy Policy</a>.
         </p>
     </div>
+    <script>
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirm_password');
+        const rulesContainer = document.getElementById('password-rules');
+        const submitBtn = document.getElementById('register-btn');
+
+        const ruleLength = document.getElementById('rule-length');
+        const ruleCase = document.getElementById('rule-case');
+        const ruleNumber = document.getElementById('rule-number');
+        const ruleSpecial = document.getElementById('rule-special');
+        const ruleMatch = document.getElementById('rule-match');
+
+        function updateRule(element, isValid, typed) {
+            const indicator = element.querySelector('.indicator');
+            if (isValid) {
+                element.classList.remove('text-zinc-500', 'text-rose-450');
+                element.classList.add('text-[#10b981]');
+                if (indicator) indicator.textContent = '✓';
+            } else {
+                element.classList.remove('text-[#10b981]');
+                if (typed) {
+                    element.classList.remove('text-zinc-500');
+                    element.classList.add('text-rose-450');
+                    if (indicator) indicator.textContent = '✗';
+                } else {
+                    element.classList.remove('text-rose-450');
+                    element.classList.add('text-zinc-500');
+                    if (indicator) indicator.textContent = '•';
+                }
+            }
+        }
+
+        function checkValidation() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmInput.value;
+            const typed = password.length > 0 || confirmPassword.length > 0;
+
+            if (typed) {
+                rulesContainer.classList.remove('hidden');
+            } else {
+                rulesContainer.classList.add('hidden');
+            }
+
+            const isLengthValid = password.length >= 10;
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const isCaseValid = hasUpper && hasLower;
+            const isNumberValid = /[0-9]/.test(password);
+            const isSpecialValid = /[^A-Za-z0-9\s]/.test(password);
+            const isMatchValid = password.length > 0 && password === confirmPassword;
+
+            updateRule(ruleLength, isLengthValid, password.length > 0);
+            updateRule(ruleCase, isCaseValid, password.length > 0);
+            updateRule(ruleNumber, isNumberValid, password.length > 0);
+            updateRule(ruleSpecial, isSpecialValid, password.length > 0);
+            updateRule(ruleMatch, isMatchValid, confirmPassword.length > 0);
+
+            const allValid = isLengthValid && isCaseValid && isNumberValid && isSpecialValid && isMatchValid;
+
+            if (allValid) {
+                submitBtn.removeAttribute('disabled');
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                submitBtn.setAttribute('disabled', 'true');
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Initialize state
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        passwordInput.addEventListener('input', checkValidation);
+        confirmInput.addEventListener('input', checkValidation);
+    </script>
 {% include "mobile_nav.html" %}
 </body>
 </html>

@@ -649,9 +649,9 @@ async def milestones_redirect_page(request: Request):
 @app.get("/shop", response_class=HTMLResponse)
 async def shop_page(request: Request):
     try:
-        copy_assets()
+        clean_old_assets()
     except Exception as e:
-        print(f"Error copying assets on request: {e}")
+        print(f"Error cleaning assets on request: {e}")
     user = get_current_user(request)
     packs = [
         {

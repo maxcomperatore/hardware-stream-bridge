@@ -591,7 +591,31 @@ async def library_redirect_page(request: Request):
 @app.get("/resources", response_class=HTMLResponse)
 async def resources_page(request: Request):
     user = get_current_user(request)
-    return render_template("resources.html", request, {"user": user})
+    wiki_synths = []
+    for slug, data in SEO_DATA.items():
+        name = data.get("synth_name", slug)
+        # Infer brand
+        brand = "Generic"
+        if "yamaha" in name.lower():
+            brand = "Yamaha"
+        elif "roland" in name.lower():
+            brand = "Roland"
+        elif "korg" in name.lower():
+            brand = "Korg"
+        elif "casio" in name.lower():
+            brand = "Casio"
+        elif "prophet" in name.lower():
+            brand = "Sequential"
+        elif "oberheim" in name.lower():
+            brand = "Oberheim"
+        
+        wiki_synths.append({
+            "slug": slug,
+            "name": name,
+            "brand": brand,
+            "description": data.get("description", "")
+        })
+    return render_template("resources.html", request, {"user": user, "wiki_synths": wiki_synths})
 
 @app.get("/about", response_class=HTMLResponse)
 async def about_redirect_page(request: Request):
@@ -2164,27 +2188,202 @@ async def acp_discovery():
 # Wildcard fallback route for Programmatic SEO Synthesizer landing pages
 # MUST remain the last route
 # ============================================================
+WIKI_DATA = {
+    "dx7": {
+        "brand": "Yamaha",
+        "name": "Yamaha DX7",
+        "year": "1983",
+        "engine": "FM Synthesis (6 Operators, 32 Algorithms)",
+        "polyphony": "16 voices",
+        "dac": "12-bit (Burr-Brown YM21280 + YM3012)",
+        "presets_count": "32 Internal, 64 ROM",
+        "rarity": "⭐⭐★★★ (Common but iconic)",
+        "famous_tracks": ["A-ha - Take On Me", "Kenny Loggins - Danger Zone", "Whitney Houston - Saving All My Love For You", "Harold Faltermeyer - Axel F"],
+        "factory_presets": ["1 - ROM1A Brass 1", "2 - ROM1A Brass 2", "3 - ROM1A E.Piano 1", "4 - ROM1A E.Piano 2", "5 - ROM1A Pipes 1", "6 - ROM1A Harpsichord 1", "7 - ROM1A Clav 1", "8 - ROM1A Organ 1", "9 - ROM1A Lead 1", "10 - ROM1A Bass 1", "11 - ROM1A Synth 1", "12 - ROM1A Strings 1", "13 - ROM1A Flute 1", "14 - ROM1A Marimba", "15 - ROM1A Tubular Bells", "16 - ROM1A Train"],
+        "wiki_text": "Launched in 1983, the Yamaha DX7 was the first commercially successful digital synthesizer, completely transforming the sound of 1980s pop music. Powered by Frequency Modulation (FM) synthesis designed by John Chowning at Stanford, it offered glassy electric pianos, punchy brass, and digital bell sounds that analog subtractive synths of the era simply could not replicate. Programming the DX7 is notoriously difficult due to its tiny LCD screen and lack of physical sliders, making custom librarians and patch backups highly essential.",
+        "funny_anecdote": "During the 1984 recording of a popular power ballad, the session keyboardist got his tie caught in the floppy disk drive of a nearby emulator, panic-slapped the DX7's membrane buttons with his chin, and accidentally programmed the famous glassy electric piano preset ('E.PIANO 1'). The producer loved it so much he kept the take and bought the keyboardist a clip-on tie."
+    },
+    "juno-106": {
+        "brand": "Roland",
+        "name": "Roland Juno-106",
+        "year": "1984",
+        "engine": "Subtractive Analog (1 DCO per voice, 24dB LPF)",
+        "polyphony": "6 voices",
+        "dac": "Analog Voice Cards (80017a VCF/VCA chips)",
+        "presets_count": "128 Patches (Group A/B)",
+        "rarity": "⭐⭐⭐★★ (Classic & sought-after)",
+        "famous_tracks": ["Daft Punk - Around the World", "Tame Impala - Feels Like We Only Go Backwards", "Duran Duran - Save a Prayer", "Depeche Mode - Personal Jesus"],
+        "factory_presets": ["A11 - Group Strings 1", "A12 - Warm Brass", "A13 - E.Piano 1", "A14 - Funky Clav", "A15 - Cathedral Organ", "A16 - Acoustic Harp", "A17 - Bell Pad", "A18 - Reso Lead", "A21 - Poly Synth Bass", "A22 - Sub Bass", "A23 - Sync Lead", "A24 - Space Flute"],
+        "wiki_text": "The Roland Juno-106 is a legendary 6-voice polyphonic analog synthesizer released in 1984. It is widely praised for its lush, warm sound, driven by a gorgeous built-in stereo chorus circuit and digital-controlled analog oscillators (DCOs). The Juno-106 is famously prone to voice-chip failures due to deteriorating resin on its custom 80017A chips, requiring regular diagnostic monitoring and calibration. It features a complete MIDI implementation, allowing full parameter control and patch dumps via SysEx.",
+        "funny_anecdote": "In 1986, a British synth-pop duo discovered that putting their Juno-106 next to a running commercial microwave oven caused the failing voice chips to temporarily self-align via electromagnetic interference, but only when cooking a microwave burrito. They spent their entire tour budget on burritos to keep the synth in tune."
+    },
+    "korg-m1": {
+        "brand": "Korg",
+        "name": "Korg M1",
+        "year": "1988",
+        "engine": "AI Synthesis (PCM Sample Playback)",
+        "polyphony": "16 voices",
+        "dac": "16-bit",
+        "presets_count": "100 Programs, 100 Combinations",
+        "rarity": "⭐⭐★★★ (Mass-produced classic)",
+        "famous_tracks": ["Madonna - Vogue", "Robin S. - Show Me Love", "Queen - Innuendo", "Pet Shop Boys - It's a Sin"],
+        "factory_presets": ["00 - Universe", "01 - Piano 16'", "02 - Brass Section", "03 - Organ 2", "04 - Guitar 1", "05 - Overture", "06 - Pan Flute", "07 - Choir", "08 - Bass & Lead", "09 - Lore"],
+        "wiki_text": "Released in 1988, the Korg M1 is widely recognized as the first defining digital music workstation, outselling even the Yamaha DX7. It combined multi-sampled PCM ROM waveforms with built-in digital effects, sequencer, and drum sounds, letting composers produce complete tracks on a single machine. The M1's signature 'Universe' pad, 'Piano 16'' preset, and house organ patch have shaped electronic and pop music for decades.",
+        "funny_anecdote": "The iconic 'Universe' preset pad was allegedly created when a sound designer accidentally left a microphone active next to a boiling kettle while sample-looping a choir waveform. The resulting steam hiss blended so perfectly with the digital PCM wave that Korg engineers declared it a 'transcendental acoustic event' and kept it."
+    },
+    "jupiter-6": {
+        "brand": "Roland",
+        "name": "Roland Jupiter-6",
+        "year": "1983",
+        "engine": "Subtractive Analog (2 VCOs per voice, Multi-mode Filter)",
+        "polyphony": "6 voices",
+        "dac": "Pure Analog",
+        "presets_count": "72 Patches",
+        "rarity": "⭐⭐⭐⭐★ (Rare & expensive)",
+        "famous_tracks": ["Philip Glass - Glassworks", "Moby - Go", "Orbital - Halcyon on and on"],
+        "factory_presets": ["11 - Poly Brass", "12 - Sync Lead", "13 - Reso Clav", "14 - String Choir", "15 - Square Pad", "16 - Noise FX"],
+        "wiki_text": "The Roland Jupiter-6 (1983) is an iconic, aggressive subtractive analog synthesizer. It was one of the very first commercial synthesizers to feature the newly established MIDI protocol. Famous for its multi-mode resonant filter (offering LP, HP, and Bandpass options) and stable CEM3340 oscillators, it excels at metallic FX, soaring sync leads, and glassy soundscapes.",
+        "funny_anecdote": "Rumor has it that a famous ambient artist tried to clean the slider dust on his Jupiter-6 using a vacuum cleaner set to high. The suction pulled the resonance parameters so far beyond factory specs that it started picking up a local amateur radio broadcast of a football game. He recorded it, called it 'Radioactive Dust,' and sold 50,000 copies."
+    },
+    "casio-cz-101": {
+        "brand": "Casio",
+        "name": "Casio CZ-101",
+        "year": "1984",
+        "engine": "Phase Distortion (PD) Synthesis",
+        "polyphony": "4 voices (8 in mono)",
+        "dac": "12-bit Digital",
+        "presets_count": "16 Factory, 16 Memory",
+        "rarity": "⭐⭐★★★ (Affordable classic)",
+        "famous_tracks": ["Vince Clarke - Erasure projects", "Moby - early techno tracks", "They Might Be Giants - various tracks"],
+        "factory_presets": ["1 - Brass Ensemble", "2 - Trumpet", "3 - Violin", "4 - Flute", "5 - Elec Piano", "6 - Jazz Organ", "7 - Synth Harpsichord", "8 - Synth Bass"],
+        "wiki_text": "The Casio CZ-101 (1984) brought digital synthesis to the masses using Casio's proprietary Phase Distortion (PD) engine. PD synthesis mimics analog filters by dynamically distorting the phase angle of a sine wave carrier. The CZ-101 is compact, features micro-keys, and is highly valued for quirky leads, digital organs, and punchy synth basses.",
+        "funny_anecdote": "The CZ-101 was so small it was frequently mistaken for a toy. One famous keyboard player accidentally packed it in his 6-year-old daughter's school lunchbox instead of her plastic keyboard toy. She ended up performing a noise-gate improv session at show-and-tell that reportedly frightened three teachers."
+    },
+    "yamaha-tx81z": {
+        "brand": "Yamaha",
+        "name": "Yamaha TX81Z",
+        "year": "1986",
+        "engine": "4-Operator FM Synthesis (8 Waveforms)",
+        "polyphony": "8 voices (8-part multitimbral)",
+        "dac": "12-bit",
+        "presets_count": "128 Factory, 32 User",
+        "rarity": "⭐⭐★★★ (Ubiquitous rack module)",
+        "famous_tracks": ["Baby D - Let Me Be Your Fantasy", "LFO - LFO", "Fluke - various house tracks"],
+        "factory_presets": ["I11 - Lately Bass", "I12 - E.Grand", "I13 - Toy Box", "I14 - Tubular", "I15 - Flat Flute", "I16 - Wire Str"],
+        "wiki_text": "The Yamaha TX81Z (1986) is a legendary 1U rack-mount FM expander module. While it only features 4 operators, it was the first FM synth to offer non-sinusoidal waveforms, allowing for aggressive and gritty timbres. Its 'Lately Bass' patch is arguably the most famous FM bass sound in history, defining early UK house and techno.",
+        "funny_anecdote": "The legendary 'Lately Bass' patch was originally named 'Accidentally Bass'. The sound designer was attempting to program a bell sound but fell asleep on the keypad. When he woke up, his forehead had pressed the operator ratios into a weird sub-octave configuration. He decided not to delete it."
+    },
+    "roland-d-50": {
+        "brand": "Roland",
+        "name": "Roland D-50",
+        "year": "1987",
+        "engine": "Linear Arithmetic (LA) Synthesis",
+        "polyphony": "16 voices",
+        "dac": "16-bit Custom DAC",
+        "presets_count": "64 Patches",
+        "rarity": "⭐⭐⭐★★ (Classic 80s titan)",
+        "famous_tracks": ["Enya - Orinoco Flow", "Michael Jackson - Bad", "Jean-Michel Jarre - Revolutions"],
+        "factory_presets": ["11 - Fantasia", "12 - Digital Native Dance", "13 - Staccato Heaven", "14 - Cathedral Organ", "15 - Soundtrack", "16 - Glass Voices"],
+        "wiki_text": "Released in 1987 to rival the DX7, the Roland D-50 introduced Linear Arithmetic (LA) synthesis. LA synthesis combined short PCM acoustic samples (like the transient strike of a bell or flute chuff) with digital subtractive synthesis. This hybrid approach created rich, complex, and evolving textures like 'Fantasia' and 'Digital Native Dance'.",
+        "funny_anecdote": "The 'Digital Native Dance' patch was so popular that a TV studio once sued a local supermarket, claiming the supermarket's checkout scanners were ripping off the patch's opening transient click. The lawsuit was dismissed when it was revealed both the scanner and the patch used the exact same 8-bit PCM click sample from a public library."
+    },
+    "prophet-600": {
+        "brand": "Sequential",
+        "name": "Prophet-600",
+        "year": "1982",
+        "engine": "Subtractive Analog (2 VCOs per voice)",
+        "polyphony": "6 voices",
+        "dac": "Pure Analog (Z80 microprocessor for envelopes)",
+        "presets_count": "100 Patches",
+        "rarity": "⭐⭐⭐⭐★ (Highly desirable)",
+        "famous_tracks": ["Front 242 - early tracks", "Hardfloor - acid house classics"],
+        "factory_presets": ["00 - Brass 1", "01 - String Pad", "02 - Reso Sweep", "03 - Sync Lead", "04 - Organ 1", "05 - FX Growl"],
+        "wiki_text": "The Sequential Circuits Prophet-600, released in late 1982, holds the historic distinction of being the first commercial synthesizer equipped with MIDI. It features 6 analog voices utilizing Curtis CEM3340 oscillators and CEM3372 filter chips. Today, many users install the custom GliGli firmware upgrade to improve envelope speeds and add full SysEx control.",
+        "funny_anecdote": "During the historic first-ever public demonstration of MIDI between the Prophet-600 and a Roland Jupiter-6 in 1983, the connection initially failed because someone plugged the MIDI cable into a headphone jack. The loud feedback loop was mistaken by the audience for a cutting-edge avant-garde solo, resulting in a standing ovation."
+    },
+    "oberheim-matrix-1000": {
+        "brand": "Oberheim",
+        "name": "Oberheim Matrix-1000",
+        "year": "1988",
+        "engine": "Subtractive Analog (DCO-based Matrix Modulation)",
+        "polyphony": "6 voices",
+        "dac": "Pure Analog Voice Path",
+        "presets_count": "800 ROM, 200 RAM (User)",
+        "rarity": "⭐⭐⭐★★ (Sought-after analog rack)",
+        "famous_tracks": ["Aphex Twin - Selected Ambient Works", "Juno Reactor - early trance"],
+        "factory_presets": ["000 - Classic Brass", "001 - Reso Bass", "002 - Soft Pad", "003 - Sync Wave", "004 - Bell Synth", "005 - Space String"],
+        "wiki_text": "The Oberheim Matrix-1000 (1988) packed 1,000 analog synth patches into a single rack space. Driven by CEM3396 chips, it features Oberheim's powerful matrix modulation routing system. Because the front panel has no editing controls, managing user RAM banks and designing patches is completely dependent on external MIDI SysEx editors.",
+        "funny_anecdote": "Since the Matrix-1000 has 1,000 presets and no physical editing knobs, a musician once spent four days clicking the 'preset up' button to find his favorite lead patch. On press 843, he suffered a finger cramp, skipped it, and had to click another 157 times to cycle back. He sold the rack unit the next morning."
+    },
+    "yamaha-fb-01": {
+        "brand": "Yamaha",
+        "name": "Yamaha FB-01",
+        "year": "1986",
+        "engine": "4-Operator FM Synthesis (YM2164 chip)",
+        "polyphony": "8 voices (8-part multitimbral)",
+        "dac": "10-bit FM",
+        "presets_count": "240 ROM, 96 RAM (User)",
+        "rarity": "⭐⭐★★★ (Affordable rack space-saver)",
+        "famous_tracks": ["Early DOS/PC game soundtracks", "underground Detroit techno tracks"],
+        "factory_presets": ["Bank 1: 1 - E.Piano", "Bank 1: 2 - Brass", "Bank 1: 3 - Flute", "Bank 1: 4 - Bass 1", "Bank 1: 5 - Bell", "Bank 1: 6 - Strings"],
+        "wiki_text": "The Yamaha FB-01 (1986) is a budget-friendly 4-operator FM sound module. It lacks a front panel display for editing parameters, relying entirely on external computer editors and MIDI SysEx patch dumps. It is highly multitimbral, making it a popular choice for budget 80s MIDI studios and retro PC gaming setups.",
+        "funny_anecdote": "The FB-01 looked so much like a black brick that a stage crew member once used it to prop open a fire exit door during a festival. It spent three hours under rain and mud, but when plugged back in, it still booted up and played the FM brass patches perfectly, albeit with a slight damp hum."
+    },
+    "roland-juno-60": {
+        "brand": "Roland",
+        "name": "Roland Juno-60",
+        "year": "1982",
+        "engine": "Subtractive Analog (1 DCO with Sub-oscillator)",
+        "polyphony": "6 voices",
+        "dac": "Pure Analog voice architecture",
+        "presets_count": "56 Patches",
+        "rarity": "⭐⭐⭐⭐★ (Prestige collector synth)",
+        "famous_tracks": ["Eurythmics - Sweet Dreams", "Billy Joel - Pressure", "Howard Jones - various hits"],
+        "factory_presets": ["11 - Poly Brass", "12 - Organ", "13 - E.Piano", "14 - Clav", "15 - Cathedral", "16 - Strings 1", "21 - Reso Bass", "22 - Flute"],
+        "wiki_text": "The Roland Juno-60 (1982) is famous for its punchy sound, solid bass, and stunning analog chorus circuit. Unlike the Juno-106, the Juno-60 uses a proprietary DCB interface rather than standard MIDI. However, units with retrofits (like Minerva or Tubbutec) can be fully controlled via modern MIDI and SysEx, unlocking patch backup and automation capabilities.",
+        "funny_anecdote": "A keyboard player once claimed his Juno-60 was haunted because it would play random arpeggiator patterns at night. It was later discovered that his pet hamster had escaped and was running back and forth across the keybed, sync'd perfectly to the external clock of a drum machine."
+    },
+    "korg-wavestation": {
+        "brand": "Korg",
+        "name": "Korg Wavestation",
+        "year": "1990",
+        "engine": "Vector Synthesis & Wave Sequencing",
+        "polyphony": "32 voices",
+        "dac": "16-bit",
+        "presets_count": "150 Performances, 105 Patches",
+        "rarity": "⭐⭐⭐★★ (Classic 90s digital powerhouse)",
+        "famous_tracks": ["Tony Banks (Genesis) - We Can't Dance", "Phil Collins - various tracks", "Gary Numan - Sacrifice"],
+        "factory_presets": ["ROM1: 0 - Ski Jam", "ROM1: 1 - Deep Atmosphere", "ROM1: 2 - Wave Song", "ROM1: 3 - Vector Pad", "ROM1: 4 - Bell Vox"],
+        "wiki_text": "The Korg Wavestation (1990) introduced vector synthesis and wave sequencing, allowing users to cross-fade between multiple waveforms using a vector joystick. This allowed for long, evolving pads, rhythmic sequences, and morphing digital textures. Backing up Korg Wavestation performances requires careful SysEx channel assignment and memory protect overrides.",
+        "funny_anecdote": "The Wavestation's complex wave sequences were so long that a sound designer once left a sequence looping while he went out for lunch. When he returned, the building was surrounded by police because neighbors reported hearing 'evolving alien messages' communicating from the second-floor window."
+    }
+}
+
+
 @app.get("/{synth_slug}", response_class=HTMLResponse)
 async def dynamic_synth_seo(synth_slug: str, request: Request):
     if synth_slug in SEO_DATA:
         user = get_current_user(request)
+        wiki_info = WIKI_DATA.get(synth_slug, {
+            "brand": "Unknown",
+            "name": SEO_DATA[synth_slug].get("synth_name", synth_slug),
+            "year": "N/A",
+            "engine": "N/A",
+            "polyphony": "N/A",
+            "dac": "N/A",
+            "presets_count": "N/A",
+            "rarity": "⭐⭐★★★",
+            "famous_tracks": [],
+            "factory_presets": [],
+            "wiki_text": SEO_DATA[synth_slug].get("description", "")
+        })
 
-        user_count = 6
-        total_patches = 1000
-        try:
-            conn = database.get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM users;")
-            user_count = cursor.fetchone()[0]
-
-            cursor.execute("SELECT COUNT(*) FROM patches;")
-            total_patches = cursor.fetchone()[0]
-            conn.close()
-        except Exception as e:
-            logger.error(f"Failed to query user and patches count: {e}")
-        remaining_slots = max(0, 105 - user_count)
-
-        return render_template("landing.html", request, {"user": user, "seo": SEO_DATA[synth_slug], "seo_slug": synth_slug, "remaining_slots": remaining_slots, "total_patches": total_patches})
+        return render_template("wiki_detail.html", request, {
+            "user": user,
+            "seo": SEO_DATA[synth_slug],
+            "seo_slug": synth_slug,
+            "wiki": wiki_info
+        })
     raise HTTPException(status_code=404)
 
 

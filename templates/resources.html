@@ -385,6 +385,44 @@
                 </div>
             </section>
 
+            <!-- Section 5: The Vintage Synth Wiki -->
+            <section class="space-y-8">
+                <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">V. Vintage Synth Wiki &amp; Database</h2>
+                    <span class="text-zinc-600 font-mono text-2xs">{{ wiki_synths|length }} Hardware Profiles</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {% for synth in wiki_synths %}
+                    <a href="/{{ synth.slug }}" id="resources-wiki-{{ synth.slug }}" class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[9px] font-pixel px-2 py-0.5 rounded-md uppercase 
+                                    {% if synth.brand == 'Yamaha' %}text-teal-400 bg-teal-500/10 border border-teal-500/25
+                                    {% elif synth.brand == 'Roland' %}text-orange-400 bg-orange-500/10 border border-orange-500/25
+                                    {% elif synth.brand == 'Korg' %}text-blue-400 bg-blue-500/10 border border-blue-500/25
+                                    {% elif synth.brand == 'Casio' %}text-purple-400 bg-purple-500/10 border border-purple-500/25
+                                    {% elif synth.brand == 'Sequential' %}text-red-400 bg-red-500/10 border border-red-500/25
+                                    {% elif synth.brand == 'Oberheim' %}text-yellow-400 bg-yellow-500/10 border border-yellow-500/25
+                                    {% else %}text-zinc-400 bg-zinc-800/30 border border-zinc-700/50{% endif %}">
+                                    {{ synth.brand }}
+                                </span>
+                                <span class="text-zinc-650 font-mono text-[9px] uppercase">Wiki Profile</span>
+                            </div>
+                            <h3 class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">{{ synth.name }}</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                {{ synth.description }}
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read Wiki &amp; Setup</span>
+                            <span class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+
         </div>
 
         <!-- Call to Action -->

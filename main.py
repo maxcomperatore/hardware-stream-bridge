@@ -115,7 +115,7 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
             "timestamp": datetime.utcnow().isoformat() + "Z",
             "footer": {
                 "text": "knob.monster alerts",
-                "icon_url": "https://knob.monster/static/logo.png"
+                "icon_url": "https://knob.monster/static/logo.svg"
             }
         }
 

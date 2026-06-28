@@ -18,7 +18,16 @@
                 ui_host: 'https://us.posthog.com', // necessary because you're using a proxy, this way links will point back to PostHog properly
                 defaults: '2026-05-30',
                 person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
-                disable_conversations: typeof window !== 'undefined' && window.innerWidth < 768
+                disable_conversations: typeof window !== 'undefined' && window.innerWidth < 768,
+                before_send: function(event) {
+                    if (event && event.event === '$exception') {
+                        var val = event.properties && event.properties.$exception_value;
+                        if (val && (val.indexOf('Permission denied to access property') !== -1 || val.indexOf('nodeName') !== -1)) {
+                            return null; // Drops the event
+                        }
+                    }
+                    return event;
+                }
             });
         }
     } catch (err) {

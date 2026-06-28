@@ -71,7 +71,7 @@
   "crons": [
     {
       "path": "/api/cron/send-drips",
-      "schedule": "*/10 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }

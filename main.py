@@ -2552,43 +2552,6 @@ knob monster support
         except Exception as e:
             logger.error(f"error in drip_email_worker loop: {e}")
 
-@app.get("/api/test-drip-email")
-async def test_drip_email(to_email: str):
-    """
-    Test endpoint to instantly verify SMTP credentials.
-    Access it via: /api/test-drip-email?to_email=your-email@example.com
-    """
-    import smtplib
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-    
-    subject = "your studio vault is locked (test)"
-    body = f"""hey there,
-
-this is a test email from knob monster to verify that your resend smtp configuration works!
-
-👉 https://knob.monster/dashboard
-
-keep the analog alive,
-
-knob monster support
-"""
-    try:
-        msg = MIMEMultipart()
-        msg['From'] = SMTP_FROM
-        msg['To'] = to_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
-        
-        server = smtplib.SMTP(SMTP_HOST, int(SMTP_PORT))
-        server.starttls()
-        server.login(SMTP_USER, SMTP_PASSWORD)
-        server.sendmail(SMTP_FROM, to_email, msg.as_string())
-        server.quit()
-        return {"status": "success", "message": f"test email sent to {to_email} from {SMTP_FROM}"}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
 @app.on_event("startup")
 async def start_drip_worker():
     import asyncio

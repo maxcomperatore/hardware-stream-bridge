@@ -1508,6 +1508,13 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
         return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}&plan={normalize_plan(plan)}")
     
     normalized_plan = normalize_plan(plan)
+    if user_has_premium(user):
+        current_plan = normalize_plan(user.get("plan") or "personal")
+        if normalized_plan == current_plan:
+            return RedirectResponse(url="/dashboard?payment=already_active")
+        if normalized_plan == "personal" and current_plan == "studio":
+            return RedirectResponse(url="/dashboard?payment=already_active")
+
     if normalized_plan in ("personal", "studio"):
         price_id = get_plan_price_id(normalized_plan)
         checkout_mode = "payment"
@@ -1556,7 +1563,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
                 "invoice_creation": {
                     "enabled": True,
                     "invoice_data": {
-                            "description": "knob.monster+ Studio lifetime license (commercial use, one location).",
+                        "description": "knob.monster+ Studio lifetime license (commercial use, one location).",
                         "metadata": {"plan": "studio"},
                     },
                 },

@@ -93,7 +93,8 @@ def init_db():
         id SERIAL PRIMARY KEY,
         email VARCHAR(255) UNIQUE NOT NULL,
         stripe_customer_id VARCHAR(255),
-        created_at VARCHAR(100) NOT NULL
+        created_at VARCHAR(100) NOT NULL,
+        plan VARCHAR(50) DEFAULT 'personal'
     )
     """)
     

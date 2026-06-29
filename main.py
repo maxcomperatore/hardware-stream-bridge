@@ -978,8 +978,6 @@ async def dashboard(request: Request):
     user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
-        return RedirectResponse(url="/checkout")
         
     banks = database.get_all_banks(user["id"])
     return render_template("index.html", request, {"banks": banks, "user": user})
@@ -991,10 +989,6 @@ async def get_banks(request: Request):
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
-        if "hx-request" in request.headers:
-            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
-        return RedirectResponse(url="/checkout")
         
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
@@ -1006,15 +1000,11 @@ async def get_bank_details(request: Request, bank_id: int):
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
-        if "hx-request" in request.headers:
-            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
-        return RedirectResponse(url="/checkout")
         
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
-    return render_template("patch_list.html", request, {"bank": bank})
+    return render_template("patch_list.html", request, {"bank": bank, "user": user})
 
 @app.post("/banks", response_class=HTMLResponse)
 async def create_bank(
@@ -1028,7 +1018,9 @@ async def create_bank(
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
+
+    banks = database.get_all_banks(user["id"])
+    if user["tier"] != "premium" and len(banks) >= 1:
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
@@ -1081,8 +1073,14 @@ async def create_bank(
                     "patches_count": len(patch_names),
                     "patch_names_preview": patch_names[:5]
                 },
-                distinct_id=user["email"]
-            )
+                    distinct_id=user["email"]
+                )
+        if user["tier"] != "premium":
+            if patch_names:
+                patch_names = [f"LOCKED {i+1} (PRO)" for i in range(len(patch_names))]
+            else:
+                patch_names = ["LOCKED (PRO)"]
+
     except Exception as exc:
         trigger_alert(
             "sysex_parser_failed",
@@ -1124,7 +1122,9 @@ async def upload_bank_file(
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
+
+    banks = database.get_all_banks(user["id"])
+    if user["tier"] != "premium" and len(banks) >= 1:
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
@@ -1180,8 +1180,14 @@ async def upload_bank_file(
                     "patches_count": len(patch_names),
                     "patch_names_preview": patch_names[:5]
                 },
-                distinct_id=user["email"]
-            )
+                    distinct_id=user["email"]
+                )
+        if user["tier"] != "premium":
+            if patch_names:
+                patch_names = [f"LOCKED {i+1} (PRO)" for i in range(len(patch_names))]
+            else:
+                patch_names = ["LOCKED (PRO)"]
+
     except Exception as exc:
         trigger_alert(
             "sysex_parser_failed",
@@ -1216,10 +1222,6 @@ async def delete_bank(request: Request, bank_id: int):
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
-        if "hx-request" in request.headers:
-            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
-        return RedirectResponse(url="/checkout")
         
     bank = database.get_bank(bank_id, user["id"])
     bank_name = bank["name"] if bank else "Unknown"
@@ -1272,8 +1274,6 @@ async def get_bank_hex(request: Request, bank_id: int):
     user = get_current_user(request)
     if not user:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    if user["tier"] != "premium":
-        raise HTTPException(status_code=402, detail="Payment Required")
         
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
@@ -2497,11 +2497,11 @@ async def run_drip_check() -> int:
                     subject = "your studio vault is locked"
                     body = f"""hey there,
 
-you signed up for knob monster, but you stopped before activating your account.
+you signed up for knob monster, but you are currently on the free tier.
 
-right now, your vault is locked. you can't upload sysex banks, backup your presets, or organize your patches.
+right now, your vault is restricted. you can't download your sysex banks back to your computer, upload a second soundbank, or use preset name decoding.
 
-we don't do free tiers or ad-supported accounts here. knob monster is a professional tool built exclusively for producers who want a bulletproof cloud archive for their vintage synthesizers.
+if you successfully tested your synth connection and want to protect your entire collection, it's time to upgrade. knob monster is a professional tool built exclusively for producers who want a bulletproof cloud archive for their vintage synthesizers.
 
 if you have a juno-106, dx7, or m1 sitting in your studio right now, those sounds are vulnerable. all it takes is one internal battery failure or local drive crash to wipe your custom patches forever.
 

@@ -1004,6 +1004,14 @@ async def get_bank_details(request: Request, bank_id: int):
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
+
+    if user.get("tier") != "premium":
+        if bank.get("patches"):
+            for i, patch in enumerate(bank["patches"]):
+                patch["name"] = f"LOCKED {i+1} (PRO)"
+        else:
+            bank["patches"] = [{"name": "LOCKED (PRO)", "index": 0}]
+
     return render_template("patch_list.html", request, {"bank": bank, "user": user})
 
 @app.post("/banks", response_class=HTMLResponse)
@@ -1075,11 +1083,6 @@ async def create_bank(
                 },
                     distinct_id=user["email"]
                 )
-        if user["tier"] != "premium":
-            if patch_names:
-                patch_names = [f"LOCKED {i+1} (PRO)" for i in range(len(patch_names))]
-            else:
-                patch_names = ["LOCKED (PRO)"]
 
     except Exception as exc:
         trigger_alert(
@@ -1182,11 +1185,6 @@ async def upload_bank_file(
                 },
                     distinct_id=user["email"]
                 )
-        if user["tier"] != "premium":
-            if patch_names:
-                patch_names = [f"LOCKED {i+1} (PRO)" for i in range(len(patch_names))]
-            else:
-                patch_names = ["LOCKED (PRO)"]
 
     except Exception as exc:
         trigger_alert(
@@ -2431,6 +2429,25 @@ WIKI_DATA = {
 }
 
 
+@app.get("/unsubscribe", response_class=HTMLResponse)
+async def unsubscribe_page(request: Request, token: str = ""):
+    email = ""
+    error = ""
+    if token:
+        try:
+            email = cookie_signer.unsign(token).decode()
+            database.add_to_unsubscribed(email)
+            trigger_alert(
+                "newsletter_unsubscribed",
+                f"User `{email}` has unsubscribed from the newsletter.",
+                {"email": email},
+                distinct_id=email
+            )
+        except BadSignature:
+            error = "Invalid or expired unsubscribe link."
+            logger.warning(f"Invalid unsubscribe token attempt: {token}")
+    return render_template("unsubscribe.html", request, {"email": email, "error": error})
+
 @app.get("/{synth_slug}", response_class=HTMLResponse)
 async def dynamic_synth_seo(synth_slug: str, request: Request):
     if synth_slug in SEO_DATA:
@@ -2626,7 +2643,7 @@ knob.monster preservation vault
 
 ---
 to stop receiving these, you can unsubscribe instantly at:
-https://knob.monster/unsubscribe?email={{recipient_email}}
+https://knob.monster/unsubscribe?token={{unsubscribe_token}}
 """
     }
 
@@ -2657,7 +2674,7 @@ https://knob.monster/unsubscribe?email={{recipient_email}}
     - Start the email with a very casual, lower-case greeting like 'hey,' or 'quick thought,' or just dive straight into the narrative without any greeting.
     - NEVER end the email with a signature, placeholder names, sign-offs, or generic closing salutations like 'Cheers, [Your Name]', 'Sincerely', 'The knob.monster team', 'Best regards', or 'Keep making noise'. Just end with the core thoughts and the dashboard call-to-action.
     - Include a clear link pointing to "https://knob.monster/dashboard" to upload new SysEx banks.
-    - Include the exact text at the bottom: "To stop receiving these, you can unsubscribe instantly at: https://knob.monster/unsubscribe?email={{{{recipient_email}}}}"
+    - Include the exact text at the bottom: "To stop receiving these, you can unsubscribe instantly at: https://knob.monster/unsubscribe?token={{{{unsubscribe_token}}}}"
     """
 
     payload = {
@@ -2764,7 +2781,8 @@ def run_newsletter_broadcast_sync(override_subject: str = None, override_body: s
                 server = None
 
         for email in recipients:
-            personal_body = body.replace("{{recipient_email}}", email)
+            unsubscribe_token = cookie_signer.sign(email.encode()).decode()
+            personal_body = body.replace("{{unsubscribe_token}}", unsubscribe_token)
             
             sent_via_smtp = False
             if server:
@@ -2774,7 +2792,7 @@ def run_newsletter_broadcast_sync(override_subject: str = None, override_body: s
                     msg['To'] = email
                     msg['Subject'] = subject
                     msg['Reply-To'] = "halfradiationllc@gmail.com"
-                    msg['List-Unsubscribe'] = f"<https://knob.monster/unsubscribe?email={email}>"
+                    msg['List-Unsubscribe'] = f"<https://knob.monster/unsubscribe?token={unsubscribe_token}>"
                     msg['Precedence'] = "bulk"
                     msg.attach(MIMEText(personal_body, 'plain'))
                     
@@ -2847,18 +2865,4 @@ async def admin_broadcast_override(secret: str, override_subject: str = None, ov
     
     return {"status": "broadcast_initiated"}
 
-@app.get("/unsubscribe", response_class=HTMLResponse)
-async def unsubscribe_page(request: Request, email: str = ""):
-    """
-    Unsubscribe page to allow users to opt-out from the newsletter.
-    """
-    if email:
-        database.add_to_unsubscribed(email)
-        trigger_alert(
-            "newsletter_unsubscribed",
-            f"User `{email}` has unsubscribed from the newsletter.",
-            {"email": email},
-            distinct_id=email
-        )
-    return render_template("unsubscribe.html", request, {"email": email})
 

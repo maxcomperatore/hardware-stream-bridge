@@ -1374,16 +1374,29 @@
                 }
 
                 logMidiEvent("SYSTEM", `Sending ${bytes.length} bytes of raw SysEx dump to output port '${outputPort.name}'...`);
-                outputPort.send(bytes);
+
+                const CHUNK_SIZE = 256;
+                const INTER_CHUNK_DELAY = 60;
+                let offset = 0;
+
+                for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
+                    const chunk = bytes.slice(i, i + CHUNK_SIZE);
+                    outputPort.send(chunk, performance.now() + offset);
+                    offset += INTER_CHUNK_DELAY;
+                }
+
                 logMidiEvent("OUT", hexString.slice(0, 48) + " ... " + hexString.slice(-8));
 
-                completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!");
-                showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
-                logToPostHog('flash_execution_success', {
-                    bank_name: bankName,
-                    output_port: selectedOutput,
-                    byte_count: bytes.length
-                });
+                setTimeout(() => {
+                    completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!");
+                    showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
+                    logToPostHog('flash_execution_success', {
+                        bank_name: bankName,
+                        output_port: selectedOutput,
+                        byte_count: bytes.length
+                    });
+                }, offset);
+
             } catch (err) {
                 console.error("Midi flash error:", err);
                 closeStatusOverlay();

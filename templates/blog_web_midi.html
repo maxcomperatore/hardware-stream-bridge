@@ -250,22 +250,23 @@
                     right now."</em>
             </p>
             <p>
-                To solve this in JavaScript, we have to enforce a custom software flow throttle:
+                To solve this efficiently, we can utilize the Web MIDI API's built-in scheduler to throttle data packets, rather than relying on JavaScript's <code>setTimeout</code> thread loops which can cause imprecise delays or packet drops on cheap USB-MIDI cables:
             </p>
 
             <pre
                 class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 overflow-x-auto text-xs font-mono text-emerald-400">
-// Chunking and pacing SysEx transmission arrays
-async function sendSysExWithPacing(midiOutput, rawSysExBytes) {
+// Chunking and pacing SysEx transmission arrays using API-level scheduling
+function sendSysExWithPacing(midiOutput, rawSysExBytes) {
     const CHUNK_SIZE = 256; // Limit blocks to prevent buffer floods
     const INTER_CHUNK_DELAY = 60; // Milliseconds to wait between packets
+    let offset = 0;
 
     for (let i = 0; i < rawSysExBytes.length; i += CHUNK_SIZE) {
         const chunk = rawSysExBytes.slice(i, i + CHUNK_SIZE);
-        midiOutput.send(chunk);
         
-        // Wait to allow the vintage 8-bit CPU to write block to EEPROM
-        await new Promise(resolve => setTimeout(resolve, INTER_CHUNK_DELAY));
+        // Schedule the packet using the precise API clock
+        midiOutput.send(chunk, performance.now() + offset);
+        offset += INTER_CHUNK_DELAY;
     }
 }</pre>
 

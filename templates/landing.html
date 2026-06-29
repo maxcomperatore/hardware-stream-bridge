@@ -342,6 +342,12 @@
         details[open] .faq-answer {
             animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        .demo-loop-video {
+            opacity: 1;
+            transition: opacity 0.12s linear;
+            will-change: opacity;
+        }
     </style>
     {% include 'posthog.html' %}
     <!-- JSON-LD Structured Data for SEO -->
@@ -379,7 +385,7 @@
         "thumbnailUrl": "https://knob.monster/static/og_banner.png",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
-        "contentUrl": "https://knob.monster/static/1.mp4"
+        "contentUrl": "https://knob.monster/static/1.mp4?v=20260629"
       },
       {
         "@context": "https://schema.org",
@@ -389,7 +395,7 @@
         "thumbnailUrl": "https://knob.monster/static/og_banner.png",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
-        "contentUrl": "https://knob.monster/static/2.mp4"
+        "contentUrl": "https://knob.monster/static/2.mp4?v=20260629"
       }
     ]
     </script>
@@ -1246,8 +1252,8 @@
                     <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
                         <video autoplay loop muted playsinline preload="auto"
                             aria-label="MIDI keyboard backup demo video"
-                            class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
-                            <source src="/static/1.mp4" type="video/mp4">
+                            class="demo-loop-video w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                            <source src="/static/1.mp4?v=20260629" type="video/mp4">
                             <track kind="captions" src="" srclang="en" label="No captions" default>
                         </video>
                     </div>
@@ -1268,8 +1274,8 @@
                     <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
                         <video autoplay loop muted playsinline preload="auto"
                             aria-label="Web cloud patch editor database demo video"
-                            class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
-                            <source src="/static/2.mp4" type="video/mp4">
+                            class="demo-loop-video w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                            <source src="/static/2.mp4?v=20260629" type="video/mp4">
                             <track kind="captions" src="" srclang="en" label="No captions" default>
                         </video>
                     </div>
@@ -2190,6 +2196,38 @@
 
         <!-- Lazy Loading script for MP4 Videos -->
         <script>
+            function softenDemoVideoLoop(video, fadeSec = 0.4, minOpacity = 0.8) {
+                let rafId = null;
+                const tick = () => {
+                    const duration = video.duration;
+                    if (video.paused || !duration || !isFinite(duration)) {
+                        rafId = null;
+                        return;
+                    }
+                    const t = video.currentTime;
+                    let opacity = 1;
+                    if (t < fadeSec) {
+                        opacity = minOpacity + (1 - minOpacity) * (t / fadeSec);
+                    } else if (duration - t < fadeSec) {
+                        opacity = minOpacity + (1 - minOpacity) * ((duration - t) / fadeSec);
+                    }
+                    video.style.opacity = String(opacity);
+                    rafId = requestAnimationFrame(tick);
+                };
+                const start = () => {
+                    if (rafId === null) rafId = requestAnimationFrame(tick);
+                };
+                video.addEventListener('play', start);
+                video.addEventListener('loadedmetadata', start);
+                if (!video.paused) start();
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('#demo .demo-loop-video').forEach((video) => {
+                    softenDemoVideoLoop(video);
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', () => {
                 const lazyVideos = document.querySelectorAll('video[preload="none"]');
                 if ('IntersectionObserver' in window) {

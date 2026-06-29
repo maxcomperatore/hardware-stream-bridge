@@ -1004,6 +1004,14 @@ async def get_bank_details(request: Request, bank_id: int):
     bank = database.get_bank(bank_id, user["id"])
     if not bank:
         raise HTTPException(status_code=404, detail="Bank not found")
+
+    if user.get("tier") != "premium":
+        if bank.get("patches"):
+            for i, patch in enumerate(bank["patches"]):
+                patch["name"] = f"LOCKED {i+1} (PRO)"
+        else:
+            bank["patches"] = [{"name": "LOCKED (PRO)", "index": 0}]
+
     return render_template("patch_list.html", request, {"bank": bank, "user": user})
 
 @app.post("/banks", response_class=HTMLResponse)
@@ -1075,11 +1083,6 @@ async def create_bank(
                 },
                     distinct_id=user["email"]
                 )
-        if user["tier"] != "premium":
-            if patch_names:
-                patch_names = [f"LOCKED {i+1} (PRO)" for i in range(len(patch_names))]
-            else:
-                patch_names = ["LOCKED (PRO)"]
 
     except Exception as exc:
         trigger_alert(
@@ -1182,11 +1185,6 @@ async def upload_bank_file(
                 },
                     distinct_id=user["email"]
                 )
-        if user["tier"] != "premium":
-            if patch_names:
-                patch_names = [f"LOCKED {i+1} (PRO)" for i in range(len(patch_names))]
-            else:
-                patch_names = ["LOCKED (PRO)"]
 
     except Exception as exc:
         trigger_alert(

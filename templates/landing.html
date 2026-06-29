@@ -1556,7 +1556,8 @@
         <!-- Pricing Grid -->
         <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
             {% if pricing is not defined %}
-            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '39', 'studio_amount': '399', 'billing_label': 'USD / ONE-TIME'} %}
+            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '39', 'studio_amount': '399',
+            'billing_label': 'USD / ONE-TIME'} %}
             {% endif %}
             <div class="text-center max-w-2xl mx-auto mb-20 reveal">
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
@@ -1586,7 +1587,8 @@
                             <div class="flex items-center gap-2 flex-wrap pr-12">
                                 <h3 class="text-sm font-roman uppercase text-white tracking-wide">knob.monster+</h3>
                             </div>
-                            <p class="text-xs text-zinc-400 mt-1">Home &amp; hobby. <span class="underline underline-offset-2 text-zinc-300">Non-commercial</span> only.</p>
+                            <p class="text-xs text-zinc-400 mt-1">Home &amp; hobby. <span
+                                    class="underline underline-offset-2 text-zinc-300">Non-commercial</span> only.</p>
                         </div>
                         <div class="h-16 flex flex-col justify-center">
                             <div class="flex items-baseline gap-2">
@@ -1602,7 +1604,9 @@
                                         {% endif %}
                                     </span><span id="pricing-personal-amount">{{ pricing.personal_amount }}</span>
                                 </span>
-                                <span id="pricing-personal-billing" class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label }}</span>
+                                <span id="pricing-personal-billing"
+                                    class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label
+                                    }}</span>
                             </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                 <span class="text-emerald-400 font-semibold">Own it forever.</span> No subscriptions.
@@ -1649,7 +1653,8 @@
                                 <img src="https://api.iconify.design/dinkie-icons:heart-white-suit-circled.svg" alt=""
                                     width="14" height="14" class="h-3.5 w-3.5 shrink-0"
                                     style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                <span class="text-[10px] sm:text-xs leading-tight">100% customer funded: no ads or tracking</span>
+                                <span class="text-[10px] sm:text-xs leading-tight">100% customer funded: no ads or
+                                    tracking</span>
                                 <div class="flex items-center shrink-0 -space-x-1.5 md:-space-x-2 ml-0.5">
                                     <img src="https://api.dicebear.com/10.x/pixel-art/svg?seed=patchouli-pete" alt=""
                                         width="16" height="16" loading="lazy"
@@ -1678,17 +1683,16 @@
                 <!-- Studio -->
                 <div class="glow-card rounded-2xl border border-blue-500/20 bg-zinc-950/60 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 280ms;">
-                    <div
-                        class="absolute top-6 right-6 border border-dashed border-blue-400/40 p-1.5 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
+                    <div class="absolute top-6 right-6 border border-dashed border-blue-400/40 p-1.5 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
                         style="box-shadow: 0 0 20px rgba(96, 165, 250, 0.25);">
-                        <img src="/static/logo.svg"
-                            class="h-full w-full object-cover rounded-md" alt="knob.monster+ Studio Stamp"
-                            style="image-rendering: pixelated;" />
+                        <img src="/static/logo.svg" class="h-full w-full object-cover rounded-md"
+                            alt="knob.monster+ Studio Stamp" style="image-rendering: pixelated;" />
                     </div>
                     <div class="space-y-5">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap pr-12">
-                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">knob.monster+ Studio</h3>
+                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">knob.monster+ Studio
+                                </h3>
                             </div>
                             <p class="text-xs text-zinc-400 mt-1">Producers, gear rooms &amp; paid client work.</p>
                         </div>
@@ -1706,7 +1710,8 @@
                                         {% endif %}
                                     </span><span id="pricing-studio-amount">{{ pricing.studio_amount }}</span>
                                 </span>
-                                <span id="pricing-studio-billing" class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label }}</span>
+                                <span id="pricing-studio-billing" class="text-xs font-roman uppercase text-zinc-400">{{
+                                    pricing.billing_label }}</span>
                             </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                 Licensed for <span class="text-blue-400 font-semibold">commercial use.</span>
@@ -1751,11 +1756,16 @@
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
-                    Legacy SysEx librarians (<span class="text-zinc-400">MIDI Quest, SoundTower</span>) run
+                    Legacy SysEx librarians run
                     <span class="text-zinc-400 line-through decoration-zinc-600">$200–500+</span>.
                     knob.monster+:
-                    <span class="text-emerald-400 font-semibold"><span id="pricing-anchor-symbol">{{ pricing.symbol }}</span><span id="pricing-anchor-amount">{{ pricing.personal_amount }}</span></span>
-                    once, forever.
+                    <span class="text-emerald-400 font-semibold"><span id="pricing-anchor-personal-symbol">{{
+                            pricing.symbol }}</span><span id="pricing-anchor-personal-amount">{{ pricing.personal_amount
+                            }}</span></span>
+                    once · Studio:
+                    <span class="text-blue-400 font-semibold"><span id="pricing-anchor-studio-symbol">{{ pricing.symbol
+                            }}</span><span id="pricing-anchor-studio-amount">{{ pricing.studio_amount }}</span></span>
+                    once.
                 </p>
             </div>
 
@@ -1764,7 +1774,8 @@
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
                     Multi-site or repair shop? White-labeling &amp; onboarding available.
                     <a href="mailto:halfradiationllc@gmail.com?subject=knob.monster%20Commercial%20License"
-                        class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">Contact us for bespoke commercial pricing</a>
+                        class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">Contact us for
+                        bespoke commercial pricing</a>
                 </p>
             </div>
 
@@ -1841,10 +1852,14 @@
                 if (studioAmount) studioAmount.textContent = cfg.studio;
                 if (personalBilling) personalBilling.textContent = cfg.billing;
                 if (studioBilling) studioBilling.textContent = cfg.billing;
-                const anchorSymbol = document.getElementById('pricing-anchor-symbol');
-                const anchorAmount = document.getElementById('pricing-anchor-amount');
-                if (anchorSymbol) anchorSymbol.textContent = cfg.symbol;
-                if (anchorAmount) anchorAmount.textContent = cfg.personal;
+                const anchorPersonalSymbol = document.getElementById('pricing-anchor-personal-symbol');
+                const anchorPersonalAmount = document.getElementById('pricing-anchor-personal-amount');
+                const anchorStudioSymbol = document.getElementById('pricing-anchor-studio-symbol');
+                const anchorStudioAmount = document.getElementById('pricing-anchor-studio-amount');
+                if (anchorPersonalSymbol) anchorPersonalSymbol.textContent = cfg.symbol;
+                if (anchorPersonalAmount) anchorPersonalAmount.textContent = cfg.personal;
+                if (anchorStudioSymbol) anchorStudioSymbol.textContent = cfg.symbol;
+                if (anchorStudioAmount) anchorStudioAmount.textContent = cfg.studio;
                 document.documentElement.dataset.pricingRegion = region;
             }
 

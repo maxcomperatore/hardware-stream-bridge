@@ -2570,20 +2570,6 @@ p.s. if you ran into issues setting up your midi connection or parsing your syse
         
     return sent_count
 
-async def drip_email_worker():
-    """
-    Background worker that runs every 5 minutes.
-    Used for local developer environments where Vercel Crons aren't active.
-    """
-    import asyncio
-    while True:
-        try:
-            # Check every 5 minutes
-            await asyncio.sleep(300)
-            await run_drip_check()
-        except Exception as e:
-            logger.error(f"error in drip_email_worker loop: {e}")
-
 @app.get("/api/cron/send-drips")
 async def trigger_drip_cron(request: Request):
     """
@@ -2875,15 +2861,4 @@ async def unsubscribe_page(request: Request, email: str = ""):
             distinct_id=email
         )
     return render_template("unsubscribe.html", request, {"email": email})
-
-@app.on_event("startup")
-async def start_drip_worker():
-    import asyncio
-    # Start the worker only if running locally (not on Vercel)
-    if os.environ.get("VERCEL") != "1":
-        asyncio.create_task(drip_email_worker())
-        logger.info("local automated paywall drip email background worker started.")
-    else:
-        logger.info("running in Vercel environment; local worker bypassed in favor of Vercel Cron.")
-
 

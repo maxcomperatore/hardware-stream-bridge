@@ -2186,19 +2186,29 @@
         <script>
             const EUR_PRICING_ENABLED = {{ 'true' if (eur_pricing_enabled is defined and eur_pricing_enabled) else 'false' }};
             const GBP_PRICING_ENABLED = {{ 'true' if (gbp_pricing_enabled is defined and gbp_pricing_enabled) else 'false' }};
+            const CAD_PRICING_ENABLED = {{ 'true' if (cad_pricing_enabled is defined and cad_pricing_enabled) else 'false' }};
+            const AUD_PRICING_ENABLED = {{ 'true' if (aud_pricing_enabled is defined and aud_pricing_enabled) else 'false' }};
             const EU_COUNTRY_CODES = {{ eu_country_codes | tojson if eu_country_codes is defined else '[]' }};
             const GB_COUNTRY_CODES = {{ gb_country_codes | tojson if gb_country_codes is defined else '[]' }};
+            const CA_COUNTRY_CODES = {{ ca_country_codes | tojson if ca_country_codes is defined else '[]' }};
+            const AU_COUNTRY_CODES = {{ au_country_codes | tojson if au_country_codes is defined else '[]' }};
             const REGIONAL_PRICING_DISPLAY = {
-                eur: { symbol: '€', billing: 'EUR / ONE-TIME' },
-                gbp: { symbol: '£', billing: 'GBP / ONE-TIME' },
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '39', studio: '399' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '39', studio: '399' },
+                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '59', studio: '599' },
+                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '59', studio: '599' },
             };
 
             function resolveRegionalPricingRegion(data) {
                 if (!data) return null;
                 if (data.pricing_region === 'gbp' && GBP_PRICING_ENABLED) return 'gbp';
+                if (data.pricing_region === 'cad' && CAD_PRICING_ENABLED) return 'cad';
+                if (data.pricing_region === 'aud' && AUD_PRICING_ENABLED) return 'aud';
                 if (data.pricing_region === 'eur' && EUR_PRICING_ENABLED) return 'eur';
                 const code = (data.country || '').toUpperCase();
                 if (GBP_PRICING_ENABLED && GB_COUNTRY_CODES.includes(code)) return 'gbp';
+                if (CAD_PRICING_ENABLED && CA_COUNTRY_CODES.includes(code)) return 'cad';
+                if (AUD_PRICING_ENABLED && AU_COUNTRY_CODES.includes(code)) return 'aud';
                 if (EUR_PRICING_ENABLED && EU_COUNTRY_CODES.includes(code)) return 'eur';
                 return null;
             }
@@ -2208,11 +2218,15 @@
                 if (!cfg) return;
                 const personalCurrency = document.getElementById('pricing-personal-currency');
                 const studioCurrency = document.getElementById('pricing-studio-currency');
+                const personalAmount = document.getElementById('pricing-personal-amount');
+                const studioAmount = document.getElementById('pricing-studio-amount');
                 const personalBilling = document.getElementById('pricing-personal-billing');
                 const studioBilling = document.getElementById('pricing-studio-billing');
                 const symbolMarkup = `<span class="select-none text-4xl md:text-5xl leading-none" style="transform: translateY(-2px);">${cfg.symbol}</span>`;
                 if (personalCurrency) personalCurrency.innerHTML = symbolMarkup;
                 if (studioCurrency) studioCurrency.innerHTML = symbolMarkup;
+                if (personalAmount) personalAmount.textContent = cfg.personal;
+                if (studioAmount) studioAmount.textContent = cfg.studio;
                 if (personalBilling) personalBilling.textContent = cfg.billing;
                 if (studioBilling) studioBilling.textContent = cfg.billing;
                 document.documentElement.dataset.pricingRegion = region;
@@ -2245,6 +2259,8 @@
                         let countryName = data.country_name;
                         if (code === 'us') countryName = 'the USA';
                         else if (code === 'gb') countryName = 'the UK';
+                        else if (code === 'ca') countryName = 'Canada';
+                        else if (code === 'au') countryName = 'Australia';
                         else if (code === 'de') countryName = 'Germany';
                         else if (code === 'nl') countryName = 'the Netherlands';
                         else if (code === 'uae') countryName = 'the UAE';

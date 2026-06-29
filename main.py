@@ -355,6 +355,10 @@ STRIPE_PRICE_ID_PERSONAL_EUR = os.environ.get("STRIPE_PRICE_ID_PERSONAL_EUR") or
 STRIPE_PRICE_ID_STUDIO_EUR = os.environ.get("STRIPE_PRICE_ID_STUDIO_EUR") or "price_1TnjEVLuSQGuB7eyQcMUddXy"
 STRIPE_PRICE_ID_PERSONAL_GBP = os.environ.get("STRIPE_PRICE_ID_PERSONAL_GBP") or "price_1TnjRLLuSQGuB7eyVigKkTFK"
 STRIPE_PRICE_ID_STUDIO_GBP = os.environ.get("STRIPE_PRICE_ID_STUDIO_GBP") or "price_1TnjRZLuSQGuB7eyVtQj4No0"
+STRIPE_PRICE_ID_PERSONAL_CAD = os.environ.get("STRIPE_PRICE_ID_PERSONAL_CAD") or "price_1TnjbyLuSQGuB7eymTXdiwdB"
+STRIPE_PRICE_ID_STUDIO_CAD = os.environ.get("STRIPE_PRICE_ID_STUDIO_CAD") or "price_1TnjcfLuSQGuB7eyk12F0YlY"
+STRIPE_PRICE_ID_PERSONAL_AUD = os.environ.get("STRIPE_PRICE_ID_PERSONAL_AUD") or "price_1Tnjd6LuSQGuB7eyE4YBCaOx"
+STRIPE_PRICE_ID_STUDIO_AUD = os.environ.get("STRIPE_PRICE_ID_STUDIO_AUD") or "price_1TnjdvLuSQGuB7eyRNRFeyCi"
 BASE_URL = "https://knob.monster"
 
 EU_EUR_COUNTRY_CODES = frozenset({
@@ -363,6 +367,8 @@ EU_EUR_COUNTRY_CODES = frozenset({
 })
 
 GB_GBP_COUNTRY_CODES = frozenset({"GB"})
+CA_CAD_COUNTRY_CODES = frozenset({"CA"})
+AU_AUD_COUNTRY_CODES = frozenset({"AU"})
 
 COUNTRY_NAME_TO_ISO = {
     "GERMANY": "DE",
@@ -397,6 +403,8 @@ COUNTRY_NAME_TO_ISO = {
     "GREAT BRITAIN": "GB",
     "ENGLAND": "GB",
     "UK": "GB",
+    "CANADA": "CA",
+    "AUSTRALIA": "AU",
 }
 
 REGIONAL_PRICING_CATALOG = {
@@ -424,6 +432,22 @@ REGIONAL_PRICING_CATALOG = {
         "studio_amount": "399",
         "billing_label": "GBP / ONE-TIME",
     },
+    "cad": {
+        "region": "cad",
+        "currency": "CAD",
+        "symbol": "$",
+        "personal_amount": "59",
+        "studio_amount": "599",
+        "billing_label": "CAD / ONE-TIME",
+    },
+    "aud": {
+        "region": "aud",
+        "currency": "AUD",
+        "symbol": "$",
+        "personal_amount": "59",
+        "studio_amount": "599",
+        "billing_label": "AUD / ONE-TIME",
+    },
 }
 
 def normalize_country_code(raw: str | None) -> str:
@@ -440,10 +464,27 @@ def eur_pricing_enabled() -> bool:
 def gbp_pricing_enabled() -> bool:
     return bool(STRIPE_PRICE_ID_PERSONAL_GBP and STRIPE_PRICE_ID_STUDIO_GBP)
 
+def cad_pricing_enabled() -> bool:
+    return bool(STRIPE_PRICE_ID_PERSONAL_CAD and STRIPE_PRICE_ID_STUDIO_CAD)
+
+def aud_pricing_enabled() -> bool:
+    return bool(STRIPE_PRICE_ID_PERSONAL_AUD and STRIPE_PRICE_ID_STUDIO_AUD)
+
+REGIONAL_PRICE_IDS = {
+    "gbp": (STRIPE_PRICE_ID_PERSONAL_GBP, STRIPE_PRICE_ID_STUDIO_GBP),
+    "eur": (STRIPE_PRICE_ID_PERSONAL_EUR, STRIPE_PRICE_ID_STUDIO_EUR),
+    "cad": (STRIPE_PRICE_ID_PERSONAL_CAD, STRIPE_PRICE_ID_STUDIO_CAD),
+    "aud": (STRIPE_PRICE_ID_PERSONAL_AUD, STRIPE_PRICE_ID_STUDIO_AUD),
+}
+
 def get_pricing_region(country_code: str | None) -> str:
     code = normalize_country_code(country_code)
     if gbp_pricing_enabled() and code in GB_GBP_COUNTRY_CODES:
         return "gbp"
+    if cad_pricing_enabled() and code in CA_CAD_COUNTRY_CODES:
+        return "cad"
+    if aud_pricing_enabled() and code in AU_AUD_COUNTRY_CODES:
+        return "aud"
     if eur_pricing_enabled() and code in EU_EUR_COUNTRY_CODES:
         return "eur"
     return "usd"
@@ -552,16 +593,11 @@ def get_valid_stripe_customer_id(user: dict) -> str | None:
 def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
     normalized = normalize_plan(plan)
     region = get_pricing_region(country_code)
+    if region in REGIONAL_PRICE_IDS:
+        personal_id, studio_id = REGIONAL_PRICE_IDS[region]
+        return studio_id if normalized == "studio" else personal_id
     if normalized == "studio":
-        if region == "gbp":
-            return STRIPE_PRICE_ID_STUDIO_GBP
-        if region == "eur":
-            return STRIPE_PRICE_ID_STUDIO_EUR
         return "price_1Tngs7LuSQGuB7eysSDEeYFN"
-    if region == "gbp":
-        return STRIPE_PRICE_ID_PERSONAL_GBP
-    if region == "eur":
-        return STRIPE_PRICE_ID_PERSONAL_EUR
     return PLAN_CATALOG[normalized]["stripe_price_id"]
 
 # SMTP configuration with Resend defaults
@@ -807,8 +843,12 @@ async def index(request: Request):
             "pricing": get_regional_pricing(country_code),
             "eur_pricing_enabled": eur_pricing_enabled(),
             "gbp_pricing_enabled": gbp_pricing_enabled(),
+            "cad_pricing_enabled": cad_pricing_enabled(),
+            "aud_pricing_enabled": aud_pricing_enabled(),
             "eu_country_codes": sorted(EU_EUR_COUNTRY_CODES),
             "gb_country_codes": sorted(GB_GBP_COUNTRY_CODES),
+            "ca_country_codes": sorted(CA_CAD_COUNTRY_CODES),
+            "au_country_codes": sorted(AU_AUD_COUNTRY_CODES),
         },
     )
 
@@ -986,6 +1026,8 @@ async def get_geoip(request: Request):
         "pricing_region": pricing["region"],
         "eur_pricing_enabled": eur_pricing_enabled(),
         "gbp_pricing_enabled": gbp_pricing_enabled(),
+        "cad_pricing_enabled": cad_pricing_enabled(),
+        "aud_pricing_enabled": aud_pricing_enabled(),
     }
 
 
@@ -2480,7 +2522,7 @@ async def acp_discovery():
         "capabilities": {
             "services": ["one-time"],
             "payment_methods": ["card", "apple_pay", "google_pay", "cashapp", "pix", "naver_pay", "usdc"],
-            "currencies": ["USD", "EUR", "GBP", "BRL", "KRW"],
+            "currencies": ["USD", "EUR", "GBP", "CAD", "AUD", "BRL", "KRW"],
             "billing_periods": ["lifetime"]
         },
         "endpoints": {

@@ -1662,7 +1662,7 @@
                         <a id="pricing-cta-btn" href="/signup?plan=lifetime"
                             data-logged-in="{% if user %}true{% else %}false{% endif %}"
                             class="w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm mb-3">
-                            <span>Let Me Check It Out</span>
+                            <span>Get Lifetime Access</span>
                         </a>
                     </div>
                 </div>
@@ -1695,39 +1695,40 @@
                 <p class="text-xs text-zinc-400 mt-2 font-mono">Ask our AI anything about knob.monster or Web MIDI.</p>
             </div>
 
-            <div class="bg-black/40 border border-zinc-800 rounded-lg p-4 reveal" style="--delay: 100ms;">
-                <div id="ai-chat-window" class="space-y-4 mb-4 max-h-[400px] overflow-y-auto pr-2">
+            <div class="bg-black/20 backdrop-blur-xl border border-white/10 ring-1 ring-white/5 shadow-[0_0_30px_rgba(255,255,255,0.03)] rounded-xl p-5 reveal relative overflow-hidden" style="--delay: 100ms;">
+                <div class="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none"></div>
+                <div id="ai-chat-window" class="space-y-5 mb-5 max-h-[400px] overflow-y-auto pr-3 relative z-10 custom-scrollbar">
                     <!-- Initial Welcome Message -->
-                    <div class="flex flex-col gap-1 items-start">
-                        <span class="text-[10px] font-pixel text-zinc-500 uppercase tracking-wider">knob.monster AI</span>
-                        <div class="bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm font-sans rounded-lg rounded-tl-none p-3 max-w-[85%] leading-relaxed">
+                    <div class="flex flex-col gap-1.5 items-start">
+                        <span class="text-[10px] font-pixel text-zinc-500 uppercase tracking-widest pl-1">knob.monster AI</span>
+                        <div class="bg-zinc-900/50 backdrop-blur-md border border-white/10 text-zinc-300 text-sm font-sans rounded-2xl rounded-tl-none p-4 max-w-[85%] leading-relaxed shadow-sm">
                             Hello! I'm the knob.monster assistant. What would you like to know about our browser-native SysEx librarian?
                         </div>
                     </div>
                 </div>
 
                 <!-- Suggested Questions Chips -->
-                <div id="suggested-questions" class="flex flex-wrap gap-2 mb-4">
-                    <button class="suggestion-btn bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 text-xs px-3 py-1.5 rounded-full transition-colors font-sans">
+                <div id="suggested-questions" class="flex flex-wrap gap-2.5 mb-5 relative z-10">
+                    <button class="suggestion-btn bg-zinc-900/40 hover:bg-zinc-800/60 border border-white/10 hover:border-white/20 text-zinc-400 hover:text-zinc-200 text-xs px-3.5 py-2 rounded-full transition-all duration-300 font-sans backdrop-blur-sm">
                         What is knob.monster?
                     </button>
-                    <button class="suggestion-btn bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 text-xs px-3 py-1.5 rounded-full transition-colors font-sans">
+                    <button class="suggestion-btn bg-zinc-900/40 hover:bg-zinc-800/60 border border-white/10 hover:border-white/20 text-zinc-400 hover:text-zinc-200 text-xs px-3.5 py-2 rounded-full transition-all duration-300 font-sans backdrop-blur-sm">
                         How does browser-native Web MIDI work?
                     </button>
-                    <button class="suggestion-btn bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 text-xs px-3 py-1.5 rounded-full transition-colors font-sans">
+                    <button class="suggestion-btn bg-zinc-900/40 hover:bg-zinc-800/60 border border-white/10 hover:border-white/20 text-zinc-400 hover:text-zinc-200 text-xs px-3.5 py-2 rounded-full transition-all duration-300 font-sans backdrop-blur-sm">
                         Are my patches private and secure?
                     </button>
-                    <button class="suggestion-btn bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 text-xs px-3 py-1.5 rounded-full transition-colors font-sans">
+                    <button class="suggestion-btn bg-zinc-900/40 hover:bg-zinc-800/60 border border-white/10 hover:border-white/20 text-zinc-400 hover:text-zinc-200 text-xs px-3.5 py-2 rounded-full transition-all duration-300 font-sans backdrop-blur-sm">
                         Is it better than MIDI-OX?
                     </button>
                 </div>
 
                 <!-- Input Area -->
-                <form id="ai-faq-form" class="flex gap-2 relative">
+                <form id="ai-faq-form" class="flex gap-3 relative z-10">
                     <input type="text" id="ai-faq-input" placeholder="Ask a question..."
-                        class="flex-1 bg-zinc-900 border border-zinc-800 text-white text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition-colors placeholder:text-zinc-600 font-sans shadow-inner">
+                        class="flex-1 bg-black/40 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:outline-none focus:border-[#3b83f6]/50 focus:ring-1 focus:ring-[#3b83f6]/50 transition-all placeholder:text-zinc-600 font-sans shadow-inner backdrop-blur-sm">
                     <button type="submit" id="ai-faq-submit"
-                        class="bg-white text-black font-pixel uppercase tracking-wide text-xs px-5 py-3 rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="bg-white text-black font-pixel uppercase tracking-widest text-xs px-6 py-3.5 rounded-xl hover:bg-zinc-200 hover:scale-[0.98] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                         Ask
                     </button>
                 </form>
@@ -1773,14 +1774,14 @@
                 function showTypingIndicator() {
                     const msgDiv = document.createElement('div');
                     msgDiv.id = 'typing-indicator';
-                    msgDiv.className = 'flex flex-col gap-1 items-start';
+                    msgDiv.className = 'flex flex-col gap-1.5 items-start animate-fade-in-up';
 
                     const sender = document.createElement('span');
-                    sender.className = 'text-[10px] font-pixel text-zinc-500 uppercase tracking-wider';
+                    sender.className = 'text-[10px] font-pixel text-zinc-500 uppercase tracking-widest px-1';
                     sender.textContent = 'knob.monster AI';
 
                     const bubble = document.createElement('div');
-                    bubble.className = 'bg-zinc-900 border border-zinc-800 text-zinc-500 text-sm font-sans rounded-lg rounded-tl-none p-3 max-w-[85%] flex items-center gap-1';
+                    bubble.className = 'bg-zinc-900/50 backdrop-blur-md border border-white/10 text-zinc-500 text-sm font-sans rounded-2xl rounded-tl-none p-4 max-w-[85%] flex items-center gap-1 shadow-sm';
                     bubble.innerHTML = '<span class="animate-pulse">●</span><span class="animate-pulse delay-75">●</span><span class="animate-pulse delay-150">●</span>';
 
                     msgDiv.appendChild(sender);

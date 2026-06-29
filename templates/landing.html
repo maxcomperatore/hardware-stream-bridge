@@ -1556,7 +1556,7 @@
         <!-- Pricing Grid -->
         <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
             {% if pricing is not defined %}
-            {% set pricing = {'is_eur': false, 'personal_amount': '39', 'studio_amount': '399', 'billing_label': 'USD / ONE-TIME'} %}
+            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '39', 'studio_amount': '399', 'billing_label': 'USD / ONE-TIME'} %}
             {% endif %}
             <div class="text-center max-w-2xl mx-auto mb-20 reveal">
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
@@ -1592,13 +1592,13 @@
                             <div class="flex items-baseline gap-2">
                                 <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
                                     <span id="pricing-personal-currency" class="pricing-currency-slot">
-                                        {% if pricing.is_eur %}
-                                        <span class="select-none text-4xl md:text-5xl leading-none"
-                                            style="transform: translateY(-2px);">€</span>
-                                        {% else %}
+                                        {% if pricing.region == 'usd' %}
                                         <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
                                             class="h-8 w-auto select-none pricing-currency-usd"
                                             style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />
+                                        {% else %}
+                                        <span class="select-none text-4xl md:text-5xl leading-none"
+                                            style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
                                     </span><span id="pricing-personal-amount">{{ pricing.personal_amount }}</span>
                                 </span>
@@ -1696,13 +1696,13 @@
                             <div class="flex items-baseline gap-2">
                                 <span class="text-5xl font-lcd text-blue-400 flex items-baseline gap-0.5">
                                     <span id="pricing-studio-currency" class="pricing-currency-slot">
-                                        {% if pricing.is_eur %}
-                                        <span class="select-none text-4xl md:text-5xl leading-none"
-                                            style="transform: translateY(-2px);">€</span>
-                                        {% else %}
+                                        {% if pricing.region == 'usd' %}
                                         <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
                                             class="h-8 w-auto select-none pricing-currency-usd"
                                             style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />
+                                        {% else %}
+                                        <span class="select-none text-4xl md:text-5xl leading-none"
+                                            style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
                                     </span><span id="pricing-studio-amount">{{ pricing.studio_amount }}</span>
                                 </span>
@@ -2185,29 +2185,42 @@
 
         <script>
             const EUR_PRICING_ENABLED = {{ 'true' if (eur_pricing_enabled is defined and eur_pricing_enabled) else 'false' }};
+            const GBP_PRICING_ENABLED = {{ 'true' if (gbp_pricing_enabled is defined and gbp_pricing_enabled) else 'false' }};
             const EU_COUNTRY_CODES = {{ eu_country_codes | tojson if eu_country_codes is defined else '[]' }};
+            const GB_COUNTRY_CODES = {{ gb_country_codes | tojson if gb_country_codes is defined else '[]' }};
+            const REGIONAL_PRICING_DISPLAY = {
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME' },
+            };
 
-            function shouldUseEurPricing(data) {
-                if (!EUR_PRICING_ENABLED || !data) return false;
-                if (data.pricing_region === 'eur') return true;
+            function resolveRegionalPricingRegion(data) {
+                if (!data) return null;
+                if (data.pricing_region === 'gbp' && GBP_PRICING_ENABLED) return 'gbp';
+                if (data.pricing_region === 'eur' && EUR_PRICING_ENABLED) return 'eur';
                 const code = (data.country || '').toUpperCase();
-                return EU_COUNTRY_CODES.includes(code);
+                if (GBP_PRICING_ENABLED && GB_COUNTRY_CODES.includes(code)) return 'gbp';
+                if (EUR_PRICING_ENABLED && EU_COUNTRY_CODES.includes(code)) return 'eur';
+                return null;
             }
 
-            function applyEurPricingDisplay() {
+            function applyRegionalPricingDisplay(region) {
+                const cfg = REGIONAL_PRICING_DISPLAY[region];
+                if (!cfg) return;
                 const personalCurrency = document.getElementById('pricing-personal-currency');
                 const studioCurrency = document.getElementById('pricing-studio-currency');
                 const personalBilling = document.getElementById('pricing-personal-billing');
                 const studioBilling = document.getElementById('pricing-studio-billing');
-                const euroMarkup = '<span class="select-none text-4xl md:text-5xl leading-none" style="transform: translateY(-2px);">€</span>';
-                if (personalCurrency) personalCurrency.innerHTML = euroMarkup;
-                if (studioCurrency) studioCurrency.innerHTML = euroMarkup;
-                if (personalBilling) personalBilling.textContent = 'EUR / ONE-TIME';
-                if (studioBilling) studioBilling.textContent = 'EUR / ONE-TIME';
+                const symbolMarkup = `<span class="select-none text-4xl md:text-5xl leading-none" style="transform: translateY(-2px);">${cfg.symbol}</span>`;
+                if (personalCurrency) personalCurrency.innerHTML = symbolMarkup;
+                if (studioCurrency) studioCurrency.innerHTML = symbolMarkup;
+                if (personalBilling) personalBilling.textContent = cfg.billing;
+                if (studioBilling) studioBilling.textContent = cfg.billing;
+                document.documentElement.dataset.pricingRegion = region;
             }
 
-            if (document.documentElement.dataset.pricingRegion === 'eur') {
-                applyEurPricingDisplay();
+            const initialPricingRegion = document.documentElement.dataset.pricingRegion;
+            if (initialPricingRegion && initialPricingRegion !== 'usd') {
+                applyRegionalPricingDisplay(initialPricingRegion);
             }
 
             // Call the secure same-origin server-side proxy to get geoip details
@@ -2221,8 +2234,9 @@
 
             fetchGeoData()
                 .then(data => {
-                    if (shouldUseEurPricing(data)) {
-                        applyEurPricingDisplay();
+                    const regionalRegion = resolveRegionalPricingRegion(data);
+                    if (regionalRegion) {
+                        applyRegionalPricingDisplay(regionalRegion);
                     }
 
                     if (data.country_name && data.country) {

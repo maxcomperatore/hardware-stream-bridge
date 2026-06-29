@@ -14,6 +14,7 @@ import parser
 import logging
 import traceback
 import re
+import faq_knowledge
 
 # Standard robust email validation pattern
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
@@ -849,8 +850,26 @@ async def index(request: Request):
             "gb_country_codes": sorted(GB_GBP_COUNTRY_CODES),
             "ca_country_codes": sorted(CA_CAD_COUNTRY_CODES),
             "au_country_codes": sorted(AU_AUD_COUNTRY_CODES),
+            "faq_suggestions": faq_knowledge.FAQ_SUGGESTIONS,
         },
     )
+
+
+@app.post("/api/faq/ask")
+async def faq_ask(request: Request):
+    try:
+        body = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON body.")
+
+    question = (body.get("question") or "").strip()
+    if not question:
+        raise HTTPException(status_code=400, detail="Question is required.")
+    if len(question) > 500:
+        raise HTTPException(status_code=400, detail="Question must be 500 characters or fewer.")
+
+    result = answer_faq_question(question)
+    return result
 
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):
@@ -2902,18 +2921,114 @@ NEWSLETTER_TOPICS = [
     "the Korg M1 Universe preset and how PCM samples changed the industry overnight"
 ]
 
-def generate_newsletter_content_via_gemini() -> dict:
-    import urllib.request
-    import urllib.error
-    import json
-    import random
-    
-    # Retrieve OpenRouter configuration from environment or fallback defaults
+def get_openrouter_config():
     api_key = os.environ.get(
-        "OPENROUTER_API_KEY", 
-        "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"
+        "OPENROUTER_API_KEY",
+        "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",
     )
     model = os.environ.get("OPENROUTER_MODEL", "google/gemini-3.1-flash-lite")
+    return api_key, model
+
+
+def call_openrouter_chat(messages, json_object=False, timeout=30):
+    import urllib.request
+    import json
+
+    api_key, model = get_openrouter_config()
+    if not api_key:
+        return None
+
+    payload = {"model": model, "messages": messages}
+    if json_object:
+        payload["response_format"] = {"type": "json_object"}
+
+    req = urllib.request.Request(
+        "https://openrouter.ai/api/v1/chat/completions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+            "HTTP-Referer": "https://knob.monster",
+            "X-Title": "knob.monster",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as res:
+            response_data = json.loads(res.read().decode("utf-8"))
+            return response_data["choices"][0]["message"]["content"]
+    except Exception as e:
+        logger.error(f"Error calling OpenRouter API: {e}")
+        return None
+
+
+def _parse_openrouter_json(text_response):
+    import json
+
+    cleaned = (text_response or "").strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.splitlines()
+        if len(lines) > 2 and lines[-1].startswith("```"):
+            cleaned = "\n".join(lines[1:-1]).strip()
+        else:
+            cleaned = cleaned.strip("`").strip()
+    return json.loads(cleaned)
+
+
+def answer_faq_question(question: str) -> dict:
+    matched = faq_knowledge.find_faq_match(question)
+    if matched:
+        return {
+            "answer": matched["answer"],
+            "source": "faq",
+            "matched_question": matched["question"],
+        }
+
+    corpus = faq_knowledge.build_faq_corpus()
+    prompt = f"""You are the knob.monster support assistant on the landing page.
+Answer the user's question using ONLY the official FAQ knowledge below.
+When a FAQ clearly covers the question, reuse that FAQ answer text as closely as possible (light edits for flow are OK).
+Do not invent features, pricing, synth support, or policies that are not in the FAQ.
+If the FAQ does not cover the question, say you are not sure and suggest emailing halfradiationllc@gmail.com.
+Keep answers concise (1-4 sentences). Plain text only, no markdown or HTML.
+
+OFFICIAL FAQ:
+{corpus}
+
+User question: {question}
+
+Return JSON: {{"answer": "your response"}}"""
+
+    text_response = call_openrouter_chat([{"role": "user", "content": prompt}], json_object=True)
+    if not text_response:
+        return {
+            "answer": (
+                "I could not generate an answer right now. Please try one of the suggested questions, "
+                "or email halfradiationllc@gmail.com and we will help."
+            ),
+            "source": "fallback",
+        }
+
+    try:
+        parsed = _parse_openrouter_json(text_response)
+        answer = (parsed.get("answer") or "").strip()
+        if answer:
+            return {"answer": answer, "source": "llm"}
+    except Exception as json_err:
+        logger.error(f"FAQ JSON parsing failed: {json_err}. Raw response:\n{text_response}")
+
+    return {
+        "answer": (
+            "I could not parse an answer right now. Please try rephrasing your question, "
+            "or email halfradiationllc@gmail.com."
+        ),
+        "source": "fallback",
+    }
+
+
+def generate_newsletter_content_via_gemini() -> dict:
+    import random
     
     fallback_newsletter = {
         "subject": "the ticking timebomb inside your 80s synthesizers",
@@ -2937,12 +3052,11 @@ https://knob.monster/unsubscribe?token={{unsubscribe_token}}
 """
     }
 
+    api_key, _model = get_openrouter_config()
     if not api_key:
         logger.warning("OpenRouter API key is not set. Generating fallback mockup newsletter.")
         return fallback_newsletter
 
-    url = "https://openrouter.ai/api/v1/chat/completions"
-    
     selected_topic = random.choice(NEWSLETTER_TOPICS)
     logger.info(f"Selected weekly newsletter topic: {selected_topic}")
     
@@ -2967,54 +3081,17 @@ https://knob.monster/unsubscribe?token={{unsubscribe_token}}
     - Include the exact text at the bottom: "To stop receiving these, you can unsubscribe instantly at: https://knob.monster/unsubscribe?token={{{{unsubscribe_token}}}}"
     """
 
-    payload = {
-        "model": model,
-        "messages": [
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
-        "response_format": {
-            "type": "json_object"
-        }
-    }
-
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "https://knob.monster",
-            "X-Title": "knob.monster"
-        },
-        method="POST"
-    )
-
     try:
-        with urllib.request.urlopen(req, timeout=30) as res:
-            response_data = json.loads(res.read().decode("utf-8"))
-            text_response = response_data["choices"][0]["message"]["content"]
-            try:
-                # Strip markdown code blocks if the model wrapped it
-                cleaned_response = text_response.strip()
-                if cleaned_response.startswith("```"):
-                    lines = cleaned_response.splitlines()
-                    if len(lines) > 2 and lines[-1].startswith("```"):
-                        cleaned_response = "\n".join(lines[1:-1]).strip()
-                    else:
-                        cleaned_response = cleaned_response.strip("`").strip()
-                parsed = json.loads(cleaned_response)
-                return {
-                    "subject": parsed.get("subject", "vintage synth preservation updates").lower(),
-                    "body": parsed.get("body", "")
-                }
-            except Exception as json_err:
-                logger.error(f"JSON parsing failed for OpenRouter response: {json_err}. Raw response was:\n{text_response}")
-                raise json_err
+        text_response = call_openrouter_chat([{"role": "user", "content": prompt}], json_object=True)
+        if not text_response:
+            raise RuntimeError("Empty OpenRouter response")
+        parsed = _parse_openrouter_json(text_response)
+        return {
+            "subject": parsed.get("subject", "vintage synth preservation updates").lower(),
+            "body": parsed.get("body", ""),
+        }
     except Exception as e:
-        logger.error(f"Error calling OpenRouter API: {e}")
+        logger.error(f"Error generating newsletter via OpenRouter: {e}")
         return fallback_newsletter
 
 def run_newsletter_broadcast_sync(override_subject: str = None, override_body: str = None):

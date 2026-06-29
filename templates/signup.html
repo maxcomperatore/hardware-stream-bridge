@@ -96,11 +96,19 @@
             <img src="/static/logo.svg" alt="Knob Monster Logo" class="h-10 w-auto mx-auto object-contain mb-3">
             <h2 class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</h2>
             <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start backup</p>
-            {% if plan == 'studio' %}
-            <p class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime</p>
-            {% else %}
-            <p class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">Personal plan · {{ plan_catalog.personal.price_display }} lifetime</p>
-            {% endif %}
+            <p id="signup-plan-label" class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">
+                {% if plan == 'studio' %}knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{ plan_catalog.personal.price_display }} lifetime{% endif %}
+            </p>
+        </div>
+
+        {% if notice == 'business_email' %}
+        <div class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center">
+            Business email detected — Studio commercial license required (not Personal).
+        </div>
+        {% endif %}
+
+        <div id="business-email-notice" class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center hidden">
+            Business email detected — you'll checkout on <strong class="text-blue-200">Studio</strong>, not Personal.
         </div>
 
         {% if error %}
@@ -110,10 +118,10 @@
         {% endif %}
 
         <form action="/signup" method="POST" class="space-y-4">
-            <input type="hidden" name="plan" value="{{ plan or 'personal' }}">
+            <input type="hidden" name="plan" id="signup-plan" value="{{ plan or 'personal' }}">
             <div>
                 <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email Address</label>
-                <input type="email" name="email" required placeholder="name@domain.com"
+                <input type="email" name="email" id="signup-email" required placeholder="name@domain.com"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
             </div>
 
@@ -142,15 +150,17 @@
             </div>
 
             {% if plan != 'studio' %}
+            <div id="personal-license-ack">
             <label class="flex items-start gap-2.5 cursor-pointer group">
-                <input type="checkbox" name="license_ack" value="1" required
+                <input type="checkbox" name="license_ack" id="license_ack" value="1" required
                     class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-0 focus:ring-offset-0">
                 <span class="text-[9px] text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors">
                     I confirm this license is for personal, non-commercial use only (bedroom studio, my own synths).
                 </span>
             </label>
+            </div>
             {% else %}
-            <p class="text-[9px] text-zinc-500 leading-relaxed">
+            <p id="studio-license-note" class="text-[9px] text-zinc-500 leading-relaxed">
                 knob.monster+ Studio licenses cover commercial use at one location.
             </p>
             {% endif %}
@@ -232,6 +242,57 @@
 
         passwordInput.addEventListener('input', checkValidation);
         confirmInput.addEventListener('input', checkValidation);
+
+        const CONSUMER_EMAIL_DOMAINS = new Set({{ consumer_email_domains | tojson if consumer_email_domains is defined else '[]' }});
+        const INITIAL_PLAN = {{ (plan or 'personal') | tojson }};
+        const PLAN_LABELS = {
+            personal: 'Personal plan · {{ plan_catalog.personal.price_display }} lifetime',
+            studio: 'knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime',
+        };
+        const emailInput = document.getElementById('signup-email');
+        const planInput = document.getElementById('signup-plan');
+        const planLabel = document.getElementById('signup-plan-label');
+        const businessNotice = document.getElementById('business-email-notice');
+        const personalAck = document.getElementById('personal-license-ack');
+        const licenseCheckbox = document.getElementById('license_ack');
+
+        function updatePlanUi(effectivePlan, showBusinessNotice) {
+            if (planLabel) {
+                planLabel.textContent = effectivePlan === 'studio' ? PLAN_LABELS.studio : PLAN_LABELS.personal;
+            }
+            if (businessNotice) {
+                businessNotice.classList.toggle('hidden', !showBusinessNotice);
+            }
+            if (personalAck && licenseCheckbox) {
+                if (effectivePlan === 'studio') {
+                    personalAck.classList.add('hidden');
+                    licenseCheckbox.removeAttribute('required');
+                    licenseCheckbox.checked = false;
+                } else {
+                    personalAck.classList.remove('hidden');
+                    licenseCheckbox.setAttribute('required', 'required');
+                }
+            }
+        }
+
+        function applyPlanForEmail(email) {
+            if (!planInput) return;
+            if (INITIAL_PLAN === 'studio') {
+                planInput.value = 'studio';
+                updatePlanUi('studio', false);
+                return;
+            }
+            const domain = (email.split('@')[1] || '').toLowerCase().trim();
+            const useStudio = Boolean(domain && !CONSUMER_EMAIL_DOMAINS.has(domain));
+            planInput.value = useStudio ? 'studio' : 'personal';
+            updatePlanUi(planInput.value, useStudio);
+        }
+
+        if (emailInput) {
+            emailInput.addEventListener('input', () => applyPlanForEmail(emailInput.value.trim()));
+            emailInput.addEventListener('blur', () => applyPlanForEmail(emailInput.value.trim()));
+            if (emailInput.value) applyPlanForEmail(emailInput.value.trim());
+        }
     </script>
 {% include "mobile_nav.html" %}
 </body>

@@ -18,6 +18,40 @@ import faq_knowledge
 
 # Standard robust email validation pattern
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+
+CONSUMER_EMAIL_DOMAINS = frozenset({
+    "gmail.com", "googlemail.com",
+    "yahoo.com", "yahoo.co.uk", "yahoo.co.jp", "ymail.com", "rocketmail.com",
+    "hotmail.com", "hotmail.co.uk", "outlook.com", "live.com", "msn.com",
+    "icloud.com", "me.com", "mac.com",
+    "proton.me", "protonmail.com", "protonmail.ch", "pm.me",
+    "aol.com",
+    "gmx.com", "gmx.net", "gmx.de",
+    "mail.com", "email.com",
+    "yandex.com", "yandex.ru",
+    "fastmail.com", "fastmail.fm",
+    "tutanota.com", "tuta.io",
+    "hey.com",
+    "qq.com", "163.com", "126.com",
+    "inbox.com", "zoho.com",
+})
+
+
+def get_email_domain(email: str) -> str:
+    parts = email.lower().strip().rsplit("@", 1)
+    return parts[1] if len(parts) == 2 else ""
+
+
+def is_consumer_email(email: str) -> bool:
+    return get_email_domain(email) in CONSUMER_EMAIL_DOMAINS
+
+
+def resolve_plan_for_email(plan: str, email: str) -> str:
+    """Custom / business email domains must purchase Studio, not Personal."""
+    normalized = normalize_plan(plan)
+    if normalized == "personal" and not is_consumer_email(email):
+        return "studio"
+    return normalized
 # Clean up/delete any generated mockup assets in static folder
 def clean_old_assets():
     static_dir = r"d:\crew\experiment\static"
@@ -1117,11 +1151,21 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
-async def signup_page(request: Request, error: str = None, plan: str = "personal"):
+async def signup_page(request: Request, error: str = None, plan: str = "personal", notice: str = None):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
     plan = normalize_plan(plan)
-    return render_template("signup.html", request, {"error": error, "plan": plan, "plan_catalog": PLAN_CATALOG})
+    return render_template(
+        "signup.html",
+        request,
+        {
+            "error": error,
+            "plan": plan,
+            "plan_catalog": PLAN_CATALOG,
+            "notice": notice,
+            "consumer_email_domains": sorted(CONSUMER_EMAIL_DOMAINS),
+        },
+    )
 
 @app.post("/signup")
 async def do_signup(
@@ -1132,8 +1176,11 @@ async def do_signup(
     plan: str = Form("personal"),
     license_ack: str = Form(None),
 ):
-    plan = normalize_plan(plan)
     email_clean = email.lower().strip()
+    requested_plan = normalize_plan(plan)
+    plan = resolve_plan_for_email(requested_plan, email_clean)
+    plan_upgraded_for_email = plan != requested_plan
+
     if not EMAIL_REGEX.match(email_clean):
         trigger_alert(
             "user_signup_failed",
@@ -1141,7 +1188,16 @@ async def do_signup(
             {"email": email, "reason": "invalid_email_format"},
             distinct_id="anonymous"
         )
-        return render_template("signup.html", request, {"error": "Invalid email address format", "plan": plan, "plan_catalog": PLAN_CATALOG})
+        return render_template(
+            "signup.html",
+            request,
+            {
+                "error": "Invalid email address format",
+                "plan": plan,
+                "plan_catalog": PLAN_CATALOG,
+                "consumer_email_domains": sorted(CONSUMER_EMAIL_DOMAINS),
+            },
+        )
 
     if password != confirm_password:
         trigger_alert(
@@ -1179,13 +1235,14 @@ async def do_signup(
         return render_template("signup.html", request, {"error": "Email is already registered", "plan": plan, "plan_catalog": PLAN_CATALOG})
     
     try:
-        database.create_user(email, hash_password(password))
-        logger.info(f"User registered: {email}", extra={"email": email, "plan": plan, "event_type": "signup"})
+        database.create_user(email_clean, hash_password(password))
+        logger.info(f"User registered: {email_clean}", extra={"email": email_clean, "plan": plan, "event_type": "signup"})
         trigger_alert(
             "user_signup",
-            f"New user registered: `{email}` with plan `{plan}`.",
-            {"email": email, "plan": plan},
-            distinct_id=email
+            f"New user registered: `{email_clean}` with plan `{plan}`."
+            + (" (auto-upgraded from Personal — business email domain)" if plan_upgraded_for_email else ""),
+            {"email": email_clean, "plan": plan, "plan_upgraded_for_email": plan_upgraded_for_email},
+            distinct_id=email_clean
         )
     except Exception as e:
         trigger_alert(
@@ -1210,11 +1267,14 @@ async def do_signup(
         )
         response = RedirectResponse(url="/dashboard?payment=success", status_code=303)
     else:
-        response = RedirectResponse(url=f"/checkout?plan={plan}", status_code=303)
+        checkout_url = f"/checkout?plan={plan}"
+        if plan_upgraded_for_email:
+            checkout_url += "&upgraded=business_email"
+        response = RedirectResponse(url=checkout_url, status_code=303)
 
     response.set_cookie(
         key="session_user",
-        value=sign_session_cookie(email.lower().strip()),
+        value=sign_session_cookie(email_clean),
         max_age=86400 * 30,
         path="/",
         httponly=True,
@@ -1705,6 +1765,14 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
         return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}&plan={normalize_plan(plan)}")
     
     normalized_plan = normalize_plan(plan)
+    if not user_has_premium(user):
+        checkout_plan = resolve_plan_for_email(normalized_plan, user["email"])
+        if checkout_plan != normalized_plan:
+            return RedirectResponse(
+                url=f"/checkout?plan=studio&upgraded=business_email",
+                status_code=303,
+            )
+        normalized_plan = checkout_plan
     country_code = get_request_country_code(request)
     if user_has_premium(user):
         current_plan = normalize_plan(user.get("plan") or "personal")

@@ -45,6 +45,7 @@
                     </button>
                     
                     <!-- Download -->
+                    {% if user.tier == 'premium' %}
                     <a href="/banks/{{ bank.id }}/download" 
                        title="Download .syx backup file" 
                        onclick="logToPostHog('bank_downloaded', { bank_id: {{ bank.id }}, bank_name: '{{ bank.name }}' })"
@@ -52,6 +53,14 @@
                         <img src="https://api.iconify.design/dinkie-icons:download.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
                         Download file
                     </a>
+                    {% else %}
+                    <a href="/checkout"
+                       title="Download .syx backup file"
+                       class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-amber-600/20 border border-amber-500/30 hover:bg-amber-600/30 text-amber-400 font-roman uppercase text-[9px] tracking-wider transition-colors tactical-button">
+                        <img src="https://api.iconify.design/dinkie-icons:lock.svg" class="h-3.5 w-3.5" style="filter: invert(70%) sepia(80%) saturate(1000%) hue-rotate(350deg);" />
+                        Unlock Download
+                    </a>
+                    {% endif %}
                     
                     <!-- Delete -->
                     <button hx-delete="/banks/{{ bank.id }}" 

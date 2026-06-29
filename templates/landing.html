@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="overflow-x-hidden">
+<html lang="en" class="overflow-x-hidden" data-pricing-region="{{ pricing.region if pricing is defined else 'usd' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -1555,6 +1555,9 @@
 
         <!-- Pricing Grid -->
         <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
+            {% if pricing is not defined %}
+            {% set pricing = {'is_eur': false, 'personal_amount': '39', 'studio_amount': '399', 'billing_label': 'USD / ONE-TIME'} %}
+            {% endif %}
             <div class="text-center max-w-2xl mx-auto mb-20 reveal">
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
                     is_halloween_week %}A billing ritual for immortal synth souls.{% else %}A pricing system built for
@@ -1588,11 +1591,18 @@
                         <div class="h-16 flex flex-col justify-center">
                             <div class="flex items-baseline gap-2">
                                 <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
-                                    <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
-                                        class="h-8 w-auto select-none"
-                                        style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />39
+                                    <span id="pricing-personal-currency" class="pricing-currency-slot">
+                                        {% if pricing.is_eur %}
+                                        <span class="select-none text-4xl md:text-5xl leading-none"
+                                            style="transform: translateY(-2px);">€</span>
+                                        {% else %}
+                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
+                                            class="h-8 w-auto select-none pricing-currency-usd"
+                                            style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />
+                                        {% endif %}
+                                    </span><span id="pricing-personal-amount">{{ pricing.personal_amount }}</span>
                                 </span>
-                                <span class="text-xs font-roman uppercase text-zinc-400">USD / ONE-TIME</span>
+                                <span id="pricing-personal-billing" class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label }}</span>
                             </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                 <span class="text-emerald-400 font-semibold">Own it forever.</span> No subscriptions.
@@ -1685,11 +1695,18 @@
                         <div class="h-16 flex flex-col justify-center">
                             <div class="flex items-baseline gap-2">
                                 <span class="text-5xl font-lcd text-blue-400 flex items-baseline gap-0.5">
-                                    <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
-                                        class="h-8 w-auto select-none"
-                                        style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />399
+                                    <span id="pricing-studio-currency" class="pricing-currency-slot">
+                                        {% if pricing.is_eur %}
+                                        <span class="select-none text-4xl md:text-5xl leading-none"
+                                            style="transform: translateY(-2px);">€</span>
+                                        {% else %}
+                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
+                                            class="h-8 w-auto select-none pricing-currency-usd"
+                                            style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />
+                                        {% endif %}
+                                    </span><span id="pricing-studio-amount">{{ pricing.studio_amount }}</span>
                                 </span>
-                                <span class="text-xs font-roman uppercase text-zinc-400">USD / ONE-TIME</span>
+                                <span id="pricing-studio-billing" class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label }}</span>
                             </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                 Licensed for <span class="text-blue-400 font-semibold">commercial use.</span>
@@ -2167,6 +2184,32 @@
         {% include "footer.html" %}
 
         <script>
+            const EUR_PRICING_ENABLED = {{ 'true' if (eur_pricing_enabled is defined and eur_pricing_enabled) else 'false' }};
+            const EU_COUNTRY_CODES = {{ eu_country_codes | tojson if eu_country_codes is defined else '[]' }};
+
+            function shouldUseEurPricing(data) {
+                if (!EUR_PRICING_ENABLED || !data) return false;
+                if (data.pricing_region === 'eur') return true;
+                const code = (data.country || '').toUpperCase();
+                return EU_COUNTRY_CODES.includes(code);
+            }
+
+            function applyEurPricingDisplay() {
+                const personalCurrency = document.getElementById('pricing-personal-currency');
+                const studioCurrency = document.getElementById('pricing-studio-currency');
+                const personalBilling = document.getElementById('pricing-personal-billing');
+                const studioBilling = document.getElementById('pricing-studio-billing');
+                const euroMarkup = '<span class="select-none text-4xl md:text-5xl leading-none" style="transform: translateY(-2px);">€</span>';
+                if (personalCurrency) personalCurrency.innerHTML = euroMarkup;
+                if (studioCurrency) studioCurrency.innerHTML = euroMarkup;
+                if (personalBilling) personalBilling.textContent = 'EUR / ONE-TIME';
+                if (studioBilling) studioBilling.textContent = 'EUR / ONE-TIME';
+            }
+
+            if (document.documentElement.dataset.pricingRegion === 'eur') {
+                applyEurPricingDisplay();
+            }
+
             // Call the secure same-origin server-side proxy to get geoip details
             const fetchGeoData = () => {
                 return fetch('/api/geoip')
@@ -2178,13 +2221,17 @@
 
             fetchGeoData()
                 .then(data => {
-                    if (data.country_name && data.country) {
-                        const country = data.country_name;
-                        const code = data.country.toLowerCase();
+                    if (shouldUseEurPricing(data)) {
+                        applyEurPricingDisplay();
+                    }
 
-                        let countryName = country;
+                    if (data.country_name && data.country) {
+                        const code = (data.country || '').toLowerCase();
+
+                        let countryName = data.country_name;
                         if (code === 'us') countryName = 'the USA';
                         else if (code === 'gb') countryName = 'the UK';
+                        else if (code === 'de') countryName = 'Germany';
                         else if (code === 'nl') countryName = 'the Netherlands';
                         else if (code === 'uae') countryName = 'the UAE';
                         else if (code === 'ph') countryName = 'the Philippines';
@@ -2196,7 +2243,7 @@
 
                         const pricingTitle = document.getElementById('pricing-title');
                         if (pricingTitle) {
-                            pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" width="32" height="24" class="h-6 w-auto inline-block align-middle ml-1.5" alt="${countryName}" />`;
+                            pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" width="32" height="24" class="h-6 w-auto inline-block align-middle ml-1.5" alt="" />`;
                         }
 
                         // Dynamically match Nabla font colors to the country flag

@@ -349,9 +349,149 @@ stripe.api_key = STRIPE_SECRET_KEY
 STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
 STRIPE_PRICE_ID_MONTHLY = os.environ.get("STRIPE_PRICE_ID_MONTHLY", "price_1TmkUzLuSQGuB7eytGvepyWd")
 STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TnPsgLuSQGuB7eyPbyJSarD")
-STRIPE_PRICE_ID_PERSONAL = os.environ.get("STRIPE_PRICE_ID_PERSONAL", STRIPE_PRICE_ID_LIFETIME)
+STRIPE_PRICE_ID_PERSONAL = os.environ.get("STRIPE_PRICE_ID_PERSONAL") or STRIPE_PRICE_ID_LIFETIME
 STRIPE_PRICE_ID_STUDIO = "price_1Tngs7LuSQGuB7eysSDEeYFN"
+STRIPE_PRICE_ID_PERSONAL_EUR = os.environ.get("STRIPE_PRICE_ID_PERSONAL_EUR") or "price_1TnjE0LuSQGuB7eyLK5aLxbm"
+STRIPE_PRICE_ID_STUDIO_EUR = os.environ.get("STRIPE_PRICE_ID_STUDIO_EUR") or "price_1TnjEVLuSQGuB7eyQcMUddXy"
 BASE_URL = "https://knob.monster"
+
+EU_EUR_COUNTRY_CODES = frozenset({
+    "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU",
+    "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE",
+})
+
+COUNTRY_NAME_TO_ISO = {
+    "GERMANY": "DE",
+    "FRANCE": "FR",
+    "ITALY": "IT",
+    "SPAIN": "ES",
+    "NETHERLANDS": "NL",
+    "BELGIUM": "BE",
+    "AUSTRIA": "AT",
+    "POLAND": "PL",
+    "SWEDEN": "SE",
+    "DENMARK": "DK",
+    "FINLAND": "FI",
+    "IRELAND": "IE",
+    "PORTUGAL": "PT",
+    "GREECE": "GR",
+    "CZECHIA": "CZ",
+    "CZECH REPUBLIC": "CZ",
+    "ROMANIA": "RO",
+    "HUNGARY": "HU",
+    "CROATIA": "HR",
+    "SLOVAKIA": "SK",
+    "SLOVENIA": "SI",
+    "BULGARIA": "BG",
+    "LITHUANIA": "LT",
+    "LATVIA": "LV",
+    "ESTONIA": "EE",
+    "CYPRUS": "CY",
+    "LUXEMBOURG": "LU",
+    "MALTA": "MT",
+}
+
+def normalize_country_code(raw: str | None) -> str:
+    if not raw:
+        return "US"
+    value = raw.strip().upper()
+    if len(value) == 2 and value.isalpha():
+        return value
+    return COUNTRY_NAME_TO_ISO.get(value, "US")
+
+def eur_pricing_enabled() -> bool:
+    return bool(STRIPE_PRICE_ID_PERSONAL_EUR and STRIPE_PRICE_ID_STUDIO_EUR)
+
+def uses_eur_pricing(country_code: str | None) -> bool:
+    if not eur_pricing_enabled():
+        return False
+    if not country_code:
+        return False
+    return country_code.upper() in EU_EUR_COUNTRY_CODES
+
+def get_regional_pricing(country_code: str | None) -> dict:
+    if uses_eur_pricing(country_code):
+        return {
+            "region": "eur",
+            "is_eur": True,
+            "currency": "EUR",
+            "symbol": "€",
+            "personal_amount": "39",
+            "studio_amount": "399",
+            "billing_label": "EUR / ONE-TIME",
+        }
+    return {
+        "region": "usd",
+        "is_eur": False,
+        "currency": "USD",
+        "symbol": "$",
+        "personal_amount": "39",
+        "studio_amount": "399",
+        "billing_label": "USD / ONE-TIME",
+    }
+
+def resolve_client_ip(request: Request) -> tuple[str, bool]:
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    x_forwarded_for = request.headers.get("x-forwarded-for")
+    if x_forwarded_for:
+        client_ip = x_forwarded_for.split(",")[0].strip()
+    else:
+        cf_connecting_ip = request.headers.get("cf-connecting-ip")
+        if cf_connecting_ip:
+            client_ip = cf_connecting_ip.strip()
+        else:
+            x_real_ip = request.headers.get("x-real-ip")
+            if x_real_ip:
+                client_ip = x_real_ip.strip()
+
+    if client_ip != "localhost":
+        import ipaddress
+        try:
+            ipaddress.ip_address(client_ip)
+        except ValueError:
+            client_ip = "127.0.0.1"
+
+    is_private = client_ip in ["127.0.0.1", "localhost", "::1"]
+    if not is_private and (
+        client_ip.startswith("192.168.")
+        or client_ip.startswith("10.")
+        or any(client_ip.startswith(f"172.{i}.") for i in range(16, 32))
+    ):
+        is_private = True
+    return client_ip, is_private
+
+def lookup_geo_country(client_ip: str, is_private: bool) -> dict:
+    import urllib.request
+    import json
+
+    try:
+        url = "https://ipwho.is/" if is_private else f"https://ipwho.is/{client_ip}"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        with urllib.request.urlopen(req, timeout=3) as response:
+            data = json.loads(response.read().decode())
+            if data.get("success"):
+                return {
+                    "country_name": data.get("country"),
+                    "country": normalize_country_code(data.get("country_code") or data.get("country")),
+                    "ip": data.get("ip") if not is_private else "127.0.0.1",
+                }
+    except Exception as e:
+        logger.error(f"Server-side ipwho.is geoip lookup failed: {e}")
+
+    return {
+        "country_name": "everywhere",
+        "country": "US",
+        "ip": "127.0.0.1",
+    }
+
+def get_request_country_code(request: Request) -> str:
+    for header in ("cf-ipcountry", "x-vercel-ip-country"):
+        code = request.headers.get(header)
+        if code and len(code) == 2 and code.upper() != "XX":
+            return normalize_country_code(code)
+    client_ip, is_private = resolve_client_ip(request)
+    geo = lookup_geo_country(client_ip, is_private)
+    return normalize_country_code(geo.get("country"))
 
 PLAN_CATALOG = {
     "personal": {
@@ -388,10 +528,14 @@ def get_valid_stripe_customer_id(user: dict) -> str | None:
         return None
     return customer_id
 
-def get_plan_price_id(plan: str) -> str:
+def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
     normalized = normalize_plan(plan)
     if normalized == "studio":
+        if uses_eur_pricing(country_code):
+            return STRIPE_PRICE_ID_STUDIO_EUR
         return "price_1Tngs7LuSQGuB7eysSDEeYFN"
+    if uses_eur_pricing(country_code):
+        return STRIPE_PRICE_ID_PERSONAL_EUR
     return PLAN_CATALOG[normalized]["stripe_price_id"]
 
 # SMTP configuration with Resend defaults
@@ -626,7 +770,19 @@ async def index(request: Request):
     except Exception as e:
         logger.error(f"Failed to query user and patches count: {e}")
     remaining_slots = max(0, 105 - user_count)
-    return render_template("landing.html", request, {"user": user, "remaining_slots": remaining_slots, "total_patches": total_patches})
+    country_code = get_request_country_code(request)
+    return render_template(
+        "landing.html",
+        request,
+        {
+            "user": user,
+            "remaining_slots": remaining_slots,
+            "total_patches": total_patches,
+            "pricing": get_regional_pricing(country_code),
+            "eur_pricing_enabled": eur_pricing_enabled(),
+            "eu_country_codes": sorted(EU_EUR_COUNTRY_CODES),
+        },
+    )
 
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):
@@ -792,64 +948,15 @@ async def status_page():
 
 @app.get("/api/geoip")
 async def get_geoip(request: Request):
-    # Try to find the client IP
-    client_ip = request.client.host if request.client else "127.0.0.1"
-    
-    # Check headers for reverse proxy IPs
-    x_forwarded_for = request.headers.get("x-forwarded-for")
-    if x_forwarded_for:
-        # Get the first IP in the list
-        client_ip = x_forwarded_for.split(",")[0].strip()
-    else:
-        cf_connecting_ip = request.headers.get("cf-connecting-ip")
-        if cf_connecting_ip:
-            client_ip = cf_connecting_ip.strip()
-        else:
-            x_real_ip = request.headers.get("x-real-ip")
-            if x_real_ip:
-                client_ip = x_real_ip.strip()
-                
-    # Validate the IP format to prevent SSRF path traversal injections
-    if client_ip != "localhost":
-        import ipaddress
-        try:
-            ipaddress.ip_address(client_ip)
-        except ValueError:
-            client_ip = "127.0.0.1"
-                
-    # Detect if loopback/private
-    is_private = False
-    if client_ip in ["127.0.0.1", "localhost", "::1"]:
-        is_private = True
-    elif client_ip.startswith("192.168.") or client_ip.startswith("10."):
-        is_private = True
-    elif client_ip.startswith("172.16.") or client_ip.startswith("172.17.") or client_ip.startswith("172.18.") or client_ip.startswith("172.19.") or client_ip.startswith("172.20.") or client_ip.startswith("172.21.") or client_ip.startswith("172.22.") or client_ip.startswith("172.23.") or client_ip.startswith("172.24.") or client_ip.startswith("172.25.") or client_ip.startswith("172.26.") or client_ip.startswith("172.27.") or client_ip.startswith("172.28.") or client_ip.startswith("172.29.") or client_ip.startswith("172.30.") or client_ip.startswith("172.31."):
-        is_private = True
-        
-    # Perform server-side geolocation
-    import urllib.request
-    import json
-    
-    # Try ipwho.is first (free, fast, no auth key required)
-    try:
-        url = "https://ipwho.is/" if is_private else f"https://ipwho.is/{client_ip}"
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
-        with urllib.request.urlopen(req, timeout=3) as response:
-            data = json.loads(response.read().decode())
-            if data.get("success"):
-                return {
-                    "country_name": data.get("country"),
-                    "country": data.get("country_code"),
-                    "ip": data.get("ip") if not is_private else "127.0.0.1"
-                }
-    except Exception as e:
-        logger.error(f"Server-side ipwho.is geoip lookup failed: {e}")
-        
-    # Default fallback
+    client_ip, is_private = resolve_client_ip(request)
+    geo = lookup_geo_country(client_ip, is_private)
+    country_code = get_request_country_code(request)
+    pricing = get_regional_pricing(country_code)
     return {
-        "country_name": "everywhere",
-        "country": "US",
-        "ip": "127.0.0.1"
+        **geo,
+        "country": country_code,
+        "pricing_region": pricing["region"],
+        "eur_pricing_enabled": eur_pricing_enabled(),
     }
 
 
@@ -1508,6 +1615,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
         return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}&plan={normalize_plan(plan)}")
     
     normalized_plan = normalize_plan(plan)
+    country_code = get_request_country_code(request)
     if user_has_premium(user):
         current_plan = normalize_plan(user.get("plan") or "personal")
         if normalized_plan == current_plan:
@@ -1516,7 +1624,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             return RedirectResponse(url="/dashboard?payment=already_active")
 
     if normalized_plan in ("personal", "studio"):
-        price_id = get_plan_price_id(normalized_plan)
+        price_id = get_plan_price_id(normalized_plan, country_code)
         checkout_mode = "payment"
     elif plan == "yearly":
         price_id = STRIPE_PRICE_ID_YEARLY
@@ -1555,7 +1663,11 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             "allow_promotion_codes": allow_promo,
             "success_url": BASE_URL + "/dashboard?payment=success",
             "cancel_url": BASE_URL + "/dashboard?payment=cancel",
-            "metadata": {"user_email": user["email"], "plan": normalized_plan},
+            "metadata": {
+                "user_email": user["email"],
+                "plan": normalized_plan,
+                "pricing_region": get_regional_pricing(country_code)["region"],
+            },
         }
 
         if normalized_plan == "studio" and checkout_mode == "payment":
@@ -2339,7 +2451,7 @@ async def acp_discovery():
         "capabilities": {
             "services": ["one-time"],
             "payment_methods": ["card", "apple_pay", "google_pay", "cashapp", "pix", "naver_pay", "usdc"],
-            "currencies": ["USD", "BRL", "KRW"],
+            "currencies": ["USD", "EUR", "BRL", "KRW"],
             "billing_periods": ["lifetime"]
         },
         "endpoints": {

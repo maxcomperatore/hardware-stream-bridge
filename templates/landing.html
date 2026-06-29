@@ -1748,6 +1748,17 @@
                 </div>
             </div>
 
+            <!-- Value anchor -->
+            <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
+                <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
+                    Legacy SysEx librarians (<span class="text-zinc-400">MIDI Quest, SoundTower</span>) run
+                    <span class="text-zinc-400 line-through decoration-zinc-600">$200–500+</span>.
+                    knob.monster+:
+                    <span class="text-emerald-400 font-semibold"><span id="pricing-anchor-symbol">{{ pricing.symbol }}</span><span id="pricing-anchor-amount">{{ pricing.personal_amount }}</span></span>
+                    once, forever.
+                </p>
+            </div>
+
             <!-- Commercial / B2B -->
             <div class="max-w-4xl mx-auto mt-8 text-center reveal" style="--delay: 360ms;">
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
@@ -1830,6 +1841,10 @@
                 if (studioAmount) studioAmount.textContent = cfg.studio;
                 if (personalBilling) personalBilling.textContent = cfg.billing;
                 if (studioBilling) studioBilling.textContent = cfg.billing;
+                const anchorSymbol = document.getElementById('pricing-anchor-symbol');
+                const anchorAmount = document.getElementById('pricing-anchor-amount');
+                if (anchorSymbol) anchorSymbol.textContent = cfg.symbol;
+                if (anchorAmount) anchorAmount.textContent = cfg.personal;
                 document.documentElement.dataset.pricingRegion = region;
             }
 

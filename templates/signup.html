@@ -96,6 +96,11 @@
             <img src="/static/logo.svg" alt="Knob Monster Logo" class="h-10 w-auto mx-auto object-contain mb-3">
             <h2 class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</h2>
             <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start backup</p>
+            {% if plan == 'studio' %}
+            <p class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime</p>
+            {% else %}
+            <p class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">Personal plan · {{ plan_catalog.personal.price_display }} lifetime</p>
+            {% endif %}
         </div>
 
         {% if error %}
@@ -104,7 +109,8 @@
         </div>
         {% endif %}
 
-        <form action="/signup?plan={{ plan or 'lifetime' }}" method="POST" class="space-y-4">
+        <form action="/signup" method="POST" class="space-y-4">
+            <input type="hidden" name="plan" value="{{ plan or 'personal' }}">
             <div>
                 <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email Address</label>
                 <input type="email" name="email" required placeholder="name@domain.com"
@@ -134,6 +140,20 @@
                     <span>Passwords match</span>
                 </div>
             </div>
+
+            {% if plan != 'studio' %}
+            <label class="flex items-start gap-2.5 cursor-pointer group">
+                <input type="checkbox" name="license_ack" value="1" required
+                    class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-0 focus:ring-offset-0">
+                <span class="text-[9px] text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors">
+                    I confirm this license is for personal, non-commercial use only (bedroom studio, my own synths).
+                </span>
+            </label>
+            {% else %}
+            <p class="text-[9px] text-zinc-500 leading-relaxed">
+                knob.monster+ Studio licenses cover commercial use at one location.
+            </p>
+            {% endif %}
 
             <button type="submit" id="register-btn"
                 class="w-full py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-[0.98]">

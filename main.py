@@ -349,7 +349,50 @@ stripe.api_key = STRIPE_SECRET_KEY
 STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
 STRIPE_PRICE_ID_MONTHLY = os.environ.get("STRIPE_PRICE_ID_MONTHLY", "price_1TmkUzLuSQGuB7eytGvepyWd")
 STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TnPsgLuSQGuB7eyPbyJSarD")
+STRIPE_PRICE_ID_PERSONAL = os.environ.get("STRIPE_PRICE_ID_PERSONAL", STRIPE_PRICE_ID_LIFETIME)
+STRIPE_PRICE_ID_STUDIO = "price_1Tngs7LuSQGuB7eysSDEeYFN"
 BASE_URL = "https://knob.monster"
+
+PLAN_CATALOG = {
+    "personal": {
+        "label": "Personal",
+        "price_display": "$39",
+        "amount_cents": 3900,
+        "stripe_price_id": STRIPE_PRICE_ID_PERSONAL,
+        "commercial": False,
+    },
+    "studio": {
+        "label": "knob.monster+ Studio",
+        "price_display": "$399",
+        "amount_cents": 39900,
+        "stripe_price_id": "price_1Tngs7LuSQGuB7eysSDEeYFN",
+        "commercial": True,
+    },
+}
+
+def normalize_plan(plan: str) -> str:
+    if not plan or plan in ("lifetime", "personal"):
+        return "personal"
+    if plan == "studio":
+        return "studio"
+    return "personal"
+
+def user_has_premium(user: dict) -> bool:
+    return bool(user) and user.get("tier") == "premium"
+
+def get_valid_stripe_customer_id(user: dict) -> str | None:
+    customer_id = user.get("stripe_customer_id")
+    if not customer_id or customer_id == "mock_customer_id":
+        return None
+    if not str(customer_id).startswith("cus_"):
+        return None
+    return customer_id
+
+def get_plan_price_id(plan: str) -> str:
+    normalized = normalize_plan(plan)
+    if normalized == "studio":
+        return "price_1Tngs7LuSQGuB7eysSDEeYFN"
+    return PLAN_CATALOG[normalized]["stripe_price_id"]
 
 # SMTP configuration with Resend defaults
 SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.resend.com")
@@ -877,13 +920,22 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
-async def signup_page(request: Request, error: str = None, plan: str = "lifetime"):
+async def signup_page(request: Request, error: str = None, plan: str = "personal"):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
-    return render_template("signup.html", request, {"error": error, "plan": plan})
+    plan = normalize_plan(plan)
+    return render_template("signup.html", request, {"error": error, "plan": plan, "plan_catalog": PLAN_CATALOG})
 
 @app.post("/signup")
-async def do_signup(request: Request, email: str = Form(...), password: str = Form(...), confirm_password: str = Form(...), plan: str = "lifetime"):
+async def do_signup(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...),
+    confirm_password: str = Form(...),
+    plan: str = Form("personal"),
+    license_ack: str = Form(None),
+):
+    plan = normalize_plan(plan)
     email_clean = email.lower().strip()
     if not EMAIL_REGEX.match(email_clean):
         trigger_alert(
@@ -892,7 +944,7 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
             {"email": email, "reason": "invalid_email_format"},
             distinct_id="anonymous"
         )
-        return render_template("signup.html", request, {"error": "Invalid email address format", "plan": plan})
+        return render_template("signup.html", request, {"error": "Invalid email address format", "plan": plan, "plan_catalog": PLAN_CATALOG})
 
     if password != confirm_password:
         trigger_alert(
@@ -901,7 +953,7 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
             {"email": email, "reason": "password_mismatch"},
             distinct_id="anonymous"
         )
-        return render_template("signup.html", request, {"error": "Passwords do not match", "plan": plan})
+        return render_template("signup.html", request, {"error": "Passwords do not match", "plan": plan, "plan_catalog": PLAN_CATALOG})
     
     if len(password) < 8:
         trigger_alert(
@@ -910,7 +962,14 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
             {"email": email, "reason": "weak_password"},
             distinct_id="anonymous"
         )
-        return render_template("signup.html", request, {"error": "Password must be at least 8 characters long", "plan": plan})
+        return render_template("signup.html", request, {"error": "Password must be at least 8 characters long", "plan": plan, "plan_catalog": PLAN_CATALOG})
+    
+    if plan == "personal" and not license_ack:
+        return render_template(
+            "signup.html",
+            request,
+            {"error": "Please confirm personal, non-commercial use for the Personal plan.", "plan": plan, "plan_catalog": PLAN_CATALOG},
+        )
     
     user = database.get_user_by_email(email)
     if user:
@@ -920,7 +979,7 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
             {"email": email, "reason": "email_registered"},
             distinct_id=email
         )
-        return render_template("signup.html", request, {"error": "Email is already registered", "plan": plan})
+        return render_template("signup.html", request, {"error": "Email is already registered", "plan": plan, "plan_catalog": PLAN_CATALOG})
     
     try:
         database.create_user(email, hash_password(password))
@@ -938,12 +997,13 @@ async def do_signup(request: Request, email: str = Form(...), password: str = Fo
             {"email": email, "plan": plan, "error": str(e)},
             distinct_id=email or "anonymous"
         )
-        return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan})
+        return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan, "plan_catalog": PLAN_CATALOG})
 
     # Check if this email paid before registering — auto-upgrade instantly
     pending = database.consume_pending_premium(email)
     if pending:
-        database.update_user_tier(email, "premium", pending.get("stripe_customer_id"))
+        pending_plan = normalize_plan(pending.get("plan") or "personal")
+        database.update_user_tier(email, "premium", pending.get("stripe_customer_id"), plan=pending_plan)
         logger.info(f"Pending premium applied on registration: {email}", extra={"email": email, "event_type": "pending_premium_applied"})
         trigger_alert(
             "pending_premium_applied",
@@ -1438,21 +1498,27 @@ async def checkout_pack(request: Request, pack_id: str):
 
 # --- Stripe Monetization Endpoints ---
 @app.get("/checkout")
-async def create_checkout_session(request: Request, plan: str = "lifetime"):
+async def create_checkout_session(request: Request, plan: str = "personal"):
     user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login")
         
     # If Stripe keys are missing, run in sandbox developer mock-mode
     if not STRIPE_SECRET_KEY:
-        return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}")
-        
-    if plan == "lifetime":
-        price_id = STRIPE_PRICE_ID_LIFETIME
+        return RedirectResponse(url=f"/mock-checkout-success?email={user['email']}&plan={normalize_plan(plan)}")
+    
+    normalized_plan = normalize_plan(plan)
+    if normalized_plan in ("personal", "studio"):
+        price_id = get_plan_price_id(normalized_plan)
+        checkout_mode = "payment"
     elif plan == "yearly":
         price_id = STRIPE_PRICE_ID_YEARLY
+        checkout_mode = "subscription"
+        normalized_plan = "yearly"
     else:
         price_id = STRIPE_PRICE_ID_MONTHLY
+        checkout_mode = "subscription"
+        normalized_plan = "monthly"
     
     # Check if we are in an active promotion week to allow coupon codes
     query_birthday = False
@@ -1471,24 +1537,48 @@ async def create_checkout_session(request: Request, plan: str = "lifetime"):
     allow_promo = is_birthday or is_christmas
     
     try:
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
+        checkout_kwargs = {
+            "line_items": [
                 {
-                    'price': price_id,
-                    'quantity': 1,
+                    "price": price_id,
+                    "quantity": 1,
                 },
             ],
-            mode='payment' if plan == "lifetime" else 'subscription',
-            allow_promotion_codes=allow_promo,
-            success_url=BASE_URL + "/dashboard?payment=success",
-            cancel_url=BASE_URL + "/dashboard?payment=cancel",
-            customer_email=user["email"],
-            metadata={"user_email": user["email"]}
-        )
+            "mode": checkout_mode,
+            "allow_promotion_codes": allow_promo,
+            "success_url": BASE_URL + "/dashboard?payment=success",
+            "cancel_url": BASE_URL + "/dashboard?payment=cancel",
+            "metadata": {"user_email": user["email"], "plan": normalized_plan},
+        }
+
+        if normalized_plan == "studio" and checkout_mode == "payment":
+            studio_checkout_extras = {
+                "invoice_creation": {
+                    "enabled": True,
+                    "invoice_data": {
+                            "description": "knob.monster+ Studio lifetime license (commercial use, one location).",
+                        "metadata": {"plan": "studio"},
+                    },
+                },
+                "tax_id_collection": {"enabled": True},
+                "billing_address_collection": "required",
+            }
+            stripe_customer_id = get_valid_stripe_customer_id(user)
+            if stripe_customer_id:
+                studio_checkout_extras["customer"] = stripe_customer_id
+                studio_checkout_extras["customer_update"] = {"name": "auto", "address": "auto"}
+            else:
+                studio_checkout_extras["customer_email"] = user["email"]
+                studio_checkout_extras["customer_creation"] = "always"
+            checkout_kwargs.update(studio_checkout_extras)
+        else:
+            checkout_kwargs["customer_email"] = user["email"]
+
+        checkout_session = stripe.checkout.Session.create(**checkout_kwargs)
         trigger_alert(
             "stripe_checkout_initiated",
-            f"Stripe checkout initiated by `{user['email']}` for plan `{plan}`.",
-            {"email": user["email"], "plan": plan, "checkout_session_id": checkout_session.id},
+            f"Stripe checkout initiated by `{user['email']}` for plan `{normalized_plan}`.",
+            {"email": user["email"], "plan": normalized_plan, "checkout_session_id": checkout_session.id},
             distinct_id=user["email"]
         )
         return RedirectResponse(url=checkout_session.url, status_code=303)
@@ -1513,12 +1603,13 @@ async def create_portal_session(request: Request):
         database.update_user_tier(user["email"], new_tier)
         return RedirectResponse(url="/dashboard?mock_portal=1")
         
-    if not user["stripe_customer_id"]:
+    stripe_customer_id = get_valid_stripe_customer_id(user)
+    if not stripe_customer_id:
         return RedirectResponse(url="/checkout")
         
     try:
         portal_session = stripe.billing_portal.Session.create(
-            customer=user["stripe_customer_id"],
+            customer=stripe_customer_id,
             return_url=BASE_URL + "/dashboard"
         )
         trigger_alert(
@@ -1538,11 +1629,12 @@ async def create_portal_session(request: Request):
         raise HTTPException(status_code=500, detail=f"Billing portal connection error: {str(e)}")
 
 @app.get("/mock-checkout-success")
-async def mock_checkout_success(email: str):
+async def mock_checkout_success(email: str, plan: str = "personal"):
     # Protect against production payment bypass
     if os.environ.get("VERCEL") or (STRIPE_SECRET_KEY and not STRIPE_SECRET_KEY.startswith("sk_test_")):
         raise HTTPException(status_code=403, detail="Mock checkout is disabled in production")
-    database.update_user_tier(email, "premium", "mock_customer_id")
+    normalized_plan = normalize_plan(plan)
+    database.update_user_tier(email, "premium", "mock_customer_id", plan=normalized_plan)
     return RedirectResponse(url="/dashboard?payment=success")
 
 @app.get("/admin/grant-premium")
@@ -1597,20 +1689,24 @@ async def stripe_webhook(request: Request):
             metadata = getattr(session, 'metadata', None) or {}
             customer_email = metadata.get('user_email') if isinstance(metadata, dict) else getattr(metadata, 'user_email', None)
         customer_id = getattr(session, 'customer', None)
+        metadata = getattr(session, 'metadata', None) or {}
+        if not isinstance(metadata, dict):
+            metadata = dict(metadata) if metadata else {}
+        purchased_plan = normalize_plan(metadata.get("plan", "personal"))
         if customer_email:
             existing_user = database.get_user_by_email(customer_email)
             if existing_user:
-                database.update_user_tier(customer_email, "premium", customer_id)
-                logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_activated"})
+                database.update_user_tier(customer_email, "premium", customer_id, plan=purchased_plan)
+                logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "plan": purchased_plan, "event_type": "subscription_activated"})
                 trigger_alert(
                     "subscription_activated",
-                    f"Subscription activated via Stripe for `{customer_email}`.",
-                    {"email": customer_email, "customer_id": customer_id},
+                    f"Subscription activated via Stripe for `{customer_email}` on plan `{purchased_plan}`.",
+                    {"email": customer_email, "customer_id": customer_id, "plan": purchased_plan},
                     distinct_id=customer_email
                 )
             else:
                 # User paid before registering — park it, apply on registration
-                database.upsert_pending_premium(customer_email, customer_id)
+                database.upsert_pending_premium(customer_email, customer_id, plan=purchased_plan)
                 logger.info(f"Pending premium parked (no account yet): {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_pending"})
                 trigger_alert(
                     "subscription_pending",
@@ -1725,7 +1821,7 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Direct Pricing:** $39 one-time payment for lifetime access. Own it forever. No subscriptions.",
+        "- **Direct Pricing:** knob.monster+ $39 lifetime (non-commercial) or knob.monster+ Studio $399 lifetime (commercial, one location). Bespoke quotes for repair shops.",
         "",
         "## Key Pages",
         "- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.",
@@ -1779,7 +1875,9 @@ async def agent_discovery_middleware(request: Request, call_next):
 - **Universal Support**: Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers
 
 ## Pricing
-- **Lifetime Access**: $39 one-time payment. Own it forever. No subscriptions.
+- **Personal**: $39 one-time lifetime. 1 user, non-commercial use.
+- **knob.monster+ Studio**: $399 one-time lifetime. Commercial use at one location. Same features as Personal.
+- **Commercial / B2B**: Contact halfradiationllc@gmail.com for bespoke site licenses, white-labeling, and multi-site rollouts.
 
 ## API
 - **API Catalog**: </well-known/api-catalog>
@@ -1953,7 +2051,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access is a single $39 one-time payment. Agents can purchase via Stripe checkout at `/checkout`.
+Premium access: knob.monster+ ($39) or knob.monster+ Studio ($399) lifetime plans. Checkout at `/checkout?plan=personal` or `/checkout?plan=studio`. Commercial/B2B via email.
 
 ## Discovery Documents
 
@@ -2243,7 +2341,9 @@ async def acp_discovery():
             "status": f"{SITE_BASE}/status"
         },
         "pricing": {
-            "lifetime": {"amount": 2900, "currency": "USD", "interval": "one-time"}
+            "personal": {"amount": 3900, "currency": "USD", "interval": "one-time"},
+            "studio": {"amount": 39900, "currency": "USD", "interval": "one-time", "commercial": True},
+            "commercial": {"contact": "halfradiationllc@gmail.com"}
         }
     }
     return Response(

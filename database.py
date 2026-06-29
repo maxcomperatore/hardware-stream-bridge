@@ -108,6 +108,8 @@ def init_db():
     
     # Add drip_email_sent tracking to users table
     cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
+    cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(50);")
+    cursor.execute("ALTER TABLE pending_premiums ADD COLUMN IF NOT EXISTS plan VARCHAR(50) DEFAULT 'personal';")
     
     conn.commit()
     conn.close()
@@ -146,15 +148,22 @@ def get_user_by_id(user_id: int) -> dict:
     conn.close()
     return dict(row) if row else None
 
-def update_user_tier(email: str, tier: str, stripe_customer_id: str = None):
+def update_user_tier(email: str, tier: str, stripe_customer_id: str = None, plan: str = None):
     conn = get_db_connection()
     cursor = conn.cursor()
-    if stripe_customer_id:
+    email = email.lower().strip()
+    if stripe_customer_id and plan:
+        query = "UPDATE users SET tier = %s, stripe_customer_id = %s, plan = %s WHERE email = %s"
+        params = (tier, stripe_customer_id, plan, email)
+    elif stripe_customer_id:
         query = "UPDATE users SET tier = %s, stripe_customer_id = %s WHERE email = %s"
-        params = (tier, stripe_customer_id, email.lower().strip())
+        params = (tier, stripe_customer_id, email)
+    elif plan:
+        query = "UPDATE users SET tier = %s, plan = %s WHERE email = %s"
+        params = (tier, plan, email)
     else:
         query = "UPDATE users SET tier = %s WHERE email = %s"
-        params = (tier, email.lower().strip())
+        params = (tier, email)
         
     cursor.execute(query, params)
     conn.commit()
@@ -167,18 +176,20 @@ def update_user_tier_by_customer_id(stripe_customer_id: str, tier: str):
     conn.commit()
     conn.close()
 
-def upsert_pending_premium(email: str, stripe_customer_id: str = None):
+def upsert_pending_premium(email: str, stripe_customer_id: str = None, plan: str = "personal"):
     """Park a premium grant for an email that hasn't registered yet."""
     conn = get_db_connection()
     cursor = conn.cursor()
     created_at = datetime.now().isoformat()
     cursor.execute(
         """
-        INSERT INTO pending_premiums (email, stripe_customer_id, created_at)
-        VALUES (%s, %s, %s)
-        ON CONFLICT (email) DO UPDATE SET stripe_customer_id = EXCLUDED.stripe_customer_id
+        INSERT INTO pending_premiums (email, stripe_customer_id, created_at, plan)
+        VALUES (%s, %s, %s, %s)
+        ON CONFLICT (email) DO UPDATE SET
+            stripe_customer_id = EXCLUDED.stripe_customer_id,
+            plan = EXCLUDED.plan
         """,
-        (email.lower().strip(), stripe_customer_id, created_at)
+        (email.lower().strip(), stripe_customer_id, created_at, plan)
     )
     conn.commit()
     conn.close()

@@ -36,7 +36,7 @@
             }
 
             // Update landing pricing card stamp avatar
-            const landingAvatarImg = document.getElementById('landing-upgrade-avatar');
+            const landingAvatarImg = document.getElementById('landing-lifetime-avatar') || document.getElementById('landing-upgrade-avatar');
             if (landingAvatarImg) {
                 landingAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
             }

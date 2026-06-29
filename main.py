@@ -352,10 +352,10 @@ STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1Tn
 BASE_URL = "https://knob.monster"
 
 # SMTP configuration with Resend defaults
-SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.resend.com")
+SMTP_HOST = os.environ.get("SMTP_HOST")
 SMTP_PORT = os.environ.get("SMTP_PORT", "587")
-SMTP_USER = os.environ.get("SMTP_USER", "resend")
-SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa")
+SMTP_USER = os.environ.get("SMTP_USER")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
 SMTP_FROM = os.environ.get("SMTP_FROM", "knob.monster <vault@knob.monster>")
 
 # Initialize database on startup
@@ -2431,6 +2431,71 @@ WIKI_DATA = {
 }
 
 
+from pydantic import BaseModel
+class FAQRequest(BaseModel):
+    question: str
+
+@app.post("/api/ask-faq")
+def ask_faq(faq_request: FAQRequest, request: Request):
+    """
+    Endpoint to answer user FAQs using OpenRouter with Mistral Nemo.
+    """
+    question = faq_request.question
+
+    # Log to PostHog
+    if posthog_client:
+        client_ip = request.client.host if request.client else "127.0.0.1"
+        x_forwarded_for = request.headers.get("x-forwarded-for")
+        if x_forwarded_for:
+            client_ip = x_forwarded_for.split(",")[0].strip()
+
+        posthog_client.capture(
+            distinct_id=client_ip,
+            event="faq_asked",
+            properties={"question": question}
+        )
+
+    api_key = os.environ.get(
+        "OPENROUTER_API_KEY",
+        "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"
+    )
+    model = os.environ.get("OPENROUTER_MODEL", "mistralai/mistral-nemo")
+
+    try:
+        import urllib.request
+        import json
+        req = urllib.request.Request(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://knob.monster",
+                "X-Title": "knob.monster FAQ Bot"
+            },
+            data=json.dumps({
+                "model": model,
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are a helpful, knowledgeable AI assistant for knob.monster, a browser-native cloud SysEx librarian and patch manager designed for vintage synthesizers from the 1980s and 90s. Keep your answers brief, clear, and focused on helping users with their questions. Mention that we support native Web MIDI on modern browsers, meaning no local desktop utilities or drivers are required. We offer a lifetime access plan for a simple $39 one-time payment. We support synths like Yamaha DX7, Roland Juno-106, Korg M1, etc."
+                    },
+                    {
+                        "role": "user",
+                        "content": question
+                    }
+                ]
+            }).encode('utf-8'),
+            method="POST"
+        )
+        with urllib.request.urlopen(req, timeout=10) as response:
+            result = json.loads(response.read().decode())
+            answer = result["choices"][0]["message"]["content"].strip()
+            return {"answer": answer}
+    except Exception as e:
+        logger.error(f"Error querying OpenRouter for FAQ: {e}")
+        return {"answer": "Sorry, I'm having trouble connecting to my knowledge base right now. Please try again later."}
+
+
 @app.get("/{synth_slug}", response_class=HTMLResponse)
 async def dynamic_synth_seo(synth_slug: str, request: Request):
     if synth_slug in SEO_DATA:
@@ -2606,7 +2671,7 @@ def generate_newsletter_content_via_gemini() -> dict:
         "OPENROUTER_API_KEY", 
         "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"
     )
-    model = os.environ.get("OPENROUTER_MODEL", "google/gemini-3.1-flash-lite")
+    model = os.environ.get("OPENROUTER_MODEL", "mistralai/mistral-nemo")
     
     fallback_newsletter = {
         "subject": "the ticking timebomb inside your 80s synthesizers",

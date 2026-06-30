@@ -120,6 +120,7 @@ except Exception as e:
     logger.error(f"Failed to initialize PostHog SDK: {e}")
 
 DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1519380424550256660/VetDI5944BLsDv8bJx-1zWC55EPpVsUaQbFykMbUgWj7O_9K9_q7xWzwxQaziXCC3Fg_"
+DISCORD_LOGO_URL = "https://knob.monster/static/logo.png"
 
 def _sync_send_alert(event_type: str, message: str, properties: dict = None, distinct_id: str = "system"):
     # 1. PostHog client capture
@@ -156,7 +157,7 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
             "timestamp": datetime.utcnow().isoformat() + "Z",
             "footer": {
                 "text": "knob.monster alerts",
-                "icon_url": "https://knob.monster/static/logo.svg"
+                "icon_url": DISCORD_LOGO_URL,
             }
         }
 
@@ -173,7 +174,7 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
 
         payload = {
             "username": "Knob Monster Bot",
-            "avatar_url": "https://knob.monster/static/logo.png",
+            "avatar_url": DISCORD_LOGO_URL,
             "embeds": [embed]
         }
 
@@ -492,11 +493,9 @@ async def get_logo_avif():
 
 @app.get("/static/logo.png")
 async def get_logo_png():
-    logo_path = os.path.join(BASE_DIR, "static", "logo.svg")
+    logo_path = os.path.join(BASE_DIR, "static", "logo.png")
     if os.path.exists(logo_path):
-        with open(logo_path, "r", encoding="utf-8") as f:
-            svg_content = f.read()
-        return Response(content=svg_content, media_type="image/svg+xml")
+        return FileResponse(logo_path, media_type="image/png")
     raise HTTPException(status_code=404)
 
 # Mount Static Files

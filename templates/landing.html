@@ -20,7 +20,7 @@
         content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="og:description"
         content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
-    <meta property="og:image" content="https://knob.monster/static/og_banner.png">
+    <meta property="og:image" content="{{ asset_abs_url('og_banner.png') }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -29,7 +29,7 @@
         content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="twitter:description"
         content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
-    <meta property="twitter:image" content="https://knob.monster/static/og_banner.png">
+    <meta property="twitter:image" content="{{ asset_abs_url('og_banner.png') }}">
     <!-- Prevent Flash of Unstyled Content (FOUC) and set default background early -->
     <style>
         html,
@@ -382,7 +382,7 @@
         "@type": "VideoObject",
         "name": "Web MIDI SysEx Connection Demo",
         "description": "Connecting vintage hardware synthesizers directly to a browser using native Web MIDI to back up patch names and RAM registers.",
-        "thumbnailUrl": "https://knob.monster/static/og_banner.png",
+        "thumbnailUrl": "{{ asset_abs_url('og_banner.png') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
         "contentUrl": "https://knob.monster/static/1.mp4?v=20260629"
@@ -392,7 +392,7 @@
         "@type": "VideoObject",
         "name": "Knob Monster Cloud Librarian Walkthrough",
         "description": "A demonstration of storing, searching, and restoring backup SysEx patch banks directly from a private cloud librarian vault.",
-        "thumbnailUrl": "https://knob.monster/static/og_banner.png",
+        "thumbnailUrl": "{{ asset_abs_url('og_banner.png') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
         "contentUrl": "https://knob.monster/static/2.mp4?v=20260629"
@@ -545,7 +545,7 @@
       {
         "@context": "https://schema.org/",
         "@type": "ImageObject",
-        "contentUrl": "https://knob.monster/static/studio_detail.avif",
+        "contentUrl": "{{ asset_abs_url('studio_detail.avif') }}",
         "license": "https://knob.monster/terms",
         "acquireLicensePage": "https://knob.monster/#pricing",
         "creditText": "knob.monster",
@@ -558,7 +558,7 @@
       {
         "@context": "https://schema.org/",
         "@type": "ImageObject",
-        "contentUrl": "https://knob.monster/static/midi_handshake.avif",
+        "contentUrl": "{{ asset_abs_url('midi_handshake.avif') }}",
         "license": "https://knob.monster/terms",
         "acquireLicensePage": "https://knob.monster/#pricing",
         "creditText": "knob.monster",
@@ -571,7 +571,7 @@
       {
         "@context": "https://schema.org/",
         "@type": "ImageObject",
-        "contentUrl": "https://knob.monster/static/index_extraction.avif",
+        "contentUrl": "{{ asset_abs_url('index_extraction.avif') }}",
         "license": "https://knob.monster/terms",
         "acquireLicensePage": "https://knob.monster/#pricing",
         "creditText": "knob.monster",
@@ -584,7 +584,7 @@
       {
         "@context": "https://schema.org/",
         "@type": "ImageObject",
-        "contentUrl": "https://knob.monster/static/recall_button.avif",
+        "contentUrl": "{{ asset_abs_url('recall_button.avif') }}",
         "license": "https://knob.monster/terms",
         "acquireLicensePage": "https://knob.monster/#pricing",
         "creditText": "knob.monster",
@@ -597,7 +597,7 @@
       {
         "@context": "https://schema.org/",
         "@type": "ImageObject",
-        "contentUrl": "https://knob.monster/static/trade_offer.avif",
+        "contentUrl": "{{ asset_abs_url('trade_offer.avif') }}",
         "license": "https://knob.monster/terms",
         "acquireLicensePage": "https://knob.monster/#pricing",
         "creditText": "knob.monster",
@@ -1407,7 +1407,7 @@
                 </div>
                 <div class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black reveal reveal-right"
                     style="--delay: 150ms;">
-                    <img src="/static/studio_detail.avif" alt="Studio Synthesizer Cables close-up" width="1024"
+                    <img src="{{ asset_url('studio_detail.avif') }}" alt="Studio Synthesizer Cables close-up" width="1024"
                         height="1016" sizes="(max-width: 768px) 100vw, 50vw" fetchpriority="high"
                         class="w-full h-full object-cover dithered">
                 </div>
@@ -1429,7 +1429,7 @@
                     <div
                         class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal">
                         <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
-                            <img src="/static/midi_handshake.avif" alt="MIDI Din Connection Handshake" width="1024"
+                            <img src="{{ asset_url('midi_handshake.avif') }}" alt="MIDI Din Connection Handshake" width="1024"
                                 height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
                         </div>
@@ -1457,7 +1457,7 @@
                     <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal"
                         style="--delay: 150ms;">
                         <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
-                            <img src="/static/index_extraction.avif" alt="Auto-naming Hexadecimal Parser" width="1024"
+                            <img src="{{ asset_url('index_extraction.avif') }}" alt="Auto-naming Hexadecimal Parser" width="1024"
                                 height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
                         </div>
@@ -1484,7 +1484,7 @@
                     <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal"
                         style="--delay: 300ms;">
                         <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
-                            <img src="/static/recall_button.avif" alt="Single Click Preset Flash Sync" width="1024"
+                            <img src="{{ asset_url('recall_button.avif') }}" alt="Single Click Preset Flash Sync" width="1024"
                                 height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
                         </div>
@@ -1549,7 +1549,7 @@
                     <div class="flex items-center gap-3 border-t border-zinc-900/60 pt-4 mt-6">
                         <div
                             class="h-8 w-8 rounded-full border border-zinc-800 overflow-hidden flex items-center justify-center bg-zinc-900">
-                            <img src="/static/bgood.avif" alt="bgood avatar" width="32" height="32"
+                            <img src="{{ asset_url('bgood.avif') }}" alt="bgood avatar" width="32" height="32"
                                 class="w-full h-full object-cover">
                         </div>
                         <div class="text-left">
@@ -1791,7 +1791,7 @@
 
             <!-- Centered Meme Image -->
             <div class="flex items-center justify-center mt-8 reveal reveal-scale" style="--delay: 350ms;">
-                <img src="/static/trade_offer.avif" alt="Meme" width="380" height="513" loading="lazy"
+                <img src="{{ asset_url('trade_offer.avif') }}" alt="Meme" width="380" height="513" loading="lazy"
                     sizes="(max-width: 768px) 380px, 380px"
                     class="w-full max-w-[380px] md:max-w-[400px] rounded-2xl border border-zinc-900 shadow-2xl">
                     </div>

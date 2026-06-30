@@ -7,7 +7,7 @@ import io
 import os
 import hashlib
 import bcrypt
-from itsdangerous import Signer, BadSignature
+from itsdangerous import Signer, BadSignature, URLSafeTimedSerializer
 import stripe
 import database
 import parser
@@ -15,6 +15,7 @@ import logging
 import traceback
 import re
 import faq_knowledge
+from urllib.parse import quote, urlparse
 
 # Standard robust email validation pattern
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
@@ -347,6 +348,130 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Templates
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+SITE_BASE = os.environ.get("SITE_BASE", "https://knob.monster").rstrip("/")
+_MARKETING_SECRET = os.environ.get("SESSION_SECRET_KEY") or (
+    None if os.environ.get("VERCEL") == "1" else "knob_monster_super_secure_default_session_secret_998822"
+)
+_marketing_serializer = (
+    URLSafeTimedSerializer(_MARKETING_SECRET, salt="km-marketing-assets") if _MARKETING_SECRET else None
+)
+
+PROTECTED_MARKETING_ASSETS = frozenset({
+    "studio_detail.avif",
+    "midi_handshake.avif",
+    "index_extraction.avif",
+    "recall_button.avif",
+    "trade_offer.avif",
+    "bgood.avif",
+    "vintage_camera_404.avif",
+    "og_banner.png",
+})
+
+PREVIEW_BOT_MARKERS = (
+    "facebookexternalhit",
+    "twitterbot",
+    "linkedinbot",
+    "discordbot",
+    "slackbot",
+    "telegrambot",
+    "whatsapp",
+    "googlebot",
+    "bingpreview",
+    "applebot",
+    "embedly",
+    "redditbot",
+)
+
+OUR_HOSTS = frozenset({"knob.monster", "www.knob.monster", "localhost", "127.0.0.1"})
+
+
+def _marketing_media_type(filename: str) -> str:
+    if filename.endswith(".avif"):
+        return "image/avif"
+    if filename.endswith(".png"):
+        return "image/png"
+    if filename.endswith(".webp"):
+        return "image/webp"
+    return "application/octet-stream"
+
+
+def sign_marketing_asset(filename: str) -> str:
+    if not _marketing_serializer:
+        return quote(filename)
+    return quote(_marketing_serializer.dumps(filename))
+
+
+def marketing_asset_path(filename: str) -> str:
+    if filename not in PROTECTED_MARKETING_ASSETS:
+        return f"/static/{filename}"
+    return f"/m/{filename}?t={sign_marketing_asset(filename)}"
+
+
+def marketing_asset_abs_url(filename: str) -> str:
+    return f"{SITE_BASE}{marketing_asset_path(filename)}"
+
+
+def _is_preview_bot(user_agent: str) -> bool:
+    ua = (user_agent or "").lower()
+    return any(marker in ua for marker in PREVIEW_BOT_MARKERS)
+
+
+def _is_our_referer(referer: str) -> bool:
+    if not referer:
+        return False
+    host = urlparse(referer).netloc.lower().split(":", 1)[0]
+    return host in OUR_HOSTS or host.endswith(".vercel.app")
+
+
+def _allow_marketing_asset(request: Request, filename: str, token):
+    if filename not in PROTECTED_MARKETING_ASSETS:
+        return False
+    if not token or not _marketing_serializer:
+        return False
+    try:
+        if _marketing_serializer.loads(token, max_age=60 * 60 * 24 * 7) != filename:
+            return False
+    except Exception:
+        return False
+    if _is_preview_bot(request.headers.get("user-agent", "")):
+        return True
+    sec_fetch_site = (request.headers.get("sec-fetch-site") or "").lower()
+    if sec_fetch_site in {"same-origin", "same-site"}:
+        return True
+    if _is_our_referer(request.headers.get("referer", "")):
+        return True
+    return False
+
+
+templates.env.globals["asset_url"] = marketing_asset_path
+templates.env.globals["asset_abs_url"] = marketing_asset_abs_url
+
+
+@app.get("/m/{filename}")
+async def serve_marketing_asset(filename: str, request: Request, t=None):
+    if filename not in PROTECTED_MARKETING_ASSETS:
+        raise HTTPException(status_code=404)
+    if not _allow_marketing_asset(request, filename, t):
+        raise HTTPException(status_code=403, detail="Forbidden")
+    asset_path = os.path.join(BASE_DIR, "static", filename)
+    if not os.path.isfile(asset_path):
+        raise HTTPException(status_code=404)
+    return FileResponse(
+        asset_path,
+        media_type=_marketing_media_type(filename),
+        headers={"Cache-Control": "private, no-store"},
+    )
+
+
+@app.middleware("http")
+async def block_public_marketing_static(request: Request, call_next):
+    path = request.url.path
+    if path.startswith("/static/"):
+        name = path.rsplit("/", 1)[-1]
+        if name in PROTECTED_MARKETING_ASSETS:
+            return Response("Forbidden", status_code=403, media_type="text/plain")
+    return await call_next(request)
 
 # Intercept logo requests to serve the microbe SVG
 @app.get("/static/logo.svg")

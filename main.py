@@ -1461,10 +1461,10 @@ async def do_signup(
         )
         response = RedirectResponse(url="/dashboard?payment=success", status_code=303)
     else:
-        checkout_url = f"/checkout?plan={plan}"
+        welcome_url = "/dashboard?welcome=1"
         if plan_upgraded_for_email:
-            checkout_url += "&upgraded=business_email"
-        response = RedirectResponse(url=checkout_url, status_code=303)
+            welcome_url += "&upgraded=business_email"
+        response = RedirectResponse(url=welcome_url, status_code=303)
 
     response.set_cookie(
         key="session_user",

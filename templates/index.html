@@ -517,7 +517,7 @@
                             class="bg-zinc-950/80 border-b border-zinc-800 px-5 py-3 flex items-center justify-between text-[10px] font-pixel text-zinc-400 uppercase tracking-widest">
                             <div class="flex items-center gap-2">
                                 <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span>SYSTEM READY</span>
+                                <span>GET STARTED</span>
                             </div>
                         </div>
 
@@ -1675,10 +1675,12 @@
         // Show success/cancel billing status notifications
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            if (params.get('payment') === 'success') {
+            if (params.get('welcome') === '1') {
+                showToast("Account Ready", "Free vault created. Connect MIDI and save your first bank.", "success");
+            } else if (params.get('payment') === 'success') {
                 showToast("Upgrade Successful", "Welcome to King of Knobs PRO!", "success");
             } else if (params.get('payment') === 'cancel') {
-                showToast("Upgrade Cancelled", "Billing process was cancelled.", "info");
+                showToast("No Charge", "Checkout closed. Your free vault is still ready.", "info");
             } else if (params.get('mock_portal') === '1') {
                 showToast("Pro Subscription Toggle", "Mock billing portal active: subscription changed.", "success");
             } else if (params.get('payment') === 'pack_success') {

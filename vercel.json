@@ -20,6 +20,14 @@
       "dest": "/static/sitemap.xml"
     },
     {
+      "src": "/static/(studio_detail\\.avif|midi_handshake\\.avif|index_extraction\\.avif|recall_button\\.avif|trade_offer\\.avif|bgood\\.avif|vintage_camera_404\\.avif|og_banner\\.png)",
+      "dest": "main.py"
+    },
+    {
+      "src": "/m/(.*)",
+      "dest": "main.py"
+    },
+    {
       "src": "/static/(.*)",
       "dest": "/static/$1"
     },

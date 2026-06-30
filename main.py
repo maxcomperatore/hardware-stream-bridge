@@ -385,6 +385,8 @@ PREVIEW_BOT_MARKERS = (
 
 OUR_HOSTS = frozenset({"knob.monster", "www.knob.monster", "localhost", "127.0.0.1"})
 
+MARKETING_ASSETS_DIR = os.path.join(BASE_DIR, "private", "marketing")
+
 
 def _marketing_media_type(filename: str) -> str:
     if filename.endswith(".avif"):
@@ -454,7 +456,7 @@ async def serve_marketing_asset(filename: str, request: Request, t=None):
         raise HTTPException(status_code=404)
     if not _allow_marketing_asset(request, filename, t):
         raise HTTPException(status_code=403, detail="Forbidden")
-    asset_path = os.path.join(BASE_DIR, "static", filename)
+    asset_path = os.path.join(MARKETING_ASSETS_DIR, filename)
     if not os.path.isfile(asset_path):
         raise HTTPException(status_code=404)
     return FileResponse(

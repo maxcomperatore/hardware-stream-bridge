@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="STOaPWGwgPycvNfxtzTRhyetLyvasi3uelnlo5SV_QA" />
-    <title>{{ seo.title if seo else "knob.monster | The iCloud for Vintage Synthesizers" }}</title>
+    <title>{{ seo.title if seo else "knob.monster | SysEx Librarian & Vintage Synth Cloud Backup" }}</title>
     <link rel="canonical" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="en" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="x-default" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
     <meta name="description"
-        content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
+        content="{{ seo.description if seo else 'Browser SysEx librarian and vintage synth cloud backup. DX7 backup, Juno-106 patches, and Korg M1 presets — no software install, Web MIDI in your browser.' }}">
     <meta name="keywords"
-        content="{{ seo.keywords if seo else 'sysex librarian, dx7 editor, juno 106 patch editor, korg m1 backup, web midi sysex, synth bank manager' }}">
+        content="{{ seo.keywords if seo else 'sysex librarian, vintage synth backup, dx7 backup, juno-106 patches, cloud backup for synthesizers, backup dx7 patches without software, best sysex librarian 2026, midi-ox alternative mac' }}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:site_name" content="knob.monster">
@@ -359,16 +361,22 @@
       "description": "{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}",
       "operatingSystem": "Windows, macOS, Linux, Android, iOS",
       "applicationCategory": "MultimediaApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "29.00",
-        "priceCurrency": "USD"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "18"
-      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "knob.monster+ Personal",
+          "price": "39.00",
+          "priceCurrency": "USD",
+          "description": "Lifetime license for personal, non-commercial use"
+        },
+        {
+          "@type": "Offer",
+          "name": "knob.monster+ Studio",
+          "price": "399.00",
+          "priceCurrency": "USD",
+          "description": "Lifetime commercial license for one business location"
+        }
+      ],
       "author": {
         "@type": "Organization",
         "name": "knob.monster"

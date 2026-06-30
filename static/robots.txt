@@ -2,6 +2,12 @@ User-agent: *
 Allow: /
 Disallow: /dashboard
 Disallow: /banks/
+Disallow: /login
+Disallow: /signup
+Disallow: /checkout
+Disallow: /checkout-pack/
+Disallow: /mock-checkout-success
+Disallow: /portal
 
 Sitemap: https://knob.monster/sitemap.xml
 

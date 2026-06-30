@@ -941,18 +941,18 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
 
 SEO_DATA = {
     "dx7": {
-        "title": "How to Turn Off Memory Protect on Yamaha DX7 | knob.monster",
-        "description": "Learn how to turn off memory protect on the Yamaha DX7 and enable SysEx data reception to back up your patches.",
-        "keywords": "how to turn off memory protect on yamaha dx7, disable memory protect dx7, yamaha dx7 sysex settings, dx7 internal memory protection",
+        "title": "Yamaha DX7 Backup & SysEx Librarian | Cloud Patch Manager",
+        "description": "Browser-native Yamaha DX7 backup and SysEx librarian. Back up DX7 patches without installing software — Web MIDI cloud backup in Chrome, Edge, and Opera.",
+        "keywords": "yamaha dx7 backup, dx7 backup, backup dx7 patches without software, sysex librarian, yamaha dx7 sysex, dx7 patch manager, cloud backup for synthesizers",
         "synth_name": "Yamaha DX7",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Yamaha DX7.</span>",
         "hero_subtitle": "The ultimate Yamaha DX7 online librarian. Back up, search, and recall Yamaha DX7 patches directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
 ,
         "docs": {"title": "How to Turn Off Memory Protect on the Yamaha DX7", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">The Yamaha DX7 requires you to explicitly disable internal memory protection and enable SysEx data reception before you can back up or restore patches.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">FUNCTION</strong> button on the front panel.</li>\n    <li>Press button <strong class=\"text-white\">8</strong> (labeled MEMORY PROTECT INTERNAL).</li>\n    <li>The LCD screen will display <code>MEMORY PROTECT INTERNAL: ON</code>.</li>\n    <li>Press the <strong class=\"text-white\">-1/NO</strong> button to change it to <code>OFF</code>.</li>\n    <li>Press button <strong class=\"text-white\">8</strong> again to access the SYS INFO screen.</li>\n    <li>Ensure the screen says <code>SYS INFO: AVAIL</code>. If it says <code>UNAVAIL</code>, press <strong class=\"text-white\">+1/YES</strong> to toggle it.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your DX7 is now ready to send and receive SysEx dumps.</p>"}    },
     "juno-106": {
-        "title": "How to Turn Off Memory Protect & Enable SysEx on Roland Juno-106",
-        "description": "Learn the secret rear panel switch settings to turn off memory protect and enable SysEx MIDI dumps on the Roland Juno-106.",
-        "keywords": "how to turn off memory protect on roland juno 106, roland juno 106 sysex switch, juno 106 midi channel 3, juno 106 patch dump",
+        "title": "Roland Juno-106 Patches & SysEx Backup | Cloud Librarian",
+        "description": "Save and back up Roland Juno-106 patches and presets in the cloud. Browser SysEx librarian for Juno-106 — no drivers, vintage synth backup via Web MIDI.",
+        "keywords": "juno-106 patches, roland juno 106 backup, how to save juno-106 presets, juno 106 sysex librarian, vintage synth backup, cloud backup for synthesizers",
         "synth_name": "Roland Juno-106",
         "hero_title": "The iCloud for your <br class=\"hidden sm:inline\"><span class=\"text-zinc-550\">Roland Juno-106.</span>",
         "hero_subtitle": "The easiest way to manage Roland Juno-106 SysEx backup files directly from your browser. Zero setup, zero drivers, instant 1-click MIDI transfers."
@@ -1252,6 +1252,11 @@ async def guide_battery_page(request: Request):
 async def guide_juno_troubleshooting_page(request: Request):
     user = get_current_user(request)
     return render_template("guide_juno_troubleshooting.html", request, {"user": user})
+
+@app.get("/vintage-synth-cloud-backup", response_class=HTMLResponse)
+async def guide_cloud_backup_page(request: Request):
+    user = get_current_user(request)
+    return render_template("guide_cloud_backup.html", request, {"user": user})
 
 @app.get("/changelog")
 async def changelog_redirect():
@@ -2193,56 +2198,52 @@ async def stripe_webhook(request: Request):
         
     return {"status": "success"}
 
+def build_sitemap_xml() -> str:
+    from datetime import date
+
+    today = date.today().isoformat()
+    entries: list[tuple[str, str, str]] = [
+        (f"{SITE_BASE}/", "weekly", "1.0"),
+        (f"{SITE_BASE}/shop", "weekly", "0.9"),
+        (f"{SITE_BASE}/vintage-synth-cloud-backup", "weekly", "1.0"),
+        (f"{SITE_BASE}/sysex-librarian-alternatives", "weekly", "0.95"),
+        (f"{SITE_BASE}/knob-monster-vs-snoize-sysex-librarian", "weekly", "0.9"),
+        (f"{SITE_BASE}/knob-monster-vs-midi-ox", "weekly", "0.9"),
+        (f"{SITE_BASE}/audit/midiox", "monthly", "0.85"),
+        (f"{SITE_BASE}/resources", "weekly", "0.85"),
+        (f"{SITE_BASE}/payment-methods", "monthly", "0.6"),
+        (f"{SITE_BASE}/terms", "monthly", "0.5"),
+        (f"{SITE_BASE}/privacy", "monthly", "0.5"),
+        (f"{SITE_BASE}/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", "weekly", "0.9"),
+        (f"{SITE_BASE}/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide", "weekly", "0.9"),
+        (f"{SITE_BASE}/how-to-backup-roland-juno-106-presets-sysex-transfer-guide", "weekly", "0.9"),
+        (f"{SITE_BASE}/how-to-backup-korg-m1-presets-sysex-transfer-guide", "weekly", "0.9"),
+        (f"{SITE_BASE}/why-your-vintage-synth-battery-is-killing-your-sounds", "weekly", "0.9"),
+        (f"{SITE_BASE}/how-to-fix-juno-106-memory-loss-troubleshooting-guide", "weekly", "0.9"),
+    ]
+    for slug in SEO_DATA.keys():
+        entries.append((f"{SITE_BASE}/{slug}", "weekly", "0.9"))
+
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for loc, changefreq, priority in entries:
+        xml_lines.extend([
+            "  <url>",
+            f"    <loc>{loc}</loc>",
+            f"    <lastmod>{today}</lastmod>",
+            f"    <changefreq>{changefreq}</changefreq>",
+            f"    <priority>{priority}</priority>",
+            "  </url>",
+        ])
+    xml_lines.append("</urlset>")
+    return "\n".join(xml_lines)
+
 @app.get("/sitemap.xml")
 @app.get("/sitemap.xml/")
 async def sitemap():
-    sitemap_path = os.path.join(BASE_DIR, "static", "sitemap.xml")
-    if os.path.exists(sitemap_path):
-        try:
-            with open(sitemap_path, "r", encoding="utf-8") as f:
-                content = f.read()
-            return Response(content=content, media_type="application/xml")
-        except Exception as e:
-            logger.error(f"Failed to read static sitemap.xml: {e}")
-
-    urls = [
-        ("https://knob.monster/", "2026-06-21", "weekly", "1.0"),
-        ("https://knob.monster/sysex-librarian-alternatives", "2026-06-21", "weekly", "0.9"),
-        ("https://knob.monster/knob-monster-vs-snoize-sysex-librarian", "2026-06-21", "weekly", "0.9"),
-        ("https://knob.monster/knob-monster-vs-midi-ox", "2026-06-21", "weekly", "0.9"),
-        ("https://knob.monster/audit/midiox", "2026-06-29", "monthly", "0.85"),
-        ("https://knob.monster/login", "2026-06-21", "monthly", "0.8"),
-        ("https://knob.monster/signup", "2026-06-21", "monthly", "0.8"),
-        ("https://knob.monster/resources", "2026-06-21", "weekly", "0.85"),
-        ("https://knob.monster/terms", "2026-06-21", "monthly", "0.5"),
-        ("https://knob.monster/privacy", "2026-06-21", "monthly", "0.5"),
-        ("https://knob.monster/payment-methods", "2026-06-21", "monthly", "0.6"),
-        ("https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", "2026-06-23", "weekly", "0.9"),
-        ("https://knob.monster/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide", "2026-06-25", "weekly", "0.9"),
-        ("https://knob.monster/how-to-backup-roland-juno-106-presets-sysex-transfer-guide", "2026-06-25", "weekly", "0.9"),
-        ("https://knob.monster/how-to-backup-korg-m1-presets-sysex-transfer-guide", "2026-06-25", "weekly", "0.9"),
-    ]
-    
-    # Dynamically add all synths from SEO_DATA
-    for slug in SEO_DATA.keys():
-        urls.append((f"https://knob.monster/{slug}", "2026-06-21", "weekly", "0.9"))
-        
-    xml_lines = [
-        '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-    ]
-    
-    for loc, lastmod, changefreq, priority in urls:
-        xml_lines.append("  <url>")
-        xml_lines.append(f"    <loc>{loc}</loc>")
-        xml_lines.append(f"    <lastmod>{lastmod}</lastmod>")
-        xml_lines.append(f"    <changefreq>{changefreq}</changefreq>")
-        xml_lines.append(f"    <priority>{priority}</priority>")
-        xml_lines.append("  </url>")
-        
-    xml_lines.append("</urlset>")
-    
-    return Response(content="\n".join(xml_lines), media_type="application/xml")
+    return Response(content=build_sitemap_xml(), media_type="application/xml")
 
 @app.get("/robots.txt")
 @app.get("/robots.txt/")
@@ -2285,15 +2286,25 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Direct Pricing:** knob.monster+ $39 lifetime (non-commercial) or knob.monster+ Studio $399 lifetime (commercial, one location). Bespoke quotes for repair shops.",
+        "- **Lifetime Pricing:** knob.monster+ Personal $39 (non-commercial) or knob.monster+ Studio $399 (commercial, one location). Sound packs from $9 in the Monster Shop.",
         "",
         "## Key Pages",
-        "- [Home Page](https://knob.monster/): Explains features, pricing, and includes live MIDI scanning simulator.",
-        "- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.",
-        "- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): Detailed comparison with Snoize SysEx Librarian.",
-        "- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): Technical comparison with Windows MIDI-OX.",
-        "- [MIDI-OX TLS Audit](https://knob.monster/audit/midiox): Independent transport-security review of midiox.com (June 2026).",
-        "- [Payment Methods](https://knob.monster/payment-methods): Supported payment mechanisms and local options.",
+        "- [Home Page](https://knob.monster/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
+        "- [Vintage Synth Cloud Backup](https://knob.monster/vintage-synth-cloud-backup): Pillar guide for DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.",
+        "- [Monster Shop](https://knob.monster/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
+        "- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.",
+        "- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): knob.monster vs Snoize SysEx Librarian.",
+        "- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): knob.monster vs Windows MIDI-OX.",
+        "- [MIDI-OX TLS Audit](https://knob.monster/audit/midiox): Independent transport-security review of midiox.com.",
+        "- [Payment Methods](https://knob.monster/payment-methods): Supported payment options.",
+        "",
+        "## How-To Guides",
+        "- [Yamaha DX7 SysEx Backup](https://knob.monster/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)",
+        "- [Roland Juno-106 SysEx Backup](https://knob.monster/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)",
+        "- [Korg M1 SysEx Backup](https://knob.monster/how-to-backup-korg-m1-presets-sysex-transfer-guide)",
+        "- [Vintage Synth Battery Guide](https://knob.monster/why-your-vintage-synth-battery-is-killing-your-sounds)",
+        "- [Juno-106 Memory Loss Troubleshooting](https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide)",
+        "- [Web MIDI Engineering Notes](https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)",
         ""
     ]
     

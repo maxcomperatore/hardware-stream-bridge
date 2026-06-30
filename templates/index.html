@@ -485,8 +485,8 @@
                             title="{{ user.email }}">{{ user.email.split('@')[0] }}</span>
                     </div>
                     {% if user.tier == 'premium' %}
-                    <button onclick="showUnsubscribeModal()"
-                        class="text-[7.5px] font-pixel px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none cursor-pointer hover:bg-amber-500/20 transition-colors">PRO</button>
+                    <span
+                        class="text-[7.5px] font-pixel px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none">PRO</span>
                     {% else %}
                     <span
                         class="text-[7.5px] font-pixel px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">FREE</span>
@@ -1666,21 +1666,6 @@
             }
         }
 
-        function showUnsubscribeModal() {
-            const modal = document.getElementById('unsubscribe-modal');
-            if (modal) {
-                modal.classList.remove('hidden-transition');
-                modal.classList.add('visible-transition');
-            }
-        }
-        function closeUnsubscribeModal() {
-            const modal = document.getElementById('unsubscribe-modal');
-            if (modal) {
-                modal.classList.remove('visible-transition');
-                modal.classList.add('hidden-transition');
-            }
-        }
-
         document.body.addEventListener('triggerUpgradeModal', () => {
             closeStatusOverlay();
             showUpgradeModal();
@@ -1767,41 +1752,6 @@
         </div>
     </div>
 
-    <!-- Unsubscribe Modal -->
-    <div id="unsubscribe-modal"
-        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 flex items-center justify-center hidden-transition">
-        <div
-            class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-96 max-w-[90vw] text-center shadow-2xl relative select-none">
-            <!-- Close btn -->
-            <button onclick="closeUnsubscribeModal()"
-                class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
-                <img src="https://api.iconify.design/dinkie-icons/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
-                    style="filter: invert(0.6);" />
-            </button>
-
-            <span class="text-[9px] font-pixel text-rose-500 uppercase tracking-widest">UNSUBSCRIBE</span>
-            <h3 class="text-sm font-pixel text-white uppercase mt-2">wish to cancel your subscription?</h3>
-            <p class="text-xs text-zinc-450 mt-3.5 leading-relaxed font-sans font-normal">
-                Please email us at <a href="mailto:halfradiationllc@gmail.com"
-                    class="text-blue-400 underline">halfradiationllc@gmail.com</a> within 30 days of purchase to request
-                a refund. Requests outside this window cannot be accommodated.
-            </p>
-            <p class="text-[10px] text-amber-500 mt-2 font-mono">
-                If you have any issues, please reach out directly rather than filing a chargeback.
-            </p>
-
-            <div class="flex flex-col gap-2 mt-5">
-                <a href="mailto:halfradiationllc@gmail.com" onclick="closeUnsubscribeModal()"
-                    class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
-                    Send Email
-                </a>
-                <button onclick="closeUnsubscribeModal()"
-                    class="w-full py-2 bg-transparent text-zinc-550 hover:text-zinc-400 text-[10px] font-pixel uppercase tracking-wider transition-colors mt-1">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
     {% include 'visitor_avatar.html' %}
     {% include "mobile_nav.html" %}
 </body>

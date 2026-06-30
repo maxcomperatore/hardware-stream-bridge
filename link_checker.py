@@ -55,7 +55,6 @@ VALID_LITERAL_PATHS = {
     "/logout",
     "/dashboard",
     "/banks",
-    "/marketplace",
     "/checkout",
     "/portal",
     "/sitemap.xml",

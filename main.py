@@ -774,10 +774,11 @@ def get_valid_stripe_customer_id(user: dict) -> str | None:
         return None
 
 def build_pack_checkout_kwargs(user: dict, pack_id: str, pack: dict) -> dict:
-    """Mirror one-time Personal checkout — avoid extra flags that break hosted Checkout."""
-    kwargs = {
+    """Match Personal one-time checkout — no customer, no payment_intent_data extras."""
+    return {
         "line_items": build_pack_checkout_line_items(pack_id, pack),
         "mode": "payment",
+        "allow_promotion_codes": False,
         "success_url": BASE_URL + f"/dashboard?payment=pack_success&pack_id={pack_id}",
         "cancel_url": BASE_URL + "/shop?payment=pack_cancel",
         "metadata": {
@@ -786,21 +787,9 @@ def build_pack_checkout_kwargs(user: dict, pack_id: str, pack: dict) -> dict:
             "user_email": user["email"],
             "pack_name": pack["name"],
         },
-        "payment_intent_data": {
-            "metadata": {
-                "purchase_type": "sound_pack",
-                "pack_id": pack_id,
-                "user_email": user["email"],
-            },
-        },
+        "customer_email": user["email"],
         "adaptive_pricing": {"enabled": False},
     }
-    stripe_customer_id = get_valid_stripe_customer_id(user)
-    if stripe_customer_id:
-        kwargs["customer"] = stripe_customer_id
-    else:
-        kwargs["customer_email"] = user["email"]
-    return kwargs
 
 def get_pack_stripe_price_id(pack_id: str) -> str | None:
     env_key = PACK_STRIPE_PRICE_ENV_KEYS.get(pack_id)
@@ -814,7 +803,9 @@ def get_pack_stripe_price_id(pack_id: str) -> str | None:
     return None
 
 def build_pack_checkout_line_items(pack_id: str, pack: dict) -> list[dict]:
-    price_id = get_pack_stripe_price_id(pack_id)
+    """Inline price_data avoids catalog price adaptive-pricing issues on hosted Checkout."""
+    use_catalog = os.environ.get("STRIPE_PACK_USE_CATALOG_PRICE", "").strip().lower() in ("1", "true", "yes")
+    price_id = get_pack_stripe_price_id(pack_id) if use_catalog else None
     if price_id:
         return [{"price": price_id, "quantity": 1}]
     return [
@@ -825,7 +816,6 @@ def build_pack_checkout_line_items(pack_id: str, pack: dict) -> list[dict]:
                 "product_data": {
                     "name": pack["name"][:250],
                     "description": (pack.get("description") or pack["name"])[:500],
-                    "tax_code": "txcd_10000000",
                 },
             },
             "quantity": 1,
@@ -833,16 +823,7 @@ def build_pack_checkout_line_items(pack_id: str, pack: dict) -> list[dict]:
     ]
 
 def create_pack_checkout_session(user: dict, pack_id: str, pack: dict):
-    kwargs = build_pack_checkout_kwargs(user, pack_id, pack)
-    try:
-        return stripe.checkout.Session.create(**kwargs)
-    except stripe.error.StripeError:
-        if "customer" in kwargs:
-            retry_kwargs = dict(kwargs)
-            retry_kwargs.pop("customer", None)
-            retry_kwargs["customer_email"] = user["email"]
-            return stripe.checkout.Session.create(**retry_kwargs)
-        raise
+    return stripe.checkout.Session.create(**build_pack_checkout_kwargs(user, pack_id, pack))
 
 def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
     normalized = normalize_plan(plan)
@@ -1939,6 +1920,7 @@ async def checkout_pack(request: Request, pack_id: str):
         checkout_session = create_pack_checkout_session(user, pack_id, pack)
         if not checkout_session.url:
             raise RuntimeError("Stripe returned a checkout session without a redirect URL")
+        adaptive = getattr(checkout_session, "adaptive_pricing", None) or {}
         trigger_alert(
             "stripe_pack_checkout_initiated",
             f"Sound pack checkout started for `{user['email']}` — `{pack['name']}`.",
@@ -1948,6 +1930,8 @@ async def checkout_pack(request: Request, pack_id: str):
                 "pack_name": pack["name"],
                 "checkout_session_id": checkout_session.id,
                 "stripe_price_id": get_pack_stripe_price_id(pack_id),
+                "inline_price": os.environ.get("STRIPE_PACK_USE_CATALOG_PRICE", "").strip().lower() not in ("1", "true", "yes"),
+                "adaptive_pricing": adaptive.get("enabled") if isinstance(adaptive, dict) else getattr(adaptive, "enabled", None),
             },
             distinct_id=user["email"],
         )

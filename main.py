@@ -975,18 +975,17 @@ async def about_redirect_page(request: Request):
 
 FILING_10K_PATH = os.path.join(BASE_DIR, "static", "filings", "HALF_RADIATION_FORM_10K_FY2026.pdf")
 
-@app.get("/10k", response_class=HTMLResponse)
-async def filing_10k_viewer(request: Request):
-    user = get_current_user(request)
-    return render_template("filing_10k.html", request, {"user": user})
-
-@app.get("/10k/pdf")
-async def filing_10k_pdf_inline():
+@app.get("/10k")
+async def filing_10k_pdf():
     return FileResponse(
         FILING_10K_PATH,
         media_type="application/pdf",
         content_disposition_type="inline",
     )
+
+@app.get("/10k/pdf")
+async def filing_10k_pdf_alias():
+    return RedirectResponse(url="/10k", status_code=301)
 
 @app.get("/filings/10k")
 async def filing_10k_legacy():

@@ -1178,24 +1178,6 @@ async def resources_page(request: Request):
 async def about_redirect_page(request: Request):
     return RedirectResponse(url="/shop", status_code=301)
 
-FILING_10K_PATH = os.path.join(BASE_DIR, "static", "filings", "HALF_RADIATION_FORM_10K_FY2026.pdf")
-
-@app.get("/10k")
-async def filing_10k_pdf():
-    return FileResponse(
-        FILING_10K_PATH,
-        media_type="application/pdf",
-        content_disposition_type="inline",
-    )
-
-@app.get("/10k/pdf")
-async def filing_10k_pdf_alias():
-    return RedirectResponse(url="/10k", status_code=301)
-
-@app.get("/filings/10k")
-async def filing_10k_legacy():
-    return RedirectResponse(url="/10k", status_code=301)
-
 @app.get("/milestones", response_class=HTMLResponse)
 async def milestones_redirect_page(request: Request):
     return RedirectResponse(url="/shop", status_code=301)

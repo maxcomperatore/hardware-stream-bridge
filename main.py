@@ -924,6 +924,11 @@ async def midi_ox_comparison(request: Request):
     user = get_current_user(request)
     return render_template("midi_ox_alternatives.html", request, {"user": user})
 
+@app.get("/audit/midiox", response_class=HTMLResponse)
+async def midiox_ssl_audit(request: Request):
+    user = get_current_user(request)
+    return render_template("midiox_ssl_audit.html", request, {"user": user})
+
 @app.get("/terms", response_class=HTMLResponse)
 async def terms_page(request: Request):
     return render_template("terms.html", request)
@@ -2042,6 +2047,7 @@ async def sitemap():
         ("https://knob.monster/sysex-librarian-alternatives", "2026-06-21", "weekly", "0.9"),
         ("https://knob.monster/knob-monster-vs-snoize-sysex-librarian", "2026-06-21", "weekly", "0.9"),
         ("https://knob.monster/knob-monster-vs-midi-ox", "2026-06-21", "weekly", "0.9"),
+        ("https://knob.monster/audit/midiox", "2026-06-29", "monthly", "0.85"),
         ("https://knob.monster/login", "2026-06-21", "monthly", "0.8"),
         ("https://knob.monster/signup", "2026-06-21", "monthly", "0.8"),
         ("https://knob.monster/resources", "2026-06-21", "weekly", "0.85"),
@@ -2123,6 +2129,7 @@ async def llms_txt():
         "- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comprehensive comparison of web-based SysEx librarians.",
         "- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): Detailed comparison with Snoize SysEx Librarian.",
         "- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): Technical comparison with Windows MIDI-OX.",
+        "- [MIDI-OX TLS Audit](https://knob.monster/audit/midiox): Independent transport-security review of midiox.com (June 2026).",
         "- [Payment Methods](https://knob.monster/payment-methods): Supported payment mechanisms and local options.",
         ""
     ]

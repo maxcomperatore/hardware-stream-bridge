@@ -7,70 +7,31 @@
     <title>Monster Shop | knob.monster</title>
     <link rel="canonical" href="https://knob.monster/shop">
     <meta name="description"
-        content="Browse and order physical sticker packs, embroidered patches, floppy labels, and digital preset expansion cartridges.">
+        content="Digital SysEx sound expansion packs for classic synthesizers. Instant vault delivery.">
 
-    <!-- Favicon -->
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
 
-    <!-- Fonts -->
     <link
         href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
         rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        zinc: {
-                            450: '#7e7e8a',
-                            555: '#52525c',
-                            650: '#43434c',
-                            655: '#3e3e46',
-                            850: '#1c1c21',
-                        },
-                        blue: {
-                            650: '#1d4ed8',
-                        },
-                        rose: {
-                            450: '#fb7185',
-                        },
+                        zinc: { 850: '#1c1c21' },
                         emerald: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
                             400: '#60a5fa',
                             500: '#3b83f6',
-                            600: '#1d4ed8',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                            950: '#172554',
                         },
-                        green: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
-                            500: '#3b83f6',
-                            600: '#1d4ed8',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                            950: '#172554',
-                        }
                     },
                     fontFamily: {
                         sans: ['Geist', 'Geist Sans', 'sans-serif'],
                         mono: ['Geist Mono', 'monospace'],
                         pixel: ['Silkscreen', 'monospace'],
-                        lcd: ['VT323', 'monospace'],
                     }
                 }
             }
@@ -78,672 +39,142 @@
     </script>
 
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
-
         ::selection {
             background-color: rgba(41, 151, 255, 0.2);
             color: #ffffff;
         }
 
-        /* 3D spin animation for logo */
         @keyframes logo-spin {
-            0% {
-                transform: rotateY(0deg);
-            }
-
-            100% {
-                transform: rotateY(360deg);
-            }
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
         }
 
         .spin-logo {
             animation: logo-spin 8s linear infinite;
             transform-style: preserve-3d;
-            backface-visibility: visible;
         }
 
-        /* 1-bit dither mesh overlay */
-        .mobile-bg-pattern {
-            background-image:
-                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 24px 24px, 32px 32px, 32px 32px;
-            background-position: 12px 12px, 0 0, 0 0;
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-        }
-
-        .dither-mesh {
-            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #09090b;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #27272a;
-            border-radius: 2px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
+        .shop-play-btn.playing {
+            border-color: rgba(96, 165, 250, 0.7);
+            color: #93c5fd;
         }
     </style>
     {% include 'posthog.html' %}
 </head>
 
-<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+<body class="bg-black text-zinc-100 font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- Global Dither Overlay -->
-    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
-    <!-- Fancy Background Pattern -->
-    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern"></div>
+    <header class="sticky top-0 bg-black/90 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center px-6 z-40">
+        <div class="max-w-3xl w-full mx-auto flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2.5 group">
+                <div class="spin-logo w-6 h-6">
+                    <img src="/static/logo.svg" alt="" width="24" height="24" class="w-6 h-6" style="image-rendering: pixelated;">
+                </div>
+                <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+            </a>
 
-    <!-- Sticky Header -->
-    <header
-        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-45">
-        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-                <a href="/" class="flex items-center gap-2.5 group">
-                    <div class="relative spin-logo flex items-center justify-center"
-                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
-                            class="absolute w-6 h-6 object-contain"
-                            style="transform: translateZ(0px); image-rendering: pixelated;">
-                    </div>
-                    <span
-                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
-                </a>
-            </div>
-
-            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
-                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
-                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
-                <span class="text-zinc-600 select-none">/</span>
-                <a href="/resources" class="hover:text-white transition-colors duration-200">Resources</a>
-                <a href="/shop" class="text-white transition-colors duration-200">Shop</a>
-            </nav>
-
-            <div class="flex items-center gap-4">
-                <!-- Cart Trigger Button -->
-                <button onclick="toggleCartDrawer(true)"
-                    class="relative p-2.5 text-zinc-400 hover:text-white hover:bg-zinc-900/50 rounded-full transition-all flex items-center justify-center border border-transparent hover:border-zinc-800">
-                    <img src="https://api.iconify.design/lucide:shopping-bag.svg" class="h-4.5 w-4.5"
-                        style="filter: invert(1);" />
-                    <span id="cart-badge-count"
-                        class="absolute -top-1 -right-1 bg-emerald-500 text-black font-mono text-[9px] font-bold h-4.5 w-4.5 rounded-full flex items-center justify-center shadow-lg border border-black hidden">0</span>
-                </button>
-
+            <div class="flex items-center gap-3">
+                <a href="/" class="hidden sm:inline text-xs font-pixel text-zinc-500 uppercase tracking-wider hover:text-white transition-colors">Home</a>
                 {% if user %}
                 <a href="/dashboard"
-                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Open Vault
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-[10px] font-pixel uppercase tracking-wider transition-colors">
+                    Vault
                 </a>
                 {% else %}
                 <a href="/login"
-                    class="hidden md:flex border border-zinc-750 hover:border-zinc-550 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
-                    Sign In
-                </a>
-                <a href="/signup"
-                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Sign Up
+                    class="text-xs font-pixel text-zinc-400 uppercase tracking-wider hover:text-white transition-colors">
+                    Sign in
                 </a>
                 {% endif %}
             </div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 py-20 relative z-10">
-        <!-- Hero Header -->
-        <article class="space-y-6 text-center mb-20">
-            <span
-                class="inline-flex items-center px-3 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-widest shadow-sm">
-                Monster Storefront
-            </span>
-            <h1
-                class="text-3xl md:text-5xl font-black text-white tracking-tight leading-none max-w-4xl mx-auto font-pixel uppercase">
-                Monster Shop
-            </h1>
-            <p class="text-xs md:text-sm text-zinc-400 max-w-xl mx-auto leading-relaxed font-sans">
-                Preset Cards &amp; Physical Merch. Classic synthesizer voice cartridges, premium die-cut vinyl stickers,
-                and embroidered gear patches.
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 py-10 sm:py-14">
+
+        <div class="mb-10">
+            <h1 class="font-pixel text-lg sm:text-xl text-white uppercase tracking-widest">Sound packs</h1>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed max-w-xl">
+                SysEx banks for classic hardware. $9 each — lands in your vault right after checkout.
+                Send to your synth with Web MIDI, no DAW needed.
             </p>
-        </article>
-
-        <!-- Department Grid -->
-        <div class="space-y-24">
-
-            <!-- SECTION 1: DIGITAL SOUND EXPANSIONS -->
-            <section class="space-y-8">
-                <div class="flex items-center justify-between border-b border-zinc-900 pb-4">
-                    <div class="flex items-center gap-2">
-                        <span class="text-emerald-500 font-pixel text-xs">01 //</span>
-                        <h2 class="text-xs font-pixel uppercase text-zinc-300 tracking-widest">Digital Sound Expansions
-                        </h2>
-                    </div>
-                    <span class="text-3xs font-mono text-zinc-550 uppercase tracking-wider hidden sm:inline">INSTANT
-                        DASHBOARD DOWNLOAD</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {% for pack in packs %}
-                    {% set slide1_url = "" %}
-                    {% set slide2_url = "" %}
-                    {% set slide3_url = "" %}
-                    {% set spec_lbl = "" %}
-                    {% if pack.id == 'm1_matrix' %}
-                    {% set slide1_url = "https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction" %}
-                    {% set slide2_url = "https://placehold.co/200x300/09090b/71717a?text=Mockup+Slide+2" %}
-                    {% set slide3_url = "https://placehold.co/200x300/09090b/52525b?text=Mockup+Slide+3" %}
-                    {% set spec_lbl = "M1 // KORG MATRIX" %}
-                    {% elif pack.id == 'dx7_retro' %}
-                    {% set slide1_url = "https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction" %}
-                    {% set slide2_url = "https://placehold.co/200x300/09090b/71717a?text=Mockup+Slide+2" %}
-                    {% set slide3_url = "https://placehold.co/200x300/09090b/52525b?text=Mockup+Slide+3" %}
-                    {% set spec_lbl = "DX7 // YAMAHA FM" %}
-                    {% else %}
-                    {% set slide1_url = "https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction" %}
-                    {% set slide2_url = "https://placehold.co/200x300/09090b/71717a?text=Mockup+Slide+2" %}
-                    {% set slide3_url = "https://placehold.co/200x300/09090b/52525b?text=Mockup+Slide+3" %}
-                    {% set spec_lbl = "JUNO // ROLAND CHORUS" %}
-                    {% endif %}
-
-                    <div
-                        class="border border-zinc-900 rounded-2xl bg-zinc-950/20 hover:bg-zinc-950/40 hover:border-zinc-800 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group/card">
-                        <!-- Carousel Image Container -->
-                        <div
-                            class="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950 border-b border-zinc-900 flex items-center justify-center group/carousel">
-                            <!-- Slides -->
-                            <div id="carousel-slides-{{ pack.id }}"
-                                class="flex w-full h-full transition-transform duration-300 ease-out">
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="{{ slide1_url }}" alt="{{ pack.name }}" class="w-full h-full object-cover"
-                                        onerror="this.src='https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction';" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="{{ slide2_url }}" alt="Placeholder 2"
-                                        class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="{{ slide3_url }}" alt="Placeholder 3"
-                                        class="w-full h-full object-cover" />
-                                </div>
-                            </div>
-
-                            <!-- Carousel Controls -->
-                            <button onclick="prevSlide('{{ pack.id }}', event)"
-                                class="absolute left-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-left.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-                            <button onclick="nextSlide('{{ pack.id }}', event)"
-                                class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-right.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-
-                            <!-- Pagination Dots -->
-                            <div id="carousel-dots-{{ pack.id }}"
-                                class="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-                                <span
-                                    class="w-1.5 h-1.5 rounded-full bg-emerald-500 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                            </div>
-
-                            <!-- Badges Overlay -->
-                            <div
-                                class="absolute top-4 left-4 bg-black/85 backdrop-blur-md border border-zinc-800 text-[10px] font-pixel text-emerald-400 px-3 py-1 rounded-full uppercase tracking-wider shadow z-25">
-                                {{ pack.price }}
-                            </div>
-                            <div
-                                class="absolute top-4 right-4 bg-zinc-900/90 backdrop-blur-md border border-zinc-800 text-[8px] font-mono text-zinc-400 px-2 py-0.5 rounded uppercase tracking-widest shadow-sm z-25">
-                                Instant Download
-                            </div>
-                        </div>
-
-                        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[8px] font-pixel text-zinc-550 uppercase tracking-widest">{{
-                                        spec_lbl }}</span>
-                                    <span
-                                        class="text-[8px] font-mono text-zinc-450 uppercase tracking-wider bg-zinc-900 px-2 py-0.5 rounded border border-zinc-855">{{
-                                        pack.patches_count }} VOICES</span>
-                                </div>
-                                <h3
-                                    class="text-xs font-pixel text-white uppercase group-hover:text-emerald-455 transition-colors leading-tight">
-                                    {{ pack.name }}</h3>
-                                <p class="text-2xs text-zinc-400 font-sans leading-relaxed">{{ pack.description }}</p>
-
-                                <!-- Highlighted Presets -->
-                                <div class="pt-4 border-t border-zinc-900/60">
-                                    <span
-                                        class="text-[7.5px] font-pixel text-zinc-500 uppercase tracking-wider block mb-2">Sample
-                                        Presets:</span>
-                                    <div class="grid grid-cols-2 gap-1.5">
-                                        {% for patch in pack.demo_patches %}
-                                        <span
-                                            class="text-[9px] font-mono bg-zinc-955 border border-zinc-900/80 text-zinc-400 px-2 py-1 rounded flex items-center justify-between group/patch hover:border-emerald-500/25 transition-all">
-                                            <span class="truncate">{{ patch }}</span>
-                                            <span
-                                                class="text-[8px] text-zinc-650 font-pixel opacity-0 group-hover/patch:opacity-100 transition-opacity">DEMO</span>
-                                        </span>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="pt-4 border-t border-zinc-900/60 flex items-center justify-between gap-3">
-                                <button onclick="auditionPackDemo('{{ pack.id }}')"
-                                    class="flex-1 py-2 border border-zinc-800 hover:border-zinc-650 hover:bg-zinc-900/40 text-white rounded-lg text-[9px] font-pixel uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-1.5">
-                                    <img src="https://api.iconify.design/lucide:volume-2.svg" class="h-3.5 w-3.5"
-                                        style="filter: invert(1);" />
-                                    Play Audition
-                                </button>
-
-                                <button onclick="addToCart('{{ pack.id }}', '{{ pack.name }}', 9.00, slide1_url)"
-                                    class="flex-1 py-2 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black rounded-lg text-[9px] font-pixel uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-1.5 shadow-sm">
-                                    <img src="https://api.iconify.design/lucide:shopping-cart.svg"
-                                        class="h-3.5 w-3.5" />
-                                    Add To Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </section>
-
-            <!-- SECTION 2: PHYSICAL MERCH -->
-            <section class="space-y-8">
-                <div class="flex items-center justify-between border-b border-zinc-900 pb-4">
-                    <div class="flex items-center gap-2">
-                        <span class="text-emerald-500 font-pixel text-xs">02 //</span>
-                        <h2 class="text-xs font-pixel uppercase text-zinc-300 tracking-widest">Physical Gear &amp;
-                            Stickers</h2>
-                    </div>
-                    <span class="text-3xs font-mono text-zinc-550 uppercase tracking-wider hidden sm:inline">WORLDWIDE
-                        SHIPPING AVAILABLE</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Holographic Sticker Pack -->
-                    <div
-                        class="border border-zinc-900 rounded-2xl bg-zinc-950/20 hover:bg-zinc-950/40 hover:border-zinc-800 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group/card">
-                        <!-- Carousel Image Container -->
-                        <div
-                            class="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950 border-b border-zinc-900 flex items-center justify-center group/carousel">
-                            <!-- Slides -->
-                            <div id="carousel-slides-sticker_pack"
-                                class="flex w-full h-full transition-transform duration-300 ease-out">
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction"
-                                        alt="Holo Sticker Pack" class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/71717a?text=Mockup+Slide+2"
-                                        alt="Placeholder 2" class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/52525b?text=Mockup+Slide+3"
-                                        alt="Placeholder 3" class="w-full h-full object-cover" />
-                                </div>
-                            </div>
-
-                            <!-- Carousel Controls -->
-                            <button onclick="prevSlide('sticker_pack', event)"
-                                class="absolute left-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-left.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-                            <button onclick="nextSlide('sticker_pack', event)"
-                                class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-right.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-
-                            <!-- Pagination Dots -->
-                            <div id="carousel-dots-sticker_pack"
-                                class="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-                                <span
-                                    class="w-1.5 h-1.5 rounded-full bg-emerald-500 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                            </div>
-
-                            <!-- Badges Overlay -->
-                            <div
-                                class="absolute top-4 left-4 bg-black/85 backdrop-blur-md border border-zinc-800 text-[10px] font-pixel text-emerald-400 px-3 py-1 rounded-full uppercase tracking-wider shadow z-25">
-                                $4.99
-                            </div>
-                            <div
-                                class="absolute top-4 right-4 bg-zinc-900/90 backdrop-blur-md border border-zinc-800 text-[8px] font-mono text-zinc-400 px-2 py-0.5 rounded uppercase tracking-widest shadow-sm z-25">
-                                Free Shipping
-                            </div>
-                        </div>
-
-                        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
-                            <div class="space-y-2">
-                                <span class="text-[8px] font-pixel text-zinc-500 uppercase tracking-widest">01 //
-                                    ACCESSORY</span>
-                                <h3
-                                    class="text-xs font-pixel text-white uppercase group-hover:text-emerald-450 transition-colors leading-tight">
-                                    Holo Sticker Pack</h3>
-                                <p class="text-2xs text-zinc-400 font-sans leading-relaxed">
-                                    Three custom die-cut holographic vinyl stickers featuring the official Knob Monster
-                                    emblem. Perfect for road cases, synthesizer chassis, or laptops.
-                                </p>
-                            </div>
-
-                            <div class="pt-4 border-t border-zinc-900/60 flex items-center justify-between">
-                                <span class="text-[8px] font-pixel text-zinc-500 uppercase tracking-widest">Holo
-                                    Vinyl</span>
-                                <button
-                                    onclick="addToCart('sticker_pack', 'Holo Sticker Pack', 4.99, 'https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction')"
-                                    class="px-4 py-2 bg-zinc-900 hover:bg-white hover:text-black border border-zinc-800 text-white rounded-lg text-[9px] font-pixel uppercase tracking-widest transition-all active:scale-95 flex items-center gap-1.5 shadow-sm">
-                                    <img src="https://api.iconify.design/lucide:shopping-cart.svg" class="h-3 w-3"
-                                        style="filter: invert(1); opacity: 0.8;" />
-                                    Add To Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SRAM Embroidered Patch -->
-                    <div
-                        class="border border-zinc-900 rounded-2xl bg-zinc-950/20 hover:bg-zinc-950/40 hover:border-zinc-800 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group/card">
-                        <!-- Carousel Image Container -->
-                        <div
-                            class="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950 border-b border-zinc-900 flex items-center justify-center group/carousel">
-                            <!-- Slides -->
-                            <div id="carousel-slides-sram_patch"
-                                class="flex w-full h-full transition-transform duration-300 ease-out">
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction"
-                                        alt="SRAM Lifesaver Patch" class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/71717a?text=Mockup+Slide+2"
-                                        alt="Placeholder 2" class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/52525b?text=Mockup+Slide+3"
-                                        alt="Placeholder 3" class="w-full h-full object-cover" />
-                                </div>
-                            </div>
-
-                            <!-- Carousel Controls -->
-                            <button onclick="prevSlide('sram_patch', event)"
-                                class="absolute left-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-left.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-                            <button onclick="nextSlide('sram_patch', event)"
-                                class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-right.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-
-                            <!-- Pagination Dots -->
-                            <div id="carousel-dots-sram_patch"
-                                class="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-                                <span
-                                    class="w-1.5 h-1.5 rounded-full bg-emerald-500 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                            </div>
-
-                            <!-- Badges Overlay -->
-                            <div
-                                class="absolute top-4 left-4 bg-black/85 backdrop-blur-md border border-zinc-800 text-[10px] font-pixel text-emerald-400 px-3 py-1 rounded-full uppercase tracking-wider shadow z-25">
-                                $12.99
-                            </div>
-                            <div
-                                class="absolute top-4 right-4 bg-zinc-900/90 backdrop-blur-md border border-zinc-800 text-[8px] font-mono text-zinc-400 px-2 py-0.5 rounded uppercase tracking-widest shadow-sm z-25">
-                                Free Shipping
-                            </div>
-                        </div>
-
-                        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
-                            <div class="space-y-2">
-                                <span class="text-[8px] font-pixel text-zinc-500 uppercase tracking-widest">02 //
-                                    WEARABLE</span>
-                                <h3
-                                    class="text-xs font-pixel text-white uppercase group-hover:text-emerald-450 transition-colors leading-tight">
-                                    SRAM Lifesaver Patch</h3>
-                                <p class="text-2xs text-zinc-400 font-sans leading-relaxed">
-                                    Premium 3" embroidered iron-on badge. Features the official "SRAM Life Support"
-                                    crosshairs in neon green and high-density thread count.
-                                </p>
-                            </div>
-
-                            <div class="pt-4 border-t border-zinc-900/60 flex items-center justify-between">
-                                <span class="text-[8px] font-pixel text-zinc-500 uppercase tracking-widest">Embroidery
-                                    (3")</span>
-                                <button
-                                    onclick="addToCart('sram_patch', 'SRAM Lifesaver Patch', 12.99, 'https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction')"
-                                    class="px-4 py-2 bg-zinc-900 hover:bg-white hover:text-black border border-zinc-800 text-white rounded-lg text-[9px] font-pixel uppercase tracking-widest transition-all active:scale-95 flex items-center gap-1.5 shadow-sm">
-                                    <img src="https://api.iconify.design/lucide:shopping-cart.svg" class="h-3 w-3"
-                                        style="filter: invert(1); opacity: 0.8;" />
-                                    Add To Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Floppy Disk Labels -->
-                    <div
-                        class="border border-zinc-900 rounded-2xl bg-zinc-950/20 hover:bg-zinc-950/40 hover:border-zinc-800 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group/card">
-                        <!-- Carousel Image Container -->
-                        <div
-                            class="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950 border-b border-zinc-900 flex items-center justify-center group/carousel">
-                            <!-- Slides -->
-                            <div id="carousel-slides-floppy_labels"
-                                class="flex w-full h-full transition-transform duration-300 ease-out">
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction"
-                                        alt="Floppy Disk Labels" class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/71717a?text=Mockup+Slide+2"
-                                        alt="Placeholder 2" class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-full h-full flex-shrink-0 relative">
-                                    <img src="https://placehold.co/200x300/09090b/52525b?text=Mockup+Slide+3"
-                                        alt="Placeholder 3" class="w-full h-full object-cover" />
-                                </div>
-                            </div>
-
-                            <!-- Carousel Controls -->
-                            <button onclick="prevSlide('floppy_labels', event)"
-                                class="absolute left-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-left.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-                            <button onclick="nextSlide('floppy_labels', event)"
-                                class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/75 border border-zinc-800 text-white hover:bg-black/95 transition-opacity opacity-0 group-hover/carousel:opacity-100 z-20">
-                                <img src="https://api.iconify.design/lucide:chevron-right.svg" class="h-3.5 w-3.5"
-                                    style="filter: invert(1);" />
-                            </button>
-
-                            <!-- Pagination Dots -->
-                            <div id="carousel-dots-floppy_labels"
-                                class="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-                                <span
-                                    class="w-1.5 h-1.5 rounded-full bg-emerald-500 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300"></span>
-                            </div>
-
-                            <!-- Badges Overlay -->
-                            <div
-                                class="absolute top-4 left-4 bg-black/85 backdrop-blur-md border border-zinc-800 text-[10px] font-pixel text-emerald-400 px-3 py-1 rounded-full uppercase tracking-wider shadow z-25">
-                                $5.99
-                            </div>
-                            <div
-                                class="absolute top-4 right-4 bg-zinc-900/90 backdrop-blur-md border border-zinc-800 text-[8px] font-mono text-zinc-400 px-2 py-0.5 rounded uppercase tracking-widest shadow-sm z-25">
-                                Free Shipping
-                            </div>
-                        </div>
-
-                        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
-                            <div class="space-y-2">
-                                <span class="text-[8px] font-pixel text-zinc-500 uppercase tracking-widest">03 //
-                                    STORAGE ARCHIVE</span>
-                                <h3
-                                    class="text-xs font-pixel text-white uppercase group-hover:text-emerald-450 transition-colors leading-tight">
-                                    Floppy Disk Labels</h3>
-                                <p class="text-2xs text-zinc-400 font-sans leading-relaxed">
-                                    Pack of 10 classic 3.5" floppy disk writable vinyl labels. Pre-ruled lines and
-                                    custom header slots to index physical patch backups.
-                                </p>
-                            </div>
-
-                            <div class="pt-4 border-t border-zinc-900/60 flex items-center justify-between">
-                                <span class="text-[8px] font-pixel text-zinc-500 uppercase tracking-widest">Writable
-                                    Vinyl</span>
-                                <button
-                                    onclick="addToCart('floppy_labels', 'Floppy Disk Labels', 5.99, 'https://placehold.co/200x300/09090b/a1a1aa?text=Under+Construction')"
-                                    class="px-4 py-2 bg-zinc-900 hover:bg-white hover:text-black border border-zinc-800 text-white rounded-lg text-[9px] font-pixel uppercase tracking-widest transition-all active:scale-95 flex items-center gap-1.5 shadow-sm">
-                                    <img src="https://api.iconify.design/lucide:shopping-cart.svg" class="h-3 w-3"
-                                        style="filter: invert(1); opacity: 0.8;" />
-                                    Add To Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
+
+        {% if checkout_error == 'stripe' %}
+        <div class="mb-6 rounded-lg border border-rose-900/60 bg-rose-950/30 px-4 py-3 text-sm text-rose-300">
+            Checkout could not start. Email
+            <a href="mailto:halfradiationllc@gmail.com" class="underline text-rose-200">halfradiationllc@gmail.com</a>
+            if it keeps happening.
+        </div>
+        {% elif payment_status == 'pack_cancel' %}
+        <div class="mb-6 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-zinc-400">
+            Checkout cancelled — packs are still here when you're ready.
+        </div>
+        {% endif %}
+
+        <div class="space-y-5">
+            {% for pack in packs %}
+            <article class="rounded-xl border border-zinc-800 bg-zinc-950/50 p-5 sm:p-6">
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-base font-medium text-white">{{ pack.name }}</h2>
+                            {% if pack.is_new %}
+                            <span class="text-[9px] font-pixel bg-emerald-500 text-black px-2 py-0.5 rounded uppercase tracking-wider">New</span>
+                            {% endif %}
+                        </div>
+                        <p class="mt-1 text-sm text-zinc-500">{{ pack.synth }} · {{ pack.patches_count }} patches · SysEx</p>
+                    </div>
+                    <p class="text-lg font-mono text-white shrink-0">{{ pack.price }}</p>
+                </div>
+
+                <p class="text-sm text-zinc-400 leading-relaxed">{{ pack.description }}</p>
+
+                {% if pack.demo_patches %}
+                <p class="mt-3 text-xs font-mono text-zinc-600">
+                    Includes: {{ pack.demo_patches | join(', ') }}, and more
+                </p>
+                {% endif %}
+
+                <div class="mt-5 flex flex-wrap items-center gap-3">
+                    <button type="button" onclick="auditionPackDemo('{{ pack.id }}', this)"
+                        class="shop-play-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-700 bg-zinc-900 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white transition-colors"
+                        aria-label="Play sample for {{ pack.name }}">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        Play sample
+                    </button>
+
+                    {% if pack.id in owned_pack_ids %}
+                    <a href="/dashboard"
+                        class="inline-flex items-center px-5 py-2 rounded-lg border border-zinc-700 text-sm text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors">
+                        In your vault
+                    </a>
+                    {% else %}
+                    <a href="/checkout-pack/{{ pack.id }}"
+                        class="inline-flex items-center px-5 py-2 rounded-lg bg-white hover:bg-zinc-200 text-black text-sm font-medium transition-colors">
+                        Buy {{ pack.price }}
+                    </a>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <p class="mt-10 text-xs text-zinc-600 leading-relaxed">
+            Instant delivery to your knob.monster vault. Compatible with the synth named on each pack.
+            Questions? <a href="mailto:halfradiationllc@gmail.com" class="text-zinc-500 hover:text-zinc-300 underline">halfradiationllc@gmail.com</a>
+        </p>
     </main>
 
-    <!-- Cart Drawer -->
-    <div id="cart-drawer"
-        class="fixed right-0 top-0 h-full w-full max-w-md bg-black/95 backdrop-blur-lg border-l border-zinc-900 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between shadow-2xl select-none">
-
-        <!-- Header -->
-        <div class="p-6 border-b border-zinc-900 flex items-center justify-between bg-zinc-950/20">
-            <div class="flex items-center gap-2">
-                <img src="https://api.iconify.design/lucide:shopping-bag.svg" class="h-4.5 w-4.5"
-                    style="filter: invert(1);" />
-                <span class="font-pixel uppercase text-[10px] text-white tracking-widest">Your Cart</span>
-            </div>
-            <button onclick="toggleCartDrawer(false)"
-                class="text-zinc-500 hover:text-white transition-colors text-2xs font-mono font-bold uppercase tracking-wider flex items-center gap-1">
-                Close [X]
-            </button>
-        </div>
-
-        <!-- Cart List (Scrollable) -->
-        <div id="cart-list-container" class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4">
-            <div class="flex flex-col items-center justify-center h-full text-center space-y-2 select-none">
-                <img src="https://api.iconify.design/lucide:shopping-bag.svg" class="h-6 w-6 opacity-30"
-                    style="filter: invert(0.4);" />
-                <span class="font-pixel uppercase text-3xs text-zinc-550 tracking-wider block">Your Cart is Empty</span>
-            </div>
-        </div>
-
-        <!-- Footer / checkout info -->
-        <div class="p-6 border-t border-zinc-900 bg-zinc-950/10 space-y-4">
-            <div class="flex justify-between items-center text-xs font-mono">
-                <span class="text-zinc-500 uppercase">Subtotal</span>
-                <span id="cart-subtotal" class="text-emerald-450 font-bold">$0.00</span>
-            </div>
-
-            <p class="text-[9px] text-zinc-500 font-mono leading-relaxed">
-                Free standard shipping worldwide on physical stickers and patches. Digital voice preset carts are
-                unlocked immediately on your account dashboard.
-            </p>
-
-            <button onclick="checkoutCart()"
-                class="w-full py-3 bg-white hover:bg-zinc-200 text-black rounded-xl text-2xs font-pixel uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 font-bold">
-                Place Pre-Order &rarr;
-            </button>
-        </div>
-    </div>
-
-    <!-- Toast Notification Block -->
-    <div id="shop-toast"
-        class="fixed bottom-6 right-6 z-50 bg-[#0e0e11] border border-zinc-850 rounded-xl p-4 shadow-2xl max-w-xs transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-start gap-3 select-none">
-        <div
-            class="h-5 w-5 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 text-emerald-400">
-            <img src="https://api.iconify.design/dinkie-icons:thumbs-up-sign.svg" class="h-3.5 w-3.5"
-                style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
-        </div>
-        <div>
-            <h4 id="shop-toast-title" class="text-2xs font-pixel text-white uppercase">Added to Cart</h4>
-            <p id="shop-toast-desc" class="text-[10px] text-zinc-500 font-mono mt-0.5"></p>
-        </div>
-    </div>
-
-    <!-- Footer -->
     {% include "footer.html" %}
+    {% include "mobile_nav.html" %}
 
     <script>
-        // Carousel state management
-        const carouselState = {};
-
-        function updateCarouselUI(id) {
-            const idx = carouselState[id] || 0;
-            const slidesContainer = document.getElementById(`carousel-slides-${id}`);
-            const dotsContainer = document.getElementById(`carousel-dots-${id}`);
-            if (slidesContainer) {
-                slidesContainer.style.transform = `translateX(-${idx * 100}%)`;
-            }
-            if (dotsContainer) {
-                const dots = dotsContainer.children;
-                for (let i = 0; i < dots.length; i++) {
-                    if (i === idx) {
-                        dots[i].classList.remove('bg-zinc-700');
-                        dots[i].classList.add('bg-emerald-500', 'w-3');
-                    } else {
-                        dots[i].classList.remove('bg-emerald-500', 'w-3');
-                        dots[i].classList.add('bg-zinc-700');
-                    }
-                }
-            }
-        }
-
-        function prevSlide(id, event) {
-            if (event) {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-            const slidesContainer = document.getElementById(`carousel-slides-${id}`);
-            if (!slidesContainer) return;
-            const totalSlides = slidesContainer.children.length;
-            let idx = carouselState[id] || 0;
-            idx = (idx - 1 + totalSlides) % totalSlides;
-            carouselState[id] = idx;
-            updateCarouselUI(id);
-        }
-
-        function nextSlide(id, event) {
-            if (event) {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-            const slidesContainer = document.getElementById(`carousel-slides-${id}`);
-            if (!slidesContainer) return;
-            const totalSlides = slidesContainer.children.length;
-            let idx = carouselState[id] || 0;
-            idx = (idx + 1) % totalSlides;
-            carouselState[id] = idx;
-            updateCarouselUI(id);
-        }
-
-        // Audio Context setup for synth demos
         let audioCtx = null;
+        let activeAuditionTimeout = null;
+
         function initAudioContext() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -753,163 +184,39 @@
             }
         }
 
-        // Cart state
-        let cart = [];
-
-        function showShopToast(title, desc) {
-            const toast = document.getElementById('shop-toast');
-            document.getElementById('shop-toast-title').textContent = title;
-            document.getElementById('shop-toast-desc').textContent = desc;
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+        function setPlayButtonsPlaying(activeBtn) {
+            document.querySelectorAll('.shop-play-btn').forEach(btn => btn.classList.remove('playing'));
+            if (activeBtn) activeBtn.classList.add('playing');
         }
 
-        function toggleCartDrawer(open) {
-            const drawer = document.getElementById('cart-drawer');
-            if (open) {
-                drawer.classList.remove('translate-x-full');
-                renderCart();
-            } else {
-                drawer.classList.add('translate-x-full');
-            }
-        }
-
-        function addToCart(id, name, price, image) {
-            const existing = cart.find(item => item.id === id);
-            if (existing) {
-                existing.qty += 1;
-            } else {
-                cart.push({ id, name, price, image, qty: 1 });
-            }
-            updateCartBadge();
-            showShopToast("Added to Cart", `${name} has been added to your order.`);
-        }
-
-        function updateCartBadge() {
-            const count = cart.reduce((sum, item) => sum + item.qty, 0);
-            const badge = document.getElementById('cart-badge-count');
-            if (count > 0) {
-                badge.textContent = count;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartBadge();
-            renderCart();
-        }
-
-        function changeQty(id, delta) {
-            const item = cart.find(i => i.id === id);
-            if (item) {
-                item.qty += delta;
-                if (item.qty <= 0) {
-                    removeFromCart(id);
-                } else {
-                    updateCartBadge();
-                    renderCart();
-                }
-            }
-        }
-
-        function renderCart() {
-            const container = document.getElementById('cart-list-container');
-            const subtotalEl = document.getElementById('cart-subtotal');
-
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full text-center space-y-2 select-none">
-                        <img src="https://api.iconify.design/lucide:shopping-bag.svg" class="h-6 w-6 opacity-30" style="filter: invert(0.4);" />
-                        <span class="font-pixel uppercase text-3xs text-zinc-550 tracking-wider block">Your Cart is Empty</span>
-                    </div>
-                `;
-                subtotalEl.textContent = "$0.00";
-                return;
-            }
-
-            let html = '<div class="space-y-4">';
-            let subtotal = 0;
-
-            cart.forEach(item => {
-                const totalItemPrice = item.price * item.qty;
-                subtotal += totalItemPrice;
-
-                html += `
-                    <div class="flex items-center gap-3 border-b border-zinc-900/60 pb-3">
-                        <div class="relative h-10 w-10 shrink-0 bg-zinc-900 border border-zinc-800 rounded overflow-hidden">
-                            <img src="${item.image}" alt="${item.name}" class="h-full w-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" />
-                            <div class="hidden h-full w-full bg-zinc-950 flex items-center justify-center text-[7px] font-pixel text-zinc-600">KM</div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="text-2xs font-pixel text-white uppercase truncate">${item.name}</h4>
-                            <span class="text-3xs font-mono text-zinc-500 block">$${item.price.toFixed(2)} each</span>
-                        </div>
-                        
-                        <div class="flex items-center gap-3">
-                            <div class="flex items-center border border-zinc-800 rounded bg-zinc-950 font-mono text-xs">
-                                <button onclick="changeQty('${item.id}', -1)" class="px-2 py-0.5 text-zinc-500 hover:text-white transition-colors">-</button>
-                                <span class="px-1 text-white">${item.qty}</span>
-                                <button onclick="changeQty('${item.id}', 1)" class="px-2 py-0.5 text-zinc-500 hover:text-white transition-colors">+</button>
-                            </div>
-                            <span class="text-2xs font-mono font-bold text-white w-14 text-right">$${totalItemPrice.toFixed(2)}</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            html += '</div>';
-            container.innerHTML = html;
-            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-        }
-
-        function checkoutCart() {
-            if (cart.length === 0) {
-                showShopToast("Empty Cart", "Add some items to your cart before checking out.");
-                return;
-            }
-
-            const itemsList = cart.map(item => `- ${item.name} (Qty: ${item.qty}, Price: $${(item.price * item.qty).toFixed(2)})`).join('%0D%0A');
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2);
-
-            showShopToast("Opening Pre-Order", "Pre-order list generated! Redirecting to mailto support...", "success");
-
-            setTimeout(() => {
-                window.location.href = `mailto:halfradiationllc@gmail.com?subject=Pre-order: Knob Monster Shop&body=Hi Knob Monster,%0D%0A%0D%0AI would like to order the following items from the Monster Shop:%0D%0A${itemsList}%0D%0A%0D%0ATotal Amount: $${total}%0D%0A%0D%0APlease send me details on payment methods.%0D%0A%0D%0AThank you!`;
-            }, 1200);
-        }
-
-        function auditionPackDemo(packId) {
+        function auditionPackDemo(packId, btn) {
+            if (!packId) return;
             initAudioContext();
             if (!audioCtx) return;
 
-            showShopToast("Playing Audition", `Auditioning fm sound loop for ${packId}...`);
+            if (activeAuditionTimeout) {
+                clearTimeout(activeAuditionTimeout);
+                activeAuditionTimeout = null;
+            }
+            setPlayButtonsPlaying(btn);
 
             const now = audioCtx.currentTime;
-            const notes = [130.81, 146.83, 164.81, 196.00, 220.00, 261.63];
-
+            const notes = [130.81, 146.83, 164.81, 196.0, 220.0, 261.63];
             let playOffset = 0;
-            notes.forEach((freq, idx) => {
+
+            notes.forEach((freq) => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 const filter = audioCtx.createBiquadFilter();
 
-                if (packId === "m1_matrix") {
-                    osc.type = "sawtooth";
-                    filter.type = "lowpass";
+                if (packId === 'm1_matrix') {
+                    osc.type = 'sawtooth';
+                    filter.type = 'lowpass';
                     filter.frequency.setValueAtTime(200, now + playOffset);
                     filter.frequency.exponentialRampToValueAtTime(1500, now + playOffset + 0.1);
                     filter.frequency.exponentialRampToValueAtTime(100, now + playOffset + 0.4);
-                } else if (packId === "dx7_retro") {
-                    osc.type = "triangle";
+                } else if (packId === 'dx7_retro') {
+                    osc.type = 'triangle';
                     const mod = audioCtx.createOscillator();
                     const modGain = audioCtx.createGain();
                     mod.frequency.value = freq * 3.5;
@@ -919,11 +226,12 @@
                     mod.start(now + playOffset);
                     mod.stop(now + playOffset + 0.5);
                 } else {
-                    osc.type = "square";
-                    filter.type = "lowpass";
+                    osc.type = 'square';
+                    filter.type = 'lowpass';
                     filter.frequency.value = 800;
                 }
 
+                osc.frequency.value = freq;
                 gain.gain.setValueAtTime(0, now + playOffset);
                 gain.gain.linearRampToValueAtTime(0.08, now + playOffset + 0.05);
                 gain.gain.exponentialRampToValueAtTime(0.0001, now + playOffset + 0.45);
@@ -934,12 +242,12 @@
 
                 osc.start(now + playOffset);
                 osc.stop(now + playOffset + 0.5);
-
                 playOffset += 0.15;
             });
+
+            activeAuditionTimeout = setTimeout(() => setPlayButtonsPlaying(null), 1200);
         }
     </script>
-    {% include "mobile_nav.html" %}
 </body>
 
 </html>

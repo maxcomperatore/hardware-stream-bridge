@@ -15,9 +15,14 @@ import logging
 import traceback
 import re
 import faq_knowledge
+import shop_packs
 from urllib.parse import quote, urlparse
 
-# Standard robust email validation pattern
+def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
+    if not next_url or not next_url.startswith("/") or next_url.startswith("//"):
+        return default
+    return next_url
+
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 
 CONSUMER_EMAIL_DOMAINS = frozenset({
@@ -521,6 +526,15 @@ STRIPE_PRICE_ID_PERSONAL_CAD = os.environ.get("STRIPE_PRICE_ID_PERSONAL_CAD") or
 STRIPE_PRICE_ID_STUDIO_CAD = os.environ.get("STRIPE_PRICE_ID_STUDIO_CAD") or "price_1TnjcfLuSQGuB7eyk12F0YlY"
 STRIPE_PRICE_ID_PERSONAL_AUD = os.environ.get("STRIPE_PRICE_ID_PERSONAL_AUD") or "price_1Tnjd6LuSQGuB7eyE4YBCaOx"
 STRIPE_PRICE_ID_STUDIO_AUD = os.environ.get("STRIPE_PRICE_ID_STUDIO_AUD") or "price_1TnjdvLuSQGuB7eyRNRFeyCi"
+STRIPE_PRICE_ID_SOUND_PACK = os.environ.get(
+    "STRIPE_PRICE_ID_SOUND_PACK",
+    "price_1To3HiLuSQGuB7ey39i6WqFp",
+)
+PACK_STRIPE_PRICE_ENV_KEYS = {
+    "m1_matrix": "STRIPE_PRICE_ID_PACK_M1_MATRIX",
+    "dx7_retro": "STRIPE_PRICE_ID_PACK_DX7",
+    "juno_nostalgia": "STRIPE_PRICE_ID_PACK_JUNO",
+}
 BASE_URL = "https://knob.monster"
 
 EU_EUR_COUNTRY_CODES = frozenset({
@@ -750,7 +764,85 @@ def get_valid_stripe_customer_id(user: dict) -> str | None:
         return None
     if not str(customer_id).startswith("cus_"):
         return None
-    return customer_id
+    if not STRIPE_SECRET_KEY:
+        return customer_id
+    try:
+        stripe.Customer.retrieve(customer_id)
+        return customer_id
+    except stripe.error.StripeError:
+        logger.warning("Ignoring stale Stripe customer id for %s", user.get("email"))
+        return None
+
+def build_pack_checkout_kwargs(user: dict, pack_id: str, pack: dict) -> dict:
+    """Mirror one-time Personal checkout — avoid extra flags that break hosted Checkout."""
+    kwargs = {
+        "line_items": build_pack_checkout_line_items(pack_id, pack),
+        "mode": "payment",
+        "success_url": BASE_URL + f"/dashboard?payment=pack_success&pack_id={pack_id}",
+        "cancel_url": BASE_URL + "/shop?payment=pack_cancel",
+        "metadata": {
+            "purchase_type": "sound_pack",
+            "pack_id": pack_id,
+            "user_email": user["email"],
+            "pack_name": pack["name"],
+        },
+        "payment_intent_data": {
+            "metadata": {
+                "purchase_type": "sound_pack",
+                "pack_id": pack_id,
+                "user_email": user["email"],
+            },
+        },
+        "adaptive_pricing": {"enabled": False},
+    }
+    stripe_customer_id = get_valid_stripe_customer_id(user)
+    if stripe_customer_id:
+        kwargs["customer"] = stripe_customer_id
+    else:
+        kwargs["customer_email"] = user["email"]
+    return kwargs
+
+def get_pack_stripe_price_id(pack_id: str) -> str | None:
+    env_key = PACK_STRIPE_PRICE_ENV_KEYS.get(pack_id)
+    if env_key:
+        specific = os.environ.get(env_key, "").strip()
+        if specific.startswith("price_"):
+            return specific
+    shared = STRIPE_PRICE_ID_SOUND_PACK.strip()
+    if shared.startswith("price_"):
+        return shared
+    return None
+
+def build_pack_checkout_line_items(pack_id: str, pack: dict) -> list[dict]:
+    price_id = get_pack_stripe_price_id(pack_id)
+    if price_id:
+        return [{"price": price_id, "quantity": 1}]
+    return [
+        {
+            "price_data": {
+                "currency": "usd",
+                "unit_amount": pack["price_cents"],
+                "product_data": {
+                    "name": pack["name"][:250],
+                    "description": (pack.get("description") or pack["name"])[:500],
+                    "tax_code": "txcd_10000000",
+                },
+            },
+            "quantity": 1,
+        }
+    ]
+
+def create_pack_checkout_session(user: dict, pack_id: str, pack: dict):
+    kwargs = build_pack_checkout_kwargs(user, pack_id, pack)
+    try:
+        return stripe.checkout.Session.create(**kwargs)
+    except stripe.error.StripeError:
+        if "customer" in kwargs:
+            retry_kwargs = dict(kwargs)
+            retry_kwargs.pop("customer", None)
+            retry_kwargs["customer_email"] = user["email"]
+            return stripe.checkout.Session.create(**retry_kwargs)
+        raise
 
 def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
     normalized = normalize_plan(plan)
@@ -1134,36 +1226,21 @@ async def shop_page(request: Request):
     except Exception as e:
         print(f"Error cleaning assets on request: {e}")
     user = get_current_user(request)
-    packs = [
-        {
-            "id": "m1_matrix",
-            "name": "Korg M1: Off the Matrix",
-            "synth": "Korg M1",
-            "price": "$9.00",
-            "description": "Premium overrides of sample keymaps carefully programmed over 20 years. Features Trident Strings and analog emulations.",
-            "patches_count": 32,
-            "demo_patches": ["Cyber Gate", "HousePiano", "Ethereal", "TridentStr", "Glassy Pad", "Obese Poly"],
-        },
-        {
-            "id": "dx7_retro",
-            "name": "Yamaha DX7: Classic FM Leads & Basses",
-            "synth": "Yamaha DX7",
-            "price": "$9.00",
-            "description": "Punchy FM basses, crystal-clear bell leads, and classic 80s electric pianos. Optimized for live MIDI performance.",
-            "patches_count": 32,
-            "demo_patches": ["Super Bass", "Chime Bell", "FM Rhodes", "Synth Brass", "Sitar Glide", "Atmosphere"],
-        },
-        {
-            "id": "juno_nostalgia",
-            "name": "Roland Juno-106: Nostalgia Plucks & Pads",
-            "synth": "Roland Juno-106",
-            "price": "$9.00",
-            "description": "Warm, chorus-drenched analog pads, snap plucks, and classic 80s sci-fi SFX. Relive the golden age of ambient.",
-            "patches_count": 32,
-            "demo_patches": ["Nostalgia", "Chorused Pad", "Snap Pluck", "Space Wind", "Analog Sweep", "Sub Bass"],
+    packs = shop_packs.packs_for_template()
+    owned_pack_ids = set()
+    if user:
+        owned_pack_ids = {
+            pack["id"]
+            for pack in shop_packs.list_shop_packs()
+            if shop_packs.user_owns_pack(user["id"], pack["id"])
         }
-    ]
-    return render_template("shop.html", request, {"user": user, "packs": packs})
+    return render_template("shop.html", request, {
+        "user": user,
+        "packs": packs,
+        "owned_pack_ids": owned_pack_ids,
+        "checkout_error": request.query_params.get("checkout_error"),
+        "payment_status": request.query_params.get("payment"),
+    })
 
 @app.get("/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer", response_class=HTMLResponse)
 async def blog_web_midi_page(request: Request):
@@ -1265,12 +1342,13 @@ async def subscribe(request: Request, email: str = Form(...)):
 
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request, error: str = None):
+    next_url = request.query_params.get("next")
     if get_current_user(request):
-        return RedirectResponse(url="/dashboard")
-    return render_template("login.html", request, {"error": error})
+        return RedirectResponse(url=safe_next_url(next_url))
+    return render_template("login.html", request, {"error": error, "next": next_url})
 
 @app.post("/login")
-async def do_login(request: Request, email: str = Form(...), password: str = Form(...)):
+async def do_login(request: Request, email: str = Form(...), password: str = Form(...), next: str = Form(None)):
     user = database.get_user_by_email(email)
     if not user or not verify_password(password, user["hashed_password"]):
         trigger_alert(
@@ -1279,9 +1357,9 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
             {"email": email, "reason": "invalid_credentials"},
             distinct_id=email or "anonymous"
         )
-        return render_template("login.html", request, {"error": "Invalid email or password"})
+        return render_template("login.html", request, {"error": "Invalid email or password", "next": next})
     
-    response = RedirectResponse(url="/dashboard", status_code=303)
+    response = RedirectResponse(url=safe_next_url(next), status_code=303)
     response.set_cookie(
         key="session_user",
         value=sign_session_cookie(email.lower().strip()),
@@ -1764,36 +1842,8 @@ async def get_marketplace(request: Request):
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
-        
-    packs = [
-        {
-            "id": "m1_matrix",
-            "name": "Korg M1: Off the Matrix",
-            "synth": "Korg M1",
-            "price": "$9.00",
-            "description": "Premium overrides of sample keymaps carefully programmed over 20 years. Features Trident Strings and analog emulations.",
-            "patches_count": 32,
-            "demo_patches": ["Cyber Gate", "HousePiano", "Ethereal", "TridentStr", "Glassy Pad", "Obese Poly"],
-        },
-        {
-            "id": "dx7_retro",
-            "name": "Yamaha DX7: Classic FM Leads & Basses",
-            "synth": "Yamaha DX7",
-            "price": "$9.00",
-            "description": "Punchy FM basses, crystal-clear bell leads, and classic 80s electric pianos. Optimized for live MIDI performance.",
-            "patches_count": 32,
-            "demo_patches": ["Super Bass", "Chime Bell", "FM Rhodes", "Synth Brass", "Sitar Glide", "Atmosphere"],
-        },
-        {
-            "id": "juno_nostalgia",
-            "name": "Roland Juno-106: Nostalgia Plucks & Pads",
-            "synth": "Roland Juno-106",
-            "price": "$9.00",
-            "description": "Warm, chorus-drenched analog pads, snap plucks, and classic 80s sci-fi SFX. Relive the golden age of ambient.",
-            "patches_count": 32,
-            "demo_patches": ["Nostalgia", "Chorused Pad", "Snap Pluck", "Space Wind", "Analog Sweep", "Sub Bass"],
-        }
-    ]
+
+    packs = shop_packs.packs_for_template()
     return render_template("marketplace.html", request, {"packs": packs, "user": user})
 
 @app.post("/api/generate-ai-bank", response_class=HTMLResponse)
@@ -1865,43 +1915,55 @@ async def generate_ai_bank(request: Request, synth_model: str = Form(...), chaos
 async def checkout_pack(request: Request, pack_id: str):
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
-        return RedirectResponse(url="/checkout")
-        
-    packs_data = {
-        "m1_matrix": {
-            "name": "Korg M1: Off the Matrix",
-            "synth": "Korg M1",
-            "hex": "f042301910" + "00" * 4000 + "f7",
-            "patches": ["Cyber Gate", "HousePiano", "Ethereal", "TridentStr", "Glassy Pad", "Obese Poly", "Karimba!", "Narnia"]
-        },
-        "dx7_retro": {
-            "name": "Yamaha DX7: Classic FM Leads & Basses",
-            "synth": "Yamaha DX7",
-            "hex": "f04300092000" + "3f" * 4096 + "f7",
-            "patches": ["Super Bass", "Chime Bell", "FM Rhodes", "Synth Brass", "Sitar Glide", "Atmosphere", "Digi Bass", "Church Org"]
-        },
-        "juno_nostalgia": {
-            "name": "Roland Juno-106: Nostalgia Plucks & Pads",
-            "synth": "Roland Juno-106",
-            "hex": "f0413600" + "1a" * 2000 + "f7",
-            "patches": ["Nostalgia", "Chorused Pad", "Snap Pluck", "Space Wind", "Analog Sweep", "Sub Bass", "Euro Bass", "PPG Wave"]
-        }
-    }
-    
-    if pack_id not in packs_data:
+        return RedirectResponse(url=f"/login?next=/checkout-pack/{pack_id}")
+
+    pack = shop_packs.get_shop_pack(pack_id)
+    if not pack:
         raise HTTPException(status_code=404, detail="Pack not found")
-        
-    pack = packs_data[pack_id]
-    database.save_bank(f"{pack['name']} (Purchased)", pack["synth"], pack["hex"], pack["patches"], user["id"])
-    trigger_alert(
-        "marketplace_pack_purchased",
-        f"Marketplace pack `{pack['name']}` purchased/added for user `{user['email']}`.",
-        {"email": user["email"], "pack_id": pack_id, "pack_name": pack["name"], "synth_model": pack["synth"]},
-        distinct_id=user["email"]
-    )
-    return RedirectResponse(url="/dashboard?payment=pack_success", status_code=303)
+
+    if shop_packs.user_owns_pack(user["id"], pack_id):
+        return RedirectResponse(url="/dashboard?payment=pack_owned", status_code=303)
+
+    if not STRIPE_SECRET_KEY:
+        bank_id = shop_packs.fulfill_sound_pack(user["email"], pack_id)
+        if bank_id:
+            trigger_alert(
+                "marketplace_pack_purchased",
+                f"Sound pack `{pack['name']}` fulfilled (mock) for `{user['email']}`.",
+                {"email": user["email"], "pack_id": pack_id, "pack_name": pack["name"], "bank_id": bank_id},
+                distinct_id=user["email"],
+            )
+        return RedirectResponse(url="/dashboard?payment=pack_success", status_code=303)
+
+    try:
+        checkout_session = create_pack_checkout_session(user, pack_id, pack)
+        if not checkout_session.url:
+            raise RuntimeError("Stripe returned a checkout session without a redirect URL")
+        trigger_alert(
+            "stripe_pack_checkout_initiated",
+            f"Sound pack checkout started for `{user['email']}` — `{pack['name']}`.",
+            {
+                "email": user["email"],
+                "pack_id": pack_id,
+                "pack_name": pack["name"],
+                "checkout_session_id": checkout_session.id,
+                "stripe_price_id": get_pack_stripe_price_id(pack_id),
+            },
+            distinct_id=user["email"],
+        )
+        return RedirectResponse(url=checkout_session.url, status_code=303)
+    except Exception as e:
+        logger.error(f"Stripe pack checkout failed: {e}", extra={"pack_id": pack_id, "email": user["email"]})
+        trigger_alert(
+            "stripe_pack_checkout_failed",
+            f"Sound pack checkout failed for `{user['email']}` / `{pack_id}`: {e}",
+            {"email": user["email"], "pack_id": pack_id, "error": str(e)},
+            distinct_id=user["email"],
+        )
+        return RedirectResponse(
+            url="/shop?checkout_error=stripe",
+            status_code=303,
+        )
 
 # --- Stripe Monetization Endpoints ---
 @app.get("/checkout")
@@ -2119,28 +2181,45 @@ async def stripe_webhook(request: Request):
         metadata = getattr(session, 'metadata', None) or {}
         if not isinstance(metadata, dict):
             metadata = dict(metadata) if metadata else {}
-        purchased_plan = normalize_plan(metadata.get("plan", "personal"))
-        if customer_email:
-            existing_user = database.get_user_by_email(customer_email)
-            if existing_user:
-                database.update_user_tier(customer_email, "premium", customer_id, plan=purchased_plan)
-                logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "plan": purchased_plan, "event_type": "subscription_activated"})
-                trigger_alert(
-                    "subscription_activated",
-                    f"Subscription activated via Stripe for `{customer_email}` on plan `{purchased_plan}`.",
-                    {"email": customer_email, "customer_id": customer_id, "plan": purchased_plan},
-                    distinct_id=customer_email
-                )
-            else:
-                # User paid before registering — park it, apply on registration
-                database.upsert_pending_premium(customer_email, customer_id, plan=purchased_plan)
-                logger.info(f"Pending premium parked (no account yet): {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_pending"})
-                trigger_alert(
-                    "subscription_pending",
-                    f"Subscription paid but pending registration for `{customer_email}`.",
-                    {"email": customer_email, "customer_id": customer_id},
-                    distinct_id=customer_email
-                )
+        if metadata.get("purchase_type") == "sound_pack":
+            pack_id = metadata.get("pack_id")
+            if customer_email and pack_id:
+                pack = shop_packs.get_shop_pack(pack_id)
+                bank_id = shop_packs.fulfill_sound_pack(customer_email, pack_id)
+                if bank_id and pack:
+                    logger.info(
+                        f"Sound pack delivered via Stripe: {customer_email} / {pack_id}",
+                        extra={"email": customer_email, "pack_id": pack_id, "bank_id": bank_id, "event_type": "pack_purchased"},
+                    )
+                    trigger_alert(
+                        "marketplace_pack_purchased",
+                        f"Sound pack `{pack['name']}` purchased via Stripe for `{customer_email}`.",
+                        {"email": customer_email, "pack_id": pack_id, "pack_name": pack["name"], "bank_id": bank_id},
+                        distinct_id=customer_email,
+                    )
+        elif metadata.get("plan"):
+            purchased_plan = normalize_plan(metadata.get("plan"))
+            if customer_email:
+                existing_user = database.get_user_by_email(customer_email)
+                if existing_user:
+                    database.update_user_tier(customer_email, "premium", customer_id, plan=purchased_plan)
+                    logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "plan": purchased_plan, "event_type": "subscription_activated"})
+                    trigger_alert(
+                        "subscription_activated",
+                        f"Subscription activated via Stripe for `{customer_email}` on plan `{purchased_plan}`.",
+                        {"email": customer_email, "customer_id": customer_id, "plan": purchased_plan},
+                        distinct_id=customer_email
+                    )
+                else:
+                    # User paid before registering — park it, apply on registration
+                    database.upsert_pending_premium(customer_email, customer_id, plan=purchased_plan)
+                    logger.info(f"Pending premium parked (no account yet): {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_pending"})
+                    trigger_alert(
+                        "subscription_pending",
+                        f"Subscription paid but pending registration for `{customer_email}`.",
+                        {"email": customer_email, "customer_id": customer_id},
+                        distinct_id=customer_email
+                    )
             
     elif event['type'] == 'customer.subscription.deleted':
         session = event['data']['object']

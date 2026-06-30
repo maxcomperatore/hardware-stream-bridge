@@ -76,13 +76,19 @@ def parse_juno106_sysex(data: bytes) -> list[str]:
             break
 
         msg = data[start:end + 1]
-        # Juno-106 APR: F0 41 30 0n pp + 16 slider bytes + 2 switch bytes + F7
-        if len(msg) >= 24 and msg[2] == 0x30:
-            patch_num = msg[4]
-            if patch_num < 128:
-                # Extract 16 sliders and 2 switches
+        if len(msg) >= 24 and msg[1] == 0x41:
+            patch_num = None
+            params = None
+            # Legacy / captured dumps
+            if msg[2] == 0x30:
+                patch_num = msg[4]
                 params = msg[5:23]
-                if len(params) == 18:
+            # Roland Juno-106 APR (device 0x36, command 0x35)
+            elif msg[2] == 0x36 and len(msg) >= 25 and msg[4] == 0x35:
+                patch_num = msg[5]
+                params = msg[6:24]
+            if patch_num is not None and params is not None and len(params) == 18:
+                if patch_num < 128:
                     patches_by_number[patch_num] = analyze_juno106_patch(params, patch_num)
         idx = end + 1
 

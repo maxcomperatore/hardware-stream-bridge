@@ -1114,7 +1114,7 @@
             })
                 .then(res => {
                     if (res.ok) {
-                        statusDiv.textContent = "Success! Vault connection established. You're on the list.";
+                        statusDiv.textContent = "Subscribed. Updates about twice a month. Unsubscribe anytime.";
                         statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
                         form.reset();
                     } else {
@@ -1122,7 +1122,7 @@
                     }
                 })
                 .catch(() => {
-                    statusDiv.textContent = "Vault connection successful! You are now subscribed.";
+                    statusDiv.textContent = "Subscribed. Updates about twice a month. Unsubscribe anytime.";
                     statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
                     form.reset();
                 })

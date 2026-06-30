@@ -3077,17 +3077,38 @@ async def trigger_drip_cron(request: Request):
     return {"status": "success", "emails_sent": sent_count}
 
 NEWSLETTER_TOPICS = [
-    "why the DX7 FM synthesis is notoriously hard to program and how to think about operators",
-    "the ticking timebomb of NiCad batteries in vintage synths and the horror of ruined mainboards",
-    "how vintage floppy disk libraries were organized and the sound of a floppy drive seek",
-    "the charm of early digital-to-analog converters like 12-bit DACs in the DSS-1 or Prophet-VS",
-    "how Web MIDI communicates directly from the browser without any drivers",
-    "the legendary Lately Bass patch on the TX81Z and why it defined 90s dance music",
-    "the secret sauce of the Roland Juno-106 chorus circuit and its noisy buckets",
-    "the struggle of saving patches to cassette tapes in the early 80s and the high-pitched screech",
-    "why sysex dumps fail midway due to buffer overflows on old MIDI interfaces",
-    "the Korg M1 Universe preset and how PCM samples changed the industry overnight"
+    "why the DX7 is FM hell to program — and the one operator trick that finally clicks",
+    "NiCad and lithium backup batteries: leak patterns, smell, and why waiting is the worst plan",
+    "roland juno-106 bucket-brigade chorus — why it hisses and why we still love it",
+    "sysex bulk dumps failing mid-transfer: buffer size, cable direction, and the 60ms pause trick",
+    "the TX81Z Lately Bass preset — how one ROM patch owned 90s dance floors",
+    "korg M1 universe preset and the moment PCM samples killed pure analog worship",
+    "saving patches to cassette in 1984 — baud rate, alignment, and the screech nobody misses",
+    "web MIDI in chrome vs safari: why your synth 'doesn't work' in the wrong browser",
+    "jupiter-6 europa firmware vs stock — memory maps and why generic librarians choke",
+    "casio CZ nibble-packed tones — why names don't exist and how librarians fake them",
+    "MIDI-OX SSL warnings in 2026 — why desktop abandonware is a security footgun",
+    "internal battery swap checklist before your next sysex dump (write protect, backup first)",
 ]
+
+NEWSLETTER_PRODUCT_FACTS = """
+PRODUCT FACTS (use only these — do not invent features or pricing):
+- knob.monster is a browser SysEx librarian at https://knob.monster (Chrome/Edge, Web MIDI + SysEx).
+- Dedicated parsers: Yamaha DX7, Roland Juno-106, Korg M1, Roland Jupiter-6, Casio CZ-101; generic scan for others.
+- Lifetime pricing: Personal $39 (non-commercial), Studio $399 (commercial). NOT a monthly subscription.
+- Shop sound packs from $9 at https://knob.monster/shop
+- Users back up, search, download .syx, and flash banks via Web MIDI.
+- Built by Half Radiation LLC. Support: halfradiationllc@gmail.com
+"""
+
+NEWSLETTER_FOOTER = """
+---
+back up your banks (lifetime — no subscription):
+https://knob.monster/dashboard
+
+to stop receiving these, unsubscribe instantly:
+https://knob.monster/unsubscribe?token={{unsubscribe_token}}
+"""
 
 def get_openrouter_config():
     api_key = os.environ.get(
@@ -3195,72 +3216,126 @@ Return JSON: {{"answer": "your response"}}"""
     }
 
 
+def _strip_ai_newsletter_footer(body: str) -> str:
+    import re
+    text = (body or "").strip()
+    text = re.sub(r"\n---+\s*\n.*", "", text, flags=re.DOTALL | re.IGNORECASE)
+    text = re.sub(r"\n(to stop receiving|unsubscribe).*$", "", text, flags=re.DOTALL | re.IGNORECASE)
+    return text.strip()
+
+
+def _validate_newsletter_draft(subject: str, body: str) -> list[str]:
+    import re
+    issues = []
+    subj = (subject or "").strip()
+    text = _strip_ai_newsletter_footer(body)
+    if len(subj) < 8:
+        issues.append("subject too short")
+    if len(subj) > 90:
+        issues.append("subject too long")
+    if len(text) < 180:
+        issues.append("body too short")
+    if len(text) > 2200:
+        issues.append("body too long")
+    if re.search(r"<[^>]+>", text):
+        issues.append("html not allowed")
+    banned = [
+        r"\$\d+/month",
+        r"monthly subscription",
+        r"prophet-5 parser",
+        r"matrix-1000 parser",
+        r"free tier forever",
+        r"chatgpt",
+    ]
+    combined = f"{subj} {text}".lower()
+    for pattern in banned:
+        if re.search(pattern, combined):
+            issues.append(f"banned phrase: {pattern}")
+    return issues
+
+
+def _finalize_newsletter_draft(subject: str, body: str) -> dict:
+    clean_body = _strip_ai_newsletter_footer(body)
+    return {
+        "subject": (subject or "vintage synth field notes").strip().lower(),
+        "body": clean_body + NEWSLETTER_FOOTER,
+    }
+
+
 def generate_newsletter_content_via_gemini() -> dict:
     import random
-    
-    fallback_newsletter = {
-        "subject": "the ticking timebomb inside your 80s synthesizers",
-        "body": """hey there,
 
-if you own a roland juno-106, a korg poly-61, or a yamaha dx7, there is a silent killer sitting on the mainboard right now. it's the internal nickel-cadmium (NiCad) or lithium backup battery.
+    fallback_newsletter = _finalize_newsletter_draft(
+        "the ticking timebomb inside your 80s synthesizers",
+        """hey,
 
-over time, these old batteries leak corrosive acid that eats through copper traces, destroying mainboards beyond repair. and even if it doesn't leak, once that battery dies, all your custom patches are wiped instantly.
+if you own a roland juno-106, korg m1, or yamaha dx7, there is a silent killer on the mainboard: the backup battery.
 
-protect your history. connect your synth to knob.monster, back up your custom patches to the cloud in one click, and rest easy knowing they are preserved forever.
+NiCad packs leak. lithium cells die quietly. either way, when that cell goes flat, your custom patches vanish. sometimes the leak eats copper traces and the board is done.
 
-upload your patches now:
-👉 https://knob.monster/dashboard
+before you swap the battery or buy another rompler, dump what you have. one sysex bulk save while the machine still boots is the difference between a library and a ghost.
 
-keep the analog alive,
-knob.monster preservation vault
-
----
-to stop receiving these, you can unsubscribe instantly at:
-https://knob.monster/unsubscribe?token={{unsubscribe_token}}
-"""
-    }
+tip: write protect off, known-good midi cable (out → in), chrome open, then request the bulk dump. if bytes stop mid-stream, slow the sender — vintage rom is not a race.""",
+    )
 
     api_key, _model = get_openrouter_config()
     if not api_key:
-        logger.warning("OpenRouter API key is not set. Generating fallback mockup newsletter.")
+        logger.warning("OpenRouter API key is not set. Using fallback newsletter.")
         return fallback_newsletter
 
     selected_topic = random.choice(NEWSLETTER_TOPICS)
-    logger.info(f"Selected weekly newsletter topic: {selected_topic}")
-    
-    prompt = f"""
-    You are the automated email system for knob.monster, the premium cloud SysEx librarian for 1983-1995 vintage hardware synthesizers (Juno-106, DX7, Korg M1, etc.).
-    Every week you generate a highly engaging, raw, opinionated, or nostalgic email newsletter for vintage synth collectors and hardware musicians (our ICP).
-    The tone should be: raw, highly opinionated, nostalgic, slightly cynical about modern software, completely hardware-obsessed, and writing in a lowercase/conversational style.
-    Write like a seasoned vintage synth repair technician or a dedicated collector who has spent too many late nights soldering, breathing flux fumes, and dealing with flaky MIDI cables. Use gearhead terms like 'SysEx dumps', 'bucket-brigades', 'VCFs', 'FM hell', 'leaky batteries'. Avoid any happy marketing-speak or standard corporate introduction.
+    faq_corpus = faq_knowledge.build_faq_corpus()
+    logger.info(f"Selected newsletter topic: {selected_topic}")
 
-    Generate a JSON object with:
-    1. "subject": A catchy, lower-case/conversational email subject line.
-    2. "body": A raw, conversational plain text email body.
+    prompt = f"""You write the knob.monster email — a field note for vintage synth owners (1983–1995 hardware).
 
-    Guidelines for "body":
-    - Do NOT use HTML tags. Keep it strictly raw plain text.
-    - Focus this week's newsletter specifically on this topic: {selected_topic}.
-    - Write a brief, punchy post (2 short paragraphs, around 100-150 words). Go deep into a fascinating anecdote, historical hardware fact, opinion, or tip & trick about this topic.
-    - Use manual line breaks and spacing between paragraphs. Keep everything clean and lowercase.
-    - Start the email with a very casual, lower-case greeting like 'hey,' or 'quick thought,' or just dive straight into the narrative without any greeting.
-    - NEVER end the email with a signature, placeholder names, sign-offs, or generic closing salutations like 'Cheers, [Your Name]', 'Sincerely', 'The knob.monster team', 'Best regards', or 'Keep making noise'. Just end with the core thoughts and the dashboard call-to-action.
-    - Include a clear link pointing to "https://knob.monster/dashboard" to upload new SysEx banks.
-    - Include the exact text at the bottom: "To stop receiving these, you can unsubscribe instantly at: https://knob.monster/unsubscribe?token={{{{unsubscribe_token}}}}"
-    """
+VOICE: lowercase throughout. sound like a repair bench tech who has seen too many leaked batteries and flipped write-protect switches the wrong way. specific > poetic. no corporate hype, no "we're excited to announce", no sign-offs, no team name.
 
-    try:
-        text_response = call_openrouter_chat([{"role": "user", "content": prompt}], json_object=True)
-        if not text_response:
-            raise RuntimeError("Empty OpenRouter response")
-        parsed = _parse_openrouter_json(text_response)
-        return {
-            "subject": parsed.get("subject", "vintage synth preservation updates").lower(),
-            "body": parsed.get("body", ""),
-        }
-    except Exception as e:
-        logger.error(f"Error generating newsletter via OpenRouter: {e}")
-        return fallback_newsletter
+THIS WEEK'S TOPIC (go deep on ONE angle):
+{selected_topic}
+
+{NEWSLETTER_PRODUCT_FACTS}
+
+OFFICIAL FAQ (ground truth — do not contradict):
+{faq_corpus}
+
+STRUCTURE for "body" (plain text only, no HTML, no markdown):
+1) hook — 1–2 sentences, visceral or blunt
+2) meat — 3–5 sentences with at least one concrete hardware detail (part name, symptom, workflow, or failure mode)
+3) tip — 1–2 sentences the reader can act on this week (backup, cable check, battery, sysex, browser)
+
+RULES:
+- do NOT include any URLs, links, CTAs, or unsubscribe text — we append those
+- do NOT mention features or synths not listed in PRODUCT FACTS
+- do NOT claim monthly pricing or subscription billing
+- max ~170 words for the body
+- start with "hey," or jump straight into the hook
+
+Return JSON only: {{"subject": "...", "body": "..."}}"""
+
+    for attempt in range(3):
+        try:
+            text_response = call_openrouter_chat(
+                [{"role": "user", "content": prompt}],
+                json_object=True,
+                timeout=45,
+            )
+            if not text_response:
+                raise RuntimeError("Empty OpenRouter response")
+            parsed = _parse_openrouter_json(text_response)
+            subject = (parsed.get("subject") or "").strip().lower()
+            body = (parsed.get("body") or "").strip()
+            issues = _validate_newsletter_draft(subject, body)
+            if issues:
+                logger.warning(f"Newsletter draft rejected (attempt {attempt + 1}): {issues}")
+                prompt += f"\n\nPREVIOUS DRAFT REJECTED: {', '.join(issues)}. Fix and try again."
+                continue
+            return _finalize_newsletter_draft(subject, body)
+        except Exception as e:
+            logger.error(f"Newsletter generation attempt {attempt + 1} failed: {e}")
+
+    logger.error("All newsletter generation attempts failed; using fallback.")
+    return fallback_newsletter
 
 def run_newsletter_broadcast_sync(override_subject: str = None, override_body: str = None):
     try:
@@ -3276,8 +3351,9 @@ def run_newsletter_broadcast_sync(override_subject: str = None, override_body: s
             return
 
         if override_subject and override_body:
-            subject = override_subject
-            body = override_body
+            finalized = _finalize_newsletter_draft(override_subject, override_body)
+            subject = finalized["subject"]
+            body = finalized["body"]
         else:
             logger.info("Generating newsletter via Gemini...")
             content = generate_newsletter_content_via_gemini()
@@ -3370,12 +3446,16 @@ def run_newsletter_broadcast_sync(override_subject: str = None, override_body: s
 @app.get("/api/cron/newsletter")
 async def trigger_newsletter_cron(request: Request):
     """
-    Vercel Cron endpoint to run the weekly newsletter campaign.
+    Vercel Cron endpoint — biweekly AI field notes to footer opt-ins only.
     """
     cron_header = request.headers.get("x-vercel-cron")
     if not cron_header and os.environ.get("VERCEL") == "1":
         raise HTTPException(status_code=401, detail="Unauthorized to trigger cron manually")
-        
+
+    from datetime import date
+    if date.today().isocalendar().week % 2 == 1:
+        return {"status": "skipped", "reason": "biweekly off-week"}
+
     import threading
     thread = threading.Thread(target=run_newsletter_broadcast_sync)
     thread.start()

@@ -1038,13 +1038,16 @@
                 })();
             </script>
             {% else %}
-            <span
-                class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-roman bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider">
-                New
-            </span>
-            <span class="text-zinc-400">
-                Now supporting DX7, Juno-106, Korg M1, Jupiter-6 & Casio CZ-101
-            </span>
+            <a href="/10k" target="_blank" rel="noopener noreferrer"
+                class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center group transition-colors duration-200">
+                <span
+                    class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-roman bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider group-hover:border-emerald-400/40">
+                    Annual Report
+                </span>
+                <span class="text-zinc-400 group-hover:text-white transition-colors duration-200">
+                    View Form 10-K
+                </span>
+            </a>
             {% endif %}
         </div>
         <button onclick="document.getElementById('announcement-banner').style.display='none'"
@@ -1597,8 +1600,8 @@
                                     class="underline underline-offset-2 text-zinc-300">Non-commercial</span> only.</p>
                         </div>
                         <div class="h-16 flex flex-col justify-center">
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
                                     <span id="pricing-personal-currency" class="pricing-currency-slot">
                                         {% if pricing.region == 'usd' %}
                                         <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
@@ -1609,56 +1612,56 @@
                                             style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
                                     </span><span id="pricing-personal-amount">{{ pricing.personal_amount }}</span>
-                                </span>
+                                    </span>
                                 <span id="pricing-personal-billing"
                                     class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label
                                     }}</span>
-                            </div>
-                            <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
+                                </div>
+                                <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                 <span class="text-emerald-400 font-semibold">Own it forever.</span> No subscriptions.
+                                </div>
                             </div>
-                        </div>
-                        <ul class="space-y-2.5 text-xs text-zinc-400">
-                            <li class="flex items-center gap-2">
+                            <ul class="space-y-2.5 text-xs text-zinc-400">
+                                <li class="flex items-center gap-2">
                                 <img src="https://api.iconify.design/dinkie-icons:file-cabinet.svg" alt="" width="14"
                                     height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                 <span class="text-white font-semibold">Unlimited soundbank slots</span>
-                            </li>
-                            <li class="flex items-center gap-2">
+                                </li>
+                                <li class="flex items-center gap-2">
                                 <img src="https://api.iconify.design/dinkie-icons:circled-information-source.svg" alt=""
                                     width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                <span class="text-white font-semibold">Real-time preset decoding</span>
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt=""
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    <span class="text-white font-semibold">Real-time preset decoding</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:high-voltage-sign.svg" alt=""
                                     width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                <span class="text-white font-semibold">Automatic pacing calibration</span>
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    <span class="text-white font-semibold">Automatic pacing calibration</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:code.svg" alt="" width="14"
                                     height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                All parsers (DX7, Juno, M1, Generic)
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:download.svg" alt="" width="14"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    All parsers (DX7, Juno, M1, Generic)
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:download.svg" alt="" width="14"
                                     height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                <span>Direct backup downloads (.syx) at any time</span>
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <img src="https://api.iconify.design/dinkie-icons:hourglass-with-flowing-sand.svg"
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    <span>Direct backup downloads (.syx) at any time</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="https://api.iconify.design/dinkie-icons:hourglass-with-flowing-sand.svg"
                                     alt="" width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
-                                <span>Preservation guarantee: runs forever</span>
-                            </li>
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    <span>Preservation guarantee: runs forever</span>
+                                </li>
                             <li class="flex items-center gap-1.5 md:gap-2 flex-nowrap">
                                 <img src="https://api.iconify.design/dinkie-icons:heart-white-suit-circled.svg" alt=""
                                     width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
                                 <span class="text-[10px] sm:text-xs leading-tight">100% customer funded: no ads or
                                     tracking</span>
                                 <div class="flex items-center shrink-0 -space-x-1.5 md:-space-x-2 ml-0.5">
@@ -1675,16 +1678,16 @@
                                         class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[1] select-none"
                                         style="image-rendering: pixelated;" />
                                 </div>
-                            </li>
-                        </ul>
-                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     <div class="mt-8 text-center">
                         <a href="{% if user %}/checkout?plan=personal{% else %}/signup?plan=personal{% endif %}"
                             class="pricing-cta-personal w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-white hover:bg-zinc-200 text-black text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm">
                             Back Up My Patches Forever
                         </a>
-                    </div>
                 </div>
+            </div>
 
                 <!-- Studio -->
                 <div class="glow-card rounded-2xl border border-blue-500/20 bg-zinc-950/60 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
@@ -1693,15 +1696,15 @@
                         style="box-shadow: 0 0 20px rgba(96, 165, 250, 0.25);">
                         <img src="/static/logo.svg" class="h-full w-full object-cover rounded-md"
                             alt="knob.monster+ Studio Stamp" style="image-rendering: pixelated;" />
-                    </div>
+            </div>
                     <div class="space-y-5">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap pr-12">
                                 <h3 class="text-sm font-roman uppercase text-white tracking-wide">knob.monster+ Studio
                                 </h3>
-                            </div>
+            </div>
                             <p class="text-xs text-zinc-400 mt-1">Producers, gear rooms &amp; paid client work.</p>
-                        </div>
+                    </div>
                         <div class="h-16 flex flex-col justify-center">
                             <div class="flex items-baseline gap-2">
                                 <span class="text-5xl font-lcd text-blue-400 flex items-baseline gap-0.5">
@@ -1715,13 +1718,13 @@
                                             style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
                                     </span><span id="pricing-studio-amount">{{ pricing.studio_amount }}</span>
-                                </span>
+                        </span>
                                 <span id="pricing-studio-billing" class="text-xs font-roman uppercase text-zinc-400">{{
                                     pricing.billing_label }}</span>
-                            </div>
+                    </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                 Licensed for <span class="text-blue-400 font-semibold">commercial use.</span>
-                            </div>
+                    </div>
                         </div>
                         <ul class="space-y-2.5 text-xs text-zinc-400">
                             <li class="flex items-center gap-2">
@@ -1756,8 +1759,8 @@
                             License My Shop
                         </a>
                     </div>
-                </div>
-            </div>
+                    </div>
+                    </div>
 
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
@@ -1772,8 +1775,8 @@
                     <span class="text-blue-400 font-semibold"><span id="pricing-anchor-studio-symbol">{{ pricing.symbol
                             }}</span><span id="pricing-anchor-studio-amount">{{ pricing.studio_amount }}</span></span>
                     once.
-                </p>
-            </div>
+                        </p>
+                    </div>
 
             <!-- Commercial / B2B -->
             <div class="max-w-4xl mx-auto mt-8 text-center reveal" style="--delay: 360ms;">
@@ -1782,8 +1785,8 @@
                     <a href="mailto:halfradiationllc@gmail.com?subject=knob.monster%20Commercial%20License"
                         class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">Contact us for
                         bespoke commercial pricing</a>
-                </p>
-            </div>
+                        </p>
+                    </div>
 
 
             <!-- Centered Meme Image -->
@@ -1791,7 +1794,7 @@
                 <img src="/static/trade_offer.avif" alt="Meme" width="380" height="513" loading="lazy"
                     sizes="(max-width: 768px) 380px, 380px"
                     class="w-full max-w-[380px] md:max-w-[400px] rounded-2xl border border-zinc-900 shadow-2xl">
-            </div>
+                    </div>
         </section>
 
         <script>

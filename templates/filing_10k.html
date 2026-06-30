@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form 10-K | Half Radiation LLC</title>
+    <link rel="canonical" href="https://knob.monster/10k">
+    <meta name="robots" content="noindex">
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+    <link href="https://api.fontshare.com/v2/css?f[]=geist@400,500,600&f[]=geist-mono@400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400&family=VT323&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        pixel: ['Silkscreen', 'monospace'],
+                        lcd: ['VT323', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        #pdf-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #3f3f46 #09090b;
+        }
+        #pdf-scroll::-webkit-scrollbar { width: 10px; }
+        #pdf-scroll::-webkit-scrollbar-track { background: #09090b; }
+        #pdf-scroll::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 999px; }
+        .pdf-page-wrap {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
+        }
+        .toolbar-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans antialiased h-full flex flex-col overflow-hidden">
+    <header class="shrink-0 border-b border-zinc-900 bg-black/95 backdrop-blur-md z-20">
+        <div class="px-4 py-3 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <a href="/" class="text-[10px] font-pixel uppercase tracking-widest text-zinc-500 hover:text-white transition-colors shrink-0">
+                    &larr; knob.monster
+                </a>
+                <span class="text-zinc-800 hidden sm:inline">|</span>
+                <div class="min-w-0">
+                    <p class="text-[10px] font-pixel uppercase tracking-wider text-zinc-500 truncate">Annual Report</p>
+                    <h1 class="text-xs font-mono text-white truncate">Form 10-K</h1>
+                </div>
+            </div>
+            <a href="/10k/pdf" target="_blank" rel="noopener noreferrer"
+                class="shrink-0 text-[9px] font-mono uppercase tracking-wider text-zinc-500 hover:text-emerald-400 transition-colors border border-zinc-800 hover:border-zinc-600 rounded-full px-3 py-1.5">
+                Open PDF
+            </a>
+        </div>
+        <div class="px-4 pb-3 flex flex-wrap items-center justify-center gap-2 sm:gap-3 border-t border-zinc-900/80 pt-3">
+            <button type="button" id="btn-prev" class="toolbar-btn px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-[10px] font-pixel uppercase tracking-wider transition-colors" title="Previous page">Prev</button>
+            <div class="flex items-center gap-2 text-[10px] font-mono text-zinc-400">
+                <span>Page</span>
+                <input id="page-input" type="number" min="1" value="1"
+                    class="w-12 bg-zinc-900 border border-zinc-800 rounded-md px-2 py-1 text-center text-white text-xs focus:outline-none focus:border-emerald-500/50" />
+                <span id="page-total">/ —</span>
+            </div>
+            <button type="button" id="btn-next" class="toolbar-btn px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-[10px] font-pixel uppercase tracking-wider transition-colors" title="Next page">Next</button>
+            <span class="hidden sm:inline w-px h-5 bg-zinc-800"></span>
+            <button type="button" id="btn-zoom-out" class="toolbar-btn px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-xs font-mono transition-colors" title="Zoom out">−</button>
+            <span id="zoom-label" class="text-[10px] font-lcd text-emerald-400 tracking-wider min-w-[3rem] text-center">100%</span>
+            <button type="button" id="btn-zoom-in" class="toolbar-btn px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-xs font-mono transition-colors" title="Zoom in">+</button>
+            <button type="button" id="btn-fit-width" class="toolbar-btn px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-[10px] font-pixel uppercase tracking-wider transition-colors" title="Fit width">Fit</button>
+        </div>
+    </header>
+
+    <main id="pdf-scroll" class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden bg-zinc-950 relative">
+        <div id="pdf-loading" class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 bg-zinc-950">
+            <div class="h-8 w-8 rounded-full border-2 border-zinc-800 border-t-emerald-500 animate-spin"></div>
+            <p class="text-[10px] font-pixel uppercase tracking-widest text-zinc-500">Loading Form 10-K</p>
+        </div>
+        <div id="pdf-error" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-3 z-10 bg-zinc-950 px-6 text-center">
+            <p class="text-sm font-mono text-rose-400">Could not load the filing.</p>
+            <a href="/10k/pdf" target="_blank" rel="noopener noreferrer" class="text-[10px] font-pixel uppercase tracking-wider text-emerald-400 hover:text-emerald-300">Open PDF directly</a>
+        </div>
+        <div id="pdf-pages" class="py-8 px-4 sm:px-8 flex flex-col items-center gap-6 min-h-full"></div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const PDF_URL = '/10k/pdf';
+        const scrollEl = document.getElementById('pdf-scroll');
+        const pagesEl = document.getElementById('pdf-pages');
+        const loadingEl = document.getElementById('pdf-loading');
+        const errorEl = document.getElementById('pdf-error');
+        const pageInput = document.getElementById('page-input');
+        const pageTotalEl = document.getElementById('page-total');
+        const zoomLabel = document.getElementById('zoom-label');
+
+        let pdfDoc = null;
+        let scale = 1.0;
+        let fitWidthScale = 1.0;
+        let pageElements = [];
+        let rendering = false;
+        let renderQueued = false;
+
+        function setZoomLabel() {
+            zoomLabel.textContent = Math.round(scale * 100) + '%';
+        }
+
+        function updateToolbar() {
+            if (!pdfDoc) return;
+            const total = pdfDoc.numPages;
+            pageTotalEl.textContent = '/ ' + total;
+            pageInput.max = total;
+            const current = getCurrentPage();
+            pageInput.value = current;
+            document.getElementById('btn-prev').disabled = current <= 1;
+            document.getElementById('btn-next').disabled = current >= total;
+        }
+
+        function getCurrentPage() {
+            if (!pageElements.length) return 1;
+            const mid = scrollEl.scrollTop + scrollEl.clientHeight * 0.35;
+            let best = 1;
+            let bestDist = Infinity;
+            pageElements.forEach((wrap, idx) => {
+                const dist = Math.abs(wrap.offsetTop - mid);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    best = idx + 1;
+                }
+            });
+            return best;
+        }
+
+        function scrollToPage(num) {
+            const wrap = pageElements[num - 1];
+            if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        async function renderAllPages() {
+            if (rendering) {
+                renderQueued = true;
+                return;
+            }
+            rendering = true;
+            pagesEl.innerHTML = '';
+            pageElements = [];
+
+            const firstPage = await pdfDoc.getPage(1);
+            const baseViewport = firstPage.getViewport({ scale: 1 });
+            const containerWidth = Math.min(scrollEl.clientWidth - 32, 900);
+            fitWidthScale = containerWidth / baseViewport.width;
+            if (!scale || scale === 1.0) scale = fitWidthScale;
+            setZoomLabel();
+
+            for (let i = 1; i <= pdfDoc.numPages; i++) {
+                const page = await pdfDoc.getPage(i);
+                const viewport = page.getViewport({ scale });
+
+                const wrap = document.createElement('div');
+                wrap.className = 'pdf-page-wrap relative bg-white rounded-sm overflow-hidden';
+                wrap.dataset.page = String(i);
+                wrap.style.width = viewport.width + 'px';
+
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                canvas.className = 'block max-w-full h-auto';
+
+                const label = document.createElement('div');
+                label.className = 'absolute top-2 right-2 px-2 py-0.5 rounded bg-black/70 text-[9px] font-mono text-zinc-300 pointer-events-none';
+                label.textContent = i + ' / ' + pdfDoc.numPages;
+
+                wrap.appendChild(canvas);
+                wrap.appendChild(label);
+                pagesEl.appendChild(wrap);
+                pageElements.push(wrap);
+
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+            }
+
+            rendering = false;
+            updateToolbar();
+            if (renderQueued) {
+                renderQueued = false;
+                await renderAllPages();
+            }
+        }
+
+        async function init() {
+            try {
+                pdfDoc = await pdfjsLib.getDocument({ url: PDF_URL, withCredentials: true }).promise;
+                pageInput.max = pdfDoc.numPages;
+                await renderAllPages();
+                loadingEl.classList.add('hidden');
+            } catch (err) {
+                console.error(err);
+                loadingEl.classList.add('hidden');
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('btn-prev').addEventListener('click', () => scrollToPage(Math.max(1, getCurrentPage() - 1)));
+        document.getElementById('btn-next').addEventListener('click', () => scrollToPage(Math.min(pdfDoc.numPages, getCurrentPage() + 1)));
+
+        pageInput.addEventListener('change', () => {
+            let n = parseInt(pageInput.value, 10);
+            if (!pdfDoc || isNaN(n)) return;
+            n = Math.max(1, Math.min(pdfDoc.numPages, n));
+            pageInput.value = n;
+            scrollToPage(n);
+        });
+
+        document.getElementById('btn-zoom-in').addEventListener('click', async () => {
+            scale = Math.min(scale * 1.15, 3);
+            setZoomLabel();
+            await renderAllPages();
+        });
+
+        document.getElementById('btn-zoom-out').addEventListener('click', async () => {
+            scale = Math.max(scale / 1.15, 0.35);
+            setZoomLabel();
+            await renderAllPages();
+        });
+
+        document.getElementById('btn-fit-width').addEventListener('click', async () => {
+            scale = fitWidthScale;
+            setZoomLabel();
+            await renderAllPages();
+        });
+
+        let scrollTicking = false;
+        scrollEl.addEventListener('scroll', () => {
+            if (scrollTicking) return;
+            scrollTicking = true;
+            requestAnimationFrame(() => {
+                updateToolbar();
+                scrollTicking = false;
+            });
+        });
+
+        window.addEventListener('resize', async () => {
+            if (!pdfDoc) return;
+            const firstPage = await pdfDoc.getPage(1);
+            const baseViewport = firstPage.getViewport({ scale: 1 });
+            const containerWidth = Math.min(scrollEl.clientWidth - 32, 900);
+            const newFit = containerWidth / baseViewport.width;
+            const ratio = scale / fitWidthScale;
+            fitWidthScale = newFit;
+            scale = newFit * ratio;
+            setZoomLabel();
+            await renderAllPages();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!pdfDoc || e.target === pageInput) return;
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                scrollToPage(Math.min(pdfDoc.numPages, getCurrentPage() + 1));
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                scrollToPage(Math.max(1, getCurrentPage() - 1));
+            } else if (e.key === '+' || e.key === '=') {
+                document.getElementById('btn-zoom-in').click();
+            } else if (e.key === '-') {
+                document.getElementById('btn-zoom-out').click();
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>

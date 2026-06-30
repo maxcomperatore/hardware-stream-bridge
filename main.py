@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException, Response
-from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -972,6 +972,25 @@ async def resources_page(request: Request):
 @app.get("/about", response_class=HTMLResponse)
 async def about_redirect_page(request: Request):
     return RedirectResponse(url="/shop", status_code=301)
+
+FILING_10K_PATH = os.path.join(BASE_DIR, "static", "filings", "HALF_RADIATION_FORM_10K_FY2026.pdf")
+
+@app.get("/10k", response_class=HTMLResponse)
+async def filing_10k_viewer(request: Request):
+    user = get_current_user(request)
+    return render_template("filing_10k.html", request, {"user": user})
+
+@app.get("/10k/pdf")
+async def filing_10k_pdf_inline():
+    return FileResponse(
+        FILING_10K_PATH,
+        media_type="application/pdf",
+        content_disposition_type="inline",
+    )
+
+@app.get("/filings/10k")
+async def filing_10k_legacy():
+    return RedirectResponse(url="/10k", status_code=301)
 
 @app.get("/milestones", response_class=HTMLResponse)
 async def milestones_redirect_page(request: Request):

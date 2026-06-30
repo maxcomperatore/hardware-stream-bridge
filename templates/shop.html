@@ -7,7 +7,7 @@
     <title>Monster Shop | knob.monster</title>
     <link rel="canonical" href="https://knob.monster/shop">
     <meta name="description"
-        content="Digital SysEx sound expansion packs for classic synthesizers. Instant vault delivery.">
+        content="Curated SysEx sound banks for DX7, Juno-106, and Korg M1. $9 each, instant vault delivery, transmit via Web MIDI. No DAW required.">
 
     <link rel="shortcut icon" href="/static/logo.png" type="image/png">
 
@@ -127,9 +127,12 @@
 
         <div class="mb-10">
             <h1 class="font-pixel text-lg sm:text-xl text-white uppercase tracking-widest">Sound packs</h1>
-            <p class="mt-3 text-sm text-zinc-400 leading-relaxed max-w-xl">
-                SysEx banks for classic hardware. $9 each, delivered to your vault right after checkout.
-                Send to your synth with Web MIDI. No DAW needed.
+            <p class="mt-3 text-sm text-zinc-300 leading-relaxed max-w-xl">
+                Curated SysEx banks for DX7, Juno-106, and M1. Buy once for $9, own them in your vault forever.
+            </p>
+            <p class="mt-2 text-sm text-zinc-500 leading-relaxed max-w-xl">
+                No hunting for downloads, no legacy drivers, no DAW. Checkout lands the bank in your vault in seconds.
+                Open the dashboard, pick a pack, and transmit to your synth over Web MIDI from the browser.
             </p>
         </div>
 
@@ -181,8 +184,9 @@
                         <svg class="icon-pause w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                             <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" />
                         </svg>
-                        <span class="shop-play-label">Play sample</span>
+                        <span class="shop-play-label">Play demo</span>
                     </button>
+                    <span class="text-[10px] font-mono text-zinc-600 self-center">~22 sec</span>
 
                     {% if pack.id in owned_pack_ids %}
                     <a href="/dashboard"
@@ -201,7 +205,8 @@
         </div>
 
         <p class="mt-10 text-xs text-zinc-600 leading-relaxed">
-            Instant delivery to your knob.monster vault. Compatible with the synth named on each pack.
+            Packs are tied to your knob.monster account. Load any pack from your vault on any computer with a browser and MIDI.
+            Each listing matches the synth named on the card.
             Questions? <a href="mailto:halfradiationllc@gmail.com" class="text-zinc-500 hover:text-zinc-300 underline">halfradiationllc@gmail.com</a>
         </p>
     </main>
@@ -209,126 +214,7 @@
     {% include "footer.html" %}
     {% include "mobile_nav.html" %}
 
-    <script>
-        let audioCtx = null;
-        let activeSession = null;
-
-        function initAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        function setButtonPlaying(btn, playing) {
-            const label = btn.querySelector('.shop-play-label');
-            if (playing) {
-                btn.classList.add('playing');
-                if (label) label.textContent = 'Pause';
-                btn.setAttribute('aria-label', `Pause sample for ${btn.dataset.packName || 'pack'}`);
-            } else {
-                btn.classList.remove('playing');
-                if (label) label.textContent = 'Play sample';
-                btn.setAttribute('aria-label', `Play sample for ${btn.dataset.packName || 'pack'}`);
-            }
-        }
-
-        function stopAudition() {
-            if (!activeSession) return;
-            if (activeSession.timeout) {
-                clearTimeout(activeSession.timeout);
-            }
-            activeSession.nodes.forEach((node) => {
-                try {
-                    if (typeof node.stop === 'function') {
-                        node.stop(0);
-                    }
-                    if (typeof node.disconnect === 'function') {
-                        node.disconnect();
-                    }
-                } catch (e) { /* already stopped */ }
-            });
-            setButtonPlaying(activeSession.btn, false);
-            activeSession = null;
-        }
-
-        function startAudition(packId, btn) {
-            initAudioContext();
-            if (!audioCtx) return;
-
-            const nodes = [];
-            const now = audioCtx.currentTime;
-            const notes = [130.81, 146.83, 164.81, 196.0, 220.0, 261.63];
-            let playOffset = 0;
-
-            notes.forEach((freq) => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                const filter = audioCtx.createBiquadFilter();
-                nodes.push(osc, gain, filter);
-
-                if (packId === 'm1_matrix') {
-                    osc.type = 'sawtooth';
-                    filter.type = 'lowpass';
-                    filter.frequency.setValueAtTime(200, now + playOffset);
-                    filter.frequency.exponentialRampToValueAtTime(1500, now + playOffset + 0.1);
-                    filter.frequency.exponentialRampToValueAtTime(100, now + playOffset + 0.4);
-                } else if (packId === 'dx7_retro') {
-                    osc.type = 'triangle';
-                    const mod = audioCtx.createOscillator();
-                    const modGain = audioCtx.createGain();
-                    mod.frequency.value = freq * 3.5;
-                    modGain.gain.value = 500;
-                    mod.connect(modGain);
-                    modGain.connect(osc.frequency);
-                    mod.start(now + playOffset);
-                    mod.stop(now + playOffset + 0.5);
-                    nodes.push(mod, modGain);
-                } else {
-                    osc.type = 'square';
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 800;
-                }
-
-                osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0, now + playOffset);
-                gain.gain.linearRampToValueAtTime(0.08, now + playOffset + 0.05);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + playOffset + 0.45);
-
-                osc.connect(filter);
-                filter.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                osc.start(now + playOffset);
-                osc.stop(now + playOffset + 0.5);
-                playOffset += 0.15;
-            });
-
-            setButtonPlaying(btn, true);
-            activeSession = {
-                packId,
-                btn,
-                nodes,
-                timeout: setTimeout(stopAudition, 1300),
-            };
-        }
-
-        function toggleAudition(packId, btn) {
-            if (!packId) return;
-            if (activeSession?.packId === packId && activeSession.btn === btn) {
-                stopAudition();
-                return;
-            }
-            stopAudition();
-            startAudition(packId, btn);
-        }
-
-        document.querySelectorAll('.shop-play-btn').forEach((btn) => {
-            btn.addEventListener('click', () => toggleAudition(btn.dataset.packId, btn));
-        });
-    </script>
+    <script src="/static/js/shop_pack_player.js"></script>
 </body>
 
 </html>

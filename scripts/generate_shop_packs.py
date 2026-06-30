@@ -26,9 +26,9 @@ def main() -> None:
         seed = PACK_SEEDS.get(pack_id, 0)
         path = pack_generator.write_pack_file(pack_id, pack["patches"], seed)
         data = path.read_bytes()
-        names = pack_generator.patch_names_from_sysex(pack_id, data)
+        names = pack_generator.curated_patch_names(pack_id)
         if not names:
-            names = pack["patches"]
+            names = pack_generator.patch_names_from_sysex(pack_id, data)
 
         manifest[pack_id] = {
             "file": path.name,

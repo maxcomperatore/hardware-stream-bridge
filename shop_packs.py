@@ -15,7 +15,7 @@ SHOP_PACKS: dict[str, dict] = {
         "synth": "Korg M1",
         "price_cents": 900,
         "price_display": "$9.00",
-        "description": "Sample-keymap overrides with Trident strings, house pianos, and analog emulations. 32 programs.",
+        "description": "Sample-keymap style programs with house pianos, pads, and basses. 32 curated programs.",
         "patches_count": 32,
         "demo_patches": ["Cyber Gate", "HousePiano", "Ethereal", "TridentStr", "Glassy Pad", "Obese Poly"],
         "patches": [
@@ -35,7 +35,7 @@ SHOP_PACKS: dict[str, dict] = {
         "synth": "Yamaha DX7",
         "price_cents": 900,
         "price_display": "$9.00",
-        "description": "Punchy FM basses, bell leads, and 80s electric pianos. Full 32-voice bulk dump.",
+        "description": "Punchy FM basses, bell leads, and electric pianos. 32 curated DX7 voices.",
         "patches_count": 32,
         "demo_patches": ["Super Bass", "Chime Bell", "FM Rhodes", "Synth Brass", "Sitar Glide", "Atmosphere"],
         "patches": [
@@ -55,7 +55,7 @@ SHOP_PACKS: dict[str, dict] = {
         "synth": "Roland Juno-106",
         "price_cents": 900,
         "price_display": "$9.00",
-        "description": "Chorus-drenched pads, snap plucks, and sci-fi SFX. Full 128-patch bank dump.",
+        "description": "Chorus pads, plucks, acid bass, and leads. Full 128-patch Juno bank.",
         "patches_count": 128,
         "demo_patches": ["Nostalgia", "Chorused Pad", "Snap Pluck", "Space Wind", "Analog Sweep", "Sub Bass"],
         "patches": [
@@ -96,6 +96,9 @@ def get_pack_patch_names(pack_id: str) -> list[str]:
     manifest = _load_manifest()
     if pack_id in manifest and manifest[pack_id].get("patches"):
         return manifest[pack_id]["patches"]
+    curated = pack_generator.curated_patch_names(pack_id)
+    if curated:
+        return curated
     pack = get_shop_pack(pack_id)
     if not pack:
         return []
@@ -129,7 +132,7 @@ def packs_for_template() -> list[dict]:
             "spec_label": pack["spec_label"],
             "slug": f"{pack['id']}.bank",
             "is_new": pack["id"] == "m1_matrix",
-            "footnote": "Delivers to your vault instantly after checkout. Transmit to your synth via Web MIDI — no DAW required.",
+            "footnote": "Delivers to your vault instantly after checkout. Transmit to your synth via Web MIDI. No DAW required.",
             "available": "Instant",
         })
     return packs

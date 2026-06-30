@@ -2109,32 +2109,6 @@ async def mock_checkout_success(email: str, plan: str = "personal"):
     database.update_user_tier(email, "premium", "mock_customer_id", plan=normalized_plan)
     return RedirectResponse(url="/dashboard?payment=success")
 
-@app.get("/admin/grant-premium")
-async def admin_grant_premium(email: str, secret: str):
-    """Emergency admin endpoint to manually upgrade a user to premium.
-    Requires ADMIN_SECRET env var to match the secret query param."""
-    admin_secret = os.environ.get("ADMIN_SECRET", "")
-    if not admin_secret or secret != admin_secret:
-        trigger_alert(
-            "unauthorized_admin_access",
-            f"Unauthorized attempt to grant premium to `{email}` using secret `{secret}`.",
-            {"email": email, "provided_secret": secret},
-            distinct_id="admin_attacker"
-        )
-        raise HTTPException(status_code=403, detail="Forbidden")
-    user = database.get_user_by_email(email)
-    if not user:
-        raise HTTPException(status_code=404, detail=f"No account found for {email}. Ask them to register first.")
-    database.update_user_tier(email, "premium")
-    logger.info(f"Admin manually granted premium: {email}", extra={"email": email, "event_type": "admin_grant_premium"})
-    trigger_alert(
-        "admin_grant_premium",
-        f"Admin manually granted premium status to `{email}`.",
-        {"email": email},
-        distinct_id=email
-    )
-    return {"status": "ok", "message": f"{email} upgraded to premium successfully."}
-
 @app.post("/stripe-webhook")
 async def stripe_webhook(request: Request):
     payload = await request.body()
@@ -3495,23 +3469,4 @@ async def trigger_newsletter_cron(request: Request):
     thread.start()
     
     return {"status": "broadcast_initiated"}
-
-@app.post("/admin/broadcast-override")
-async def admin_broadcast_override(secret: str, override_subject: str = None, override_body: str = None):
-    """
-    Manual override endpoint to trigger a newsletter broadcast immediately.
-    """
-    admin_secret = os.environ.get("ADMIN_SECRET", "")
-    if not admin_secret or secret != admin_secret:
-        raise HTTPException(status_code=403, detail="Forbidden")
-        
-    import threading
-    thread = threading.Thread(
-        target=run_newsletter_broadcast_sync,
-        args=(override_subject, override_body)
-    )
-    thread.start()
-    
-    return {"status": "broadcast_initiated"}
-
 

@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - knob.monster</title>
     <link rel="canonical" href="https://knob.monster/signup">
-    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/logo.svg" type="image/svg+xml">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -85,7 +89,9 @@
     </style>
     {% include 'posthog.html' %}
 </head>
-<body class="bg-black text-zinc-100 font-sans antialiased overflow-hidden min-h-screen flex flex-col justify-center items-center relative">
+
+<body
+    class="bg-black text-zinc-100 font-sans antialiased overflow-hidden min-h-screen flex flex-col justify-center items-center relative">
     <!-- Global Dither Overlay -->
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
     <!-- Fancy Mobile Background Pattern -->
@@ -95,24 +101,29 @@
         <div class="text-center mb-8">
             <img src="/static/logo.svg" alt="Knob Monster Logo" class="h-10 w-auto mx-auto object-contain mb-3">
             <h2 class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</h2>
-            <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start backup</p>
+            <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start
+                backup</p>
             <p id="signup-plan-label" class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">
-                {% if plan == 'studio' %}knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{ plan_catalog.personal.price_display }} lifetime{% endif %}
+                {% if plan == 'studio' %}knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime{% else
+                %}Personal plan · {{ plan_catalog.personal.price_display }} lifetime{% endif %}
             </p>
         </div>
 
         {% if notice == 'business_email' %}
-        <div class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center">
+        <div
+            class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center">
             Business email detected — Studio commercial license required (not Personal).
         </div>
         {% endif %}
 
-        <div id="business-email-notice" class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center hidden">
+        <div id="business-email-notice"
+            class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center hidden">
             Business email detected — you'll checkout on <strong class="text-blue-200">Studio</strong>, not Personal.
         </div>
 
         {% if error %}
-        <div class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">
+        <div
+            class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">
             {{ error }}
         </div>
         {% endif %}
@@ -120,44 +131,56 @@
         <form action="/signup" method="POST" class="space-y-4">
             <input type="hidden" name="plan" id="signup-plan" value="{{ plan or 'personal' }}">
             <div>
-                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email Address</label>
+                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email
+                    Address</label>
                 <input type="email" name="email" id="signup-email" required placeholder="name@domain.com"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
             </div>
 
             <div>
-                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Password</label>
+                <label
+                    class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Password</label>
                 <input type="password" name="password" id="password" required placeholder="••••••••"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
             </div>
 
             <div>
-                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Confirm Password</label>
+                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Confirm
+                    Password</label>
                 <input type="password" name="confirm_password" id="confirm_password" required placeholder="••••••••"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
             </div>
 
             <!-- Password Validation Rules -->
-            <div id="password-rules" class="bg-zinc-950/50 border border-zinc-900/80 rounded-lg p-3 space-y-1.5 text-[9px] font-mono hidden">
-                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-length">
-                    <span class="indicator font-pixel text-[8px]">•</span>
+            <div id="password-rules"
+                class="bg-zinc-950/50 border border-zinc-900/80 rounded-lg p-3 space-y-1.5 text-[9px] font-mono hidden">
+                <div class="flex items-center gap-2 text-zinc-500 transition-colors duration-150" id="rule-length">
+                    <span class="indicator shrink-0 w-3 h-3 flex items-center justify-center">
+                        <img src="https://api.iconify.design/dinkie-icons:ballot-box-with-check.svg" alt="" width="12"
+                            height="12" class="h-3 w-3 opacity-30"
+                            style="filter: invert(0.45); image-rendering: pixelated;">
+                    </span>
                     <span>8+ characters</span>
                 </div>
-                <div class="flex items-center space-x-2 text-zinc-500 transition-colors duration-150" id="rule-match">
-                    <span class="indicator font-pixel text-[8px]">•</span>
+                <div class="flex items-center gap-2 text-zinc-500 transition-colors duration-150" id="rule-match">
+                    <span class="indicator shrink-0 w-3 h-3 flex items-center justify-center">
+                        <img src="https://api.iconify.design/dinkie-icons:ballot-box-with-check.svg" alt="" width="12"
+                            height="12" class="h-3 w-3 opacity-30"
+                            style="filter: invert(0.45); image-rendering: pixelated;">
+                    </span>
                     <span>Passwords match</span>
                 </div>
             </div>
 
             {% if plan != 'studio' %}
             <div id="personal-license-ack">
-            <label class="flex items-start gap-2.5 cursor-pointer group">
-                <input type="checkbox" name="license_ack" id="license_ack" value="1" required
-                    class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-0 focus:ring-offset-0">
-                <span class="text-[9px] text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors">
-                    I confirm this license is for personal, non-commercial use only (bedroom studio, my own synths).
-                </span>
-            </label>
+                <label class="flex items-start gap-2.5 cursor-pointer group">
+                    <input type="checkbox" name="license_ack" id="license_ack" value="1" required
+                        class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-0 focus:ring-offset-0">
+                    <span class="text-[9px] text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors">
+                        I confirm this license is for personal, non-commercial use only (bedroom studio, my own synths).
+                    </span>
+                </label>
             </div>
             {% else %}
             <p id="studio-license-note" class="text-[9px] text-zinc-500 leading-relaxed">
@@ -176,7 +199,9 @@
         </p>
 
         <p class="text-center text-[9px] text-zinc-700 mt-4 leading-relaxed font-sans">
-            By registering, you agree to our <a href="/terms" target="_blank" class="hover:text-zinc-500 underline">Terms of Service</a> <br class="hidden sm:inline"> and <a href="/privacy" target="_blank" class="hover:text-zinc-500 underline">Privacy Policy</a>.
+            By registering, you agree to our <a href="/terms" target="_blank"
+                class="hover:text-zinc-500 underline">Terms of Service</a> <br class="hidden sm:inline"> and <a
+                href="/privacy" target="_blank" class="hover:text-zinc-500 underline">Privacy Policy</a>.
         </p>
     </div>
     <script>
@@ -188,22 +213,43 @@
         const ruleLength = document.getElementById('rule-length');
         const ruleMatch = document.getElementById('rule-match');
 
+        const ICON_CHECK = 'https://api.iconify.design/dinkie-icons:ballot-box-with-check.svg';
+        const ICON_CROSS = 'https://api.iconify.design/dinkie-icons:black-cross-square.svg';
+        const FILTER_VALID = 'invert(62%) sepia(61%) saturate(459%) hue-rotate(106deg) brightness(92%) contrast(92%)';
+        const FILTER_INVALID = 'invert(68%) sepia(47%) saturate(1523%) hue-rotate(314deg) brightness(101%) contrast(96%)';
+        const FILTER_NEUTRAL = 'invert(0.45)';
+
         function updateRule(element, isValid, typed) {
-            const indicator = element.querySelector('.indicator');
+            const img = element.querySelector('.indicator img');
             if (isValid) {
                 element.classList.remove('text-zinc-500', 'text-rose-450');
                 element.classList.add('text-[#10b981]');
-                if (indicator) indicator.textContent = '✓';
+                if (img) {
+                    img.src = ICON_CHECK;
+                    img.style.filter = FILTER_VALID;
+                    img.classList.remove('opacity-30');
+                    img.classList.add('opacity-100');
+                }
             } else {
                 element.classList.remove('text-[#10b981]');
                 if (typed) {
                     element.classList.remove('text-zinc-500');
                     element.classList.add('text-rose-450');
-                    if (indicator) indicator.textContent = '✗';
+                    if (img) {
+                        img.src = ICON_CROSS;
+                        img.style.filter = FILTER_INVALID;
+                        img.classList.remove('opacity-30');
+                        img.classList.add('opacity-100');
+                    }
                 } else {
                     element.classList.remove('text-rose-450');
                     element.classList.add('text-zinc-500');
-                    if (indicator) indicator.textContent = '•';
+                    if (img) {
+                        img.src = ICON_CHECK;
+                        img.style.filter = FILTER_NEUTRAL;
+                        img.classList.remove('opacity-100');
+                        img.classList.add('opacity-30');
+                    }
                 }
             }
         }
@@ -294,6 +340,7 @@
             if (emailInput.value) applyPlanForEmail(emailInput.value.trim());
         }
     </script>
-{% include "mobile_nav.html" %}
+    {% include "mobile_nav.html" %}
 </body>
+
 </html>

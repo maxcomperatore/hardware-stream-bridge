@@ -54,9 +54,42 @@
             transform-style: preserve-3d;
         }
 
+        .shop-play-btn .icon-pause {
+            display: none;
+        }
+
         .shop-play-btn.playing {
-            border-color: rgba(96, 165, 250, 0.7);
-            color: #93c5fd;
+            border-color: rgba(96, 165, 250, 0.85);
+            color: #dbeafe;
+            background: rgba(59, 130, 246, 0.15);
+            box-shadow:
+                0 0 0 1px rgba(96, 165, 250, 0.45),
+                0 0 18px rgba(59, 130, 246, 0.45),
+                0 0 36px rgba(59, 130, 246, 0.2);
+            animation: shop-play-glow 1.4s ease-in-out infinite;
+        }
+
+        .shop-play-btn.playing .icon-play {
+            display: none;
+        }
+
+        .shop-play-btn.playing .icon-pause {
+            display: block;
+        }
+
+        @keyframes shop-play-glow {
+            0%, 100% {
+                box-shadow:
+                    0 0 0 1px rgba(96, 165, 250, 0.45),
+                    0 0 16px rgba(59, 130, 246, 0.35),
+                    0 0 28px rgba(59, 130, 246, 0.15);
+            }
+            50% {
+                box-shadow:
+                    0 0 0 1px rgba(147, 197, 253, 0.7),
+                    0 0 24px rgba(96, 165, 250, 0.55),
+                    0 0 48px rgba(59, 130, 246, 0.3);
+            }
         }
     </style>
     {% include 'posthog.html' %}
@@ -137,13 +170,18 @@
                 {% endif %}
 
                 <div class="mt-5 flex flex-wrap items-center gap-3">
-                    <button type="button" onclick="auditionPackDemo('{{ pack.id }}', this)"
-                        class="shop-play-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-700 bg-zinc-900 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white transition-colors"
+                    <button type="button"
+                        class="shop-play-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-700 bg-zinc-900 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white transition-all duration-200"
+                        data-pack-id="{{ pack.id }}"
+                        data-pack-name="{{ pack.name }}"
                         aria-label="Play sample for {{ pack.name }}">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <svg class="icon-play w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                             <path d="M8 5v14l11-7z" />
                         </svg>
-                        Play sample
+                        <svg class="icon-pause w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" />
+                        </svg>
+                        <span class="shop-play-label">Play sample</span>
                     </button>
 
                     {% if pack.id in owned_pack_ids %}
@@ -173,7 +211,7 @@
 
     <script>
         let audioCtx = null;
-        let activeAuditionTimeout = null;
+        let activeSession = null;
 
         function initAudioContext() {
             if (!audioCtx) {
@@ -184,22 +222,43 @@
             }
         }
 
-        function setPlayButtonsPlaying(activeBtn) {
-            document.querySelectorAll('.shop-play-btn').forEach(btn => btn.classList.remove('playing'));
-            if (activeBtn) activeBtn.classList.add('playing');
+        function setButtonPlaying(btn, playing) {
+            const label = btn.querySelector('.shop-play-label');
+            if (playing) {
+                btn.classList.add('playing');
+                if (label) label.textContent = 'Pause';
+                btn.setAttribute('aria-label', `Pause sample for ${btn.dataset.packName || 'pack'}`);
+            } else {
+                btn.classList.remove('playing');
+                if (label) label.textContent = 'Play sample';
+                btn.setAttribute('aria-label', `Play sample for ${btn.dataset.packName || 'pack'}`);
+            }
         }
 
-        function auditionPackDemo(packId, btn) {
-            if (!packId) return;
+        function stopAudition() {
+            if (!activeSession) return;
+            if (activeSession.timeout) {
+                clearTimeout(activeSession.timeout);
+            }
+            activeSession.nodes.forEach((node) => {
+                try {
+                    if (typeof node.stop === 'function') {
+                        node.stop(0);
+                    }
+                    if (typeof node.disconnect === 'function') {
+                        node.disconnect();
+                    }
+                } catch (e) { /* already stopped */ }
+            });
+            setButtonPlaying(activeSession.btn, false);
+            activeSession = null;
+        }
+
+        function startAudition(packId, btn) {
             initAudioContext();
             if (!audioCtx) return;
 
-            if (activeAuditionTimeout) {
-                clearTimeout(activeAuditionTimeout);
-                activeAuditionTimeout = null;
-            }
-            setPlayButtonsPlaying(btn);
-
+            const nodes = [];
             const now = audioCtx.currentTime;
             const notes = [130.81, 146.83, 164.81, 196.0, 220.0, 261.63];
             let playOffset = 0;
@@ -208,6 +267,7 @@
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 const filter = audioCtx.createBiquadFilter();
+                nodes.push(osc, gain, filter);
 
                 if (packId === 'm1_matrix') {
                     osc.type = 'sawtooth';
@@ -225,6 +285,7 @@
                     modGain.connect(osc.frequency);
                     mod.start(now + playOffset);
                     mod.stop(now + playOffset + 0.5);
+                    nodes.push(mod, modGain);
                 } else {
                     osc.type = 'square';
                     filter.type = 'lowpass';
@@ -245,8 +306,28 @@
                 playOffset += 0.15;
             });
 
-            activeAuditionTimeout = setTimeout(() => setPlayButtonsPlaying(null), 1200);
+            setButtonPlaying(btn, true);
+            activeSession = {
+                packId,
+                btn,
+                nodes,
+                timeout: setTimeout(stopAudition, 1300),
+            };
         }
+
+        function toggleAudition(packId, btn) {
+            if (!packId) return;
+            if (activeSession?.packId === packId && activeSession.btn === btn) {
+                stopAudition();
+                return;
+            }
+            stopAudition();
+            startAudition(packId, btn);
+        }
+
+        document.querySelectorAll('.shop-play-btn').forEach((btn) => {
+            btn.addEventListener('click', () => toggleAudition(btn.dataset.packId, btn));
+        });
     </script>
 </body>
 

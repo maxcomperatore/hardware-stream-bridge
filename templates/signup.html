@@ -109,18 +109,6 @@
             </p>
         </div>
 
-        {% if notice == 'business_email' %}
-        <div
-            class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center">
-            Business email detected — Studio commercial license required (not Personal).
-        </div>
-        {% endif %}
-
-        <div id="business-email-notice"
-            class="mb-4 p-3 bg-blue-950/30 border border-blue-500/30 rounded-lg text-[10px] text-blue-300 font-mono leading-relaxed text-center hidden">
-            Business email detected — you'll checkout on <strong class="text-blue-200">Studio</strong>, not Personal.
-        </div>
-
         {% if error %}
         <div
             class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">
@@ -298,16 +286,12 @@
         const emailInput = document.getElementById('signup-email');
         const planInput = document.getElementById('signup-plan');
         const planLabel = document.getElementById('signup-plan-label');
-        const businessNotice = document.getElementById('business-email-notice');
         const personalAck = document.getElementById('personal-license-ack');
         const licenseCheckbox = document.getElementById('license_ack');
 
-        function updatePlanUi(effectivePlan, showBusinessNotice) {
+        function updatePlanUi(effectivePlan) {
             if (planLabel) {
                 planLabel.textContent = effectivePlan === 'studio' ? PLAN_LABELS.studio : PLAN_LABELS.personal;
-            }
-            if (businessNotice) {
-                businessNotice.classList.toggle('hidden', !showBusinessNotice);
             }
             if (personalAck && licenseCheckbox) {
                 if (effectivePlan === 'studio') {
@@ -325,13 +309,13 @@
             if (!planInput) return;
             if (INITIAL_PLAN === 'studio') {
                 planInput.value = 'studio';
-                updatePlanUi('studio', false);
+                updatePlanUi('studio');
                 return;
             }
             const domain = (email.split('@')[1] || '').toLowerCase().trim();
             const useStudio = Boolean(domain && !CONSUMER_EMAIL_DOMAINS.has(domain));
             planInput.value = useStudio ? 'studio' : 'personal';
-            updatePlanUi(planInput.value, useStudio);
+            updatePlanUi(planInput.value);
         }
 
         if (emailInput) {

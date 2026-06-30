@@ -1360,7 +1360,7 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
-async def signup_page(request: Request, error: str = None, plan: str = "personal", notice: str = None):
+async def signup_page(request: Request, error: str = None, plan: str = "personal"):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
     plan = normalize_plan(plan)
@@ -1371,7 +1371,6 @@ async def signup_page(request: Request, error: str = None, plan: str = "personal
             "error": error,
             "plan": plan,
             "plan_catalog": PLAN_CATALOG,
-            "notice": notice,
             "consumer_email_domains": sorted(CONSUMER_EMAIL_DOMAINS),
         },
     )

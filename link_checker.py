@@ -16,6 +16,10 @@ os.chdir(SCRIPT_DIR)
 # Add current dir to sys.path so we can import main
 sys.path.insert(0, SCRIPT_DIR)
 
+# main.py imports database.py at module load; CI has no secrets. Routes-only scan — no DB calls.
+os.environ.setdefault("DATABASE_URL", "postgresql://localhost/linkcheck")
+os.environ.setdefault("SESSION_SECRET_KEY", "link-checker-ci-dummy-secret")
+
 try:
     from main import app, SEO_DATA
 except Exception as e:
@@ -46,6 +50,10 @@ VALID_LITERAL_PATHS = {
     "/how-to-backup-korg-m1-presets-sysex-transfer-guide",
     "/why-your-vintage-synth-battery-is-killing-your-sounds",
     "/how-to-fix-juno-106-memory-loss-troubleshooting-guide",
+    "/vintage-synth-cloud-backup",
+    "/audit/midiox",
+    "/unsubscribe",
+    "/milestones",
     "/changelog",
     "/payment-methods",
     "/status",

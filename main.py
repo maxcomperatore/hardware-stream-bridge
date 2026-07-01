@@ -502,14 +502,9 @@ async def get_logo_png():
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # Configure Stripe key & fallback mock mode
-STRIPE_SECRET_KEY = os.environ.get(
-    "STRIPE_SECRET_KEY",
-    "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"
-)
-STRIPE_WEBHOOK_SECRET = os.environ.get(
-    "STRIPE_WEBHOOK_SECRET",
-    "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
-)
+_STRIPE_SECRET_DEFAULT = "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"
+STRIPE_SECRET_KEY = (os.environ.get("STRIPE_SECRET_KEY") or _STRIPE_SECRET_DEFAULT).strip()
+STRIPE_WEBHOOK_SECRET = (os.environ.get("STRIPE_WEBHOOK_SECRET") or "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR").strip()
 stripe.api_key = STRIPE_SECRET_KEY
 
 STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
@@ -833,6 +828,39 @@ def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
     if normalized == "studio":
         return "price_1Tngs7LuSQGuB7eysSDEeYFN"
     return PLAN_CATALOG[normalized]["stripe_price_id"]
+
+
+def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[dict]:
+    """Inline price_data avoids catalog/adaptive-pricing hosted Checkout failures."""
+    normalized = normalize_plan(plan)
+    use_catalog = os.environ.get("STRIPE_PLAN_USE_CATALOG_PRICE", "").strip().lower() in ("1", "true", "yes")
+    if use_catalog:
+        return [{"price": get_plan_price_id(normalized, country_code), "quantity": 1}]
+
+    regional = get_regional_pricing(country_code)
+    currency = regional["currency"].lower()
+    if normalized == "studio":
+        unit_amount = int(regional["studio_amount"]) * 100
+        name = "knob.monster+ Studio (lifetime)"
+        description = "Commercial use, one location. Lifetime license."
+    else:
+        unit_amount = int(regional["personal_amount"]) * 100
+        name = "knob.monster+ Personal (lifetime)"
+        description = "Non-commercial lifetime license."
+
+    return [
+        {
+            "price_data": {
+                "currency": currency,
+                "unit_amount": unit_amount,
+                "product_data": {
+                    "name": name[:250],
+                    "description": description[:500],
+                },
+            },
+            "quantity": 1,
+        }
+    ]
 
 # Email (Resend) — HTTP API for drips; SMTP for newsletter bulk
 RESEND_API_KEY = "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa"
@@ -1951,7 +1979,6 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             return RedirectResponse(url="/dashboard?payment=already_active")
 
     if normalized_plan in ("personal", "studio"):
-        price_id = get_plan_price_id(normalized_plan, country_code)
         checkout_mode = "payment"
     elif plan == "yearly":
         price_id = STRIPE_PRICE_ID_YEARLY
@@ -1979,15 +2006,16 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
     allow_promo = is_birthday or is_christmas
     
     try:
+        if checkout_mode == "payment":
+            line_items = build_plan_checkout_line_items(normalized_plan, country_code)
+        else:
+            line_items = [{"price": price_id, "quantity": 1}]
+
         checkout_kwargs = {
-            "line_items": [
-                {
-                    "price": price_id,
-                    "quantity": 1,
-                },
-            ],
+            "line_items": line_items,
             "mode": checkout_mode,
             "allow_promotion_codes": allow_promo,
+            "adaptive_pricing": {"enabled": False},
             "success_url": BASE_URL + "/dashboard?payment=success",
             "cancel_url": BASE_URL + "/dashboard?payment=cancel",
             "metadata": {
@@ -2024,18 +2052,28 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
         trigger_alert(
             "stripe_checkout_initiated",
             f"Stripe checkout initiated by `{user['email']}` for plan `{normalized_plan}`.",
-            {"email": user["email"], "plan": normalized_plan, "checkout_session_id": checkout_session.id},
+            {
+                "email": user["email"],
+                "plan": normalized_plan,
+                "checkout_session_id": checkout_session.id,
+                "pricing_region": get_regional_pricing(country_code)["region"],
+                "inline_price": checkout_mode == "payment",
+            },
             distinct_id=user["email"]
         )
         return RedirectResponse(url=checkout_session.url, status_code=303)
     except Exception as e:
+        logger.error(f"Stripe checkout failed for {user['email']}: {e}")
         trigger_alert(
             "stripe_checkout_failed",
             f"Stripe checkout session creation failed for `{user['email']}`: {str(e)}",
             {"email": user["email"], "plan": plan, "error": str(e)},
             distinct_id=user["email"]
         )
-        raise HTTPException(status_code=500, detail=f"Stripe integration session error: {str(e)}")
+        return RedirectResponse(
+            url="/dashboard?checkout_error=stripe",
+            status_code=303,
+        )
 
 @app.get("/portal")
 async def create_portal_session(request: Request):

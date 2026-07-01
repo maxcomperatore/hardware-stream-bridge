@@ -767,10 +767,19 @@ def get_valid_stripe_customer_id(user: dict) -> str | None:
         logger.warning("Ignoring stale Stripe customer id for %s", user.get("email"))
         return None
 
+def checkout_adaptive_pricing_for_currency(currency: str) -> dict:
+    """Stripe adaptive pricing only when checkout currency is USD (default)."""
+    return {"adaptive_pricing": {"enabled": currency.lower() == "usd"}}
+
+
 def build_pack_checkout_kwargs(user: dict, pack_id: str, pack: dict) -> dict:
     """Match Personal one-time checkout — no customer, no payment_intent_data extras."""
+    line_items = build_pack_checkout_line_items(pack_id, pack)
+    pack_currency = "usd"
+    if line_items and line_items[0].get("price_data"):
+        pack_currency = line_items[0]["price_data"].get("currency", "usd")
     return {
-        "line_items": build_pack_checkout_line_items(pack_id, pack),
+        "line_items": line_items,
         "mode": "payment",
         "allow_promotion_codes": False,
         "success_url": BASE_URL + f"/dashboard?payment=pack_success&pack_id={pack_id}",
@@ -782,7 +791,7 @@ def build_pack_checkout_kwargs(user: dict, pack_id: str, pack: dict) -> dict:
             "pack_name": pack["name"],
         },
         "customer_email": user["email"],
-        "adaptive_pricing": {"enabled": False},
+        **checkout_adaptive_pricing_for_currency(pack_currency),
     }
 
 def get_pack_stripe_price_id(pack_id: str) -> str | None:
@@ -2011,17 +2020,20 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
         else:
             line_items = [{"price": price_id, "quantity": 1}]
 
+        pricing_region = get_regional_pricing(country_code)
+        checkout_currency = pricing_region["currency"] if checkout_mode == "payment" else "usd"
+
         checkout_kwargs = {
             "line_items": line_items,
             "mode": checkout_mode,
             "allow_promotion_codes": allow_promo,
-            "adaptive_pricing": {"enabled": False},
+            **checkout_adaptive_pricing_for_currency(checkout_currency),
             "success_url": BASE_URL + "/dashboard?payment=success",
             "cancel_url": BASE_URL + "/dashboard?payment=cancel",
             "metadata": {
                 "user_email": user["email"],
                 "plan": normalized_plan,
-                "pricing_region": get_regional_pricing(country_code)["region"],
+                "pricing_region": pricing_region["region"],
             },
         }
 

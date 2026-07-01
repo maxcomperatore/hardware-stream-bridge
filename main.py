@@ -882,6 +882,8 @@ def send_email_via_resend(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "User-Agent": "knob.monster/1.0 (resend-api)",
+            "Accept": "application/json",
         },
         method="POST",
     )
@@ -3042,110 +3044,115 @@ p.s. if you ran into issues setting up your midi connection or parsing your syse
 """
 
 
-async def run_drip_check() -> dict:
-    """
-    Free-tier users registered >1h ago who haven't received the drip email.
-    Sends via Resend HTTP API; only marks sent after delivery succeeds.
-    """
-    sent_count = 0
+async def get_drip_eligible_users() -> tuple[list[dict], int, int]:
+    """Return (eligible users, skipped_young, pending_total)."""
+    if not hasattr(database, "get_pending_drip_users"):
+        try:
+            import importlib
+            importlib.reload(database)
+        except Exception as reload_err:
+            logger.error(f"failed to reload database module: {reload_err}")
+
+    users = database.get_pending_drip_users()
+    eligible: list[dict] = []
     skipped_young = 0
-    failed_count = 0
-    pending_count = 0
-    last_error: str | None = None
+    for u in users:
+        created_at = datetime.fromisoformat(u["created_at"])
+        elapsed = datetime.now() - created_at
+        if elapsed.total_seconds() < 3600:
+            skipped_young += 1
+            continue
+        eligible.append(
+            {
+                "id": u["id"],
+                "email": u["email"],
+                "elapsed_seconds": int(elapsed.total_seconds()),
+            }
+        )
+    return eligible, skipped_young, len(users)
 
-    try:
-        if not hasattr(database, "get_pending_drip_users"):
-            try:
-                import importlib
-                importlib.reload(database)
-            except Exception as reload_err:
-                logger.error(f"failed to reload database module: {reload_err}")
 
-        users = database.get_pending_drip_users()
-        pending_count = len(users)
+@app.get("/api/cron/drip-pending")
+async def drip_pending(request: Request):
+    """Queue eligible drip recipients — actual send runs on GitHub Actions (Vercel IPs blocked by Cloudflare)."""
+    assert_cron_authorized(request)
+    eligible, skipped_young, pending_total = await get_drip_eligible_users()
+    return {
+        "subject": DRIP_SUBJECT,
+        "body": DRIP_BODY_TEMPLATE,
+        "from": SMTP_FROM,
+        "reply_to": "halfradiationllc@gmail.com",
+        "users": eligible,
+        "skipped_young": skipped_young,
+        "pending_total": pending_total,
+    }
 
-        for u in users:
-            try:
-                created_at = datetime.fromisoformat(u["created_at"])
-                elapsed = datetime.now() - created_at
-                if elapsed.total_seconds() < 3600:
-                    skipped_young += 1
-                    continue
 
-                email = u["email"]
-                user_id = u["id"]
-                sent, resend_error = send_email_via_resend(
-                    email,
-                    DRIP_SUBJECT,
-                    DRIP_BODY_TEMPLATE,
-                    reply_to="halfradiationllc@gmail.com",
-                )
+@app.post("/api/cron/drip-ack")
+async def drip_ack(request: Request):
+    """Mark drips sent / log failures after GitHub Actions delivers via Resend."""
+    assert_cron_authorized(request)
+    body = await request.json()
+    sent_items = body.get("sent") or []
+    failed_items = body.get("failed") or []
+    skipped_young = int(body.get("skipped_young") or 0)
+    pending_total = int(body.get("pending_total") or 0)
 
-                if sent:
-                    database.mark_drip_sent(user_id)
-                    sent_count += 1
-                    logger.info(f"drip email sent via resend to {email}")
-                    trigger_alert(
-                        "drip_email_sent",
-                        f"paywall drip sent to `{email}`.",
-                        {
-                            "email": email,
-                            "elapsed_seconds": int(elapsed.total_seconds()),
-                            "via": "resend",
-                        },
-                        distinct_id=email,
-                    )
-                else:
-                    failed_count += 1
-                    last_error = resend_error
-                    trigger_alert(
-                        "drip_email_failed",
-                        f"paywall drip failed for `{email}`: {resend_error or 'unknown'}",
-                        {
-                            "email": email,
-                            "elapsed_seconds": int(elapsed.total_seconds()),
-                            "resend_error": resend_error,
-                        },
-                        distinct_id=email,
-                    )
-                    import time
-                    time.sleep(0.6)
-            except Exception as user_err:
-                failed_count += 1
-                logger.error(f"failed processing drip for user {u.get('email')}: {user_err}")
-    except Exception as e:
-        logger.error(f"error during run_drip_check: {e}")
+    for item in sent_items:
+        database.mark_drip_sent(int(item["id"]))
         trigger_alert(
-            "drip_cron_error",
-            f"drip cron crashed: `{e}`",
-            {"error": str(e)},
-            distinct_id="drip_cron",
+            "drip_email_sent",
+            f"paywall drip sent to `{item['email']}`.",
+            {
+                "email": item["email"],
+                "elapsed_seconds": item.get("elapsed_seconds"),
+                "via": "resend-github",
+            },
+            distinct_id=item["email"],
+        )
+
+    last_error = None
+    for item in failed_items:
+        err = item.get("error") or "unknown"
+        last_error = err
+        trigger_alert(
+            "drip_email_failed",
+            f"paywall drip failed for `{item['email']}`: {err}",
+            {"email": item["email"], "resend_error": err},
+            distinct_id=item["email"],
         )
 
     summary = {
-        "pending": pending_count,
-        "sent": sent_count,
+        "pending": pending_total,
+        "sent": len(sent_items),
         "skipped_young": skipped_young,
-        "failed": failed_count,
+        "failed": len(failed_items),
         "last_resend_error": last_error,
     }
     trigger_alert(
         "drip_cron_finished",
         (
-            f"drip cron: {sent_count} sent, {failed_count} failed, "
-            f"{skipped_young} too new, {pending_count} pending total."
+            f"drip cron: {summary['sent']} sent, {summary['failed']} failed, "
+            f"{skipped_young} too new, {pending_total} pending total."
         ),
         summary,
         distinct_id="drip_cron",
     )
-    return summary
+    return {"status": "success", **summary}
+
 
 @app.get("/api/cron/send-drips")
 async def trigger_drip_cron(request: Request):
-    """Vercel Cron or GitHub Actions (CRON_SECRET bearer)."""
+    """Legacy alias — drips send from GitHub Actions (scripts/send_drips.py)."""
     assert_cron_authorized(request)
-    summary = await run_drip_check()
-    return {"status": "success", **summary}
+    eligible, skipped_young, pending_total = await get_drip_eligible_users()
+    return {
+        "status": "use_github_actions",
+        "message": "Run scripts/send_drips.py from the Drip Email Cron workflow.",
+        "eligible": len(eligible),
+        "skipped_young": skipped_young,
+        "pending_total": pending_total,
+    }
 
 NEWSLETTER_TOPICS = [
     "why the DX7 is FM hell to program — and the one operator trick that finally clicks",

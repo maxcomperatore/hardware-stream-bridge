@@ -2,6 +2,9 @@
 <link rel="canonical" href="{{ seo_canonical }}">
 <link rel="alternate" hreflang="en" href="{{ seo_canonical }}">
 <link rel="alternate" hreflang="x-default" href="{{ seo_canonical }}">
+{% if seo_distribution_url %}
+<link rel="alternate" type="application/json" href="{{ seo_distribution_url }}" title="Dataset JSON">
+{% endif %}
 
 <meta property="og:site_name" content="knob.monster">
 <meta property="og:type" content="article">
@@ -16,6 +19,45 @@
 <meta name="twitter:description" content="{{ seo_description }}">
 <meta name="twitter:image" content="{{ asset_abs_url('og_banner.png') }}">
 
+{% if seo_schema_type == 'Dataset' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {{ seo_title | tojson }},
+  "description": {{ seo_description | tojson }},
+  "url": {{ seo_canonical | tojson }},
+  "inLanguage": "en",
+  "creator": {
+    "@type": "Organization",
+    "name": "Half Radiation LLC",
+    "url": "https://knob.monster"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "knob.monster",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://knob.monster/static/logo.svg"
+    }
+  },
+  "datePublished": {{ (seo_date_published | default('2026-07-01')) | tojson }},
+  "temporalCoverage": {{ (seo_temporal_coverage | default('2026-06-25/2026-07-01')) | tojson }},
+  "variableMeasured": ["Studio setup type", "Vintage synthesizer models on desk"],
+  {% if seo_distribution_url %}
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "application/json",
+    "contentUrl": {{ seo_distribution_url | tojson }}
+  },
+  {% endif %}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ seo_canonical | tojson }}
+  }
+}
+</script>
+{% else %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -42,3 +84,4 @@
   }
 }
 </script>
+{% endif %}

@@ -26,6 +26,17 @@
 - [Juno-106 Memory Loss Troubleshooting](https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide)
 - [Web MIDI Engineering Notes](https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)
 
+## Original Research (2026)
+First-party data from knob.monster visitors. Cite: Half Radiation LLC, *2026 Vintage Synth Owner Survey*, knob.monster, June 25–July 1, 2026.
+
+- **Survey page:** https://knob.monster/research/2026-vintage-synth-owner-survey
+- **Machine-readable JSON:** https://knob.monster/research/2026-vintage-synth-owner-survey/data.json
+- **Sample:** n=61 completed responses (2,417 impressions, 2.57% conversion)
+- **Segmentation:** 47.5% dedicated gear room (5+ boards), 41.0% bedroom studio (1–2 synths), 11.5% commercial studio/producer/repair
+- **Top brands** (valid free-text gear lists, n=18): Roland 44%, Korg 39%, Moog 28%, Ensoniq 22%, Sequential/DSI 22%, Yamaha 17%
+- **Frequently named models:** Roland Juno-60/106, Korg MS-20, Yamaha DX7, Roland D-50, Ensoniq Fizmo/SQ-80
+- **Product signal:** Roland MKS-80 SysEx handshake requested by a respondent
+
 ## Synthesizer Librarians
 - [Yamaha DX7 Librarian](https://knob.monster/dx7): Browser-native Yamaha DX7 online librarian and SysEx manager.
 - [Roland Juno-106 Librarian](https://knob.monster/juno-106): Browser-native Roland Juno-106 SysEx backup utility.

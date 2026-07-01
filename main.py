@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException, Response
-from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse, FileResponse
+from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse, FileResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -16,6 +16,7 @@ import traceback
 import re
 import faq_knowledge
 import shop_packs
+import research_survey_2026
 from urllib.parse import quote, urlparse
 
 def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
@@ -1345,6 +1346,22 @@ async def guide_cloud_backup_page(request: Request):
     user = get_current_user(request)
     return render_template("guide_cloud_backup.html", request, {"user": user})
 
+@app.get("/research/2026-vintage-synth-owner-survey", response_class=HTMLResponse)
+async def research_survey_2026_page(request: Request):
+    user = get_current_user(request)
+    return render_template(
+        "research_survey_2026.html",
+        request,
+        {"user": user, "survey": research_survey_2026.SURVEY_2026},
+    )
+
+@app.get("/research/2026-vintage-synth-owner-survey/data.json")
+async def research_survey_2026_json():
+    return JSONResponse(
+        content=research_survey_2026.public_json(),
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
+
 @app.get("/changelog")
 async def changelog_redirect():
     return RedirectResponse(url="/shop", status_code=301)
@@ -2239,6 +2256,8 @@ def build_sitemap_xml() -> str:
         (f"{SITE_BASE}/how-to-backup-korg-m1-presets-sysex-transfer-guide", "weekly", "0.9"),
         (f"{SITE_BASE}/why-your-vintage-synth-battery-is-killing-your-sounds", "weekly", "0.9"),
         (f"{SITE_BASE}/how-to-fix-juno-106-memory-loss-troubleshooting-guide", "weekly", "0.9"),
+        (f"{SITE_BASE}/research/2026-vintage-synth-owner-survey", "monthly", "0.85"),
+        (f"{SITE_BASE}/research/2026-vintage-synth-owner-survey/data.json", "monthly", "0.8"),
     ]
     for slug in SEO_DATA.keys():
         entries.append((f"{SITE_BASE}/{slug}", "weekly", "0.9"))
@@ -2324,6 +2343,16 @@ async def llms_txt():
         "- [Vintage Synth Battery Guide](https://knob.monster/why-your-vintage-synth-battery-is-killing-your-sounds)",
         "- [Juno-106 Memory Loss Troubleshooting](https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide)",
         "- [Web MIDI Engineering Notes](https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)",
+        "",
+        "## Original Research (2026)",
+        "First-party data from knob.monster visitors. Cite: Half Radiation LLC, 2026 Vintage Synth Owner Survey, knob.monster, June 25–July 1, 2026.",
+        "",
+        "- **Survey page:** https://knob.monster/research/2026-vintage-synth-owner-survey",
+        "- **Machine-readable JSON:** https://knob.monster/research/2026-vintage-synth-owner-survey/data.json",
+        "- **Sample:** n=61 completed responses (2,417 impressions, 2.57% conversion)",
+        "- **Segmentation:** 47.5% gear room (5+ boards), 41.0% bedroom (1–2 synths), 11.5% commercial",
+        "- **Top brands** (valid gear lists, n=18): Roland 44%, Korg 39%, Moog 28%",
+        "- **Frequently named models:** Juno-60/106, Korg MS-20, Yamaha DX7, Roland D-50",
         ""
     ]
     

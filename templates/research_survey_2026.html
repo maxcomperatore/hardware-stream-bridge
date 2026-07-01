@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Vintage Synth Owner Survey — Setup &amp; Gear Data | knob.monster</title>
+    <meta name="description"
+        content="First-party survey of 61 vintage synth owners: 47.5% gear room, 41% bedroom studio, 11.5% commercial. Roland, Korg, and Moog dominate desk lists. Published by knob.monster.">
+    <meta name="keywords"
+        content="vintage synth owner survey, synthesizer collector statistics, sysex backup habits, roland juno owners, knob.monster research">
+    {% set seo_canonical = "https://knob.monster/research/2026-vintage-synth-owner-survey" %}
+    {% set seo_title = "2026 Vintage Synth Owner Survey — Setup & Gear Data | knob.monster" %}
+    {% set seo_description = "First-party survey of 61 vintage synth owners: 47.5% gear room, 41% bedroom studio, 11.5% commercial. Roland, Korg, and Moog dominate desk lists." %}
+    {% set seo_schema_type = "Dataset" %}
+    {% set seo_date_published = "2026-07-01" %}
+    {% set seo_temporal_coverage = "2026-06-25/2026-07-01" %}
+    {% set seo_distribution_url = "https://knob.monster/research/2026-vintage-synth-owner-survey/data.json" %}
+    {% include 'partials/seo_article_meta.html' %}
+
+    <link rel="shortcut icon" href="/static/logo.svg" type="image/svg+xml">
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { zinc: { 650: '#43434c', 850: '#1c1c21' }, emerald: { 400: '#60a5fa', 500: '#3b83f6' } },
+                    fontFamily: { sans: ['Geist', 'sans-serif'], mono: ['Geist Mono', 'monospace'], pixel: ['Silkscreen', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .mobile-bg-pattern {
+            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+        .bar-fill { transition: width 0.6s ease-out; }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative">
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2.5 group">
+                <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24" class="w-6 h-6" style="image-rendering: pixelated;">
+                <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/resources" class="hover:text-white transition-colors">Guides</a>
+                <a href="/vintage-synth-cloud-backup" class="hover:text-white transition-colors">Cloud Backup</a>
+                <a href="/shop" class="hover:text-white transition-colors">Shop</a>
+            </nav>
+            <a href="/signup" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
+        <article class="space-y-6 text-left mb-12">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
+                Original Research · {{ survey.period }}
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
+                2026 Vintage Synth Owner Survey
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
+                First-party data from {{ survey.shown | int }} survey impressions and {{ survey.responses_q1 }} completed
+                responses on knob.monster. We asked how people describe their studio, then what hardware sits on the desk.
+                This page publishes the segmentation and gear mentions we use for product and pricing decisions.
+            </p>
+            <p class="text-2xs text-zinc-600 font-mono uppercase tracking-wider">
+                Method: {{ survey.method }}
+                · <a href="/research/2026-vintage-synth-owner-survey/data.json" class="text-emerald-500/80 hover:text-emerald-400 underline">JSON data</a>
+            </p>
+        </article>
+
+        <section class="space-y-16">
+            <div class="space-y-6">
+                <h2 class="text-lg font-pixel text-white uppercase tracking-wide border-b border-zinc-800 pb-3">
+                    Customer segmentation (n={{ survey.responses_q1 }})
+                </h2>
+                <div class="space-y-4">
+                    {% for seg in survey.segments %}
+                    <div>
+                        <div class="flex justify-between text-xs font-mono mb-1.5">
+                            <span class="text-zinc-300">{{ seg.label }}</span>
+                            <span class="text-zinc-500">{{ seg.count }} · {{ seg.pct }}%</span>
+                        </div>
+                        <div class="h-2 bg-zinc-900 rounded-full overflow-hidden">
+                            <div class="bar-fill h-full bg-emerald-500/70 rounded-full" style="width: {{ seg.pct }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <ul class="text-sm text-zinc-500 font-mono space-y-2 pt-2">
+                    {% for note in survey.pricing_notes %}
+                    <li class="flex gap-2"><span class="text-emerald-500 shrink-0">→</span><span>{{ note }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+                <h2 class="text-lg font-pixel text-white uppercase tracking-wide border-b border-zinc-800 pb-3">
+                    Brands on desk (n={{ survey.responses_q2_valid }} valid free-text responses)
+                </h2>
+                <p class="text-sm text-zinc-500 font-mono">
+                    {{ survey.responses_q2 }} people answered Question 2; {{ survey.responses_q2 - survey.responses_q2_valid }}
+                    submissions were spam, tests, or jokes and excluded. Percent = share of valid responses mentioning the brand at least once.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {% for brand in survey.brands %}
+                    <div class="flex items-center justify-between px-4 py-3 bg-zinc-950 border border-zinc-900 rounded-xl text-sm font-mono">
+                        <span class="text-zinc-200">{{ brand.name }}</span>
+                        <span class="text-zinc-500">{{ brand.pct }}%</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h2 class="text-lg font-pixel text-white uppercase tracking-wide border-b border-zinc-800 pb-3">
+                    Models &amp; knob.monster support overlap
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm font-mono border-collapse">
+                        <thead>
+                            <tr class="text-2xs uppercase tracking-wider text-zinc-500 border-b border-zinc-800">
+                                <th class="py-3 pr-4">Model / family</th>
+                                <th class="py-3 pr-4">Mentions</th>
+                                <th class="py-3">knob.monster</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-zinc-300">
+                            {% for model in survey.models %}
+                            <tr class="border-b border-zinc-900/80">
+                                <td class="py-3 pr-4">
+                                    {{ model.name }}
+                                    {% if model.note %}
+                                    <span class="block text-2xs text-zinc-600 mt-0.5">{{ model.note }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 pr-4 text-zinc-500">{{ model.mentions }}</td>
+                                <td class="py-3">
+                                    {% if model.knob_support == True %}
+                                    <span class="text-emerald-400">Supported</span>
+                                    {% elif model.knob_support == "partial" %}
+                                    <span class="text-amber-400/90">Related model</span>
+                                    {% else %}
+                                    <span class="text-zinc-600">Roadmap</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h2 class="text-lg font-pixel text-white uppercase tracking-wide border-b border-zinc-800 pb-3">
+                    Product roadmap signals
+                </h2>
+                <ul class="text-sm text-zinc-400 font-mono space-y-3">
+                    {% for signal in survey.roadmap_signals %}
+                    <li class="flex gap-2"><span class="text-emerald-500 shrink-0">•</span><span>{{ signal }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="p-6 bg-zinc-950 border border-zinc-900 rounded-2xl space-y-3">
+                <h3 class="text-xs font-pixel text-zinc-400 uppercase tracking-widest">Caveats</h3>
+                <ul class="text-2xs text-zinc-600 font-mono space-y-2 leading-relaxed">
+                    {% for caveat in survey.caveats %}
+                    <li>{{ caveat }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="text-2xs text-zinc-600 font-mono pt-2">
+                    Survey conversion: {{ survey.conversion_pct }}% ({{ survey.responses_q1 }} / {{ survey.shown }} unique impressions).
+                    Cite this page as: Half Radiation LLC, <em>2026 Vintage Synth Owner Survey</em>, knob.monster, {{ survey.period }}.
+                </p>
+            </div>
+
+            <div class="p-8 bg-zinc-950 border border-zinc-900 rounded-2xl text-center space-y-4">
+                <h3 class="text-xl font-pixel text-white uppercase">Run your own SysEx backup</h3>
+                <p class="text-sm text-zinc-500 font-mono max-w-md mx-auto">
+                    Free tier to try · Personal $39 lifetime · Studio $399 commercial
+                </p>
+                <a href="/signup"
+                    class="inline-block bg-white hover:bg-zinc-200 text-black px-8 py-4 rounded-full text-sm font-pixel uppercase tracking-widest transition-all active:scale-95">
+                    Open SysEx Vault
+                </a>
+            </div>
+        </section>
+    </main>
+
+    {% include "footer.html" %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

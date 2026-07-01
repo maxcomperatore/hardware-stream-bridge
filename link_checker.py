@@ -58,6 +58,8 @@ VALID_LITERAL_PATHS = {
     "/how-to-fix-juno-106-memory-loss-troubleshooting-guide",
     "/vintage-synth-cloud-backup",
     "/audit/midiox",
+    "/research/2026-vintage-synth-owner-survey",
+    "/research/2026-vintage-synth-owner-survey/data.json",
     "/unsubscribe",
     "/milestones",
     "/changelog",

@@ -834,12 +834,78 @@ def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
         return "price_1Tngs7LuSQGuB7eysSDEeYFN"
     return PLAN_CATALOG[normalized]["stripe_price_id"]
 
-# SMTP configuration with Resend defaults
+# Email (Resend) — HTTP API for drips; SMTP for newsletter bulk
 SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.resend.com")
 SMTP_PORT = os.environ.get("SMTP_PORT", "587")
 SMTP_USER = os.environ.get("SMTP_USER", "resend")
-SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa")
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", RESEND_API_KEY)
 SMTP_FROM = os.environ.get("SMTP_FROM", "knob.monster <vault@knob.monster>")
+CRON_SECRET = os.environ.get("CRON_SECRET", "knob_drip_cron_secret_7788")
+
+
+def get_resend_api_key() -> str:
+    return RESEND_API_KEY or SMTP_PASSWORD
+
+
+def send_email_via_resend(
+    to: str,
+    subject: str,
+    body: str,
+    *,
+    reply_to: str | None = None,
+    list_unsubscribe: str | None = None,
+) -> bool:
+    """Send one email via Resend HTTP API (reliable on Vercel serverless)."""
+    import json
+    import urllib.error
+    import urllib.request
+
+    api_key = get_resend_api_key()
+    if not api_key:
+        logger.error("RESEND_API_KEY / SMTP_PASSWORD not configured")
+        return False
+
+    payload: dict = {
+        "from": SMTP_FROM,
+        "to": [to],
+        "subject": subject,
+        "text": body,
+    }
+    if reply_to:
+        payload["reply_to"] = reply_to
+    if list_unsubscribe:
+        payload["headers"] = {"List-Unsubscribe": f"<{list_unsubscribe}>"}
+
+    req = urllib.request.Request(
+        "https://api.resend.com/emails",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            resp.read()
+        return True
+    except urllib.error.HTTPError as err:
+        detail = err.read().decode("utf-8", errors="replace")
+        logger.error(f"resend api failed for {to}: {err.code} {detail}")
+        return False
+    except Exception as err:
+        logger.error(f"resend api failed for {to}: {err}")
+        return False
+
+
+def assert_cron_authorized(request: Request) -> None:
+    """GitHub Actions cron — bearer CRON_SECRET only."""
+    auth = request.headers.get("authorization", "")
+    if CRON_SECRET and auth == f"Bearer {CRON_SECRET}":
+        return
+    if os.environ.get("VERCEL") == "1":
+        raise HTTPException(status_code=401, detail="Unauthorized cron trigger")
 
 # Initialize database on startup
 @app.on_event("startup")
@@ -2952,43 +3018,8 @@ async def dynamic_synth_seo(synth_slug: str, request: Request):
 
 
 # --- Automated Drip Email Operations (Local & Vercel Cron compatible) ---
-async def run_drip_check() -> int:
-    """
-    Checks for free tier users registered > 1 hour ago who haven't
-    received the drip email, sends the email via SMTP, triggers alerts,
-    and updates the database. Returns the number of emails sent.
-    """
-    import smtplib
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-    
-    sent_count = 0
-    try:
-        # Fetch pending users (force dynamic reload if module has caching issues from startup)
-        if not hasattr(database, "get_pending_drip_users"):
-            try:
-                import importlib
-                importlib.reload(database)
-                logger.info("Programmatically reloaded database module to load new functions.")
-            except Exception as reload_err:
-                logger.error(f"Failed to programmatically reload database module: {reload_err}")
-        users = database.get_pending_drip_users()
-        now = datetime.utcnow()
-        
-        for u in users:
-            try:
-                # Parse created_at ISO string
-                created_at = datetime.fromisoformat(u["created_at"])
-                elapsed = datetime.now() - created_at
-                
-                # If registered more than 1 hour ago (3600 seconds)
-                if elapsed.total_seconds() >= 3600:
-                    email = u["email"]
-                    user_id = u["id"]
-                    
-                    # Prepare drip email contents in all small caps (lowercase)
-                    subject = "your studio vault is locked"
-                    body = f"""hey there,
+DRIP_SUBJECT = "your studio vault is locked"
+DRIP_BODY_TEMPLATE = """hey there,
 
 you signed up for knob monster, but you are currently on the free tier.
 
@@ -3008,72 +3039,109 @@ knob monster support
 
 p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
-                    
-                    # Reference global SMTP configuration constants
-                    smtp_host = SMTP_HOST
-                    smtp_port = SMTP_PORT
-                    smtp_user = SMTP_USER
-                    smtp_pass = SMTP_PASSWORD
-                    smtp_from = SMTP_FROM
-                    
-                    sent_via_smtp = False
-                    if smtp_host and smtp_user and smtp_pass:
-                        try:
-                            msg = MIMEMultipart()
-                            msg['From'] = smtp_from
-                            msg['To'] = email
-                            msg['Subject'] = subject
-                            msg['Reply-To'] = "halfradiationllc@gmail.com"
-                            msg.attach(MIMEText(body, 'plain'))
-                            
-                            server = smtplib.SMTP(smtp_host, int(smtp_port))
-                            server.starttls()
-                            server.login(smtp_user, smtp_pass)
-                            server.sendmail(smtp_from, email, msg.as_string())
-                            server.quit()
-                            sent_via_smtp = True
-                            logger.info(f"drip email successfully sent via smtp to {email}")
-                        except Exception as smtp_err:
-                            logger.error(f"smtp send failed for {email}: {smtp_err}")
-                            
-                    # Log/Simulate and send Discord warning/alert
-                    if not sent_via_smtp:
-                        logger.info(f"[simulated drip email] to: {email}\nsubject: {subject}\nbody:\n{body}")
-                        
-                    # Send alert to Discord
+
+
+async def run_drip_check() -> dict:
+    """
+    Free-tier users registered >1h ago who haven't received the drip email.
+    Sends via Resend HTTP API; only marks sent after delivery succeeds.
+    """
+    sent_count = 0
+    skipped_young = 0
+    failed_count = 0
+    pending_count = 0
+
+    try:
+        if not hasattr(database, "get_pending_drip_users"):
+            try:
+                import importlib
+                importlib.reload(database)
+            except Exception as reload_err:
+                logger.error(f"failed to reload database module: {reload_err}")
+
+        users = database.get_pending_drip_users()
+        pending_count = len(users)
+        resend_configured = bool(get_resend_api_key())
+
+        for u in users:
+            try:
+                created_at = datetime.fromisoformat(u["created_at"])
+                elapsed = datetime.now() - created_at
+                if elapsed.total_seconds() < 3600:
+                    skipped_young += 1
+                    continue
+
+                email = u["email"]
+                user_id = u["id"]
+                sent = send_email_via_resend(
+                    email,
+                    DRIP_SUBJECT,
+                    DRIP_BODY_TEMPLATE,
+                    reply_to="halfradiationllc@gmail.com",
+                )
+
+                if sent:
+                    database.mark_drip_sent(user_id)
+                    sent_count += 1
+                    logger.info(f"drip email sent via resend to {email}")
                     trigger_alert(
                         "drip_email_sent",
-                        f"automated paywall drip email sent to `{email}` (via smtp: {sent_via_smtp}).",
+                        f"paywall drip sent to `{email}`.",
                         {
                             "email": email,
                             "elapsed_seconds": int(elapsed.total_seconds()),
-                            "smtp_active": bool(smtp_host),
-                            "simulated_only": not sent_via_smtp
+                            "via": "resend",
                         },
-                        distinct_id=email
+                        distinct_id=email,
                     )
-                    
-                    # Mark as sent in DB
-                    database.mark_drip_sent(user_id)
-                    sent_count += 1
+                else:
+                    failed_count += 1
+                    trigger_alert(
+                        "drip_email_failed",
+                        f"paywall drip **failed** for `{email}` — will retry next cron run.",
+                        {
+                            "email": email,
+                            "elapsed_seconds": int(elapsed.total_seconds()),
+                            "resend_configured": resend_configured,
+                        },
+                        distinct_id=email,
+                    )
             except Exception as user_err:
-                logger.error(f"failed processing drip email for user {u.get('email')}: {user_err}")
+                failed_count += 1
+                logger.error(f"failed processing drip for user {u.get('email')}: {user_err}")
     except Exception as e:
         logger.error(f"error during run_drip_check: {e}")
-        
-    return sent_count
+        trigger_alert(
+            "drip_cron_error",
+            f"drip cron crashed: `{e}`",
+            {"error": str(e)},
+            distinct_id="drip_cron",
+        )
+
+    summary = {
+        "pending": pending_count,
+        "sent": sent_count,
+        "skipped_young": skipped_young,
+        "failed": failed_count,
+        "resend_configured": bool(get_resend_api_key()),
+    }
+    trigger_alert(
+        "drip_cron_finished",
+        (
+            f"drip cron: {sent_count} sent, {failed_count} failed, "
+            f"{skipped_young} too new, {pending_count} pending total."
+        ),
+        summary,
+        distinct_id="drip_cron",
+    )
+    return summary
 
 @app.get("/api/cron/send-drips")
 async def trigger_drip_cron(request: Request):
-    """
-    Vercel Cron endpoint to run the drip campaign periodically.
-    """
-    cron_header = request.headers.get("x-vercel-cron")
-    if not cron_header and os.environ.get("VERCEL") == "1":
-        raise HTTPException(status_code=401, detail="Unauthorized to trigger cron manually")
-        
-    sent_count = await run_drip_check()
-    return {"status": "success", "emails_sent": sent_count}
+    """Vercel Cron or GitHub Actions (CRON_SECRET bearer)."""
+    assert_cron_authorized(request)
+    summary = await run_drip_check()
+    return {"status": "success", **summary}
 
 NEWSLETTER_TOPICS = [
     "why the DX7 is FM hell to program — and the one operator trick that finally clicks",
@@ -3447,9 +3515,7 @@ async def trigger_newsletter_cron(request: Request):
     """
     Vercel Cron endpoint — biweekly AI field notes to footer opt-ins only.
     """
-    cron_header = request.headers.get("x-vercel-cron")
-    if not cron_header and os.environ.get("VERCEL") == "1":
-        raise HTTPException(status_code=401, detail="Unauthorized to trigger cron manually")
+    assert_cron_authorized(request)
 
     from datetime import date
     if date.today().isocalendar().week % 2 == 1:

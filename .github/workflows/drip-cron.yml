@@ -1,0 +1,21 @@
+name: Drip Email Cron
+
+on:
+  schedule:
+    - cron: "15 * * * *"   # hourly at :15 UTC
+  workflow_dispatch:
+
+jobs:
+  send-drips:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger drip endpoint
+        run: |
+          HTTP_CODE=$(curl -s -o /tmp/drip_resp.json -w "%{http_code}" \
+            -H "Authorization: Bearer knob_drip_cron_secret_7788" \
+            "https://knob.monster/api/cron/send-drips")
+          echo "HTTP $HTTP_CODE"
+          cat /tmp/drip_resp.json
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            exit 1
+          fi

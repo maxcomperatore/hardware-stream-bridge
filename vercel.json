@@ -75,15 +75,5 @@
         }
       ]
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/send-drips",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/cron/newsletter",
-      "schedule": "0 14 * * 4"
-    }
   ]
 }

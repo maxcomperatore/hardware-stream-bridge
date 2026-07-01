@@ -3521,20 +3521,95 @@ def run_newsletter_broadcast_sync(override_subject: str = None, override_body: s
             distinct_id="newsletter_cron"
         )
 
-@app.get("/api/cron/newsletter")
-async def trigger_newsletter_cron(request: Request):
-    """
-    Vercel Cron endpoint — biweekly AI field notes to footer opt-ins only.
-    """
+@app.get("/api/cron/newsletter-pending")
+async def newsletter_pending(request: Request):
+    """Queue newsletter recipients + content — send runs on GitHub Actions."""
     assert_cron_authorized(request)
 
     from datetime import date
     if date.today().isocalendar().week % 2 == 1:
         return {"status": "skipped", "reason": "biweekly off-week"}
 
-    import threading
-    thread = threading.Thread(target=run_newsletter_broadcast_sync)
-    thread.start()
-    
-    return {"status": "broadcast_initiated"}
+    recipients = database.get_all_newsletter_recipients()
+    if not recipients:
+        return {"status": "empty", "recipient_count": 0}
+
+    content = generate_newsletter_content_via_gemini()
+    subject = content["subject"]
+    body_template = content["body"]
+
+    trigger_alert(
+        "newsletter_broadcast_started",
+        f"starting newsletter broadcast to {len(recipients)} recipients.\nsubject: `{subject}`",
+        {"recipient_count": len(recipients), "subject": subject},
+        distinct_id="newsletter_cron",
+    )
+
+    prepared = []
+    for email in recipients:
+        unsubscribe_token = cookie_signer.sign(email.encode()).decode()
+        prepared.append(
+            {
+                "email": email,
+                "body": body_template.replace("{{unsubscribe_token}}", unsubscribe_token),
+                "list_unsubscribe": f"https://knob.monster/unsubscribe?token={unsubscribe_token}",
+            }
+        )
+
+    return {
+        "status": "ready",
+        "subject": subject,
+        "from": SMTP_FROM,
+        "reply_to": "halfradiationllc@gmail.com",
+        "recipients": prepared,
+        "recipient_count": len(prepared),
+    }
+
+
+@app.post("/api/cron/newsletter-ack")
+async def newsletter_ack(request: Request):
+    assert_cron_authorized(request)
+    body = await request.json()
+    sent_count = int(body.get("sent_count") or 0)
+    failed_count = int(body.get("failed_count") or 0)
+    subject = body.get("subject") or ""
+    failed_samples = body.get("failed") or []
+
+    trigger_alert(
+        "newsletter_broadcast_finished",
+        f"finished newsletter broadcast. sent: {sent_count}, failed: {failed_count}.",
+        {"sent_count": sent_count, "failed_count": failed_count, "subject": subject},
+        distinct_id="newsletter_cron",
+    )
+    for item in failed_samples[:3]:
+        trigger_alert(
+            "newsletter_send_failed",
+            f"newsletter failed for `{item.get('email')}`: {item.get('error')}",
+            item,
+            distinct_id=item.get("email", "newsletter_cron"),
+        )
+
+    return {
+        "status": "success",
+        "sent_count": sent_count,
+        "failed_count": failed_count,
+        "subject": subject,
+    }
+
+
+@app.get("/api/cron/newsletter")
+async def trigger_newsletter_cron(request: Request):
+    """Legacy alias — newsletter sends from GitHub Actions (scripts/send_newsletter.py)."""
+    assert_cron_authorized(request)
+
+    from datetime import date
+    if date.today().isocalendar().week % 2 == 1:
+        return {"status": "skipped", "reason": "biweekly off-week"}
+
+    recipients = database.get_all_newsletter_recipients()
+    return {
+        "status": "use_github_actions",
+        "message": "Run scripts/send_newsletter.py from the Newsletter Cron workflow.",
+        "recipient_count": len(recipients),
+    }
 

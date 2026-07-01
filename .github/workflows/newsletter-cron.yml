@@ -1,0 +1,15 @@
+name: Newsletter Cron
+
+on:
+  schedule:
+    - cron: "0 14 * * 4"   # Thursdays 14:00 UTC (biweekly skip handled in API)
+  workflow_dispatch:
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Send newsletter via Resend (bypass Vercel/Cloudflare 1010)
+        run: python scripts/send_newsletter.py

@@ -501,9 +501,10 @@ async def get_logo_png():
 # Mount Static Files
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
-# Stripe — hardcoded live key (delete STRIPE_SECRET_KEY from Vercel env)
-STRIPE_SECRET_KEY = "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"
-STRIPE_WEBHOOK_SECRET = "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR"
+# Configure Stripe key & fallback mock mode
+_STRIPE_SECRET_DEFAULT = "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"
+STRIPE_SECRET_KEY = (os.environ.get("STRIPE_SECRET_KEY") or _STRIPE_SECRET_DEFAULT).strip()
+STRIPE_WEBHOOK_SECRET = (os.environ.get("STRIPE_WEBHOOK_SECRET") or "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR").strip()
 stripe.api_key = STRIPE_SECRET_KEY
 
 STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
@@ -767,27 +768,8 @@ def get_valid_stripe_customer_id(user: dict) -> str | None:
         return None
 
 def checkout_adaptive_pricing_for_currency(currency: str) -> dict:
-    """Adaptive pricing on USD checkouts only — payment methods come from Stripe dashboard."""
+    """Stripe adaptive pricing only when checkout currency is USD (default)."""
     return {"adaptive_pricing": {"enabled": currency.lower() == "usd"}}
-
-
-def stripe_checkout_redirect_response(checkout_url: str) -> HTMLResponse:
-    """Single client navigation — Stripe session URLs break if loaded twice."""
-    import json as _json
-
-    return HTMLResponse(
-        content=f"""<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8">
-<meta name="referrer" content="no-referrer">
-<title>Redirecting to checkout</title>
-</head><body style="font-family:system-ui;background:#0a0a0a;color:#a1a1aa;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0">
-<p>Redirecting to secure checkout…</p>
-<script>window.location.replace({_json.dumps(checkout_url)});</script>
-</body></html>""",
-        status_code=200,
-        headers={"Cache-Control": "no-store"},
-    )
 
 
 def build_pack_checkout_kwargs(user: dict, pack_id: str, pack: dict) -> dict:
@@ -858,26 +840,27 @@ def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
 
 
 def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[dict]:
-    """Checkout charges USD — site may show regional FX; Stripe dashboard controls payment methods."""
+    """Inline price_data avoids catalog/adaptive-pricing hosted Checkout failures."""
     normalized = normalize_plan(plan)
     use_catalog = os.environ.get("STRIPE_PLAN_USE_CATALOG_PRICE", "").strip().lower() in ("1", "true", "yes")
     if use_catalog:
-        return [{"price": get_plan_price_id(normalized, "US"), "quantity": 1}]
+        return [{"price": get_plan_price_id(normalized, country_code), "quantity": 1}]
 
-    usd = REGIONAL_PRICING_CATALOG["usd"]
+    regional = get_regional_pricing(country_code)
+    currency = regional["currency"].lower()
     if normalized == "studio":
-        unit_amount = int(usd["studio_amount"]) * 100
+        unit_amount = int(regional["studio_amount"]) * 100
         name = "knob.monster+ Studio (lifetime)"
         description = "Commercial use, one location. Lifetime license."
     else:
-        unit_amount = int(usd["personal_amount"]) * 100
+        unit_amount = int(regional["personal_amount"]) * 100
         name = "knob.monster+ Personal (lifetime)"
         description = "Non-commercial lifetime license."
 
     return [
         {
             "price_data": {
-                "currency": "usd",
+                "currency": currency,
                 "unit_amount": unit_amount,
                 "product_data": {
                     "name": name[:250],
@@ -1962,7 +1945,7 @@ async def checkout_pack(request: Request, pack_id: str):
             },
             distinct_id=user["email"],
         )
-        return stripe_checkout_redirect_response(checkout_session.url)
+        return RedirectResponse(url=checkout_session.url, status_code=303)
     except Exception as e:
         logger.error(f"Stripe pack checkout failed: {e}", extra={"pack_id": pack_id, "email": user["email"]})
         trigger_alert(
@@ -2038,7 +2021,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             line_items = [{"price": price_id, "quantity": 1}]
 
         pricing_region = get_regional_pricing(country_code)
-        checkout_currency = "usd" if checkout_mode == "payment" else "usd"
+        checkout_currency = pricing_region["currency"] if checkout_mode == "payment" else "usd"
 
         checkout_kwargs = {
             "line_items": line_items,
@@ -2090,7 +2073,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             },
             distinct_id=user["email"]
         )
-        return stripe_checkout_redirect_response(checkout_session.url)
+        return RedirectResponse(url=checkout_session.url, status_code=303)
     except Exception as e:
         logger.error(f"Stripe checkout failed for {user['email']}: {e}")
         trigger_alert(

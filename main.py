@@ -835,17 +835,17 @@ def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
     return PLAN_CATALOG[normalized]["stripe_price_id"]
 
 # Email (Resend) — HTTP API for drips; SMTP for newsletter bulk
+RESEND_API_KEY = "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa"
 SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.resend.com")
 SMTP_PORT = os.environ.get("SMTP_PORT", "587")
 SMTP_USER = os.environ.get("SMTP_USER", "resend")
-RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa")
-SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", RESEND_API_KEY)
-SMTP_FROM = os.environ.get("SMTP_FROM", "knob.monster <vault@knob.monster>")
-CRON_SECRET = os.environ.get("CRON_SECRET", "knob_drip_cron_secret_7788")
+SMTP_PASSWORD = RESEND_API_KEY
+SMTP_FROM = "Knob Monster <vault@knob.monster>"
+CRON_SECRET = "knob_drip_cron_secret_7788"
 
 
 def get_resend_api_key() -> str:
-    return RESEND_API_KEY or SMTP_PASSWORD
+    return RESEND_API_KEY
 
 
 def send_email_via_resend(
@@ -855,16 +855,15 @@ def send_email_via_resend(
     *,
     reply_to: str | None = None,
     list_unsubscribe: str | None = None,
-) -> bool:
-    """Send one email via Resend HTTP API (reliable on Vercel serverless)."""
+) -> tuple[bool, str | None]:
+    """Send one email via Resend HTTP API. Returns (ok, error_detail)."""
     import json
     import urllib.error
     import urllib.request
 
     api_key = get_resend_api_key()
     if not api_key:
-        logger.error("RESEND_API_KEY / SMTP_PASSWORD not configured")
-        return False
+        return False, "missing api key"
 
     payload: dict = {
         "from": SMTP_FROM,
@@ -873,7 +872,7 @@ def send_email_via_resend(
         "text": body,
     }
     if reply_to:
-        payload["reply_to"] = reply_to
+        payload["reply_to"] = [reply_to]
     if list_unsubscribe:
         payload["headers"] = {"List-Unsubscribe": f"<{list_unsubscribe}>"}
 
@@ -889,14 +888,16 @@ def send_email_via_resend(
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
             resp.read()
-        return True
+        return True, None
     except urllib.error.HTTPError as err:
         detail = err.read().decode("utf-8", errors="replace")
-        logger.error(f"resend api failed for {to}: {err.code} {detail}")
-        return False
+        error = f"HTTP {err.code}: {detail}"
+        logger.error(f"resend api failed for {to}: {error}")
+        return False, error
     except Exception as err:
-        logger.error(f"resend api failed for {to}: {err}")
-        return False
+        error = str(err)
+        logger.error(f"resend api failed for {to}: {error}")
+        return False, error
 
 
 def assert_cron_authorized(request: Request) -> None:
@@ -3050,6 +3051,7 @@ async def run_drip_check() -> dict:
     skipped_young = 0
     failed_count = 0
     pending_count = 0
+    last_error: str | None = None
 
     try:
         if not hasattr(database, "get_pending_drip_users"):
@@ -3061,7 +3063,6 @@ async def run_drip_check() -> dict:
 
         users = database.get_pending_drip_users()
         pending_count = len(users)
-        resend_configured = bool(get_resend_api_key())
 
         for u in users:
             try:
@@ -3073,7 +3074,7 @@ async def run_drip_check() -> dict:
 
                 email = u["email"]
                 user_id = u["id"]
-                sent = send_email_via_resend(
+                sent, resend_error = send_email_via_resend(
                     email,
                     DRIP_SUBJECT,
                     DRIP_BODY_TEMPLATE,
@@ -3096,16 +3097,19 @@ async def run_drip_check() -> dict:
                     )
                 else:
                     failed_count += 1
+                    last_error = resend_error
                     trigger_alert(
                         "drip_email_failed",
-                        f"paywall drip **failed** for `{email}` — will retry next cron run.",
+                        f"paywall drip failed for `{email}`: {resend_error or 'unknown'}",
                         {
                             "email": email,
                             "elapsed_seconds": int(elapsed.total_seconds()),
-                            "resend_configured": resend_configured,
+                            "resend_error": resend_error,
                         },
                         distinct_id=email,
                     )
+                    import time
+                    time.sleep(0.6)
             except Exception as user_err:
                 failed_count += 1
                 logger.error(f"failed processing drip for user {u.get('email')}: {user_err}")
@@ -3123,7 +3127,7 @@ async def run_drip_check() -> dict:
         "sent": sent_count,
         "skipped_young": skipped_young,
         "failed": failed_count,
-        "resend_configured": bool(get_resend_api_key()),
+        "last_resend_error": last_error,
     }
     trigger_alert(
         "drip_cron_finished",

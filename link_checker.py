@@ -6,6 +6,12 @@ import urllib.parse
 import json
 from datetime import datetime
 
+# Windows consoles often default to cp1252; emoji in print() then raises UnicodeEncodeError.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 # Discord Webhook URL for alerts
 DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1519380424550256660/VetDI5944BLsDv8bJx-1zWC55EPpVsUaQbFykMbUgWj7O_9K9_q7xWzwxQaziXCC3Fg_"
 

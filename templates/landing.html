@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="overflow-x-hidden" data-pricing-region="{{ pricing.region if pricing is defined else 'usd' }}">
+<html lang="en" data-pricing-region="{{ pricing.region if pricing is defined else 'usd' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -933,7 +933,7 @@
     {% endif %}
 </head>
 
-<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+<body class="bg-black text-zinc-100 font-sans antialiased relative">
 
     <!-- Global Dither Overlay -->
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
@@ -1104,7 +1104,7 @@
     </div>
 
     <header
-        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-[60]">
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <a href="/" class="flex items-center gap-2.5 group">

@@ -190,6 +190,20 @@
             will-change: filter;
         }
 
+        /* B&W, pixel-crunched — no dither (code screenshots, UI crops) */
+        .mono-pixel-wrap img.mono-pixel {
+            filter: grayscale(100%) contrast(172%) brightness(88%);
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            transform: scale(1.1);
+            transform-origin: center center;
+            transition: transform 500ms;
+        }
+
+        .mono-pixel-wrap:hover img.mono-pixel {
+            transform: scale(1.16);
+        }
+
         /* 1-bit style dither mesh with retro ASCII characters */
         /* Mobile specific fancy background pattern */
         .mobile-bg-pattern {
@@ -1475,10 +1489,10 @@
                     <!-- Step 2 -->
                     <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal"
                         style="--delay: 150ms;">
-                        <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
+                        <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black mono-pixel-wrap">
                             <img src="{{ asset_url('index_extraction.avif') }}" alt="Auto-naming Hexadecimal Parser" width="1024"
                                 height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
+                                class="w-full h-full object-cover mono-pixel">
                         </div>
                         <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
                             <div class="space-y-3 text-left">
@@ -1502,10 +1516,10 @@
                     <!-- Step 3 -->
                     <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal"
                         style="--delay: 300ms;">
-                        <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
+                        <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black mono-pixel-wrap">
                             <img src="{{ asset_url('recall_button.avif') }}" alt="Single Click Preset Flash Sync" width="1024"
                                 height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
+                                class="w-full h-full object-cover mono-pixel">
                         </div>
                         <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
                             <div class="space-y-3 text-left">

@@ -745,7 +745,11 @@ PLAN_CATALOG = {
 }
 
 def normalize_plan(plan: str) -> str:
-    if not plan or plan in ("lifetime", "personal"):
+    if not plan:
+        return "free"
+    if plan == "free":
+        return "free"
+    if plan in ("lifetime", "personal"):
         return "personal"
     if plan == "studio":
         return "studio"
@@ -1486,7 +1490,7 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     return response
 
 @app.get("/signup", response_class=HTMLResponse)
-async def signup_page(request: Request, error: str = None, plan: str = "personal"):
+async def signup_page(request: Request, error: str = None, plan: str = None):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
     plan = normalize_plan(plan)
@@ -1507,7 +1511,7 @@ async def do_signup(
     email: str = Form(...),
     password: str = Form(...),
     confirm_password: str = Form(...),
-    plan: str = Form("personal"),
+    plan: str = Form("free"),
     license_ack: str = Form(None),
 ):
     email_clean = email.lower().strip()

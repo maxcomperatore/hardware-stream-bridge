@@ -104,8 +104,9 @@
             <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start
                 backup</p>
             <p id="signup-plan-label" class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">
-                {% if plan == 'studio' %}knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime{% else
-                %}Personal plan · {{ plan_catalog.personal.price_display }} lifetime{% endif %}
+                {% if plan == 'free' %}Free tier · $0 · no card{% elif plan == 'studio' %}knob.monster+ Studio · {{
+                plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{
+                plan_catalog.personal.price_display }} lifetime{% endif %}
             </p>
         </div>
 
@@ -117,7 +118,7 @@
         {% endif %}
 
         <form action="/signup" method="POST" class="space-y-4">
-            <input type="hidden" name="plan" id="signup-plan" value="{{ plan or 'personal' }}">
+            <input type="hidden" name="plan" id="signup-plan" value="{{ plan or 'free' }}">
             <div>
                 <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email
                     Address</label>
@@ -160,7 +161,11 @@
                 </div>
             </div>
 
-            {% if plan != 'studio' %}
+            {% if plan == 'studio' %}
+            <p id="studio-license-note" class="text-[9px] text-zinc-500 leading-relaxed">
+                knob.monster+ Studio licenses cover commercial use at one location.
+            </p>
+            {% elif plan != 'free' %}
             <div id="personal-license-ack">
                 <label class="flex items-start gap-2.5 cursor-pointer group">
                     <input type="checkbox" name="license_ack" id="license_ack" value="1" required
@@ -170,10 +175,6 @@
                     </span>
                 </label>
             </div>
-            {% else %}
-            <p id="studio-license-note" class="text-[9px] text-zinc-500 leading-relaxed">
-                knob.monster+ Studio licenses cover commercial use at one location.
-            </p>
             {% endif %}
 
             <button type="submit" id="register-btn"
@@ -278,8 +279,9 @@
         confirmInput.addEventListener('input', checkValidation);
 
         const CONSUMER_EMAIL_DOMAINS = new Set({{ consumer_email_domains | tojson if consumer_email_domains is defined else '[]' }});
-        const INITIAL_PLAN = {{ (plan or 'personal') | tojson }};
+        const INITIAL_PLAN = {{ (plan or 'free') | tojson }};
         const PLAN_LABELS = {
+            free: 'Free tier · $0 · no card',
             personal: 'Personal plan · {{ plan_catalog.personal.price_display }} lifetime',
             studio: 'knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime',
         };
@@ -291,10 +293,10 @@
 
         function updatePlanUi(effectivePlan) {
             if (planLabel) {
-                planLabel.textContent = effectivePlan === 'studio' ? PLAN_LABELS.studio : PLAN_LABELS.personal;
+                planLabel.textContent = PLAN_LABELS[effectivePlan] || PLAN_LABELS.free;
             }
             if (personalAck && licenseCheckbox) {
-                if (effectivePlan === 'studio') {
+                if (effectivePlan === 'studio' || effectivePlan === 'free') {
                     personalAck.classList.add('hidden');
                     licenseCheckbox.removeAttribute('required');
                     licenseCheckbox.checked = false;
@@ -307,6 +309,11 @@
 
         function applyPlanForEmail(email) {
             if (!planInput) return;
+            if (INITIAL_PLAN === 'free') {
+                planInput.value = 'free';
+                updatePlanUi('free');
+                return;
+            }
             if (INITIAL_PLAN === 'studio') {
                 planInput.value = 'studio';
                 updatePlanUi('studio');

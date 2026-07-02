@@ -1585,7 +1585,7 @@
         <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
             {% if pricing is not defined %}
             {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '39', 'studio_amount': '399',
-            'billing_label': 'USD / ONE-TIME'} %}
+            'billing_label': 'USD / ONE-TIME', 'free_price_display': '$0'} %}
             {% endif %}
             <div class="text-center max-w-2xl mx-auto mb-8 reveal">
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
@@ -1604,7 +1604,7 @@
                     <a href="/signup?plan=free" role="button"
                         class="pricing-free-cta relative z-10 mx-auto w-full flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full bg-white hover:bg-zinc-200 text-black cursor-pointer shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-200 select-none">
                         <span class="text-lg md:text-xl font-pixel uppercase tracking-widest text-black">Start Free</span>
-                        <span class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-500">$0 · no card · click to start</span>
+                        <span id="pricing-free-subtext" class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-500">{{ pricing.free_price_display }} · no card · click to start</span>
                     </a>
                 </div>
             </div>
@@ -1839,10 +1839,10 @@
             const CA_COUNTRY_CODES = {{ ca_country_codes | tojson if ca_country_codes is defined else '[]' }};
             const AU_COUNTRY_CODES = {{ au_country_codes | tojson if au_country_codes is defined else '[]' }};
             const REGIONAL_PRICING_DISPLAY = {
-                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '39', studio: '399' },
-                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '39', studio: '399' },
-                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '59', studio: '599' },
-                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '59', studio: '599' },
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '39', studio: '399', free: '€0' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '39', studio: '399', free: '£0' },
+                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '59', studio: '599', free: '$0 CAD' },
+                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '59', studio: '599', free: '$0 AUD' },
             };
 
             function resolveRegionalPricingRegion(data) {
@@ -1883,6 +1883,10 @@
                 if (anchorPersonalAmount) anchorPersonalAmount.textContent = cfg.personal;
                 if (anchorStudioSymbol) anchorStudioSymbol.textContent = cfg.symbol;
                 if (anchorStudioAmount) anchorStudioAmount.textContent = cfg.studio;
+                const freeSubtext = document.getElementById('pricing-free-subtext');
+                if (freeSubtext && cfg.free) {
+                    freeSubtext.textContent = `${cfg.free} · no card · click to start`;
+                }
                 document.documentElement.dataset.pricingRegion = region;
             }
 

@@ -104,7 +104,7 @@
             <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start
                 backup</p>
             <p id="signup-plan-label" class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">
-                {% if plan == 'free' %}Free tier · $0 · no card{% elif plan == 'studio' %}knob.monster+ Studio · {{
+                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% elif plan == 'studio' %}knob.monster+ Studio · {{
                 plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{
                 plan_catalog.personal.price_display }} lifetime{% endif %}
             </p>
@@ -281,7 +281,7 @@
         const CONSUMER_EMAIL_DOMAINS = new Set({{ consumer_email_domains | tojson if consumer_email_domains is defined else '[]' }});
         const INITIAL_PLAN = {{ (plan or 'free') | tojson }};
         const PLAN_LABELS = {
-            free: 'Free tier · $0 · no card',
+            free: 'Free tier · {{ pricing.free_price_display | default("$0") }} · no card',
             personal: 'Personal plan · {{ plan_catalog.personal.price_display }} lifetime',
             studio: 'knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime',
         };

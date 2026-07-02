@@ -664,6 +664,22 @@ def get_pricing_region(country_code: str | None) -> str:
 def get_regional_pricing(country_code: str | None) -> dict:
     return dict(REGIONAL_PRICING_CATALOG[get_pricing_region(country_code)])
 
+
+def format_free_price_display(regional: dict) -> str:
+    region = regional["region"]
+    if region == "gbp":
+        return "£0"
+    if region == "eur":
+        return "€0"
+    if region == "usd":
+        return "$0"
+    return f"{regional['symbol']}0 {regional['currency']}"
+
+
+def enrich_regional_pricing(country_code: str | None = None) -> dict:
+    regional = get_regional_pricing(country_code)
+    return {**regional, "free_price_display": format_free_price_display(regional)}
+
 def resolve_client_ip(request: Request) -> tuple[str, bool]:
     client_ip = request.client.host if request.client else "127.0.0.1"
     x_forwarded_for = request.headers.get("x-forwarded-for")
@@ -843,6 +859,48 @@ def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
     if normalized == "studio":
         return "price_1Tngs7LuSQGuB7eysSDEeYFN"
     return PLAN_CATALOG[normalized]["stripe_price_id"]
+
+
+def format_plan_price_display(regional: dict, plan: str) -> str:
+    amount = regional["personal_amount"] if plan == "personal" else regional["studio_amount"]
+    symbol = regional["symbol"]
+    if regional["region"] == "usd":
+        return f"{symbol}{amount}"
+    return f"{symbol}{amount} {regional['currency']}"
+
+
+def get_plan_catalog(country_code: str | None = None) -> dict:
+    regional = get_regional_pricing(country_code)
+    return {
+        "personal": {
+            "label": "Personal",
+            "price_display": format_plan_price_display(regional, "personal"),
+            "amount_cents": int(regional["personal_amount"]) * 100,
+            "stripe_price_id": get_plan_price_id("personal", country_code),
+            "commercial": False,
+        },
+        "studio": {
+            "label": "knob.monster+ Studio",
+            "price_display": format_plan_price_display(regional, "studio"),
+            "amount_cents": int(regional["studio_amount"]) * 100,
+            "stripe_price_id": get_plan_price_id("studio", country_code),
+            "commercial": True,
+        },
+    }
+
+
+def signup_template_context(request: Request, **kwargs) -> dict:
+    country_code = get_request_country_code(request)
+    return {
+        "consumer_email_domains": sorted(CONSUMER_EMAIL_DOMAINS),
+        "plan_catalog": get_plan_catalog(country_code),
+        "pricing": enrich_regional_pricing(country_code),
+        **kwargs,
+    }
+
+
+def render_signup(request: Request, **kwargs):
+    return render_template("signup.html", request, signup_template_context(request, **kwargs))
 
 
 def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[dict]:
@@ -1186,7 +1244,7 @@ async def index(request: Request):
             "user": user,
             "remaining_slots": remaining_slots,
             "total_patches": total_patches,
-            "pricing": get_regional_pricing(country_code),
+            "pricing": enrich_regional_pricing(country_code),
             "eur_pricing_enabled": eur_pricing_enabled(),
             "gbp_pricing_enabled": gbp_pricing_enabled(),
             "cad_pricing_enabled": cad_pricing_enabled(),
@@ -1494,16 +1552,7 @@ async def signup_page(request: Request, error: str = None, plan: str = None):
     if get_current_user(request):
         return RedirectResponse(url="/dashboard")
     plan = normalize_plan(plan)
-    return render_template(
-        "signup.html",
-        request,
-        {
-            "error": error,
-            "plan": plan,
-            "plan_catalog": PLAN_CATALOG,
-            "consumer_email_domains": sorted(CONSUMER_EMAIL_DOMAINS),
-        },
-    )
+    return render_signup(request, error=error, plan=plan)
 
 @app.post("/signup")
 async def do_signup(
@@ -1526,15 +1575,10 @@ async def do_signup(
             {"email": email, "reason": "invalid_email_format"},
             distinct_id="anonymous"
         )
-        return render_template(
-            "signup.html",
+        return render_signup(
             request,
-            {
-                "error": "Invalid email address format",
-                "plan": plan,
-                "plan_catalog": PLAN_CATALOG,
-                "consumer_email_domains": sorted(CONSUMER_EMAIL_DOMAINS),
-            },
+            error="Invalid email address format",
+            plan=plan,
         )
 
     if password != confirm_password:
@@ -1544,7 +1588,7 @@ async def do_signup(
             {"email": email, "reason": "password_mismatch"},
             distinct_id="anonymous"
         )
-        return render_template("signup.html", request, {"error": "Passwords do not match", "plan": plan, "plan_catalog": PLAN_CATALOG})
+        return render_signup(request, error="Passwords do not match", plan=plan)
     
     if len(password) < 8:
         trigger_alert(
@@ -1553,13 +1597,13 @@ async def do_signup(
             {"email": email, "reason": "weak_password"},
             distinct_id="anonymous"
         )
-        return render_template("signup.html", request, {"error": "Password must be at least 8 characters long", "plan": plan, "plan_catalog": PLAN_CATALOG})
+        return render_signup(request, error="Password must be at least 8 characters long", plan=plan)
     
     if plan == "personal" and not license_ack:
-        return render_template(
-            "signup.html",
+        return render_signup(
             request,
-            {"error": "Please confirm personal, non-commercial use for the Personal plan.", "plan": plan, "plan_catalog": PLAN_CATALOG},
+            error="Please confirm personal, non-commercial use for the Personal plan.",
+            plan=plan,
         )
     
     user = database.get_user_by_email(email)
@@ -1570,7 +1614,7 @@ async def do_signup(
             {"email": email, "reason": "email_registered"},
             distinct_id=email
         )
-        return render_template("signup.html", request, {"error": "Email is already registered", "plan": plan, "plan_catalog": PLAN_CATALOG})
+        return render_signup(request, error="Email is already registered", plan=plan)
     
     try:
         database.create_user(email_clean, hash_password(password))
@@ -1589,7 +1633,7 @@ async def do_signup(
             {"email": email, "plan": plan, "error": str(e)},
             distinct_id=email or "anonymous"
         )
-        return render_template("signup.html", request, {"error": "Account registration failed.", "plan": plan, "plan_catalog": PLAN_CATALOG})
+        return render_signup(request, error="Account registration failed.", plan=plan)
 
     # Check if this email paid before registering — auto-upgrade instantly
     pending = database.consume_pending_premium(email)

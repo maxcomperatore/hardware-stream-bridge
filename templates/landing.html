@@ -156,6 +156,76 @@
             font-palette: --synth-nabla;
         }
 
+        @keyframes pricing-gem-shimmer {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .pricing-gem-price {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0;
+            letter-spacing: -0.03em;
+        }
+
+        .pricing-gem-blue {
+            --pricing-gem-gradient: linear-gradient(105deg,
+                    #1e3a8a 0%,
+                    #2563eb 16%,
+                    #60a5fa 32%,
+                    #dbeafe 46%,
+                    #93c5fd 54%,
+                    #3b82f6 68%,
+                    #1d4ed8 84%,
+                    #1e3a8a 100%);
+            background: var(--pricing-gem-gradient);
+            background-size: 260% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+            animation: pricing-gem-shimmer 7s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.32));
+        }
+
+        .pricing-gem-currency-icon {
+            display: inline-block;
+            flex-shrink: 0;
+            width: 2rem;
+            height: 2rem;
+            transform: translateY(-2px);
+            background: var(--pricing-gem-gradient, linear-gradient(105deg,
+                    #1e3a8a 0%,
+                    #2563eb 16%,
+                    #60a5fa 32%,
+                    #dbeafe 46%,
+                    #93c5fd 54%,
+                    #3b82f6 68%,
+                    #1d4ed8 84%,
+                    #1e3a8a 100%));
+            background-size: 260% 100%;
+            animation: pricing-gem-shimmer 7s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.32));
+        }
+
+        .pricing-gem-currency-usd {
+            -webkit-mask: url('https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg') center / contain no-repeat;
+            mask: url('https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg') center / contain no-repeat;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .pricing-gem-blue,
+            .pricing-gem-currency-icon {
+                animation: none;
+                background-position: 50% 50%;
+            }
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -1655,24 +1725,24 @@
                         </div>
                         <div class="h-16 flex flex-col justify-center">
                                 <div class="flex items-baseline gap-2">
-                                    <span class="text-5xl font-lcd text-emerald-400 flex items-baseline gap-0.5">
-                                    <span id="pricing-personal-currency" class="pricing-currency-slot">
-                                        {% if pricing.region == 'usd' %}
-                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
-                                            class="h-8 w-auto select-none pricing-currency-usd"
-                                            style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />
+                                    <span class="text-5xl font-lcd flex items-baseline gap-0.5">
+                                    <span class="pricing-gem-price">
+                                    <span id="pricing-personal-currency" class="pricing-currency-slot inline-flex items-baseline">
+                                        {% if pricing.region == 'usd' or pricing.region == 'cad' or pricing.region == 'aud' %}
+                                        <span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>
                                         {% else %}
-                                        <span class="select-none text-4xl md:text-5xl leading-none"
+                                        <span class="pricing-gem-blue select-none text-4xl md:text-5xl leading-none"
                                             style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
-                                    </span><span id="pricing-personal-amount">{{ pricing.personal_amount }}</span>
+                                    </span><span id="pricing-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount }}</span>
+                                    </span>
                                     </span>
                                 <span id="pricing-personal-billing"
                                     class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label
                                     }}</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                <span class="text-emerald-400 font-semibold">Own it forever.</span> No subscriptions.
+                                <span class="pricing-gem-blue font-semibold">Own it forever.</span> No subscriptions.
                                 </div>
                             </div>
                             <ul class="space-y-2.5 text-xs text-zinc-400">
@@ -1761,23 +1831,23 @@
                     </div>
                         <div class="h-16 flex flex-col justify-center">
                             <div class="flex items-baseline gap-2">
-                                <span class="text-5xl font-lcd text-blue-400 flex items-baseline gap-0.5">
-                                    <span id="pricing-studio-currency" class="pricing-currency-slot">
-                                        {% if pricing.region == 'usd' %}
-                                        <img src="https://api.iconify.design/dinkie-icons:heavy-dollar-sign.svg?color=%2360a5fa"
-                                            class="h-8 w-auto select-none pricing-currency-usd"
-                                            style="image-rendering: pixelated; transform: translateY(-2px);" alt="" />
+                                <span class="text-5xl font-lcd flex items-baseline gap-0.5">
+                                    <span class="pricing-gem-price">
+                                    <span id="pricing-studio-currency" class="pricing-currency-slot inline-flex items-baseline">
+                                        {% if pricing.region == 'usd' or pricing.region == 'cad' or pricing.region == 'aud' %}
+                                        <span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>
                                         {% else %}
-                                        <span class="select-none text-4xl md:text-5xl leading-none"
+                                        <span class="pricing-gem-blue select-none text-4xl md:text-5xl leading-none"
                                             style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
-                                    </span><span id="pricing-studio-amount">{{ pricing.studio_amount }}</span>
+                                    </span><span id="pricing-studio-amount" class="pricing-gem-blue">{{ pricing.studio_amount }}</span>
+                                    </span>
                         </span>
                                 <span id="pricing-studio-billing" class="text-xs font-roman uppercase text-zinc-400">{{
                                     pricing.billing_label }}</span>
                     </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                Licensed for <span class="text-blue-400 font-semibold">commercial use.</span>
+                                Licensed for <span class="pricing-gem-blue font-semibold">commercial use.</span>
                     </div>
                         </div>
                         <ul class="space-y-2.5 text-xs text-zinc-400">
@@ -1820,8 +1890,8 @@
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
                     Desktop librarians often cost $200+. knob.monster+ is
-                    <span class="text-emerald-400 font-semibold"><span id="pricing-anchor-personal-symbol">{{
-                            pricing.symbol }}</span><span id="pricing-anchor-personal-amount">{{ pricing.personal_amount
+                    <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{
+                            pricing.symbol }}</span><span id="pricing-anchor-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount
                             }}</span></span>
                     once.
                         </p>
@@ -1883,6 +1953,13 @@
                 return null;
             }
 
+            function pricingCurrencyMarkup(symbol) {
+                if (symbol === '$') {
+                    return '<span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>';
+                }
+                return `<span class="pricing-gem-blue select-none text-4xl md:text-5xl leading-none" style="transform: translateY(-2px);">${symbol}</span>`;
+            }
+
             function applyRegionalPricingDisplay(region) {
                 const cfg = REGIONAL_PRICING_DISPLAY[region];
                 if (!cfg) return;
@@ -1892,7 +1969,7 @@
                 const studioAmount = document.getElementById('pricing-studio-amount');
                 const personalBilling = document.getElementById('pricing-personal-billing');
                 const studioBilling = document.getElementById('pricing-studio-billing');
-                const symbolMarkup = `<span class="select-none text-4xl md:text-5xl leading-none" style="transform: translateY(-2px);">${cfg.symbol}</span>`;
+                const symbolMarkup = pricingCurrencyMarkup(cfg.symbol);
                 if (personalCurrency) personalCurrency.innerHTML = symbolMarkup;
                 if (studioCurrency) studioCurrency.innerHTML = symbolMarkup;
                 if (personalAmount) personalAmount.textContent = cfg.personal;
@@ -1903,9 +1980,15 @@
                 const anchorPersonalAmount = document.getElementById('pricing-anchor-personal-amount');
                 const anchorStudioSymbol = document.getElementById('pricing-anchor-studio-symbol');
                 const anchorStudioAmount = document.getElementById('pricing-anchor-studio-amount');
-                if (anchorPersonalSymbol) anchorPersonalSymbol.textContent = cfg.symbol;
+                if (anchorPersonalSymbol) {
+                    anchorPersonalSymbol.textContent = cfg.symbol;
+                    anchorPersonalSymbol.classList.add('pricing-gem-blue');
+                }
                 if (anchorPersonalAmount) anchorPersonalAmount.textContent = cfg.personal;
-                if (anchorStudioSymbol) anchorStudioSymbol.textContent = cfg.symbol;
+                if (anchorStudioSymbol) {
+                    anchorStudioSymbol.textContent = cfg.symbol;
+                    anchorStudioSymbol.classList.add('pricing-gem-blue');
+                }
                 if (anchorStudioAmount) anchorStudioAmount.textContent = cfg.studio;
                 const freeSubtext = document.getElementById('pricing-free-subtext');
                 if (freeSubtext && cfg.free) {

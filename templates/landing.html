@@ -1587,7 +1587,7 @@
             {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '39', 'studio_amount': '399',
             'billing_label': 'USD / ONE-TIME'} %}
             {% endif %}
-            <div class="text-center max-w-2xl mx-auto mb-20 reveal">
+            <div class="text-center max-w-2xl mx-auto mb-8 reveal">
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
                     is_halloween_week %}A billing ritual for immortal synth souls.{% else %}A pricing system built for
                     fellow synth heads.{% endif %}</h2>
@@ -1597,11 +1597,16 @@
                         don't have to</span>. <span id="rn-securesounds">Protect your creative work with simple,
                         reliable backups and keep your hardware alive.</span>
                 </p>
-                <a href="/signup?plan=free" role="button"
-                    class="pricing-free-cta mt-8 mx-auto w-full max-w-sm flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full bg-white hover:bg-zinc-200 text-black cursor-pointer shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-200 select-none">
-                    <span class="text-lg md:text-xl font-pixel uppercase tracking-widest text-emerald-400">Start Free</span>
-                    <span class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-500">$0 · no card · click to start</span>
-                </a>
+                <div class="relative mt-8 mx-auto w-full max-w-sm pt-5">
+                    <img src="/static/logo.png" alt="" width="56" height="56" aria-hidden="true"
+                        class="absolute left-1/2 top-0 z-0 w-14 h-14 -translate-x-1/2 -translate-y-1 select-none pointer-events-none"
+                        style="image-rendering: pixelated; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));">
+                    <a href="/signup?plan=free" role="button"
+                        class="pricing-free-cta relative z-10 mx-auto w-full flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full bg-white hover:bg-zinc-200 text-black cursor-pointer shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-200 select-none">
+                        <span class="text-lg md:text-xl font-pixel uppercase tracking-widest text-black">Start Free</span>
+                        <span class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-500">$0 · no card · click to start</span>
+                    </a>
+                </div>
             </div>
 
             <!-- Pricing Cards -->
@@ -1790,15 +1795,10 @@
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
-                    Legacy SysEx librarians run
-                    <span class="text-zinc-400 line-through decoration-zinc-600">$200–500+</span>.
-                    knob.monster+:
+                    Desktop librarians often cost $200+. knob.monster+ is
                     <span class="text-emerald-400 font-semibold"><span id="pricing-anchor-personal-symbol">{{
                             pricing.symbol }}</span><span id="pricing-anchor-personal-amount">{{ pricing.personal_amount
                             }}</span></span>
-                    once · Studio:
-                    <span class="text-blue-400 font-semibold"><span id="pricing-anchor-studio-symbol">{{ pricing.symbol
-                            }}</span><span id="pricing-anchor-studio-amount">{{ pricing.studio_amount }}</span></span>
                     once.
                         </p>
                     </div>

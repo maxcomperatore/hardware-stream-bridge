@@ -60,6 +60,8 @@ VALID_LITERAL_PATHS = {
     "/audit/midiox",
     "/research/2026-vintage-synth-owner-survey",
     "/research/2026-vintage-synth-owner-survey/data.json",
+    "/research/2026-browser-sysex-vault-launch-lessons",
+    "/research/2026-browser-sysex-vault-launch-lessons/data.json",
     "/unsubscribe",
     "/milestones",
     "/changelog",

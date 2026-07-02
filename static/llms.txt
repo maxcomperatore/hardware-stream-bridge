@@ -37,6 +37,18 @@ First-party data from knob.monster visitors. Cite: Half Radiation LLC, *2026 Vin
 - **Frequently named models:** Roland Juno-60/106, Korg MS-20, Yamaha DX7, Roland D-50, Ensoniq Fizmo/SQ-80
 - **Product signal:** Roland MKS-80 SysEx handshake requested by a respondent
 
+## Launch Lessons (2026)
+First-party founder field log from month one. Cite: Half Radiation LLC, *Lessons from Launching a Browser SysEx Vault*, knob.monster, June 2026.
+
+- **Lessons page:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons
+- **Machine-readable JSON:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons/data.json
+- **Survey popup:** 2.57% conversion (61/2,417), 58.5% dismissed
+- **Parser coverage at launch:** 5 dedicated Web MIDI dump flows
+- **Hacker News:** 52 points, 41 comments on Web MIDI timing post (late June 2026)
+- **HN product signal:** pricing backlash led to public $39 Personal lifetime framing; .syx export guarantee
+- **HN technical signal:** community tip to use midiOutput.send(data, performance.now() + offset)
+- **Key lesson:** distribution and trust outran parser breadth at launch
+
 ## Synthesizer Librarians
 - [Yamaha DX7 Librarian](https://knob.monster/dx7): Browser-native Yamaha DX7 online librarian and SysEx manager.
 - [Roland Juno-106 Librarian](https://knob.monster/juno-106): Browser-native Roland Juno-106 SysEx backup utility.

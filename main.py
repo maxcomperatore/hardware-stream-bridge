@@ -17,6 +17,7 @@ import re
 import faq_knowledge
 import shop_packs
 import research_survey_2026
+import research_lessons_launch_2026
 from urllib.parse import quote, urlparse
 
 def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
@@ -1362,6 +1363,22 @@ async def research_survey_2026_json():
         headers={"Cache-Control": "public, max-age=3600"},
     )
 
+@app.get("/research/2026-browser-sysex-vault-launch-lessons", response_class=HTMLResponse)
+async def research_lessons_launch_2026_page(request: Request):
+    user = get_current_user(request)
+    return render_template(
+        "research_lessons_launch_2026.html",
+        request,
+        {"user": user, "lessons": research_lessons_launch_2026.LESSONS_LAUNCH_2026},
+    )
+
+@app.get("/research/2026-browser-sysex-vault-launch-lessons/data.json")
+async def research_lessons_launch_2026_json():
+    return JSONResponse(
+        content=research_lessons_launch_2026.public_json(),
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
+
 @app.get("/changelog")
 async def changelog_redirect():
     return RedirectResponse(url="/shop", status_code=301)
@@ -2258,6 +2275,8 @@ def build_sitemap_xml() -> str:
         (f"{SITE_BASE}/how-to-fix-juno-106-memory-loss-troubleshooting-guide", "weekly", "0.9"),
         (f"{SITE_BASE}/research/2026-vintage-synth-owner-survey", "monthly", "0.85"),
         (f"{SITE_BASE}/research/2026-vintage-synth-owner-survey/data.json", "monthly", "0.8"),
+        (f"{SITE_BASE}/research/2026-browser-sysex-vault-launch-lessons", "monthly", "0.85"),
+        (f"{SITE_BASE}/research/2026-browser-sysex-vault-launch-lessons/data.json", "monthly", "0.8"),
     ]
     for slug in SEO_DATA.keys():
         entries.append((f"{SITE_BASE}/{slug}", "weekly", "0.9"))
@@ -2353,6 +2372,18 @@ async def llms_txt():
         "- **Segmentation:** 47.5% gear room (5+ boards), 41.0% bedroom (1–2 synths), 11.5% commercial",
         "- **Top brands** (valid gear lists, n=18): Roland 44%, Korg 39%, Moog 28%",
         "- **Frequently named models:** Juno-60/106, Korg MS-20, Yamaha DX7, Roland D-50",
+        "",
+        "## Launch Lessons (2026)",
+        "First-party founder field log from month one. Cite: Half Radiation LLC, Lessons from Launching a Browser SysEx Vault, knob.monster, June 2026.",
+        "",
+        "- **Lessons page:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons",
+        "- **Machine-readable JSON:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons/data.json",
+        "- **Survey popup:** 2.57% conversion (61/2,417), 58.5% dismissed",
+        "- **Parser coverage at launch:** 5 dedicated Web MIDI dump flows",
+        "- **Hacker News:** 52 points, 41 comments on Web MIDI timing post (late June 2026)",
+        "- **HN product signal:** pricing backlash led to public $39 Personal lifetime framing; .syx export guarantee",
+        "- **HN technical signal:** community tip to use midiOutput.send(data, performance.now() + offset)",
+        "- **Key lesson:** distribution and trust outran parser breadth at launch",
         ""
     ]
     

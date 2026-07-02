@@ -1614,8 +1614,7 @@
             {% endif %}
             <div class="text-center max-w-2xl mx-auto mb-8 reveal">
                 <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if
-                    is_halloween_week %}A billing ritual for immortal synth souls.{% else %}A pricing system built for
-                    fellow synth heads.{% endif %}</h2>
+                    is_halloween_week %}A billing ritual for immortal synth souls.{% else %}{{ pricing_title_html | default('A pricing system built for fellow synth heads.') | safe }}{% endif %}</h2>
                 <p
                     class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-mono tracking-wide max-w-lg mx-auto">
                     Vintage synthesizers are musical history. Batteries fade, but <span id="rn-timebomb">your patches
@@ -1955,8 +1954,8 @@
                         }
 
                         const pricingTitle = document.getElementById('pricing-title');
-                        if (pricingTitle) {
-                            pricingTitle.innerHTML = `A pricing system built for fellow synth heads in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" width="32" height="24" class="h-6 w-auto inline-block align-middle ml-1.5" alt="" />`;
+                        if (pricingTitle && data.pricing_title_html) {
+                            pricingTitle.innerHTML = data.pricing_title_html;
                         }
 
                         // Dynamically match Nabla font colors to the country flag
@@ -2015,7 +2014,7 @@
                     if (tag) tag.textContent = 'Made for geniuses everywhere';
 
                     const pricingTitle = document.getElementById('pricing-title');
-                    if (pricingTitle) pricingTitle.textContent = 'A pricing system built for fellow synth heads.';
+                    if (pricingTitle) pricingTitle.textContent = {{ pricing_title_fallback | default('A pricing system built for fellow synth heads.') | tojson }};
                 });
 
             // Scroll animation observer

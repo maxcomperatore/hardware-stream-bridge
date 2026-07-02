@@ -18,6 +18,7 @@ import faq_knowledge
 import shop_packs
 import research_survey_2026
 import research_lessons_launch_2026
+import pricing_geo_titles
 from urllib.parse import quote, urlparse
 
 def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
@@ -1237,6 +1238,9 @@ async def index(request: Request):
         logger.error(f"Failed to query user and patches count: {e}")
     remaining_slots = max(0, 105 - user_count)
     country_code = get_request_country_code(request)
+    client_ip, is_private = resolve_client_ip(request)
+    geo = lookup_geo_country(client_ip, is_private)
+    pricing_title = pricing_geo_titles.build_pricing_title(country_code, geo.get("country_name"))
     return render_template(
         "landing.html",
         request,
@@ -1245,6 +1249,8 @@ async def index(request: Request):
             "remaining_slots": remaining_slots,
             "total_patches": total_patches,
             "pricing": enrich_regional_pricing(country_code),
+            "pricing_title_html": pricing_title["html"],
+            "pricing_title_fallback": pricing_geo_titles.DEFAULT_PRICING_TITLE,
             "eur_pricing_enabled": eur_pricing_enabled(),
             "gbp_pricing_enabled": gbp_pricing_enabled(),
             "cad_pricing_enabled": cad_pricing_enabled(),
@@ -1469,10 +1475,13 @@ async def get_geoip(request: Request):
     geo = lookup_geo_country(client_ip, is_private)
     country_code = get_request_country_code(request)
     pricing = get_regional_pricing(country_code)
+    pricing_title = pricing_geo_titles.build_pricing_title(country_code, geo.get("country_name"))
     return {
         **geo,
         "country": country_code,
         "pricing_region": pricing["region"],
+        "pricing_title": pricing_title["text"],
+        "pricing_title_html": pricing_title["html"],
         "eur_pricing_enabled": eur_pricing_enabled(),
         "gbp_pricing_enabled": gbp_pricing_enabled(),
         "cad_pricing_enabled": cad_pricing_enabled(),

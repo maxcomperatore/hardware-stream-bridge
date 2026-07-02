@@ -11,7 +11,7 @@
     </a>
     <a href="/#pricing"
         class="flex flex-col items-center gap-1 p-2 group hover:scale-105 active:scale-95 transition-transform">
-        <img src="https://api.iconify.design/dinkie-icons:money-bag-usd.svg" alt="Pricing"
+        <img id="mobile-nav-pricing-icon" src="https://api.iconify.design/dinkie-icons:money-bag-usd.svg" alt="Pricing"
             class="h-6 w-6 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
             style="filter: invert(1);">
         <span
@@ -35,3 +35,33 @@
             class="text-[8px] font-pixel uppercase tracking-widest text-zinc-500 group-hover:text-white transition-colors">Shop</span>
     </a>
 </nav>
+<script>
+    (function () {
+        const PRICING_NAV_ICONS = {
+            usd: 'dinkie-icons:money-bag-usd',
+            gbp: 'dinkie-icons:money-bag-gbp',
+            eur: 'dinkie-icons:money-bag-eur',
+            cad: 'dinkie-icons:money-bag-usd',
+            aud: 'dinkie-icons:money-bag-usd',
+        };
+
+        function setMobilePricingIcon(region) {
+            const img = document.getElementById('mobile-nav-pricing-icon');
+            const icon = PRICING_NAV_ICONS[region] || PRICING_NAV_ICONS.usd;
+            if (img) img.src = `https://api.iconify.design/${icon}.svg`;
+        }
+
+        const fromPage = document.documentElement.dataset.pricingRegion;
+        if (fromPage && PRICING_NAV_ICONS[fromPage]) {
+            setMobilePricingIcon(fromPage);
+            return;
+        }
+
+        fetch('/api/geoip')
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+                if (data && data.pricing_region) setMobilePricingIcon(data.pricing_region);
+            })
+            .catch(() => {});
+    })();
+</script>

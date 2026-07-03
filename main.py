@@ -21,7 +21,7 @@ import shop_packs
 import research_survey_2026
 import research_lessons_launch_2026
 import pricing_geo_titles
-from icon_paths import brand_icon, dinkie_icon, flag_icon
+from icon_paths import brand_icon, dinkie_cover_icon, dinkie_cover_icon_names, dinkie_icon, flag_icon
 from urllib.parse import quote, urlparse
 
 def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
@@ -469,6 +469,8 @@ def dinkie_icon_path(name: str) -> str:
 templates.env.globals["asset_url"] = marketing_asset_path
 templates.env.globals["asset_abs_url"] = marketing_asset_abs_url
 templates.env.globals["dinkie_icon"] = dinkie_icon_path
+templates.env.globals["dinkie_cover_icon"] = dinkie_cover_icon
+templates.env.globals["dinkie_cover_icon_names"] = dinkie_cover_icon_names
 templates.env.globals["flag_icon"] = flag_icon
 templates.env.globals["brand_icon"] = brand_icon
 templates.env.globals["posthog_api_key"] = settings.POSTHOG_API_KEY or ""

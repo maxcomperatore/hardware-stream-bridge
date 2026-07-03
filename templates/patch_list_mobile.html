@@ -14,7 +14,6 @@
                 class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-40 pointer-events-none"
                 style="filter: invert(1);" />
             <input type="search" id="mobile-patch-search" placeholder="Search presets"
-                oninput="filterMobilePatches()"
                 class="w-full rounded-full bg-zinc-900/80 border border-zinc-800/80 pl-10 pr-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-colors" />
         </div>
     </div>
@@ -33,14 +32,14 @@
     <div class="flex-1 overflow-y-auto mobile-scroll px-2 pb-4" id="mobile-patch-list">
         {% for patch in bank.patches %}
         <button type="button"
-            onclick="openMobilePatchDetail({{ patch.index }}, {{ patch.name | tojson }})"
-            class="mobile-patch-row w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left active:bg-white/10 transition-colors"
+            class="mobile-open-patch mobile-patch-row w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left active:bg-white/10 transition-colors"
+            data-patch-index="{{ patch.index }}"
             data-name="{{ patch.name | lower }}"
             data-index="{{ patch.index + 1 }}">
             <span class="w-7 text-center text-xs font-lcd text-zinc-500 tabular-nums">{{ "%02d" | format(patch.index + 1) }}</span>
-            <div class="h-11 w-11 rounded-lg shrink-0 flex items-center justify-center text-lg font-pixel text-white/90 mobile-patch-art"
-                style="--hue: {{ (patch.index * 47 + bank.id * 13) % 360 }};">
-                ♪
+            <div class="mobile-dinkie-tile h-11 w-11 rounded-lg shrink-0 p-2">
+                <img src="{{ dinkie_cover_icon(bank.id ~ '-' ~ patch.index) }}" alt="" width="28" height="28"
+                    class="mobile-cover-img w-full h-full" loading="lazy" />
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-white truncate">{{ patch.name }}</p>

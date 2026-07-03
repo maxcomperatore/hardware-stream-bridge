@@ -1,4 +1,4 @@
-"""Download pixel-art avatars from Dicebear once into static/avatars/ (build-time only)."""
+"""Download pixel-art avatars into static/avatars/ (build-time Dicebear fetch only)."""
 from __future__ import annotations
 
 import urllib.parse
@@ -10,7 +10,6 @@ OUT = ROOT / "static" / "avatars"
 UA = "knob.monster-asset-mirror/1.0"
 API = "https://api.dicebear.com/10.x/pixel-art/svg"
 
-# Distinct seeds → numbered files for self-hosted random pool.
 AVATAR_SEEDS = (
     "patchouli-pete",
     "juno-widow-86",
@@ -34,7 +33,10 @@ def main() -> None:
         data = fetch_bytes(url)
         dest.write_bytes(data)
         print(f"wrote {dest.name} ({len(data)} bytes) seed={seed}")
-    print(f"done — {len(AVATAR_SEEDS)} avatars in {OUT}")
+    for stale in OUT.glob("stripe-*.svg"):
+        stale.unlink()
+        print(f"removed {stale.name}")
+    print(f"done — avatars in {OUT}")
 
 
 if __name__ == "__main__":

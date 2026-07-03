@@ -1,5 +1,5 @@
 <!-- Mobile read-only vault (Spotify-style). Desktop MIDI UI stays hidden below md. -->
-<div id="mobile-app" class="md:hidden fixed inset-0 z-30 flex flex-col bg-[#050507] text-zinc-200 overflow-hidden">
+<div id="mobile-app" class="md:hidden fixed inset-0 z-40 flex flex-col bg-[#050507] text-zinc-200 overflow-hidden isolate">
 
     <!-- Ambient gradient -->
     <div class="pointer-events-none absolute inset-0 mobile-vault-glow" aria-hidden="true"></div>
@@ -25,7 +25,6 @@
                         class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-40 pointer-events-none"
                         style="filter: invert(1);" />
                     <input type="search" id="mobile-bank-search" placeholder="Search soundbanks"
-                        oninput="filterMobileBanks()"
                         class="w-full rounded-full bg-zinc-900/70 border border-zinc-800/60 pl-10 pr-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600" />
                 </div>
             </div>
@@ -36,12 +35,12 @@
             <div class="flex gap-3 overflow-x-auto mobile-scroll px-5 pb-4 snap-x snap-mandatory">
                 {% for bank in banks[:6] %}
                 <button type="button"
-                    onclick="openMobileBank({{ bank.id }}, {{ bank.name | tojson }}, {{ bank.synth_model | tojson }})"
-                    class="mobile-bank-card snap-start shrink-0 w-[8.5rem] text-left active:scale-[0.97] transition-transform"
+                    class="mobile-open-bank mobile-bank-card snap-start shrink-0 w-[8.5rem] text-left active:scale-[0.97] transition-transform"
+                    data-bank-id="{{ bank.id }}"
                     data-name="{{ bank.name | lower }}">
-                    <div class="mobile-album-art aspect-square rounded-xl mb-2 shadow-xl"
-                        style="--hue: {{ (bank.id * 37) % 360 }};">
-                        <span class="text-[10px] font-pixel uppercase opacity-80 px-2 text-center leading-tight">{{ bank.synth_model.split(' ')[0] }}</span>
+                    <div class="mobile-dinkie-tile aspect-square rounded-xl mb-2 w-full p-4">
+                        <img src="{{ dinkie_cover_icon(bank.id) }}" alt="" width="80" height="80"
+                            class="mobile-cover-img w-[55%] h-[55%]" loading="lazy" />
                     </div>
                     <p class="text-xs font-semibold text-white truncate">{{ bank.name }}</p>
                     <p class="text-[10px] text-zinc-500 truncate">{{ bank.patch_count }} presets</p>
@@ -55,13 +54,13 @@
             <div class="flex-1 overflow-y-auto mobile-scroll px-3 pb-2" id="mobile-bank-list">
                 {% for bank in banks %}
                 <button type="button"
-                    onclick="openMobileBank({{ bank.id }}, {{ bank.name | tojson }}, {{ bank.synth_model | tojson }})"
-                    class="mobile-bank-row w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left active:bg-white/10 transition-colors"
+                    class="mobile-open-bank mobile-bank-row w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left active:bg-white/10 transition-colors"
+                    data-bank-id="{{ bank.id }}"
                     data-name="{{ bank.name | lower }}"
                     data-synth="{{ bank.synth_model | lower }}">
-                    <div class="mobile-album-art h-14 w-14 rounded-lg shrink-0 text-[9px]"
-                        style="--hue: {{ (bank.id * 37) % 360 }};">
-                        <span class="font-pixel opacity-90">{{ bank.synth_model.split(' ')[0][:4] }}</span>
+                    <div class="mobile-dinkie-tile h-14 w-14 rounded-lg shrink-0 p-2.5">
+                        <img src="{{ dinkie_cover_icon(bank.id) }}" alt="" width="32" height="32"
+                            class="mobile-cover-img w-full h-full" loading="lazy" />
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-semibold text-white truncate">{{ bank.name }}</p>
@@ -73,7 +72,10 @@
             </div>
             {% else %}
             <div class="flex-1 flex flex-col items-center justify-center px-8 text-center pb-24">
-                <div class="mobile-album-art h-28 w-28 rounded-2xl mb-6 text-2xl" style="--hue: 200;">♪</div>
+                <div class="mobile-dinkie-tile h-28 w-28 rounded-2xl mb-6 p-5">
+                    <img src="{{ dinkie_cover_icon('empty-vault') }}" alt="" width="72" height="72"
+                        class="mobile-cover-img w-full h-full" />
+                </div>
                 <h2 class="text-lg font-bold text-white">Your vault is empty</h2>
                 <p class="text-sm text-zinc-500 mt-2 leading-relaxed max-w-xs">
                     Back up synth patches on desktop with Web MIDI — then browse them here anytime.
@@ -147,13 +149,14 @@
     <!-- ── BANK DETAIL (preset list) ── -->
     <div id="mobile-screen-bank" class="relative hidden flex-col flex-1 min-h-0">
         <div class="mobile-bank-hero shrink-0 pt-[max(0.5rem,env(safe-area-inset-top))] px-4 pb-6">
-            <button type="button" onclick="closeMobileBank()"
+            <button type="button" id="mobile-close-bank-btn"
                 class="flex items-center gap-1 text-sm font-semibold text-zinc-300 py-2 -ml-1 active:opacity-70">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                 Library
             </button>
-            <div id="mobile-bank-hero-art" class="mobile-album-art h-36 w-36 rounded-2xl mx-auto mt-2 shadow-2xl text-lg" style="--hue: 160;">
-                <span id="mobile-bank-hero-label" class="font-pixel uppercase">SYN</span>
+            <div class="mobile-dinkie-tile h-36 w-36 rounded-2xl mx-auto mt-2 p-6">
+                <img id="mobile-bank-hero-img" src="{{ dinkie_cover_icon(0) }}" alt="" width="96" height="96"
+                    class="mobile-cover-img w-full h-full" />
             </div>
         </div>
         <div id="mobile-bank-detail" class="flex flex-col flex-1 min-h-0 -mt-4 rounded-t-3xl bg-[#0a0a0c] border-t border-white/5 overflow-hidden">
@@ -164,20 +167,23 @@
         </div>
     </div>
 
-    <!-- Patch detail sheet -->
-    <div id="mobile-patch-sheet" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300" aria-hidden="true">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" onclick="closeMobilePatchDetail()"></div>
+    <!-- Patch detail sheet (children must stay pointer-events-none until .open) -->
+    <div id="mobile-patch-sheet" class="fixed inset-0 z-[60] pointer-events-none opacity-0 transition-opacity duration-300 invisible" aria-hidden="true">
+        <div class="mobile-patch-sheet-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" data-close-patch-sheet></div>
         <div id="mobile-patch-sheet-panel"
-            class="absolute inset-x-0 bottom-0 rounded-t-3xl bg-[#121214] border-t border-white/10 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] transform translate-y-full transition-transform duration-300 ease-out pointer-events-auto">
+            class="absolute inset-x-0 bottom-0 rounded-t-3xl bg-[#121214] border-t border-white/10 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] transform translate-y-full transition-transform duration-300 ease-out">
             <div class="w-10 h-1 rounded-full bg-zinc-700 mx-auto mb-5"></div>
-            <div id="mobile-patch-sheet-art" class="mobile-album-art h-24 w-24 rounded-2xl mx-auto mb-4 text-2xl" style="--hue: 200;">♪</div>
+            <div class="mobile-dinkie-tile h-24 w-24 rounded-2xl mx-auto mb-4 p-4">
+                <img id="mobile-patch-sheet-img" src="{{ dinkie_cover_icon('patch') }}" alt="" width="64" height="64"
+                    class="mobile-cover-img w-full h-full" />
+            </div>
             <p class="text-[10px] font-pixel uppercase tracking-widest text-center text-emerald-400/80">Preset</p>
             <h3 id="mobile-patch-sheet-name" class="text-xl font-bold text-white text-center mt-1">—</h3>
             <p id="mobile-patch-sheet-meta" class="text-sm text-zinc-500 text-center mt-1">—</p>
             <p class="text-[11px] text-zinc-600 text-center mt-4 leading-relaxed max-w-xs mx-auto">
                 View-only on mobile. Open the desktop studio to audition or sync to hardware.
             </p>
-            <button type="button" onclick="closeMobilePatchDetail()"
+            <button type="button" id="mobile-patch-sheet-done" data-close-patch-sheet
                 class="w-full mt-6 py-3 rounded-full bg-zinc-800 text-white text-sm font-semibold active:bg-zinc-700">
                 Done
             </button>
@@ -191,4 +197,5 @@
         { "id": {{ bank.id }}, "name": {{ bank.name | tojson }}, "synth": {{ bank.synth_model | tojson }}, "count": {{ bank.patch_count }} }{{ "," if not loop.last }}
         {%- endfor -%}
     ];
+    window.dinkieCoverIcons = {{ dinkie_cover_icon_names() | tojson }};
 </script>

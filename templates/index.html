@@ -188,14 +188,18 @@
             display: none;
         }
 
-        .mobile-album-art {
+        .mobile-dinkie-tile {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(145deg,
-                    hsl(var(--hue, 200) 55% 42%),
-                    hsl(calc(var(--hue, 200) + 40) 45% 22%));
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+            background-color: #000000;
+            border: 1px solid #27272a;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .mobile-cover-img {
+            object-fit: contain;
+            filter: brightness(0) invert(1);
         }
 
         .mobile-bank-hero {
@@ -203,13 +207,19 @@
         }
 
         .mobile-patch-art {
-            background: linear-gradient(145deg,
-                    hsl(var(--hue, 200) 50% 38%),
-                    hsl(calc(var(--hue, 200) + 30) 40% 20%));
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            opacity: 1;
         }
 
         #mobile-patch-sheet.open {
             opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        #mobile-patch-sheet.open .mobile-patch-sheet-backdrop,
+        #mobile-patch-sheet.open #mobile-patch-sheet-panel {
             pointer-events: auto;
         }
 
@@ -645,7 +655,7 @@
 
     <!-- Global Progress / Sync Ingestion Popup -->
     <div id="status-overlay"
-        class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 flex items-center justify-center hidden-transition">
+        class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
         <div
             class="bg-[#0e0e11] border border-zinc-900 rounded-xl p-5 w-80 max-w-[90vw] text-center shadow-2xl shadow-black select-none">
             <!-- Spinner / Success check -->
@@ -1620,6 +1630,20 @@
             return window.matchMedia('(max-width: 767px)').matches;
         }
 
+        function dinkieCoverUrl(key) {
+            const icons = window.dinkieCoverIcons || [];
+            if (!icons.length) {
+                return '/static/icons/dinkie/multiple-musical-notes.svg';
+            }
+            let hash = 5381;
+            const s = String(key);
+            for (let i = 0; i < s.length; i++) {
+                hash = ((hash << 5) + hash) + s.charCodeAt(i);
+            }
+            const name = icons[Math.abs(hash) % icons.length];
+            return `/static/icons/dinkie/${name}.svg`;
+        }
+
         function openMobileBank(bankId, bankName, synthModel) {
             const home = document.getElementById('mobile-screen-home');
             const bankScreen = document.getElementById('mobile-screen-bank');
@@ -1630,11 +1654,8 @@
             bankScreen.classList.remove('hidden');
             bankScreen.classList.add('flex');
 
-            const hue = (bankId * 37) % 360;
-            const heroArt = document.getElementById('mobile-bank-hero-art');
-            const heroLabel = document.getElementById('mobile-bank-hero-label');
-            if (heroArt) heroArt.style.setProperty('--hue', hue);
-            if (heroLabel) heroLabel.textContent = (synthModel || 'SYN').split(' ')[0].slice(0, 6).toUpperCase();
+            const heroImg = document.getElementById('mobile-bank-hero-img');
+            if (heroImg) heroImg.src = dinkieCoverUrl('bank-' + bankId);
 
             const detail = document.getElementById('mobile-bank-detail');
             if (detail) {
@@ -1686,18 +1707,73 @@
             }
         }
 
+        function openMobileBankById(bankId) {
+            const bank = (window.mobileBankCatalog || []).find((b) => b.id === Number(bankId));
+            if (bank) {
+                openMobileBank(bank.id, bank.name, bank.synth);
+            }
+        }
+
         function initMobileDashboardNav() {
-            const nav = document.getElementById('mobile-dashboard-nav');
-            if (!nav) return;
-            nav.addEventListener('click', (e) => {
-                const btn = e.target.closest('[data-mobile-tab]');
-                if (!btn) return;
-                e.preventDefault();
-                mobileNavTo(btn.getAttribute('data-mobile-tab'));
+            const app = document.getElementById('mobile-app');
+            if (!app || app.dataset.bound === '1') return;
+            app.dataset.bound = '1';
+
+            app.addEventListener('click', (e) => {
+                const bankBtn = e.target.closest('.mobile-open-bank');
+                if (bankBtn) {
+                    e.preventDefault();
+                    openMobileBankById(bankBtn.getAttribute('data-bank-id'));
+                    return;
+                }
+                const patchBtn = e.target.closest('.mobile-open-patch');
+                if (patchBtn) {
+                    e.preventDefault();
+                    const idx = Number(patchBtn.getAttribute('data-patch-index'));
+                    const patches = window.mobileActivePatches || [];
+                    const patch = patches.find((p) => p.index === idx);
+                    if (patch) {
+                        openMobilePatchDetail(idx, patch.name);
+                    }
+                    return;
+                }
+                if (e.target.closest('#mobile-close-bank-btn')) {
+                    e.preventDefault();
+                    closeMobileBank();
+                    return;
+                }
+                if (e.target.closest('[data-close-patch-sheet]')) {
+                    e.preventDefault();
+                    closeMobilePatchDetail();
+                }
             });
+
+            app.addEventListener('input', (e) => {
+                if (e.target.id === 'mobile-patch-search') {
+                    filterMobilePatches();
+                }
+            });
+
+            const nav = document.getElementById('mobile-dashboard-nav');
+            if (nav && nav.dataset.bound !== '1') {
+                nav.dataset.bound = '1';
+                nav.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-mobile-tab]');
+                    if (!btn) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    mobileNavTo(btn.getAttribute('data-mobile-tab'));
+                });
+            }
             const searchInput = document.getElementById('mobile-global-search');
-            if (searchInput) {
+            if (searchInput && searchInput.dataset.bound !== '1') {
+                searchInput.dataset.bound = '1';
                 searchInput.addEventListener('input', mobileGlobalSearch);
+            }
+            const bankSearch = document.getElementById('mobile-bank-search');
+            if (bankSearch && bankSearch.dataset.bound !== '1') {
+                bankSearch.dataset.bound = '1';
+                bankSearch.addEventListener('input', filterMobileBanks);
             }
         }
 
@@ -1739,10 +1815,10 @@
             hits.forEach((bank) => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = 'w-full text-left px-3 py-3 rounded-xl active:bg-white/10';
+                btn.className = 'mobile-open-bank w-full text-left px-3 py-3 rounded-xl active:bg-white/10';
+                btn.setAttribute('data-bank-id', String(bank.id));
                 btn.innerHTML = `<p class="text-sm font-semibold text-white">${escapeMobileHtml(bank.name)}</p>
                     <p class="text-[11px] text-zinc-500">${escapeMobileHtml(bank.synth)} · ${bank.count} presets</p>`;
-                btn.addEventListener('click', () => openMobileBank(bank.id, bank.name, bank.synth));
                 out.appendChild(btn);
             });
         }
@@ -1761,9 +1837,12 @@
             document.getElementById('mobile-patch-sheet-name').textContent = name;
             document.getElementById('mobile-patch-sheet-meta').textContent =
                 `${meta.synth || 'Synth'} · Slot ${index + 1}`;
-            const art = document.getElementById('mobile-patch-sheet-art');
-            if (art) art.style.setProperty('--hue', (index * 47 + (meta.id || 0) * 13) % 360);
+            const sheetImg = document.getElementById('mobile-patch-sheet-img');
+            if (sheetImg) {
+                sheetImg.src = dinkieCoverUrl(`${meta.id || 0}-${index}`);
+            }
             sheet.classList.add('open');
+            sheet.classList.remove('invisible');
             sheet.setAttribute('aria-hidden', 'false');
         }
 
@@ -1771,8 +1850,19 @@
             const sheet = document.getElementById('mobile-patch-sheet');
             if (!sheet) return;
             sheet.classList.remove('open');
+            sheet.classList.add('invisible');
             sheet.setAttribute('aria-hidden', 'true');
         }
+
+        window.mobileNavTo = mobileNavTo;
+        window.openMobileBank = openMobileBank;
+        window.closeMobileBank = closeMobileBank;
+        window.openMobilePatchDetail = openMobilePatchDetail;
+        window.closeMobilePatchDetail = closeMobilePatchDetail;
+        window.filterMobileBanks = filterMobileBanks;
+        window.filterMobilePatches = filterMobilePatches;
+        window.mobileGlobalSearch = mobileGlobalSearch;
+        window.dinkieCoverUrl = dinkieCoverUrl;
 
         function showUploadProgress() {
             const uploadForm = document.getElementById('upload-form');
@@ -1893,7 +1983,7 @@
 
     <!-- Premium Upgrade Paywall Modal -->
     <div id="upgrade-modal"
-        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 flex items-center justify-center hidden-transition">
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
         <div
             class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-96 max-w-[90vw] text-center shadow-2xl relative select-none">
             <!-- Close btn -->

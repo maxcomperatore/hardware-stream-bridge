@@ -13,6 +13,7 @@ import stripe
 import database
 import parser
 import logging
+import mimetypes
 import traceback
 import re
 import faq_knowledge
@@ -517,6 +518,8 @@ async def get_logo_png():
     raise HTTPException(status_code=404)
 
 # Mount Static Files
+mimetypes.add_type("application/javascript", ".mjs")
+mimetypes.add_type("application/javascript", ".js")
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # Configure Stripe key & fallback mock mode

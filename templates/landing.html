@@ -323,6 +323,14 @@
             transform: scale(0.96);
         }
 
+        /* Horizontal slide reveals overflow the viewport on mobile before scroll-in */
+        @media (max-width: 767px) {
+            .reveal.reveal-left,
+            .reveal.reveal-right {
+                transform: translateY(24px);
+            }
+        }
+
         .reveal.active {
             opacity: 1;
             transform: translate(0) scale(1);
@@ -1226,7 +1234,7 @@
         </div>
     </header>
 
-    <main class="pb-20 md:pb-0">
+    <main class="pb-20 md:pb-0 overflow-x-clip max-w-full">
 
         <!-- Hero Section -->
         <section class="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center relative z-10">

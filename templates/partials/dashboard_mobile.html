@@ -101,17 +101,17 @@
                 <div class="flex items-center gap-3">
                     <img id="mobile-you-avatar" src="" alt="" width="48" height="48"
                         class="h-12 w-12 rounded-full border-2 border-zinc-700 object-cover" />
-                    <div class="min-w-0">
-                        <p class="text-base font-bold text-white truncate">{{ user.email.split('@')[0] }}</p>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <p class="text-base font-bold text-white truncate">{{ user.email.split('@')[0] }}</p>
+                            {% if user.tier == 'premium' %}
+                            <span class="shrink-0 text-[9px] font-pixel px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25 uppercase">Pro</span>
+                            {% else %}
+                            <span class="shrink-0 text-[9px] font-pixel px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">Free</span>
+                            {% endif %}
+                        </div>
                         <p class="text-xs text-zinc-500 truncate">{{ user.email }}</p>
                     </div>
-                </div>
-                <div class="mt-4 inline-flex">
-                    {% if user.tier == 'premium' %}
-                    <span class="text-[9px] font-pixel px-2 py-1 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25 uppercase">Pro</span>
-                    {% else %}
-                    <span class="text-[9px] font-pixel px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">Free</span>
-                    {% endif %}
                 </div>
             </div>
 

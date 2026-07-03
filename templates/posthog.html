@@ -11,6 +11,10 @@
     });
 
     (function() {
+        var posthogKey = {{ posthog_api_key | tojson }};
+        if (!posthogKey) {
+            return;
+        }
         var script = document.createElement('script');
         script.src = 'https://us-assets.i.posthog.com/static/1.396.2/array.js';
         script.crossOrigin = 'anonymous';
@@ -20,8 +24,8 @@
                 if (!window.posthog || typeof window.posthog.init !== 'function') {
                     return;
                 }
-                window.posthog.init('phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m', {
-                    api_host: 'https://e.knob.monster',
+                window.posthog.init(posthogKey, {
+                    api_host: {{ posthog_api_host | tojson }},
                     ui_host: 'https://us.posthog.com',
                     strict_script_versioning: true,
                     defaults: '2026-05-30',

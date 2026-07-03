@@ -7,10 +7,14 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 
-SITE = "https://knob.monster"
-CRON_SECRET = "knob_drip_cron_secret_7788"
-RESEND_API_KEY = "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import settings
+
+SITE = settings.SITE_BASE
+CRON_SECRET = settings.CRON_SECRET
+RESEND_API_KEY = settings.RESEND_API_KEY
 
 
 def http_json(method: str, url: str, body: dict | None = None) -> dict:

@@ -23,19 +23,21 @@ jobs:
 
       - name: Alert Discord if Site is Down
         if: steps.check_site.outcome == 'failure'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          curl -X POST -H "Content-Type: application/json" -d '{
-            "username": "Knob Monster Monitor",
-            "avatar_url": "https://knob.monster/static/logo.png",
-            "embeds": [{
-              "title": "🚨 Uptime Alert: knob.monster is DOWN!",
-              "description": "The site failed to return HTTP 200 during the hourly uptime check.",
-              "color": 15158332,
-              "fields": [
-                {"name": "HTTP Code Received", "value": "${{ steps.check_site.outputs.status_code }}", "inline": true},
-                {"name": "Severity", "value": "Critical", "inline": true}
+          curl -X POST -H "Content-Type: application/json" -d "{
+            \"username\": \"Knob Monster Monitor\",
+            \"avatar_url\": \"https://knob.monster/static/logo.png\",
+            \"embeds\": [{
+              \"title\": \"🚨 Uptime Alert: knob.monster is DOWN!\",
+              \"description\": \"The site failed to return HTTP 200 during the hourly uptime check.\",
+              \"color\": 15158332,
+              \"fields\": [
+                {\"name\": \"HTTP Code Received\", \"value\": \"${{ steps.check_site.outputs.status_code }}\", \"inline\": true},
+                {\"name\": \"Severity\", \"value\": \"Critical\", \"inline\": true}
               ],
-              "timestamp": "'"$CURRENT_TIME"'"
+              \"timestamp\": \"$CURRENT_TIME\"
             }]
-          }' https://discord.com/api/webhooks/1519380424550256660/VetDI5944BLsDv8bJx-1zWC55EPpVsUaQbFykMbUgWj7O_9K9_q7xWzwxQaziXCC3Fg_
+          }" "$DISCORD_WEBHOOK_URL"

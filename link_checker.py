@@ -12,9 +12,6 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-# Discord Webhook URL for alerts
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1519380424550256660/VetDI5944BLsDv8bJx-1zWC55EPpVsUaQbFykMbUgWj7O_9K9_q7xWzwxQaziXCC3Fg_"
-
 # Set CWD to the directory of this script to avoid path issues
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 os.chdir(SCRIPT_DIR)
@@ -25,6 +22,10 @@ sys.path.insert(0, SCRIPT_DIR)
 # main.py imports database.py at module load; CI has no secrets. Routes-only scan — no DB calls.
 os.environ.setdefault("DATABASE_URL", "postgresql://localhost/linkcheck")
 os.environ.setdefault("SESSION_SECRET_KEY", "link-checker-ci-dummy-secret")
+
+import settings
+
+DISCORD_WEBHOOK_URL = settings.DISCORD_WEBHOOK_URL
 
 try:
     from main import app, SEO_DATA

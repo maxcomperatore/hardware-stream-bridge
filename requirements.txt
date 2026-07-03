@@ -10,3 +10,4 @@ opentelemetry-api>=1.42.1
 opentelemetry-sdk>=1.42.1
 opentelemetry-exporter-otlp-proto-http>=1.42.1
 posthog>=7.21.1,<8
+python-dotenv>=1.0.0

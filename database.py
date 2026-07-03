@@ -1,12 +1,8 @@
-import os
-from datetime import datetime
+import settings
 import psycopg2
 import psycopg2.extras
 
-# Load database connection string from environment variables
-DATABASE_URL = os.environ.get("DATABASE_URL")
-if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL environment variable is missing. Please set DATABASE_URL.")
+DATABASE_URL = settings.DATABASE_URL
 
 def get_db_connection():
     return psycopg2.connect(DATABASE_URL)

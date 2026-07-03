@@ -1,4 +1,4 @@
-import os
+import settings
 import urllib.request
 import json
 from datetime import datetime
@@ -32,8 +32,10 @@ def send_stats_report():
         print(f"Error querying database: {e}")
         return
 
-    # Discord Webhook URL
-    webhook_url = "https://discord.com/api/webhooks/1519380424550256660/VetDI5944BLsDv8bJx-1zWC55EPpVsUaQbFykMbUgWj7O_9K9_q7xWzwxQaziXCC3Fg_"
+    webhook_url = settings.DISCORD_WEBHOOK_URL
+    if not webhook_url:
+        print("DISCORD_WEBHOOK_URL not set; skipping Discord report.")
+        return
     
     # Construct Embed payload
     conversion_rate = (premium_users / total_users * 100) if total_users > 0 else 0.0

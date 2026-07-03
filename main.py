@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse,
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
+import settings
 import io
 import os
 import hashlib
@@ -94,36 +95,41 @@ try:
     from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
     from opentelemetry.sdk.resources import Resource
 
-    resource = Resource(attributes={"service.name": "knob-monster"})
-    logger_provider = LoggerProvider(resource=resource)
-    set_logger_provider(logger_provider)
+    if settings.POSTHOG_API_KEY:
+        resource = Resource(attributes={"service.name": "knob-monster"})
+        logger_provider = LoggerProvider(resource=resource)
+        set_logger_provider(logger_provider)
 
-    exporter = OTLPLogExporter(
-        endpoint="https://us.i.posthog.com/i/v1/logs",
-        headers={"Authorization": "Bearer phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m"},
-    )
-    logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
+        exporter = OTLPLogExporter(
+            endpoint="https://us.i.posthog.com/i/v1/logs",
+            headers={"Authorization": f"Bearer {settings.POSTHOG_API_KEY}"},
+        )
+        logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
 
-    # Bridge standard library logging to OTel
-    handler = LoggingHandler(logger_provider=logger_provider)
-    logging.getLogger().addHandler(handler)
+        handler = LoggingHandler(logger_provider=logger_provider)
+        logging.getLogger().addHandler(handler)
 except Exception as e:
     logger.error(f"Failed to initialize PostHog OTLP Logging: {e}")
 
 # PostHog Python SDK — Error Tracking & Exception Capture
 try:
     from posthog import Posthog
-    posthog_client = Posthog(
-        project_api_key="phc_owNMxXfxVUZpDjBJDEDasNnKQKmnAkCLGWGYW6BdKH9m",
-        host="https://e.knob.monster",
-        enable_exception_autocapture=True,
+
+    posthog_client = (
+        Posthog(
+            project_api_key=settings.POSTHOG_API_KEY,
+            host=settings.POSTHOG_HOST,
+            enable_exception_autocapture=True,
+        )
+        if settings.POSTHOG_API_KEY
+        else None
     )
 except Exception as e:
     posthog_client = None
     logger.error(f"Failed to initialize PostHog SDK: {e}")
 
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1519380424550256660/VetDI5944BLsDv8bJx-1zWC55EPpVsUaQbFykMbUgWj7O_9K9_q7xWzwxQaziXCC3Fg_"
-DISCORD_LOGO_URL = "https://knob.monster/static/logo.png"
+DISCORD_WEBHOOK_URL = settings.DISCORD_WEBHOOK_URL
+DISCORD_LOGO_URL = f"{settings.SITE_BASE}/static/logo.png"
 
 def _sync_send_alert(event_type: str, message: str, properties: dict = None, distinct_id: str = "system"):
     # 1. PostHog client capture
@@ -138,6 +144,8 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
             logger.error(f"PostHog capture failed: {e}")
 
     # 2. Discord Webhook
+    if not DISCORD_WEBHOOK_URL:
+        return
     try:
         import urllib.request
         import json
@@ -358,10 +366,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Templates
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
-SITE_BASE = os.environ.get("SITE_BASE", "https://knob.monster").rstrip("/")
-_MARKETING_SECRET = os.environ.get("SESSION_SECRET_KEY") or (
-    None if os.environ.get("VERCEL") == "1" else "knob_monster_super_secure_default_session_secret_998822"
-)
+SITE_BASE = settings.SITE_BASE
+_MARKETING_SECRET = settings.SESSION_SECRET_KEY
 _marketing_serializer = (
     URLSafeTimedSerializer(_MARKETING_SECRET, salt="km-marketing-assets") if _MARKETING_SECRET else None
 )
@@ -457,6 +463,8 @@ def _allow_marketing_asset(request: Request, filename: str, token):
 
 templates.env.globals["asset_url"] = marketing_asset_path
 templates.env.globals["asset_abs_url"] = marketing_asset_abs_url
+templates.env.globals["posthog_api_key"] = settings.POSTHOG_API_KEY or ""
+templates.env.globals["posthog_api_host"] = settings.POSTHOG_HOST
 
 
 @app.get("/m/{filename}")
@@ -505,34 +513,30 @@ async def get_logo_png():
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # Configure Stripe key & fallback mock mode
-_STRIPE_SECRET_DEFAULT = "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"
-STRIPE_SECRET_KEY = (os.environ.get("STRIPE_SECRET_KEY") or _STRIPE_SECRET_DEFAULT).strip()
-STRIPE_WEBHOOK_SECRET = (os.environ.get("STRIPE_WEBHOOK_SECRET") or "whsec_AWPK4gRmIUdFkUXAzn9IMufmJF5pW5wR").strip()
+STRIPE_SECRET_KEY = settings.STRIPE_SECRET_KEY
+STRIPE_WEBHOOK_SECRET = settings.STRIPE_WEBHOOK_SECRET or ""
 stripe.api_key = STRIPE_SECRET_KEY
 
-STRIPE_PRICE_ID_YEARLY = os.environ.get("STRIPE_PRICE_ID_YEARLY", "price_1TmkVKLuSQGuB7eyU0JeuYr2")
-STRIPE_PRICE_ID_MONTHLY = os.environ.get("STRIPE_PRICE_ID_MONTHLY", "price_1TmkUzLuSQGuB7eytGvepyWd")
-STRIPE_PRICE_ID_LIFETIME = os.environ.get("STRIPE_PRICE_ID_LIFETIME", "price_1TnPsgLuSQGuB7eyPbyJSarD")
-STRIPE_PRICE_ID_PERSONAL = os.environ.get("STRIPE_PRICE_ID_PERSONAL") or STRIPE_PRICE_ID_LIFETIME
-STRIPE_PRICE_ID_STUDIO = "price_1Tngs7LuSQGuB7eysSDEeYFN"
-STRIPE_PRICE_ID_PERSONAL_EUR = os.environ.get("STRIPE_PRICE_ID_PERSONAL_EUR") or "price_1TnjE0LuSQGuB7eyLK5aLxbm"
-STRIPE_PRICE_ID_STUDIO_EUR = os.environ.get("STRIPE_PRICE_ID_STUDIO_EUR") or "price_1TnjEVLuSQGuB7eyQcMUddXy"
-STRIPE_PRICE_ID_PERSONAL_GBP = os.environ.get("STRIPE_PRICE_ID_PERSONAL_GBP") or "price_1TnjRLLuSQGuB7eyVigKkTFK"
-STRIPE_PRICE_ID_STUDIO_GBP = os.environ.get("STRIPE_PRICE_ID_STUDIO_GBP") or "price_1TnjRZLuSQGuB7eyVtQj4No0"
-STRIPE_PRICE_ID_PERSONAL_CAD = os.environ.get("STRIPE_PRICE_ID_PERSONAL_CAD") or "price_1TnjbyLuSQGuB7eymTXdiwdB"
-STRIPE_PRICE_ID_STUDIO_CAD = os.environ.get("STRIPE_PRICE_ID_STUDIO_CAD") or "price_1TnjcfLuSQGuB7eyk12F0YlY"
-STRIPE_PRICE_ID_PERSONAL_AUD = os.environ.get("STRIPE_PRICE_ID_PERSONAL_AUD") or "price_1Tnjd6LuSQGuB7eyE4YBCaOx"
-STRIPE_PRICE_ID_STUDIO_AUD = os.environ.get("STRIPE_PRICE_ID_STUDIO_AUD") or "price_1TnjdvLuSQGuB7eyRNRFeyCi"
-STRIPE_PRICE_ID_SOUND_PACK = os.environ.get(
-    "STRIPE_PRICE_ID_SOUND_PACK",
-    "price_1To3HiLuSQGuB7ey39i6WqFp",
-)
+STRIPE_PRICE_ID_YEARLY = settings.STRIPE_PRICE_ID_YEARLY
+STRIPE_PRICE_ID_MONTHLY = settings.STRIPE_PRICE_ID_MONTHLY
+STRIPE_PRICE_ID_LIFETIME = settings.STRIPE_PRICE_ID_LIFETIME
+STRIPE_PRICE_ID_PERSONAL = settings.STRIPE_PRICE_ID_PERSONAL
+STRIPE_PRICE_ID_STUDIO = settings.STRIPE_PRICE_ID_STUDIO
+STRIPE_PRICE_ID_PERSONAL_EUR = settings.STRIPE_PRICE_ID_PERSONAL_EUR
+STRIPE_PRICE_ID_STUDIO_EUR = settings.STRIPE_PRICE_ID_STUDIO_EUR
+STRIPE_PRICE_ID_PERSONAL_GBP = settings.STRIPE_PRICE_ID_PERSONAL_GBP
+STRIPE_PRICE_ID_STUDIO_GBP = settings.STRIPE_PRICE_ID_STUDIO_GBP
+STRIPE_PRICE_ID_PERSONAL_CAD = settings.STRIPE_PRICE_ID_PERSONAL_CAD
+STRIPE_PRICE_ID_STUDIO_CAD = settings.STRIPE_PRICE_ID_STUDIO_CAD
+STRIPE_PRICE_ID_PERSONAL_AUD = settings.STRIPE_PRICE_ID_PERSONAL_AUD
+STRIPE_PRICE_ID_STUDIO_AUD = settings.STRIPE_PRICE_ID_STUDIO_AUD
+STRIPE_PRICE_ID_SOUND_PACK = settings.STRIPE_PRICE_ID_SOUND_PACK
 PACK_STRIPE_PRICE_ENV_KEYS = {
     "m1_matrix": "STRIPE_PRICE_ID_PACK_M1_MATRIX",
     "dx7_retro": "STRIPE_PRICE_ID_PACK_DX7",
     "juno_nostalgia": "STRIPE_PRICE_ID_PACK_JUNO",
 }
-BASE_URL = "https://knob.monster"
+BASE_URL = settings.SITE_BASE
 
 EU_EUR_COUNTRY_CODES = frozenset({
     "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU",
@@ -756,7 +760,7 @@ PLAN_CATALOG = {
         "label": "knob.monster+ Studio",
         "price_display": "$399",
         "amount_cents": 39900,
-        "stripe_price_id": "price_1Tngs7LuSQGuB7eysSDEeYFN",
+        "stripe_price_id": STRIPE_PRICE_ID_STUDIO,
         "commercial": True,
     },
 }
@@ -858,7 +862,7 @@ def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
         personal_id, studio_id = REGIONAL_PRICE_IDS[region]
         return studio_id if normalized == "studio" else personal_id
     if normalized == "studio":
-        return "price_1Tngs7LuSQGuB7eysSDEeYFN"
+        return STRIPE_PRICE_ID_STUDIO or ""
     return PLAN_CATALOG[normalized]["stripe_price_id"]
 
 
@@ -937,17 +941,17 @@ def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[
     ]
 
 # Email (Resend) — HTTP API for drips; SMTP for newsletter bulk
-RESEND_API_KEY = "re_ADkvw7wX_M7HjJRUUVphAuWg6rf8aNpQa"
-SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.resend.com")
-SMTP_PORT = os.environ.get("SMTP_PORT", "587")
-SMTP_USER = os.environ.get("SMTP_USER", "resend")
-SMTP_PASSWORD = RESEND_API_KEY
-SMTP_FROM = "Knob Monster <vault@knob.monster>"
-CRON_SECRET = "knob_drip_cron_secret_7788"
+RESEND_API_KEY = settings.RESEND_API_KEY
+SMTP_HOST = settings.SMTP_HOST
+SMTP_PORT = settings.SMTP_PORT
+SMTP_USER = settings.SMTP_USER
+SMTP_PASSWORD = settings.SMTP_PASSWORD
+SMTP_FROM = settings.SMTP_FROM
+CRON_SECRET = settings.CRON_SECRET or ""
 
 
 def get_resend_api_key() -> str:
-    return RESEND_API_KEY
+    return RESEND_API_KEY or ""
 
 
 def send_email_via_resend(
@@ -1018,11 +1022,7 @@ async def startup_event():
     database.init_db()
 
 # Secure Cookie Session signing key
-SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY")
-if not SESSION_SECRET_KEY:
-    if os.environ.get("VERCEL") == "1":
-        raise RuntimeError("SESSION_SECRET_KEY environment variable is required in production!")
-    SESSION_SECRET_KEY = "knob_monster_super_secure_default_session_secret_998822"
+SESSION_SECRET_KEY = settings.SESSION_SECRET_KEY
 cookie_signer = Signer(SESSION_SECRET_KEY)
 
 def sign_session_cookie(email: str) -> str:
@@ -3356,12 +3356,7 @@ https://knob.monster/unsubscribe?token={{unsubscribe_token}}
 """
 
 def get_openrouter_config():
-    api_key = os.environ.get(
-        "OPENROUTER_API_KEY",
-        "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",
-    )
-    model = os.environ.get("OPENROUTER_MODEL", "google/gemini-3.1-flash-lite")
-    return api_key, model
+    return settings.OPENROUTER_API_KEY, settings.OPENROUTER_MODEL
 
 
 def call_openrouter_chat(messages, json_object=False, timeout=30):

@@ -188,18 +188,17 @@
             display: none;
         }
 
-        .mobile-dinkie-tile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #000000;
+        .mobile-cover-tile {
+            overflow: hidden;
             border: 1px solid #27272a;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
         }
 
         .mobile-cover-img {
-            object-fit: contain;
-            filter: brightness(0) invert(1);
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .mobile-bank-hero {
@@ -1630,18 +1629,17 @@
             return window.matchMedia('(max-width: 767px)').matches;
         }
 
-        function dinkieCoverUrl(key) {
-            const icons = window.dinkieCoverIcons || [];
-            if (!icons.length) {
-                return '/static/icons/dinkie/multiple-musical-notes.svg';
+        function stripeCoverUrl(key) {
+            const files = window.stripeCoverFiles || [];
+            if (!files.length) {
+                return '/static/covers/stripes/stripe-01.svg';
             }
             let hash = 5381;
             const s = String(key);
             for (let i = 0; i < s.length; i++) {
                 hash = ((hash << 5) + hash) + s.charCodeAt(i);
             }
-            const name = icons[Math.abs(hash) % icons.length];
-            return `/static/icons/dinkie/${name}.svg`;
+            return `/static/covers/stripes/${files[Math.abs(hash) % files.length]}`;
         }
 
         function openMobileBank(bankId, bankName, synthModel) {
@@ -1655,7 +1653,7 @@
             bankScreen.classList.add('flex');
 
             const heroImg = document.getElementById('mobile-bank-hero-img');
-            if (heroImg) heroImg.src = dinkieCoverUrl('bank-' + bankId);
+            if (heroImg) heroImg.src = stripeCoverUrl('bank-' + bankId);
 
             const detail = document.getElementById('mobile-bank-detail');
             if (detail) {
@@ -1839,7 +1837,7 @@
                 `${meta.synth || 'Synth'} · Slot ${index + 1}`;
             const sheetImg = document.getElementById('mobile-patch-sheet-img');
             if (sheetImg) {
-                sheetImg.src = dinkieCoverUrl(`${meta.id || 0}-${index}`);
+                sheetImg.src = stripeCoverUrl(`${meta.id || 0}-${index}`);
             }
             sheet.classList.add('open');
             sheet.classList.remove('invisible');
@@ -1862,7 +1860,7 @@
         window.filterMobileBanks = filterMobileBanks;
         window.filterMobilePatches = filterMobilePatches;
         window.mobileGlobalSearch = mobileGlobalSearch;
-        window.dinkieCoverUrl = dinkieCoverUrl;
+        window.stripeCoverUrl = stripeCoverUrl;
 
         function showUploadProgress() {
             const uploadForm = document.getElementById('upload-form');

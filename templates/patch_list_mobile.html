@@ -37,9 +37,9 @@
             data-name="{{ patch.name | lower }}"
             data-index="{{ patch.index + 1 }}">
             <span class="w-7 text-center text-xs font-lcd text-zinc-500 tabular-nums">{{ "%02d" | format(patch.index + 1) }}</span>
-            <div class="mobile-dinkie-tile h-11 w-11 rounded-lg shrink-0 p-2">
-                <img src="{{ dinkie_cover_icon(bank.id ~ '-' ~ patch.index) }}" alt="" width="28" height="28"
-                    class="mobile-cover-img w-full h-full" loading="lazy" />
+            <div class="mobile-cover-tile h-11 w-11 rounded-lg shrink-0">
+                <img src="{{ stripe_cover_icon(bank.id ~ '-' ~ patch.index) }}" alt="" width="44" height="44"
+                    class="mobile-cover-img" loading="lazy" />
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-white truncate">{{ patch.name }}</p>

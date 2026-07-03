@@ -2,88 +2,78 @@
 <script>
     (function() {
         const userEmail = "{{ user.email if user else '' }}";
-        
-        function initVisitorAvatar() {
-            let seed = localStorage.getItem('visitor-avatar-seed');
-            
-            // Clean up legacy IP seeds and unhashed fingerprints
-            if (seed && (seed.includes('.') || seed === '127.0.0.1' || seed === 'localhost' || seed === 'visitor' || !seed.startsWith('km-'))) {
-                seed = null;
-                localStorage.removeItem('visitor-avatar-seed');
+        const AVATAR_COUNT = 5;
+        const AVATAR_BASE = '/static/avatars/avatar-';
+
+        function avatarUrlForKey(key) {
+            let hash = 5381;
+            for (let i = 0; i < key.length; i++) {
+                hash = ((hash << 5) + hash) + key.charCodeAt(i);
             }
-            
-            // Set up initial seed if not present
+            const idx = (Math.abs(hash) % AVATAR_COUNT) + 1;
+            return `${AVATAR_BASE}${String(idx).padStart(2, '0')}.svg`;
+        }
+
+        function initVisitorAvatar() {
+            let avatarKey = localStorage.getItem('visitor-avatar-key');
+            if (avatarKey && (avatarKey.includes('.') || avatarKey === 'visitor')) {
+                avatarKey = null;
+                localStorage.removeItem('visitor-avatar-key');
+            }
+            localStorage.removeItem('visitor-avatar-seed');
+
             if (userEmail) {
-                seed = userEmail;
-            } else if (!seed) {
-                // Generate a robust device fingerprinted salt + random component
-                const fingerprint = [
-                    navigator.userAgent.replace(/[^a-zA-Z0-9]/g, '').slice(-15),
-                    screen.width,
-                    screen.height,
-                    navigator.language,
-                    Math.random().toString(36).substring(2, 10)
-                ].join('-');
-                
-                // Simple djb2 hash to obfuscate fingerprint details
-                let hash = 5381;
-                for (let i = 0; i < fingerprint.length; i++) {
-                    hash = ((hash << 5) + hash) + fingerprint.charCodeAt(i);
-                }
-                
-                seed = 'km-' + Math.abs(hash).toString(16);
-                localStorage.setItem('visitor-avatar-seed', seed);
+                avatarKey = userEmail;
+            } else if (!avatarKey) {
+                avatarKey = 'km-' + Math.random().toString(36).slice(2, 10);
+                localStorage.setItem('visitor-avatar-key', avatarKey);
             }
 
-            // Update landing pricing card stamp avatar
+            const avatarSrc = avatarUrlForKey(avatarKey);
+
             const landingAvatarImg = document.getElementById('landing-lifetime-avatar') || document.getElementById('landing-upgrade-avatar');
             if (landingAvatarImg) {
-                landingAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
+                landingAvatarImg.src = avatarSrc;
             }
 
-            // Update landing page hero inline avatar
             const heroAvatarImg = document.getElementById('hero-visitor-avatar');
             if (heroAvatarImg) {
-                heroAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
+                heroAvatarImg.src = avatarSrc;
             }
 
-            // Update dashboard upgrade paywall avatar
             const upgradeAvatarImg = document.getElementById('dashboard-upgrade-avatar');
             if (upgradeAvatarImg) {
-                upgradeAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
+                upgradeAvatarImg.src = avatarSrc;
             }
 
-            // Update sidebar user avatar
             const sidebarUserAvatarImg = document.getElementById('sidebar-user-avatar');
             if (sidebarUserAvatarImg) {
-                sidebarUserAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
+                sidebarUserAvatarImg.src = avatarSrc;
             }
 
-            // Inject mini avatar into footer if visitor-geo-tag exists
             const geoTag = document.getElementById('visitor-geo-tag');
             if (geoTag) {
                 if (!document.getElementById('footer-visitor-avatar')) {
                     const wrapper = document.createElement('div');
                     wrapper.className = "flex items-center gap-2 mt-1 justify-center md:justify-start";
-                    
+
                     geoTag.classList.remove('mt-1', 'justify-center', 'md:justify-start');
                     geoTag.classList.add('flex', 'items-center', 'gap-1.5');
-                    
+
                     geoTag.parentNode.insertBefore(wrapper, geoTag);
-                    
+
                     const footerAvatarImg = document.createElement('img');
                     footerAvatarImg.id = 'footer-visitor-avatar';
-                    footerAvatarImg.src = `https://api.dicebear.com/10.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
+                    footerAvatarImg.src = avatarSrc;
                     footerAvatarImg.className = 'w-5 h-5 rounded-full border border-zinc-855 bg-zinc-900 object-cover shrink-0 select-none';
                     footerAvatarImg.alt = 'Visitor Footer Avatar';
-                    
+
                     wrapper.appendChild(footerAvatarImg);
                     wrapper.appendChild(geoTag);
                 }
             }
         }
 
-        // Web MIDI Browser Support Badge Injection
         function injectMidiBadge() {
             const container = document.querySelector('header .flex.items-center.gap-4') || document.querySelector('header div > div:last-child');
             if (!container || document.getElementById('web-midi-badge')) return;
@@ -116,7 +106,6 @@
             container.insertBefore(badge, container.firstChild);
         }
 
-        // Run on DOM load
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 initVisitorAvatar();

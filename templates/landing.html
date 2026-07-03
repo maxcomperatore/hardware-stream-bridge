@@ -7,6 +7,43 @@
     <meta name="google-site-verification" content="STOaPWGwgPycvNfxtzTRhyetLyvasi3uelnlo5SV_QA" />
     {% include "partials/local_fonts.html" %}
     <title>{{ seo.title if seo else "knob.monster | SysEx Librarian & Vintage Synth Cloud Backup" }}</title>
+    <link rel="canonical" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="en" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="x-default" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <meta name="description"
+        content="{{ seo.description if seo else 'Browser SysEx librarian and vintage synth cloud backup. DX7 backup, Juno-106 patches, and Korg M1 presets — no software install, Web MIDI in your browser.' }}">
+    <meta name="keywords"
+        content="{{ seo.keywords if seo else 'sysex librarian, vintage synth backup, dx7 backup, juno-106 patches, cloud backup for synthesizers, backup dx7 patches without software, best sysex librarian 2026, midi-ox alternative mac' }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="knob.monster">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <meta property="og:title"
+        content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
+    <meta property="og:description"
+        content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
+    <meta property="og:image" content="{{ asset_abs_url('og_banner.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <meta property="twitter:title"
+        content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
+    <meta property="twitter:description"
+        content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
+    <meta property="twitter:image" content="{{ asset_abs_url('og_banner.png') }}">
+
+    <!-- Prevent Flash of Unstyled Content (FOUC) and set default background early -->
+    <style>
+        html,
+        body {
+            background-color: #000000 !important;
+            color: #f4f4f5 !important;
+        }
+    </style>
+
+    <link id="favicon" rel="icon" href="/static/logo.svg" type="image/svg+xml">
 
     <!-- Tailwind CSS (deferred to avoid render-blocking) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1735,15 +1772,15 @@
                                 <span class="text-[10px] sm:text-xs leading-tight">100% customer funded: no ads or
                                     tracking</span>
                                 <div class="flex items-center shrink-0 -space-x-1.5 md:-space-x-2 ml-0.5">
-                                    <img src="https://api.dicebear.com/10.x/pixel-art/svg?seed=patchouli-pete" alt=""
+                                    <img src="/static/avatars/avatar-01.svg" alt=""
                                         width="16" height="16" loading="lazy"
                                         class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[3] select-none"
                                         style="image-rendering: pixelated;" />
-                                    <img src="https://api.dicebear.com/10.x/pixel-art/svg?seed=juno-widow-86" alt=""
+                                    <img src="/static/avatars/avatar-02.svg" alt=""
                                         width="16" height="16" loading="lazy"
                                         class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[2] select-none"
                                         style="image-rendering: pixelated;" />
-                                    <img src="https://api.dicebear.com/10.x/pixel-art/svg?seed=midi-goblin-x" alt=""
+                                    <img src="/static/avatars/avatar-03.svg" alt=""
                                         width="16" height="16" loading="lazy"
                                         class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[1] select-none"
                                         style="image-rendering: pixelated;" />

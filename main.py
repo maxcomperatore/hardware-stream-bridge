@@ -20,6 +20,7 @@ import shop_packs
 import research_survey_2026
 import research_lessons_launch_2026
 import pricing_geo_titles
+from icon_paths import brand_icon, dinkie_icon, flag_icon
 from urllib.parse import quote, urlparse
 
 def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
@@ -291,9 +292,8 @@ async def earth_day_middleware(request: Request, call_next):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/fonts/knob-monster.css">
     <title>KNOB.MONSTER | Closed for Earth Day</title>
-    <link href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Geist', sans-serif; }
@@ -461,13 +461,15 @@ def _allow_marketing_asset(request: Request, filename: str, token):
     return False
 
 
-def dinkie_icon(name: str) -> str:
-    return f"/static/icons/dinkie/{name}.svg"
+def dinkie_icon_path(name: str) -> str:
+    return dinkie_icon(name)
 
 
 templates.env.globals["asset_url"] = marketing_asset_path
 templates.env.globals["asset_abs_url"] = marketing_asset_abs_url
-templates.env.globals["dinkie_icon"] = dinkie_icon
+templates.env.globals["dinkie_icon"] = dinkie_icon_path
+templates.env.globals["flag_icon"] = flag_icon
+templates.env.globals["brand_icon"] = brand_icon
 templates.env.globals["posthog_api_key"] = settings.POSTHOG_API_KEY or ""
 templates.env.globals["posthog_api_host"] = settings.POSTHOG_HOST
 

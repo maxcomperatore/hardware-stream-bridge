@@ -4,32 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
     <title>Independent TLS Audit: midiox.com (MIDI-OX) | June 2026</title>
-    <link rel="canonical" href="https://knob.monster/audit/midiox">
-    <meta name="description"
-        content="Observable TLS and transport-security findings for midiox.com, official home of MIDI-OX. Hostname mismatch, expired certificate, HTTP-only delivery. Reproducible audit by Half Radiation LLC.">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:site_name" content="knob.monster">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://knob.monster/audit/midiox">
-    <meta property="og:title" content="We audited MIDI-OX's SSL certificate">
-    <meta property="og:description"
-        content="midiox.com serves a certificate for *.hostingplatform.com that expired in 2022. HTTPS fails. HTTP works. Latest listed build: June 2010.">
-    <meta property="og:image" content="{{ asset_abs_url('og_banner.png') }}">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="We audited MIDI-OX's SSL certificate">
-    <meta property="twitter:description"
-        content="midiox.com serves a certificate for *.hostingplatform.com that expired in 2022. HTTPS fails. HTTP works.">
-    <meta property="twitter:image" content="{{ asset_abs_url('og_banner.png') }}">
-
-    <link id="favicon" rel="shortcut icon" href="/static/logo.svg" type="image/svg+xml">
-    <link
-        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
-        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

@@ -4,30 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
     <title>{{ seo.title if seo else "Vintage Synth Wiki | knob.monster" }}</title>
-    <link rel="canonical" href="https://knob.monster/{{ seo_slug }}">
-    <meta name="description"
-        content="{{ seo.description if seo else 'Detailed vintage synth wiki, memory protect disable steps, factory presets, and interactive Web MIDI troubleshooting.' }}">
-    <meta name="keywords" content="{{ seo.keywords if seo else 'sysex librarian, synth editor, midi setup' }}">
-
-    <!-- Open Graph -->
-    <meta property="og:site_name" content="knob.monster">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://knob.monster/{{ seo_slug }}">
-    <meta property="og:title" content="{{ seo.title }}">
-    <meta property="og:description" content="{{ seo.description }}">
-    <meta property="og:image" content="{{ asset_abs_url('og_banner.png') }}">
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/static/logo.svg" type="image/svg+xml">
-
-    <!-- Fonts -->
-    <link
-        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
-        rel="stylesheet">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>

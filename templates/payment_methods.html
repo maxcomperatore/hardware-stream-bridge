@@ -4,21 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
     <title>Payment Methods & Options | knob.monster</title>
-    <link rel="canonical" href="https://knob.monster/payment-methods">
-    <meta name="description"
-        content="All the ways you can transfer us your hard-earned cash to backup and manage your vintage synthesizers.">
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/static/logo.svg" type="image/svg+xml">
-
-    <!-- Fonts -->
-    <link
-        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
-        rel="stylesheet">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -223,8 +210,8 @@
             <!-- Visa & Mastercard -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-3">
-                    <img src="https://api.iconify.design/logos:visa.svg" class="h-4 w-auto" alt="Visa" />
-                    <img src="https://api.iconify.design/logos:mastercard.svg" class="h-4 w-auto" alt="Mastercard" />
+                    <img src="/static/icons/brands/visa.svg" class="h-4 w-auto" alt="Visa" />
+                    <img src="/static/icons/brands/mastercard.svg" class="h-4 w-auto" alt="Mastercard" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Visa &amp; Mastercard</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
@@ -237,7 +224,7 @@
             <!-- American Express -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/logos:amex.svg" class="h-4 w-auto" alt="Amex" />
+                    <img src="/static/icons/brands/amex.svg" class="h-4 w-auto" alt="Amex" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">American Express</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
@@ -250,7 +237,7 @@
             <!-- Apple Pay -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/applepay/ffffff" class="h-4 w-auto" alt="Apple Pay" />
+                    <img src="/static/icons/brands/applepay.svg" class="h-4 w-auto" alt="Apple Pay" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Apple Pay</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
@@ -262,7 +249,7 @@
             <!-- Google Pay -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/logos:google-pay.svg" class="h-3.5 w-auto" alt="Google Pay" />
+                    <img src="/static/icons/brands/google-pay.svg" class="h-3.5 w-auto" alt="Google Pay" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Google Pay</h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
@@ -275,7 +262,7 @@
             <!-- USDC -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-2">
-                    <img src="https://api.iconify.design/cryptocurrency-color:usdc.svg" class="h-5 w-5" alt="USDC" />
+                    <img src="/static/icons/brands/usdc.svg" class="h-5 w-5" alt="USDC" />
                     <span class="text-[10px] font-pixel text-zinc-400">USDC</span>
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">USDC &amp; Stablecoins</h3>
@@ -289,11 +276,11 @@
             <!-- Pix -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/pix/32B3A6" class="h-4 w-auto" alt="Pix" />
+                    <img src="/static/icons/brands/pix.svg" class="h-4 w-auto" alt="Pix" />
                     <span class="text-[10px] font-pixel text-[#32B3A6]">PIX</span>
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Pix <img
-                        src="https://api.iconify.design/flagpack/br.svg" width="16" height="12"
+                        src="/static/icons/flags/br.svg" width="16" height="12"
                         class="h-3 w-auto inline-block align-middle ml-1" alt="Brazil" /></h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
                     The absolute crown jewel of Brazilian central banking. Instant, zero processing friction, and runs
@@ -305,10 +292,10 @@
             <!-- Naver Pay -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/naver/03C75A" class="h-4 w-auto" alt="Naver Pay" />
+                    <img src="/static/icons/brands/naver.svg" class="h-4 w-auto" alt="Naver Pay" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Naver Pay <img
-                        src="https://api.iconify.design/flagpack/kr.svg" width="16" height="12"
+                        src="/static/icons/flags/kr.svg" width="16" height="12"
                         class="h-3 w-auto inline-block align-middle ml-1" alt="South Korea" /></h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
                     For our friends producing K-pop bangers in Seoul. One-click mobile checkout with zero currency
@@ -319,10 +306,10 @@
             <!-- Cash App -->
             <div class="payment-card rounded-2xl p-6 space-y-4">
                 <div class="flex items-center gap-2">
-                    <img src="https://cdn.simpleicons.org/cashapp/00D632" class="h-4 w-auto" alt="Cash App Pay" />
+                    <img src="/static/icons/brands/cashapp.svg" class="h-4 w-auto" alt="Cash App Pay" />
                 </div>
                 <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Cash App Pay <img
-                        src="https://api.iconify.design/flagpack/us.svg" width="16" height="12"
+                        src="/static/icons/flags/us.svg" width="16" height="12"
                         class="h-3 w-auto inline-block align-middle ml-1" alt="US" /></h3>
                 <p class="text-xs text-zinc-400 font-sans leading-relaxed">
                     For when your synth budget is stuck inside the little green app. Tap to pay directly from your Cash
@@ -371,7 +358,7 @@
 
                     const tag = document.getElementById('visitor-geo-tag');
                     if (tag) {
-                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
+                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="/static/icons/flags/${code}.svg" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
                     }
                 }
             })

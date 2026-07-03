@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from icon_paths import flag_icon
+
 DEFAULT_PRICING_TITLE = "A pricing system built for fellow synth heads."
 ENGLISH_TITLE_TEMPLATE = "A pricing system built for fellow synth heads in {country}"
 
@@ -93,7 +95,7 @@ def display_country_name(country_code: str, country_name: str | None = None) -> 
 def flag_markup(country_code: str) -> str:
     code = country_code.strip().lower()
     return (
-        f'<img src="https://api.iconify.design/flagpack/{code}.svg" '
+        f'<img src="{flag_icon(code)}" '
         f'width="32" height="24" class="h-6 w-auto inline-block align-middle ml-1.5" alt="" />'
     )
 

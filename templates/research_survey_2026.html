@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
     <title>2026 Vintage Synth Owner Survey: Setup &amp; Gear Data | knob.monster</title>
     <meta name="description"
         content="First-party survey of 61 vintage synth owners: 47.5% gear room, 41% bedroom studio, 11.5% commercial. Roland, Korg, and Moog dominate desk lists. Published by knob.monster.">
@@ -18,12 +19,6 @@
     {% set seo_distribution_url = "https://knob.monster/research/2026-vintage-synth-owner-survey/data.json" %}
     {% include 'partials/seo_article_meta.html' %}
 
-    <link rel="shortcut icon" href="/static/logo.svg" type="image/svg+xml">
-    <link
-        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
-        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

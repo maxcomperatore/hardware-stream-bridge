@@ -4,40 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
     <title>5 Best SysEx Librarian Alternatives for Windows & macOS (2026)</title>
-    <link rel="canonical" href="https://knob.monster/sysex-librarian-alternatives">
-    <meta name="description"
-        content="Best SysEx librarian alternatives for Windows and Mac in 2026. Compare knob.monster, MIDI-OX, Snoize, and more for DX7 backup, Juno-106 patches, and vintage synth cloud backup.">
-    <meta name="keywords"
-        content="best sysex librarian 2026, sysex librarian, sysex librarian mac, midi-ox alternative mac, vintage synth backup, cloud backup for synthesizers, yamaha dx7 librarian">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="knob.monster">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://knob.monster/sysex-librarian-alternatives">
-    <meta property="og:title" content="5 Best SysEx Librarian Alternatives for Windows & macOS (2026)">
-    <meta property="og:description"
-        content="Compare the best SysEx librarian software and alternatives for vintage synthesizers (Yamaha DX7, Juno, Korg M1).">
-    <meta property="og:image" content="{{ asset_abs_url('og_banner.png') }}">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://knob.monster/sysex-librarian-alternatives">
-    <meta property="twitter:title" content="5 Best SysEx Librarian Alternatives for Windows & macOS (2026)">
-    <meta property="twitter:description"
-        content="Compare the best SysEx librarian software and alternatives for vintage synthesizers (Yamaha DX7, Juno, Korg M1).">
-    <meta property="twitter:image" content="{{ asset_abs_url('og_banner.png') }}">
-
-    <!-- Favicon -->
-    <link id="favicon" rel="shortcut icon" href="/static/logo.svg" type="image/svg+xml">
-
-    <!-- Fonts -->
-    <link
-        href="https://api.fontshare.com/v2/css?f[]=geist@100,200,300,400,500,600,700,800,900&f[]=geist-mono@100,200,300,400,500,600,700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap"
-        rel="stylesheet">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -227,7 +195,6 @@
     </script>
     {% if is_halloween_week %}
     <!-- Google Spooky Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Kablammo&display=swap" rel="stylesheet">
     <style>
         /* Spooky Font & Color Overrides */
         h1,
@@ -1075,7 +1042,7 @@
 
                     const tag = document.getElementById('visitor-geo-tag');
                     if (tag) {
-                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="https://api.iconify.design/flagpack/${code}.svg" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
+                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="/static/icons/flags/${code}.svg" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
                     }
                 }
             })

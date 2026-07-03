@@ -461,8 +461,13 @@ def _allow_marketing_asset(request: Request, filename: str, token):
     return False
 
 
+def dinkie_icon(name: str) -> str:
+    return f"/static/icons/dinkie/{name}.svg"
+
+
 templates.env.globals["asset_url"] = marketing_asset_path
 templates.env.globals["asset_abs_url"] = marketing_asset_abs_url
+templates.env.globals["dinkie_icon"] = dinkie_icon
 templates.env.globals["posthog_api_key"] = settings.POSTHOG_API_KEY or ""
 templates.env.globals["posthog_api_host"] = settings.POSTHOG_HOST
 
@@ -530,6 +535,8 @@ STRIPE_PRICE_ID_PERSONAL_CAD = settings.STRIPE_PRICE_ID_PERSONAL_CAD
 STRIPE_PRICE_ID_STUDIO_CAD = settings.STRIPE_PRICE_ID_STUDIO_CAD
 STRIPE_PRICE_ID_PERSONAL_AUD = settings.STRIPE_PRICE_ID_PERSONAL_AUD
 STRIPE_PRICE_ID_STUDIO_AUD = settings.STRIPE_PRICE_ID_STUDIO_AUD
+STRIPE_PRICE_ID_PERSONAL_CHF = settings.STRIPE_PRICE_ID_PERSONAL_CHF
+STRIPE_PRICE_ID_STUDIO_CHF = settings.STRIPE_PRICE_ID_STUDIO_CHF
 STRIPE_PRICE_ID_SOUND_PACK = settings.STRIPE_PRICE_ID_SOUND_PACK
 PACK_STRIPE_PRICE_ENV_KEYS = {
     "m1_matrix": "STRIPE_PRICE_ID_PACK_M1_MATRIX",
@@ -546,6 +553,7 @@ EU_EUR_COUNTRY_CODES = frozenset({
 GB_GBP_COUNTRY_CODES = frozenset({"GB"})
 CA_CAD_COUNTRY_CODES = frozenset({"CA"})
 AU_AUD_COUNTRY_CODES = frozenset({"AU"})
+CH_CHF_COUNTRY_CODES = frozenset({"CH", "LI"})
 
 COUNTRY_NAME_TO_ISO = {
     "GERMANY": "DE",
@@ -582,6 +590,8 @@ COUNTRY_NAME_TO_ISO = {
     "UK": "GB",
     "CANADA": "CA",
     "AUSTRALIA": "AU",
+    "SWITZERLAND": "CH",
+    "LIECHTENSTEIN": "LI",
 }
 
 REGIONAL_PRICING_CATALOG = {
@@ -625,6 +635,14 @@ REGIONAL_PRICING_CATALOG = {
         "studio_amount": "599",
         "billing_label": "AUD / ONE-TIME",
     },
+    "chf": {
+        "region": "chf",
+        "currency": "CHF",
+        "symbol": "Fr.",
+        "personal_amount": "39",
+        "studio_amount": "399",
+        "billing_label": "CHF / ONE-TIME",
+    },
 }
 
 def normalize_country_code(raw: str | None) -> str:
@@ -647,17 +665,23 @@ def cad_pricing_enabled() -> bool:
 def aud_pricing_enabled() -> bool:
     return bool(STRIPE_PRICE_ID_PERSONAL_AUD and STRIPE_PRICE_ID_STUDIO_AUD)
 
+def chf_pricing_enabled() -> bool:
+    return bool(STRIPE_PRICE_ID_PERSONAL_CHF and STRIPE_PRICE_ID_STUDIO_CHF)
+
 REGIONAL_PRICE_IDS = {
     "gbp": (STRIPE_PRICE_ID_PERSONAL_GBP, STRIPE_PRICE_ID_STUDIO_GBP),
     "eur": (STRIPE_PRICE_ID_PERSONAL_EUR, STRIPE_PRICE_ID_STUDIO_EUR),
     "cad": (STRIPE_PRICE_ID_PERSONAL_CAD, STRIPE_PRICE_ID_STUDIO_CAD),
     "aud": (STRIPE_PRICE_ID_PERSONAL_AUD, STRIPE_PRICE_ID_STUDIO_AUD),
+    "chf": (STRIPE_PRICE_ID_PERSONAL_CHF, STRIPE_PRICE_ID_STUDIO_CHF),
 }
 
 def get_pricing_region(country_code: str | None) -> str:
     code = normalize_country_code(country_code)
     if gbp_pricing_enabled() and code in GB_GBP_COUNTRY_CODES:
         return "gbp"
+    if chf_pricing_enabled() and code in CH_CHF_COUNTRY_CODES:
+        return "chf"
     if cad_pricing_enabled() and code in CA_CAD_COUNTRY_CODES:
         return "cad"
     if aud_pricing_enabled() and code in AU_AUD_COUNTRY_CODES:
@@ -676,6 +700,8 @@ def format_free_price_display(regional: dict) -> str:
         return "£0"
     if region == "eur":
         return "€0"
+    if region == "chf":
+        return "Fr. 0"
     if region == "usd":
         return "$0"
     return f"{regional['symbol']}0 {regional['currency']}"
@@ -871,6 +897,8 @@ def format_plan_price_display(regional: dict, plan: str) -> str:
     symbol = regional["symbol"]
     if regional["region"] == "usd":
         return f"{symbol}{amount}"
+    if regional["region"] == "chf":
+        return f"Fr. {amount}"
     return f"{symbol}{amount} {regional['currency']}"
 
 
@@ -1255,10 +1283,12 @@ async def index(request: Request):
             "gbp_pricing_enabled": gbp_pricing_enabled(),
             "cad_pricing_enabled": cad_pricing_enabled(),
             "aud_pricing_enabled": aud_pricing_enabled(),
+            "chf_pricing_enabled": chf_pricing_enabled(),
             "eu_country_codes": sorted(EU_EUR_COUNTRY_CODES),
             "gb_country_codes": sorted(GB_GBP_COUNTRY_CODES),
             "ca_country_codes": sorted(CA_CAD_COUNTRY_CODES),
             "au_country_codes": sorted(AU_AUD_COUNTRY_CODES),
+            "ch_country_codes": sorted(CH_CHF_COUNTRY_CODES),
             "faq_suggestions": faq_knowledge.FAQ_SUGGESTIONS,
         },
     )
@@ -1486,6 +1516,7 @@ async def get_geoip(request: Request):
         "gbp_pricing_enabled": gbp_pricing_enabled(),
         "cad_pricing_enabled": cad_pricing_enabled(),
         "aud_pricing_enabled": aud_pricing_enabled(),
+        "chf_pricing_enabled": chf_pricing_enabled(),
     }
 
 
@@ -2944,7 +2975,7 @@ async def acp_discovery():
         "capabilities": {
             "services": ["one-time"],
             "payment_methods": ["card", "apple_pay", "google_pay", "cashapp", "pix", "naver_pay", "usdc"],
-            "currencies": ["USD", "EUR", "GBP", "CAD", "AUD", "BRL", "KRW"],
+            "currencies": ["USD", "EUR", "GBP", "CAD", "AUD", "CHF", "BRL", "KRW"],
             "billing_periods": ["lifetime"]
         },
         "endpoints": {

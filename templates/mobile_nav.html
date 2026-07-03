@@ -3,7 +3,7 @@
     class="md:hidden fixed bottom-0 inset-x-0 w-full max-w-[100vw] box-border bg-black/90 backdrop-blur-xl border-t border-zinc-900 z-50 flex items-center justify-around px-2 py-3 shadow-[0_-10px_40px_rgba(0,0,0,0.8)] pb-[calc(0.75rem+env(safe-area-inset-bottom))] overflow-x-clip">
     <a href="/#features"
         class="flex flex-col items-center gap-1 p-2 group hover:scale-105 active:scale-95 transition-transform">
-        <img src="https://api.iconify.design/dinkie-icons:bigger.svg" alt="Features"
+        <img src="/static/icons/dinkie/bigger.svg" alt="Features"
             class="h-6 w-6 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
             style="filter: invert(1);">
         <span
@@ -11,7 +11,7 @@
     </a>
     <a href="/#pricing"
         class="flex flex-col items-center gap-1 p-2 group hover:scale-105 active:scale-95 transition-transform">
-        <img id="mobile-nav-pricing-icon" src="https://api.iconify.design/dinkie-icons:money-bag-usd.svg" alt="Pricing"
+        <img id="mobile-nav-pricing-icon" src="/static/icons/dinkie/money-bag-usd.svg" alt="Pricing"
             class="h-6 w-6 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
             style="filter: invert(1);">
         <span
@@ -19,7 +19,7 @@
     </a>
     <a href="/resources"
         class="flex flex-col items-center gap-1 p-2 group hover:scale-105 active:scale-95 transition-transform relative">
-        <img src="https://api.iconify.design/dinkie-icons:graduation-cap.svg" alt="Resources"
+        <img src="/static/icons/dinkie/graduation-cap.svg" alt="Resources"
             class="h-6 w-6 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
             style="filter: invert(1);">
         <span
@@ -27,10 +27,9 @@
     </a>
     <a href="/shop"
         class="flex flex-col items-center gap-1 p-2 group hover:scale-105 active:scale-95 transition-transform">
-        <img src="https://api.iconify.design/dinkie-icons:shopping-bag.svg" alt="Shop"
+        <img src="/static/icons/dinkie/shopping-bag.svg" alt="Shop"
             class="h-6 w-6 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
-            style="filter: invert(1);"
-            onerror="this.src='https://api.iconify.design/lucide:shopping-bag.svg';">
+            style="filter: invert(1);">
         <span
             class="text-[8px] font-pixel uppercase tracking-widest text-zinc-500 group-hover:text-white transition-colors">Shop</span>
     </a>
@@ -38,17 +37,18 @@
 <script>
     (function () {
         const PRICING_NAV_ICONS = {
-            usd: 'dinkie-icons:money-bag-usd',
-            gbp: 'dinkie-icons:money-bag-gbp',
-            eur: 'dinkie-icons:money-bag-eur',
-            cad: 'dinkie-icons:money-bag-usd',
-            aud: 'dinkie-icons:money-bag-usd',
+            usd: 'money-bag-usd',
+            gbp: 'money-bag-gbp',
+            eur: 'money-bag-eur',
+            chf: 'money-bag-frf',
+            cad: 'money-bag-usd',
+            aud: 'money-bag-usd',
         };
 
         function setMobilePricingIcon(region) {
             const img = document.getElementById('mobile-nav-pricing-icon');
             const icon = PRICING_NAV_ICONS[region] || PRICING_NAV_ICONS.usd;
-            if (img) img.src = `https://api.iconify.design/${icon}.svg`;
+            if (img) img.src = `/static/icons/dinkie/${icon}.svg`;
         }
 
         const fromPage = document.documentElement.dataset.pricingRegion;

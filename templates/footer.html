@@ -118,11 +118,14 @@
                                     class="hover:text-emerald-400 transition-colors font-sans">halfradiationllc@gmail.com</a>
                             </li>
                             <li><a href="/status"
-                                    class="text-emerald-500 hover:text-emerald-400 flex items-center gap-1.5 font-sans transition-colors"><img
-                                        src="https://api.iconify.design/dinkie-icons:thumbs-up-sign.svg?color=%2310b981" alt="Thumbs Up" width="14" height="14" class="h-3.5 w-3.5 shrink-0 led-flicker" /> Status:
-                                    100% Operational</a></li>
+                                    class="text-emerald-400 visited:text-emerald-400 hover:text-emerald-300 flex items-center gap-2 font-sans transition-colors"><svg
+                                        class="h-4 w-4 shrink-0 status-led" viewBox="0 0 12 12" fill="currentColor"
+                                        aria-hidden="true" style="image-rendering: pixelated">
+                                        <path
+                                            d="M5 12h5v-1H8v-1h2v1h1V5H8v1h2v1H8V6H7v5H5Zm-5 0h3v-1h2v-1H3V7h1V6H2v5H1V6h1V5H0Zm4-6h1V5H4Zm4 3V8h2v1ZM5 5h1V2h1V1H5Zm2 0h1V2H7Zm0 0" />
+                                    </svg><span>Status: 100% Operational</span></a></li>
                             <li><span class="text-zinc-400 flex items-center gap-1.5 font-mono text-[11px]"><img
-                                        src="https://api.iconify.design/dinkie-icons:clock.svg?color=%23a1a1aa" alt="Clock" width="14" height="14" class="h-3.5 w-3.5 shrink-0" /> Uptime: <span id="uptime-hours">...</span>h <span id="uptime-minutes">..</span>m <span id="uptime-seconds">..</span>s</span></li>
+                                        src="/static/icons/dinkie/clock.svg" alt="Clock" width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-img dinkie-img--muted" /> Uptime: <span id="uptime-hours">...</span>h <span id="uptime-minutes">..</span>m <span id="uptime-seconds">..</span>s</span></li>
                         </ul>
                     </div>
                 </div>
@@ -160,9 +163,9 @@
                         <div class="flex flex-col items-center text-center space-y-2 px-2">
                             <div
                                 class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
-                                <img src="https://api.iconify.design/dinkie-icons:leafy-green.svg?color=white"
+                                <img src="/static/icons/dinkie/leafy-green.svg"
                                     alt="" width="18" height="18" loading="lazy"
-                                    class="w-[18px] h-[18px] object-contain" style="image-rendering: pixelated;" />
+                                    class="w-[18px] h-[18px] object-contain dinkie-img dinkie-img--white" />
                             </div>
                             <h4 class="font-pixel text-white text-[10px] uppercase tracking-widest">Sustainable SysEx
                             </h4>
@@ -174,9 +177,9 @@
                         <div class="flex flex-col items-center text-center space-y-2 px-2">
                             <div
                                 class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
-                                <img src="https://api.iconify.design/dinkie-icons:seedling.svg?color=white" alt=""
-                                    width="18" height="18" loading="lazy" class="w-[18px] h-[18px] object-contain"
-                                    style="image-rendering: pixelated;" />
+                                <img src="/static/icons/dinkie/seedling.svg" alt=""
+                                    width="18" height="18" loading="lazy"
+                                    class="w-[18px] h-[18px] object-contain dinkie-img dinkie-img--white" />
                             </div>
                             <h4 class="font-pixel text-white text-[10px] uppercase tracking-widest">Carbon Neutrality</h4>
                             <p class="text-[10px] text-zinc-400 font-sans leading-relaxed max-w-[200px]">
@@ -187,9 +190,9 @@
                         <div class="flex flex-col items-center text-center space-y-2 px-2">
                             <div
                                 class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
-                                <img src="https://api.iconify.design/dinkie-icons:globe-meridians.svg?color=white"
+                                <img src="/static/icons/dinkie/globe-meridians.svg"
                                     alt="" width="18" height="18" loading="lazy"
-                                    class="w-[18px] h-[18px] object-contain" style="image-rendering: pixelated;" />
+                                    class="w-[18px] h-[18px] object-contain dinkie-img dinkie-img--white" />
                             </div>
                             <h4 class="font-pixel text-white text-[10px] uppercase tracking-widest">Making a Difference</h4>
                             <p class="text-[10px] text-zinc-400 font-sans leading-relaxed max-w-[200px]">
@@ -379,21 +382,30 @@
                 backface-visibility: visible;
             }
             @keyframes led-glow {
-                0%, 100% { 
-                    opacity: 1; 
-                    filter: brightness(1.3) drop-shadow(0 0 4px rgba(16, 185, 129, 0.7)); 
+                0%, 100% {
+                    filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.85));
                 }
-                45%, 55% { 
-                    opacity: 0.95; 
-                    filter: brightness(1.05) drop-shadow(0 0 2px rgba(16, 185, 129, 0.4)); 
+                45%, 55% {
+                    filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.4));
                 }
-                50% { 
-                    opacity: 0.98; 
-                    filter: brightness(1.15) drop-shadow(0 0 3px rgba(16, 185, 129, 0.5)); 
+                50% {
+                    filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.55));
                 }
+            }
+            .status-led {
+                animation: led-glow 2s infinite ease-in-out;
             }
             .led-flicker {
                 animation: led-glow 2s infinite ease-in-out;
+            }
+            .dinkie-img {
+                image-rendering: pixelated;
+            }
+            .dinkie-img--muted {
+                filter: invert(72%);
+            }
+            .dinkie-img--white {
+                filter: invert(1);
             }
         </style>
 

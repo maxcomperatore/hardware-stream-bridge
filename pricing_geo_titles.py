@@ -74,6 +74,7 @@ COUNTRY_DISPLAY_NAMES: dict[str, str] = {
     "CA": "Canada",
     "AU": "Australia",
     "DE": "Germany",
+    "CH": "Switzerland",
     "NL": "the Netherlands",
     "AE": "the UAE",
     "PH": "the Philippines",

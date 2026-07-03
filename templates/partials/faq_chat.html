@@ -15,7 +15,7 @@
         <div class="flex flex-wrap gap-2 px-4 pb-3 border-t border-zinc-900 pt-3">
             {% for suggestion in faq_suggestions %}
             <button type="button"
-                class="faq-suggestion-btn text-[10px] font-pixel uppercase tracking-wide px-3 py-1.5 rounded border border-zinc-800 text-zinc-400 hover:text-[#3b83f6] hover:border-[#3b83f6]/40 transition-colors"
+                class="faq-suggestion-btn text-[10px] font-pixel uppercase tracking-wide px-3 py-1.5 rounded border border-zinc-800 text-zinc-400 hover:text-lapis-mid hover:border-lapis-mid/40 transition-colors"
                 data-question="{{ suggestion }}">{{ suggestion }}</button>
             {% endfor %}
         </div>
@@ -24,9 +24,9 @@
         <form id="faq-chat-form" class="flex gap-2 p-4 border-t border-zinc-900">
             <input type="text" id="faq-chat-input" maxlength="500" autocomplete="off"
                 placeholder="Type your question..."
-                class="flex-1 bg-zinc-900 border border-zinc-800 rounded px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-[#3b83f6]/60 font-sans" />
+                class="flex-1 bg-zinc-900 border border-zinc-800 rounded px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-lapis-mid/60 font-sans" />
             <button type="submit" id="faq-chat-submit"
-                class="font-pixel uppercase text-[10px] tracking-wide px-4 py-2 rounded bg-[#3b83f6] text-white hover:bg-[#2563eb] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
+                class="font-pixel uppercase text-[10px] tracking-wide px-4 py-2 rounded bg-lapis-mid text-white hover:bg-lapis-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
                 Ask
             </button>
         </form>
@@ -48,10 +48,10 @@
             if (welcomeEl) welcomeEl.remove();
             const bubble = document.createElement('div');
             bubble.className = role === 'user'
-                ? 'ml-8 pl-3 border-l-2 border-[#3b83f6] text-zinc-200'
+                ? 'ml-8 pl-3 border-l-2 border-lapis-mid text-zinc-200'
                 : 'mr-4 pr-3 border-r-2 border-zinc-700 text-zinc-400';
             const label = document.createElement('div');
-            label.className = 'font-pixel uppercase text-[9px] tracking-wider mb-1 ' + (role === 'user' ? 'text-[#3b83f6]' : 'text-zinc-600');
+            label.className = 'font-pixel uppercase text-[9px] tracking-wider mb-1 ' + (role === 'user' ? 'text-lapis-mid' : 'text-zinc-600');
             label.textContent = role === 'user' ? 'You' : 'knob.monster';
             const body = document.createElement('p');
             body.className = 'whitespace-pre-wrap';

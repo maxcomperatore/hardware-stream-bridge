@@ -61,36 +61,49 @@
                             850: '#1c1c21',
                         },
                         blue: {
-                            650: '#1d4ed8',
+                            400: '#4A7FB8',
+                            500: '#26619C',
+                            600: '#1B4F8C',
+                            650: '#1B4F8C',
+                            700: '#1B4F8C',
+                            800: '#153d66',
+                            900: '#1B4F8C',
+                        },
+                        lapis: {
+                            deep: '#1B4F8C',
+                            DEFAULT: '#26619C',
+                            mid: '#26619C',
+                            light: '#4A7FB8',
+                            pyrite: '#C9A227',
                         },
                         rose: {
                             450: '#fb7185',
                         },
                         emerald: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
-                            500: '#3b83f6',
-                            600: '#1d4ed8',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                            950: '#172554',
+                            50: '#eef3f8',
+                            100: '#dce8f2',
+                            200: '#b8cfe0',
+                            300: '#7fa8c9',
+                            400: '#4A7FB8',
+                            500: '#26619C',
+                            600: '#1B4F8C',
+                            700: '#1B4F8C',
+                            800: '#153d66',
+                            900: '#0f2847',
+                            950: '#0a1a2e',
                         },
                         green: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
-                            500: '#3b83f6',
-                            600: '#1d4ed8',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                            950: '#172554',
+                            50: '#eef3f8',
+                            100: '#dce8f2',
+                            200: '#b8cfe0',
+                            300: '#7fa8c9',
+                            400: '#4A7FB8',
+                            500: '#26619C',
+                            600: '#1B4F8C',
+                            700: '#1B4F8C',
+                            800: '#153d66',
+                            900: '#0f2847',
+                            950: '#0a1a2e',
                         }
                     },
                     fontFamily: {
@@ -110,21 +123,107 @@
     </script>
 
     <style>
+        :root {
+            --canvas-void: #09090B;
+            --canvas-surface: #18181B;
+            --ink-primary: #FAFAFA;
+            --ink-secondary: #A1A1AA;
+            --ink-muted: #71717A;
+
+            /* Lapis lazuli — knob.monster+ brand, archive, price gem */
+            --lapis-deep: #1B4F8C;
+            --lapis-mid: #26619C;
+            --lapis-light: #4A7FB8;
+            --gem-facet: #E8F0F8;
+            --gem-flash: #FFFFFF;
+
+            /* Pain anchors — competitor framing only */
+            --avoid-neon: #B8CC3A;
+            --pain-blood: #DC2626;
+            --stuck-rust: #EF4444;
+
+            --pricing-gem-gradient: linear-gradient(105deg,
+                    var(--lapis-deep) 0%,
+                    var(--lapis-mid) 14%,
+                    var(--lapis-light) 28%,
+                    var(--gem-facet) 38%,
+                    var(--gem-flash) 44%,
+                    var(--lapis-light) 52%,
+                    var(--lapis-mid) 64%,
+                    var(--gem-facet) 74%,
+                    var(--lapis-light) 86%,
+                    var(--lapis-deep) 100%);
+        }
+
+        .btn-free {
+            background-color: var(--canvas-surface);
+            border: 2px solid #3F3F46;
+            color: var(--ink-primary);
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+
+        .btn-free:hover {
+            border-color: var(--lapis-light);
+            box-shadow: 0 0 20px rgba(74, 127, 184, 0.25);
+        }
+
+        .btn-free:active {
+            transform: scale(0.98);
+        }
+
+        .btn-lapis {
+            background-color: var(--lapis-deep);
+            color: #FFFFFF;
+            box-shadow: 0 4px 14px rgba(27, 79, 140, 0.35);
+            transition: background-color 0.2s, transform 0.15s;
+        }
+
+        .btn-lapis:hover {
+            background-color: var(--lapis-mid);
+        }
+
+        .btn-lapis:active {
+            transform: scale(0.98);
+        }
+
+        .pricing-card-featured {
+            border-color: rgba(74, 127, 184, 0.35) !important;
+            box-shadow: 0 0 48px rgba(74, 127, 184, 0.1), 4px 4px 0 0 #18181b;
+        }
+
+        .pricing-card-featured.glow-card:hover {
+            border-color: var(--lapis-mid) !important;
+            box-shadow: 6px 6px 0 0 var(--lapis-mid), 0 0 28px rgba(74, 127, 184, 0.2) !important;
+        }
+
+        .pricing-card-featured.glow-card:active {
+            box-shadow: 2px 2px 0 0 var(--lapis-mid) !important;
+        }
+
+        /* Dinkie SVG tinting — one lapis filter sitewide on landing */
+        .dinkie-lapis {
+            filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);
+        }
+
+        .dinkie-dead {
+            filter: invert(0.4);
+        }
+
+        .dinkie-muted {
+            filter: invert(1);
+            opacity: 0.4;
+        }
+
         @font-palette-values --synth-nabla {
             font-family: "Nabla";
             base-palette: 0;
             override-colors:
                 0 #ffffff,
-                /* front face - clean white */
-                1 #3b83f6,
-                /* primary side - blue */
-                2 #1d4ed8,
-                /* secondary side - dark blue */
-                3 #93c5fd,
-                /* highlights - light blue */
-                4 #172554,
-                /* shadow - deep blue */
-                5 #1e40af;
+                1 #26619C,
+                2 #1B4F8C,
+                3 #4A7FB8,
+                4 #0a1a2e,
+                5 #153d66;
         }
 
         .font-nabla-synth {
@@ -150,22 +249,29 @@
         }
 
         .pricing-gem-blue {
-            --pricing-gem-gradient: linear-gradient(105deg,
-                    #1e3a8a 0%,
-                    #2563eb 16%,
-                    #60a5fa 32%,
-                    #dbeafe 46%,
-                    #93c5fd 54%,
-                    #3b82f6 68%,
-                    #1d4ed8 84%,
-                    #1e3a8a 100%);
             background: var(--pricing-gem-gradient);
             background-size: 260% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent !important;
             animation: pricing-gem-shimmer 7s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.32));
+            filter: drop-shadow(0 0 14px rgba(248, 250, 252, 0.35)) drop-shadow(0 0 8px rgba(74, 127, 184, 0.28));
+        }
+
+        /* knob.monster+ — lapis brand (same family as price gem) */
+        .text-brand-plus {
+            color: var(--lapis-light);
+        }
+
+        /* Primal “avoid” — bile / radioactive chartreuse (neon = danger, not cool) */
+        .text-anchor-competitor {
+            color: var(--avoid-neon);
+            text-shadow: 0 0 10px rgba(184, 204, 58, 0.5), 0 0 2px rgba(90, 110, 30, 0.6);
+        }
+
+        .text-anchor-blood {
+            color: var(--pain-blood);
+            text-shadow: 0 0 8px rgba(220, 38, 38, 0.45);
         }
 
         .pricing-gem-currency-icon {
@@ -174,18 +280,10 @@
             width: 2rem;
             height: 2rem;
             transform: translateY(-2px);
-            background: var(--pricing-gem-gradient, linear-gradient(105deg,
-                    #1e3a8a 0%,
-                    #2563eb 16%,
-                    #60a5fa 32%,
-                    #dbeafe 46%,
-                    #93c5fd 54%,
-                    #3b82f6 68%,
-                    #1d4ed8 84%,
-                    #1e3a8a 100%));
+            background: var(--pricing-gem-gradient);
             background-size: 260% 100%;
             animation: pricing-gem-shimmer 7s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.32));
+            filter: drop-shadow(0 0 14px rgba(248, 250, 252, 0.35)) drop-shadow(0 0 8px rgba(74, 127, 184, 0.28));
         }
 
         .pricing-gem-currency-usd {
@@ -367,15 +465,13 @@
 
         .glow-card:hover {
             transform: translate(-2px, -2px) !important;
-            border-color: #3b83f6 !important;
-            /* Blue-500 border */
-            box-shadow: 6px 6px 0px 0px #3b83f6 !important;
-            /* Hard blue shadow */
+            border-color: var(--lapis-mid) !important;
+            box-shadow: 6px 6px 0px 0px var(--lapis-mid) !important;
         }
 
         .glow-card:active {
             transform: translate(2px, 2px) !important;
-            box-shadow: 2px 2px 0px 0px #3b83f6 !important;
+            box-shadow: 2px 2px 0px 0px var(--lapis-mid) !important;
         }
 
         /* Slow, zero-gravity levitation animation for the meme image */
@@ -1234,9 +1330,9 @@
                     <img src="/static/icons/dinkie/cloud.svg" alt="Cloud"
                         class="w-full h-full object-contain" style="filter: invert(1);">
                 </span>
-                for <span id="hero-your-text" class="inline-block" data-color="#60a5fa">your</span>
+                for <span id="hero-your-text" class="inline-block" data-color="#4A7FB8">your</span>
                 <span
-                    class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-emerald-500/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(96,165,250,0.3)]">
+                    class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-lapis-light/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(74,127,184,0.35)]">
                     <img id="hero-visitor-avatar"
                         src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>"
                         alt="Your Avatar" class="w-full h-full object-cover">
@@ -1402,23 +1498,23 @@
                     <div
                         class="h-8 w-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
                         <img src="/static/icons/dinkie/diagonal-cross.svg" alt="" width="16"
-                            height="16" class="h-4 w-4" style="filter: invert(0.4);" />
+                            height="16" class="h-4 w-4 dinkie-dead" />
                     </div>
                     <h3 class="text-sm font-pixel uppercase text-zinc-350 tracking-wide">Archaic Desktop Utilities</h3>
                     <ul class="space-y-3.5 text-xs text-zinc-450">
                         <li class="flex items-start gap-3">
                             <img src="/static/icons/dinkie/desktop-computer.svg" alt="" width="14"
-                                height="14" class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-muted" />
                             Requires installing desktop utilities or legacy driver configurations.
                         </li>
                         <li class="flex items-start gap-3">
                             <img src="/static/icons/dinkie/lock-filled.svg" alt="" width="14"
-                                height="14" class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-muted" />
                             Requires manually cataloging cryptic .syx files with no visual search or metadata tags.
                         </li>
                         <li class="flex items-start gap-3">
                             <img src="/static/icons/dinkie/adjustments.svg" alt="" width="14"
-                                height="14" class="h-3.5 w-3.5 mt-0.5 opacity-40" style="filter: invert(1);" />
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-muted" />
                             Requires configuring custom buffer pacing and millisecond delays to avoid packet loss.
                         </li>
                     </ul>
@@ -1430,28 +1526,24 @@
                     <div
                         class="h-8 w-8 rounded-full bg-blue-650/10 border border-blue-500/20 flex items-center justify-center">
                         <img src="/static/icons/dinkie/checkmark-circled.svg" alt="" width="16"
-                            height="16" class="h-4 w-4"
-                            style="filter: invert(32%) sepia(85%) saturate(2400%) hue-rotate(200deg) brightness(98%) contrast(98%);" />
+                            height="16" class="h-4 w-4 dinkie-lapis" />
                     </div>
                     <h3 class="text-sm font-pixel uppercase text-white tracking-wide">knob.monster Flow</h3>
                     <ul class="space-y-3.5 text-xs text-zinc-300">
                         <li class="flex items-start gap-3">
                             <img src="/static/icons/dinkie/window-browser.svg" alt="" width="14"
-                                height="14" class="h-3.5 w-3.5 mt-0.5 text-blue-500"
-                                style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-lapis" />
                             Zero-installation. Connects natively inside any Chrome/Edge tab.
                         </li>
                         <li class="flex items-start gap-3">
                             <img src="/static/icons/dinkie/code.svg" alt="" width="14" height="14"
-                                class="h-3.5 w-3.5 mt-0.5 text-blue-500"
-                                style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
+                                class="h-3.5 w-3.5 mt-0.5 dinkie-lapis" />
                             Hex-to-ASCII Parser decompresses dumps automatically to extract patch name tags in
                             real-time.
                         </li>
                         <li class="flex items-start gap-3">
                             <img src="/static/icons/dinkie/multiple-musical-notes.svg" alt=""
-                                width="14" height="14" class="h-3.5 w-3.5 mt-0.5 text-blue-500"
-                                style="filter: invert(53%) sepia(93%) saturate(3000%) hue-rotate(185deg) brightness(102%) contrast(101%);" />
+                                width="14" height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-lapis" />
                             Audition sounds directly inside the browser using Web Audio previews before sending.
                         </li>
                     </ul>
@@ -1476,7 +1568,7 @@
                 <div class="mt-16 text-center reveal" style="--delay: 300ms;">
                     <p class="text-zinc-400 mb-6 text-sm font-medium">Ready to back up your {{ seo.synth_name }}?</p>
                     <a href="/signup"
-                        class="bg-emerald-500 hover:bg-emerald-400 text-black px-8 py-4 rounded-xl text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 inline-flex items-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                        class="bg-emerald-500 hover:bg-emerald-400 text-white px-8 py-4 rounded-xl text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 inline-flex items-center gap-3 shadow-[0_0_20px_rgba(74,127,184,0.35)]">
                         <span>Get Premium Vault</span>
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -1679,8 +1771,8 @@
                         class="absolute left-1/2 top-0 z-0 w-14 h-14 -translate-x-1/2 -translate-y-1 select-none pointer-events-none"
                         style="image-rendering: pixelated; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));">
                     <a href="/signup?plan=free" role="button"
-                        class="pricing-free-cta relative z-10 mx-auto w-full flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full bg-white hover:bg-zinc-200 text-black cursor-pointer shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-200 select-none">
-                        <span class="text-lg md:text-xl font-pixel uppercase tracking-widest text-black">Start Free</span>
+                        class="btn-free pricing-free-cta relative z-10 mx-auto w-full flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full cursor-pointer active:scale-[0.98] select-none">
+                        <span class="text-lg md:text-xl font-pixel uppercase tracking-widest">Start Free</span>
                         <span id="pricing-free-subtext" class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-500">{{ pricing.free_price_display }} · no card · click to start</span>
                     </a>
                 </div>
@@ -1689,11 +1781,11 @@
             <!-- Pricing Cards -->
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                 <!-- Personal -->
-                <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
+                <div class="glow-card pricing-card-featured rounded-2xl border bg-zinc-950/40 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 200ms;">
                     <div id="stamp-diamond"
-                        class="absolute top-6 right-6 border border-dashed border-[#00f5ff]/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
-                        style="box-shadow: 0 0 20px rgba(0, 245, 255, 0.35);">
+                        class="absolute top-6 right-6 border border-dashed border-lapis-light/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
+                        style="box-shadow: 0 0 20px rgba(74, 127, 184, 0.35);">
                         <img id="landing-lifetime-avatar" src="/static/logo.svg"
                             class="h-full w-full object-cover rounded-md" alt="knob.monster+ Stamp">
                     </div>
@@ -1725,50 +1817,43 @@
                                     }}</span>
                                 </div>
                                 <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                <span class="pricing-gem-blue font-semibold">Own it forever.</span> No subscriptions.
+                                <span class="text-brand-plus font-semibold">Own it forever.</span> No subscriptions.
                                 </div>
                             </div>
                             <ul class="space-y-2.5 text-xs text-zinc-400">
                                 <li class="flex items-center gap-2">
                                 <img src="/static/icons/dinkie/file-cabinet.svg" alt="" width="14"
-                                    height="14" class="h-3.5 w-3.5 shrink-0"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                 <span class="text-white font-semibold">Unlimited soundbank slots</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                 <img src="/static/icons/dinkie/circled-information-source.svg" alt=""
-                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                     <span class="text-white font-semibold">Real-time preset decoding</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="/static/icons/dinkie/sparkles.svg" alt=""
-                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                     <span class="text-white font-semibold">All future updates included</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="/static/icons/dinkie/code.svg" alt="" width="14"
-                                    height="14" class="h-3.5 w-3.5 shrink-0"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                     All parsers (DX7, Juno, M1, Generic)
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="/static/icons/dinkie/download.svg" alt="" width="14"
-                                    height="14" class="h-3.5 w-3.5 shrink-0"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                     <span>Direct backup downloads (.syx) at any time</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="/static/icons/dinkie/hourglass-with-flowing-sand.svg"
-                                    alt="" width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    alt="" width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                     <span>Preservation guarantee: runs forever</span>
                                 </li>
                             <li class="flex items-center gap-1.5 md:gap-2 flex-nowrap">
                                 <img src="/static/icons/dinkie/heart-white-suit-circled.svg" alt=""
-                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                        style="filter: invert(72%) sepia(85%) saturate(300%) hue-rotate(30deg) brightness(95%) contrast(90%);" />
+                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                 <span class="text-[10px] sm:text-xs leading-tight">100% customer funded: no ads or
                                     tracking</span>
                                 <div class="flex items-center shrink-0 -space-x-1.5 md:-space-x-2 ml-0.5">
@@ -1799,8 +1884,8 @@
                 <!-- Studio -->
                 <div class="glow-card rounded-2xl border border-blue-500/20 bg-zinc-950/60 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 280ms;">
-                    <div class="absolute top-6 right-6 border border-dashed border-blue-400/40 p-1.5 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
-                        style="box-shadow: 0 0 20px rgba(96, 165, 250, 0.25);">
+                    <div class="absolute top-6 right-6 border border-dashed border-lapis-light/40 p-1.5 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
+                        style="box-shadow: 0 0 20px rgba(74, 127, 184, 0.28);">
                         <img src="/static/logo.svg" class="h-full w-full object-cover rounded-md"
                             alt="knob.monster+ Studio Stamp" style="image-rendering: pixelated;" />
             </div>
@@ -1830,39 +1915,35 @@
                                     pricing.billing_label }}</span>
                     </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
-                                Licensed for <span class="pricing-gem-blue font-semibold">commercial use.</span>
+                                Licensed for <span class="text-brand-plus font-semibold">commercial use.</span>
                     </div>
                     </div>
                         <ul class="space-y-2.5 text-xs text-zinc-400">
                             <li class="flex items-center gap-2">
                                 <img src="/static/icons/dinkie/checkmark-circled.svg" alt=""
-                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                 <span class="text-white font-semibold">Everything in Personal</span>
                             </li>
                             <li class="flex items-center gap-2">
                                 <img src="/static/icons/dinkie/briefcase.svg" alt="" width="14"
-                                    height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                 <span class="text-white font-semibold">Commercial &amp; client work allowed</span>
                             </li>
                             <li class="flex items-center gap-2">
                                 <img src="/static/icons/dinkie/money-bag-usd.svg" alt="" width="14"
-                                    height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                 <span>Business invoice &amp; tax ID at checkout</span>
                             </li>
                             <li class="flex items-center gap-2">
                                 <img src="/static/icons/dinkie/envelope.svg" alt="" width="14"
-                                    height="14" class="h-3.5 w-3.5 shrink-0"
-                                    style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                 <span>Priority support</span>
                             </li>
                         </ul>
                     </div>
                     <div class="mt-8 text-center">
                         <a href="{% if user %}/checkout?plan=studio{% else %}/signup?plan=studio{% endif %}"
-                            class="pricing-cta-studio w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs md:text-sm font-roman uppercase tracking-wider transition-all duration-200 shadow-sm shadow-blue-500/10">
+                            class="btn-lapis pricing-cta-studio w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
                             License My Shop
                         </a>
                     </div>
@@ -1872,7 +1953,7 @@
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
-                    Desktop librarians often cost <span class="text-red-600 font-semibold">$200+</span>. knob.monster+ is
+                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold">$200+</span>. <span class="text-brand-plus font-semibold">knob.monster+</span> is
                     <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{
                             pricing.symbol }}</span><span id="pricing-anchor-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount
                             }}</span></span>
@@ -2265,10 +2346,10 @@
                                 } else {
                                     statusText.innerText = `Connected: ${devName} (unsupported)`;
                                     statusText.className = "text-xs font-mono text-left truncate w-full select-none font-semibold";
-                                    statusText.style.color = "#60a5fa";
+                                    statusText.style.color = "#4A7FB8";
                                     if (midiIcon) {
                                         midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
-                                        midiIcon.style.backgroundColor = "#60a5fa";
+                                        midiIcon.style.backgroundColor = "#4A7FB8";
                                     }
                                 }
                             }
@@ -2474,7 +2555,7 @@
                 height = canvas.height = window.innerHeight;
             });
 
-            const colors = ['#ec4899', '#3b82f6', '#10b981', '#eab308', '#a855f7', '#f97316'];
+            const colors = ['#ec4899', '#26619C', '#10b981', '#eab308', '#a855f7', '#f97316'];
             const numParticles = 75;
             const particles = [];
 
@@ -2545,7 +2626,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const e = document.querySelector('#hero-your-text');
             if (e) {
-                const color = e.getAttribute('data-color') || '#60a5fa';
+                const color = e.getAttribute('data-color') || '#4A7FB8';
                 const annotation = annotate(e, {
                     type: 'circle',
                     color: color,

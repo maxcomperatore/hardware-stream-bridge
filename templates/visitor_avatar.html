@@ -51,6 +51,16 @@
                 sidebarUserAvatarImg.src = avatarSrc;
             }
 
+            const mobileNavAvatar = document.getElementById('mobile-nav-avatar');
+            if (mobileNavAvatar) {
+                mobileNavAvatar.src = avatarSrc;
+            }
+
+            const mobileYouAvatar = document.getElementById('mobile-you-avatar');
+            if (mobileYouAvatar) {
+                mobileYouAvatar.src = avatarSrc;
+            }
+
             const geoTag = document.getElementById('visitor-geo-tag');
             if (geoTag) {
                 if (!document.getElementById('footer-visitor-avatar')) {

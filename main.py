@@ -1756,7 +1756,8 @@ async def get_bank_details(request: Request, bank_id: int):
         else:
             bank["patches"] = [{"name": "LOCKED (PRO)", "index": 0}]
 
-    return render_template("patch_list.html", request, {"bank": bank, "user": user})
+    template = "patch_list_mobile.html" if request.query_params.get("mobile") == "1" else "patch_list.html"
+    return render_template(template, request, {"bank": bank, "user": user})
 
 @app.post("/banks", response_class=HTMLResponse)
 async def create_bank(

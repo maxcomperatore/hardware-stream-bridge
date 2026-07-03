@@ -1,0 +1,194 @@
+<!-- Mobile read-only vault (Spotify-style). Desktop MIDI UI stays hidden below md. -->
+<div id="mobile-app" class="md:hidden fixed inset-0 z-30 flex flex-col bg-[#050507] text-zinc-200 overflow-hidden">
+
+    <!-- Ambient gradient -->
+    <div class="pointer-events-none absolute inset-0 mobile-vault-glow" aria-hidden="true"></div>
+
+    <!-- ── HOME / LIBRARY ── -->
+    <div id="mobile-screen-home" class="relative flex flex-col flex-1 min-h-0">
+        <header class="shrink-0 px-5 pt-[max(1rem,env(safe-area-inset-top))] pb-4">
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <p class="text-[10px] font-pixel uppercase tracking-[0.25em] text-zinc-500">Your vault</p>
+                    <h1 id="mobile-header-title" class="text-[1.65rem] font-bold text-white tracking-tight leading-none mt-1">Library</h1>
+                </div>
+                <img src="/static/logo.svg" alt="" width="36" height="36"
+                    class="h-9 w-9 rounded-full border border-zinc-800 shadow-lg" style="image-rendering: pixelated;" />
+            </div>
+        </header>
+
+        <div id="mobile-panel-home" class="mobile-panel flex flex-1 flex-col min-h-0 overflow-hidden">
+            {% if banks %}
+            <div class="px-5 pb-3">
+                <div class="relative">
+                    <img src="/static/icons/dinkie/left-magnifying-glass.svg" alt=""
+                        class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-40 pointer-events-none"
+                        style="filter: invert(1);" />
+                    <input type="search" id="mobile-bank-search" placeholder="Search soundbanks"
+                        oninput="filterMobileBanks()"
+                        class="w-full rounded-full bg-zinc-900/70 border border-zinc-800/60 pl-10 pr-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600" />
+                </div>
+            </div>
+
+            <div class="px-5 pb-2">
+                <h2 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Jump back in</h2>
+            </div>
+            <div class="flex gap-3 overflow-x-auto mobile-scroll px-5 pb-4 snap-x snap-mandatory">
+                {% for bank in banks[:6] %}
+                <button type="button"
+                    onclick="openMobileBank({{ bank.id }}, {{ bank.name | tojson }}, {{ bank.synth_model | tojson }})"
+                    class="mobile-bank-card snap-start shrink-0 w-[8.5rem] text-left active:scale-[0.97] transition-transform"
+                    data-name="{{ bank.name | lower }}">
+                    <div class="mobile-album-art aspect-square rounded-xl mb-2 shadow-xl"
+                        style="--hue: {{ (bank.id * 37) % 360 }};">
+                        <span class="text-[10px] font-pixel uppercase opacity-80 px-2 text-center leading-tight">{{ bank.synth_model.split(' ')[0] }}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-white truncate">{{ bank.name }}</p>
+                    <p class="text-[10px] text-zinc-500 truncate">{{ bank.patch_count }} presets</p>
+                </button>
+                {% endfor %}
+            </div>
+
+            <div class="px-5 pb-2 pt-1">
+                <h2 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">All soundbanks</h2>
+            </div>
+            <div class="flex-1 overflow-y-auto mobile-scroll px-3 pb-2" id="mobile-bank-list">
+                {% for bank in banks %}
+                <button type="button"
+                    onclick="openMobileBank({{ bank.id }}, {{ bank.name | tojson }}, {{ bank.synth_model | tojson }})"
+                    class="mobile-bank-row w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left active:bg-white/10 transition-colors"
+                    data-name="{{ bank.name | lower }}"
+                    data-synth="{{ bank.synth_model | lower }}">
+                    <div class="mobile-album-art h-14 w-14 rounded-lg shrink-0 text-[9px]"
+                        style="--hue: {{ (bank.id * 37) % 360 }};">
+                        <span class="font-pixel opacity-90">{{ bank.synth_model.split(' ')[0][:4] }}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-white truncate">{{ bank.name }}</p>
+                        <p class="text-[11px] text-zinc-500 truncate">{{ bank.synth_model }}</p>
+                    </div>
+                    <span class="text-xs font-lcd text-zinc-600 shrink-0">{{ bank.patch_count }}</span>
+                </button>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="flex-1 flex flex-col items-center justify-center px-8 text-center pb-24">
+                <div class="mobile-album-art h-28 w-28 rounded-2xl mb-6 text-2xl" style="--hue: 200;">♪</div>
+                <h2 class="text-lg font-bold text-white">Your vault is empty</h2>
+                <p class="text-sm text-zinc-500 mt-2 leading-relaxed max-w-xs">
+                    Back up synth patches on desktop with Web MIDI — then browse them here anytime.
+                </p>
+                <p class="text-[10px] font-pixel uppercase tracking-wider text-zinc-600 mt-6">Read-only on mobile</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Search panel -->
+        <div id="mobile-panel-search" class="mobile-panel hidden flex-1 flex flex-col min-h-0 px-5 pt-1 overflow-hidden">
+            <p class="text-sm text-zinc-500 mb-3 shrink-0">Find a soundbank by name or synth model.</p>
+            <input type="search" id="mobile-global-search" placeholder="Search your vault…"
+                class="w-full rounded-full bg-zinc-900/70 border border-zinc-800/60 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600 mb-4 shrink-0" />
+            <div id="mobile-global-results" class="flex-1 overflow-y-auto mobile-scroll space-y-1 pb-2">
+                <p class="text-xs text-zinc-600 px-2 py-4">Type to search your soundbanks.</p>
+            </div>
+        </div>
+
+        <!-- You panel -->
+        <div id="mobile-panel-you" class="mobile-panel hidden flex-1 flex flex-col min-h-0 px-5 pb-4 pt-1 overflow-y-auto mobile-scroll">
+            <div class="rounded-2xl bg-gradient-to-br from-zinc-900/90 to-zinc-950 border border-zinc-800/80 p-5 mt-2">
+                <div class="flex items-center gap-3">
+                    <img id="mobile-you-avatar" src="" alt="" width="48" height="48"
+                        class="h-12 w-12 rounded-full border-2 border-zinc-700 object-cover" />
+                    <div class="min-w-0">
+                        <p class="text-base font-bold text-white truncate">{{ user.email.split('@')[0] }}</p>
+                        <p class="text-xs text-zinc-500 truncate">{{ user.email }}</p>
+                    </div>
+                </div>
+                <div class="mt-4 inline-flex">
+                    {% if user.tier == 'premium' %}
+                    <span class="text-[9px] font-pixel px-2 py-1 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25 uppercase">Pro</span>
+                    {% else %}
+                    <span class="text-[9px] font-pixel px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">Free</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <ul class="mt-6 space-y-1 text-sm">
+                <li class="flex items-center justify-between py-3 border-b border-zinc-900">
+                    <span class="text-zinc-400">Soundbanks</span>
+                    <span class="font-semibold text-white">{{ banks | length }}</span>
+                </li>
+                <li class="flex items-center justify-between py-3 border-b border-zinc-900">
+                    <span class="text-zinc-400">Mode</span>
+                    <span class="text-emerald-400 font-medium">Read-only</span>
+                </li>
+            </ul>
+
+            <p class="text-xs text-zinc-600 leading-relaxed mt-6">
+                Capture, flash, and audition presets on desktop Chrome with a MIDI interface. This view is for browsing your cloud library on the go.
+            </p>
+
+            {% if user.tier != 'premium' %}
+            <a href="/checkout?plan=personal"
+                class="mt-6 block text-center rounded-full bg-white text-black text-sm font-semibold py-3 active:scale-[0.98] transition-transform">
+                Upgrade vault
+            </a>
+            {% endif %}
+
+            <a href="/logout"
+                class="mt-4 block text-center text-xs font-pixel uppercase tracking-wider text-zinc-500 py-2">
+                Log out
+            </a>
+        </div>
+
+        {% include 'partials/dashboard_mobile_nav.html' %}
+    </div>
+
+    <!-- ── BANK DETAIL (preset list) ── -->
+    <div id="mobile-screen-bank" class="relative hidden flex-col flex-1 min-h-0">
+        <div class="mobile-bank-hero shrink-0 pt-[max(0.5rem,env(safe-area-inset-top))] px-4 pb-6">
+            <button type="button" onclick="closeMobileBank()"
+                class="flex items-center gap-1 text-sm font-semibold text-zinc-300 py-2 -ml-1 active:opacity-70">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                Library
+            </button>
+            <div id="mobile-bank-hero-art" class="mobile-album-art h-36 w-36 rounded-2xl mx-auto mt-2 shadow-2xl text-lg" style="--hue: 160;">
+                <span id="mobile-bank-hero-label" class="font-pixel uppercase">SYN</span>
+            </div>
+        </div>
+        <div id="mobile-bank-detail" class="flex flex-col flex-1 min-h-0 -mt-4 rounded-t-3xl bg-[#0a0a0c] border-t border-white/5 overflow-hidden">
+            <div class="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                <div class="h-8 w-8 rounded-full border-2 border-zinc-700 border-t-emerald-500 animate-spin mb-3"></div>
+                <p class="text-xs text-zinc-500">Loading presets…</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patch detail sheet -->
+    <div id="mobile-patch-sheet" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300" aria-hidden="true">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" onclick="closeMobilePatchDetail()"></div>
+        <div id="mobile-patch-sheet-panel"
+            class="absolute inset-x-0 bottom-0 rounded-t-3xl bg-[#121214] border-t border-white/10 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] transform translate-y-full transition-transform duration-300 ease-out pointer-events-auto">
+            <div class="w-10 h-1 rounded-full bg-zinc-700 mx-auto mb-5"></div>
+            <div id="mobile-patch-sheet-art" class="mobile-album-art h-24 w-24 rounded-2xl mx-auto mb-4 text-2xl" style="--hue: 200;">♪</div>
+            <p class="text-[10px] font-pixel uppercase tracking-widest text-center text-emerald-400/80">Preset</p>
+            <h3 id="mobile-patch-sheet-name" class="text-xl font-bold text-white text-center mt-1">—</h3>
+            <p id="mobile-patch-sheet-meta" class="text-sm text-zinc-500 text-center mt-1">—</p>
+            <p class="text-[11px] text-zinc-600 text-center mt-4 leading-relaxed max-w-xs mx-auto">
+                View-only on mobile. Open the desktop studio to audition or sync to hardware.
+            </p>
+            <button type="button" onclick="closeMobilePatchDetail()"
+                class="w-full mt-6 py-3 rounded-full bg-zinc-800 text-white text-sm font-semibold active:bg-zinc-700">
+                Done
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.mobileBankCatalog = [
+        {%- for bank in banks -%}
+        { "id": {{ bank.id }}, "name": {{ bank.name | tojson }}, "synth": {{ bank.synth_model | tojson }}, "count": {{ bank.patch_count }} }{{ "," if not loop.last }}
+        {%- endfor -%}
+    ];
+</script>

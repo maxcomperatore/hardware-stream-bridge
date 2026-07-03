@@ -173,6 +173,50 @@
             mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
         }
 
+        .mobile-vault-glow {
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.18), transparent),
+                radial-gradient(ellipse 60% 40% at 100% 50%, rgba(16, 185, 129, 0.08), transparent);
+        }
+
+        .mobile-scroll {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .mobile-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mobile-album-art {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg,
+                    hsl(var(--hue, 200) 55% 42%),
+                    hsl(calc(var(--hue, 200) + 40) 45% 22%));
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+        }
+
+        .mobile-bank-hero {
+            background: linear-gradient(180deg, rgba(20, 20, 28, 0.95) 0%, transparent 100%);
+        }
+
+        .mobile-patch-art {
+            background: linear-gradient(145deg,
+                    hsl(var(--hue, 200) 50% 38%),
+                    hsl(calc(var(--hue, 200) + 30) 40% 20%));
+        }
+
+        #mobile-patch-sheet.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #mobile-patch-sheet.open #mobile-patch-sheet-panel {
+            transform: translateY(0);
+        }
+
         .dither-mesh {
             background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
             background-repeat: repeat;
@@ -239,8 +283,10 @@
 <body
     class="bg-[#0b0b0d] text-zinc-300 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-white overflow-hidden relative">
 
+    {% include 'partials/dashboard_mobile.html' %}
+
     <!-- Global Dither Overlay -->
-    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100 hidden md:block"></div>
     <!-- Fancy Mobile Background Pattern -->
     <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
 
@@ -261,7 +307,7 @@
 
     <!-- Top Navigation Player Bar -->
     <header
-        class="h-16 border-b border-zinc-900 bg-[#0e0e11] px-5 flex items-center justify-between z-10 shadow-md select-none">
+        class="hidden md:flex h-16 border-b border-zinc-900 bg-[#0e0e11] px-5 items-center justify-between z-10 shadow-md select-none">
 
         <!-- Left: Quick play & Audition Volume -->
         <div class="flex items-center gap-5 w-1/4">
@@ -357,7 +403,7 @@
     </header>
 
     <!-- Main Workspace -->
-    <main class="flex-1 flex overflow-hidden">
+    <main class="hidden md:flex flex-1 overflow-hidden">
 
         <!-- Left Sidebar: Library Controls -->
         <aside class="w-56 border-r border-zinc-900 bg-[#0a0a0d] flex flex-col justify-between select-none">
@@ -757,7 +803,10 @@
 
         // Init MIDI Access
         window.addEventListener('DOMContentLoaded', () => {
-            initializeMidiAccess(false);
+            initMobileDashboardNav();
+            if (!window.matchMedia('(max-width: 767px)').matches) {
+                initializeMidiAccess(false);
+            }
 
             // Custom file label updates on dropzone select
             const fileInput = document.getElementById('file-input');
@@ -1561,6 +1610,168 @@
             `;
 
             htmx.ajax('GET', `/banks/${bankId}`, { target: '#patch-explorer-content', swap: 'innerHTML' });
+
+            if (window.matchMedia('(max-width: 767px)').matches) {
+                openMobileBank(bankId, bankName, synthModel);
+            }
+        }
+
+        function isMobileVault() {
+            return window.matchMedia('(max-width: 767px)').matches;
+        }
+
+        function openMobileBank(bankId, bankName, synthModel) {
+            const home = document.getElementById('mobile-screen-home');
+            const bankScreen = document.getElementById('mobile-screen-bank');
+            if (!home || !bankScreen) return;
+
+            home.classList.add('hidden');
+            home.classList.remove('flex');
+            bankScreen.classList.remove('hidden');
+            bankScreen.classList.add('flex');
+
+            const hue = (bankId * 37) % 360;
+            const heroArt = document.getElementById('mobile-bank-hero-art');
+            const heroLabel = document.getElementById('mobile-bank-hero-label');
+            if (heroArt) heroArt.style.setProperty('--hue', hue);
+            if (heroLabel) heroLabel.textContent = (synthModel || 'SYN').split(' ')[0].slice(0, 6).toUpperCase();
+
+            const detail = document.getElementById('mobile-bank-detail');
+            if (detail) {
+                detail.innerHTML = `
+                    <div class="flex flex-1 flex-col items-center justify-center p-8 text-center min-h-[12rem]">
+                        <div class="h-8 w-8 rounded-full border-2 border-zinc-700 border-t-emerald-500 animate-spin mb-3"></div>
+                        <p class="text-xs text-zinc-500">Loading presets…</p>
+                    </div>`;
+            }
+
+            htmx.ajax('GET', `/banks/${bankId}?mobile=1`, { target: '#mobile-bank-detail', swap: 'innerHTML' });
+        }
+
+        function closeMobileBank() {
+            const home = document.getElementById('mobile-screen-home');
+            const bankScreen = document.getElementById('mobile-screen-bank');
+            if (!home || !bankScreen) return;
+            bankScreen.classList.add('hidden');
+            bankScreen.classList.remove('flex');
+            home.classList.remove('hidden');
+            home.classList.add('flex');
+            closeMobilePatchDetail();
+        }
+
+        function mobileNavTo(tab) {
+            const panels = { home: 'mobile-panel-home', search: 'mobile-panel-search', you: 'mobile-panel-you' };
+            const titles = { home: 'Library', search: 'Search', you: 'You' };
+
+            Object.entries(panels).forEach(([key, id]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const active = key === tab;
+                el.classList.toggle('hidden', !active);
+            });
+
+            document.querySelectorAll('.mobile-nav-btn').forEach((btn) => {
+                const isActive = btn.getAttribute('data-mobile-tab') === tab;
+                btn.classList.toggle('text-emerald-400', isActive);
+                btn.classList.toggle('text-zinc-500', !isActive);
+            });
+
+            const headerTitle = document.getElementById('mobile-header-title');
+            if (headerTitle) headerTitle.textContent = titles[tab] || 'Library';
+
+            if (tab === 'search') {
+                mobileGlobalSearch();
+                const input = document.getElementById('mobile-global-search');
+                if (input) setTimeout(() => input.focus(), 50);
+            }
+        }
+
+        function initMobileDashboardNav() {
+            const nav = document.getElementById('mobile-dashboard-nav');
+            if (!nav) return;
+            nav.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-mobile-tab]');
+                if (!btn) return;
+                e.preventDefault();
+                mobileNavTo(btn.getAttribute('data-mobile-tab'));
+            });
+            const searchInput = document.getElementById('mobile-global-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', mobileGlobalSearch);
+            }
+        }
+
+        function filterMobileBanks() {
+            const q = (document.getElementById('mobile-bank-search')?.value || '').toLowerCase();
+            document.querySelectorAll('.mobile-bank-row').forEach((row) => {
+                const name = row.getAttribute('data-name') || '';
+                const synth = row.getAttribute('data-synth') || '';
+                row.classList.toggle('hidden', q && !name.includes(q) && !synth.includes(q));
+            });
+        }
+
+        function filterMobilePatches() {
+            const q = (document.getElementById('mobile-patch-search')?.value || '').toLowerCase();
+            document.querySelectorAll('.mobile-patch-row').forEach((row) => {
+                const name = row.getAttribute('data-name') || '';
+                const index = row.getAttribute('data-index') || '';
+                row.classList.toggle('hidden', q && !name.includes(q) && !index.includes(q));
+            });
+        }
+
+        function mobileGlobalSearch() {
+            const q = (document.getElementById('mobile-global-search')?.value || '').toLowerCase().trim();
+            const out = document.getElementById('mobile-global-results');
+            if (!out) return;
+            if (!q) {
+                out.innerHTML = '<p class="text-xs text-zinc-600 px-2 py-4">Type to search your soundbanks.</p>';
+                return;
+            }
+            const catalog = window.mobileBankCatalog || [];
+            const hits = catalog.filter((bank) =>
+                bank.name.toLowerCase().includes(q) || bank.synth.toLowerCase().includes(q)
+            );
+            if (!hits.length) {
+                out.innerHTML = '<p class="text-xs text-zinc-600 px-2 py-4">No soundbanks match.</p>';
+                return;
+            }
+            out.replaceChildren();
+            hits.forEach((bank) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'w-full text-left px-3 py-3 rounded-xl active:bg-white/10';
+                btn.innerHTML = `<p class="text-sm font-semibold text-white">${escapeMobileHtml(bank.name)}</p>
+                    <p class="text-[11px] text-zinc-500">${escapeMobileHtml(bank.synth)} · ${bank.count} presets</p>`;
+                btn.addEventListener('click', () => openMobileBank(bank.id, bank.name, bank.synth));
+                out.appendChild(btn);
+            });
+        }
+
+        function escapeMobileHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function openMobilePatchDetail(index, name) {
+            const sheet = document.getElementById('mobile-patch-sheet');
+            const meta = window.mobileActiveBankMeta || {};
+            document.getElementById('mobile-patch-sheet-name').textContent = name;
+            document.getElementById('mobile-patch-sheet-meta').textContent =
+                `${meta.synth || 'Synth'} · Slot ${index + 1}`;
+            const art = document.getElementById('mobile-patch-sheet-art');
+            if (art) art.style.setProperty('--hue', (index * 47 + (meta.id || 0) * 13) % 360);
+            sheet.classList.add('open');
+            sheet.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeMobilePatchDetail() {
+            const sheet = document.getElementById('mobile-patch-sheet');
+            if (!sheet) return;
+            sheet.classList.remove('open');
+            sheet.setAttribute('aria-hidden', 'true');
         }
 
         function showUploadProgress() {
@@ -1741,7 +1952,6 @@
     </div>
 
     {% include 'visitor_avatar.html' %}
-    {% include "mobile_nav.html" %}
 </body>
 
 </html>

@@ -8,63 +8,7 @@
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
     <title>Register - knob.monster</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        zinc: {
-                            450: '#7e7e8a',
-                            550: '#5c5c66',
-                            555: '#52525c',
-                            650: '#43434c',
-                            655: '#3e3e46',
-                            850: '#1c1c21',
-                        },
-                        blue: {
-                            650: '#1B4F8C',
-                        },
-                        rose: {
-                            450: '#fb7185',
-                        },
-                        emerald: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
-                        },
-                        green: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                        pixel: ['Silkscreen', 'monospace'],
-                        lcd: ['VT323', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
     <style>
         /* Mobile specific fancy background pattern */
         .mobile-bg-pattern {
@@ -99,7 +43,7 @@
             <h2 class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</h2>
             <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start
                 backup</p>
-            <p id="signup-plan-label" class="text-[9px] text-emerald-400 uppercase font-pixel tracking-wider mt-2">
+            <p id="signup-plan-label" class="text-[9px] text-lapis-light uppercase font-pixel tracking-wider mt-2">
                 {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% elif plan == 'studio' %}knob.monster+ Studio · {{
                 plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{
                 plan_catalog.personal.price_display }} lifetime{% endif %}
@@ -165,7 +109,7 @@
             <div id="personal-license-ack">
                 <label class="flex items-start gap-2.5 cursor-pointer group">
                     <input type="checkbox" name="license_ack" id="license_ack" value="1" required
-                        class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-0 focus:ring-offset-0">
+                        class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-lapis-mid focus:ring-0 focus:ring-offset-0">
                     <span class="text-[9px] text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors">
                         I confirm this license is for personal, non-commercial use only (bedroom studio, my own synths).
                     </span>

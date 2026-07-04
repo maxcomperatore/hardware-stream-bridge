@@ -15,32 +15,18 @@
     {% set seo_schema_type = "WebPage" %}
     {% include 'partials/seo_article_meta.html' %}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        zinc: { 850: '#1c1c21' },
-                        emerald: {
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                        },
-                    },
-                    fontFamily: {
-                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                        pixel: ['Silkscreen', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
 
     <style>
         ::selection {
-            background-color: rgba(41, 151, 255, 0.2);
+            background-color: rgba(74, 127, 184, 0.25);
             color: #ffffff;
+        }
+
+        @supports (color: oklch(0% 0 0)) {
+            ::selection {
+                background-color: oklch(58.50% 0.1049 251.61 / 0.25);
+            }
         }
 
         @keyframes logo-spin {
@@ -58,13 +44,13 @@
         }
 
         .shop-play-btn.playing {
-            border-color: rgba(74, 127, 184, 0.85);
-            color: #dce8f2;
-            background: rgba(74, 127, 184, 0.15);
+            border-color: oklch(58.50% 0.1049 251.61 / 0.85);
+            color: oklch(93.8% 0.018 251.3);
+            background: oklch(58.50% 0.1049 251.61 / 0.15);
             box-shadow:
-                0 0 0 1px rgba(74, 127, 184, 0.45),
-                0 0 18px rgba(74, 127, 184, 0.45),
-                0 0 36px rgba(74, 127, 184, 0.2);
+                0 0 0 1px oklch(58.50% 0.1049 251.61 / 0.45),
+                0 0 18px oklch(58.50% 0.1049 251.61 / 0.45),
+                0 0 36px oklch(58.50% 0.1049 251.61 / 0.2);
             animation: shop-play-glow 1.4s ease-in-out infinite;
         }
 
@@ -79,15 +65,15 @@
         @keyframes shop-play-glow {
             0%, 100% {
                 box-shadow:
-                    0 0 0 1px rgba(74, 127, 184, 0.45),
-                    0 0 16px rgba(74, 127, 184, 0.35),
-                    0 0 28px rgba(74, 127, 184, 0.15);
+                    0 0 0 1px oklch(58.50% 0.1049 251.61 / 0.45),
+                    0 0 16px oklch(58.50% 0.1049 251.61 / 0.35),
+                    0 0 28px oklch(58.50% 0.1049 251.61 / 0.15);
             }
             50% {
                 box-shadow:
-                    0 0 0 1px rgba(147, 197, 253, 0.7),
-                    0 0 24px rgba(74, 127, 184, 0.55),
-                    0 0 48px rgba(74, 127, 184, 0.3);
+                    0 0 0 1px oklch(75% 0.12 251.61 / 0.7),
+                    0 0 24px oklch(58.50% 0.1049 251.61 / 0.55),
+                    0 0 48px oklch(58.50% 0.1049 251.61 / 0.3);
             }
         }
     </style>
@@ -102,7 +88,7 @@
                 <div class="spin-logo w-6 h-6">
                     <img src="/static/logo.svg" alt="" width="24" height="24" class="w-6 h-6" style="image-rendering: pixelated;">
                 </div>
-                <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">knob.monster</span>
+                <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-lapis-light transition-colors">knob.monster</span>
             </a>
 
             <div class="flex items-center gap-3">

@@ -61,49 +61,48 @@
                             850: '#1c1c21',
                         },
                         blue: {
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            650: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#1B4F8C',
+                            400: 'oklch(58.50% 0.1049 251.61)',
+                            500: 'oklch(48.42% 0.1129 251.34)',
+                            600: 'oklch(42.72% 0.1149 254.84)',
+                            650: 'oklch(42.72% 0.1149 254.84)',
+                            700: 'oklch(42.72% 0.1149 254.84)',
+                            800: 'oklch(35.46% 0.0842 251.90)',
+                            900: 'oklch(42.72% 0.1149 254.84)',
                         },
                         lapis: {
-                            deep: '#1B4F8C',
-                            DEFAULT: '#26619C',
-                            mid: '#26619C',
-                            light: '#4A7FB8',
-                            pyrite: '#C9A227',
+                            deep: 'oklch(42.72% 0.1149 254.84)',
+                            DEFAULT: 'oklch(48.42% 0.1129 251.34)',
+                            mid: 'oklch(48.42% 0.1129 251.34)',
+                            light: 'oklch(58.50% 0.1049 251.61)',
                         },
                         rose: {
                             450: '#fb7185',
                         },
                         emerald: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
+                            50: 'oklch(97.2% 0.008 251.6)',
+                            100: 'oklch(93.8% 0.018 251.3)',
+                            200: 'oklch(86.5% 0.038 251.4)',
+                            300: 'oklch(73.2% 0.062 251.5)',
+                            400: 'oklch(58.50% 0.1049 251.61)',
+                            500: 'oklch(48.42% 0.1129 251.34)',
+                            600: 'oklch(42.72% 0.1149 254.84)',
+                            700: 'oklch(42.72% 0.1149 254.84)',
+                            800: 'oklch(35.46% 0.0842 251.90)',
+                            900: 'oklch(27.53% 0.0654 255.18)',
+                            950: 'oklch(21.57% 0.0452 254.99)',
                         },
                         green: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
+                            50: 'oklch(97.2% 0.008 251.6)',
+                            100: 'oklch(93.8% 0.018 251.3)',
+                            200: 'oklch(86.5% 0.038 251.4)',
+                            300: 'oklch(73.2% 0.062 251.5)',
+                            400: 'oklch(58.50% 0.1049 251.61)',
+                            500: 'oklch(48.42% 0.1129 251.34)',
+                            600: 'oklch(42.72% 0.1149 254.84)',
+                            700: 'oklch(42.72% 0.1149 254.84)',
+                            800: 'oklch(35.46% 0.0842 251.90)',
+                            900: 'oklch(27.53% 0.0654 255.18)',
+                            950: 'oklch(21.57% 0.0452 254.99)',
                         }
                     },
                     fontFamily: {
@@ -123,25 +122,100 @@
     </script>
 
     <style>
+        /* Perceptual color tokens — hex fallback, OKLCH primary, P3 wide-gamut on capable displays */
         :root {
             --canvas-void: #09090B;
             --canvas-surface: #18181B;
+            --border-muted: #3F3F46;
             --ink-primary: #FAFAFA;
             --ink-secondary: #A1A1AA;
             --ink-muted: #71717A;
-
-            /* Lapis lazuli — knob.monster+ brand, archive, price gem */
             --lapis-deep: #1B4F8C;
             --lapis-mid: #26619C;
             --lapis-light: #4A7FB8;
             --gem-facet: #E8F0F8;
             --gem-flash: #FFFFFF;
-
-            /* Pain anchors — competitor framing only */
             --avoid-neon: #B8CC3A;
             --pain-blood: #DC2626;
             --stuck-rust: #EF4444;
+            --lapis-glow: rgba(74, 127, 184, 0.35);
+            --lapis-glow-strong: rgba(74, 127, 184, 0.5);
+            --lapis-glow-soft: rgba(74, 127, 184, 0.2);
+            --lapis-border: rgba(74, 127, 184, 0.45);
+            --lapis-fill-soft: rgba(38, 97, 156, 0.12);
+            --gem-glow: rgba(248, 250, 252, 0.35);
+            --gem-glow-soft: rgba(248, 250, 252, 0.12);
+            --facet-border: rgba(232, 240, 248, 0.22);
+            --avoid-neon-glow: rgba(184, 204, 58, 0.5);
+            --avoid-neon-shadow: rgba(90, 110, 30, 0.6);
+            --pain-blood-glow: rgba(220, 38, 38, 0.45);
+            --shadow-void: rgba(0, 0, 0, 0.35);
+        }
 
+        @supports (color: oklch(0% 0 0)) {
+            :root {
+                --canvas-void: oklch(14.08% 0.0044 285.82);
+                --canvas-surface: oklch(21.03% 0.0059 285.89);
+                --border-muted: oklch(37.03% 0.0119 285.81);
+                --ink-primary: oklch(98.51% 0 0);
+                --ink-secondary: oklch(71.18% 0.0129 286.07);
+                --ink-muted: oklch(55.17% 0.0138 285.94);
+
+                /* Lapis lazuli — perceptually uniform lightness steps */
+                --lapis-deep: oklch(42.72% 0.1149 254.84);
+                --lapis-mid: oklch(48.42% 0.1129 251.34);
+                --lapis-light: oklch(58.50% 0.1049 251.61);
+                --gem-facet: oklch(95.14% 0.0138 247.97);
+                --gem-flash: oklch(100% 0 0);
+
+                /* Pain anchors — competitor framing only */
+                --avoid-neon: oklch(80.41% 0.1655 117.11);
+                --pain-blood: oklch(57.71% 0.2152 27.33);
+                --stuck-rust: oklch(63.68% 0.2078 25.33);
+
+                /* Alpha tokens (same hue — consistent glows) */
+                --lapis-glow: oklch(58.50% 0.1049 251.61 / 0.35);
+                --lapis-glow-strong: oklch(58.50% 0.1049 251.61 / 0.5);
+                --lapis-glow-soft: oklch(58.50% 0.1049 251.61 / 0.2);
+                --lapis-border: oklch(58.50% 0.1049 251.61 / 0.45);
+                --lapis-fill-soft: oklch(48.42% 0.1129 251.34 / 0.12);
+                --gem-glow: oklch(100% 0 0 / 0.35);
+                --gem-glow-soft: oklch(100% 0 0 / 0.12);
+                --facet-border: oklch(95.14% 0.0138 247.97 / 0.22);
+                --avoid-neon-glow: oklch(80.41% 0.1655 117.11 / 0.5);
+                --avoid-neon-shadow: oklch(48% 0.08 117 / 0.6);
+                --pain-blood-glow: oklch(57.71% 0.2152 27.33 / 0.45);
+                --shadow-void: oklch(0% 0 0 / 0.35);
+
+                --pricing-gem-gradient: linear-gradient(105deg,
+                        var(--lapis-deep) 0%,
+                        var(--lapis-mid) 14%,
+                        var(--lapis-light) 28%,
+                        var(--gem-facet) 38%,
+                        var(--gem-flash) 44%,
+                        var(--lapis-light) 52%,
+                        var(--lapis-mid) 64%,
+                        var(--gem-facet) 74%,
+                        var(--lapis-light) 86%,
+                        var(--lapis-deep) 100%);
+            }
+        }
+
+        /* Display P3 — extra chroma on Retina / OLED (colors hex cannot reach) */
+        @media (color-gamut: p3) {
+            :root {
+                --lapis-deep: oklch(42.72% 0.142 254.84);
+                --lapis-mid: oklch(48.42% 0.148 251.34);
+                --lapis-light: oklch(58.50% 0.138 251.61);
+                --avoid-neon: oklch(80.41% 0.205 117.11);
+                --pain-blood: oklch(57.71% 0.26 27.33);
+                --stuck-rust: oklch(63.68% 0.25 25.33);
+                --lapis-glow: oklch(58.50% 0.138 251.61 / 0.38);
+                --lapis-glow-strong: oklch(58.50% 0.138 251.61 / 0.55);
+            }
+        }
+
+        :root {
             --pricing-gem-gradient: linear-gradient(105deg,
                     var(--lapis-deep) 0%,
                     var(--lapis-mid) 14%,
@@ -157,14 +231,14 @@
 
         .btn-free {
             background-color: var(--canvas-surface);
-            border: 2px solid #3F3F46;
+            border: 2px solid var(--border-muted, #3F3F46);
             color: var(--ink-primary);
             transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
         }
 
         .btn-free:hover {
             border-color: var(--lapis-light);
-            box-shadow: 0 0 20px rgba(74, 127, 184, 0.25);
+            box-shadow: 0 0 20px var(--lapis-glow-soft, rgba(74, 127, 184, 0.25));
         }
 
         .btn-free:active {
@@ -173,22 +247,22 @@
 
         .btn-lapis {
             background: linear-gradient(180deg, var(--lapis-mid) 0%, var(--lapis-deep) 100%);
-            color: #FFFFFF;
-            border: 1px solid rgba(232, 240, 248, 0.22);
+            color: var(--gem-flash);
+            border: 1px solid var(--facet-border, rgba(232, 240, 248, 0.22));
             box-shadow:
-                0 0 28px rgba(74, 127, 184, 0.4),
-                0 4px 16px rgba(0, 0, 0, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.14);
+                0 0 28px var(--lapis-glow, rgba(74, 127, 184, 0.4)),
+                0 4px 16px var(--shadow-void, rgba(0, 0, 0, 0.35)),
+                inset 0 1px 0 oklch(100% 0 0 / 0.14);
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
 
         .btn-lapis:hover {
             background: linear-gradient(180deg, var(--lapis-light) 0%, var(--lapis-mid) 100%);
             box-shadow:
-                0 0 36px rgba(248, 250, 252, 0.12),
-                0 0 32px rgba(74, 127, 184, 0.5),
-                0 6px 18px rgba(0, 0, 0, 0.38),
-                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+                0 0 36px var(--gem-glow-soft, rgba(248, 250, 252, 0.12)),
+                0 0 32px var(--lapis-glow-strong, rgba(74, 127, 184, 0.5)),
+                0 6px 18px var(--shadow-void, rgba(0, 0, 0, 0.38)),
+                inset 0 1px 0 oklch(100% 0 0 / 0.18);
         }
 
         .btn-lapis:active {
@@ -198,15 +272,15 @@
         .btn-lapis-outline {
             background: transparent;
             color: var(--lapis-light);
-            border: 1px solid rgba(74, 127, 184, 0.45);
+            border: 1px solid var(--lapis-border, rgba(74, 127, 184, 0.45));
             box-shadow: none;
             transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
         }
 
         .btn-lapis-outline:hover {
-            background: rgba(38, 97, 156, 0.12);
+            background: var(--lapis-fill-soft, rgba(38, 97, 156, 0.12));
             border-color: var(--lapis-light);
-            box-shadow: 0 0 20px rgba(74, 127, 184, 0.2);
+            box-shadow: 0 0 20px var(--lapis-glow-soft, rgba(74, 127, 184, 0.2));
         }
 
         .btn-lapis-outline:active {
@@ -214,13 +288,13 @@
         }
 
         .pricing-card-featured {
-            border-color: rgba(74, 127, 184, 0.35) !important;
-            box-shadow: 0 0 48px rgba(74, 127, 184, 0.1), 4px 4px 0 0 #18181b;
+            border-color: var(--lapis-glow, rgba(74, 127, 184, 0.35)) !important;
+            box-shadow: 0 0 48px var(--lapis-glow-soft, rgba(74, 127, 184, 0.1)), 4px 4px 0 0 var(--canvas-surface);
         }
 
         .pricing-card-featured.glow-card:hover {
             border-color: var(--lapis-mid) !important;
-            box-shadow: 6px 6px 0 0 var(--lapis-mid), 0 0 28px rgba(74, 127, 184, 0.2) !important;
+            box-shadow: 6px 6px 0 0 var(--lapis-mid), 0 0 28px var(--lapis-glow-soft, rgba(74, 127, 184, 0.2)) !important;
         }
 
         .pricing-card-featured.glow-card:active {
@@ -282,7 +356,7 @@
             background-clip: text;
             color: transparent !important;
             animation: pricing-gem-shimmer 7s ease-in-out infinite;
-            filter: drop-shadow(0 0 14px rgba(248, 250, 252, 0.35)) drop-shadow(0 0 8px rgba(74, 127, 184, 0.28));
+            filter: drop-shadow(0 0 14px var(--gem-glow, rgba(248, 250, 252, 0.35))) drop-shadow(0 0 8px var(--lapis-glow-soft, rgba(74, 127, 184, 0.28)));
         }
 
         /* knob.monster+ — lapis brand (same family as price gem) */
@@ -293,12 +367,12 @@
         /* Primal “avoid” — bile / radioactive chartreuse (neon = danger, not cool) */
         .text-anchor-competitor {
             color: var(--avoid-neon);
-            text-shadow: 0 0 10px rgba(184, 204, 58, 0.5), 0 0 2px rgba(90, 110, 30, 0.6);
+            text-shadow: 0 0 10px var(--avoid-neon-glow, rgba(184, 204, 58, 0.5)), 0 0 2px var(--avoid-neon-shadow, rgba(90, 110, 30, 0.6));
         }
 
         .text-anchor-blood {
             color: var(--pain-blood);
-            text-shadow: 0 0 8px rgba(220, 38, 38, 0.45);
+            text-shadow: 0 0 8px var(--pain-blood-glow, rgba(220, 38, 38, 0.45));
         }
 
         .pricing-gem-currency-icon {
@@ -310,7 +384,7 @@
             background: var(--pricing-gem-gradient);
             background-size: 260% 100%;
             animation: pricing-gem-shimmer 7s ease-in-out infinite;
-            filter: drop-shadow(0 0 14px rgba(248, 250, 252, 0.35)) drop-shadow(0 0 8px rgba(74, 127, 184, 0.28));
+            filter: drop-shadow(0 0 14px var(--gem-glow, rgba(248, 250, 252, 0.35))) drop-shadow(0 0 8px var(--lapis-glow-soft, rgba(74, 127, 184, 0.28)));
         }
 
         .pricing-gem-currency-usd {
@@ -331,10 +405,28 @@
             scroll-behavior: smooth;
         }
 
+        .shadow-lapis-glow {
+            box-shadow: 0 0 12px var(--lapis-glow);
+        }
+
+        .shadow-lapis-glow-lg {
+            box-shadow: 0 0 20px var(--lapis-glow);
+        }
+
+        .shadow-lapis-glow-soft {
+            box-shadow: 0 0 20px var(--lapis-glow-soft);
+        }
+
         /* Custom selection color */
         ::selection {
-            background-color: rgba(41, 151, 255, 0.2);
-            color: #ffffff;
+            background-color: rgba(74, 127, 184, 0.25);
+            color: var(--ink-primary);
+        }
+
+        @supports (color: oklch(0% 0 0)) {
+            ::selection {
+                background-color: oklch(58.50% 0.1049 251.61 / 0.25);
+            }
         }
 
         /* Minecraft-style 3D spinning item animation */
@@ -1357,9 +1449,9 @@
                     <img src="/static/icons/dinkie/cloud.svg" alt="Cloud"
                         class="w-full h-full object-contain" style="filter: invert(1);">
                 </span>
-                for <span id="hero-your-text" class="inline-block" data-color="#4A7FB8">your</span>
+                for <span id="hero-your-text" class="inline-block text-lapis-light" data-color="lapis-light">your</span>
                 <span
-                    class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-lapis-light/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(74,127,184,0.35)]">
+                    class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-lapis-light/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-lapis-glow">
                     <img id="hero-visitor-avatar"
                         src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>"
                         alt="Your Avatar" class="w-full h-full object-cover">
@@ -1595,7 +1687,7 @@
                 <div class="mt-16 text-center reveal" style="--delay: 300ms;">
                     <p class="text-zinc-400 mb-6 text-sm font-medium">Ready to back up your {{ seo.synth_name }}?</p>
                     <a href="/signup"
-                        class="bg-emerald-500 hover:bg-emerald-400 text-white px-8 py-4 rounded-xl text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 inline-flex items-center gap-3 shadow-[0_0_20px_rgba(74,127,184,0.35)]">
+                        class="bg-emerald-500 hover:bg-emerald-400 text-white px-8 py-4 rounded-xl text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 inline-flex items-center gap-3 shadow-lapis-glow-lg">
                         <span>Get Premium Vault</span>
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -1811,8 +1903,7 @@
                 <div class="glow-card pricing-card-featured rounded-2xl border bg-zinc-950/40 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 200ms;">
                     <div id="stamp-diamond"
-                        class="absolute top-6 right-6 border border-dashed border-lapis-light/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
-                        style="box-shadow: 0 0 20px rgba(74, 127, 184, 0.35);">
+                        class="absolute top-6 right-6 border border-dashed border-lapis-light/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11 shadow-lapis-glow-lg">
                         <img id="landing-lifetime-avatar" src="/static/logo.svg"
                             class="h-full w-full object-cover rounded-md" alt="knob.monster+ Stamp">
                     </div>
@@ -1911,8 +2002,7 @@
                 <!-- Studio -->
                 <div class="glow-card rounded-2xl border border-blue-500/20 bg-zinc-950/60 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 280ms;">
-                    <div class="absolute top-6 right-6 border border-dashed border-lapis-light/40 p-1.5 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11"
-                        style="box-shadow: 0 0 20px rgba(74, 127, 184, 0.28);">
+                    <div class="absolute top-6 right-6 border border-dashed border-lapis-light/40 p-1.5 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11 shadow-lapis-glow-soft">
                         <img src="/static/logo.svg" class="h-full w-full object-cover rounded-md"
                             alt="knob.monster+ Studio Stamp" style="image-rendering: pixelated;" />
             </div>
@@ -2313,6 +2403,10 @@
                 }
             });
 
+            function lapisLightColor() {
+                return getComputedStyle(document.documentElement).getPropertyValue('--lapis-light').trim() || '#4A7FB8';
+            }
+
             function initiateMIDIScan() {
                 const statusText = document.getElementById('midi-status-text');
                 const midiIcon = document.getElementById('midi-icon');
@@ -2373,10 +2467,10 @@
                                 } else {
                                     statusText.innerText = `Connected: ${devName} (unsupported)`;
                                     statusText.className = "text-xs font-mono text-left truncate w-full select-none font-semibold";
-                                    statusText.style.color = "#4A7FB8";
+                                    statusText.style.color = lapisLightColor();
                                     if (midiIcon) {
                                         midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
-                                        midiIcon.style.backgroundColor = "#4A7FB8";
+                                        midiIcon.style.backgroundColor = lapisLightColor();
                                     }
                                 }
                             }
@@ -2582,7 +2676,7 @@
                 height = canvas.height = window.innerHeight;
             });
 
-            const colors = ['#ec4899', '#26619C', '#10b981', '#eab308', '#a855f7', '#f97316'];
+            const colors = ['#ec4899', getComputedStyle(document.documentElement).getPropertyValue('--lapis-mid').trim() || '#26619C', '#10b981', '#eab308', '#a855f7', '#f97316'];
             const numParticles = 75;
             const particles = [];
 
@@ -2650,10 +2744,18 @@
     <script type="module">
         import { annotate } from '/static/js/rough-notation.js';
 
+        function resolveCssColor(raw, fallback) {
+            if (!raw) return fallback;
+            if (raw.startsWith('#') || raw.startsWith('oklch') || raw.startsWith('rgb')) return raw;
+            const varName = raw.startsWith('--') ? raw : `--${raw}`;
+            const resolved = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            return resolved || fallback;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const e = document.querySelector('#hero-your-text');
             if (e) {
-                const color = e.getAttribute('data-color') || '#4A7FB8';
+                const color = resolveCssColor(e.getAttribute('data-color'), resolveCssColor('lapis-light', '#4A7FB8'));
                 const annotation = annotate(e, {
                     type: 'circle',
                     color: color,
@@ -2671,7 +2773,7 @@
 
             const frictionElem = document.querySelector('#rn-friction');
             if (frictionElem) {
-                const color = frictionElem.getAttribute('data-color') || '#ef4444';
+                const color = resolveCssColor(frictionElem.getAttribute('data-color'), resolveCssColor('stuck-rust', '#ef4444'));
                 const annotation = annotate(frictionElem, {
                     type: 'highlight',
                     color: color,
@@ -2702,7 +2804,7 @@
 
             const rn1995Elem = document.querySelector('#rn-1995');
             if (rn1995Elem) {
-                const color = rn1995Elem.getAttribute('data-color') || '#ef4444';
+                const color = resolveCssColor(rn1995Elem.getAttribute('data-color'), resolveCssColor('stuck-rust', '#ef4444'));
                 const annotation = annotate(rn1995Elem, {
                     type: 'underline',
                     color: color,

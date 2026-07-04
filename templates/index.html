@@ -27,42 +27,48 @@
                             850: '#1c1c21',
                         },
                         blue: {
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            650: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#1B4F8C',
+                            400: 'oklch(58.50% 0.1049 251.61)',
+                            500: 'oklch(48.42% 0.1129 251.34)',
+                            600: 'oklch(42.72% 0.1149 254.84)',
+                            650: 'oklch(42.72% 0.1149 254.84)',
+                            700: 'oklch(42.72% 0.1149 254.84)',
+                            800: 'oklch(35.46% 0.0842 251.90)',
+                            900: 'oklch(42.72% 0.1149 254.84)',
+                        },
+                        lapis: {
+                            deep: 'oklch(42.72% 0.1149 254.84)',
+                            DEFAULT: 'oklch(48.42% 0.1129 251.34)',
+                            mid: 'oklch(48.42% 0.1129 251.34)',
+                            light: 'oklch(58.50% 0.1049 251.61)',
                         },
                         rose: {
                             450: '#fb7185',
                         },
                         emerald: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
+                            50: 'oklch(97.2% 0.008 251.6)',
+                            100: 'oklch(93.8% 0.018 251.3)',
+                            200: 'oklch(86.5% 0.038 251.4)',
+                            300: 'oklch(73.2% 0.062 251.5)',
+                            400: 'oklch(58.50% 0.1049 251.61)',
+                            500: 'oklch(48.42% 0.1129 251.34)',
+                            600: 'oklch(42.72% 0.1149 254.84)',
+                            700: 'oklch(42.72% 0.1149 254.84)',
+                            800: 'oklch(35.46% 0.0842 251.90)',
+                            900: 'oklch(27.53% 0.0654 255.18)',
+                            950: 'oklch(21.57% 0.0452 254.99)',
                         },
                         green: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
+                            50: 'oklch(97.2% 0.008 251.6)',
+                            100: 'oklch(93.8% 0.018 251.3)',
+                            200: 'oklch(86.5% 0.038 251.4)',
+                            300: 'oklch(73.2% 0.062 251.5)',
+                            400: 'oklch(58.50% 0.1049 251.61)',
+                            500: 'oklch(48.42% 0.1129 251.34)',
+                            600: 'oklch(42.72% 0.1149 254.84)',
+                            700: 'oklch(42.72% 0.1149 254.84)',
+                            800: 'oklch(35.46% 0.0842 251.90)',
+                            900: 'oklch(27.53% 0.0654 255.18)',
+                            950: 'oklch(21.57% 0.0452 254.99)',
                         }
                     },
                     fontFamily: {
@@ -125,7 +131,7 @@
 
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.2);
-            background: #26619C;
+            background: oklch(48.42% 0.1129 251.34);
         }
 
         /* LCD Screen Ambient Glow */
@@ -133,11 +139,11 @@
 
             0%,
             100% {
-                text-shadow: 0 0 6px rgba(74, 127, 184, 0.2);
+                text-shadow: 0 0 6px oklch(58.50% 0.1049 251.61 / 0.2);
             }
 
             50% {
-                text-shadow: 0 0 14px rgba(74, 127, 184, 0.6);
+                text-shadow: 0 0 14px oklch(58.50% 0.1049 251.61 / 0.6);
             }
         }
 
@@ -272,9 +278,9 @@
         }
 
         .tactical-pink-button {
-            border: 1px solid #26619C;
-            border-bottom: 3px solid #1B4F8C;
-            border-right: 3px solid #1B4F8C;
+            border: 1px solid oklch(48.42% 0.1129 251.34);
+            border-bottom: 3px solid oklch(42.72% 0.1149 254.84);
+            border-right: 3px solid oklch(42.72% 0.1149 254.84);
             transition: all 0.05s ease;
         }
 
@@ -482,7 +488,7 @@
                         </div>
 
                         <button type="submit"
-                            class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-white font-roman uppercase text-[8px] tracking-wider transition-colors bg-[#1B4F8C] hover:bg-[#26619C] border border-blue-700/20 tactical-pink-button">
+                            class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-white font-roman uppercase text-[8px] tracking-wider transition-colors bg-lapis-deep hover:bg-lapis-mid border border-blue-700/20 tactical-pink-button">
                             <img src="/static/icons/dinkie/download.svg" class="h-3 w-3" style="filter: invert(1);" />
                             Capture Soundbank
                         </button>

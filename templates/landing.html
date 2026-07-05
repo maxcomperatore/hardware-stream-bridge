@@ -65,18 +65,18 @@
             --avoid-neon: #B8CC3A;
             --pain-blood: #DC2626;
             --stuck-rust: #EF4444;
-            --lapis-glow: rgba(74, 127, 184, 0.35);
-            --lapis-glow-strong: rgba(74, 127, 184, 0.5);
-            --lapis-glow-soft: rgba(74, 127, 184, 0.2);
-            --lapis-border: rgba(74, 127, 184, 0.45);
-            --lapis-fill-soft: rgba(38, 97, 156, 0.12);
-            --gem-glow: rgba(248, 250, 252, 0.35);
-            --gem-glow-soft: rgba(248, 250, 252, 0.12);
-            --facet-border: rgba(232, 240, 248, 0.22);
-            --avoid-neon-glow: rgba(184, 204, 58, 0.5);
-            --avoid-neon-shadow: rgba(90, 110, 30, 0.6);
-            --pain-blood-glow: rgba(220, 38, 38, 0.45);
-            --shadow-void: rgba(0, 0, 0, 0.35);
+            --lapis-glow: color-mix(in srgb, var(--lapis-light) 35%, transparent);
+            --lapis-glow-strong: color-mix(in srgb, var(--lapis-light) 50%, transparent);
+            --lapis-glow-soft: color-mix(in srgb, var(--lapis-light) 20%, transparent);
+            --lapis-border: color-mix(in srgb, var(--lapis-light) 45%, transparent);
+            --lapis-fill-soft: color-mix(in srgb, var(--lapis-mid) 12%, transparent);
+            --gem-glow: color-mix(in srgb, var(--gem-flash) 35%, transparent);
+            --gem-glow-soft: color-mix(in srgb, var(--gem-flash) 12%, transparent);
+            --facet-border: color-mix(in srgb, var(--gem-facet) 22%, transparent);
+            --avoid-neon-glow: color-mix(in srgb, var(--avoid-neon) 50%, transparent);
+            --avoid-neon-shadow: color-mix(in srgb, #5a6e1e 60%, transparent);
+            --pain-blood-glow: color-mix(in srgb, var(--pain-blood) 45%, transparent);
+            --shadow-void: color-mix(in srgb, #000 35%, transparent);
         }
 
         @supports (color: oklch(0% 0 0)) {
@@ -100,19 +100,19 @@
                 --pain-blood: oklch(57.71% 0.2152 27.33);
                 --stuck-rust: oklch(63.68% 0.2078 25.33);
 
-                /* Alpha tokens (same hue — consistent glows) */
-                --lapis-glow: oklch(58.50% 0.1049 251.61 / 0.35);
-                --lapis-glow-strong: oklch(58.50% 0.1049 251.61 / 0.5);
-                --lapis-glow-soft: oklch(58.50% 0.1049 251.61 / 0.2);
-                --lapis-border: oklch(58.50% 0.1049 251.61 / 0.45);
-                --lapis-fill-soft: oklch(48.42% 0.1129 251.34 / 0.12);
-                --gem-glow: oklch(100% 0 0 / 0.35);
-                --gem-glow-soft: oklch(100% 0 0 / 0.12);
-                --facet-border: oklch(95.14% 0.0138 247.97 / 0.22);
-                --avoid-neon-glow: oklch(80.41% 0.1655 117.11 / 0.5);
-                --avoid-neon-shadow: oklch(48% 0.08 117 / 0.6);
-                --pain-blood-glow: oklch(57.71% 0.2152 27.33 / 0.45);
-                --shadow-void: oklch(0% 0 0 / 0.35);
+                /* Alpha tokens — derived from base hues via color-mix */
+                --lapis-glow: color-mix(in oklch, var(--lapis-light) 35%, transparent);
+                --lapis-glow-strong: color-mix(in oklch, var(--lapis-light) 50%, transparent);
+                --lapis-glow-soft: color-mix(in oklch, var(--lapis-light) 20%, transparent);
+                --lapis-border: color-mix(in oklch, var(--lapis-light) 45%, transparent);
+                --lapis-fill-soft: color-mix(in oklch, var(--lapis-mid) 12%, transparent);
+                --gem-glow: color-mix(in oklch, var(--gem-flash) 35%, transparent);
+                --gem-glow-soft: color-mix(in oklch, var(--gem-flash) 12%, transparent);
+                --facet-border: color-mix(in oklch, var(--gem-facet) 22%, transparent);
+                --avoid-neon-glow: color-mix(in oklch, var(--avoid-neon) 50%, transparent);
+                --avoid-neon-shadow: color-mix(in oklch, oklch(48% 0.08 117) 60%, transparent);
+                --pain-blood-glow: color-mix(in oklch, var(--pain-blood) 45%, transparent);
+                --shadow-void: color-mix(in oklch, black 35%, transparent);
 
                 --pricing-gem-gradient: linear-gradient(105deg,
                         var(--lapis-deep) 0%,
@@ -137,8 +137,6 @@
                 --avoid-neon: oklch(80.41% 0.205 117.11);
                 --pain-blood: oklch(57.71% 0.26 27.33);
                 --stuck-rust: oklch(63.68% 0.25 25.33);
-                --lapis-glow: oklch(58.50% 0.138 251.61 / 0.38);
-                --lapis-glow-strong: oklch(58.50% 0.138 251.61 / 0.55);
             }
         }
 
@@ -274,6 +272,7 @@
             align-items: baseline;
             gap: 0;
             letter-spacing: -0.03em;
+            text-wrap: balance;
         }
 
         .pricing-gem-blue {

@@ -1,6 +1,27 @@
 <style>
+    :root {
+        --lapis-mid: #26619C;
+        accent-color: var(--lapis-mid);
+    }
+
+    @supports (color: oklch(0% 0 0)) {
+        :root {
+            --lapis-mid: oklch(48.42% 0.1129 251.34);
+        }
+    }
+
     html {
         color-scheme: dark;
+        scrollbar-gutter: stable;
+    }
+
+    h1 {
+        text-wrap: balance;
+    }
+
+    .footer-seo-blob {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 12rem;
     }
 </style>
 <script src="https://cdn.tailwindcss.com"></script>

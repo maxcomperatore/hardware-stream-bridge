@@ -129,7 +129,7 @@ try:
         Posthog(
             project_api_key=settings.POSTHOG_API_KEY,
             host=settings.POSTHOG_HOST,
-            enable_exception_autocapture=True,
+        enable_exception_autocapture=True,
         )
         if settings.POSTHOG_API_KEY
         else None
@@ -2051,7 +2051,7 @@ async def checkout_pack(request: Request, pack_id: str):
     pack = shop_packs.get_shop_pack(pack_id)
     if not pack:
         raise HTTPException(status_code=404, detail="Pack not found")
-
+        
     if shop_packs.user_owns_pack(user["id"], pack_id):
         return RedirectResponse(url="/dashboard?payment=pack_owned", status_code=303)
 
@@ -2341,7 +2341,7 @@ async def stripe_webhook(request: Request):
                         {"email": customer_email, "customer_id": customer_id},
                         distinct_id=customer_email
                     )
-            
+
     elif event['type'] == 'customer.subscription.deleted':
         session = event['data']['object']
         customer_id = getattr(session, 'customer', None)
@@ -2386,7 +2386,7 @@ def build_sitemap_xml() -> str:
     ]
     for slug in SEO_DATA.keys():
         entries.append((f"{SITE_BASE}/{slug}", "weekly", "0.9"))
-
+        
     xml_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -2402,7 +2402,7 @@ def build_sitemap_xml() -> str:
         ])
     xml_lines.append("</urlset>")
     return "\n".join(xml_lines)
-
+    
 @app.get("/sitemap.xml")
 @app.get("/sitemap.xml/")
 async def sitemap():
@@ -3258,7 +3258,7 @@ knob monster support
 
 p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
-
+                    
 
 async def get_drip_eligible_users() -> tuple[list[dict], int, int]:
     """Return (eligible users, skipped_young, pending_total)."""

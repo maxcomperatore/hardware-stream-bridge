@@ -2157,7 +2157,7 @@
         document.body.addEventListener('triggerUpgradeModal', () => {
             closeStatusOverlay();
             showUpgradeModal();
-            showToast("Upgrade Required", "You have reached the limit of 3 soundbanks.", "warning");
+            showToast("Upgrade Required", "Free vault is limited to one soundbank.", "warning");
         });
 
         // Show success/cancel billing status notifications
@@ -2166,7 +2166,7 @@
             if (params.get('welcome') === '1') {
                 showToast("Account Ready", "Free vault created. Connect MIDI and save your first bank.", "success");
             } else if (params.get('payment') === 'success') {
-                showToast("Upgrade Successful", "Welcome to King of Knobs PRO!", "success");
+                showToast("Upgrade Successful", "Welcome to knob.monster+!", "success");
             } else if (params.get('payment') === 'cancel') {
                 showToast("No Charge", "Checkout closed. Your free vault is still ready.", "info");
             } else if (params.get('mock_portal') === '1') {
@@ -2239,64 +2239,68 @@
     <div id="upgrade-modal"
         class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
         <div
-            class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-96 max-w-[90vw] text-center shadow-2xl relative select-none">
-            <!-- Close btn -->
+            class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-[30rem] max-w-[92vw] text-left shadow-2xl relative select-none">
             <button onclick="closeUpgradeModal()"
                 class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
                 <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
                     style="filter: invert(0.6);" />
             </button>
 
-            <!-- Mascot Badge -->
-            <div
-                class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-4 overflow-hidden">
-                <img id="dashboard-upgrade-avatar" src="" class="h-full w-full object-cover" />
+            <div class="flex items-center gap-3 mb-4">
+                <img id="dashboard-upgrade-avatar" src="" alt=""
+                    class="h-10 w-10 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0" />
+                <div>
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-lapis-light">knob.monster+</span>
+                    <h3 class="text-sm font-semibold text-white mt-0.5">Unlock your full vault</h3>
+                </div>
             </div>
 
-            <span class="text-[9px] font-pixel text-amber-500 uppercase tracking-widest">KING OF KNOBS</span>
-            <h3 class="text-sm font-pixel text-white uppercase mt-2">Unleash the Knob Monster</h3>
-            <p class="text-xs text-zinc-450 mt-3.5 leading-relaxed font-sans font-normal">
-                You have hit the limit of <strong>3 soundbanks</strong>. Upgrade to King of Knobs PRO for unlimited
-                cloud vaults, instant backups, and continuous hardware sync.
+            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                Free accounts hold <strong class="text-zinc-200">one soundbank</strong>. Upgrade once for unlimited
+                backups, .syx export, and every parser we ship.
             </p>
 
-            <div
-                class="my-5 p-4 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5 text-left text-2xs font-pixel uppercase tracking-wider text-zinc-400">
-                <div class="flex items-center gap-2">
-                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5"
-                        style="filter: invert(0.6);" />
-                    <span>Unlimited Cloud Sync Storage</span>
+            <div class="mt-4 p-3 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5">
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Unlimited cloud soundbanks</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5"
-                        style="filter: invert(0.6);" />
-                    <span>Real-time Live MIDI Monitor Log</span>
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Export .syx + full vault .zip anytime</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5"
-                        style="filter: invert(0.6);" />
-                    <span>DX7, Juno-106 & Korg M1 Support</span>
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Adaptive SysEx flash pacing (DX7, Juno, M1…)</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5"
-                        style="filter: invert(0.6);" />
-                    <span>Export .syx backups anytime</span>
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Live MIDI monitor + preset name decoding</span>
                 </div>
             </div>
 
-            <div class="flex flex-col gap-2 mt-2">
+            <p class="mt-4 text-[10px] text-zinc-500 leading-relaxed font-sans">
+                One payment. Own it forever. No subscriptions.
+            </p>
+
+            <div class="flex flex-col gap-2 mt-4">
                 <a href="/checkout?plan=personal"
-                    class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] flex items-center justify-center gap-0.5 shadow-lg shadow-amber-500/10">
-                    👾 Personal (<img src="/static/icons/dinkie/heavy-dollar-sign.svg"
-                        class="h-3 w-auto select-none inline-block align-middle"
-                        style="image-rendering: pixelated; margin-top: -2px;" alt="" />39 Lifetime)
+                    onclick="logToPostHog('upgrade_modal_checkout_click', { plan: 'personal' })"
+                    class="w-full py-3 bg-gradient-to-r from-lapis-mid to-lapis-deep hover:from-lapis-light hover:to-lapis-mid text-white text-xs font-semibold uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center border border-blue-700/30">
+                    Personal · {{ pricing.symbol }}{{ pricing.personal_amount }} lifetime
                 </a>
-                <span class="text-[8px] text-zinc-500 uppercase font-sans tracking-wide mt-1 block">
-                    One-time payment. Own it forever. No subscriptions. Export your vault anytime.
-                </span>
+                <a href="/checkout?plan=studio"
+                    onclick="logToPostHog('upgrade_modal_checkout_click', { plan: 'studio' })"
+                    class="w-full py-2.5 bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white text-[10px] font-mono uppercase tracking-wider rounded-full transition-all text-center">
+                    Studio · {{ pricing.symbol }}{{ pricing.studio_amount }} (commercial)
+                </a>
                 <button onclick="closeUpgradeModal()"
-                    class="w-full py-2 bg-transparent text-zinc-550 hover:text-zinc-400 text-[10px] font-pixel uppercase tracking-wider transition-colors mt-1">
-                    No thanks, keep it limited
+                    class="w-full py-2 bg-transparent text-zinc-500 hover:text-zinc-400 text-[10px] font-mono uppercase tracking-wider transition-colors">
+                    Not now
                 </button>
             </div>
         </div>

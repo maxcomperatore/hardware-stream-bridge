@@ -1760,7 +1760,7 @@ async def dashboard(request: Request):
         return RedirectResponse(url="/login")
         
     banks = database.get_all_banks(user["id"])
-    context = {"banks": banks, "user": user}
+    context = {"banks": banks, "user": user, "pricing": enrich_regional_pricing(get_request_country_code(request))}
     context.update(posthog_support_context(user, enable_conversations=True))
     return render_template("index.html", request, context)
 

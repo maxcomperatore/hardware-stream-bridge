@@ -120,8 +120,14 @@
         <div class="border-b border-zinc-900 pb-8 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
                 <div class="flex items-center gap-3 mb-2">
-                    <span
-                        class="text-[9px] font-pixel px-2 py-0.5 rounded uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/25">
+                    <span class="text-[8px] font-pixel px-2 py-0.5 rounded uppercase bg-lapis-deep border-3 border-double inline-flex items-center 
+                        {% if wiki.brand == 'Yamaha' %}text-teal-400 border-teal-500/80
+                        {% elif wiki.brand == 'Roland' %}text-orange-400 border-orange-500/80
+                        {% elif wiki.brand == 'Korg' %}text-blue-300 border-blue-400/80
+                        {% elif wiki.brand == 'Casio' %}text-purple-300 border-purple-500/80
+                        {% elif wiki.brand == 'Sequential' %}text-red-400 border-red-500/80
+                        {% elif wiki.brand == 'Oberheim' %}text-yellow-200 border-yellow-500/80
+                        {% else %}text-zinc-300 border-zinc-500/80{% endif %}">
                         {{ wiki.brand }}
                     </span>
                     <span class="text-zinc-500 font-mono text-[9px] uppercase tracking-wider">Wiki Profile</span>

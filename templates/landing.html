@@ -1164,8 +1164,7 @@
         class="w-full {% if is_birthday_week %}confetti-banner-bg border-b border-zinc-800{% elif is_christmas_week %}christmas-banner-bg border-b border-emerald-950/40{% else %}confetti-banner-bg border-b border-zinc-900{% endif %} py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
         <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
             {% if is_birthday_week %}
-            <span
-                class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-rose-500/10 border border-rose-500/20 text-rose-400 uppercase tracking-wider animate-pulse">
+            <span class="tag-lapis-audit animate-pulse">
                 🎂 Birthday Week
             </span>
             <span class="text-zinc-250">
@@ -1220,8 +1219,7 @@
                     })();
             </script>
             {% elif is_christmas_week %}
-            <span
-                class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-pixel bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider animate-pulse">
+            <span class="tag-lapis-audit animate-pulse">
                 🎄 Holiday Sale
             </span>
             <span class="text-zinc-250">
@@ -1275,8 +1273,7 @@
                 })();
             </script>
             {% else %}
-            <span
-                class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-roman bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase tracking-wider">
+            <span class="tag-lapis">
                 Supported
             </span>
             <span class="inline-flex flex-wrap items-center justify-center gap-1.5">

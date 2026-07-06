@@ -508,11 +508,9 @@
                             title="{{ user.email }}">{{ user.email.split('@')[0] }}</span>
                     </div>
                     {% if user.tier == 'premium' %}
-                    <span
-                        class="text-[7.5px] font-pixel px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase select-none">PRO</span>
+                    <span class="tag-lapis-tool select-none">PRO</span>
                     {% else %}
-                    <span
-                        class="text-[7.5px] font-pixel px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase select-none">FREE</span>
+                    <span class="tag-lapis select-none">FREE</span>
                     {% endif %}
                 </div>
 

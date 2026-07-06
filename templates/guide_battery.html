@@ -122,8 +122,7 @@
 
     <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
         <article class="space-y-6 text-left mb-12">
-            <span
-                class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-red-500/10 border border-red-500/25 text-red-400 uppercase tracking-widest">
+            <span class="tag-lapis">
                 Hardware Preservation
             </span>
             <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
@@ -204,8 +203,7 @@
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-3xs font-pixel text-zinc-500 uppercase">Data Loss Risk</span>
-                            <span id="result-risk"
-                                class="text-xs font-pixel px-2 py-0.5 rounded uppercase bg-emerald-500/10 text-emerald-400">SAFE</span>
+                            <span id="result-risk" class="tag-lapis">SAFE</span>
                         </div>
                     </div>
 
@@ -319,7 +317,7 @@
 
             // Reset styles
             resultVoltage.className = "text-xl font-lcd text-emerald-400";
-            resultRisk.className = "text-xs font-pixel px-2 py-0.5 rounded uppercase bg-emerald-500/10 text-emerald-400";
+            resultRisk.className = "tag-lapis";
             resultRisk.textContent = "SAFE";
             resultAlertBox.className = "p-3.5 bg-emerald-950/20 border border-emerald-900/30 rounded-xl text-center";
             resultAdvice.textContent = "Your battery voltage is within safe operational limits. Regular backups recommended.";
@@ -327,13 +325,13 @@
             // Risk Thresholds
             if (voltage < 2.5) {
                 resultVoltage.className = "text-xl font-lcd text-red-500";
-                resultRisk.className = "text-xs font-pixel px-2 py-0.5 rounded uppercase bg-red-500/10 text-red-400 animate-pulse";
+                resultRisk.className = "tag-lapis-audit animate-pulse";
                 resultRisk.textContent = "CRITICAL RISK";
                 resultAlertBox.className = "p-3.5 bg-red-950/20 border border-red-900/30 rounded-xl text-center";
                 resultAdvice.textContent = "CRITICAL: Battery is likely flat. Any power loss or system shutdown will permanently delete your custom soundbanks. Perform an emergency SysEx backup immediately!";
             } else if (voltage < 2.8) {
                 resultVoltage.className = "text-xl font-lcd text-yellow-500";
-                resultRisk.className = "text-xs font-pixel px-2 py-0.5 rounded uppercase bg-yellow-500/10 text-yellow-400";
+                resultRisk.className = "tag-lapis-tool";
                 resultRisk.textContent = "MODERATE RISK";
                 resultAlertBox.className = "p-3.5 bg-yellow-950/20 border border-yellow-900/30 rounded-xl text-center";
                 resultAdvice.textContent = "WARNING: Battery voltage is degrading below nominal SRAM requirements. Random bit-flips or checksum failures are imminent. Backup your files now.";

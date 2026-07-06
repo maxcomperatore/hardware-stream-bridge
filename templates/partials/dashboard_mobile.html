@@ -105,9 +105,9 @@
                         <div class="flex items-center gap-2 min-w-0">
                             <p class="text-base font-bold text-white truncate">{{ user.email.split('@')[0] }}</p>
                             {% if user.tier == 'premium' %}
-                            <span class="shrink-0 text-[9px] font-pixel px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25 uppercase">Pro</span>
+                            <span class="tag-lapis-tool">Pro</span>
                             {% else %}
-                            <span class="shrink-0 text-[9px] font-pixel px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">Free</span>
+                            <span class="tag-lapis">Free</span>
                             {% endif %}
                         </div>
                         <p class="text-xs text-zinc-500 truncate">{{ user.email }}</p>

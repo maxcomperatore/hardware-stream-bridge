@@ -1750,6 +1750,65 @@ async def get_banks(request: Request):
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
 
+@app.get("/banks/export-all")
+async def export_all_banks(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        return RedirectResponse(url="/checkout")
+
+    banks = database.get_all_banks(user["id"])
+    if not banks:
+        raise HTTPException(status_code=404, detail="No banks to export")
+
+    corrupt: list[str] = []
+    entries: list[tuple[dict, bytes]] = []
+    for bank in banks:
+        try:
+            sysex_bytes = bytes.fromhex(bank["sysex_hex"])
+        except ValueError:
+            corrupt.append(bank["name"])
+            continue
+        entries.append((bank, sysex_bytes))
+
+    if corrupt:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Vault export aborted: corrupted data in {', '.join(corrupt)}"
+        )
+    if not entries:
+        raise HTTPException(status_code=404, detail="No banks to export")
+
+    buf = io.BytesIO()
+    used_names: dict[str, int] = {}
+    manifest_lines = ["# knob.monster vault export", f"# {len(entries)} soundbank(s)", ""]
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as archive:
+        for bank, sysex_bytes in entries:
+            base = re.sub(r"[^\w\-]+", "_", bank["name"].lower()).strip("_") or "bank"
+            count = used_names.get(base, 0)
+            used_names[base] = count + 1
+            filename = f"{base}.syx" if count == 0 else f"{base}_{count}.syx"
+            archive.writestr(filename, sysex_bytes)
+            manifest_lines.append(f"{filename}\t{bank['name']}\t{bank['synth_model']}\t{len(sysex_bytes)} bytes")
+
+        archive.writestr("manifest.txt", "\n".join(manifest_lines) + "\n")
+
+    buf.seek(0)
+
+    trigger_alert(
+        "vault_exported",
+        f"Full vault export ({len(entries)} banks) by user `{user['email']}`.",
+        {"email": user["email"], "bank_count": len(entries)},
+        distinct_id=user["email"]
+    )
+
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": 'attachment; filename="knob_monster_vault.zip"'}
+    )
+
 @app.get("/banks/{bank_id}", response_class=HTMLResponse)
 async def get_bank_details(request: Request, bank_id: int):
     user = get_current_user(request)
@@ -2023,65 +2082,6 @@ async def download_bank(request: Request, bank_id: int):
         file_stream, 
         media_type="application/octet-stream",
         headers={"Content-Disposition": f"attachment; filename={filename}"}
-    )
-
-@app.get("/banks/export-all")
-async def export_all_banks(request: Request):
-    user = get_current_user(request)
-    if not user:
-        return RedirectResponse(url="/login")
-    if user["tier"] != "premium":
-        return RedirectResponse(url="/checkout")
-
-    banks = database.get_all_banks(user["id"])
-    if not banks:
-        raise HTTPException(status_code=404, detail="No banks to export")
-
-    corrupt: list[str] = []
-    entries: list[tuple[dict, bytes]] = []
-    for bank in banks:
-        try:
-            sysex_bytes = bytes.fromhex(bank["sysex_hex"])
-        except ValueError:
-            corrupt.append(bank["name"])
-            continue
-        entries.append((bank, sysex_bytes))
-
-    if corrupt:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Vault export aborted: corrupted data in {', '.join(corrupt)}"
-        )
-    if not entries:
-        raise HTTPException(status_code=404, detail="No banks to export")
-
-    buf = io.BytesIO()
-    used_names: dict[str, int] = {}
-    manifest_lines = ["# knob.monster vault export", f"# {len(entries)} soundbank(s)", ""]
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as archive:
-        for bank, sysex_bytes in entries:
-            base = re.sub(r"[^\w\-]+", "_", bank["name"].lower()).strip("_") or "bank"
-            count = used_names.get(base, 0)
-            used_names[base] = count + 1
-            filename = f"{base}.syx" if count == 0 else f"{base}_{count}.syx"
-            archive.writestr(filename, sysex_bytes)
-            manifest_lines.append(f"{filename}\t{bank['name']}\t{bank['synth_model']}\t{len(sysex_bytes)} bytes")
-
-        archive.writestr("manifest.txt", "\n".join(manifest_lines) + "\n")
-
-    buf.seek(0)
-
-    trigger_alert(
-        "vault_exported",
-        f"Full vault export ({len(entries)} banks) by user `{user['email']}`.",
-        {"email": user["email"], "bank_count": len(entries)},
-        distinct_id=user["email"]
-    )
-
-    return StreamingResponse(
-        buf,
-        media_type="application/zip",
-        headers={"Content-Disposition": 'attachment; filename="knob_monster_vault.zip"'}
     )
 
 @app.get("/banks/{bank_id}/hex")

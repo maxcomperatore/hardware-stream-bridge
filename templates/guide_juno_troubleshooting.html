@@ -17,35 +17,7 @@
     {% include 'partials/seo_article_meta.html' %}
 
     {% include 'partials/favicon.html' %}
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        zinc: {
-                            450: '#7e7e8a',
-                            555: '#52525c',
-                            650: '#43434c',
-                            655: '#3e3e46',
-                            850: '#1c1c21',
-                        },
-                        emerald: {
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                        pixel: ['Silkscreen', 'monospace'],
-                        lcd: ['VT323', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
 
     <style>
         html {
@@ -243,35 +215,32 @@
         </section>
 
         <!-- Static troubleshooting details -->
-        <section class="space-y-6 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal">
+        <section class="space-y-6 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal max-w-2xl mx-auto">
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
                 Understanding Roland SRAM Architecture
             </h2>
             <p class="font-mono text-xs text-zinc-400">
-                The Roland Juno-106 uses CMOS static RAM chips (usually type μPD444) to store patch data. These memory
-                registers require a continuous feed of 2.0V or higher to keep their data gates closed. When the internal
-                battery drops below this threshold, or if the write lines are interrupted, the memory instantly
-                corrupts.
+                The Roland Juno-106 uses CMOS static RAM chips (μPD444) to store patch data. These memory registers require a continuous feed of 2.0V or higher. When the internal battery drops below this threshold, the memory cells lose their state, corrupting the stored patches.
             </p>
             <p class="font-mono text-xs text-zinc-400">
-                A common issue on the Juno-106 is the rear panel Protect Switch. If this physical switch is slide to the
-                "ON" position, it puts an active pull-up voltage on the write-enable pin of the SRAM chips. This blocks
-                the micro-controller from modifying the patch library, which throws the blinking write-protection error
-                on the front display.
+                A common issue is the rear-panel Protect Switch. When set to 'ON', it applies a pull-up voltage to the SRAM's write-enable pin. This prevents the microprocessor from modifying the patch library, displaying a blinking write-protection error on the front screen.
             </p>
+
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    Replacing a battery wipes the SRAM. Your display will show garbage characters immediately after battery replacement. This is normal. You must load a clean SysEx patch bank to restore the memory registers to a readable state.
+                </p>
+            </div>
 
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
                 Factory restoring with zero-config Web MIDI
             </h2>
             <p class="font-mono text-xs text-zinc-400">
-                If your patches are lost or replaced by random characters, you need to execute a factory SysEx dump.
-                Traditional MIDI-OX software requires setting up custom millisecond delay sizes to prevent buffer
-                overruns on the Juno's slow 8-bit CPU.
+                If your patches are lost or replaced by random characters, you need to execute a factory SysEx restore. Traditional desktop software like MIDI-OX requires configuring specific millisecond delay intervals to prevent buffer overruns on the Juno's slow 8-bit CPU.
             </p>
             <p class="font-mono text-xs text-zinc-400">
-                knob.monster solves this with built-in pacing filters designed specifically for the Roland Juno-106
-                microchip specifications, allowing you to reload the full 64 factory preset patches in under 10 seconds
-                directly inside your browser.
+                We designed knob.monster with built-in pacing filters matched to the Juno-106's microchip specifications. You can reload the complete 64 factory presets in under 10 seconds directly inside your browser.
             </p>
         </section>
     </main>

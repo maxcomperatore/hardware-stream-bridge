@@ -7,21 +7,7 @@
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
     <title>Independent TLS Audit: midiox.com (MIDI-OX) | June 2026</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                        pixel: ['Silkscreen', 'monospace'],
-                        lcd: ['VT323', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
     <style>
         html { scroll-behavior: smooth; }
         ::selection { background-color: rgba(244, 63, 94, 0.25); color: #fff; }

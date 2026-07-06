@@ -12,7 +12,8 @@
         content="web midi, sysex librarian, midi buffer full, yamaha dx7 midi, roland juno-106 sysex, retrocomputing, midi flow control">
     {% set seo_canonical = "https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer" %}
     {% set seo_title = "How do you keep Web MIDI from crashing a 1983 synthesizer? | knob.monster" %}
-    {% set seo_description = "Web MIDI SysEx needs deliberate sender pacing — not slower synth CPUs. Flow control, 31.25k baud limits, cheap USB-MIDI cables, and vendor SysEx parsing in JavaScript." %}
+    {% set seo_description = "Web MIDI SysEx needs deliberate sender pacing — not slower synth CPUs. Flow control,
+    31.25k baud limits, cheap USB-MIDI cables, and vendor SysEx parsing in JavaScript." %}
     {% set seo_schema_type = "TechArticle" %}
     {% include 'partials/seo_article_meta.html' %}
 
@@ -149,53 +150,82 @@
         </article>
 
         <!-- Post Content -->
-        <section class="space-y-8 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal">
+        <section class="space-y-8 text-zinc-300 text-[15px] leading-relaxed font-sans font-normal max-w-2xl mx-auto">
             <p>
-                Modern browsers schedule MIDI output with microsecond precision. Your computer can enqueue thousands of
-                bytes per second without breaking a sweat.
+                Web MIDI is a minor miracle. You open a browser tab, plug in a synthesizer built in 1983, and it just
+                works. No drivers, no installers, no command-line tools.
             </p>
             <p>
-                The bottleneck is almost never the synthesizer's CPU. Classic MIDI runs at a fixed
-                <strong>31,250 baud</strong> — about 3,125 bytes per second on the wire. A full DX7 bank is only ~4 KB.
-                The synth has plenty of time to receive it, as long as the <em>sender</em> does not blast packets faster
-                than the cable and instrument can absorb them.
+                But Web MIDI is also a disaster.
             </p>
             <p>
-                When you bridge browser and hardware with the <strong>Web MIDI API</strong>, the real failure mode is
-                <em>sender pacing</em>: USB adapters (especially cheap ones) buffer bursts from the host and dump them
-                onto the DIN port faster than 31.25k allows. Without hardware flow control on standard MIDI, there is no
-                way for the synth to ask the browser to wait — so the fix is on our side: schedule complete
-                <code>F0…F7</code> messages with gaps between them, not arbitrary byte chunks.
+                If you send data slightly too fast, the synthesizer crashes. Its LCD screen turns into random blocks,
+                the buffer overflows, and the memory protect circuit blocks you from writing.
+            </p>
+            <p>
+                We spent the last month figuring out why this happens. It turns out, the problem isn’t the synthesizer’s
+                CPU. It’s the way we write web software.
             </p>
 
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
-                1. The Death of Flow Control (and the $5 Cable Problem)
+                The 31,250 baud speed limit
             </h2>
             <p>
-                In the 80s, MIDI physical hardware operated over a current loop running at 31,250 bits per second. While
-                slow, the bandwidth was constant and predictable.
+                Classic MIDI is slow. It runs at a fixed 31,250 baud—about 3,125 bytes per second on the wire. A full
+                Yamaha DX7 bank is only 4 KB.
             </p>
             <p>
-                Today, most computer music setups use modern USB-to-MIDI adapters. Modern computers send USB packets at
-                lightning-fast speeds. A cheap, bufferless adapter receives the data at high USB bandwidths, and
-                instantly attempts to serialize and dump it down the MIDI out pin.
+                The synthesizer has plenty of time to receive 4 KB of data. The problem is that modern computers send
+                USB packets at megabytes per second.
             </p>
             <p>
-                Because standard MIDI lacks hardware handshaking lines (no RTS/CTS pins), there is no physical way for
-                the synth to tell the browser: <em>"Slow down — I'm still writing the last preset block."</em>
-                The sender must pace each complete SysEx message deliberately.
+                Without hardware flow control (there are no RTS/CTS pins on a standard MIDI cable), there is no way for
+                the synth to tell the browser: <i>"Slow down, I’m still writing the last preset block."</i>
             </p>
             <p>
-                We use the Web MIDI API's built-in scheduler to space whole messages apart, rather than relying on
-                <code>setTimeout</code> loops that drift under load — and we never split a single SysEx across
-                arbitrary 256-byte chunks (that creates invalid MIDI on the wire):
+                If you blast the entire file at once, the MIDI buffer overflows instantly.
+            </p>
+
+            <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-6 border-b border-zinc-900 pb-2">
+                The $5 adapter problem
+            </h2>
+            <p>
+                Most people don't use professional MIDI interfaces. They buy cheap, $5 USB-to-MIDI adapters from Amazon.
+            </p>
+            <p>
+                These cheap adapters have tiny, bufferless microcontrollers. When you send a large batch of SysEx data,
+                the adapter receives it at USB speeds, panics, and dumps it down the MIDI out pin as fast as possible.
+            </p>
+            <p>
+                This strips the gaps between MIDI packets, corrupts the SysEx headers, and results in nothing but
+                garbage arriving at the synthesizer.
+            </p>
+
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    Do not split SysEx messages into arbitrary byte chunks. Setting a JavaScript <code>setTimeout</code>
+                    of 60ms is not a real queue—it drifts under CPU load and corrupts memory. The browser needs to pace
+                    complete messages using performance.now() timestamps.
+                </p>
+            </div>
+
+            <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-6 border-b border-zinc-900 pb-2">
+                The scheduler is your queue
+            </h2>
+            <p>
+                The fix is to use the Web MIDI API's built-in scheduler.
+            </p>
+            <p>
+                Instead of sending data immediately and hoping for the best, we must queue complete <code>F0...F7</code>
+                messages with calculated millisecond offsets:
             </p>
 
             <pre
                 class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 overflow-x-auto text-xs font-mono text-emerald-400">
-// Pace complete F0…F7 messages with inter-message gaps
+// Pace complete F0…F7 messages with calculated offsets
 function sendSysExWithPacing(midiOutput, messages) {
-    const INTER_MESSAGE_DELAY_MS = 60; // tune per synth / cable
+    const INTER_MESSAGE_DELAY_MS = 60; // Safe threshold for vintage CPUs
     let offset = 0;
 
     for (const message of messages) {
@@ -205,41 +235,54 @@ function sendSysExWithPacing(midiOutput, messages) {
 }</pre>
 
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-6 border-b border-zinc-900 pb-2">
-                2. Vendor-Specific Hex Parsers
+                Decoding proprietary 80s structures
             </h2>
             <p>
-                Once you establish a reliable hardware communication link, the next hurdle is decoding the data. Back in
-                the 80s, the MIDI spec defined how notes were triggered, but left the system exclusive (SysEx) parameter
-                format entirely up to manufacturers.
+                Once you get the connection working, you have to parse the bytes. In the 80s, the MIDI spec left the
+                system exclusive format entirely up to the manufacturers.
             </p>
             <p>
-                This means every single vintage synthesizer has its own undocumented, proprietary byte structure:
+                This means every single synth has its own proprietary byte structure:
             </p>
             <ul class="list-disc list-inside space-y-2 pl-4 text-xs font-mono text-zinc-400">
-                <li><strong class="text-white">Yamaha DX7:</strong> Spits out exactly 4104 bytes (6-byte header,
-                    4096-byte parameter data, 1 checksum byte, 1 stop byte). The final 10 bytes of each of the 32 voice
-                    slots contain ASCII data representing the patch name.</li>
-                <li><strong class="text-white">Roland Juno-106:</strong> Does not even support remote dump requests. The
-                    synth only speaks when manually prompted: the user has to physically click the 'WRITE' key on the
-                    panel to stream its current patch memory.</li>
-                <li><strong class="text-white">Korg M1:</strong> Uses a packed 7-bit architecture. Because MIDI status
+                <li><strong class="text-white">Yamaha DX7:</strong> Spits out exactly 4104 bytes. The final 10 bytes of
+                    each of the 32 voice slots contain ASCII data representing the patch name.</li>
+                <li><strong class="text-white">Roland Juno-106:</strong> Doesn't support remote dump requests. The user
+                    has to physically click the 'WRITE' key on the hardware panel to stream its current patch memory.
+                </li>
+                <li><strong class="text-white">Korg M1:</strong> Uses a packed 7-bit architecture. Because MIDI data
                     bytes must have the highest bit set to 0, data words are grouped in blocks of 7, with the 8th bits
-                    unpacked and appended separately. We had to write custom bit-shifting array decoders in JS just to
-                    parse the characters.</li>
+                    unpacked and appended separately. We had to write custom bit-shifting decoders in JavaScript just to
+                    read the text.</li>
             </ul>
 
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-6 border-b border-zinc-900 pb-2">
-                3. Browser Security Restrictions
+                Why zero-install beats feature bloat
             </h2>
             <p>
-                Because Web MIDI allows a website to flash firmware or write raw system-exclusive bytes directly to
-                external physical USB hardware, browsers treat it with extreme security care.
+                We originally built knob.monster because we were tired of dusty, unsigned desktop utilities that haven't
+                been updated since 2008.
             </p>
             <p>
-                Browsers like Google Chrome and Microsoft Edge require explicit user approval via permissions before
-                allowing websites to communicate over MIDI. Safari and Firefox block the Web MIDI API entirely out of
-                caution regarding fingerprinting and hardware injection vulnerabilities.
+                Many developers told us we should build a desktop app with Tauri or Electron. But zero install is a
+                feature for gear you only use twice a year.
             </p>
+            <p>
+                By keeping the app in the browser, we make backups instant. You don't have to download anything. You
+                don't have to configure driver settings.
+            </p>
+            <p>
+                Pacing MIDI packets is a messy, hardware-specific problem. But once you solve it, you get a system that
+                works everywhere.
+            </p>
+
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    For vintage hardware audiences, technical honesty and export guarantees (like standard .syx files)
+                    win over modern visual polish. Give developers their data back, and they'll trust your platform.
+                </p>
+            </div>
 
             <!-- Call to Action Box -->
             <div
@@ -250,9 +293,9 @@ function sendSysExWithPacing(midiOutput, messages) {
                 </span>
                 <h3 class="text-md font-pixel text-white uppercase">Tired of vintage SysEx headaches?</h3>
                 <p class="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
-                    We built <strong>knob.monster</strong> to replace dusty unsigned desktop utilities. Connect your
-                    hardware synthesizer directly to a browser tab, click back up, and organize your presets in a
-                    modern, searchable cloud library. Lifetime licenses from $39 — not a subscription.
+                    We built <strong>knob.monster</strong> to replace dusty desktop utilities. Connect your hardware
+                    synthesizer directly to a browser tab, click back up, and organize your presets in a modern,
+                    searchable cloud library. Lifetime licenses from $39 — not a subscription.
                 </p>
                 <div class="pt-2">
                     <a href="/signup"

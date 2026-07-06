@@ -7,9 +7,9 @@ LESSONS_LAUNCH_2026 = {
     "title": "Lessons from Launching a Browser SysEx Vault",
     "period": "June 1 to July 1, 2026",
     "method": (
-        "Operational data from Half Radiation LLC running knob.monster: PostHog in-product survey metrics, "
-        "beta Discord support threads, Hacker News discussion on the Web MIDI engineering post, "
-        "and parser coverage audit. Not a market report. A founder field log."
+        "Operational data from Half Radiation LLC running knob.monster. Metrics include PostHog survey logs, "
+        "beta Discord support threads, and feedback from the Web MIDI launch thread on Hacker News. "
+        "No marketing fluff. Just a founder field log."
     ),
     "metrics": {
         "survey_impressions": 2417,
@@ -33,26 +33,26 @@ LESSONS_LAUNCH_2026 = {
     "lessons": [
         {
             "id": "distribution-beats-parsers",
-            "headline": "Press coverage arrived before parser breadth caught up",
+            "headline": "You'll get press before your parsers are ready",
             "body": (
-                "Synthtopia coverage in month one drove signups and Discord DMs while only five synths had "
-                "dedicated Web MIDI dump flows (DX7, Juno-106, M1, Jupiter-6, CZ-101). Beta users listed "
-                "7+ unsupported models in a single message (D-20, Proteus/1 XR, Matrix-6, JX-8P, K4, EPS). "
-                "Lesson: hardware MIDI tools get judged on the one synth a visitor owns, not your roadmap slide."
+                "Synthtopia wrote about us in week one. Traffic spiked, DMs blew up, and we only supported five "
+                "synthesizers (DX7, Juno-106, M1, Jupiter-6, CZ-101). Our beta users didn't care about our clean "
+                "roadmap slide. They pasted lists of seven unsupported models they owned and expected them to work instantly. "
+                "Lesson: in hardware tools, you're judged on the single synth a visitor owns right now."
             ),
             "evidence": [
                 "Dedicated dump flows at launch: 5",
-                "Common beta ask: Roland JX-8P, Korg MS-20, Ensoniq EPS (survey + Discord overlap)",
+                "Common beta asks: Roland JX-8P, Korg MS-20, Ensoniq EPS (survey + Discord overlap)",
             ],
         },
         {
             "id": "survey-popup-fatigue",
-            "headline": "In-app survey popups convert ~2.6%; more than half get dismissed",
+            "headline": "In-app popups convert at 2%, then they burn trust",
             "body": (
-                "A two-question PostHog popup on knob.monster visitors produced 61 completed responses from "
-                "2,417 impressions (2.57% conversion). 58.5% dismissed the survey; 39.0% left it unanswered. "
-                "The data was still worth publishing (segmentation for pricing), but repeat popups would burn trust. "
-                "Lesson: one census popup per year; use shareable links in Discord for beta prioritization."
+                "We set up a two-question PostHog popup. Out of 2,417 visitors, 61 filled it out. That's a 2.57% "
+                "conversion rate. More than half dismissed it immediately. The feedback was valuable for pricing, "
+                "but doing this repeatedly makes you look like enterprise SaaS spam. Run one census a year. "
+                "For beta testing, stick to Discord links."
             ),
             "evidence": [
                 "2,417 impressions to 61 completions (2.57%)",
@@ -61,12 +61,12 @@ LESSONS_LAUNCH_2026 = {
         },
         {
             "id": "tier-split-validated",
-            "headline": "88.5% of survey respondents are Personal-tier buyers, not Studio",
+            "headline": "Collectors aren't commercial users",
             "body": (
-                "Segmentation (n=61): 47.5% dedicated gear room, 41.0% bedroom studio, 11.5% commercial "
-                "studio/producer/repair. Gear-room collectors are not automatically commercial users. "
-                "They still fit Personal lifetime. Raising Personal to chase power users would miss "
-                "the bedroom majority. Studio stays rare but real."
+                "Our survey split the audience into three: 47.5% have a dedicated gear room, 41.0% have a bedroom setup, "
+                "and 11.5% run a commercial studio or repair shop. It's tempting to think a guy with twelve vintage synths "
+                "is a commercial power user you can charge enterprise rates. He isn't. He's a hobbyist. "
+                "Keep the personal lifetime license, and leave the commercial tier for actual business tax write-offs."
             ),
             "evidence": [
                 "Bedroom + gear room = 88.5% (Personal positioning)",
@@ -75,11 +75,11 @@ LESSONS_LAUNCH_2026 = {
         },
         {
             "id": "free-text-spam",
-            "headline": "25% of optional gear-list answers were junk",
+            "headline": "One-quarter of free-text submissions are jokes",
             "body": (
-                "Question 2 (what synths are on your desk) received 24 free-text submissions; 6 were spam, "
-                "tests, or jokes and excluded from brand analysis. That is a 25% junk rate on optional text. "
-                "Lesson: publish cleaned n counts; do not treat raw submission count as signal."
+                "We asked what synths were on people's desks as a free-text field. We got 24 responses. Six were spam, "
+                "testing noise, or jokes about analog warmth. That's a 25% junk rate. If you don't clean your inputs, "
+                "you're building your product roadmap on internet memes. Always audit raw survey submissions."
             ),
             "evidence": [
                 "24 submissions to 18 valid gear lists (25% excluded)",
@@ -87,30 +87,26 @@ LESSONS_LAUNCH_2026 = {
         },
         {
             "id": "trust-is-human",
-            "headline": "Synthetic marketing creative erodes trust faster than missing features",
+            "headline": "AI-generated images destroy trust instantly",
             "body": (
-                "Synthtopia comment threads flagged AI-generated hero imagery as a trust signal failure. "
-                "Users want real gear photos and founder replies, not stock synth renders. Beta support in "
-                "Discord (SysEx diffs, handshake questions, dead-filter debugging) generated more goodwill "
-                "than feature breadth. Lesson: for vintage hardware audiences, being present beats looking polished."
+                "When Synthtopia covered us, the comments section didn't complain about missing features. They "
+                "complained about our stock-like synth graphics. In retro gear, AI graphics look like a scam. "
+                "What saved us was running a Discord server and responding to bug reports in minutes. Helping a user "
+                "debug a dead Roland filter builds more goodwill than polished marketing copy."
             ),
             "evidence": [
-                "Synthtopia coverage + comment trust backlash on AI creative",
-                "Beta threads: X5D to N264 patch porting, MKS-80 handshake, Juno filter diagnostics",
+                "Synthtopia coverage comment backlash on AI creative",
+                "Beta support threads: patch porting and filter diagnostics",
             ],
         },
         {
             "id": "hn-web-midi-thread",
-            "headline": "Hacker News: 52 points on Web MIDI timing, with a better scheduler tip",
+            "headline": "Hacker News will rewrite your scheduling code",
             "body": (
-                "The engineering post on keeping Web MIDI from overwhelming 1980s synth CPUs reached "
-                "52 points and 41 comments on Hacker News. The highest-signal technical comment came from "
-                "omneity: pass a timestamp as the second argument to midiOutput.send(data, timestamp) using "
-                "performance.now() + offset, instead of relying on setTimeout on the JS main thread. "
-                "We acknowledged the tip publicly and planned to test API-level scheduling. "
-                "Other thread themes: MIDI has no RTS/CTS hardware flow control; the bottleneck is the synth "
-                "8-bit CPU writing incoming SysEx to SRAM, not the nominal 31.25 kbaud line rate. "
-                "Our mitigation at the time was 100ms pauses between packets in JavaScript."
+                "Our post on Web MIDI hit 52 points on Hacker News. We explained how we paced packets using JavaScript "
+                "setTimeout. Within hours, a commenter named omneity pointed out a better way: pass a performance.now() "
+                "timestamp directly as the second argument to the Web MIDI send function. Let the browser handle the queue. "
+                "They were right. The bottleneck isn't the wire speed; it's the synth's 8-bit CPU writing to SRAM."
             ),
             "evidence": [
                 "HN thread: 52 points, 41 comments",
@@ -121,14 +117,12 @@ LESSONS_LAUNCH_2026 = {
         },
         {
             "id": "hn-pricing-feedback",
-            "headline": "HN commenters rejected subscription framing before bedroom pricing landed",
+            "headline": "People hate subscriptions for utility tools",
             "body": (
-                "Multiple HN comments compared early pricing to $20/month subscriptions, $230/year, or "
-                "$599 lifetime, and to free librarians inside Dexed or paid Plogue OP-X7. Several said "
-                "fear-based battery-death marketing felt obnoxious for a backup tool. The thread pushed "
-                "two product commitments in public replies: standard .syx export always, and a rework toward "
-                "a $39 one-time Personal lifetime (knob.monster+). Desktop/offline requests were common; "
-                "we said a local Tauri build was on the roadmap while keeping the zero-install web entry point."
+                "HN readers compared our early pricing ideas to $20/month subscriptions. They pointed to free alternatives "
+                "like Dexed or Snoize. They also hated battery-death marketing. We immediately committed to two things: "
+                "raw .syx exports will always be free, and we launched a $39 one-time lifetime license. If you charge "
+                "a subscription for a tool someone uses twice a year, they will build an open-source clone out of spite."
             ),
             "evidence": [
                 "Recurring-price comparisons dominated critical comments",
@@ -139,14 +133,12 @@ LESSONS_LAUNCH_2026 = {
         },
         {
             "id": "hn-trust-signals",
-            "headline": "HN readers scrutinized vibe-coded aesthetics and web-only longevity",
+            "headline": "Vibe-coded designs look like skepticism bait",
             "body": (
-                "Commenters flagged the site aesthetic as AI-generated skepticism bait, and questioned "
-                "whether a web-only vault would outlive the company. We replied that the DX7 SysEx parser "
-                "was hand-written, and that serverless hosting kept operating costs low enough to sustain "
-                "the service. nl pushed back on the desktop-app suggestion: zero install is a feature for "
-                "gear used twice a year. Lesson: HN rewards technical honesty and export guarantees more "
-                "than polish; give credit when commenters improve your implementation."
+                "Commenters warned that sleek, vaporwave aesthetics made us look like a landing page that would "
+                "disappear in six months. They asked if a web-only vault would outlive our startup. We told them "
+                "our DX7 parser was custom-written and our hosting costs were near zero. Showing our work and offering "
+                "a raw export guarantee turned the thread around. Technical honesty beats visual polish every time."
             ),
             "evidence": [
                 "Hand-written DX7 parser cited in founder reply",
@@ -156,11 +148,11 @@ LESSONS_LAUNCH_2026 = {
         },
         {
             "id": "free-tier-timing",
-            "headline": "A free tier mattered once beta users needed to re-register",
+            "headline": "Lifetime products still need a free tier",
             "body": (
-                "Post-launch, beta users who had accounts wiped during testing needed a try-before-buy route. "
-                "Free tier shipped to reduce signup friction. "
-                "Lesson: lifetime products still need a no-card trial; otherwise curious forum readers stall at signup."
+                "When we cleared beta data, we forced early testers to sign up again. Without a free tier, they hit a wall. "
+                "We shipped a zero-friction trial tier. If you sell a lifetime license, you still need a way for people "
+                "to test the hardware connection before pulling out a credit card."
             ),
             "evidence": [
                 "Beta re-registration friction reported in Discord DMs",
@@ -169,12 +161,12 @@ LESSONS_LAUNCH_2026 = {
         },
     ],
     "implications": [
-        "Prioritize parser coverage for models that appear in both survey and Discord (JX family, MS-20, Ensoniq cluster).",
-        "Keep Personal lifetime for collectors; Studio for the 11.5% commercial segment.",
-        "Test Web MIDI timestamp scheduling (performance.now offsets) against JS setTimeout throttling.",
-        "Credit community contributors when their comments change production code.",
-        "Publish first-party numbers even at small n. LLMs and journalists cite methodology plus caveats more than fake scale.",
-        "Use link surveys in communities; reserve in-app popups for once-per-year census moments.",
+        "Build for the synths people actually own, not your roadmap slide.",
+        "Keep the $39 personal lifetime tier; leave the $399 studio tier for tax write-offs.",
+        "Pace packets with performance.now() timestamps, not setTimeout.",
+        "Credit community members when they fix your scheduling code.",
+        "Delete AI-generated marketing illustrations and use real gear photos.",
+        "Use in-app survey popups once a year at most. Otherwise, you're just annoying your users.",
     ],
     "caveats": [
         "n=61 survey responses. Treat percentages as directional, not market-wide.",

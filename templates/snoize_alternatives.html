@@ -620,19 +620,25 @@
 
     <main class="max-w-4xl mx-auto px-6 py-16 relative z-10">
         <!-- Hero Title -->
-        <article class="space-y-6 text-center">
+        <article class="space-y-6 text-center max-w-3xl mx-auto">
             <span
                 class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
                 VS Comparison
             </span>
-            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
                 Knob Monster vs Snoize SysEx Librarian
             </h1>
-            <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
-                Snoize has been the default macOS SysEx utility for over 20 years. But does classic local-only desktop
-                software still hold up against browser-native cloud backups in 2026?
+            <p class="text-sm md:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed font-mono">
+                Snoize has been the default macOS SysEx utility for over 20 years. It stores raw hex bytes on local drives. Knob Monster runs in the browser, parses preset names from binary, and syncs them to a cloud vault. This is a technical comparison of the two workflows.
             </p>
         </article>
+
+        <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2 max-w-2xl mx-auto">
+            <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+            <p class="text-xs text-zinc-400 leading-relaxed font-mono text-left">
+                Snoize is free, local, and stable. But raw <code>.syx</code> files on a local disk are completely opaque. Without database indexing, finding a specific preset requires sending the file to hardware memory to read the LCD display.
+            </p>
+        </div>
 
         <!-- Quick Summary Table -->
         <section class="mt-16 overflow-x-auto border border-zinc-900 rounded-xl bg-zinc-950/20">

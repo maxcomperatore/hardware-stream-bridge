@@ -17,35 +17,7 @@
     {% include 'partials/seo_article_meta.html' %}
 
     {% include 'partials/favicon.html' %}
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        zinc: {
-                            450: '#7e7e8a',
-                            555: '#52525c',
-                            650: '#43434c',
-                            655: '#3e3e46',
-                            850: '#1c1c21',
-                        },
-                        emerald: {
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                        pixel: ['Silkscreen', 'monospace'],
-                        lcd: ['VT323', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
 
     <style>
         html {
@@ -156,39 +128,38 @@
                 Chrome/Edge.</h2>
         </div>
 
-        <article class="space-y-6 text-left mb-16">
+        <article class="space-y-6 text-left mb-16 max-w-2xl mx-auto">
             <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
                 The Korg M1 Setup Guide
             </h1>
             <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
-                The Korg M1 has deep global menus that hide SysEx settings. Internal memory must be unlocked in the
-                Global page, and SysEx filtering must be disabled for backups to work.
+                The Korg M1, released in 1988, features a multi-tiered menu architecture. If you request a SysEx dump while memory protect is enabled or exclusive filtering is active, the M1 ignores the request. This guide outlines how to navigate the Global mode pages to disable memory protection and allow SysEx data flow to your web browser.
             </p>
         </article>
 
-        <section class="space-y-8 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal">
+        <section class="space-y-8 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal max-w-2xl mx-auto">
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
                 Hardware Setup Steps
             </h2>
             <ul class="list-disc list-inside space-y-4 pl-4 font-mono text-zinc-300">
-
                 <li><strong>Step 1:</strong> Press the <strong>GLOBAL</strong> button to enter Global Mode.</li>
-                <li><strong>Step 2:</strong> Use the <strong>PAGE+</strong> button to navigate to the <strong>MIDI
-                        Filtering</strong> page.</li>
-                <li><strong>Step 3:</strong> Ensure that <strong>EXCLUSIVE</strong> is set to <strong>ENA</strong>
-                    (Enabled). If it says DIS, the M1 will ignore the dump request.</li>
+                <li><strong>Step 2:</strong> Use the <strong>PAGE+</strong> button to navigate to the <strong>MIDI Filtering</strong> page.</li>
+                <li><strong>Step 3:</strong> Ensure that <strong>EXCLUSIVE</strong> is set to <strong>ENA</strong> (Enabled). If it says DIS, the M1 will ignore the dump request.</li>
                 <li><strong>Step 4:</strong> Navigate to the <strong>Memory Protect</strong> page.</li>
-                <li><strong>Step 5:</strong> Ensure <strong>PROGRAM</strong> and <strong>COMBINATION</strong> are set to
-                    <strong>OFF</strong>.</li>
-
+                <li><strong>Step 5:</strong> Ensure <strong>PROGRAM</strong> and <strong>COMBINATION</strong> are set to <strong>OFF</strong>.</li>
             </ul>
 
-            <div
-                class="my-12 p-8 bg-zinc-900 border border-zinc-800 rounded-2xl relative overflow-hidden text-center space-y-6 shadow-2xl">
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    The Korg M1 has separate memory protection settings for Programs (individual sounds) and Combinations (layered performances). Both must be set to OFF before you attempt a SysEx restore, or the unit will reject the incoming data.
+                </p>
+            </div>
+
+            <div class="my-12 p-8 bg-zinc-900 border border-zinc-800 rounded-2xl relative overflow-hidden text-center space-y-6 shadow-2xl">
                 <h3 class="text-xl font-pixel text-white uppercase tracking-wide">Ready to backup?</h3>
                 <p class="text-sm text-zinc-400 max-w-md mx-auto leading-relaxed font-sans">
-                    Now that your hardware is configured, connect your MIDI cables and backup your M1 patches directly
-                    to the cloud.
+                    Now that your hardware is configured, connect your MIDI cables and backup your M1 patches directly to the cloud.
                 </p>
                 <div class="pt-4 pb-2">
                     <a href="/signup"

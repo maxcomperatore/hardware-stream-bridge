@@ -7,31 +7,7 @@
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
     <title>{{ seo.title if seo else "Vintage Synth Wiki | knob.monster" }}</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        zinc: {
-                            450: '#7e7e8a',
-                            555: '#52525c',
-                            650: '#43434c',
-                            655: '#3e3e46',
-                            850: '#1c1c21',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                        pixel: ['Silkscreen', 'monospace'],
-                        lcd: ['VT323', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
 
     <style>
         html {

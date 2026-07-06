@@ -8,68 +8,7 @@
     <title>404 - Page Not Found</title>
 
     {% include 'partials/favicon.html' %}
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        zinc: {
-                            450: '#7e7e8a',
-                            550: '#5c5c66',
-                            555: '#52525c',
-                            650: '#43434c',
-                            655: '#3e3e46',
-                            850: '#1c1c21',
-                        },
-                        blue: {
-                            650: '#1B4F8C',
-                        },
-                        rose: {
-                            450: '#fb7185',
-                        },
-                        emerald: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
-                        },
-                        green: {
-                            50: '#eef3f8',
-                            100: '#dce8f2',
-                            200: '#b8cfe0',
-                            300: '#7fa8c9',
-                            400: '#4A7FB8',
-                            500: '#26619C',
-                            600: '#1B4F8C',
-                            700: '#1B4F8C',
-                            800: '#153d66',
-                            900: '#0f2847',
-                            950: '#0a1a2e',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Geist', 'Geist Sans', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                        pixel: ['Silkscreen', 'monospace'],
-                        lcd: ['VT323', 'monospace'],
-                    },
-                    fontSize: {
-                        '2xs': '0.68rem',
-                        '3xs': '0.58rem',
-                    }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
 
     <style>
         /* Dither effect on images */

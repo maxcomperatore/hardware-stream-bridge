@@ -628,19 +628,25 @@
 
     <main class="max-w-4xl mx-auto px-6 py-16 relative z-10">
         <!-- Hero Title -->
-        <article class="space-y-6 text-center">
+        <article class="space-y-6 text-center max-w-3xl mx-auto">
             <span
                 class="inline-flex items-center px-2.5 py-1 rounded-full text-3xs font-pixel bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 uppercase tracking-widest">
                 Technical Review
             </span>
-            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto">
-                Best SysEx Librarian Alternatives for Windows &amp; macOS (2026)
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
+                Best SysEx Librarian Alternatives for Windows &amp; macOS
             </h1>
-            <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
-                Dumping patches from classic hardware synthesizers shouldn't require setting up a driver from 1995.
-                Compare the top MIDI SysEx manager utilities below.
+            <p class="text-sm md:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed font-mono">
+                Vintage synthesizers store presets in battery-backed SRAM. Managing these libraries historically meant installing desktop utilities last updated in the Clinton administration. This is an evaluation of the leading SysEx managers for modern operating systems.
             </p>
         </article>
+
+        <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2 max-w-2xl mx-auto">
+            <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+            <p class="text-xs text-zinc-400 leading-relaxed font-mono text-left">
+                SysEx transfers are highly sensitive to latency. Operating system updates frequently break legacy USB-MIDI drivers, turning once-stable desktop software into a source of silent data corruption.
+            </p>
+        </div>
 
         <!-- OS Filter Tabs -->
         <section class="flex justify-center mt-12 mb-8">
@@ -871,36 +877,25 @@
         </section>
 
         <!-- Technical Deep Dive Section (Authoritative Content for Search Ranking) -->
-        <section class="mt-20 border-t border-zinc-900 pt-16 space-y-6">
+        <section class="mt-20 border-t border-zinc-900 pt-16 space-y-6 max-w-2xl mx-auto">
             <h2 class="text-xl md:text-2xl font-pixel text-white uppercase tracking-wide">
                 Why Modern USB Interfaces Drop SysEx Packets
             </h2>
-            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
-                If you have ever tried to send a 4104-byte bulk dump file to a vintage synthesizer only to receive a
-                <code>Buffer Overflow</code> or <code>MIDI Communication Error</code> on the screen, the issue is not
-                the file format. It is packet timing.
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-mono">
+                A 4104-byte bulk dump sent to a vintage synthesizer frequently triggers a <code>Buffer Overflow</code> or <code>MIDI Communication Error</code>. The issue is packet timing, not file integrity.
             </p>
-            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
-                Vintage synthesizers from the 1980s run on slow internal microprocessors (like the 2MHz Motorola 6809 or
-                Intel 8031). They receive MIDI data at the standard hardware speed of <strong>31,250 bits per second
-                    (31.25 kbaud)</strong>.
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-mono">
+                1980s synthesizers run on slow internal microprocessors (like the 2MHz Motorola 6809 or Intel 8031). They receive MIDI data at the hardware rate of 31,250 bits per second.
             </p>
-            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
-                Modern USB-to-MIDI cable interfaces send data at high-speed USB rates. Without strict software
-                throttling, the interface throws thousands of bytes at the synth faster than its memory buffers can
-                write them.
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-mono">
+                Modern USB interfaces send data at high-speed USB rates. Without strict software pacing, they flood the synth's memory buffer before the microprocessor can write the bytes to SRAM.
             </p>
-            <div
-                class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 md:p-6 space-y-3 font-mono text-2xs md:text-xs">
-                <span class="text-emerald-400 font-semibold block uppercase tracking-wider">How to Fix Timing
-                    Errors:</span>
+            <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 md:p-6 space-y-3 font-mono text-2xs md:text-xs">
+                <span class="text-emerald-400 font-semibold block uppercase tracking-wider">How to Fix Timing Errors:</span>
                 <ul class="list-decimal list-inside space-y-2 text-zinc-300">
-                    <li><strong>Set output buffers:</strong> Configure your librarian to send data in blocks of 256
-                        bytes.</li>
-                    <li><strong>Configure delay times:</strong> Add a delay of 60 milliseconds between packets. This
-                        gives the synth time to write the received data to memory.</li>
-                    <li><strong>Avoid cheap cables:</strong> Low-cost USB-to-MIDI cables lack internal memory buffers
-                        and will consistently discard messages over 100 bytes long.</li>
+                    <li><strong>Chunk output:</strong> Send data in blocks of 256 bytes instead of single streams.</li>
+                    <li><strong>Inject delays:</strong> Introduce a 60-millisecond delay between each packet to allow SRAM writing.</li>
+                    <li><strong>Avoid generic cables:</strong> Low-cost USB-MIDI cables lack optocouplers and discard messages exceeding 100 bytes.</li>
                 </ul>
             </div>
         </section>

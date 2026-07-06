@@ -17,17 +17,7 @@
     {% set seo_schema_type = "TechArticle" %}
     {% include 'partials/seo_article_meta.html' %}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { zinc: { 650: '#43434c', 850: '#1c1c21' }, emerald: { 400: '#4A7FB8', 500: '#26619C' } },
-                    fontFamily: { sans: ['Geist', 'sans-serif'], mono: ['Geist Mono', 'monospace'], pixel: ['Silkscreen', 'monospace'] }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
     <style>
         html { scroll-behavior: smooth; }
         .mobile-bg-pattern {
@@ -76,45 +66,52 @@
             </p>
         </article>
 
-        <section class="space-y-10 text-zinc-300 text-sm leading-relaxed">
+        <section class="space-y-10 text-zinc-300 text-sm leading-relaxed max-w-2xl mx-auto">
             <div class="space-y-3">
                 <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
                     What is a SysEx librarian?
                 </h2>
                 <p>
-                    A <strong class="text-white">SysEx librarian</strong> captures, names, stores, and restores
-                    synthesizer patch data over MIDI System Exclusive messages. knob.monster runs entirely in Chrome,
-                    Edge, or Opera via Web MIDI — the best SysEx librarian workflow in 2026 if you want cloud backup
-                    without a DAW or legacy utilities.
+                    A SysEx librarian captures, stores, and restores synthesizer presets. For decades, doing this meant installing drivers, adjusting MIDI-OX buffer size, and sorting folders of raw, unnamed <code>.syx</code> files.
+                </p>
+                <p>
+                    We built knob.monster because we wanted to back up our DX7 and Juno-106 without dealing with legacy desktop apps. It runs in the browser, uses Web MIDI, and saves everything to a secure cloud vault.
                 </p>
                 <p>
                     <a href="/sysex-librarian-alternatives" class="text-emerald-400 hover:text-white underline">Compare the best SysEx librarian alternatives for Windows &amp; macOS →</a>
                 </p>
             </div>
 
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    Zero-install web utilities are not a compromise—they are a feature. Most synth owners only back up their sounds twice a year. Downloading desktop software for a five-minute task is a waste of time.
+                </p>
+            </div>
+
             <div class="space-y-3">
                 <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
-                    Cloud backup for synthesizers
+                    Universal cloud backups
                 </h2>
                 <p>
-                    <strong class="text-white">Vintage synth cloud backup</strong> protects custom patches when internal
-                    batteries fail, hard drives die, or you tour with multiple machines. Upload once, search by preset
-                    name, recall to hardware from any computer with a USB-MIDI interface.
+                    If you tour with vintage synths, run a commercial studio, or just want to protect your patches from dead internal batteries, local backups aren't enough. You need off-site storage.
+                </p>
+                <p>
+                    Our cloud library saves your soundbanks privately.
                 </p>
                 <ul class="list-disc list-inside space-y-2 font-mono text-zinc-400 pl-2">
-                    <li>Private vault per account — your dumps are never shared</li>
-                    <li>Download standard <code>.syx</code> files anytime — no lock-in</li>
-                    <li>Web MIDI send with pacing tuned for 1980s hardware buffers</li>
+                    <li>Raw exports: You can download your standard <code>.syx</code> files anytime. No lock-in.</li>
+                    <li>Paced sending: We handle Web MIDI output timing so you don't overflow vintage microprocessor buffers.</li>
+                    <li>Searchable vault: Name your patches, search them, and organize soundbanks online.</li>
                 </ul>
             </div>
 
             <div class="space-y-3">
                 <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
-                    Yamaha DX7 backup (without software)
+                    Back up your DX7 (no desktop apps)
                 </h2>
                 <p>
-                    Need to <strong class="text-white">backup DX7 patches without software</strong>? Disable memory
-                    protect, enable SysEx receive, then dump from the browser. No TX7 editor install, no MIDI-OX.
+                    The Yamaha DX7 is the classic entry point. To back it up: disable memory protect, enable SysEx channel 1, and request the dump directly from our web interface. No TX7 editors or legacy setups.
                 </p>
                 <p>
                     <a href="/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide" class="text-emerald-400 hover:text-white underline">DX7 backup step-by-step guide →</a>
@@ -124,28 +121,29 @@
 
             <div class="space-y-3">
                 <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
-                    Roland Juno-106 patches &amp; presets
+                    Save your Juno-106 patches
                 </h2>
                 <p>
-                    The Juno-106 stores 128 patches in battery-backed RAM. Learn <strong class="text-white">how to save
-                    Juno-106 presets</strong> before voice chips or memory protection block your dump — then browse
-                    curated <strong class="text-white">Juno-106 patch banks</strong> in the shop.
+                    A Roland Juno-106 stores 128 presets in battery-backed RAM. When the internal CR2032 battery dies, those presets disappear forever.
+                </p>
+                <p>
+                    You cannot request a dump remotely on the Juno-106. You have to set the rear function switch to 'III' (enable SysEx) and physically press 'WRITE' on the panel to stream the patches.
                 </p>
                 <p>
                     <a href="/how-to-backup-roland-juno-106-presets-sysex-transfer-guide" class="text-emerald-400 hover:text-white underline">Save &amp; backup Juno-106 presets →</a>
                     · <a href="/juno-106" class="text-emerald-400 hover:text-white underline">Juno-106 librarian →</a>
-                    · <a href="/shop" class="text-emerald-400 hover:text-white underline">Juno-106 patch banks ($9) →</a>
                 </p>
             </div>
 
             <div class="space-y-3">
                 <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
-                    MIDI-OX alternative for Mac &amp; Windows
+                    The desktop alternatives are dead
                 </h2>
                 <p>
-                    MIDI-OX is Windows-only and hasn't been meaningfully updated in years. On Mac, Snoize was the old
-                    answer. knob.monster is a <strong class="text-white">MIDI-OX alternative for Mac</strong> and Windows
-                    — same browser, same vault, no platform-specific installs.
+                    Windows users still run MIDI-OX—a 32-bit utility last updated in 2010. Mac users rely on Snoize. Neither offers cloud sync, and both require platform-specific installation.
+                </p>
+                <p>
+                    By running in Chrome or Edge, knob.monster works on Mac, Windows, Linux, and Chromebooks out of the box.
                 </p>
                 <p>
                     <a href="/knob-monster-vs-midi-ox" class="text-emerald-400 hover:text-white underline">MIDI-OX vs Knob Monster (Mac &amp; Windows) →</a>

@@ -20,17 +20,7 @@
     {% set seo_distribution_url = "https://knob.monster/research/2026-vintage-synth-owner-survey/data.json" %}
     {% include 'partials/seo_article_meta.html' %}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { zinc: { 650: '#43434c', 850: '#1c1c21' }, emerald: { 400: '#4A7FB8', 500: '#26619C' } },
-                    fontFamily: { sans: ['Geist', 'sans-serif'], mono: ['Geist Mono', 'monospace'], pixel: ['Silkscreen', 'monospace'] }
-                }
-            }
-        }
-    </script>
+    {% include 'partials/tailwind_lapis.html' %}
     <style>
         html { scroll-behavior: smooth; }
         .mobile-bg-pattern {

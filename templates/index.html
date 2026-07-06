@@ -315,6 +315,13 @@
                 <img src="/static/icons/dinkie/backhand-index-pointing-down.svg" class="h-3 w-3 opacity-60"
                     style="filter: invert(1);" />
             </button>
+            {% if user.tier != 'premium' %}
+            <button onclick="showUpdatePaywallModal()"
+                class="flex items-center gap-1.5 px-3 py-1.5 bg-lapis-deep border border-blue-700/30 rounded-lg hover:bg-lapis-mid transition-all text-2xs text-white font-semibold font-mono tactical-button">
+                <span class="h-1.5 w-1.5 rounded-full bg-blue-200"></span>
+                <span>Update Available</span>
+            </button>
+            {% endif %}
 
             <!-- Setup Popover Dropdown -->
             <div id="device-popover"
@@ -2131,6 +2138,21 @@
                 modal.classList.add('hidden-transition');
             }
         }
+        function showUpdatePaywallModal() {
+            const modal = document.getElementById('update-paywall-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+                logToPostHog('update_paywall_opened', { source: 'dashboard_header' });
+            }
+        }
+        function closeUpdatePaywallModal() {
+            const modal = document.getElementById('update-paywall-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
 
         document.body.addEventListener('triggerUpgradeModal', () => {
             closeStatusOverlay();
@@ -2159,6 +2181,59 @@
             window.location.reload();
         }
     </script>
+
+    <!-- Update-Style Upgrade Modal (Free users) -->
+    <div id="update-paywall-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
+        <div
+            class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-[30rem] max-w-[92vw] text-left shadow-2xl relative select-none">
+            <button onclick="closeUpdatePaywallModal()"
+                class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
+                    style="filter: invert(0.6);" />
+            </button>
+            <span class="text-[9px] font-pixel text-blue-300 uppercase tracking-widest">Release Notes v1.8</span>
+            <h3 class="text-sm font-pixel text-white uppercase mt-2">New dashboard update is ready</h3>
+            <p class="text-xs text-zinc-450 mt-3 leading-relaxed font-sans">
+                This release adds stronger SysEx flash reliability and full-vault export. Upgrade to unlock every new
+                module on your account.
+            </p>
+
+            <div class="mt-4 p-3 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2">
+                <div class="flex items-center justify-between text-2xs font-mono">
+                    <span class="text-zinc-400">Adaptive SysEx pacing profiles</span>
+                    <span class="text-amber-400 uppercase text-[9px] font-pixel">PRO</span>
+                </div>
+                <div class="flex items-center justify-between text-2xs font-mono">
+                    <span class="text-zinc-400">One-click full vault export (.zip)</span>
+                    <span class="text-amber-400 uppercase text-[9px] font-pixel">PRO</span>
+                </div>
+                <div class="flex items-center justify-between text-2xs font-mono">
+                    <span class="text-zinc-400">Unlimited cloud bank backups</span>
+                    <span class="text-amber-400 uppercase text-[9px] font-pixel">PRO</span>
+                </div>
+            </div>
+
+            <div class="mt-4 p-3 bg-zinc-950/60 border border-zinc-900 rounded-xl">
+                <p class="text-[10px] text-zinc-500 leading-relaxed">
+                    Why paid: parser updates, cloud vault storage, and hardware compatibility testing are ongoing work.
+                    You pay once, keep it forever, and export your data anytime.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-4">
+                <a href="/checkout?plan=personal"
+                    onclick="logToPostHog('update_paywall_checkout_click', { plan: 'personal' })"
+                    class="w-full py-3 bg-gradient-to-r from-blue-500 to-amber-500 hover:from-blue-400 hover:to-amber-400 text-black text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
+                    Install Update (Lifetime Access)
+                </a>
+                <button onclick="showUpgradeModal(); closeUpdatePaywallModal();"
+                    class="w-full py-2 bg-transparent text-zinc-450 hover:text-zinc-300 text-[10px] font-pixel uppercase tracking-wider transition-colors">
+                    See full plan details
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Premium Upgrade Paywall Modal -->
     <div id="upgrade-modal"

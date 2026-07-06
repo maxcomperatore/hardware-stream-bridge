@@ -556,6 +556,9 @@ async def get_logo_png():
 # Mount Static Files
 mimetypes.add_type("application/javascript", ".mjs")
 mimetypes.add_type("application/javascript", ".js")
+mimetypes.add_type("image/png", ".png")
+mimetypes.add_type("image/gif", ".gif")
+mimetypes.add_type("image/svg+xml", ".svg")
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # Configure Stripe key & fallback mock mode

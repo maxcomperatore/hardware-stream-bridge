@@ -23,6 +23,90 @@
         content-visibility: auto;
         contain-intrinsic-size: auto 12rem;
     }
+
+    /* Branded pixel cursors for every possible interaction state */
+    :root {
+        --cursor-default: url('/static/dark/pointer.png') 0 0, auto;
+        --cursor-pointer: url('/static/dark/link.png') 0 0, pointer;
+        --cursor-text: url('/static/dark/beam.png') 4 8, text;
+        --cursor-not-allowed: url('/static/dark/unavailable.png') 0 0, not-allowed;
+        --cursor-help: url('/static/dark/help.png') 0 0, help;
+        --cursor-grab: url('/static/dark/grab.png') 8 8, grab;
+        --cursor-grabbing: url('/static/dark/grab_hover.png') 8 8, grabbing;
+        --cursor-wait: url('/static/dark/busy.gif') 0 0, wait;
+        --cursor-progress: url('/static/dark/working.gif') 0 0, progress;
+        --cursor-move: url('/static/dark/move.png') 8 8, move;
+        --cursor-zoom-in: url('/static/dark/lens_maximize.png') 4 4, zoom-in;
+        --cursor-zoom-out: url('/static/dark/lens_minimize.png') 4 4, zoom-out;
+    }
+
+    html,
+    body {
+        cursor: var(--cursor-default);
+    }
+
+    a,
+    button,
+    [role="button"],
+    label[for],
+    select,
+    summary,
+    .cursor-pointer,
+    input[type="submit"],
+    input[type="button"],
+    input[type="reset"],
+    input[type="checkbox"],
+    input[type="radio"],
+    .tactical-button,
+    .faq-suggestion-btn,
+    [style*="cursor: pointer"] {
+        cursor: var(--cursor-pointer) !important;
+    }
+
+    input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    [contenteditable="true"],
+    .cursor-text,
+    [style*="cursor: text"] {
+        cursor: var(--cursor-text) !important;
+    }
+
+    :disabled,
+    [aria-disabled="true"],
+    .cursor-not-allowed,
+    [style*="cursor: not-allowed"] {
+        cursor: var(--cursor-not-allowed) !important;
+    }
+
+    .cursor-help,
+    [style*="cursor: help"] {
+        cursor: var(--cursor-help) !important;
+    }
+
+    .cursor-grab,
+    [style*="cursor: grab"] {
+        cursor: var(--cursor-grab) !important;
+    }
+
+    .cursor-grabbing,
+    [style*="cursor: grabbing"] {
+        cursor: var(--cursor-grabbing) !important;
+    }
+
+    .cursor-wait,
+    [style*="cursor: wait"] {
+        cursor: var(--cursor-wait) !important;
+    }
+
+    .cursor-progress,
+    [style*="cursor: progress"] {
+        cursor: var(--cursor-progress) !important;
+    }
+
+    .cursor-move,
+    [style*="cursor: move"] {
+        cursor: var(--cursor-move) !important;
+    }
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>

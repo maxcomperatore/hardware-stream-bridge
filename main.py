@@ -8,6 +8,7 @@ import io
 import os
 import zipfile
 import hashlib
+import hmac
 import bcrypt
 from itsdangerous import Signer, BadSignature, URLSafeTimedSerializer
 import stripe
@@ -32,6 +33,28 @@ from icon_paths import (
     stripe_cover_icon_names,
 )
 from urllib.parse import quote, urlparse
+
+def posthog_support_context(user: dict | None, *, enable_conversations: bool = False) -> dict:
+    """PostHog init flags: support bubble only on dashboard; signed identity for logged-in users."""
+    ctx = {
+        "posthog_enable_conversations": False,
+        "posthog_identity_distinct_id": None,
+        "posthog_identity_hash": None,
+    }
+    if not enable_conversations or not user:
+        return ctx
+    distinct_id = user["email"]
+    ctx["posthog_enable_conversations"] = True
+    ctx["posthog_identity_distinct_id"] = distinct_id
+    secret = settings.POSTHOG_CONVERSATIONS_IDENTITY_SECRET
+    if secret:
+        ctx["posthog_identity_hash"] = hmac.new(
+            secret.encode("utf-8"),
+            distinct_id.encode("utf-8"),
+            hashlib.sha256,
+        ).hexdigest()
+    return ctx
+
 
 def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
     if not next_url or not next_url.startswith("/") or next_url.startswith("//"):
@@ -1737,7 +1760,9 @@ async def dashboard(request: Request):
         return RedirectResponse(url="/login")
         
     banks = database.get_all_banks(user["id"])
-    return render_template("index.html", request, {"banks": banks, "user": user})
+    context = {"banks": banks, "user": user}
+    context.update(posthog_support_context(user, enable_conversations=True))
+    return render_template("index.html", request, context)
 
 @app.get("/banks", response_class=HTMLResponse)
 async def get_banks(request: Request):

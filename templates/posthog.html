@@ -15,6 +15,9 @@
         if (!posthogKey) {
             return;
         }
+        var enableConversations = {{ posthog_enable_conversations | default(false) | tojson }};
+        var identityDistinctId = {{ posthog_identity_distinct_id | default(none) | tojson }};
+        var identityHash = {{ posthog_identity_hash | default(none) | tojson }};
         var script = document.createElement('script');
         script.src = 'https://us-assets.i.posthog.com/static/1.396.2/array.js';
         script.crossOrigin = 'anonymous';
@@ -24,13 +27,14 @@
                 if (!window.posthog || typeof window.posthog.init !== 'function') {
                     return;
                 }
-                window.posthog.init(posthogKey, {
+                var isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+                var initOptions = {
                     api_host: {{ posthog_api_host | tojson }},
                     ui_host: 'https://us.posthog.com',
                     strict_script_versioning: true,
                     defaults: '2026-05-30',
                     person_profiles: 'identified_only',
-                    disable_conversations: typeof window !== 'undefined' && window.innerWidth < 768,
+                    disable_conversations: !enableConversations || isMobile,
                     before_send: function(event) {
                         if (event && event.event === '$exception') {
                             var val = event.properties && event.properties.$exception_value;
@@ -40,7 +44,15 @@
                         }
                         return event;
                     }
-                });
+                };
+                if (identityDistinctId && identityHash) {
+                    initOptions.identity_distinct_id = identityDistinctId;
+                    initOptions.identity_hash = identityHash;
+                }
+                window.posthog.init(posthogKey, initOptions);
+                if (identityDistinctId) {
+                    window.posthog.identify(identityDistinctId, { email: identityDistinctId });
+                }
             } catch (err) {
                 console.warn('PostHog initialization caught error:', err);
             }

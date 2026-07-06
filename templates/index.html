@@ -406,10 +406,11 @@
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between pl-1.5 pr-1">
                         <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider">Vault Library</h3>
-                        {% if user.tier == 'premium' and banks %}
+                        {% if user.tier == 'premium' %}
                         <a href="/banks/export-all"
+                           id="vault-export-all-link"
                            title="Download entire vault as .zip"
-                           onclick="logToPostHog('vault_export_all', {})"
+                           onclick="return handleVaultExportAll(event)"
                            class="text-[7px] font-pixel uppercase text-emerald-500 hover:text-emerald-400 tracking-wider transition-colors">
                             Export all
                         </a>
@@ -663,7 +664,7 @@
 
     <!-- Cheap-cable warning before first flash -->
     <div id="midi-cable-warning"
-        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 flex items-center justify-center hidden-transition">
         <div class="bg-[#0e0e11] border border-amber-500/30 rounded-xl p-5 w-96 max-w-[90vw] text-center shadow-2xl select-none">
             <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-3.5">
                 <img src="/static/icons/dinkie/high-voltage-sign.svg" class="h-5 w-5" style="filter: invert(70%) sepia(80%) saturate(1000%) hue-rotate(350deg);" />
@@ -811,6 +812,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             initMobileDashboardNav();
             loadMidiFlashSettings();
+            syncVaultExportLink();
             if (!window.matchMedia('(max-width: 767px)').matches) {
                 initializeMidiAccess(false);
             }
@@ -1014,6 +1016,15 @@
         let pendingFlashArgs = null;
 
         const SYNTH_PROFILE_MULTIPLIERS = { dx7: 1.25, juno: 1.5, generic: 1.0 };
+        const SYNTH_MODEL_PROFILES = {
+            'yamaha dx7': 'dx7',
+            'roland juno-106': 'juno',
+            'roland jupiter-6': 'generic',
+            'korg m1': 'generic',
+            'casio cz-101': 'generic',
+            'generic synth': 'generic',
+        };
+        let activeFlashTimers = [];
 
         function loadMidiFlashSettings() {
             try {
@@ -1044,10 +1055,36 @@
             const profileEl = document.getElementById('midi-synth-profile');
             const manual = profileEl ? profileEl.value : 'auto';
             if (manual !== 'auto') return manual;
-            const model = (synthModel || '').toLowerCase();
-            if (model.includes('dx7') || model.includes('yamaha')) return 'dx7';
-            if (model.includes('juno') || model.includes('roland')) return 'juno';
+            const model = (synthModel || '').toLowerCase().trim();
+            if (SYNTH_MODEL_PROFILES[model]) return SYNTH_MODEL_PROFILES[model];
+            if (model.includes('juno')) return 'juno';
+            if (model.includes('dx7') || model.includes('dx-7') || model.includes('dx9')) return 'dx7';
             return 'generic';
+        }
+
+        function clearFlashTimers() {
+            activeFlashTimers.forEach(t => clearTimeout(t));
+            activeFlashTimers = [];
+        }
+
+        function syncVaultExportLink() {
+            const link = document.getElementById('vault-export-all-link');
+            if (!link) return;
+            const hasBanks = document.querySelectorAll('#bank-list-container > a[id^="bank-item-"]').length > 0;
+            link.classList.toggle('opacity-30', !hasBanks);
+            link.classList.toggle('pointer-events-none', !hasBanks);
+            link.title = hasBanks ? 'Download entire vault as .zip' : 'Save a soundbank first';
+        }
+
+        function handleVaultExportAll(event) {
+            const hasBanks = document.querySelectorAll('#bank-list-container > a[id^="bank-item-"]').length > 0;
+            if (!hasBanks) {
+                event.preventDefault();
+                showToast("Nothing to export", "Save a soundbank to your vault first.", "info");
+                return false;
+            }
+            logToPostHog('vault_export_all', {});
+            return true;
         }
 
         function getDelayPreset() {
@@ -1059,7 +1096,7 @@
             const profile = resolveSynthProfile(synthModel);
             const multiplier = SYNTH_PROFILE_MULTIPLIERS[profile] || 1.0;
             if (preset === 'cakewalk') {
-                return Math.max(10, Math.round(messageLength * 0.1 * multiplier));
+                return Math.max(20, Math.round(messageLength * 0.1 * multiplier + 20));
             }
             const base = preset === 'slow' ? 120 : 60;
             return Math.round(base * multiplier);
@@ -1157,7 +1194,7 @@
             lcdProgress.style.width = `${progressPercent}%`;
         }
 
-        function completeStatusOverlay(title, successMessage, duration = 1200) {
+        function completeStatusOverlay(title, successMessage, duration = 1200, leftStatus = null) {
             const titleEl = document.getElementById('overlay-title');
             const msgEl = document.getElementById('overlay-message');
             const spinner = document.getElementById('overlay-spinner');
@@ -1171,7 +1208,7 @@
             spinner.classList.add('hidden');
             check.classList.remove('hidden');
 
-            document.getElementById('overlay-status-left').textContent = "100%";
+            document.getElementById('overlay-status-left').textContent = leftStatus || "100%";
             document.getElementById('overlay-status-right').textContent = "COMPLETED";
 
             // LCD update
@@ -1194,6 +1231,7 @@
             const overlay = document.getElementById('status-overlay');
             overlay.classList.remove('visible-transition');
             overlay.classList.add('hidden-transition');
+            clearFlashTimers();
 
             // Terminate any active hardware listeners/timeouts
             if (isIngesting) {
@@ -1419,6 +1457,7 @@
                     completeStatusOverlay("Backup Completed", "Soundbank successfully archived and parsed.");
                     showToast("Bank Archived", `"${bankName}" saved in library.`, "success");
                     document.getElementById('bank-list-container').innerHTML = html;
+                    syncVaultExportLink();
                     document.getElementById('pull-bank-form').reset();
                     logToPostHog('bank_backup_success', {
                         synth_model: synthModel,
@@ -1464,8 +1503,12 @@
                 })
                 .then(data => {
                     const hex = data.sysex_hex;
+                    if (!hex || hex.length % 2 !== 0) {
+                        throw new Error('Invalid SysEx data in vault');
+                    }
                     const bytes = new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-                    const msgCount = countSysexMessages(bytes);
+                    const messages = splitSysexMessages(bytes);
+                    const msgCount = messages.length;
                     const byteLen = bytes.length;
                     const summary = `Sending ${msgCount} SysEx message${msgCount === 1 ? '' : 's'}, ${formatByteCount(byteLen)}`;
                     logMidiEvent("SYSTEM", `Retrieved ${summary} from database.`);
@@ -1477,12 +1520,15 @@
                         synth_model: synthModel
                     });
                     updateStatusOverlay(0, summary, `0 / ${msgCount}`, "PREP");
-                    executeMidiFlash(hex, bankName, synthModel, msgCount, byteLen);
+                    executeMidiFlash(messages, bankName, synthModel, byteLen);
                 })
                 .catch(err => {
                     console.error(err);
                     closeStatusOverlay();
-                    showToast("Flash Failed", "Cannot retrieve SysEx dump from database.", "error");
+                    const detail = err.message && err.message.includes('SysEx')
+                        ? err.message
+                        : "Cannot retrieve SysEx dump from database.";
+                    showToast("Flash Failed", detail, "error");
                     logMidiEvent("SYSTEM", `Flash error: Database fetch failed: ${err.message}`);
                     logToPostHog('flash_data_fetch_failed', {
                         bank_id: bankId,
@@ -1517,9 +1563,8 @@
             return messages;
         }
 
-        function executeMidiFlash(hexString, bankName, synthModel, knownMsgCount, knownByteLen) {
+        function executeMidiFlash(messages, bankName, synthModel, byteLen) {
             try {
-                const bytes = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
                 const outputPort = midiAccess.outputs.get(selectedOutput);
                 if (!outputPort) {
                     closeStatusOverlay();
@@ -1529,22 +1574,21 @@
                     return;
                 }
 
-                const messages = splitSysexMessages(bytes);
-                const msgCount = knownMsgCount || messages.length;
-                const byteLen = knownByteLen || bytes.length;
+                const msgCount = messages.length;
                 const preset = getDelayPreset();
                 const profile = resolveSynthProfile(synthModel);
                 const summary = `Sending ${msgCount} SysEx message${msgCount === 1 ? '' : 's'}, ${formatByteCount(byteLen)}`;
+                const progressLabel = `${msgCount} / ${msgCount}`;
 
                 logMidiEvent("SYSTEM", `${summary} to '${outputPort.name}' (${preset} delay, ${profile} profile)...`);
+                clearFlashTimers();
 
                 let offset = 0;
-                const progressTimers = [];
 
                 messages.forEach((message, index) => {
                     outputPort.send(message, performance.now() + offset);
                     const fireAt = offset;
-                    progressTimers.push(setTimeout(() => {
+                    activeFlashTimers.push(setTimeout(() => {
                         const pct = Math.round(((index + 1) / messages.length) * 100);
                         updateStatusOverlay(
                             pct,
@@ -1557,9 +1601,9 @@
                     offset += getMessageDelayMs(preset, message.length, synthModel);
                 });
 
-                setTimeout(() => {
-                    progressTimers.forEach(t => clearTimeout(t));
-                    completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!");
+                activeFlashTimers.push(setTimeout(() => {
+                    clearFlashTimers();
+                    completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!", 1200, progressLabel);
                     showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
                     logToPostHog('flash_execution_success', {
                         bank_name: bankName,
@@ -1569,7 +1613,7 @@
                         delay_preset: preset,
                         synth_profile: profile
                     });
-                }, offset + 40);
+                }, offset + 40));
 
             } catch (err) {
                 console.error("Midi flash error:", err);
@@ -1703,6 +1747,7 @@
         document.body.addEventListener('htmx:afterSwap', (evt) => {
             if (evt.detail.target && evt.detail.target.id === 'bank-list-container') {
                 cachedBankCards = null;
+                syncVaultExportLink();
             }
         });
 
@@ -2009,6 +2054,7 @@
                 if (evt.detail.target.id === 'bank-list-container') {
                     completeStatusOverlay("Upload Complete", "Soundbank successfully imported.");
                     showToast("Import Successful", "Parsed and loaded to Vault Library.", "success");
+                    syncVaultExportLink();
                     document.getElementById('upload-form').reset();
                     document.getElementById('file-label').textContent = "Select .syx backup";
                     logToPostHog('file_upload_success', { bank_name: bankName, synth_model: synthModel });

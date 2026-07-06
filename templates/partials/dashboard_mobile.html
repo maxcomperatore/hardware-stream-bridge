@@ -130,7 +130,13 @@
                 Capture, flash, and audition presets on desktop Chrome with a MIDI interface. This view is for browsing your cloud library on the go.
             </p>
 
-            {% if user.tier != 'premium' %}
+            {% if user.tier == 'premium' and banks %}
+            <a href="/banks/export-all"
+                onclick="logToPostHog('vault_export_all', { mobile: true })"
+                class="mt-6 block text-center rounded-full bg-emerald-600 text-white text-sm font-semibold py-3 active:scale-[0.98] transition-transform">
+                Export vault (.zip)
+            </a>
+            {% elif user.tier != 'premium' %}
             <a href="/checkout?plan=personal"
                 class="mt-6 block text-center rounded-full bg-white text-black text-sm font-semibold py-3 active:scale-[0.98] transition-transform">
                 Upgrade vault

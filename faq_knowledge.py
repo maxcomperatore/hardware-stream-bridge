@@ -80,6 +80,22 @@ FAQ_ENTRIES = [
         ),
     },
     {
+        "question": "Is knob.monster a subscription?",
+        "aliases": [
+            "is this a subscription",
+            "monthly fee",
+            "do i pay every month",
+            "rent",
+            "recurring",
+            "saas",
+        ],
+        "answer": (
+            "No. knob.monster is not a subscription. Personal ($39) and Studio ($399) are one-time lifetime "
+            "purchases. Pay once, keep your vault, and download your .syx files whenever you want. There are no "
+            "monthly fees and no automatic renewals."
+        ),
+    },
+    {
         "question": "What is the price of knob.monster?",
         "aliases": [
             "how much does it cost",
@@ -161,6 +177,7 @@ FAQ_ENTRIES = [
 
 FAQ_SUGGESTIONS = [
     "What is knob.monster?",
+    "Is this a subscription?",
     "Which synthesizers are supported?",
     "What is the price?",
     "Are my patches private?",

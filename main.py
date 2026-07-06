@@ -2962,8 +2962,8 @@ async def ucp_discovery():
     doc = {
         "protocol": "ucp",
         "version": "1.0",
-        "services": ["checkout", "subscription"],
-        "capabilities": ["stripe_checkout", "recurring_billing"],
+        "services": ["checkout"],
+        "capabilities": ["stripe_checkout", "one_time_payment"],
         "endpoints": {
             "checkout": f"{SITE_BASE}/checkout",
             "portal": f"{SITE_BASE}/portal",

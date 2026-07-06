@@ -583,18 +583,20 @@
       "applicationCategory": "MultimediaApplication",
       "offers": [
         {
-        "@type": "Offer",
+          "@type": "Offer",
           "name": "knob.monster+ Personal",
           "price": "39.00",
           "priceCurrency": "USD",
-          "description": "Lifetime license for personal, non-commercial use"
+          "url": "https://knob.monster/#pricing",
+          "description": "One-time lifetime license for personal, non-commercial use. Not a subscription."
         },
         {
           "@type": "Offer",
           "name": "knob.monster+ Studio",
           "price": "399.00",
           "priceCurrency": "USD",
-          "description": "Lifetime commercial license for one business location"
+          "url": "https://knob.monster/#pricing",
+          "description": "One-time lifetime commercial license for one business location. Not a subscription."
         }
       ],
       "author": {
@@ -725,7 +727,15 @@
           "name": "What is the price of knob.monster?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We offer transparent lifetime pricing: knob.monster+ at $39 (non-commercial) and knob.monster+ Studio at $399 (commercial use at one location). Same product, different license. Repair shops and multi-site deployments can contact us for bespoke commercial licensing."
+            "text": "We offer transparent lifetime pricing: knob.monster+ at $39 (non-commercial) and knob.monster+ Studio at $399 (commercial use at one location). Same product, different license. One payment each — no monthly fees, no automatic renewals. Paid tiers include unlimited .syx export. Repair shops and multi-site deployments can contact us for bespoke commercial licensing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is knob.monster a subscription?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. knob.monster is not a subscription service. Personal and Studio are one-time lifetime purchases processed through Stripe. Your vault stays accessible and you can download your .syx backups at any time. There is no monthly rent for your patches."
           }
         },
         {
@@ -1811,6 +1821,9 @@
                         don't have to</span>. <span id="rn-securesounds">Protect your creative work with simple,
                         reliable backups and keep your hardware alive.</span>
                 </p>
+                <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider mt-3 max-w-md mx-auto">
+                    One-time lifetime licenses · not a subscription · export .syx anytime
+                </p>
                 <div class="relative mt-8 mx-auto w-full max-w-sm pt-5">
                     <img src="/static/logo.png" alt="" width="56" height="56" aria-hidden="true"
                         class="absolute left-1/2 top-0 z-0 w-14 h-14 -translate-x-1/2 -translate-y-1 select-none pointer-events-none"
@@ -1960,6 +1973,7 @@
                     </div>
                             <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1">
                                 Licensed for <span class="text-brand-plus font-semibold">commercial use.</span>
+                                <span class="text-zinc-500"> Own it forever. No subscriptions.</span>
                     </div>
                     </div>
                         <ul class="space-y-2.5 text-xs text-zinc-400">
@@ -1985,11 +1999,12 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="mt-8 text-center">
+                    <div class="mt-8 text-center space-y-2">
                         <a href="{% if user %}/checkout?plan=studio{% else %}/signup?plan=studio{% endif %}"
                             class="btn-lapis-outline pricing-cta-studio w-full flex items-center justify-center gap-1.5 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
                             License My Shop
                         </a>
+                        <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">One payment · yours forever · export .syx anytime</p>
                     </div>
                     </div>
                     </div>
@@ -2001,7 +2016,7 @@
                     <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{
                             pricing.symbol }}</span><span id="pricing-anchor-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount
                             }}</span></span>
-                    once.
+                    once. <span class="text-zinc-600">No monthly fee.</span>
                         </p>
                     </div>
 

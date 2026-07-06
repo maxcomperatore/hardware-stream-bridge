@@ -6,6 +6,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import settings
 import io
 import os
+import zipfile
 import hashlib
 import bcrypt
 from itsdangerous import Signer, BadSignature, URLSafeTimedSerializer
@@ -2022,6 +2023,52 @@ async def download_bank(request: Request, bank_id: int):
         file_stream, 
         media_type="application/octet-stream",
         headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+@app.get("/banks/export-all")
+async def export_all_banks(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+    if user["tier"] != "premium":
+        return RedirectResponse(url="/checkout")
+
+    banks = database.get_all_banks(user["id"])
+    if not banks:
+        raise HTTPException(status_code=404, detail="No banks to export")
+
+    buf = io.BytesIO()
+    used_names: dict[str, int] = {}
+    written = 0
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as archive:
+        for bank in banks:
+            try:
+                sysex_bytes = bytes.fromhex(bank["sysex_hex"])
+            except ValueError:
+                continue
+            base = re.sub(r"[^\w\-]+", "_", bank["name"].lower()).strip("_") or "bank"
+            count = used_names.get(base, 0)
+            used_names[base] = count + 1
+            filename = f"{base}.syx" if count == 0 else f"{base}_{count}.syx"
+            archive.writestr(filename, sysex_bytes)
+            written += 1
+
+    if written == 0:
+        raise HTTPException(status_code=500, detail="Could not build vault archive")
+
+    buf.seek(0)
+
+    trigger_alert(
+        "vault_exported",
+        f"Full vault export ({len(banks)} banks) by user `{user['email']}`.",
+        {"email": user["email"], "bank_count": len(banks)},
+        distinct_id=user["email"]
+    )
+
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": 'attachment; filename="knob_monster_vault.zip"'}
     )
 
 @app.get("/banks/{bank_id}/hex")

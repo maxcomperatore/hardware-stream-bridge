@@ -7,12 +7,12 @@
     {% include "partials/local_fonts.html" %}
     <title>How do you keep Web MIDI from crashing a 1983 synthesizer? | knob.monster</title>
     <meta name="description"
-        content="Why writing Web MIDI code for 8-bit CPUs from 1983 is a nightmare. Flow control, timing pacing, and proprietary vendor SysEx parsing in JavaScript.">
+        content="Web MIDI SysEx needs deliberate sender pacing — not slower synth CPUs. Flow control, 31.25k baud limits, cheap USB-MIDI cables, and vendor SysEx parsing in JavaScript.">
     <meta name="keywords"
         content="web midi, sysex librarian, midi buffer full, yamaha dx7 midi, roland juno-106 sysex, retrocomputing, midi flow control">
     {% set seo_canonical = "https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer" %}
     {% set seo_title = "How do you keep Web MIDI from crashing a 1983 synthesizer? | knob.monster" %}
-    {% set seo_description = "Why writing Web MIDI code for 8-bit CPUs from 1983 is a nightmare. Flow control, timing pacing, and proprietary vendor SysEx parsing in JavaScript." %}
+    {% set seo_description = "Web MIDI SysEx needs deliberate sender pacing — not slower synth CPUs. Flow control, 31.25k baud limits, cheap USB-MIDI cables, and vendor SysEx parsing in JavaScript." %}
     {% set seo_schema_type = "TechArticle" %}
     {% include 'partials/seo_article_meta.html' %}
 
@@ -140,28 +140,32 @@
                 <span class="text-xs font-mono text-zinc-500">June 23, 2026</span>
             </div>
             <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
-                How do you keep Web MIDI from crashing a 1983 synthesizer?
+                How do you pace Web MIDI SysEx for vintage synths?
             </h1>
             <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
-                Why writing Web MIDI code for 8-bit CPUs from the 1980s is an absolute timing nightmare, and how to
-                safely control data flows on vintage hardware directly from your browser.
+                Why Web MIDI SysEx needs deliberate sender pacing, and how to reliably flash vintage hardware
+                from your browser without dropped packets or corrupted memory.
             </p>
         </article>
 
         <!-- Post Content -->
         <section class="space-y-8 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal">
             <p>
-                Modern browsers run fast. Your system processor operates in gigahertz, handles multi-threaded
-                operations, and loads gigabytes of data in milliseconds.
+                Modern browsers schedule MIDI output with microsecond precision. Your computer can enqueue thousands of
+                bytes per second without breaking a sweat.
             </p>
             <p>
-                The microprocessor inside a vintage 1983 <strong>Yamaha DX7</strong> is an 8-bit Hitachi 6305 running at
-                a clock speed of 2 MHz, with a tiny 256-byte RAM buffer.
+                The bottleneck is almost never the synthesizer's CPU. Classic MIDI runs at a fixed
+                <strong>31,250 baud</strong> — about 3,125 bytes per second on the wire. A full DX7 bank is only ~4 KB.
+                The synth has plenty of time to receive it, as long as the <em>sender</em> does not blast packets faster
+                than the cable and instrument can absorb them.
             </p>
             <p>
-                When you try to bridge these two eras using the modern <strong>Web MIDI API</strong>, you run headfirst
-                into a classic retrocomputing bottleneck: <em>buffer overflow</em>. Send data too fast, and the
-                synthesizer’s CPU hangs, drops packages, or corrupts the internal sound memory completely.
+                When you bridge browser and hardware with the <strong>Web MIDI API</strong>, the real failure mode is
+                <em>sender pacing</em>: USB adapters (especially cheap ones) buffer bursts from the host and dump them
+                onto the DIN port faster than 31.25k allows. Without hardware flow control on standard MIDI, there is no
+                way for the synth to ask the browser to wait — so the fix is on our side: schedule complete
+                <code>F0…F7</code> messages with gaps between them, not arbitrary byte chunks.
             </p>
 
             <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
@@ -177,28 +181,26 @@
                 instantly attempts to serialize and dump it down the MIDI out pin.
             </p>
             <p>
-                Because standard MIDI lacks hardware handshaking lines (no RTS/CTS pins), there's no physical way for
-                the DX7 to tell the browser: <em>"Hey, stop sending data, I'm writing the last preset block to SRAM
-                    right now."</em>
+                Because standard MIDI lacks hardware handshaking lines (no RTS/CTS pins), there is no physical way for
+                the synth to tell the browser: <em>"Slow down — I'm still writing the last preset block."</em>
+                The sender must pace each complete SysEx message deliberately.
             </p>
             <p>
-                To solve this efficiently, we can utilize the Web MIDI API's built-in scheduler to throttle data packets, rather than relying on JavaScript's <code>setTimeout</code> thread loops which can cause imprecise delays or packet drops on cheap USB-MIDI cables:
+                We use the Web MIDI API's built-in scheduler to space whole messages apart, rather than relying on
+                <code>setTimeout</code> loops that drift under load — and we never split a single SysEx across
+                arbitrary 256-byte chunks (that creates invalid MIDI on the wire):
             </p>
 
             <pre
                 class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 overflow-x-auto text-xs font-mono text-emerald-400">
-// Chunking and pacing SysEx transmission arrays using API-level scheduling
-function sendSysExWithPacing(midiOutput, rawSysExBytes) {
-    const CHUNK_SIZE = 256; // Limit blocks to prevent buffer floods
-    const INTER_CHUNK_DELAY = 60; // Milliseconds to wait between packets
+// Pace complete F0…F7 messages with inter-message gaps
+function sendSysExWithPacing(midiOutput, messages) {
+    const INTER_MESSAGE_DELAY_MS = 60; // tune per synth / cable
     let offset = 0;
 
-    for (let i = 0; i < rawSysExBytes.length; i += CHUNK_SIZE) {
-        const chunk = rawSysExBytes.slice(i, i + CHUNK_SIZE);
-        
-        // Schedule the packet using the precise API clock
-        midiOutput.send(chunk, performance.now() + offset);
-        offset += INTER_CHUNK_DELAY;
+    for (const message of messages) {
+        midiOutput.send(message, performance.now() + offset);
+        offset += INTER_MESSAGE_DELAY_MS;
     }
 }</pre>
 

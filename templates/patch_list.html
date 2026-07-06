@@ -38,7 +38,7 @@
             <div class="flex items-center justify-between gap-4 mt-2">
                 <div class="flex items-center gap-2">
                     <!-- Sync/Flash Button -->
-                    <button onclick="flashBank({{ bank.id }}, '{{ bank.name }}')" 
+                    <button onclick="flashBank({{ bank.id }}, {{ bank.name | tojson }}, {{ bank.synth_model | tojson }})" 
                             class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-500 font-roman uppercase text-[9px] tracking-wider transition-colors shadow active:scale-95 tactical-pink-button">
                         <img src="/static/icons/dinkie/revert.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
                         Sync to Synth

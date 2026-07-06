@@ -345,6 +345,29 @@
                         class="w-full flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-450 hover:text-white text-3xs font-pixel uppercase tracking-wider transition-colors tactical-button">
                         Re-scan Ports
                     </button>
+
+                    <div class="border-t border-zinc-850 pt-3 space-y-2.5">
+                        <h5 class="text-[7px] font-pixel text-zinc-500 uppercase tracking-wider">SysEx Flash Pacing</h5>
+                        <div>
+                            <label class="block text-[7px] font-pixel text-zinc-600 uppercase mb-1 tracking-wider">Inter-message delay</label>
+                            <select id="midi-delay-preset" onchange="saveMidiFlashSettings()"
+                                class="block w-full text-2xs bg-zinc-950 border border-zinc-850 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
+                                <option value="normal">Normal (60 ms)</option>
+                                <option value="slow">Slow (120 ms)</option>
+                                <option value="cakewalk">Cakewalk-style (~100 µs/byte)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[7px] font-pixel text-zinc-600 uppercase mb-1 tracking-wider">Synth pacing profile</label>
+                            <select id="midi-synth-profile" onchange="saveMidiFlashSettings()"
+                                class="block w-full text-2xs bg-zinc-950 border border-zinc-850 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
+                                <option value="auto">Auto (from bank)</option>
+                                <option value="dx7">Yamaha DX7</option>
+                                <option value="juno">Roland Juno</option>
+                                <option value="generic">Generic</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -383,6 +406,14 @@
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between pl-1.5 pr-1">
                         <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider">Vault Library</h3>
+                        {% if user.tier == 'premium' and banks %}
+                        <a href="/banks/export-all"
+                           title="Download entire vault as .zip"
+                           onclick="logToPostHog('vault_export_all', {})"
+                           class="text-[7px] font-pixel uppercase text-emerald-500 hover:text-emerald-400 tracking-wider transition-colors">
+                            Export all
+                        </a>
+                        {% endif %}
                     </div>
 
                     <!-- Soundbanks list populated here -->
@@ -630,6 +661,31 @@
         </div>
     </div>
 
+    <!-- Cheap-cable warning before first flash -->
+    <div id="midi-cable-warning"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
+        <div class="bg-[#0e0e11] border border-amber-500/30 rounded-xl p-5 w-96 max-w-[90vw] text-center shadow-2xl select-none">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-3.5">
+                <img src="/static/icons/dinkie/high-voltage-sign.svg" class="h-5 w-5" style="filter: invert(70%) sepia(80%) saturate(1000%) hue-rotate(350deg);" />
+            </div>
+            <h3 class="text-xs font-bold text-white mb-1">Check your MIDI cable</h3>
+            <p class="text-[10px] text-zinc-400 leading-relaxed">
+                Cheap USB-MIDI cables often drop SysEx. For reliable flashing, use a known-good adapter
+                (e.g. Roland UM-ONE, MOTU, or your synth's built-in USB port).
+            </p>
+            <div class="flex flex-col gap-2 mt-4">
+                <button id="midi-cable-warning-continue" type="button"
+                    class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-pixel uppercase tracking-wider rounded-lg transition-colors">
+                    Got it — flash anyway
+                </button>
+                <button onclick="dismissCableWarning(false)" type="button"
+                    class="w-full py-2 text-zinc-500 hover:text-zinc-300 text-[9px] font-pixel uppercase tracking-wider transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification Toast -->
     <div id="toast"
         class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 transition-all duration-300 ease-out bg-[#0e0e11] border border-zinc-900 rounded-xl px-4 py-3 flex items-center gap-3 shadow-2xl max-w-sm pointer-events-none select-none">
@@ -754,6 +810,7 @@
         // Init MIDI Access
         window.addEventListener('DOMContentLoaded', () => {
             initMobileDashboardNav();
+            loadMidiFlashSettings();
             if (!window.matchMedia('(max-width: 767px)').matches) {
                 initializeMidiAccess(false);
             }
@@ -950,6 +1007,100 @@
                 }
             }
             return count;
+        }
+
+        const MIDI_FLASH_SETTINGS_KEY = 'knob_midi_flash_settings';
+        const MIDI_CABLE_WARN_KEY = 'midi_cable_warn_seen';
+        let pendingFlashArgs = null;
+
+        const SYNTH_PROFILE_MULTIPLIERS = { dx7: 1.25, juno: 1.5, generic: 1.0 };
+
+        function loadMidiFlashSettings() {
+            try {
+                const raw = localStorage.getItem(MIDI_FLASH_SETTINGS_KEY);
+                if (raw) {
+                    const saved = JSON.parse(raw);
+                    const delayEl = document.getElementById('midi-delay-preset');
+                    const profileEl = document.getElementById('midi-synth-profile');
+                    if (delayEl && saved.delayPreset) delayEl.value = saved.delayPreset;
+                    if (profileEl && saved.synthProfile) profileEl.value = saved.synthProfile;
+                }
+            } catch (e) {
+                console.warn('Could not load MIDI flash settings', e);
+            }
+        }
+
+        function saveMidiFlashSettings() {
+            const delayEl = document.getElementById('midi-delay-preset');
+            const profileEl = document.getElementById('midi-synth-profile');
+            if (!delayEl || !profileEl) return;
+            localStorage.setItem(MIDI_FLASH_SETTINGS_KEY, JSON.stringify({
+                delayPreset: delayEl.value,
+                synthProfile: profileEl.value
+            }));
+        }
+
+        function resolveSynthProfile(synthModel) {
+            const profileEl = document.getElementById('midi-synth-profile');
+            const manual = profileEl ? profileEl.value : 'auto';
+            if (manual !== 'auto') return manual;
+            const model = (synthModel || '').toLowerCase();
+            if (model.includes('dx7') || model.includes('yamaha')) return 'dx7';
+            if (model.includes('juno') || model.includes('roland')) return 'juno';
+            return 'generic';
+        }
+
+        function getDelayPreset() {
+            const delayEl = document.getElementById('midi-delay-preset');
+            return delayEl ? delayEl.value : 'normal';
+        }
+
+        function getMessageDelayMs(preset, messageLength, synthModel) {
+            const profile = resolveSynthProfile(synthModel);
+            const multiplier = SYNTH_PROFILE_MULTIPLIERS[profile] || 1.0;
+            if (preset === 'cakewalk') {
+                return Math.max(10, Math.round(messageLength * 0.1 * multiplier));
+            }
+            const base = preset === 'slow' ? 120 : 60;
+            return Math.round(base * multiplier);
+        }
+
+        function formatByteCount(bytes) {
+            if (bytes >= 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+            return `${bytes} B`;
+        }
+
+        function dismissCableWarning(continueFlash) {
+            const modal = document.getElementById('midi-cable-warning');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+            if (continueFlash) {
+                localStorage.setItem(MIDI_CABLE_WARN_KEY, '1');
+                const args = pendingFlashArgs;
+                pendingFlashArgs = null;
+                if (args) runFlashBank(args.bankId, args.bankName, args.synthModel);
+            } else {
+                pendingFlashArgs = null;
+            }
+        }
+
+        function maybeShowCableWarning(bankId, bankName, synthModel) {
+            if (localStorage.getItem(MIDI_CABLE_WARN_KEY) === '1') {
+                runFlashBank(bankId, bankName, synthModel);
+                return;
+            }
+            pendingFlashArgs = { bankId, bankName, synthModel };
+            const modal = document.getElementById('midi-cable-warning');
+            if (!modal) {
+                runFlashBank(bankId, bankName, synthModel);
+                return;
+            }
+            modal.classList.remove('hidden-transition');
+            modal.classList.add('visible-transition');
+            const btn = document.getElementById('midi-cable-warning-continue');
+            if (btn) btn.onclick = () => dismissCableWarning(true);
         }
 
         // --- Status Overlay Utils ---
@@ -1291,16 +1442,19 @@
         }
 
         // --- Flashing SysEx to Synthesizer ---
-        function flashBank(bankId, bankName) {
-            logToPostHog('flash_bank_initiated', { bank_id: bankId, bank_name: bankName });
+        function flashBank(bankId, bankName, synthModel) {
+            logToPostHog('flash_bank_initiated', { bank_id: bankId, bank_name: bankName, synth_model: synthModel });
             if (!selectedOutput) {
                 showToast("Flash Aborted", "Select a MIDI Output port first.", "warning");
                 logMidiEvent("SYSTEM", "Flash aborted: No output MIDI port selected.");
                 logToPostHog('flash_bank_aborted_no_output', { bank_id: bankId, bank_name: bankName });
                 return;
             }
+            maybeShowCableWarning(bankId, bankName, synthModel || 'Generic Synth');
+        }
 
-            showStatusOverlay("Flashing Synth Memory", `Writing soundbank to physical memory...`, false);
+        function runFlashBank(bankId, bankName, synthModel) {
+            showStatusOverlay("Flashing Synth Memory", "Preparing SysEx transfer...", false, "0 / ?", "PREP");
             logMidiEvent("SYSTEM", `Retrieving bank '${bankName}' from storage...`);
 
             fetch(`/banks/${bankId}/hex`)
@@ -1310,28 +1464,20 @@
                 })
                 .then(data => {
                     const hex = data.sysex_hex;
-                    const byteLen = hex.length / 2;
-                    logMidiEvent("SYSTEM", `Retrieved ${byteLen} bytes of raw SysEx from database.`);
-                    logToPostHog('flash_data_fetched', { bank_id: bankId, bank_name: bankName, byte_count: byteLen });
-
-                    let progress = 0;
-                    const interval = setInterval(() => {
-                        progress += 10;
-                        if (progress > 100) progress = 100;
-
-                        const bytesSent = Math.floor((byteLen * progress) / 100);
-                        updateStatusOverlay(
-                            progress,
-                            `Streaming presets down MIDI port...`,
-                            `${bytesSent} B`,
-                            "WRITING"
-                        );
-
-                        if (progress >= 100) {
-                            clearInterval(interval);
-                            executeMidiFlash(hex, bankName);
-                        }
-                    }, 100);
+                    const bytes = new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+                    const msgCount = countSysexMessages(bytes);
+                    const byteLen = bytes.length;
+                    const summary = `Sending ${msgCount} SysEx message${msgCount === 1 ? '' : 's'}, ${formatByteCount(byteLen)}`;
+                    logMidiEvent("SYSTEM", `Retrieved ${summary} from database.`);
+                    logToPostHog('flash_data_fetched', {
+                        bank_id: bankId,
+                        bank_name: bankName,
+                        byte_count: byteLen,
+                        message_count: msgCount,
+                        synth_model: synthModel
+                    });
+                    updateStatusOverlay(0, summary, `0 / ${msgCount}`, "PREP");
+                    executeMidiFlash(hex, bankName, synthModel, msgCount, byteLen);
                 })
                 .catch(err => {
                     console.error(err);
@@ -1371,7 +1517,7 @@
             return messages;
         }
 
-        function executeMidiFlash(hexString, bankName) {
+        function executeMidiFlash(hexString, bankName, synthModel, knownMsgCount, knownByteLen) {
             try {
                 const bytes = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
                 const outputPort = midiAccess.outputs.get(selectedOutput);
@@ -1384,25 +1530,44 @@
                 }
 
                 const messages = splitSysexMessages(bytes);
-                logMidiEvent("SYSTEM", `Sending ${messages.length} SysEx message(s) (${bytes.length} bytes total) to '${outputPort.name}'...`);
+                const msgCount = knownMsgCount || messages.length;
+                const byteLen = knownByteLen || bytes.length;
+                const preset = getDelayPreset();
+                const profile = resolveSynthProfile(synthModel);
+                const summary = `Sending ${msgCount} SysEx message${msgCount === 1 ? '' : 's'}, ${formatByteCount(byteLen)}`;
 
-                const INTER_MESSAGE_DELAY = 60;
+                logMidiEvent("SYSTEM", `${summary} to '${outputPort.name}' (${preset} delay, ${profile} profile)...`);
+
                 let offset = 0;
+                const progressTimers = [];
 
                 messages.forEach((message, index) => {
                     outputPort.send(message, performance.now() + offset);
-                    offset += INTER_MESSAGE_DELAY;
+                    const fireAt = offset;
+                    progressTimers.push(setTimeout(() => {
+                        const pct = Math.round(((index + 1) / messages.length) * 100);
+                        updateStatusOverlay(
+                            pct,
+                            summary,
+                            `${index + 1} / ${messages.length}`,
+                            "WRITING"
+                        );
+                    }, fireAt));
                     logMidiEvent("OUT", Array.from(message.slice(0, 12)).map(b => b.toString(16).padStart(2, '0')).join(' ') + (message.length > 12 ? ' ... f7' : ''));
+                    offset += getMessageDelayMs(preset, message.length, synthModel);
                 });
 
                 setTimeout(() => {
+                    progressTimers.forEach(t => clearTimeout(t));
                     completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!");
                     showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
                     logToPostHog('flash_execution_success', {
                         bank_name: bankName,
                         output_port: selectedOutput,
-                        byte_count: bytes.length,
-                        message_count: messages.length
+                        byte_count: byteLen,
+                        message_count: msgCount,
+                        delay_preset: preset,
+                        synth_profile: profile
                     });
                 }, offset + 40);
 
@@ -1991,6 +2156,11 @@
                         style="filter: invert(0.6);" />
                     <span>DX7, Juno-106 & Korg M1 Support</span>
                 </div>
+                <div class="flex items-center gap-2">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5"
+                        style="filter: invert(0.6);" />
+                    <span>Export .syx backups anytime</span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2 mt-2">
@@ -2001,7 +2171,7 @@
                         style="image-rendering: pixelated; margin-top: -2px;" alt="" />39 Lifetime)
                 </a>
                 <span class="text-[8px] text-zinc-500 uppercase font-sans tracking-wide mt-1 block">
-                    One-time payment. Own it forever. No subscriptions.
+                    One-time payment. Own it forever. No subscriptions. Export your vault anytime.
                 </span>
                 <button onclick="closeUpgradeModal()"
                     class="w-full py-2 bg-transparent text-zinc-550 hover:text-zinc-400 text-[10px] font-pixel uppercase tracking-wider transition-colors mt-1">

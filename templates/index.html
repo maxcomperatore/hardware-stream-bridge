@@ -225,6 +225,14 @@
             border-left-color: #0c0c0e;
             box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.8);
         }
+
+        .font-pixel {
+            font-family: 'Silkscreen', monospace;
+        }
+
+        .font-lcd {
+            font-family: 'VT323', monospace;
+        }
     </style>
     {% include 'posthog.html' %}
 </head>
@@ -307,6 +315,20 @@
         <!-- Right: Connections Popover -->
         <div class="flex items-center justify-end gap-3 w-1/4 relative">
 
+            <!-- UI Scale Selector -->
+            <div class="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#141417] border border-zinc-800/80 rounded-lg select-none text-2xs font-semibold font-mono text-white">
+                <span class="text-[7.5px] font-pixel text-zinc-500 uppercase tracking-wider">Scale</span>
+                <select id="ui-scale-select" onchange="setUiScale(this.value)"
+                    class="bg-transparent text-white font-mono cursor-pointer focus:outline-none border-none outline-none p-0 text-2xs">
+                    <option value="0.9" class="bg-[#0e0e11]">90%</option>
+                    <option value="1.0" class="bg-[#0e0e11]" selected>100%</option>
+                    <option value="1.1" class="bg-[#0e0e11]">110%</option>
+                    <option value="1.2" class="bg-[#0e0e11]">120%</option>
+                    <option value="1.3" class="bg-[#0e0e11]">130%</option>
+                    <option value="1.4" class="bg-[#0e0e11]">140%</option>
+                </select>
+            </div>
+
             <!-- Devices Trigger -->
             <button onclick="toggleDevicePopover()" id="device-menu-btn"
                 class="flex items-center gap-1.5 px-3 py-1.5 bg-[#141417] border border-zinc-800/80 rounded-lg hover:bg-zinc-900 transition-all text-2xs text-white font-semibold font-mono tactical-button">
@@ -371,6 +393,7 @@
                                 <option value="auto">Auto (from bank)</option>
                                 <option value="dx7">Yamaha DX7</option>
                                 <option value="juno">Roland Juno</option>
+                                <option value="prophet">Sequential Prophet</option>
                                 <option value="generic">Generic</option>
                             </select>
                         </div>
@@ -441,6 +464,7 @@
                             <select id="pull-synth-model"
                                 class="block w-full text-3xs bg-zinc-950 border border-zinc-850 rounded py-1 px-1.5 text-zinc-400 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
                                 <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
+                                <option value="Sequential Prophet">Sequential Prophet (128v)</option>
                                 <option value="Roland Juno-106">Roland Juno-106 (Gen)</option>
                                 <option value="Korg M1">Korg M1 (Gen)</option>
                                 <option value="Roland Jupiter-6">Roland Jupiter-6 (Europa)</option>
@@ -471,13 +495,14 @@
                         <select name="synth_model"
                             class="block w-full text-3xs bg-zinc-950 border border-zinc-850 rounded py-1 px-1.5 text-zinc-400 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
                             <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
+                            <option value="Sequential Prophet">Sequential Prophet (128v)</option>
                             <option value="Roland Juno-106">Roland Juno-106</option>
                             <option value="Korg M1">Korg M1</option>
                             <option value="Roland Jupiter-6">Roland Jupiter-6 (Europa)</option>
                             <option value="Casio CZ-101">Casio CZ-101</option>
                             <option value="Generic Synth">Generic Synth</option>
                         </select>
-                        <input type="text" name="name" required placeholder="Import label..."
+                        <input type="text" name="name" id="upload-bank-name" required placeholder="Import label..."
                             class="block w-full text-3xs bg-zinc-950 border border-zinc-850 rounded py-1.5 px-2 text-zinc-300 placeholder-zinc-700 focus:outline-none focus:border-zinc-700 font-mono">
 
                         <div
@@ -774,11 +799,13 @@
 
         // --- MIDI Console Logging ---
         function logMidiEvent(direction, dataHex) {
-            // Track all system & MIDI bus events in PostHog
-            logToPostHog('midi_system_event', {
-                direction: direction,
-                message: dataHex
-            });
+            // Track only high-level SYSTEM/error messages in PostHog to prevent network bottlenecks
+            if (direction === 'SYSTEM') {
+                logToPostHog('midi_system_event', {
+                    direction: direction,
+                    message: dataHex
+                });
+            }
 
             const consoleEl = document.getElementById('midi-log-console');
             if (!consoleEl) return;
@@ -803,6 +830,12 @@
             }
 
             consoleEl.appendChild(logLine);
+
+            // Cap the console lines at 150 nodes to avoid memory bloat and layout thrashing
+            while (consoleEl.children.length > 150) {
+                consoleEl.removeChild(consoleEl.firstChild);
+            }
+
             consoleEl.scrollTop = consoleEl.scrollHeight;
         }
 
@@ -813,8 +846,50 @@
             }
         }
 
+        // --- UI Scaling Options ---
+        const UI_SCALE_KEY = 'knob_ui_scale';
+        function loadUiScale() {
+            try {
+                const scale = localStorage.getItem(UI_SCALE_KEY);
+                if (scale) {
+                    const select = document.getElementById('ui-scale-select');
+                    if (select) select.value = scale;
+                    applyUiScale(scale);
+                }
+            } catch (e) {
+                console.warn('Could not load UI scale', e);
+            }
+        }
+        function setUiScale(scale) {
+            try {
+                localStorage.setItem(UI_SCALE_KEY, scale);
+                applyUiScale(scale);
+                logToPostHog('ui_scale_changed', { scale: scale });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        function applyUiScale(scale) {
+            const scaleVal = parseFloat(scale);
+            if (!isNaN(scaleVal)) {
+                // Apply scaling only on desktop screens
+                if (!window.matchMedia('(max-width: 767px)').matches) {
+                    document.body.style.zoom = scaleVal;
+                } else {
+                    document.body.style.zoom = 1.0;
+                }
+            }
+        }
+        window.addEventListener('resize', () => {
+            const select = document.getElementById('ui-scale-select');
+            if (select) {
+                applyUiScale(select.value);
+            }
+        });
+
         // Init MIDI Access
         window.addEventListener('DOMContentLoaded', () => {
+            loadUiScale();
             initMobileDashboardNav();
             loadMidiFlashSettings();
             syncVaultExportLink();
@@ -827,7 +902,13 @@
             const fileLabel = document.getElementById('file-label');
             fileInput.addEventListener('change', () => {
                 if (fileInput.files.length > 0) {
-                    fileLabel.textContent = fileInput.files[0].name;
+                    const filename = fileInput.files[0].name;
+                    fileLabel.textContent = filename;
+                    const nameInput = document.getElementById('upload-bank-name');
+                    if (nameInput) {
+                        const cleanName = filename.replace(/\.[^/.]+$/, "");
+                        nameInput.value = cleanName.replace(/[_-]/g, " ");
+                    }
                 }
             });
         });
@@ -955,7 +1036,7 @@
                     const opt = document.createElement('option');
                     opt.value = input.id;
                     const lowerName = (input.name || "").toLowerCase();
-                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential'].some(kw => lowerName.includes(kw));
+                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential', 'usb', 'midi', 'interface', 'port', 'link', 'um-one', 'mio', 'scarlett', 'focusrite', 'presonus', 'motu', 'audio', 'key', 'control', 'instr', 'device', 'cable'].some(kw => lowerName.includes(kw));
                     const suffix = isSupported ? " (SUPPORTED!)" : " (unsupported)";
                     opt.textContent = `${input.name || "MIDI Input"}${suffix} (${input.manufacturer || 'Generic'})`;
                     inputSelect.appendChild(opt);
@@ -976,7 +1057,7 @@
                     const opt = document.createElement('option');
                     opt.value = output.id;
                     const lowerName = (output.name || "").toLowerCase();
-                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential'].some(kw => lowerName.includes(kw));
+                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential', 'usb', 'midi', 'interface', 'port', 'link', 'um-one', 'mio', 'scarlett', 'focusrite', 'presonus', 'motu', 'audio', 'key', 'control', 'instr', 'device', 'cable'].some(kw => lowerName.includes(kw));
                     const suffix = isSupported ? " (SUPPORTED!)" : " (unsupported)";
                     opt.textContent = `${output.name || "MIDI Output"}${suffix} (${output.manufacturer || 'Generic'})`;
                     outputSelect.appendChild(opt);
@@ -1020,9 +1101,10 @@
         const MIDI_CABLE_WARN_KEY = 'midi_cable_warn_seen';
         let pendingFlashArgs = null;
 
-        const SYNTH_PROFILE_MULTIPLIERS = { dx7: 1.25, juno: 1.5, generic: 1.0 };
+        const SYNTH_PROFILE_MULTIPLIERS = { dx7: 1.25, juno: 1.5, prophet: 2.0, generic: 1.0 };
         const SYNTH_MODEL_PROFILES = {
             'yamaha dx7': 'dx7',
+            'sequential prophet': 'prophet',
             'roland juno-106': 'juno',
             'roland jupiter-6': 'generic',
             'korg m1': 'generic',
@@ -1064,6 +1146,7 @@
             if (SYNTH_MODEL_PROFILES[model]) return SYNTH_MODEL_PROFILES[model];
             if (model.includes('juno')) return 'juno';
             if (model.includes('dx7') || model.includes('dx-7') || model.includes('dx9')) return 'dx7';
+            if (model.includes('prophet') || model.includes('sequential')) return 'prophet';
             return 'generic';
         }
 
@@ -1303,14 +1386,21 @@
                 dumpRequestCommand = new Uint8Array([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]); // Universal Identity Request
             }
 
-            if (synthModel === "Roland Juno-106") {
-                updateStatusOverlay(10, "Press WRITE on the Juno-106 to dump all 128 patches...", "0 B", "AWAITING SYNTH");
-                logMidiEvent("SYSTEM", "Juno-106 requires manual trigger. Press WRITE on the keyboard to dump SysEx.");
+            if (synthModel === "Roland Juno-106" || synthModel === "Sequential Prophet") {
+                const isProphet = synthModel === "Sequential Prophet";
+                const instructions = isProphet
+                    ? "Initiate Bank Dump in the Prophet's Global menu (e.g. Dump Bank)..."
+                    : "Press WRITE on the Juno-106 to dump all 128 patches...";
+                updateStatusOverlay(10, instructions, "0 B", "AWAITING SYNTH");
+                logMidiEvent("SYSTEM", `${synthModel} requires manual trigger. ${instructions}`);
                 dumpTimeout = setTimeout(() => {
                     if (isIngesting && ingestedBytes.length === 0) {
                         stopMidiIngestion(false);
                         closeStatusOverlay();
-                        showToast("No response from synth", "Press WRITE on the Juno-106 while this dialog is open.", "warning");
+                        const toastMsg = isProphet
+                            ? "Verify MIDI Cables and that you initiated the dump on the synth."
+                            : "Press WRITE on the Juno-106 while this dialog is open.";
+                        showToast("No response from synth", toastMsg, "warning");
                         logToPostHog('midi_dump_timeout', {
                             synth_model: synthModel,
                             bank_name: bankName,
@@ -1349,7 +1439,12 @@
             logMidiEvent("IN", hex.length > 50 ? hex.slice(0, 47) + "..." : hex);
 
             for (let i = 0; i < dataBytes.length; i++) {
-                ingestedBytes.push(dataBytes[i]);
+                const b = dataBytes[i];
+                // Filter out real-time MIDI messages (0xF8 - 0xFF) like MIDI clock/active sensing
+                // to prevent SysEx buffer corruption
+                if (b < 0xF8) {
+                    ingestedBytes.push(b);
+                }
             }
 
             if (dumpTimeout) {
@@ -1362,30 +1457,40 @@
             }
 
             const isJuno = currentIngestSynthModel === "Roland Juno-106";
-            const expectedSize = isJuno ? 2944 : 4104;
+            const isProphet = currentIngestSynthModel === "Sequential Prophet";
             const msgCount = countSysexMessages(ingestedBytes);
-            const progress = isJuno
-                ? Math.min(Math.floor((msgCount / 128) * 100), 99)
-                : Math.min(Math.floor((ingestedBytes.length / expectedSize) * 100), 99);
 
-            updateStatusOverlay(
-                progress,
-                isJuno ? `Receiving patches... (${msgCount}/128)` : `Receiving presets stream...`,
-                `${ingestedBytes.length} Bytes`,
-                "CAPTURING"
-            );
+            if (isJuno || isProphet) {
+                const targetMsgCount = 128;
+                const progress = Math.min(Math.floor((msgCount / targetMsgCount) * 100), 99);
+                updateStatusOverlay(
+                    progress,
+                    isProphet ? `Receiving Prophet patches... (${msgCount}/128)` : `Receiving Juno patches... (${msgCount}/128)`,
+                    `${ingestedBytes.length} Bytes`,
+                    "CAPTURING"
+                );
 
-            if (isJuno) {
-                if (msgCount >= 128) {
+                if (msgCount >= targetMsgCount) {
                     stopMidiIngestion(true);
                     return;
                 }
+                
+                // Generous 4-second timeout to allow for slower synthesizers serialization gaps
                 ingestIdleTimeout = setTimeout(() => {
                     if (isIngesting && ingestedBytes.length > 0) {
                         stopMidiIngestion(true);
                     }
-                }, 3000);
+                }, 4000);
             } else {
+                const expectedSize = 4104;
+                const progress = Math.min(Math.floor((ingestedBytes.length / expectedSize) * 100), 99);
+                updateStatusOverlay(
+                    progress,
+                    `Receiving presets stream...`,
+                    `${ingestedBytes.length} Bytes`,
+                    "CAPTURING"
+                );
+
                 const lastByte = ingestedBytes[ingestedBytes.length - 1];
                 if (lastByte === 0xF7 && ingestedBytes.length >= expectedSize - 100) {
                     stopMidiIngestion(true);
@@ -1504,7 +1609,11 @@
             fetch(`/banks/${bankId}/hex`)
                 .then(res => {
                     if (!res.ok) throw new Error("Failed to fetch bank");
-                    return res.json();
+                    return res.text();
+                })
+                .then(text => {
+                    if (!text) throw new Error("Empty response from bank server");
+                    return JSON.parse(text);
                 })
                 .then(data => {
                     const hex = data.sysex_hex;

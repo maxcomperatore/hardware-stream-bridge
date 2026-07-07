@@ -570,6 +570,14 @@
             transition: opacity 0.12s linear;
             will-change: opacity;
         }
+
+        .font-pixel {
+            font-family: 'Silkscreen', monospace;
+        }
+
+        .font-lcd {
+            font-family: 'VT323', monospace;
+        }
     </style>
     {% include 'posthog.html' %}
     <!-- JSON-LD Structured Data for SEO -->
@@ -2122,12 +2130,14 @@
                 applyRegionalPricingDisplay(initialPricingRegion);
             }
 
-            // Call the secure same-origin server-side proxy to get geoip details
             const fetchGeoData = () => {
                 return fetch('/api/geoip')
                     .then(res => {
                         if (!res.ok) throw new Error();
-                        return res.json();
+                        return res.text();
+                    })
+                    .then(text => {
+                        return text ? JSON.parse(text) : {};
                     });
             };
 
@@ -2389,7 +2399,7 @@
                             } else {
                                 const devName = inputs[0]?.name || outputs[0]?.name || "MIDI Port";
                                 const devNameLower = (devName || "").toLowerCase();
-                                const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential'].some(kw => devNameLower.includes(kw));
+                                const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential', 'usb', 'midi', 'interface', 'port', 'link', 'um-one', 'mio', 'scarlett', 'focusrite', 'presonus', 'motu', 'audio', 'key', 'control', 'instr', 'device', 'cable'].some(kw => devNameLower.includes(kw));
                                 if (isSupported) {
                                     statusText.innerText = `Connected: ${devName} (SUPPORTED!)`;
                                     statusText.className = "text-xs font-mono text-left truncate w-full select-none font-semibold";

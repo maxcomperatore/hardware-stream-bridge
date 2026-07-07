@@ -189,7 +189,7 @@ def parse_generic_sysex(data: bytes) -> list[str]:
     Scans SysEx data for blocks of printable ASCII text.
     Many synths store patch names in ASCII sequences.
     """
-    # Fallback to DX7/M1/Juno/Jupiter/CZ parser if it looks like one of them
+    # Fallback to DX7/M1/Juno/Jupiter/CZ/Prophet parser if it looks like one of them
     dx7_patches = parse_dx7_sysex(data)
     if dx7_patches:
         return dx7_patches
@@ -210,6 +210,24 @@ def parse_generic_sysex(data: bytes) -> list[str]:
     if cz_patches:
         return cz_patches
 
+    prophet_patches = parse_prophet_sysex(data)
+    # Check if we got any real Prophet names out of it, or if it has a high-quality Prophet-like layout
+    if len(prophet_patches) >= 8 and any(not p.startswith("Prophet Patch") for p in prophet_patches):
+        return prophet_patches
+
+    # Count individual SysEx messages in the data
+    messages_count = 0
+    idx = 0
+    while True:
+        start = data.find(b'\xF0', idx)
+        if start == -1:
+            break
+        end = data.find(b'\xF7', start)
+        if end == -1:
+            break
+        messages_count += 1
+        idx = end + 1
+
     # Find printable ASCII segments of length 6 to 16
     patches = []
     temp_name = []
@@ -227,7 +245,10 @@ def parse_generic_sysex(data: bytes) -> list[str]:
     if 8 <= len(patches) <= 128:
         return patches
         
-    return [f"Patch {i+1:02d}" for i in range(32)]
+    # Default fallback to 128 if messages count matches common formats, otherwise fallback to 32 or message count
+    fallback_count = messages_count if messages_count >= 8 else 32
+    return [f"Patch {i+1:02d}" for i in range(fallback_count)]
+
 
 def parse_jupiter6_sysex(data: bytes) -> list[str]:
     """
@@ -353,3 +374,72 @@ def analyze_cz101_patch(p: bytes, index: int) -> str:
     bank = "INT" if index < 16 else "CRT"
     num = (index % 16) + 1
     return f"{bank}-{num:02d} {name}"
+
+def parse_prophet_sysex(data: bytes) -> list[str]:
+    """
+    Parses Sequential Prophet SysEx data.
+    Sequential/DSI dumps can contain a single program or a bank of programs.
+    Typically, each program is wrapped in F0 ... F7.
+    """
+    # Split the SysEx data into individual messages
+    messages = []
+    idx = 0
+    while True:
+        start = data.find(b'\xF0', idx)
+        if start == -1:
+            break
+        end = data.find(b'\xF7', start)
+        if end == -1:
+            break
+        messages.append(data[start:end+1])
+        idx = end + 1
+
+    patches = []
+    
+    # If we found multiple messages, parse names from each
+    if len(messages) > 1:
+        for i, msg in enumerate(messages):
+            # Scan this message for printable ASCII segments
+            temp_name = []
+            msg_names = []
+            for b in msg:
+                if 32 <= b <= 126:
+                    temp_name.append(chr(b))
+                else:
+                    if len(temp_name) >= 4 and len(temp_name) <= 16:
+                        name = "".join(temp_name).strip()
+                        # Allow letters, numbers, spaces, and basic symbols
+                        if re.match(r'^[A-Za-z0-9\s\-\.\_\+\*\/\[\]\!\#]{3,}$', name):
+                            # Exclude words that are likely MIDI command sequences or hardware identifiers
+                            if not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex"]):
+                                msg_names.append(name)
+                    temp_name = []
+            
+            # Use the last valid ASCII segment as the patch name, or default if none found
+            patch_name = msg_names[-1] if msg_names else f"Prophet Patch {i+1:03d}"
+            patches.append(patch_name)
+    else:
+        # If it's one single bulk block, we can look for printable strings in the entire block
+        temp_name = []
+        for b in data:
+            if 32 <= b <= 126:
+                temp_name.append(chr(b))
+            else:
+                if len(temp_name) >= 6 and len(temp_name) <= 16:
+                    name = "".join(temp_name).strip()
+                    if re.match(r'^[A-Za-z0-9\s\-\.\_\+\*\/\[\]\!\#]{4,}$', name):
+                        if not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex"]):
+                            patches.append(name)
+                temp_name = []
+                
+    # If the number of parsed patches is not reasonable (e.g. 0 or very small),
+    # default to 128 patches (or the message count if msg count is reasonable like 100 or 128).
+    expected_count = len(messages) if 10 <= len(messages) <= 128 else 128
+    if len(patches) < expected_count:
+        # If some patches were named, fill in the rest
+        while len(patches) < expected_count:
+            patches.append(f"Prophet Patch {len(patches)+1:03d}")
+            
+    # Crop to expected count to avoid overflowing
+    return patches[:expected_count]
+

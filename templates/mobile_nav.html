@@ -58,7 +58,8 @@
         }
 
         fetch('/api/geoip')
-            .then((res) => (res.ok ? res.json() : null))
+            .then((res) => (res.ok ? res.text() : ''))
+            .then((text) => (text ? JSON.parse(text) : null))
             .then((data) => {
                 if (data && data.pricing_region) setMobilePricingIcon(data.pricing_region);
             })

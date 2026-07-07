@@ -1640,6 +1640,7 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
         {"email": email},
         distinct_id=email
     )
+    return response
 @app.get("/api/test-welcome-email")
 async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
     # Generate the personalized first name

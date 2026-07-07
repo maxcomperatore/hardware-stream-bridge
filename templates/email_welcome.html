@@ -4,107 +4,114 @@
     <meta charset="UTF-8">
     <title>Welcome to knob.monster</title>
 </head>
-<body style="background-color: #000000; color: #d4d4d8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 40px 20px; -webkit-font-smoothing: antialiased;">
-    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #09090b; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; border-collapse: separate;">
-        <!-- Header -->
+<body style="background-color: #000000; color: #d4d4d8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased;">
+    <!-- Outer wrapper table to prevent horizontal overflow and provide responsive padding -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #000000; table-layout: fixed;">
         <tr>
-            <td style="padding: 32px 32px 24px 32px; border-bottom: 1px solid #1f1f23; text-align: center;">
-                <table align="center" border="0" cellpadding="0" cellspacing="0">
+            <td align="center" style="padding: 40px 16px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #09090b; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; border-collapse: separate;">
+                    <!-- Header -->
                     <tr>
-                        <td style="vertical-align: middle; padding-right: 10px;">
-                            <img src="https://knob.monster/static/logo.png" width="32" height="32" style="display: block; image-rendering: pixelated; border: none;" alt="knob.monster Logo">
+                        <td style="padding: 32px 32px 24px 32px; border-bottom: 1px solid #1f1f23; text-align: center;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="vertical-align: middle; padding-right: 10px;">
+                                        <img src="https://knob.monster/static/logo.png" width="32" height="32" style="display: block; image-rendering: pixelated; border: none;" alt="knob.monster Logo">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <span style="font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 18px; color: #ffffff; letter-spacing: 2px; text-transform: uppercase;">knob.monster</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
-                        <td style="vertical-align: middle;">
-                            <span style="font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 18px; color: #ffffff; letter-spacing: 2px; text-transform: uppercase;">knob.monster</span>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 32px 32px 24px 32px;">
+                            <!-- Avatar Section -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+                                <tr>
+                                    <td style="padding-right: 16px; vertical-align: middle;">
+                                        <img src="{{ avatar_url }}" width="64" height="64" style="display: block; border-radius: 32px; border: 2px solid #27272a; background-color: #18181b; image-rendering: pixelated;" alt="Your Avatar">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <h1 style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0; padding: 0;">Hi {{ first_name }},</h1>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Intro -->
+                            <p style="font-size: 15px; line-height: 24px; margin-top: 0; margin-bottom: 16px; color: #d4d4d8;">
+                                We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, or desktop installers to do its job well. knob.monster already comes with the features you often have to install as add-ons, running securely right inside your web browser.
+                            </p>
+                            <p style="font-size: 15px; line-height: 24px; margin-top: 0; margin-bottom: 32px; color: #a1a1aa;">
+                                Whether you want to back up a custom patch collection, restore a factory bank, or keep your vintage synthesizer safe from internal battery failure, your new vault is ready.
+                            </p>
+
+                            <!-- Steps -->
+                            <h3 style="color: #ffffff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; margin-bottom: 16px; font-family: 'Courier New', Courier, monospace;">Getting Started:</h3>
+                            
+                            <!-- Step 1 -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 16px; width: 100%;">
+                                <tr>
+                                    <td style="width: 24px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: bold; color: #10b981;">01</td>
+                                    <td style="padding-left: 12px; vertical-align: top;">
+                                        <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Connect your MIDI interface</h4>
+                                        <p style="color: #a1a1aa; font-size: 13px; line-height: 20px; margin: 0;">Plug in your synthesizer using a standard, class-compliant USB-MIDI cable.</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Step 2 -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 16px; width: 100%;">
+                                <tr>
+                                    <td style="width: 24px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: bold; color: #10b981;">02</td>
+                                    <td style="padding-left: 12px; vertical-align: top;">
+                                        <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Initiate the bulk dump</h4>
+                                        <p style="color: #a1a1aa; font-size: 13px; line-height: 20px; margin: 0;">Go to your dashboard, click 'Receive SysEx', and press SEND on your synth's front panel.</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Step 3 -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 32px; width: 100%;">
+                                <tr>
+                                    <td style="width: 24px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: bold; color: #10b981;">03</td>
+                                    <td style="padding-left: 12px; vertical-align: top;">
+                                        <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Organize and Protect</h4>
+                                        <p style="color: #a1a1aa; font-size: 13px; line-height: 20px; margin: 0;">Name, edit, and organize your presets in the cloud. They are archived and ready to reload anytime.</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- CTA -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 32px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://knob.monster/dashboard" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 28px; border-radius: 28px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: background-color 0.2s;">Open Your Vault</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Sign off -->
+                            <p style="font-size: 14px; line-height: 22px; margin-top: 0; margin-bottom: 4px; color: #d4d4d8;">Keep the analog alive,</p>
+                            <p style="font-size: 14px; line-height: 22px; margin-top: 0; margin-bottom: 0; font-weight: bold; color: #ffffff;">knob.monster support</p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 24px 32px 32px 32px; background-color: #000000; border-top: 1px solid #1f1f23; text-align: center;">
+                            <p style="font-size: 11px; line-height: 18px; color: #71717a; margin: 0 0 8px 0;">
+                                If you have any questions or ran into issues setting up your MIDI connection, simply reply directly to this email. We're here to help.
+                            </p>
+                            <p style="font-size: 11px; line-height: 18px; color: #3f3f46; margin: 0;">
+                                &copy; 2026 knob.monster. All rights reserved.
+                            </p>
                         </td>
                     </tr>
                 </table>
-            </td>
-        </tr>
-
-        <!-- Main Content -->
-        <tr>
-            <td style="padding: 32px 32px 24px 32px;">
-                <!-- Avatar Section -->
-                <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
-                    <tr>
-                        <td style="padding-right: 16px; vertical-align: middle;">
-                            <img src="{{ avatar_url }}" width="64" height="64" style="display: block; border-radius: 32px; border: 2px solid #27272a; background-color: #18181b; image-rendering: pixelated;" alt="Your Avatar">
-                        </td>
-                        <td style="vertical-align: middle;">
-                            <h1 style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0; padding: 0;">Hi {{ first_name }},</h1>
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Intro -->
-                <p style="font-size: 15px; line-height: 24px; margin-top: 0; margin-bottom: 16px; color: #d4d4d8;">
-                    We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, or desktop installers to do its job well. knob.monster already comes with the features you often have to install as add-ons, running securely right inside your web browser.
-                </p>
-                <p style="font-size: 15px; line-height: 24px; margin-top: 0; margin-bottom: 32px; color: #a1a1aa;">
-                    Whether you want to back up a custom patch collection, restore a factory bank, or keep your vintage synthesizer safe from internal battery failure, your new vault is ready.
-                </p>
-
-                <!-- Steps -->
-                <h3 style="color: #ffffff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; margin-bottom: 16px; font-family: 'Courier New', Courier, monospace;">Getting Started:</h3>
-                
-                <!-- Step 1 -->
-                <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 16px; width: 100%;">
-                    <tr>
-                        <td style="width: 24px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: bold; color: #10b981;">01</td>
-                        <td style="padding-left: 12px; vertical-align: top;">
-                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Connect your MIDI interface</h4>
-                            <p style="color: #a1a1aa; font-size: 13px; line-height: 20px; margin: 0;">Plug in your synthesizer using a standard, class-compliant USB-MIDI cable.</p>
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Step 2 -->
-                <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 16px; width: 100%;">
-                    <tr>
-                        <td style="width: 24px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: bold; color: #10b981;">02</td>
-                        <td style="padding-left: 12px; vertical-align: top;">
-                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Initiate the bulk dump</h4>
-                            <p style="color: #a1a1aa; font-size: 13px; line-height: 20px; margin: 0;">Go to your dashboard, click 'Receive SysEx', and press SEND on your synth's front panel.</p>
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Step 3 -->
-                <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 32px; width: 100%;">
-                    <tr>
-                        <td style="width: 24px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: bold; color: #10b981;">03</td>
-                        <td style="padding-left: 12px; vertical-align: top;">
-                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Organize and Protect</h4>
-                            <p style="color: #a1a1aa; font-size: 13px; line-height: 20px; margin: 0;">Name, edit, and organize your presets in the cloud. They are archived and ready to reload anytime.</p>
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- CTA -->
-                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 32px;">
-                    <tr>
-                        <td align="center">
-                            <a href="https://knob.monster/dashboard" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 28px; border-radius: 28px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: background-color 0.2s;">Open Your Vault</a>
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Sign off -->
-                <p style="font-size: 14px; line-height: 22px; margin-top: 0; margin-bottom: 4px; color: #d4d4d8;">Keep the analog alive,</p>
-                <p style="font-size: 14px; line-height: 22px; margin-top: 0; margin-bottom: 0; font-weight: bold; color: #ffffff;">knob.monster support</p>
-            </td>
-        </tr>
-
-        <!-- Footer -->
-        <tr>
-            <td style="padding: 24px 32px 32px 32px; background-color: #000000; border-top: 1px solid #1f1f23; text-align: center;">
-                <p style="font-size: 11px; line-height: 18px; color: #71717a; margin: 0 0 8px 0;">
-                    If you have any questions or ran into issues setting up your MIDI connection, simply reply directly to this email. We're here to help.
-                </p>
-                <p style="font-size: 11px; line-height: 18px; color: #3f3f46; margin: 0;">
-                    &copy; 2026 knob.monster. All rights reserved.
-                </p>
             </td>
         </tr>
     </table>

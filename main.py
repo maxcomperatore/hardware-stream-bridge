@@ -1638,7 +1638,52 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
         {"email": email},
         distinct_id=email
     )
-    return response
+@app.get("/api/test-welcome-email")
+async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
+    # Generate the personalized first name
+    name_part = email.split('@')[0]
+    first_name = re.split(r'[\._-]', name_part)[0]
+    first_name_cap = first_name.capitalize() if first_name else "synth head"
+
+    # Generate avatar URL using 32-bit signed hash matching JS
+    idx = calculate_avatar_idx(email)
+    avatar_url = f"{SITE_BASE}/static/avatars/Simple%20colors/Icon{idx}.png"
+
+    # Render HTML using templates
+    template = templates.get_template("email_welcome.html")
+    html_content = template.render({
+        "first_name": first_name_cap,
+        "avatar_url": avatar_url,
+    })
+
+    if send == "1":
+        # Plain text fallback body
+        plain_body = (
+            f"Hi {first_name_cap},\n\n"
+            "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
+            "or desktop installers to do its job well. knob.monster already comes with the features you "
+            "often have to install as add-ons, running securely right inside your web browser.\n\n"
+            "Open your vault: https://knob.monster/dashboard\n\n"
+            "Keep the analog alive,\n"
+            "knob.monster support"
+        )
+        ok, err = send_email_via_resend(
+            to=email,
+            subject="welcome to knob.monster",
+            body=plain_body,
+            html=html_content,
+            reply_to="halfradiationllc@gmail.com",
+        )
+        return {
+            "status": "sent" if ok else "failed",
+            "error": err,
+            "resolved_avatar": avatar_url,
+            "resolved_name": first_name_cap,
+            "email": email,
+        }
+
+    return HTMLResponse(content=html_content)
+
 
 @app.get("/signup", response_class=HTMLResponse)
 async def signup_page(request: Request, error: str = None, plan: str = None):
@@ -3363,6 +3408,15 @@ p.s. if you ran into issues setting up your midi connection or parsing your syse
 """
                     
 
+def calculate_avatar_idx(email: str) -> int:
+    h = 5381
+    for char in str(email):
+        h = ((h << 5) + h + ord(char)) & 0xFFFFFFFF
+    if h >= 0x80000000:
+        h -= 0x100000000
+    return (abs(h) % 48) + 1
+
+
 def send_welcome_email_task(email: str):
     try:
         # Generate the personalized first name
@@ -3370,11 +3424,8 @@ def send_welcome_email_task(email: str):
         first_name = re.split(r'[\._-]', name_part)[0]
         first_name_cap = first_name.capitalize() if first_name else "synth head"
 
-        # Generate avatar URL
-        hash_val = 5381
-        for ch in str(email):
-            hash_val = ((hash_val << 5) + hash_val) + ord(ch)
-        idx = (abs(hash_val) % 48) + 1
+        # Generate avatar URL using 32-bit signed hash matching JS
+        idx = calculate_avatar_idx(email)
         avatar_url = f"{SITE_BASE}/static/avatars/Simple%20colors/Icon{idx}.png"
 
         # Render HTML using templates

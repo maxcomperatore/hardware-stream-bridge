@@ -1349,12 +1349,6 @@
             </nav>
 
             <div class="flex items-center gap-4">
-                {% if user %}
-                <a href="/dashboard"
-                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Open Vault
-                </a>
-                {% else %}
                 <a href="/login"
                     class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
                     Sign In
@@ -1363,7 +1357,6 @@
                     class="btn-lapis px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider active:scale-95 flex items-center">
                     Sign Up
                 </a>
-                {% endif %}
             </div>
         </div>
     </header>
@@ -1934,7 +1927,7 @@
                             </ul>
                         </div>
                     <div class="mt-8 text-center space-y-2">
-                        <a href="{% if user %}/checkout?plan=personal{% else %}/signup?plan=personal{% endif %}"
+                        <a href="/signup?plan=personal"
                             class="btn-lapis pricing-cta-personal w-full flex items-center justify-center gap-1.5 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
                             Back Up My Patches Forever
                         </a>
@@ -2003,7 +1996,7 @@
                         </ul>
                     </div>
                     <div class="mt-8 text-center space-y-2">
-                        <a href="{% if user %}/checkout?plan=studio{% else %}/signup?plan=studio{% endif %}"
+                        <a href="/signup?plan=studio"
                             class="btn-lapis pricing-cta-studio w-full flex items-center justify-center gap-1.5 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
                             License My Shop
                         </a>
@@ -2031,17 +2024,7 @@
                     </div>
         </section>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const isLoggedIn = {{ 'true' if user else 'false' }};
-                document.querySelectorAll('.pricing-cta-personal').forEach((btn) => {
-                    btn.href = isLoggedIn ? '/checkout?plan=personal' : '/signup?plan=personal';
-                });
-                document.querySelectorAll('.pricing-cta-studio').forEach((btn) => {
-                    btn.href = isLoggedIn ? '/checkout?plan=studio' : '/signup?plan=studio';
-                });
-            });
-        </script>
+
 
         <!-- FAQ Chat (accordion hidden; JSON-LD retained for SEO) -->
         {% include "partials/faq_chat.html" %}

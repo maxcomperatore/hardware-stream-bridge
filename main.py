@@ -1304,6 +1304,8 @@ SEO_DATA = {
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     user = get_current_user(request)
+    if user:
+        return RedirectResponse(url="/dashboard", status_code=303)
     user_count = 6
     total_patches = 1000
     try:

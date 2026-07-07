@@ -919,6 +919,13 @@
     {% include "footer.html" %}
 
     <script>
+        const RECT_FLAGS_MAP = {{ (rect_flags_map or {}) | tojson | safe }};
+        function getFlagUrl(code) {
+            const codeUpper = (code || '').toUpperCase();
+            const filename = RECT_FLAGS_MAP[codeUpper];
+            if (filename) return `/static/icons/flags/Rect/${filename}`;
+            return `/static/icons/flags/Rect/${codeUpper}_rect.png`;
+        }
         // Interactive Filter Script
         function filterOS(os) {
             const cards = document.querySelectorAll('#cards-container > div');
@@ -979,7 +986,7 @@
 
                     const tag = document.getElementById('visitor-geo-tag');
                     if (tag) {
-                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="/static/icons/flags/${code}.svg" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
+                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="${getFlagUrl(code)}" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
                     }
                 }
             })

@@ -130,10 +130,10 @@ FAQ_ENTRIES = [
         "aliases": ["supported synths", "what synths work", "compatible synthesizers"],
         "answer": (
             "We feature dedicated name-decoding parsers for the Yamaha DX7 (and compatible synths like "
-            "DX7II, TX7, TX81Z), Roland Juno-106, Korg M1, Roland Jupiter-6 (Europa-modded), and the "
-            "Casio CZ series. We also feature a universal Generic Scan that works with almost any vintage "
-            "synthesizer by scanning raw SysEx bulk dumps for readable ASCII character arrays to extract "
-            "patch names automatically."
+            "DX7II, TX7, TX81Z), Roland Juno-106, Korg M1, Roland Jupiter-6 (Europa-modded), "
+            "Sequential Prophet, and the Casio CZ series. We also feature a universal Generic Scan "
+            "that works with almost any vintage synthesizer by scanning raw SysEx bulk dumps for "
+            "readable ASCII character arrays to extract patch names automatically."
         ),
     },
     {

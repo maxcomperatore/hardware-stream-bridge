@@ -48,8 +48,23 @@ def stripe_cover_icon_names() -> list[str]:
     return list(STRIPE_COVER_ICONS)
 
 
+_RECT_DIR = Path(__file__).resolve().parent / "static" / "icons" / "flags" / "Rect"
+_RECT_FLAGS_MAP: dict[str, str] = {}
+if _RECT_DIR.is_dir():
+    for p in _RECT_DIR.glob("*_rect.png"):
+        parts = p.name.split("_", 1)
+        if len(parts) > 1:
+            code = parts[0].upper()
+            _RECT_FLAGS_MAP[code] = p.name
+
+
 def flag_icon(code: str) -> str:
-    return f"/static/icons/flags/{code.strip().lower()}.svg"
+    code_upper = code.strip().upper()
+    filename = _RECT_FLAGS_MAP.get(code_upper)
+    if filename:
+        return f"/static/icons/flags/Rect/{filename}"
+    # Fallback if map entry not found
+    return f"/static/icons/flags/Rect/{code_upper}_rect.png"
 
 
 def brand_icon(name: str) -> str:

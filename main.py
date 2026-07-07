@@ -31,6 +31,7 @@ from icon_paths import (
     flag_icon,
     stripe_cover_icon,
     stripe_cover_icon_names,
+    _RECT_FLAGS_MAP,
 )
 from urllib.parse import quote, urlparse
 
@@ -507,6 +508,7 @@ templates.env.globals["stripe_cover_icon"] = stripe_cover_icon
 templates.env.globals["stripe_cover_icon_names"] = stripe_cover_icon_names
 templates.env.globals["flag_icon"] = flag_icon
 templates.env.globals["brand_icon"] = brand_icon
+templates.env.globals["rect_flags_map"] = _RECT_FLAGS_MAP
 templates.env.globals["posthog_api_key"] = settings.POSTHOG_API_KEY or ""
 templates.env.globals["posthog_api_host"] = settings.POSTHOG_HOST
 

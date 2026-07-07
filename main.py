@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException, Response
+from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException, Response, BackgroundTasks
 from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse, FileResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -1033,6 +1033,7 @@ def send_email_via_resend(
     subject: str,
     body: str,
     *,
+    html: str | None = None,
     reply_to: str | None = None,
     list_unsubscribe: str | None = None,
 ) -> tuple[bool, str | None]:
@@ -1049,8 +1050,14 @@ def send_email_via_resend(
         "from": SMTP_FROM,
         "to": [to],
         "subject": subject,
-        "text": body,
     }
+    if html:
+        payload["html"] = html
+        if body:
+            payload["text"] = body
+    else:
+        payload["text"] = body
+
     if reply_to:
         payload["reply_to"] = [reply_to]
     if list_unsubscribe:
@@ -1643,6 +1650,7 @@ async def signup_page(request: Request, error: str = None, plan: str = None):
 @app.post("/signup")
 async def do_signup(
     request: Request,
+    background_tasks: BackgroundTasks,
     email: str = Form(...),
     password: str = Form(...),
     confirm_password: str = Form(...),
@@ -1712,6 +1720,7 @@ async def do_signup(
             {"email": email_clean, "plan": plan, "plan_upgraded_for_email": plan_upgraded_for_email},
             distinct_id=email_clean
         )
+        background_tasks.add_task(send_welcome_email_task, email_clean)
     except Exception as e:
         trigger_alert(
             "user_signup_failed",
@@ -3353,6 +3362,53 @@ knob monster support
 p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
                     
+
+def send_welcome_email_task(email: str):
+    try:
+        # Generate the personalized first name
+        name_part = email.split('@')[0]
+        first_name = re.split(r'[\._-]', name_part)[0]
+        first_name_cap = first_name.capitalize() if first_name else "synth head"
+
+        # Generate avatar URL
+        hash_val = 5381
+        for ch in str(email):
+            hash_val = ((hash_val << 5) + hash_val) + ord(ch)
+        idx = (abs(hash_val) % 48) + 1
+        avatar_url = f"{SITE_BASE}/static/avatars/Simple%20colors/Icon{idx}.png"
+
+        # Render HTML using templates
+        template = templates.get_template("email_welcome.html")
+        html_content = template.render({
+            "first_name": first_name_cap,
+            "avatar_url": avatar_url,
+        })
+
+        # Plain text fallback body
+        plain_body = (
+            f"Hi {first_name_cap},\n\n"
+            "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
+            "or desktop installers to do its job well. knob.monster already comes with the features you "
+            "often have to install as add-ons, running securely right inside your web browser.\n\n"
+            "Open your vault: https://knob.monster/dashboard\n\n"
+            "Keep the analog alive,\n"
+            "knob.monster support"
+        )
+
+        ok, err = send_email_via_resend(
+            to=email,
+            subject="welcome to knob.monster",
+            body=plain_body,
+            html=html_content,
+            reply_to="halfradiationllc@gmail.com",
+        )
+        if ok:
+            logger.info(f"Welcome email successfully sent to {email}")
+        else:
+            logger.error(f"Failed to send welcome email to {email}: {err}")
+    except Exception as e:
+        logger.error(f"Error in send_welcome_email_task for {email}: {str(e)}")
+
 
 async def get_drip_eligible_users() -> tuple[list[dict], int, int]:
     """Return (eligible users, skipped_young, pending_total)."""

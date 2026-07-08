@@ -72,7 +72,7 @@ VALID_LITERAL_PATHS = {
     "/login",
     "/signup",
     "/logout",
-    "/dashboard",
+    "/home",
     "/banks",
     "/checkout",
     "/portal",

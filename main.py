@@ -57,7 +57,7 @@ def posthog_support_context(user: dict | None, *, enable_conversations: bool = F
     return ctx
 
 
-def safe_next_url(next_url: str | None, default: str = "/dashboard") -> str:
+def safe_next_url(next_url: str | None, default: str = "/home") -> str:
     if not next_url or not next_url.startswith("/") or next_url.startswith("//"):
         return default
     return next_url
@@ -881,7 +881,7 @@ def build_pack_checkout_kwargs(user: dict, pack_id: str, pack: dict) -> dict:
         "line_items": line_items,
         "mode": "payment",
         "allow_promotion_codes": False,
-        "success_url": BASE_URL + f"/dashboard?payment=pack_success&pack_id={pack_id}",
+        "success_url": BASE_URL + f"/home?payment=pack_success&pack_id={pack_id}",
         "cancel_url": BASE_URL + "/shop?payment=pack_cancel",
         "metadata": {
             "purchase_type": "sound_pack",
@@ -1305,7 +1305,7 @@ SEO_DATA = {
 async def index(request: Request):
     user = get_current_user(request)
     if user:
-        return RedirectResponse(url="/dashboard", status_code=303)
+        return RedirectResponse(url="/home", status_code=303)
     user_count = 6
     total_patches = 1000
     try:
@@ -1666,7 +1666,7 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
             "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
             "or desktop installers to do its job well. knob.monster already comes with the features you "
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
-            "Open your vault: https://knob.monster/dashboard\n\n"
+            "Open your vault: https://knob.monster/home\n\n"
             "Keep the analog alive,\n"
             "knob.monster support"
         )
@@ -1691,7 +1691,7 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
 @app.get("/signup", response_class=HTMLResponse)
 async def signup_page(request: Request, error: str = None, plan: str = None):
     if get_current_user(request):
-        return RedirectResponse(url="/dashboard")
+        return RedirectResponse(url="/home")
     plan = normalize_plan(plan)
     return render_signup(request, error=error, plan=plan)
 
@@ -1790,9 +1790,9 @@ async def do_signup(
             {"email": email, "customer_id": pending.get("stripe_customer_id")},
             distinct_id=email
         )
-        response = RedirectResponse(url="/dashboard?payment=success", status_code=303)
+        response = RedirectResponse(url="/home?payment=success", status_code=303)
     else:
-        welcome_url = "/dashboard?welcome=1"
+        welcome_url = "/home?welcome=1"
         if plan_upgraded_for_email:
             welcome_url += "&upgraded=business_email"
         response = RedirectResponse(url=welcome_url, status_code=303)
@@ -1815,8 +1815,8 @@ async def do_logout():
     return response
 
 # --- Protected Console App ---
-@app.get("/dashboard", response_class=HTMLResponse)
-async def dashboard(request: Request):
+@app.get("/home", response_class=HTMLResponse)
+async def home_page(request: Request):
     user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login")
@@ -1825,6 +1825,14 @@ async def dashboard(request: Request):
     context = {"banks": banks, "user": user, "pricing": enrich_regional_pricing(get_request_country_code(request))}
     context.update(posthog_support_context(user, enable_conversations=True))
     return render_template("index.html", request, context)
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard_redirect(request: Request):
+    query_params = request.url.query
+    url = "/home"
+    if query_params:
+        url += f"?{query_params}"
+    return RedirectResponse(url=url, status_code=301)
 
 @app.get("/banks", response_class=HTMLResponse)
 async def get_banks(request: Request):
@@ -2204,7 +2212,7 @@ async def checkout_pack(request: Request, pack_id: str):
         raise HTTPException(status_code=404, detail="Pack not found")
         
     if shop_packs.user_owns_pack(user["id"], pack_id):
-        return RedirectResponse(url="/dashboard?payment=pack_owned", status_code=303)
+        return RedirectResponse(url="/home?payment=pack_owned", status_code=303)
 
     if not STRIPE_SECRET_KEY:
         bank_id = shop_packs.fulfill_sound_pack(user["email"], pack_id)
@@ -2215,7 +2223,7 @@ async def checkout_pack(request: Request, pack_id: str):
                 {"email": user["email"], "pack_id": pack_id, "pack_name": pack["name"], "bank_id": bank_id},
                 distinct_id=user["email"],
             )
-        return RedirectResponse(url="/dashboard?payment=pack_success", status_code=303)
+        return RedirectResponse(url="/home?payment=pack_success", status_code=303)
 
     try:
         checkout_session = create_pack_checkout_session(user, pack_id, pack)
@@ -2269,14 +2277,13 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
                 url=f"/checkout?plan=studio&upgraded=business_email",
                 status_code=303,
             )
-        normalized_plan = checkout_plan
     country_code = get_request_country_code(request)
     if user_has_premium(user):
         current_plan = normalize_plan(user.get("plan") or "personal")
         if normalized_plan == current_plan:
-            return RedirectResponse(url="/dashboard?payment=already_active")
+            return RedirectResponse(url="/home?payment=already_active")
         if normalized_plan == "personal" and current_plan == "studio":
-            return RedirectResponse(url="/dashboard?payment=already_active")
+            return RedirectResponse(url="/home?payment=already_active")
 
     if normalized_plan in ("personal", "studio"):
         checkout_mode = "payment"
@@ -2310,17 +2317,17 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             line_items = build_plan_checkout_line_items(normalized_plan, country_code)
         else:
             line_items = [{"price": price_id, "quantity": 1}]
-
+ 
         pricing_region = get_regional_pricing(country_code)
         checkout_currency = pricing_region["currency"] if checkout_mode == "payment" else "usd"
-
+ 
         checkout_kwargs = {
             "line_items": line_items,
             "mode": checkout_mode,
             "allow_promotion_codes": allow_promo,
             **checkout_adaptive_pricing_for_currency(checkout_currency),
-            "success_url": BASE_URL + "/dashboard?payment=success",
-            "cancel_url": BASE_URL + "/dashboard?payment=cancel",
+            "success_url": BASE_URL + "/home?payment=success",
+            "cancel_url": BASE_URL + "/home?payment=cancel",
             "metadata": {
                 "user_email": user["email"],
                 "plan": normalized_plan,
@@ -2374,7 +2381,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             distinct_id=user["email"]
         )
         return RedirectResponse(
-            url="/dashboard?checkout_error=stripe",
+            url="/home?checkout_error=stripe",
             status_code=303,
         )
 
@@ -2388,7 +2395,7 @@ async def create_portal_session(request: Request):
         # Toggle subscription locally in mock mode for billing portal test ease
         new_tier = "free" if user["tier"] == "premium" else "premium"
         database.update_user_tier(user["email"], new_tier)
-        return RedirectResponse(url="/dashboard?mock_portal=1")
+        return RedirectResponse(url="/home?mock_portal=1")
         
     stripe_customer_id = get_valid_stripe_customer_id(user)
     if not stripe_customer_id:
@@ -2397,7 +2404,7 @@ async def create_portal_session(request: Request):
     try:
         portal_session = stripe.billing_portal.Session.create(
             customer=stripe_customer_id,
-            return_url=BASE_URL + "/dashboard"
+            return_url=BASE_URL + "/home"
         )
         trigger_alert(
             "stripe_portal_opened",
@@ -2422,7 +2429,7 @@ async def mock_checkout_success(email: str, plan: str = "personal"):
         raise HTTPException(status_code=403, detail="Mock checkout is disabled in production")
     normalized_plan = normalize_plan(plan)
     database.update_user_tier(email, "premium", "mock_customer_id", plan=normalized_plan)
-    return RedirectResponse(url="/dashboard?payment=success")
+    return RedirectResponse(url="/home?payment=success")
 
 @app.post("/stripe-webhook")
 async def stripe_webhook(request: Request):
@@ -2573,7 +2580,7 @@ async def robots():
 
     content = """User-agent: *
 Allow: /
-Disallow: /dashboard
+Disallow: /home
 Disallow: /banks/
 
 Sitemap: https://knob.monster/sitemap.xml"""
@@ -3401,12 +3408,11 @@ if you have a juno-106, dx7, or m1 sitting in your studio right now, those sound
 
 unlock your vault and get full, unlimited access to knob monster today:
 
-👉 https://knob.monster/dashboard
+👉 https://knob.monster/home
 
 keep the analog alive,
 
 knob monster support
-
 p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
                     
@@ -3444,7 +3450,7 @@ def send_welcome_email_task(email: str):
             "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
             "or desktop installers to do its job well. knob.monster already comes with the features you "
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
-            "Open your vault: https://knob.monster/dashboard\n\n"
+            "Open your vault: https://knob.monster/home\n\n"
             "Keep the analog alive,\n"
             "knob.monster support"
         )
@@ -3602,7 +3608,7 @@ PRODUCT FACTS (use only these — do not invent features or pricing):
 NEWSLETTER_FOOTER = """
 ---
 back up your banks (lifetime — no subscription):
-https://knob.monster/dashboard
+https://knob.monster/home
 
 to stop receiving these, unsubscribe instantly:
 https://knob.monster/unsubscribe?token={{unsubscribe_token}}

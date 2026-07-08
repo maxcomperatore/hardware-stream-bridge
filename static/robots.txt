@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /dashboard
+Disallow: /home
 Disallow: /banks/
 Disallow: /login
 Disallow: /signup

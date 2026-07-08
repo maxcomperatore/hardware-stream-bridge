@@ -1819,12 +1819,20 @@ async def do_logout():
 async def home_page(request: Request):
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login")
+        response = RedirectResponse(url="/login")
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
         
     banks = database.get_all_banks(user["id"])
     context = {"banks": banks, "user": user, "pricing": enrich_regional_pricing(get_request_country_code(request))}
     context.update(posthog_support_context(user, enable_conversations=True))
-    return render_template("index.html", request, context)
+    response = render_template("index.html", request, context)
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard_redirect(request: Request):

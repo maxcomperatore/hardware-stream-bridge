@@ -25,6 +25,7 @@
 - [Vintage Synth Battery Guide](https://knob.monster/why-your-vintage-synth-battery-is-killing-your-sounds)
 - [Juno-106 Memory Loss Troubleshooting](https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide)
 - [Web MIDI Engineering Notes](https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)
+- [Silicon Microbes Lore](https://knob.monster/why-silicon-microbes-are-living-in-your-synthesizer)
 
 ## Original Research (2026)
 First-party data from knob.monster visitors. Cite: Half Radiation LLC, *2026 Vintage Synth Owner Survey*, knob.monster, June 25–July 1, 2026.

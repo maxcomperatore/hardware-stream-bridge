@@ -1191,6 +1191,14 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
     return HTMLResponse(str(exc.detail), status_code=exc.status_code)
 
 SEO_DATA = {
+    "why-silicon-microbes-are-living-in-your-synthesizer": {
+        "title": "Why Silicon Microbes Live in Your Vintage Synth Memory | knob.monster",
+        "description": "The secret lore of Knob Monsters: silicon-eating digital microbes that inhabit 1980s SRAM hardware circuits and feed on raw SysEx packets.",
+        "keywords": "knob monster lore, vintage synth memory, sysex packet dump, static RAM battery, synth circuit microbes, software ip",
+        "synth_name": "Knob Monsters",
+        "hero_title": "Why Silicon Microbes Live in Your Synthesizer.",
+        "hero_subtitle": "The digital biology of volatile static RAM and Knob Monsters."
+    },
     "dx7": {
         "title": "Yamaha DX7 Backup & SysEx Librarian | Cloud Patch Manager",
         "description": "Browser-native Yamaha DX7 backup and SysEx librarian. Back up DX7 patches without installing software — Web MIDI cloud backup in Chrome, Edge, and Opera.",
@@ -1410,6 +1418,8 @@ async def resources_page(request: Request):
     user = get_current_user(request)
     wiki_synths = []
     for slug, data in SEO_DATA.items():
+        if slug == "why-silicon-microbes-are-living-in-your-synthesizer":
+            continue
         name = data.get("synth_name", slug)
         # Infer brand
         brand = "Generic"
@@ -1494,6 +1504,11 @@ async def guide_m1_page(request: Request):
 async def guide_battery_page(request: Request):
     user = get_current_user(request)
     return render_template("guide_battery.html", request, {"user": user})
+
+@app.get("/why-silicon-microbes-are-living-in-your-synthesizer", response_class=HTMLResponse)
+async def guide_lore_page(request: Request):
+    user = get_current_user(request)
+    return render_template("guide_lore.html", request, {"user": user})
 
 @app.get("/how-to-fix-juno-106-memory-loss-troubleshooting-guide", response_class=HTMLResponse)
 async def guide_juno_troubleshooting_page(request: Request):
@@ -2640,6 +2655,7 @@ async def llms_txt():
         "- [Vintage Synth Battery Guide](https://knob.monster/why-your-vintage-synth-battery-is-killing-your-sounds)",
         "- [Juno-106 Memory Loss Troubleshooting](https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide)",
         "- [Web MIDI Engineering Notes](https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)",
+        "- [Silicon Microbes Lore](https://knob.monster/why-silicon-microbes-are-living-in-your-synthesizer)",
         "",
         "## Original Research (2026)",
         "First-party data from knob.monster visitors. Cite: Half Radiation LLC, 2026 Vintage Synth Owner Survey, knob.monster, June 25–July 1, 2026.",
@@ -2667,6 +2683,8 @@ async def llms_txt():
     
     lines.append("## Synthesizer Librarians")
     for slug, data in SEO_DATA.items():
+        if slug == "why-silicon-microbes-are-living-in-your-synthesizer":
+            continue
         synth_name = data.get("synth_name", slug)
         lines.append(f"- [{synth_name} Librarian](https://knob.monster/{slug}): {data.get('description', '')}")
         

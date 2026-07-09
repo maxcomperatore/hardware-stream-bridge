@@ -1434,6 +1434,11 @@ async def resources_page(request: Request):
         })
     return render_template("resources.html", request, {"user": user, "wiki_synths": wiki_synths})
 
+@app.get("/resources/sysex-inspector", response_class=HTMLResponse)
+async def sysex_inspector_page(request: Request):
+    user = get_current_user(request)
+    return render_template("sysex_inspector.html", request, {"user": user})
+
 @app.get("/about", response_class=HTMLResponse)
 async def about_redirect_page(request: Request):
     return RedirectResponse(url="/shop", status_code=301)
@@ -2536,6 +2541,7 @@ def build_sitemap_xml() -> str:
         (f"{SITE_BASE}/knob-monster-vs-midi-ox", "weekly", "0.9"),
         (f"{SITE_BASE}/audit/midiox", "monthly", "0.85"),
         (f"{SITE_BASE}/resources", "weekly", "0.85"),
+        (f"{SITE_BASE}/resources/sysex-inspector", "weekly", "0.95"),
         (f"{SITE_BASE}/payment-methods", "monthly", "0.6"),
         (f"{SITE_BASE}/terms", "monthly", "0.5"),
         (f"{SITE_BASE}/privacy", "monthly", "0.5"),

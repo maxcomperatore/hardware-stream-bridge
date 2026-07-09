@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>Web SysEx Hex Parser &amp; FM Synth Sandbox | knob.monster</title>
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .crt-scanlines {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.06),
+                rgba(0, 255, 0, 0.02),
+                rgba(0, 0, 255, 0.06)
+            );
+            background-size: 100% 4px, 6px 100%;
+        }
+
+        .hex-byte {
+            transition: all 0.15s ease;
+        }
+
+        .hex-byte:hover {
+            transform: scale(1.15);
+            z-index: 10;
+        }
+
+        /* 3D spin animation for logo */
+        @keyframes logo-spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        /* Custom Keyboard Keys */
+        .piano-key {
+            transition: background-color 0.1s ease, transform 0.1s ease;
+        }
+        .piano-key:active, .piano-key.active {
+            transform: translateY(2px);
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative selection:bg-teal-500/20 selection:text-white">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                    </div>
+                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-lapis-light transition-colors">knob.monster</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="text-white transition-colors duration-200">Resources</a>
+                <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/home" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Open Vault
+                </a>
+                {% else %}
+                <a href="/signup" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Sign Up
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12 relative z-10 space-y-12">
+        
+        <!-- Breadcrumb & Intro -->
+        <div class="space-y-4">
+            <div class="flex items-center gap-2 text-2xs font-mono text-zinc-500 uppercase tracking-wider">
+                <a href="/resources" class="hover:text-zinc-300">Resources</a>
+                <span>/</span>
+                <span class="text-teal-400 font-semibold">Web SysEx Inspector</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-pixel uppercase text-white tracking-tight">
+                SysEx Hex Parser &amp; FM Sandbox
+            </h1>
+            <p class="text-sm text-zinc-400 max-w-2xl leading-relaxed">
+                An interactive diagnostic tool to inspect standard MIDI System Exclusive (<code class="text-zinc-200">.syx</code>) files.
+                Drag in your hardware dumps to analyze manufacturer codes, debug checksums, parse patch tables, and audition sounds using a browser-synthesized FM emulator.
+            </p>
+        </div>
+
+        <!-- Workspace Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Panel: File Ingestion -->
+            <div class="space-y-6 lg:col-span-1">
+                
+                <!-- Dropzone -->
+                <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h2 class="text-xs font-pixel text-white uppercase tracking-wider">1. Load SysEx File</h2>
+                        <div id="drop-zone" class="border border-dashed border-zinc-800 hover:border-teal-500/40 rounded-xl p-8 text-center cursor-pointer transition-all duration-150 bg-black/35 select-none relative group">
+                            <input type="file" id="file-input" class="hidden" accept=".syx,.bin,.raw">
+                            <div class="space-y-3 pointer-events-none">
+                                <svg class="mx-auto h-8 w-8 text-zinc-500 group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                <p class="text-2xs font-mono text-zinc-400">
+                                    Drag &amp; drop a <span class="text-zinc-300">.syx</span> file here, or <span class="text-teal-400 underline decoration-dotted">browse</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Demo files -->
+                        <div class="space-y-2 pt-2">
+                            <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">No file on hand? Load a demo:</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="loadDemoBank('dx7')" class="bg-zinc-900 hover:bg-zinc-800 hover:border-zinc-700 text-left p-2.5 rounded-lg border border-zinc-950 transition-all font-mono text-3xs text-zinc-300 flex flex-col justify-between h-14 animate-pulse">
+                                    <span class="text-teal-400 font-bold uppercase tracking-wider text-[9px]">Yamaha DX7</span>
+                                    <span class="text-zinc-500">32-Voice Factory Dump</span>
+                                </button>
+                                <button onclick="loadDemoBank('juno')" class="bg-zinc-900 hover:bg-zinc-800 hover:border-zinc-700 text-left p-2.5 rounded-lg border border-zinc-950 transition-all font-mono text-3xs text-zinc-300 flex flex-col justify-between h-14">
+                                    <span class="text-orange-400 font-bold uppercase tracking-wider text-[9px]">Roland Juno-106</span>
+                                    <span class="text-zinc-500">1-Voice Preset Dump</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diagnostics Summary -->
+                <div id="summary-card" class="bg-zinc-950 border border-zinc-900 rounded-2xl p-6 space-y-4 opacity-50 pointer-events-none transition-all duration-300">
+                    <h2 class="text-xs font-pixel text-white uppercase tracking-wider">2. Diagnostic Report</h2>
+                    
+                    <div class="space-y-3 font-mono text-2xs">
+                        <div class="flex justify-between border-b border-zinc-900 pb-2">
+                            <span class="text-zinc-500">Packet Status:</span>
+                            <span id="meta-status" class="text-zinc-350">No file loaded</span>
+                        </div>
+                        <div class="flex justify-between border-b border-zinc-900 pb-2">
+                            <span class="text-zinc-500">Manufacturer ID:</span>
+                            <span id="meta-mfg" class="text-zinc-350">-</span>
+                        </div>
+                        <div class="flex justify-between border-b border-zinc-900 pb-2">
+                            <span class="text-zinc-500">Model ID / Format:</span>
+                            <span id="meta-model" class="text-zinc-350">-</span>
+                        </div>
+                        <div class="flex justify-between border-b border-zinc-900 pb-2">
+                            <span class="text-zinc-500">Total Bytes:</span>
+                            <span id="meta-bytes" class="text-zinc-350">-</span>
+                        </div>
+                        <div class="flex justify-between border-b border-zinc-900 pb-2">
+                            <span class="text-zinc-500">Patches Extracted:</span>
+                            <span id="meta-patches" class="text-zinc-350">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-zinc-500">Checksum Integrity:</span>
+                            <span id="meta-checksum" class="text-zinc-350">-</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Panel: Hex view & Audition console -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Display Tabs -->
+                <div id="inspector-tabs" class="bg-zinc-950 border border-zinc-900 rounded-3xl p-6 space-y-6 min-h-[380px] flex flex-col justify-between transition-opacity duration-300 relative">
+                    
+                    <div class="space-y-6">
+                        <!-- Custom Tab Header -->
+                        <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
+                            <div class="flex items-center gap-4 text-xs font-pixel">
+                                <button id="tab-hex-btn" onclick="switchTab('hex')" class="text-white border-b-2 border-teal-400 pb-3 -mb-[14px]">HEX VISUALIZER</button>
+                                <button id="tab-patches-btn" onclick="switchTab('patches')" class="text-zinc-500 hover:text-zinc-300 pb-3 -mb-[14px]">PATCH DIRECTORY</button>
+                            </div>
+                            <span class="text-zinc-600 font-mono text-[9px] uppercase tracking-wider" id="current-action-label">Ready for ingestion</span>
+                        </div>
+
+                        <!-- Tab Content: Hex Visualizer -->
+                        <div id="tab-hex" class="space-y-4">
+                            <p class="text-2xs text-zinc-500 font-mono leading-relaxed">
+                                Hover over bytes to decode standard MIDI sub-structures. Color key:
+                                <span class="inline-block w-2 h-2 rounded bg-amber-500/80 mx-1"></span>Header/EOX 
+                                <span class="inline-block w-2 h-2 rounded bg-cyan-500/80 mx-1"></span>Mfg ID
+                                <span class="inline-block w-2 h-2 rounded bg-purple-500/80 mx-1"></span>Format
+                                <span class="inline-block w-2 h-2 rounded bg-zinc-700/80 mx-1"></span>Data
+                                <span class="inline-block w-2 h-2 rounded bg-emerald-500/80 mx-1"></span>Patch Names
+                            </p>
+                            <!-- Hex Dump Display Area -->
+                            <div class="h-64 overflow-y-auto border border-zinc-900 rounded-xl bg-black/40 p-4 font-mono text-2xs leading-relaxed select-text relative crt-scanlines">
+                                <div id="hex-grid" class="flex flex-wrap gap-x-1.5 gap-y-1 font-bold text-zinc-500 max-h-full">
+                                    <div class="text-zinc-650 w-full text-center py-16 uppercase tracking-wider text-3xs font-pixel">Awaiting binary stream...</div>
+                                </div>
+                            </div>
+                            <!-- Live Hex Tooltip Details -->
+                            <div id="hex-tooltip" class="h-10 border border-zinc-900 bg-zinc-950 rounded-lg flex items-center px-4 font-mono text-3xs text-zinc-400">
+                                Hover over any hex byte to parse instruction.
+                            </div>
+                        </div>
+
+                        <!-- Tab Content: Patch List -->
+                        <div id="tab-patches" class="hidden space-y-4">
+                            <p class="text-2xs text-zinc-500 font-mono leading-relaxed">
+                                Extracted patch list. Click <strong class="text-teal-400">AUDITION</strong> to load a patch into the FM synthesizer sandbox, then play keys below.
+                            </p>
+                            <div class="h-64 overflow-y-auto border border-zinc-900 rounded-xl bg-black/40 p-2">
+                                <div id="patch-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <div class="text-zinc-650 col-span-2 text-center py-16 uppercase tracking-wider text-3xs font-pixel">No patches decoded.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Web Audio FM Synthesizer Console -->
+                    <div id="synth-console" class="border-t border-zinc-900 pt-6 space-y-4">
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                            <!-- Selected Patch Title -->
+                            <div class="flex items-center gap-3">
+                                <div class="h-9 w-9 rounded-lg bg-teal-950/40 border border-teal-500/20 flex items-center justify-center shrink-0">
+                                    <span class="text-teal-400 font-pixel text-2xs">FM</span>
+                                </div>
+                                <div class="text-left font-mono">
+                                    <p class="text-3xs text-zinc-500 uppercase tracking-widest leading-none">Active Engine Preset</p>
+                                    <h4 id="active-patch-name" class="text-xs font-pixel text-teal-300 uppercase mt-1">DEFAULT sine TONE</h4>
+                                </div>
+                            </div>
+
+                            <!-- Real-time Oscilloscope canvas -->
+                            <div class="h-10 w-full sm:w-48 bg-black border border-zinc-900 rounded-lg overflow-hidden relative">
+                                <canvas id="oscilloscope" class="w-full h-full opacity-60"></canvas>
+                                <span class="absolute right-2 top-1 text-[7px] font-mono text-zinc-600 uppercase pointer-events-none">OSCILLOSCOPE</span>
+                            </div>
+                        </div>
+
+                        <!-- The Piano Keyboard -->
+                        <div class="relative">
+                            <div class="flex w-full select-none" id="piano-keyboard">
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="60">A</div>
+                                <div class="piano-key bg-black border border-zinc-950 w-6 h-12 -mx-3 rounded-b-sm cursor-pointer z-20" data-note="61" style="margin-left: -12px; margin-right: -12px;"></div>
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="62">S</div>
+                                <div class="piano-key bg-black border border-zinc-950 w-6 h-12 -mx-3 rounded-b-sm cursor-pointer z-20" data-note="63" style="margin-left: -12px; margin-right: -12px;"></div>
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="64">D</div>
+                                
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="65">F</div>
+                                <div class="piano-key bg-black border border-zinc-950 w-6 h-12 -mx-3 rounded-b-sm cursor-pointer z-20" data-note="66" style="margin-left: -12px; margin-right: -12px;"></div>
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="67">G</div>
+                                <div class="piano-key bg-black border border-zinc-950 w-6 h-12 -mx-3 rounded-b-sm cursor-pointer z-20" data-note="68" style="margin-left: -12px; margin-right: -12px;"></div>
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="69">H</div>
+                                <div class="piano-key bg-black border border-zinc-950 w-6 h-12 -mx-3 rounded-b-sm cursor-pointer z-20" data-note="70" style="margin-left: -12px; margin-right: -12px;"></div>
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="71">J</div>
+                                
+                                <div class="piano-key relative bg-white border border-zinc-950 flex-1 h-20 rounded-b-md cursor-pointer z-10 flex items-end justify-center pb-2 text-[9px] font-mono font-bold text-zinc-600" data-note="72">K</div>
+                            </div>
+                        </div>
+
+                        <!-- Console Status Bar -->
+                        <div class="flex items-center justify-between text-[9px] font-mono text-zinc-600">
+                            <span class="flex items-center gap-1.5">
+                                <span class="h-1.5 w-1.5 rounded-full bg-teal-500 animate-ping"></span>
+                                WEB AUDIO ONLINE
+                            </span>
+                            <span id="midi-status-label">MIDI CONTROLLER DETECTED: NO</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Return to Hub -->
+        <div class="pt-6 border-t border-zinc-900 text-center">
+            <a href="/resources" class="text-xs font-pixel uppercase text-zinc-400 hover:text-white transition-colors duration-200"><- Return to Resources</a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+    <script>
+        // Tab system
+        let activeTab = 'hex';
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.getElementById('tab-hex').classList.toggle('hidden', tabId !== 'hex');
+            document.getElementById('tab-patches').classList.toggle('hidden', tabId !== 'patches');
+            
+            document.getElementById('tab-hex-btn').className = tabId === 'hex' ? 'text-white border-b-2 border-teal-400 pb-3 -mb-[14px]' : 'text-zinc-500 hover:text-zinc-300 pb-3 -mb-[14px]';
+            document.getElementById('tab-patches-btn').className = tabId === 'patches' ? 'text-white border-b-2 border-teal-400 pb-3 -mb-[14px]' : 'text-zinc-500 hover:text-zinc-300 pb-3 -mb-[14px]';
+        }
+
+        // Web Audio Synthesizer Setup
+        let audioCtx = null;
+        let analyser = null;
+        let activeOscs = {};
+        
+        function initAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            analyser.connect(audioCtx.destination);
+            
+            drawOscilloscope();
+        }
+
+        // Dynamic 2-Operator FM Engine
+        let synthEngineConfig = {
+            algorithm: 1,
+            carrierCoarse: 1.0,
+            modulatorCoarse: 2.0,
+            modulatorIndex: 400.0,
+            feedback: 0.0,
+            decay: 1.5,
+        };
+
+        function setSynthParameters(algo, carFreq, modFreq, modIndex, fb, decay) {
+            synthEngineConfig = {
+                algorithm: algo,
+                carrierCoarse: carFreq,
+                modulatorCoarse: modFreq,
+                modulatorIndex: modIndex,
+                feedback: fb,
+                decay: decay
+            };
+        }
+
+        function playNote(midiNumber) {
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const freq = Math.pow(2, (midiNumber - 69) / 12) * 440;
+            
+            stopNote(midiNumber);
+
+            const carrier = audioCtx.createOscillator();
+            const modulator = audioCtx.createOscillator();
+            const carrierGain = audioCtx.createGain();
+            const modGain = audioCtx.createGain();
+            
+            carrier.frequency.setValueAtTime(freq * synthEngineConfig.carrierCoarse, audioCtx.currentTime);
+            modulator.frequency.setValueAtTime(freq * synthEngineConfig.modulatorCoarse, audioCtx.currentTime);
+
+            modulator.connect(modGain);
+            modGain.connect(carrier.frequency);
+            
+            carrier.connect(carrierGain);
+            carrierGain.connect(analyser);
+
+            const now = audioCtx.currentTime;
+            carrierGain.gain.setValueAtTime(0, now);
+            carrierGain.gain.linearRampToValueAtTime(0.2, now + 0.02);
+            carrierGain.gain.exponentialRampToValueAtTime(0.0001, now + synthEngineConfig.decay);
+
+            modGain.gain.setValueAtTime(synthEngineConfig.modulatorIndex, now);
+            modGain.gain.exponentialRampToValueAtTime(0.0001, now + synthEngineConfig.decay);
+
+            carrier.start(now);
+            modulator.start(now);
+
+            activeOscs[midiNumber] = {
+                carrier,
+                modulator,
+                carrierGain,
+                modGain,
+                stopTime: now + synthEngineConfig.decay
+            };
+        }
+
+        function stopNote(midiNumber) {
+            if (activeOscs[midiNumber]) {
+                try {
+                    activeOscs[midiNumber].carrier.stop();
+                    activeOscs[midiNumber].modulator.stop();
+                } catch(e) {}
+                delete activeOscs[midiNumber];
+            }
+        }
+
+        // Oscilloscope render loop
+        function drawOscilloscope() {
+            const canvas = document.getElementById('oscilloscope');
+            const ctx = canvas.getContext('2d');
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function render() {
+                requestAnimationFrame(render);
+                analyser.getByteTimeDomainData(dataArray);
+
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = '#2dd4bf'; // teal-400
+                ctx.beginPath();
+
+                const sliceWidth = canvas.width * 1.0 / bufferLength;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    const v = dataArray[i] / 128.0;
+                    const y = v * canvas.height / 2;
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+
+                    x += sliceWidth;
+                }
+
+                ctx.lineTo(canvas.width, canvas.height / 2);
+                ctx.stroke();
+            }
+
+            render();
+        }
+
+        // Drag/drop file bindings
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-teal-500', 'bg-teal-950/10');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-teal-500', 'bg-teal-950/10');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-teal-500', 'bg-teal-950/10');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        });
+
+        let parsedVoices = [];
+
+        function processFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const buffer = new Uint8Array(e.target.result);
+                analyzeBytes(buffer, file.name);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        const MFG_NAMES = {
+            0x43: "Yamaha",
+            0x41: "Roland",
+            0x42: "Korg",
+            0x01: "Sequential Circuits",
+            0x18: "Oberheim",
+            0x3F: "Casio",
+            0x0F: "E-mu Systems",
+            0x10: "Kawai",
+            0x14: "Waldorf",
+            0x1C: "Akai"
+        };
+
+        function analyzeBytes(bytes, filename) {
+            const hasStart = bytes[0] === 0xF0;
+            const hasEnd = bytes[bytes.length - 1] === 0xF7;
+            
+            document.getElementById('summary-card').className = "bg-zinc-950 border border-zinc-900 rounded-2xl p-6 space-y-4 opacity-100 transition-all duration-300";
+            
+            const metaStatus = document.getElementById('meta-status');
+            const metaMfg = document.getElementById('meta-mfg');
+            const metaModel = document.getElementById('meta-model');
+            const metaBytes = document.getElementById('meta-bytes');
+            const metaPatches = document.getElementById('meta-patches');
+            const metaChecksum = document.getElementById('meta-checksum');
+
+            metaBytes.textContent = `${bytes.length} bytes`;
+
+            if (!hasStart || !hasEnd) {
+                metaStatus.innerHTML = '<span class="text-rose-500 font-bold">INVALID FORMAT</span>';
+                metaMfg.textContent = 'Unknown';
+                metaModel.textContent = 'N/A';
+                metaPatches.textContent = '0';
+                metaChecksum.textContent = 'Check Failed';
+                
+                renderHexGrid(bytes, -1, []);
+                return;
+            }
+
+            metaStatus.innerHTML = '<span class="text-emerald-400 font-bold">VALID SYSEX</span>';
+            
+            const mfgId = bytes[1];
+            const mfgName = MFG_NAMES[mfgId] || `Unknown (${mfgId.toString(16).toUpperCase()})`;
+            metaMfg.textContent = mfgName;
+
+            parsedVoices = [];
+            let formatCode = "-";
+            let patchCount = 0;
+            let checksumStatus = "Verified";
+
+            let namePositions = [];
+
+            if (mfgId === 0x43) { // Yamaha
+                const isDX7Bulk = bytes.length === 4104 || bytes[3] === 0x09;
+                
+                if (isDX7Bulk) {
+                    formatCode = "DX7 32-Voice Bulk";
+                    patchCount = 32;
+                    
+                    for (let i = 0; i < 32; i++) {
+                        const voiceOffset = 6 + (i * 128);
+                        const nameOffset = voiceOffset + 118;
+                        namePositions.push({ start: nameOffset, end: nameOffset + 10 });
+                        
+                        let nameStr = "";
+                        for (let n = 0; n < 10; n++) {
+                            nameStr += String.fromCharCode(bytes[nameOffset + n]);
+                        }
+                        
+                        const algo = bytes[voiceOffset + 134] ? (bytes[voiceOffset + 134] & 31) + 1 : 1;
+                        const feedback = bytes[voiceOffset + 135] ? (bytes[voiceOffset + 135] & 7) : 0;
+                        const op1Coarse = bytes[voiceOffset + 17] || 1;
+                        const op2Coarse = bytes[voiceOffset + 38] || 2;
+                        const op2Out = bytes[voiceOffset + 31] || 90;
+                        
+                        parsedVoices.push({
+                            index: i + 1,
+                            name: nameStr.trim() || `INIT VOICE ${i+1}`,
+                            algo: algo,
+                            carFreq: op1Coarse,
+                            modFreq: op2Coarse,
+                            modIndex: op2Out * 5.0,
+                            feedback: feedback * 0.15,
+                            decay: 2.0
+                        });
+                    }
+
+                    // Checksum sum verification
+                    let checkSum = 0;
+                    for (let s = 6; s <= 4101; s++) {
+                        checkSum += bytes[s];
+                    }
+                    const computed = (-checkSum) & 0x7F;
+                    const loaded = bytes[4102];
+                    if (computed === loaded) {
+                        checksumStatus = `OK (0x${loaded.toString(16).toUpperCase()})`;
+                    } else {
+                        checksumStatus = `MISMATCH (Expected 0x${computed.toString(16).toUpperCase()}, Got 0x${loaded.toString(16).toUpperCase()})`;
+                    }
+                } else {
+                    formatCode = "Yamaha Single Voice / Param Change";
+                    patchCount = 1;
+                }
+            } else if (mfgId === 0x41) { // Roland
+                formatCode = "Roland Format";
+                patchCount = 1;
+            } else {
+                formatCode = "Generic SysEx";
+                patchCount = 1;
+            }
+
+            metaModel.textContent = formatCode;
+            metaPatches.textContent = patchCount;
+            metaChecksum.textContent = checksumStatus;
+
+            renderHexGrid(bytes, mfgId, namePositions);
+            renderPatches(parsedVoices);
+            
+            if (parsedVoices.length > 0) {
+                switchTab('patches');
+                auditionPatch(0);
+            } else {
+                switchTab('hex');
+                setSynthParameters(1, 1.0, 2.0, 300.0, 0.2, 1.5);
+                document.getElementById('active-patch-name').textContent = "GENERIC SYSEX DUMP";
+            }
+        }
+
+        // Render Hex Grid
+        function renderHexGrid(bytes, mfgId, namePositions) {
+            const grid = document.getElementById('hex-grid');
+            grid.innerHTML = "";
+
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < bytes.length; i++) {
+                if (i > 1000) {
+                    const tr = document.createElement('div');
+                    tr.className = "text-zinc-650 text-center w-full py-4 text-3xs font-mono uppercase";
+                    tr.textContent = `... (+ ${bytes.length - i} bytes truncated for viewer safety)`;
+                    fragment.appendChild(tr);
+                    break;
+                }
+
+                const byteVal = bytes[i];
+                const hexStr = byteVal.toString(16).padStart(2, '0').toUpperCase();
+                
+                const span = document.createElement('span');
+                span.className = "hex-byte font-mono text-3xs px-0.5 rounded cursor-help select-none ";
+                span.textContent = hexStr;
+
+                let tooltip = `Offset ${i} (0x${i.toString(16).toUpperCase()}): Byte Value 0x${hexStr} (${byteVal})`;
+
+                if (i === 0) {
+                    span.className += "bg-amber-500/20 text-amber-400";
+                    tooltip = "F0: System Exclusive Start Packet (Standard MIDI spec)";
+                } else if (i === bytes.length - 1) {
+                    span.className += "bg-amber-500/20 text-amber-400";
+                    tooltip = "F7: End of System Exclusive Packet (Standard MIDI spec)";
+                } else if (i === 1) {
+                    span.className += "bg-cyan-500/20 text-cyan-400";
+                    tooltip = `0x${hexStr}: Manufacturer ID (${MFG_NAMES[byteVal] || "Custom Brand"})`;
+                } else if (i > 1 && i < 6 && mfgId === 0x43) {
+                    span.className += "bg-purple-500/20 text-purple-400";
+                    tooltip = `0x${hexStr}: Yamaha protocol header block`;
+                } else {
+                    const nameMatch = namePositions.find(p => i >= p.start && i < p.end);
+                    if (nameMatch) {
+                        span.className += "bg-emerald-500/20 text-emerald-400";
+                        tooltip = `0x${hexStr}: Char '${String.fromCharCode(byteVal)}' (DX7 Preset Name block)`;
+                    } else {
+                        span.className += "bg-zinc-900 text-zinc-400 hover:bg-zinc-800";
+                    }
+                }
+
+                span.dataset.tooltip = tooltip;
+                
+                span.addEventListener('mouseenter', (e) => {
+                    document.getElementById('hex-tooltip').textContent = e.target.dataset.tooltip;
+                });
+
+                fragment.appendChild(span);
+            }
+
+            grid.appendChild(fragment);
+            document.getElementById('current-action-label').textContent = `${bytes.length} BYTES INGESTED`;
+        }
+
+        // Render parsed voices
+        function renderPatches(voices) {
+            const grid = document.getElementById('patch-grid');
+            grid.innerHTML = "";
+
+            if (voices.length === 0) {
+                grid.innerHTML = '<div class="text-zinc-650 col-span-2 text-center py-16 uppercase tracking-wider text-3xs font-pixel">No patches extracted.</div>';
+                return;
+            }
+
+            voices.forEach((v, index) => {
+                const item = document.createElement('div');
+                item.className = "bg-zinc-900/60 hover:bg-zinc-900 border border-zinc-950 hover:border-teal-500/30 rounded-xl p-3 flex items-center justify-between transition-all group cursor-pointer";
+                item.onclick = () => auditionPatch(index);
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-3xs font-mono text-zinc-600 group-hover:text-teal-500/60 w-5">${v.index.toString().padStart(2, '0')}</span>
+                        <span class="text-xs font-pixel text-zinc-300 group-hover:text-white uppercase tracking-wide truncate max-w-[130px]">${v.name}</span>
+                    </div>
+                    <button class="bg-teal-950/20 group-hover:bg-teal-500/20 border border-teal-500/10 group-hover:border-teal-500/30 text-teal-400 px-2.5 py-1 rounded font-pixel text-[8px] uppercase tracking-wider transition-all">
+                        Audition
+                    </button>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function auditionPatch(index) {
+            const voice = parsedVoices[index];
+            if (!voice) return;
+
+            setSynthParameters(voice.algo, voice.carFreq, voice.modFreq, voice.modIndex, voice.feedback, voice.decay);
+            document.getElementById('active-patch-name').textContent = `${voice.index.toString().padStart(2, '0')} · ${voice.name}`;
+            
+            const consoleCard = document.getElementById('synth-console');
+            consoleCard.classList.add('border-teal-500/40');
+            setTimeout(() => consoleCard.classList.remove('border-teal-500/40'), 150);
+
+            playNote(60);
+        }
+
+        // Virtual keyboard listeners
+        const keysList = document.querySelectorAll('.piano-key');
+        keysList.forEach(key => {
+            const note = parseInt(key.dataset.note);
+            
+            key.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                key.classList.add('active');
+                playNote(note);
+            });
+
+            key.addEventListener('mouseup', () => {
+                key.classList.remove('active');
+                stopNote(note);
+            });
+
+            key.addEventListener('mouseleave', () => {
+                key.classList.remove('active');
+                stopNote(note);
+            });
+        });
+
+        // Computer keys triggers
+        const PC_KEYS = {
+            'a': 60, 'w': 61, 's': 62, 'e': 63, 'd': 64, 'f': 65, 't': 66, 'g': 67, 'y': 68, 'h': 69, 'u': 70, 'j': 71, 'k': 72
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.repeat) return;
+            const note = PC_KEYS[e.key.toLowerCase()];
+            if (note) {
+                const keyEl = document.querySelector(`.piano-key[data-note="${note}"]`);
+                if (keyEl) keyEl.classList.add('active');
+                playNote(note);
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const note = PC_KEYS[e.key.toLowerCase()];
+            if (note) {
+                const keyEl = document.querySelector(`.piano-key[data-note="${note}"]`);
+                if (keyEl) keyEl.classList.remove('active');
+                stopNote(note);
+            }
+        });
+
+        // Web MIDI keyboard mapping
+        if (navigator.requestMIDIAccess) {
+            navigator.requestMIDIAccess()
+                .then(midiAccess => {
+                    const inputs = midiAccess.inputs.values();
+                    let hasInputs = false;
+                    for (let input of inputs) {
+                        input.onmidimessage = handleMidiMessage;
+                        hasInputs = true;
+                    }
+                    if (hasInputs) {
+                        document.getElementById('midi-status-label').innerHTML = '<span class="text-teal-400">MIDI CONTROLLER DETECTED: YES</span>';
+                    }
+                })
+                .catch(() => {});
+        }
+
+        function handleMidiMessage(msg) {
+            const command = msg.data[0] & 0xf0;
+            const note = msg.data[1];
+            const velocity = msg.data[2];
+
+            if (command === 0x90 && velocity > 0) {
+                const keyEl = document.querySelector(`.piano-key[data-note="${note}"]`);
+                if (keyEl) keyEl.classList.add('active');
+                playNote(note);
+            } else if (command === 0x80 || (command === 0x90 && velocity === 0)) {
+                const keyEl = document.querySelector(`.piano-key[data-note="${note}"]`);
+                if (keyEl) keyEl.classList.remove('active');
+                stopNote(note);
+            }
+        }
+
+        // Demo Loader
+        function loadDemoBank(type) {
+            if (type === 'dx7') {
+                const demoBytes = new Uint8Array(4104);
+                demoBytes[0] = 0xF0;
+                demoBytes[1] = 0x43;
+                demoBytes[2] = 0x00;
+                demoBytes[3] = 0x09;
+                demoBytes[4] = 0x20;
+                demoBytes[5] = 0x00;
+
+                const demoNames = [
+                    "E. PIANO 1", "TUB BELL 1", "BASS 1    ", "SYN LEAD 1", "MARIMBA 1 ", "BRASS 1   ", "STRINGS 1 ", "OPERA 1   ",
+                    "GUITAR 1  ", "FLUTE 1   ", "CELESTA 1 ", "CLAV 1    ", "KOTO 1    ", "HARMONICA1", "ORGAN 1   ", "LASER GUN ",
+                    "E. PIANO 2", "CHIME 2   ", "BASS 2    ", "SYN LEAD 2", "XYLOPHONE ", "BRASS 2   ", "STRINGS 2 ", "SOPRANO   ",
+                    "GUITAR 2  ", "OBOE 1    ", "HARPSICH 1", "WIND CHIME", "SHAKUHACHI", "ACCORDION ", "ORGAN 2   ", "HELICOPTER"
+                ];
+
+                for (let i = 0; i < 32; i++) {
+                    const voiceOffset = 6 + (i * 128);
+                    
+                    const name = demoNames[i].padEnd(10, ' ');
+                    for (let n = 0; n < 10; n++) {
+                        demoBytes[voiceOffset + 118 + n] = name.charCodeAt(n);
+                    }
+
+                    const algoMap = [5, 2, 1, 8, 5, 1, 1, 16, 5, 8, 2, 1, 5, 8, 1, 32];
+                    demoBytes[voiceOffset + 134] = algoMap[i % 16] - 1;
+                    demoBytes[voiceOffset + 135] = 7;
+                    
+                    if (name.includes("BASS")) {
+                        demoBytes[voiceOffset + 17] = 1;
+                        demoBytes[voiceOffset + 38] = 1;
+                        demoBytes[voiceOffset + 31] = 95;
+                    } else if (name.includes("BELL") || name.includes("CHIME") || name.includes("EP")) {
+                        demoBytes[voiceOffset + 17] = 1;
+                        demoBytes[voiceOffset + 38] = 14;
+                        demoBytes[voiceOffset + 31] = 85;
+                    } else {
+                        demoBytes[voiceOffset + 17] = 1;
+                        demoBytes[voiceOffset + 38] = 2;
+                        demoBytes[voiceOffset + 31] = 70;
+                    }
+                }
+
+                let sum = 0;
+                for (let s = 6; s <= 4101; s++) {
+                    sum += demoBytes[s];
+                }
+                demoBytes[4102] = (-sum) & 0x7F;
+                demoBytes[4103] = 0xF7;
+
+                analyzeBytes(demoBytes, "DX7_Factory_Bank_A.syx");
+
+            } else if (type === 'juno') {
+                const demoBytes = new Uint8Array(84);
+                demoBytes[0] = 0xF0;
+                demoBytes[1] = 0x41;
+                demoBytes[2] = 0x36;
+                demoBytes[3] = 0x00;
+                
+                const name = "JUNO LEAD1";
+                for (let n = 0; n < name.length; n++) {
+                    demoBytes[20 + n] = name.charCodeAt(n);
+                }
+                demoBytes[83] = 0xF7;
+
+                analyzeBytes(demoBytes, "Juno106_Preset_Bank_A1.syx");
+            }
+        }
+    </script>
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

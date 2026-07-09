@@ -304,8 +304,8 @@
         .pricing-gem-currency-icon {
             display: inline-block;
             flex-shrink: 0;
-            width: 2rem;
-            height: 2rem;
+            width: 1.5rem;
+            height: 1.5rem;
             transform: translateY(-2px);
             background: var(--pricing-gem-gradient);
             background-size: 260% 100%;
@@ -1809,7 +1809,7 @@
                                         {% if pricing.region == 'usd' or pricing.region == 'cad' or pricing.region == 'aud' %}
                                         <span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>
                                         {% else %}
-                                        <span class="pricing-gem-blue select-none text-4xl md:text-5xl leading-none"
+                                        <span class="pricing-gem-blue select-none text-2xl leading-none"
                                             style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
                                     </span><span id="pricing-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount }}</span>
@@ -1907,7 +1907,7 @@
                                         {% if pricing.region == 'usd' or pricing.region == 'cad' or pricing.region == 'aud' %}
                                         <span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>
                                         {% else %}
-                                        <span class="pricing-gem-blue select-none text-4xl md:text-5xl leading-none"
+                                        <span class="pricing-gem-blue select-none text-2xl leading-none"
                                             style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
                                         {% endif %}
                                     </span><span id="pricing-studio-amount" class="pricing-gem-blue">{{ pricing.studio_amount }}</span>
@@ -2027,7 +2027,7 @@
                 if (symbol === '$') {
                     return '<span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>';
                 }
-                return `<span class="pricing-gem-blue select-none text-4xl md:text-5xl leading-none" style="transform: translateY(-2px);">${symbol}</span>`;
+                return `<span class="pricing-gem-blue select-none text-2xl leading-none" style="transform: translateY(-2px);">${symbol}</span>`;
             }
 
             function applyRegionalPricingDisplay(region) {

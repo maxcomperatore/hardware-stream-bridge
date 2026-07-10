@@ -7,6 +7,9 @@
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
     <title>{{ seo.title if seo else "Vintage Synth Wiki | knob.monster" }}</title>
+    {% if seo and seo.description %}
+    <meta name="description" content="{{ seo.description }}">
+    {% endif %}
     {% include 'partials/tailwind_lapis.html' %}
 
     <style>

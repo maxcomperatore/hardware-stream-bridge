@@ -23,7 +23,10 @@
         content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="og:description"
         content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
-    <meta property="og:image" content="{{ asset_abs_url('og_banner.png') }}">
+    <meta property="og:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
+    <meta property="og:image:type" content="image/gif">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -32,7 +35,7 @@
         content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
     <meta property="twitter:description"
         content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
-    <meta property="twitter:image" content="{{ asset_abs_url('og_banner.png') }}">
+    <meta property="twitter:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
 
     <!-- Prevent Flash of Unstyled Content (FOUC) and set default background early -->
     <style>
@@ -620,7 +623,7 @@
         "@type": "VideoObject",
         "name": "Web MIDI SysEx Connection Demo",
         "description": "Connecting vintage hardware synthesizers directly to a browser using native Web MIDI to back up patch names and RAM registers.",
-        "thumbnailUrl": "{{ asset_abs_url('og_banner.png') }}",
+        "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
         "contentUrl": "https://knob.monster/static/1.mp4?v=20260701b"
@@ -630,7 +633,7 @@
         "@type": "VideoObject",
         "name": "Knob Monster Cloud Librarian Walkthrough",
         "description": "A demonstration of storing, searching, and restoring backup SysEx patch banks directly from a private cloud librarian vault.",
-        "thumbnailUrl": "{{ asset_abs_url('og_banner.png') }}",
+        "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
         "contentUrl": "https://knob.monster/static/2.mp4?v=20260701b"

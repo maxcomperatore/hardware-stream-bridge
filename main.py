@@ -417,6 +417,7 @@ PROTECTED_MARKETING_ASSETS = frozenset({
     "bgood.avif",
     "vintage_camera_404.avif",
     "og_banner.png",
+    "dithered_knob_og.gif",
 })
 
 PREVIEW_BOT_MARKERS = (

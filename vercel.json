@@ -24,7 +24,7 @@
       "dest": "main.py"
     },
     {
-      "src": "/static/(studio_detail\\.avif|midi_handshake\\.avif|index_extraction\\.avif|recall_button\\.avif|trade_offer\\.avif|bgood\\.avif|vintage_camera_404\\.avif|og_banner\\.png)",
+      "src": "/static/(studio_detail\\.avif|midi_handshake\\.avif|index_extraction\\.avif|recall_button\\.avif|trade_offer\\.avif|bgood\\.avif|vintage_camera_404\\.avif|og_banner\\.png|dithered_knob_og\\.gif)",
       "dest": "main.py"
     },
     {

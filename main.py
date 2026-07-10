@@ -447,6 +447,8 @@ def _marketing_media_type(filename: str) -> str:
         return "image/png"
     if filename.endswith(".webp"):
         return "image/webp"
+    if filename.endswith(".gif"):
+        return "image/gif"
     return "application/octet-stream"
 
 

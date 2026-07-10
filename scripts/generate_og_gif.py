@@ -136,20 +136,32 @@ def make_og_gif():
         # Convert to RGB
         frames.append(final_frame.convert('RGB'))
 
-    # Save animated GIF
+    # Save animated GIF to both public static and private marketing folders
     static_dir = "d:/crew/experiment/static/images"
+    private_dir = "d:/crew/experiment/private/marketing"
     os.makedirs(static_dir, exist_ok=True)
-    gif_path = os.path.join(static_dir, "dithered_knob_og.gif")
+    os.makedirs(private_dir, exist_ok=True)
     
-    # Save frame sequence
+    gif_path_static = os.path.join(static_dir, "dithered_knob_og.gif")
+    gif_path_private = os.path.join(private_dir, "dithered_knob_og.gif")
+    
+    # Save frame sequence to static
     frames[0].save(
-        gif_path,
+        gif_path_static,
         save_all=True,
         append_images=frames[1:],
         duration=50, # ~20 FPS for silky-smooth animation
         loop=0
     )
-    print(f"Successfully generated UPGRADED animated dithered OG image at: {gif_path}")
+    # Save frame sequence to private
+    frames[0].save(
+        gif_path_private,
+        save_all=True,
+        append_images=frames[1:],
+        duration=50,
+        loop=0
+    )
+    print(f"Successfully generated clean animated dithered OG image at: {gif_path_static} and {gif_path_private}")
 
 if __name__ == "__main__":
     make_og_gif()

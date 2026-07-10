@@ -1,7 +1,7 @@
 # Ian Vanagas Writing Style Guide (The Banger Blueprint)
 
 This guide documents the structural, linguistic, and philosophical writing patterns of Ian Vanagas. Use this blueprint to write, edit, and audit all blog posts and guides to ensure they sound like a high-density, high-taste, 100k/year writer.
-
+ 
 ---
 
 ## 1. The Core Philosophy (Write to Publish, Write for Bangers)

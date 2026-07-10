@@ -8,6 +8,10 @@
     {% include 'partials/favicon.html' %}
     <title>Privacy Policy | knob.monster</title>
     <meta name="description" content="Read the Privacy Policy for knob.monster. Understand how we collect, process, and protect your accounts, payment details, and SysEx data.">
+    {% set seo_canonical = "https://knob.monster/privacy" %}
+    {% set seo_title = "Privacy Policy | knob.monster" %}
+    {% set seo_description = "Read the Privacy Policy for knob.monster. Understand how we collect, process, and protect your accounts, payment details, and SysEx data." %}
+    {% include 'partials/seo_article_meta.html' %}
     {% include 'partials/tailwind_lapis.html' %}
     {% include 'posthog.html' %}
 </head>

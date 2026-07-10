@@ -10,6 +10,12 @@
     {% if seo and seo.description %}
     <meta name="description" content="{{ seo.description }}">
     {% endif %}
+    {% if seo %}
+        {% set seo_canonical = "https://knob.monster/" + seo_slug %}
+        {% set seo_title = seo.title %}
+        {% set seo_description = seo.description %}
+        {% include 'partials/seo_article_meta.html' %}
+    {% endif %}
     {% include 'partials/tailwind_lapis.html' %}
 
     <style>

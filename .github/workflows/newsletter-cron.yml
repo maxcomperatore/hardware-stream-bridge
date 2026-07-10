@@ -11,6 +11,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install python-dotenv
+
       - name: Send newsletter via Resend (bypass Vercel/Cloudflare 1010)
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}

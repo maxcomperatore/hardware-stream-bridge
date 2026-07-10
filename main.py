@@ -2427,7 +2427,7 @@ async def create_portal_session(request: Request):
         
     stripe_customer_id = get_valid_stripe_customer_id(user)
     if not stripe_customer_id:
-        return RedirectResponse(url="/checkout")
+        return RedirectResponse(url="https://billing.stripe.com/p/login/6oU7sMdou2kQcR10zH1Jm00")
         
     try:
         portal_session = stripe.billing_portal.Session.create(

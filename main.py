@@ -433,6 +433,10 @@ PREVIEW_BOT_MARKERS = (
     "applebot",
     "embedly",
     "redditbot",
+    "node",
+    "node-fetch",
+    "vercel",
+    "undici",
 )
 
 OUR_HOSTS = frozenset({"knob.monster", "www.knob.monster", "localhost", "127.0.0.1"})

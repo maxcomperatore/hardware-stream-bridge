@@ -250,6 +250,8 @@ def trigger_alert(event_type: str, message: str, properties: dict = None, distin
 
 app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
 
+PENDING_CARD_UPDATES = {}
+
 from datetime import datetime
 
 @app.exception_handler(Exception)
@@ -1181,7 +1183,10 @@ def get_current_user(request: Request):
     email = verify_session_cookie(signed_cookie)
     if not email:
         return None
-    return database.get_user_by_email(email)
+    user = database.get_user_by_email(email)
+    if user and user.get("tier") == "banned":
+        return None
+    return user
 
 # Custom 404 Error handler
 @app.exception_handler(StarletteHTTPException)
@@ -1643,6 +1648,15 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
         )
         return render_template("login.html", request, {"error": "Invalid email or password", "next": next})
     
+    if user.get("tier") == "banned":
+        trigger_alert(
+            "login_banned",
+            f"Banned user `{email}` attempted to log in.",
+            {"email": email},
+            distinct_id=email
+        )
+        return render_template("login.html", request, {"error": "Your account has been suspended.", "next": next})
+    
     response = RedirectResponse(url=safe_next_url(next), status_code=303)
     response.set_cookie(
         key="session_user",
@@ -1845,8 +1859,21 @@ async def home_page(request: Request):
         response.headers["Expires"] = "0"
         return response
         
+    user_email = user["email"].lower().strip()
+    card_updated = False
+    card_last4 = ""
+    if user_email in PENDING_CARD_UPDATES:
+        card_updated = True
+        card_last4 = PENDING_CARD_UPDATES.pop(user_email)
+
     banks = database.get_all_banks(user["id"])
-    context = {"banks": banks, "user": user, "pricing": enrich_regional_pricing(get_request_country_code(request))}
+    context = {
+        "banks": banks,
+        "user": user,
+        "pricing": enrich_regional_pricing(get_request_country_code(request)),
+        "card_updated": card_updated,
+        "card_last4": card_last4
+    }
     context.update(posthog_support_context(user, enable_conversations=True))
     response = render_template("index.html", request, context)
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
@@ -2540,6 +2567,73 @@ async def stripe_webhook(request: Request):
                 {"customer_id": customer_id},
                 distinct_id=customer_id
             )
+            
+    elif event['type'] == 'charge.dispute.created':
+        dispute = event['data']['object']
+        customer_id = dispute.get('customer')
+        charge_id = dispute.get('charge')
+        
+        if not customer_id and charge_id:
+            try:
+                charge = stripe.Charge.retrieve(charge_id)
+                customer_id = getattr(charge, 'customer', None)
+            except Exception as e:
+                logger.error(f"Error retrieving charge {charge_id} for dispute: {e}")
+                
+        if customer_id:
+            user = database.get_user_by_customer_id(customer_id)
+            if user:
+                database.update_user_tier_by_customer_id(customer_id, "banned")
+                banks = database.get_all_banks(user['id'])
+                evidence_summary = (
+                    f"DISPUTE EVIDENCE / ACTIVITY LOG\n"
+                    f"================================\n"
+                    f"Stripe Customer ID: {customer_id}\n"
+                    f"User ID: {user['id']}\n"
+                    f"Email: {user['email']}\n"
+                    f"Account Created: {user['created_at']}\n"
+                    f"Current Plan: {user.get('plan') or 'None'}\n"
+                    f"Total Banks Uploaded: {len(banks)}\n\n"
+                    f"Uploaded Soundbanks Details:\n"
+                )
+                for idx, b in enumerate(banks):
+                    evidence_summary += f"- Bank {idx+1}: {b['name']} ({b['synth_model']}) uploaded on {b['created_at']} with {b['patch_count']} patches\n"
+                
+                os.makedirs("disputes", exist_ok=True)
+                file_path = f"disputes/{customer_id}_{user['email']}_evidence.txt"
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.write(evidence_summary)
+                
+                logger.warning(f"User suspended and dispute evidence exported: {user['email']}", extra={"email": user['email'], "customer_id": customer_id, "event_type": "dispute_insta_lock"})
+                trigger_alert(
+                    "charge_dispute_lockout",
+                    f"Charge dispute created for `{user['email']}`. Account INSTANTLY locked and suspended. Dispute evidence written to `{file_path}`.",
+                    {
+                        "email": user['email'],
+                        "customer_id": customer_id,
+                        "charge_id": charge_id,
+                        "banks_count": len(banks),
+                    },
+                    distinct_id=user['email']
+                )
+
+    elif event['type'] == 'payment_method.automatically_updated':
+        payment_method = event['data']['object']
+        customer_id = payment_method.get('customer')
+        card_data = payment_method.get('card') or {}
+        last4 = card_data.get('last4') or 'XXXX'
+        if customer_id:
+            user = database.get_user_by_customer_id(customer_id)
+            if user:
+                user_email = user['email'].lower().strip()
+                PENDING_CARD_UPDATES[user_email] = last4
+                logger.info(f"Payment method automatically updated for {user_email} (ending in {last4})")
+                trigger_alert(
+                    "card_automatically_updated",
+                    f"Card automatically updated for `{user_email}` (new last4: `{last4}`).",
+                    {"email": user_email, "customer_id": customer_id, "last4": last4},
+                    distinct_id=user_email
+                )
         
     return {"status": "success"}
 

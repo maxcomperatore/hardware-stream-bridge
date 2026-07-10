@@ -2284,6 +2284,10 @@
             } else if (params.get('payment') === 'pack_success') {
                 showToast("Expansion Unlocked", "Sound pack added to your library!", "success");
             }
+
+            {% if card_updated %}
+            showToast("Card Updated", "Your card was automatically updated to your new one ending in {{ card_last4 }}. No action needed!", "success");
+            {% endif %}
         });
 
         function showSavedBanks(e) {

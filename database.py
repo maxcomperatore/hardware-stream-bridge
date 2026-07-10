@@ -148,6 +148,14 @@ def get_user_by_id(user_id: int) -> dict:
     conn.close()
     return dict(row) if row else None
 
+def get_user_by_customer_id(stripe_customer_id: str) -> dict:
+    conn = get_db_connection()
+    cursor = get_db_cursor(conn)
+    cursor.execute("SELECT * FROM users WHERE stripe_customer_id = %s", (stripe_customer_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return dict(row) if row else None
+
 def update_user_tier(email: str, tier: str, stripe_customer_id: str = None, plan: str = None):
     conn = get_db_connection()
     cursor = conn.cursor()

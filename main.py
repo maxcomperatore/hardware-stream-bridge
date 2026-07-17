@@ -1708,11 +1708,11 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
             "Open your vault: https://knob.monster/home\n\n"
             "Keep the analog alive,\n"
-            "knob.monster support"
+            "Justin at Knob Monster"
         )
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to knob.monster",
+            subject="welcome to knob.monster - Justin",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -3584,12 +3584,12 @@ def send_welcome_email_task(email: str):
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
             "Open your vault: https://knob.monster/home\n\n"
             "Keep the analog alive,\n"
-            "knob.monster support"
+            "Justin at Knob Monster"
         )
 
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to knob.monster",
+            subject="welcome to knob.monster - Justin",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",

@@ -60,7 +60,7 @@ SMTP_HOST = getenv("SMTP_HOST", "smtp.resend.com")
 SMTP_PORT = getenv("SMTP_PORT", "587")
 SMTP_USER = getenv("SMTP_USER", "resend")
 SMTP_PASSWORD = getenv("SMTP_PASSWORD") or RESEND_API_KEY
-SMTP_FROM = getenv("SMTP_FROM", "Knob Monster <support@knob.monster>")
+SMTP_FROM = getenv("SMTP_FROM", "Justin at knob.monster <support@knob.monster>")
 
 # Cron / internal auth
 CRON_SECRET = getenv("CRON_SECRET")

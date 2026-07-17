@@ -31,41 +31,21 @@
 
             const avatarSrc = avatarUrlForKey(avatarKey);
 
-            const landingAvatarImg = document.getElementById('landing-lifetime-avatar') || document.getElementById('landing-upgrade-avatar');
-            if (landingAvatarImg) {
-                landingAvatarImg.src = avatarSrc;
-                landingAvatarImg.style.imageRendering = 'pixelated';
-            }
-
-            const heroAvatarImg = document.getElementById('hero-visitor-avatar');
-            if (heroAvatarImg) {
-                heroAvatarImg.src = avatarSrc;
-                heroAvatarImg.style.imageRendering = 'pixelated';
-            }
-
-            const upgradeAvatarImg = document.getElementById('dashboard-upgrade-avatar');
-            if (upgradeAvatarImg) {
-                upgradeAvatarImg.src = avatarSrc;
-                upgradeAvatarImg.style.imageRendering = 'pixelated';
-            }
-
-            const sidebarUserAvatarImg = document.getElementById('sidebar-user-avatar');
-            if (sidebarUserAvatarImg) {
-                sidebarUserAvatarImg.src = avatarSrc;
-                sidebarUserAvatarImg.style.imageRendering = 'pixelated';
-            }
-
-            const mobileNavAvatar = document.getElementById('mobile-nav-avatar');
-            if (mobileNavAvatar) {
-                mobileNavAvatar.src = avatarSrc;
-                mobileNavAvatar.style.imageRendering = 'pixelated';
-            }
-
-            const mobileYouAvatar = document.getElementById('mobile-you-avatar');
-            if (mobileYouAvatar) {
-                mobileYouAvatar.src = avatarSrc;
-                mobileYouAvatar.style.imageRendering = 'pixelated';
-            }
+            [
+                'landing-lifetime-avatar',
+                'landing-upgrade-avatar',
+                'hero-visitor-avatar',
+                'dashboard-upgrade-avatar',
+                'sidebar-user-avatar',
+                'mobile-nav-avatar',
+                'mobile-you-avatar'
+            ].forEach(id => {
+                const img = document.getElementById(id);
+                if (img) {
+                    img.src = avatarSrc;
+                    img.style.imageRendering = 'pixelated';
+                }
+            });
 
             const geoTag = document.getElementById('visitor-geo-tag');
             if (geoTag) {

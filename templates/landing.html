@@ -1372,11 +1372,11 @@
                 class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal reveal">
                 {% if is_halloween_week %}
                 The Haunted Vault for <img src="/static/your3.png" alt="your" class="inline-block align-middle h-[1.7em] md:h-[2.1em] w-auto mx-2 relative top-[-1px] md:top-[-3px] scale-105 rotate-[-2deg] hover:scale-100 hover:rotate-0 active:scale-95 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
-                <span
-                    class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-orange-500/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(249,115,22,0.2)]">
+                <span class="inline-flex items-center justify-center align-middle mx-1.5 w-12 h-12 md:w-16 md:h-16 shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(249,115,22,0.3)]">
                     <img id="hero-visitor-avatar"
                         src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>"
-                        alt="Your Avatar" class="w-full h-full object-cover">
+                        alt="Your Avatar" class="absolute inset-[4px] w-[calc(100%-8px)] h-[calc(100%-8px)] object-cover bg-zinc-950">
+                    <img src="/static/panels/Transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none" style="image-rendering: pixelated; image-rendering: crisp-edges;">
                 </span>
                 <br class="hidden sm:inline">
                 <span class="text-zinc-400">cemetery of vintage synths.</span>
@@ -1390,11 +1390,11 @@
                         class="w-full h-full object-contain" style="filter: invert(1);">
                 </span>
                 for <img src="/static/your3.png" alt="your" class="inline-block align-middle h-[1.7em] md:h-[2.1em] w-auto mx-2 relative top-[-1px] md:top-[-3px] scale-105 rotate-[-2deg] hover:scale-100 hover:rotate-0 active:scale-95 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
-                <span
-                    class="inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 rounded-full border border-lapis-light/30 bg-zinc-950 overflow-hidden shrink-0 relative top-[-1px] md:top-[-2px] shadow-lapis-glow">
+                <span class="inline-flex items-center justify-center align-middle mx-1.5 w-12 h-12 md:w-16 md:h-16 shrink-0 relative top-[-1px] md:top-[-2px] shadow-lapis-glow">
                     <img id="hero-visitor-avatar"
                         src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>"
-                        alt="Your Avatar" class="w-full h-full object-cover">
+                        alt="Your Avatar" class="absolute inset-[4px] w-[calc(100%-8px)] h-[calc(100%-8px)] object-cover bg-zinc-950">
+                    <img src="/static/panels/Transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none" style="image-rendering: pixelated; image-rendering: crisp-edges;">
                 </span>
                 <br class="hidden sm:inline">
                 <span class="text-zinc-400">vintage synthesizers.</span>
@@ -1793,9 +1793,10 @@
                 <div class="glow-card pricing-card-featured rounded-2xl border bg-zinc-950/40 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 200ms;">
                     <div id="stamp-diamond"
-                        class="absolute top-6 right-6 border border-dashed border-lapis-light/50 p-1.5 rounded-lg bg-black/45 -rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11 shadow-lapis-glow-lg">
+                        class="absolute top-6 right-6 -rotate-12 pointer-events-none select-none flex items-center justify-center w-12 h-12 shadow-lapis-glow-lg">
                         <img id="landing-lifetime-avatar" src="/static/logo.svg"
-                            class="h-full w-full object-cover rounded-md" alt="knob.monster+ Stamp">
+                            class="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-cover bg-zinc-950" alt="knob.monster+ Stamp">
+                        <img src="/static/panels/Transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none" style="image-rendering: pixelated; image-rendering: crisp-edges;">
                     </div>
                     <div class="space-y-5">
                         <div>
@@ -1890,10 +1891,11 @@
                 <!-- Studio -->
                 <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/60 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
                     style="--delay: 280ms;">
-                    <div class="absolute top-6 right-6 p-1.5 rounded-lg bg-black/45 rotate-12 pointer-events-none select-none flex items-center justify-center overflow-hidden w-11 h-11 shadow-lapis-glow-soft">
-                        <img src="/static/logo.svg" class="h-full w-full object-cover rounded-md"
-                            alt="knob.monster+ Studio Stamp" style="image-rendering: pixelated;" />
-            </div>
+                    <div class="absolute top-6 right-6 rotate-12 pointer-events-none select-none flex items-center justify-center w-12 h-12 shadow-lapis-glow-soft">
+                        <img src="/static/logo.svg"
+                            class="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-contain bg-zinc-950 p-1.5" style="image-rendering: pixelated;" alt="knob.monster+ Studio Stamp">
+                        <img src="/static/panels/Transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+                    </div>
                     <div class="space-y-5">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap pr-12">

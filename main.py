@@ -2515,6 +2515,10 @@ async def stripe_webhook(request: Request):
         # Use getattr() — Stripe SDK returns typed objects, not plain dicts
         customer_email = getattr(session, 'customer_email', None)
         if not customer_email:
+            customer_details = getattr(session, 'customer_details', None)
+            if customer_details:
+                customer_email = getattr(customer_details, 'email', None) if not isinstance(customer_details, dict) else customer_details.get('email')
+        if not customer_email:
             metadata = getattr(session, 'metadata', None) or {}
             customer_email = metadata.get('user_email') if isinstance(metadata, dict) else getattr(metadata, 'user_email', None)
         customer_id = getattr(session, 'customer', None)

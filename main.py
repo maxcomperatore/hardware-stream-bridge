@@ -219,7 +219,7 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
                 })
 
         payload = {
-            "username": "bipluk Bot",
+            "username": "Bipluk Bot",
             "avatar_url": DISCORD_LOGO_URL,
             "embeds": [embed]
         }
@@ -248,7 +248,7 @@ def trigger_alert(event_type: str, message: str, properties: dict = None, distin
     thread.daemon = True
     thread.start()
 
-app = FastAPI(title="bipluk - Vintage Synth Patch Manager")
+app = FastAPI(title="Bipluk - Vintage Synth Patch Manager")
 
 PENDING_CARD_UPDATES = {}
 
@@ -1143,7 +1143,7 @@ def render_template(template_name: str, request: Request, context: dict = None, 
         context = {}
     context["request"] = request
     
-    # Check if we are in Knob Monster's Birthday Week (May 31st to June 6th)
+    # Check if we are in Bipluk's Birthday Week (May 31st to June 6th)
     query_birthday = False
     query_christmas = False
     query_halloween = False
@@ -1205,10 +1205,10 @@ SEO_DATA = {
     "why-silicon-microbes-are-living-in-your-synthesizer": {
         "title": "Why Silicon Microbes Live in Your Vintage Synth Memory | bipluk",
         "description": "The secret lore of Knob Monsters: silicon-eating digital microbes that inhabit 1980s SRAM hardware circuits and feed on raw SysEx packets.",
-        "keywords": "knob monster lore, vintage synth memory, sysex packet dump, static RAM battery, synth circuit microbes, software ip",
+        "keywords": "bipluk lore, vintage synth memory, sysex packet dump, static RAM battery, synth circuit microbes, software ip",
         "synth_name": "Knob Monsters",
         "hero_title": "Why Silicon Microbes Live in Your Synthesizer.",
-        "hero_subtitle": "The digital biology of volatile static RAM and Knob Monsters."
+        "hero_subtitle": "The digital biology of volatile static RAM and Bipluk."
     },
     "dx7": {
         "title": "Yamaha DX7 Backup & SysEx Librarian | Cloud Patch Manager",
@@ -1415,11 +1415,6 @@ async def terms_page(request: Request):
 @app.get("/privacy", response_class=HTMLResponse)
 async def privacy_page(request: Request):
     return render_template("privacy.html", request)
-
-@app.get("/wire", response_class=FileResponse)
-@app.get("/nicotine", response_class=FileResponse)
-async def wire_page():
-    return FileResponse(os.path.join(BASE_DIR, "static", "wire", "index.html"))
 
 @app.get("/roadmap", response_class=HTMLResponse)
 async def roadmap_page(request: Request):

@@ -1416,6 +1416,11 @@ async def terms_page(request: Request):
 async def privacy_page(request: Request):
     return render_template("privacy.html", request)
 
+@app.get("/wire", response_class=FileResponse)
+@app.get("/nicotine", response_class=FileResponse)
+async def wire_page():
+    return FileResponse(os.path.join(BASE_DIR, "static", "wire", "index.html"))
+
 @app.get("/roadmap", response_class=HTMLResponse)
 async def roadmap_page(request: Request):
     return RedirectResponse(url="/resources", status_code=301)

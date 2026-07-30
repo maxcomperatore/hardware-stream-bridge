@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
-    <title>{{ seo.title if seo else "Vintage Synth Wiki | knob.monster" }}</title>
+    <title>{{ seo.title if seo else "Vintage Synth Wiki | bipluk" }}</title>
     {% if seo and seo.description %}
     <meta name="description" content="{{ seo.description }}">
     {% endif %}
     {% if seo %}
-        {% set seo_canonical = "https://knob.monster/" + seo_slug %}
+        {% set seo_canonical = "https://bipluk/" + seo_slug %}
         {% set seo_title = seo.title %}
         {% set seo_description = seo.description %}
         {% include 'partials/seo_article_meta.html' %}
@@ -92,7 +92,7 @@
                             style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
                     </div>
                     <span
-                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">bipluk</span>
                 </a>
             </div>
 

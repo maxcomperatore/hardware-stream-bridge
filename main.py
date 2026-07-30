@@ -202,7 +202,7 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
             "fields": [],
             "timestamp": datetime.utcnow().isoformat() + "Z",
             "footer": {
-                "text": "knob.monster alerts",
+                "text": "bipluk alerts",
                 "icon_url": DISCORD_LOGO_URL,
             }
         }
@@ -360,7 +360,7 @@ async def earth_day_middleware(request: Request, call_next):
         </div>
         
         <div class="pt-6 border-t border-zinc-900 text-[10px] font-mono text-zinc-650">
-            knob.monster will wake up automatically tomorrow. Enjoy your temporary eviction from the cloud.
+            bipluk will wake up automatically tomorrow. Enjoy your temporary eviction from the cloud.
         </div>
     </div>
 
@@ -438,7 +438,7 @@ PREVIEW_BOT_MARKERS = (
     "undici",
 )
 
-OUR_HOSTS = frozenset({"knob.monster", "www.knob.monster", "localhost", "127.0.0.1"})
+OUR_HOSTS = frozenset({"bipluk.com", "www.bipluk.com", "repluk.com", "www.repluk.com", "bipluk", "www.bipluk", "localhost", "127.0.0.1"})
 
 MARKETING_ASSETS_DIR = os.path.join(BASE_DIR, "private", "marketing")
 
@@ -837,7 +837,7 @@ PLAN_CATALOG = {
         "commercial": False,
     },
     "studio": {
-        "label": "knob.monster+ Studio",
+        "label": "bipluk+ Studio",
         "price_display": "$399",
         "amount_cents": 39900,
         "stripe_price_id": STRIPE_PRICE_ID_STUDIO,
@@ -967,7 +967,7 @@ def get_plan_catalog(country_code: str | None = None) -> dict:
             "commercial": False,
         },
         "studio": {
-            "label": "knob.monster+ Studio",
+            "label": "bipluk+ Studio",
             "price_display": format_plan_price_display(regional, "studio"),
             "amount_cents": int(regional["studio_amount"]) * 100,
             "stripe_price_id": get_plan_price_id("studio", country_code),
@@ -1001,11 +1001,11 @@ def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[
     currency = regional["currency"].lower()
     if normalized == "studio":
         unit_amount = int(regional["studio_amount"]) * 100
-        name = "knob.monster+ Studio (lifetime)"
+        name = "bipluk+ Studio (lifetime)"
         description = "Commercial use, one location. Lifetime license."
     else:
         unit_amount = int(regional["personal_amount"]) * 100
-        name = "knob.monster+ Personal (lifetime)"
+        name = "bipluk+ Personal (lifetime)"
         description = "Non-commercial lifetime license."
 
     return [
@@ -1077,7 +1077,7 @@ def send_email_via_resend(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "User-Agent": "knob.monster/1.0 (resend-api)",
+            "User-Agent": "bipluk/1.0 (resend-api)",
             "Accept": "application/json",
         },
         method="POST",
@@ -1203,7 +1203,7 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
 
 SEO_DATA = {
     "why-silicon-microbes-are-living-in-your-synthesizer": {
-        "title": "Why Silicon Microbes Live in Your Vintage Synth Memory | knob.monster",
+        "title": "Why Silicon Microbes Live in Your Vintage Synth Memory | bipluk",
         "description": "The secret lore of Knob Monsters: silicon-eating digital microbes that inhabit 1980s SRAM hardware circuits and feed on raw SysEx packets.",
         "keywords": "knob monster lore, vintage synth memory, sysex packet dump, static RAM battery, synth circuit microbes, software ip",
         "synth_name": "Knob Monsters",
@@ -1704,15 +1704,15 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
         plain_body = (
             f"Hi {first_name_cap},\n\n"
             "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
-            "or desktop installers to do its job well. knob.monster already comes with the features you "
+            "or desktop installers to do its job well. bipluk already comes with the features you "
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
-            "Open your vault: https://knob.monster/home\n\n"
+            "Open your vault: https://bipluk.com/home\n\n"
             "Keep the analog alive,\n"
             "Justin at Knob Monster"
         )
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to knob.monster - Justin",
+            subject="welcome to bipluk - Justin",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -1938,7 +1938,7 @@ async def export_all_banks(request: Request):
 
     buf = io.BytesIO()
     used_names: dict[str, int] = {}
-    manifest_lines = ["# knob.monster vault export", f"# {len(entries)} soundbank(s)", ""]
+    manifest_lines = ["# bipluk vault export", f"# {len(entries)} soundbank(s)", ""]
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as archive:
         for bank, sysex_bytes in entries:
             base = re.sub(r"[^\w\-]+", "_", bank["name"].lower()).strip("_") or "bank"
@@ -2401,7 +2401,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
                 "invoice_creation": {
                     "enabled": True,
                     "invoice_data": {
-                        "description": "knob.monster+ Studio lifetime license (commercial use, one location).",
+                        "description": "bipluk+ Studio lifetime license (commercial use, one location).",
                         "metadata": {"plan": "studio"},
                     },
                 },
@@ -2716,7 +2716,7 @@ Allow: /
 Disallow: /home
 Disallow: /banks/
 
-Sitemap: https://knob.monster/sitemap.xml"""
+Sitemap: https://bipluk.com/sitemap.xml"""
     return Response(content=content, media_type="text/plain")
 
 @app.get("/llms.txt")
@@ -2732,7 +2732,7 @@ async def llms_txt():
             logger.error(f"Failed to read static llms.txt: {e}")
 
     lines = [
-        "# knob.monster",
+        "# bipluk",
         "",
         "> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.",
         "",
@@ -2740,42 +2740,42 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Lifetime Pricing:** knob.monster+ Personal $39 (non-commercial) or knob.monster+ Studio $399 (commercial, one location). Sound packs from $9 in the Monster Shop.",
+        "- **Lifetime Pricing:** bipluk+ Personal $39 (non-commercial) or bipluk+ Studio $399 (commercial, one location). Sound packs from $9 in the Monster Shop.",
         "",
         "## Key Pages",
-        "- [Home Page](https://knob.monster/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
-        "- [Vintage Synth Cloud Backup](https://knob.monster/vintage-synth-cloud-backup): Pillar guide for DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.",
-        "- [Monster Shop](https://knob.monster/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
-        "- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.",
-        "- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): knob.monster vs Snoize SysEx Librarian.",
-        "- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): knob.monster vs Windows MIDI-OX.",
-        "- [MIDI-OX TLS Audit](https://knob.monster/audit/midiox): Independent transport-security review of midiox.com.",
-        "- [Payment Methods](https://knob.monster/payment-methods): Supported payment options.",
+        "- [Home Page](https://bipluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
+        "- [Vintage Synth Cloud Backup](https://bipluk.com/vintage-synth-cloud-backup): Pillar guide for DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.",
+        "- [Monster Shop](https://bipluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
+        "- [Alternatives Guide](https://bipluk.com/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.",
+        "- [Snoize Comparison](https://bipluk.com/knob-monster-vs-snoize-sysex-librarian): bipluk vs Snoize SysEx Librarian.",
+        "- [MIDI-OX Comparison](https://bipluk.com/knob-monster-vs-midi-ox): bipluk vs Windows MIDI-OX.",
+        "- [MIDI-OX TLS Audit](https://bipluk.com/audit/midiox): Independent transport-security review of midiox.com.",
+        "- [Payment Methods](https://bipluk.com/payment-methods): Supported payment options.",
         "",
         "## How-To Guides",
-        "- [Yamaha DX7 SysEx Backup](https://knob.monster/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)",
-        "- [Roland Juno-106 SysEx Backup](https://knob.monster/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)",
-        "- [Korg M1 SysEx Backup](https://knob.monster/how-to-backup-korg-m1-presets-sysex-transfer-guide)",
-        "- [Vintage Synth Battery Guide](https://knob.monster/why-your-vintage-synth-battery-is-killing-your-sounds)",
-        "- [Juno-106 Memory Loss Troubleshooting](https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide)",
-        "- [Web MIDI Engineering Notes](https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)",
-        "- [Silicon Microbes Lore](https://knob.monster/why-silicon-microbes-are-living-in-your-synthesizer)",
+        "- [Yamaha DX7 SysEx Backup](https://bipluk.com/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)",
+        "- [Roland Juno-106 SysEx Backup](https://bipluk.com/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)",
+        "- [Korg M1 SysEx Backup](https://bipluk.com/how-to-backup-korg-m1-presets-sysex-transfer-guide)",
+        "- [Vintage Synth Battery Guide](https://bipluk.com/why-your-vintage-synth-battery-is-killing-your-sounds)",
+        "- [Juno-106 Memory Loss Troubleshooting](https://bipluk.com/how-to-fix-juno-106-memory-loss-troubleshooting-guide)",
+        "- [Web MIDI Engineering Notes](https://bipluk.com/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)",
+        "- [Silicon Microbes Lore](https://bipluk.com/why-silicon-microbes-are-living-in-your-synthesizer)",
         "",
         "## Original Research (2026)",
-        "First-party data from knob.monster visitors. Cite: Half Radiation LLC, 2026 Vintage Synth Owner Survey, knob.monster, June 25–July 1, 2026.",
+        "First-party data from bipluk visitors. Cite: Half Radiation LLC, 2026 Vintage Synth Owner Survey, bipluk, June 25–July 1, 2026.",
         "",
-        "- **Survey page:** https://knob.monster/research/2026-vintage-synth-owner-survey",
-        "- **Machine-readable JSON:** https://knob.monster/research/2026-vintage-synth-owner-survey/data.json",
+        "- **Survey page:** https://bipluk.com/research/2026-vintage-synth-owner-survey",
+        "- **Machine-readable JSON:** https://bipluk.com/research/2026-vintage-synth-owner-survey/data.json",
         "- **Sample:** n=61 completed responses (2,417 impressions, 2.57% conversion)",
         "- **Segmentation:** 47.5% gear room (5+ boards), 41.0% bedroom (1–2 synths), 11.5% commercial",
         "- **Top brands** (valid gear lists, n=18): Roland 44%, Korg 39%, Moog 28%",
         "- **Frequently named models:** Juno-60/106, Korg MS-20, Yamaha DX7, Roland D-50",
         "",
         "## Launch Lessons (2026)",
-        "First-party founder field log from month one. Cite: Half Radiation LLC, Lessons from Launching a Browser SysEx Vault, knob.monster, June 2026.",
+        "First-party founder field log from month one. Cite: Half Radiation LLC, Lessons from Launching a Browser SysEx Vault, bipluk, June 2026.",
         "",
-        "- **Lessons page:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons",
-        "- **Machine-readable JSON:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons/data.json",
+        "- **Lessons page:** https://bipluk.com/research/2026-browser-sysex-vault-launch-lessons",
+        "- **Machine-readable JSON:** https://bipluk.com/research/2026-browser-sysex-vault-launch-lessons/data.json",
         "- **Survey popup:** 2.57% conversion (61/2,417), 58.5% dismissed",
         "- **Parser coverage at launch:** 5 dedicated Web MIDI dump flows",
         "- **Hacker News:** 52 points, 41 comments on Web MIDI timing post (late June 2026)",
@@ -2790,7 +2790,7 @@ async def llms_txt():
         if slug == "why-silicon-microbes-are-living-in-your-synthesizer":
             continue
         synth_name = data.get("synth_name", slug)
-        lines.append(f"- [{synth_name} Librarian](https://knob.monster/{slug}): {data.get('description', '')}")
+        lines.append(f"- [{synth_name} Librarian](https://bipluk.com/{slug}): {data.get('description', '')}")
         
     return Response(content="\n".join(lines), media_type="text/plain")
 
@@ -2805,7 +2805,7 @@ async def indexnow_key():
 # AGENT / AI DISCOVERY INFRASTRUCTURE
 # ============================================================
 
-SITE_BASE = "https://knob.monster"
+SITE_BASE = "https://bipluk.com"
 
 # --- Middleware: RFC 8288 Link Headers + Markdown Content Negotiation ---
 @app.middleware("http")
@@ -2819,7 +2819,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 
     # Markdown content negotiation (homepage only, text/markdown or text/x-markdown)
     if path == "/" and ("text/markdown" in accept or "text/x-markdown" in accept):
-        markdown_body = """# knob.monster — The iCloud for Vintage Synthesizers
+        markdown_body = """# bipluk — The iCloud for Vintage Synthesizers
 
 > Back up, organize, and search SysEx patch banks from your 1980s and 90s hardware directly in your web browser. No desktop software or USB drivers required.
 
@@ -2831,7 +2831,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 
 ## Pricing
 - **Personal**: $39 one-time lifetime. 1 user, non-commercial use.
-- **knob.monster+ Studio**: $399 one-time lifetime. Commercial use at one location. Same features as Personal.
+- **bipluk+ Studio**: $399 one-time lifetime. Commercial use at one location. Same features as Personal.
 - **Commercial / B2B**: Contact halfradiationllc@gmail.com for bespoke site licenses, white-labeling, and multi-site rollouts.
 
 ## API
@@ -2843,12 +2843,12 @@ async def agent_discovery_middleware(request: Request, call_next):
 See /auth.md for agent registration instructions.
 
 ## Links
-- [Sign Up](https://knob.monster/signup)
-- [Log In](https://knob.monster/login)
-- [Payment Methods](https://knob.monster/payment-methods)
-- [Resources](https://knob.monster/resources)
-- [Terms](https://knob.monster/terms)
-- [Privacy](https://knob.monster/privacy)
+- [Sign Up](https://bipluk.com/signup)
+- [Log In](https://bipluk.com/login)
+- [Payment Methods](https://bipluk.com/payment-methods)
+- [Resources](https://bipluk.com/resources)
+- [Terms](https://bipluk.com/terms)
+- [Privacy](https://bipluk.com/privacy)
 """
         token_count = len(markdown_body.split())
         return Response(
@@ -2901,7 +2901,7 @@ async def api_catalog():
 # --- RFC 8414: OAuth 2.0 Authorization Server Metadata ---
 @app.get("/.well-known/oauth-authorization-server")
 async def oauth_authorization_server():
-    """OAuth 2.0 AS metadata per RFC 8414. knob.monster uses Stripe for payments and
+    """OAuth 2.0 AS metadata per RFC 8414. bipluk uses Stripe for payments and
     email/password auth — this document describes what agents need to know."""
     metadata = {
         "issuer": SITE_BASE,
@@ -2959,22 +2959,22 @@ async def auth_md():
     """auth.md — agent registration instructions per workos/auth.md spec."""
     content = """# auth.md
 
-This document describes how AI agents can register and authenticate with **knob.monster**.
+This document describes how AI agents can register and authenticate with **bipluk**.
 
 ## Service Overview
 
-knob.monster is a browser-native cloud SysEx librarian for vintage synthesizers. Agents can use the API to manage patch banks and SysEx dumps.
+bipluk is a browser-native cloud SysEx librarian for vintage synthesizers. Agents can use the API to manage patch banks and SysEx dumps.
 
 ## Authentication
 
-knob.monster uses email/password authentication with session cookies. For agent access, use the REST API endpoints below.
+bipluk uses email/password authentication with session cookies. For agent access, use the REST API endpoints below.
 
 ### Registration
 
 To create an account as an agent:
 
 ```
-POST https://knob.monster/signup
+POST https://bipluk.com/signup
 Content-Type: application/x-www-form-urlencoded
 
 email=agent@example.com&password=YourPassword123!&confirm_password=YourPassword123!&plan=lifetime
@@ -2983,7 +2983,7 @@ email=agent@example.com&password=YourPassword123!&confirm_password=YourPassword1
 ### Login / Token Acquisition
 
 ```
-POST https://knob.monster/login
+POST https://bipluk.com/login
 Content-Type: application/x-www-form-urlencoded
 
 email=agent@example.com&password=YourPassword123!
@@ -3006,7 +3006,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access: knob.monster+ ($39) or knob.monster+ Studio ($399) lifetime plans. Checkout at `/checkout?plan=personal` or `/checkout?plan=studio`. Commercial/B2B via email.
+Premium access: bipluk+ ($39) or bipluk+ Studio ($399) lifetime plans. Checkout at `/checkout?plan=personal` or `/checkout?plan=studio`. Commercial/B2B via email.
 
 ## Discovery Documents
 
@@ -3028,7 +3028,7 @@ async def mcp_server_card():
     card = {
         "schemaVersion": "1.0",
         "serverInfo": {
-            "name": "knob.monster",
+            "name": "bipluk",
             "version": "1.0.0",
             "description": "Cloud SysEx librarian for vintage synthesizers. Back up, organize, and recall MIDI patch banks via Web MIDI.",
             "homepage": SITE_BASE,
@@ -3127,7 +3127,7 @@ async def openapi_spec():
     spec = {
         "openapi": "3.1.0",
         "info": {
-            "title": "knob.monster API",
+            "title": "bipluk API",
             "version": "1.0.0",
             "description": "Cloud SysEx librarian API for vintage synthesizers. Manage MIDI patch banks and SysEx dumps.",
             "contact": {"url": SITE_BASE},
@@ -3544,7 +3544,7 @@ if you have a juno-106, dx7, or m1 sitting in your studio right now, those sound
 
 unlock your vault and get full, unlimited access to knob monster today:
 
-👉 https://knob.monster/home
+👉 https://bipluk.com/home
 
 keep the analog alive,
 
@@ -3584,16 +3584,16 @@ def send_welcome_email_task(email: str):
         plain_body = (
             f"Hi {first_name_cap},\n\n"
             "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
-            "or desktop installers to do its job well. knob.monster already comes with the features you "
+            "or desktop installers to do its job well. bipluk already comes with the features you "
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
-            "Open your vault: https://knob.monster/home\n\n"
+            "Open your vault: https://bipluk.com/home\n\n"
             "Keep the analog alive,\n"
             "Justin at Knob Monster"
         )
 
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to knob.monster - Justin",
+            subject="welcome to bipluk - Justin",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -3733,10 +3733,10 @@ NEWSLETTER_TOPICS = [
 
 NEWSLETTER_PRODUCT_FACTS = """
 PRODUCT FACTS (use only these — do not invent features or pricing):
-- knob.monster is a browser SysEx librarian at https://knob.monster (Chrome/Edge, Web MIDI + SysEx).
+- bipluk is a browser SysEx librarian at https://bipluk.com (Chrome/Edge, Web MIDI + SysEx).
 - Dedicated parsers: Yamaha DX7, Roland Juno-106, Korg M1, Roland Jupiter-6, Casio CZ-101; generic scan for others.
 - Lifetime pricing: Personal $39 (non-commercial), Studio $399 (commercial). NOT a monthly subscription.
-- Shop sound packs from $9 at https://knob.monster/shop
+- Shop sound packs from $9 at https://bipluk.com/shop
 - Users back up, search, download .syx, and flash banks via Web MIDI.
 - Built by Half Radiation LLC. Support: halfradiationllc@gmail.com
 """
@@ -3744,10 +3744,10 @@ PRODUCT FACTS (use only these — do not invent features or pricing):
 NEWSLETTER_FOOTER = """
 ---
 back up your banks (lifetime — no subscription):
-https://knob.monster/home
+https://bipluk.com/home
 
 to stop receiving these, unsubscribe instantly:
-https://knob.monster/unsubscribe?token={{unsubscribe_token}}
+https://bipluk.com/unsubscribe?token={{unsubscribe_token}}
 """
 
 def get_openrouter_config():
@@ -3772,8 +3772,8 @@ def call_openrouter_chat(messages, json_object=False, timeout=30):
         headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "https://knob.monster",
-            "X-Title": "knob.monster",
+            "HTTP-Referer": "https://bipluk.com",
+            "X-Title": "bipluk",
         },
         method="POST",
     )
@@ -3810,7 +3810,7 @@ def answer_faq_question(question: str) -> dict:
         }
 
     corpus = faq_knowledge.build_faq_corpus()
-    prompt = f"""You are the knob.monster support assistant on the landing page.
+    prompt = f"""You are the bipluk support assistant on the landing page.
 Answer the user's question using ONLY the official FAQ knowledge below.
 When a FAQ clearly covers the question, reuse that FAQ answer text as closely as possible (light edits for flow are OK).
 Do not invent features, pricing, synth support, or policies that are not in the FAQ.
@@ -3922,7 +3922,7 @@ tip: write protect off, known-good midi cable (out → in), chrome open, then re
     faq_corpus = faq_knowledge.build_faq_corpus()
     logger.info(f"Selected newsletter topic: {selected_topic}")
 
-    prompt = f"""You write the knob.monster email — a field note for vintage synth owners (1983–1995 hardware).
+    prompt = f"""You write the bipluk email — a field note for vintage synth owners (1983–1995 hardware).
 
 VOICE: lowercase throughout. sound like a repair bench tech who has seen too many leaked batteries and flipped write-protect switches the wrong way. specific > poetic. no corporate hype, no "we're excited to announce", no sign-offs, no team name.
 
@@ -4038,7 +4038,7 @@ def run_newsletter_broadcast_sync(override_subject: str = None, override_body: s
                     msg['To'] = email
                     msg['Subject'] = subject
                     msg['Reply-To'] = "halfradiationllc@gmail.com"
-                    msg['List-Unsubscribe'] = f"<https://knob.monster/unsubscribe?token={unsubscribe_token}>"
+                    msg['List-Unsubscribe'] = f"<https://bipluk.com/unsubscribe?token={unsubscribe_token}>"
                     msg['Precedence'] = "bulk"
                     msg.attach(MIMEText(personal_body, 'plain'))
                     
@@ -4109,7 +4109,7 @@ async def newsletter_pending(request: Request):
             {
                 "email": email,
                 "body": body_template.replace("{{unsubscribe_token}}", unsubscribe_token),
-                "list_unsubscribe": f"https://knob.monster/unsubscribe?token={unsubscribe_token}",
+                "list_unsubscribe": f"https://bipluk.com/unsubscribe?token={unsubscribe_token}",
             }
         )
 

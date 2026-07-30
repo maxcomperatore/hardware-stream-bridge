@@ -5,7 +5,7 @@ import json
 import sys
 
 def ping_indexnow(local=False):
-    sitemap_url = "http://127.0.0.1:8000/sitemap.xml" if local else "https://knob.monster/sitemap.xml"
+    sitemap_url = "http://127.0.0.1:8000/sitemap.xml" if local else "https://bipluk/sitemap.xml"
     print(f"Fetching sitemap from {sitemap_url}...")
     try:
         req = urllib.request.Request(sitemap_url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -29,7 +29,7 @@ def ping_indexnow(local=False):
         url = url_tag.text
         if local:
             # Swap production domain for local testing if requested
-            url = url.replace("https://knob.monster", "http://127.0.0.1:8000")
+            url = url.replace("https://bipluk", "http://127.0.0.1:8000")
         urls.append(url)
 
     print(f"Found {len(urls)} URLs to submit:")
@@ -37,9 +37,9 @@ def ping_indexnow(local=False):
         print(f" - {u}")
 
     payload = {
-        "host": "knob.monster" if not local else "127.0.0.1:8000",
+        "host": "bipluk" if not local else "127.0.0.1:8000",
         "key": "7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f",
-        "keyLocation": "https://knob.monster/7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f.txt" if not local else "http://127.0.0.1:8000/7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f.txt",
+        "keyLocation": "https://bipluk/7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f.txt" if not local else "http://127.0.0.1:8000/7f8b9e6c5d4c3b2a1a0f9e8d7c6b5a4f.txt",
         "urlList": urls
     }
 

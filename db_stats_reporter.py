@@ -40,7 +40,7 @@ def send_stats_report():
     # Construct Embed payload
     conversion_rate = (premium_users / total_users * 100) if total_users > 0 else 0.0
     embed = {
-        "title": "📊 Weekly knob.monster Platform Report",
+        "title": "📊 Weekly bipluk Platform Report",
         "description": "Here is the summary of database metrics and growth for this week.",
         "color": 0x3498db,
         "fields": [
@@ -52,14 +52,14 @@ def send_stats_report():
         ],
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "footer": {
-            "text": "knob.monster cron jobs",
-            "icon_url": "https://knob.monster/static/logo.png"
+            "text": "bipluk cron jobs",
+            "icon_url": "https://bipluk/static/logo.png"
         }
     }
     
     payload = {
         "username": "Knob Monster Bot",
-        "avatar_url": "https://knob.monster/static/logo.png",
+        "avatar_url": "https://bipluk/static/logo.png",
         "embeds": [embed]
     }
     

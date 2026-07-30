@@ -6,21 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="STOaPWGwgPycvNfxtzTRhyetLyvasi3uelnlo5SV_QA" />
     {% include "partials/local_fonts.html" %}
-    <title>{{ seo.title if seo else "knob.monster | SysEx Librarian & Vintage Synth Cloud Backup" }}</title>
-    <link rel="canonical" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
-    <link rel="alternate" hreflang="en" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
-    <link rel="alternate" hreflang="x-default" href="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
-    <meta name="description"
-        content="{{ seo.description if seo else 'Browser SysEx librarian and vintage synth cloud backup. DX7 backup, Juno-106 patches, and Korg M1 presets — no software install, Web MIDI in your browser.' }}">
-    <meta name="keywords"
-        content="{{ seo.keywords if seo else 'sysex librarian, vintage synth backup, dx7 backup, juno-106 patches, cloud backup for synthesizers, backup dx7 patches without software, best sysex librarian 2026, midi-ox alternative mac' }}">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="knob.monster">
+    <meta property="og:site_name" content="bipluk">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <meta property="og:url" content="https://bipluk/{{ seo_slug if seo_slug else '' }}">
     <meta property="og:title"
-        content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
+        content="{{ seo.title if seo else 'bipluk | The iCloud for Vintage Synthesizers' }}">
     <meta property="og:description"
         content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
     <meta property="og:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
@@ -30,9 +20,9 @@
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://knob.monster/{{ seo_slug if seo_slug else '' }}">
+    <meta property="twitter:url" content="https://bipluk/{{ seo_slug if seo_slug else '' }}">
     <meta property="twitter:title"
-        content="{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}">
+        content="{{ seo.title if seo else 'bipluk | The iCloud for Vintage Synthesizers' }}">
     <meta property="twitter:description"
         content="{{ seo.description if seo else 'Backup & recall presets from vintage DX7, Juno-106, and Korg M1 synthesizers in the cloud via Web MIDI.' }}">
     <meta property="twitter:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
@@ -288,7 +278,7 @@
             filter: drop-shadow(0 0 14px var(--gem-glow, rgba(248, 250, 252, 0.35))) drop-shadow(0 0 8px var(--lapis-glow-soft, rgba(74, 127, 184, 0.28)));
         }
 
-        /* knob.monster+ — lapis brand (same family as price gem) */
+        /* bipluk+ — lapis brand (same family as price gem) */
         .text-brand-plus {
             color: var(--lapis-light);
         }
@@ -588,31 +578,31 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "{{ seo.title if seo else 'knob.monster | The iCloud for Vintage Synthesizers' }}",
+      "name": "{{ seo.title if seo else 'bipluk | The iCloud for Vintage Synthesizers' }}",
       "description": "{{ seo.description if seo else 'Back up, search, and recall soundbanks from vintage DX7, Juno-106, and Korg M1 synthesizers. Store presets in the cloud via native Web MIDI.' }}",
       "operatingSystem": "Windows, macOS, Linux, Android, iOS",
       "applicationCategory": "MultimediaApplication",
       "offers": [
         {
           "@type": "Offer",
-          "name": "knob.monster+ Personal",
+          "name": "bipluk+ Personal",
           "price": "39.00",
           "priceCurrency": "USD",
-          "url": "https://knob.monster/#pricing",
+          "url": "https://bipluk/#pricing",
           "description": "One-time lifetime license for personal, non-commercial use. Not a subscription."
         },
         {
           "@type": "Offer",
-          "name": "knob.monster+ Studio",
+          "name": "bipluk+ Studio",
           "price": "399.00",
           "priceCurrency": "USD",
-          "url": "https://knob.monster/#pricing",
+          "url": "https://bipluk/#pricing",
           "description": "One-time lifetime commercial license for one business location. Not a subscription."
         }
       ],
       "author": {
         "@type": "Organization",
-        "name": "knob.monster"
+        "name": "bipluk"
       }
     }
     </script>
@@ -626,7 +616,7 @@
         "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
-        "contentUrl": "https://knob.monster/static/1.mp4?v=20260701b"
+        "contentUrl": "https://bipluk/static/1.mp4?v=20260701b"
       },
       {
         "@context": "https://schema.org",
@@ -636,7 +626,7 @@
         "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
-        "contentUrl": "https://knob.monster/static/2.mp4?v=20260701b"
+        "contentUrl": "https://bipluk/static/2.mp4?v=20260701b"
       }
     ]
     </script>
@@ -647,10 +637,10 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is knob.monster?",
+          "name": "What is bipluk?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "knob.monster is a browser-native cloud SysEx librarian and patch manager designed for vintage synthesizers from the 1980s and 90s. It eliminates the need for legacy drivers, desktop software, or complicated MIDI-OX configurations by connecting your instruments directly to the web."
+            "text": "bipluk is a browser-native cloud SysEx librarian and patch manager designed for vintage synthesizers from the 1980s and 90s. It eliminates the need for legacy drivers, desktop software, or complicated MIDI-OX configurations by connecting your instruments directly to the web."
           }
         },
         {
@@ -682,7 +672,7 @@
           "name": "How do I prevent 'Buffer Overflow' errors?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB data. knob.monster's MIDI transmission protocol is fine-tuned to throttle outbound dumps into small packages with 60ms pauses, ensuring your physical hardware can write the data to memory without dropping packets."
+            "text": "Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB data. bipluk's MIDI transmission protocol is fine-tuned to throttle outbound dumps into small packages with 60ms pauses, ensuring your physical hardware can write the data to memory without dropping packets."
           }
         },
         {
@@ -690,15 +680,15 @@
           "name": "Are my patches private and secure?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. All soundbanks and SysEx dumps uploaded to knob.monster are stored securely in your private cloud account. We only read the ASCII patch names to display them in your private searchable library, and your raw .syx binary files are never shared."
+            "text": "Yes. All soundbanks and SysEx dumps uploaded to bipluk are stored securely in your private cloud account. We only read the ASCII patch names to display them in your private searchable library, and your raw .syx binary files are never shared."
           }
         },
         {
           "@type": "Question",
-          "name": "Is knob.monster secure from a cybersecurity standpoint?",
+          "name": "Is bipluk secure from a cybersecurity standpoint?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. knob.monster is designed with a defense-in-depth security model. Because it is completely browser-native, you do not need to install local desktop executables, background drivers, or untrusted utilities, keeping your operating system completely isolated from security risks. On the backend, our processing engine runs in isolated environments with strict input sanitization on all uploaded binary data to prevent SSRF vulnerabilities or buffer exploit attempts. Additionally, all billing is securely managed via Stripe—no credit cards or payment credentials ever touch or reside on our servers."
+            "text": "Yes. bipluk is designed with a defense-in-depth security model. Because it is completely browser-native, you do not need to install local desktop executables, background drivers, or untrusted utilities, keeping your operating system completely isolated from security risks. On the backend, our processing engine runs in isolated environments with strict input sanitization on all uploaded binary data to prevent SSRF vulnerabilities or buffer exploit attempts. Additionally, all billing is securely managed via Stripe—no credit cards or payment credentials ever touch or reside on our servers."
           }
         },
         {
@@ -706,15 +696,15 @@
           "name": "Can I export and download my SysEx files?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Absolutely. Every backup captured using knob.monster can be downloaded as a standard .syx binary file at any time. Your data is never locked in, allowing you to use your backups with classic tools like Snoize, MIDI-OX, or hardware sequencers."
+            "text": "Absolutely. Every backup captured using bipluk can be downloaded as a standard .syx binary file at any time. Your data is never locked in, allowing you to use your backups with classic tools like Snoize, MIDI-OX, or hardware sequencers."
           }
         },
         {
           "@type": "Question",
-          "name": "Is knob.monster better than Snoize or MIDI-OX?",
+          "name": "Is bipluk better than Snoize or MIDI-OX?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics. MIDI-OX hasn't been updated since 2011, runs on Windows 95/XP, and its official website currently triggers invalid SSL certificate warnings. Beyond the security risks, manually adjusting buffer settings on ancient desktop software is a headache. knob.monster runs directly in your browser with zero installation, automatically manages buffer sizing to prevent transfer crashes, and keeps your library synced in the cloud."
+            "text": "Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics. MIDI-OX hasn't been updated since 2011, runs on Windows 95/XP, and its official website currently triggers invalid SSL certificate warnings. Beyond the security risks, manually adjusting buffer settings on ancient desktop software is a headache. bipluk runs directly in your browser with zero installation, automatically manages buffer sizing to prevent transfer crashes, and keeps your library synced in the cloud."
           }
         },
         {
@@ -722,7 +712,7 @@
           "name": "Why use this instead of free utilities or MIDI Quest?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Regardless of whether you understand the complex binary details of SysEx or have no clue what that even is, knob.monster just works without any local installation or setup. It saves you time so you can focus on exploring soundbanks and making music. Plus, you get zero setup, no app sprawl, a secure cloud library, and transparent, fair pricing compared to legacy solutions like SoundQuest/MIDI Quest or SoundTower which cost hundreds of dollars."
+            "text": "Regardless of whether you understand the complex binary details of SysEx or have no clue what that even is, bipluk just works without any local installation or setup. It saves you time so you can focus on exploring soundbanks and making music. Plus, you get zero setup, no app sprawl, a secure cloud library, and transparent, fair pricing compared to legacy solutions like SoundQuest/MIDI Quest or SoundTower which cost hundreds of dollars."
           }
         },
         {
@@ -730,23 +720,23 @@
           "name": "Does it support editing patches in real time?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "knob.monster is primarily a librarian for backup, storage, organization, and quick retrieval of patch banks. While it does not feature a graphical synthesizer editor (with virtual sliders for every parameter), it allows you to audition and swap banks in one click."
+            "text": "bipluk is primarily a librarian for backup, storage, organization, and quick retrieval of patch banks. While it does not feature a graphical synthesizer editor (with virtual sliders for every parameter), it allows you to audition and swap banks in one click."
           }
         },
         {
           "@type": "Question",
-          "name": "What is the price of knob.monster?",
+          "name": "What is the price of bipluk?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We offer transparent lifetime pricing: knob.monster+ at $39 (non-commercial) and knob.monster+ Studio at $399 (commercial use at one location). Same product, different license. One payment each — no monthly fees, no automatic renewals. Paid tiers include unlimited .syx export. Repair shops and multi-site deployments can contact us for bespoke commercial licensing."
+            "text": "We offer transparent lifetime pricing: bipluk+ at $39 (non-commercial) and bipluk+ Studio at $399 (commercial use at one location). Same product, different license. One payment each — no monthly fees, no automatic renewals. Paid tiers include unlimited .syx export. Repair shops and multi-site deployments can contact us for bespoke commercial licensing."
           }
         },
         {
           "@type": "Question",
-          "name": "Is knob.monster a subscription?",
+          "name": "Is bipluk a subscription?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. knob.monster is not a subscription service. Personal and Studio are one-time lifetime purchases processed through Stripe. Your vault stays accessible and you can download your .syx backups at any time. There is no monthly rent for your patches."
+            "text": "No. bipluk is not a subscription service. Personal and Studio are one-time lifetime purchases processed through Stripe. Your vault stays accessible and you can download your .syx backups at any time. There is no monthly rent for your patches."
           }
         },
         {
@@ -759,10 +749,10 @@
         },
         {
           "@type": "Question",
-          "name": "Who is behind knob.monster?",
+          "name": "Who is behind bipluk?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "knob.monster is built by Half Radiation LLC, a small independent team of vintage synthesizer enthusiasts and software developers. We built this tool to solve the frustration of backing up and organizing our own classic hardware rigs."
+            "text": "bipluk is built by Half Radiation LLC, a small independent team of vintage synthesizer enthusiasts and software developers. We built this tool to solve the frustration of backing up and organizing our own classic hardware rigs."
           }
         },
         {
@@ -781,13 +771,13 @@
       {
         "@context": "https://schema.org/",
         "@type": "ImageObject",
-        "contentUrl": "https://knob.monster/static/logo.svg",
-        "license": "https://knob.monster/terms",
-        "acquireLicensePage": "https://knob.monster/#pricing",
-        "creditText": "knob.monster",
+        "contentUrl": "https://bipluk/static/logo.svg",
+        "license": "https://bipluk/terms",
+        "acquireLicensePage": "https://bipluk/#pricing",
+        "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
-          "name": "knob.monster"
+          "name": "bipluk"
         },
         "copyrightNotice": "Half Radiation LLC"
       },
@@ -795,12 +785,12 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('studio_detail.avif') }}",
-        "license": "https://knob.monster/terms",
-        "acquireLicensePage": "https://knob.monster/#pricing",
-        "creditText": "knob.monster",
+        "license": "https://bipluk/terms",
+        "acquireLicensePage": "https://bipluk/#pricing",
+        "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
-          "name": "knob.monster"
+          "name": "bipluk"
         },
         "copyrightNotice": "Half Radiation LLC"
       },
@@ -808,12 +798,12 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('midi_handshake.avif') }}",
-        "license": "https://knob.monster/terms",
-        "acquireLicensePage": "https://knob.monster/#pricing",
-        "creditText": "knob.monster",
+        "license": "https://bipluk/terms",
+        "acquireLicensePage": "https://bipluk/#pricing",
+        "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
-          "name": "knob.monster"
+          "name": "bipluk"
         },
         "copyrightNotice": "Half Radiation LLC"
       },
@@ -821,12 +811,12 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('index_extraction.avif') }}",
-        "license": "https://knob.monster/terms",
-        "acquireLicensePage": "https://knob.monster/#pricing",
-        "creditText": "knob.monster",
+        "license": "https://bipluk/terms",
+        "acquireLicensePage": "https://bipluk/#pricing",
+        "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
-          "name": "knob.monster"
+          "name": "bipluk"
         },
         "copyrightNotice": "Half Radiation LLC"
       },
@@ -834,12 +824,12 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('recall_button.avif') }}",
-        "license": "https://knob.monster/terms",
-        "acquireLicensePage": "https://knob.monster/#pricing",
-        "creditText": "knob.monster",
+        "license": "https://bipluk/terms",
+        "acquireLicensePage": "https://bipluk/#pricing",
+        "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
-          "name": "knob.monster"
+          "name": "bipluk"
         },
         "copyrightNotice": "Half Radiation LLC"
       },
@@ -847,12 +837,12 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('trade_offer.avif') }}",
-        "license": "https://knob.monster/terms",
-        "acquireLicensePage": "https://knob.monster/#pricing",
-        "creditText": "knob.monster",
+        "license": "https://bipluk/terms",
+        "acquireLicensePage": "https://bipluk/#pricing",
+        "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
-          "name": "knob.monster"
+          "name": "bipluk"
         },
         "copyrightNotice": "Half Radiation LLC"
       }
@@ -1339,7 +1329,7 @@
                             style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
                     <span
-                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-lapis-light transition-colors">knob.monster™</span>
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-lapis-light transition-colors">bipluk™</span>
                 </a>
             </div>
 
@@ -1590,7 +1580,7 @@
                     </ul>
                 </div>
 
-                <!-- knob.monster -->
+                <!-- bipluk -->
                 <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 space-y-6 reveal reveal-right"
                     style="--delay: 150ms;">
                     <div
@@ -1598,7 +1588,7 @@
                         <img src="/static/icons/dinkie/checkmark-circled.svg" alt="" width="16"
                             height="16" class="h-4 w-4 dinkie-lapis" />
                     </div>
-                    <h3 class="text-sm font-pixel uppercase text-white tracking-wide">knob.monster Flow</h3>
+                    <h3 class="text-sm font-pixel uppercase text-white tracking-wide">bipluk Flow</h3>
                     <ul class="space-y-3.5 text-xs text-zinc-300">
                         <li class="flex items-start gap-3">
                             <img src="/static/icons/dinkie/window-browser.svg" alt="" width="14"
@@ -1704,7 +1694,7 @@
                                     </h3>
                                 </div>
                                 <p class="text-2xs text-zinc-400 leading-relaxed font-normal">
-                                    Plug in your synth using a standard USB-to-MIDI adapter. Open knob.monster: the
+                                    Plug in your synth using a standard USB-to-MIDI adapter. Open bipluk: the
                                     browser
                                     Web MIDI API initiates a handshake immediately.
                                 </p>
@@ -1806,13 +1796,13 @@
                     <div id="stamp-diamond"
                         class="absolute top-6 right-6 -rotate-12 pointer-events-none select-none flex items-center justify-center w-12 h-12 shadow-lapis-glow-lg">
                         <img id="landing-lifetime-avatar" src="/static/logo.svg"
-                            class="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-cover bg-zinc-950" alt="knob.monster+ Stamp">
+                            class="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-cover bg-zinc-950" alt="bipluk+ Stamp">
                         <img src="/static/panels/transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none" style="image-rendering: pixelated; image-rendering: crisp-edges;">
                     </div>
                     <div class="space-y-5">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap pr-12">
-                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">knob.monster+</h3>
+                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">bipluk+</h3>
                             </div>
                             <p class="text-xs text-zinc-400 mt-1">Home &amp; hobby. Non-commercial.</p>
                         </div>
@@ -1911,13 +1901,13 @@
                     style="--delay: 280ms;">
                     <div class="absolute top-6 right-6 rotate-12 pointer-events-none select-none flex items-center justify-center w-12 h-12 shadow-lapis-glow-soft">
                         <img src="/static/logo.svg"
-                            class="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-contain bg-zinc-950 p-1.5" style="image-rendering: pixelated;" alt="knob.monster+ Studio Stamp">
+                            class="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-contain bg-zinc-950 p-1.5" style="image-rendering: pixelated;" alt="bipluk+ Studio Stamp">
                         <img src="/static/panels/transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none" style="image-rendering: pixelated; image-rendering: crisp-edges;">
                     </div>
                     <div class="space-y-5">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap pr-12">
-                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">knob.monster+ Studio
+                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">bipluk+ Studio
                                 </h3>
             </div>
                             <p class="text-xs text-zinc-400 mt-1">Producers, gear rooms &amp; paid client work.</p>
@@ -1986,7 +1976,7 @@
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
-                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold">$200+</span>. <span class="text-brand-plus font-semibold">knob.monster+</span> is
+                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold">$200+</span>. <span class="text-brand-plus font-semibold">bipluk+</span> is
                     <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{
                             pricing.symbol }}</span><span id="pricing-anchor-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount
                             }}</span></span>
@@ -2802,28 +2792,28 @@
                             execute: async function (args) {
                                 const res = await fetch('/banks', { credentials: 'include' });
                                 if (!res.ok) return { error: "Authentication required. Please log in at /login." };
-                                return { result: "Search requires a premium account. Visit knob.monster/signup to get started." };
+                                return { result: "Search requires a premium account. Visit bipluk/signup to get started." };
                             }
                         },
                         {
                             name: "get_pricing",
-                            description: "Get current pricing plans for knob.monster",
+                            description: "Get current pricing plans for bipluk",
                             inputSchema: { type: "object", properties: {} },
                             execute: async function () {
                                 return {
                                     plans: [
                                         { name: "Personal", price: "$39 one-time", billing: "lifetime", commercial: false },
-                                        { name: "knob.monster+ Studio", price: "$399 one-time", billing: "lifetime", commercial: true },
+                                        { name: "bipluk+ Studio", price: "$399 one-time", billing: "lifetime", commercial: true },
                                         { name: "Commercial / B2B", price: "Contact for quote", billing: "custom", contact: "halfradiationllc@gmail.com", perks: ["White-labeling", "Multi-site licenses", "Repair shop deployments", "Dedicated onboarding"] }
                                     ],
-                                    signup_url: "https://knob.monster/signup",
+                                    signup_url: "https://bipluk/signup",
                                     payment_methods: ["Visa", "Mastercard", "Amex", "Apple Pay", "Google Pay", "Cash App Pay", "Pix", "Naver Pay", "USDC"]
                                 };
                             }
                         },
                         {
                             name: "get_supported_synthesizers",
-                            description: "Get the list of vintage synthesizers supported by knob.monster for SysEx backup and recall",
+                            description: "Get the list of vintage synthesizers supported by bipluk for SysEx backup and recall",
                             inputSchema: { type: "object", properties: {} },
                             execute: async function () {
                                 return {
@@ -2835,8 +2825,8 @@
                                         "Roland Juno-60 (MIDI modded)", "Korg Wavestation",
                                         "Generic (universal ASCII patch name scanner)"
                                     ],
-                                    api_docs: "https://knob.monster/openapi.json",
-                                    llms_txt: "https://knob.monster/llms.txt"
+                                    api_docs: "https://bipluk/openapi.json",
+                                    llms_txt: "https://bipluk/llms.txt"
                                 };
                             }
                         }

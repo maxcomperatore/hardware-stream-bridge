@@ -6,18 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
-    <title>2026 Vintage Synth Owner Survey: Setup &amp; Gear Data | knob.monster</title>
+    <title>2026 Vintage Synth Owner Survey: Setup &amp; Gear Data | bipluk</title>
     <meta name="description"
-        content="First-party survey of 61 vintage synth owners: 47.5% gear room, 41% bedroom studio, 11.5% commercial. Roland, Korg, and Moog dominate desk lists. Published by knob.monster.">
+        content="First-party survey of 61 vintage synth owners: 47.5% gear room, 41% bedroom studio, 11.5% commercial. Roland, Korg, and Moog dominate desk lists. Published by bipluk.">
     <meta name="keywords"
-        content="vintage synth owner survey, synthesizer collector statistics, sysex backup habits, roland juno owners, knob.monster research">
-    {% set seo_canonical = "https://knob.monster/research/2026-vintage-synth-owner-survey" %}
-    {% set seo_title = "2026 Vintage Synth Owner Survey: Setup & Gear Data | knob.monster" %}
+        content="vintage synth owner survey, synthesizer collector statistics, sysex backup habits, roland juno owners, bipluk research">
+    {% set seo_canonical = "https://bipluk/research/2026-vintage-synth-owner-survey" %}
+    {% set seo_title = "2026 Vintage Synth Owner Survey: Setup & Gear Data | bipluk" %}
     {% set seo_description = "First-party survey of 61 vintage synth owners: 47.5% gear room, 41% bedroom studio, 11.5% commercial. Roland, Korg, and Moog dominate desk lists." %}
     {% set seo_schema_type = "Dataset" %}
     {% set seo_date_published = "2026-07-01" %}
     {% set seo_temporal_coverage = "2026-06-25/2026-07-01" %}
-    {% set seo_distribution_url = "https://knob.monster/research/2026-vintage-synth-owner-survey/data.json" %}
+    {% set seo_distribution_url = "https://bipluk/research/2026-vintage-synth-owner-survey/data.json" %}
     {% include 'partials/seo_article_meta.html' %}
 
     {% include 'partials/tailwind_lapis.html' %}
@@ -44,7 +44,7 @@
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <a href="/" class="flex items-center gap-2.5 group">
                 <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24" class="w-6 h-6" style="image-rendering: pixelated;">
-                <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
+                <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">bipluk</span>
             </a>
             <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
                 <a href="/resources" class="hover:text-white transition-colors">Guides</a>
@@ -65,7 +65,7 @@
             </h1>
             <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
                 First-party data from {{ survey.shown | int }} survey impressions and {{ survey.responses_q1 }} completed
-                responses on knob.monster. We asked how people describe their studio, then what hardware sits on the desk.
+                responses on bipluk. We asked how people describe their studio, then what hardware sits on the desk.
                 This page publishes the segmentation and gear mentions we use for product and pricing decisions.
             </p>
             <p class="text-2xs text-zinc-600 font-mono uppercase tracking-wider">
@@ -119,7 +119,7 @@
 
             <div class="space-y-6">
                 <h2 class="text-lg font-pixel text-white uppercase tracking-wide border-b border-zinc-800 pb-3">
-                    Models &amp; knob.monster support overlap
+                    Models &amp; bipluk support overlap
                 </h2>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm font-mono border-collapse">
@@ -127,7 +127,7 @@
                             <tr class="text-2xs uppercase tracking-wider text-zinc-500 border-b border-zinc-800">
                                 <th class="py-3 pr-4">Model / family</th>
                                 <th class="py-3 pr-4">Mentions</th>
-                                <th class="py-3">knob.monster</th>
+                                <th class="py-3">bipluk</th>
                             </tr>
                         </thead>
                         <tbody class="text-zinc-300">
@@ -176,7 +176,7 @@
                 </ul>
                 <p class="text-2xs text-zinc-600 font-mono pt-2">
                     Survey conversion: {{ survey.conversion_pct }}% ({{ survey.responses_q1 }} / {{ survey.shown }} unique impressions).
-                    Cite this page as: Half Radiation LLC, <em>2026 Vintage Synth Owner Survey</em>, knob.monster, {{ survey.period }}.
+                    Cite this page as: Half Radiation LLC, <em>2026 Vintage Synth Owner Survey</em>, bipluk, {{ survey.period }}.
                 </p>
             </div>
 

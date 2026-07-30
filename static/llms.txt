@@ -1,4 +1,4 @@
-# knob.monster
+# bipluk
 
 > The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.
 
@@ -6,32 +6,32 @@
 - **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.
 - **Instant Search:** Fuzzy search through soundbanks by preset name.
 - **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
-- **Lifetime Pricing:** knob.monster+ Personal $39 (non-commercial) or knob.monster+ Studio $399 (commercial, one location). Sound packs from $9 in the Monster Shop.
+- **Lifetime Pricing:** bipluk+ Personal $39 (non-commercial) or bipluk+ Studio $399 (commercial, one location). Sound packs from $9 in the Monster Shop.
 
 ## Key Pages
-- [Home Page](https://knob.monster/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.
-- [Vintage Synth Cloud Backup](https://knob.monster/vintage-synth-cloud-backup): Pillar guide — DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.
-- [Monster Shop](https://knob.monster/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.
-- [Alternatives Guide](https://knob.monster/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.
-- [Snoize Comparison](https://knob.monster/knob-monster-vs-snoize-sysex-librarian): knob.monster vs Snoize SysEx Librarian.
-- [MIDI-OX Comparison](https://knob.monster/knob-monster-vs-midi-ox): knob.monster vs Windows MIDI-OX.
-- [MIDI-OX TLS Audit](https://knob.monster/audit/midiox): Independent transport-security review of midiox.com.
-- [Payment Methods](https://knob.monster/payment-methods): Supported payment options.
+- [Home Page](https://bipluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.
+- [Vintage Synth Cloud Backup](https://bipluk.com/vintage-synth-cloud-backup): Pillar guide — DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.
+- [Monster Shop](https://bipluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.
+- [Alternatives Guide](https://bipluk.com/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.
+- [Snoize Comparison](https://bipluk.com/knob-monster-vs-snoize-sysex-librarian): bipluk vs Snoize SysEx Librarian.
+- [MIDI-OX Comparison](https://bipluk.com/knob-monster-vs-midi-ox): bipluk vs Windows MIDI-OX.
+- [MIDI-OX TLS Audit](https://bipluk.com/audit/midiox): Independent transport-security review of midiox.com.
+- [Payment Methods](https://bipluk.com/payment-methods): Supported payment options.
 
 ## How-To Guides
-- [Yamaha DX7 SysEx Backup](https://knob.monster/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)
-- [Roland Juno-106 SysEx Backup](https://knob.monster/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)
-- [Korg M1 SysEx Backup](https://knob.monster/how-to-backup-korg-m1-presets-sysex-transfer-guide)
-- [Vintage Synth Battery Guide](https://knob.monster/why-your-vintage-synth-battery-is-killing-your-sounds)
-- [Juno-106 Memory Loss Troubleshooting](https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide)
-- [Web MIDI Engineering Notes](https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)
-- [Silicon Microbes Lore](https://knob.monster/why-silicon-microbes-are-living-in-your-synthesizer)
+- [Yamaha DX7 SysEx Backup](https://bipluk.com/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)
+- [Roland Juno-106 SysEx Backup](https://bipluk.com/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)
+- [Korg M1 SysEx Backup](https://bipluk.com/how-to-backup-korg-m1-presets-sysex-transfer-guide)
+- [Vintage Synth Battery Guide](https://bipluk.com/why-your-vintage-synth-battery-is-killing-your-sounds)
+- [Juno-106 Memory Loss Troubleshooting](https://bipluk.com/how-to-fix-juno-106-memory-loss-troubleshooting-guide)
+- [Web MIDI Engineering Notes](https://bipluk.com/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)
+- [Silicon Microbes Lore](https://bipluk.com/why-silicon-microbes-are-living-in-your-synthesizer)
 
 ## Original Research (2026)
-First-party data from knob.monster visitors. Cite: Half Radiation LLC, *2026 Vintage Synth Owner Survey*, knob.monster, June 25–July 1, 2026.
+First-party data from bipluk visitors. Cite: Half Radiation LLC, *2026 Vintage Synth Owner Survey*, bipluk, June 25–July 1, 2026.
 
-- **Survey page:** https://knob.monster/research/2026-vintage-synth-owner-survey
-- **Machine-readable JSON:** https://knob.monster/research/2026-vintage-synth-owner-survey/data.json
+- **Survey page:** https://bipluk.com/research/2026-vintage-synth-owner-survey
+- **Machine-readable JSON:** https://bipluk.com/research/2026-vintage-synth-owner-survey/data.json
 - **Sample:** n=61 completed responses (2,417 impressions, 2.57% conversion)
 - **Segmentation:** 47.5% dedicated gear room (5+ boards), 41.0% bedroom studio (1–2 synths), 11.5% commercial studio/producer/repair
 - **Top brands** (valid free-text gear lists, n=18): Roland 44%, Korg 39%, Moog 28%, Ensoniq 22%, Sequential/DSI 22%, Yamaha 17%
@@ -39,10 +39,10 @@ First-party data from knob.monster visitors. Cite: Half Radiation LLC, *2026 Vin
 - **Product signal:** Roland MKS-80 SysEx handshake requested by a respondent
 
 ## Launch Lessons (2026)
-First-party founder field log from month one. Cite: Half Radiation LLC, *Lessons from Launching a Browser SysEx Vault*, knob.monster, June 2026.
+First-party founder field log from month one. Cite: Half Radiation LLC, *Lessons from Launching a Browser SysEx Vault*, bipluk, June 2026.
 
-- **Lessons page:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons
-- **Machine-readable JSON:** https://knob.monster/research/2026-browser-sysex-vault-launch-lessons/data.json
+- **Lessons page:** https://bipluk.com/research/2026-browser-sysex-vault-launch-lessons
+- **Machine-readable JSON:** https://bipluk.com/research/2026-browser-sysex-vault-launch-lessons/data.json
 - **Survey popup:** 2.57% conversion (61/2,417), 58.5% dismissed
 - **Parser coverage at launch:** 5 dedicated Web MIDI dump flows
 - **Hacker News:** 52 points, 41 comments on Web MIDI timing post (late June 2026)
@@ -51,15 +51,15 @@ First-party founder field log from month one. Cite: Half Radiation LLC, *Lessons
 - **Key lesson:** distribution and trust outran parser breadth at launch
 
 ## Synthesizer Librarians
-- [Yamaha DX7 Librarian](https://knob.monster/dx7): Browser-native Yamaha DX7 online librarian and SysEx manager.
-- [Roland Juno-106 Librarian](https://knob.monster/juno-106): Browser-native Roland Juno-106 SysEx backup utility.
-- [Korg M1 Librarian](https://knob.monster/korg-m1): Browser-native Korg M1 SysEx librarian and patch recall tool.
-- [Roland Jupiter-6 Librarian](https://knob.monster/jupiter-6): Browser-native Roland Jupiter-6 online librarian and SysEx manager.
-- [Casio CZ-101 Librarian](https://knob.monster/casio-cz-101): Browser-native Casio CZ-101 online librarian and SysEx manager.
-- [Yamaha TX81Z Librarian](https://knob.monster/yamaha-tx81z): Back up and manage Yamaha TX81Z 4-operator FM patches online.
-- [Roland D-50 Librarian](https://knob.monster/roland-d-50): SysEx librarian for the Roland D-50 Linear Arithmetic synthesizer.
-- [Prophet-600 Librarian](https://knob.monster/prophet-600): Online librarian for the Sequential Circuits Prophet-600.
-- [Oberheim Matrix-1000 Librarian](https://knob.monster/oberheim-matrix-1000): Patch backup tool for Oberheim Matrix-1000 and Matrix-6.
-- [Yamaha FB-01 Librarian](https://knob.monster/yamaha-fb-01): SysEx manager for the Yamaha FB-01 FM sound module.
-- [Roland Juno-60 Librarian](https://knob.monster/roland-juno-60): SysEx librarian for MIDI-retrofitted Roland Juno-60 synthesizers.
-- [Korg Wavestation Librarian](https://knob.monster/korg-wavestation): SysEx librarian for Korg Wavestation, Wavestation EX, and Wavestation A/D.
+- [Yamaha DX7 Librarian](https://bipluk.com/dx7): Browser-native Yamaha DX7 online librarian and SysEx manager.
+- [Roland Juno-106 Librarian](https://bipluk.com/juno-106): Browser-native Roland Juno-106 SysEx backup utility.
+- [Korg M1 Librarian](https://bipluk.com/korg-m1): Browser-native Korg M1 SysEx librarian and patch recall tool.
+- [Roland Jupiter-6 Librarian](https://bipluk.com/jupiter-6): Browser-native Roland Jupiter-6 online librarian and SysEx manager.
+- [Casio CZ-101 Librarian](https://bipluk.com/casio-cz-101): Browser-native Casio CZ-101 online librarian and SysEx manager.
+- [Yamaha TX81Z Librarian](https://bipluk.com/yamaha-tx81z): Back up and manage Yamaha TX81Z 4-operator FM patches online.
+- [Roland D-50 Librarian](https://bipluk.com/roland-d-50): SysEx librarian for the Roland D-50 Linear Arithmetic synthesizer.
+- [Prophet-600 Librarian](https://bipluk.com/prophet-600): Online librarian for the Sequential Circuits Prophet-600.
+- [Oberheim Matrix-1000 Librarian](https://bipluk.com/oberheim-matrix-1000): Patch backup tool for Oberheim Matrix-1000 and Matrix-6.
+- [Yamaha FB-01 Librarian](https://bipluk.com/yamaha-fb-01): SysEx manager for the Yamaha FB-01 FM sound module.
+- [Roland Juno-60 Librarian](https://bipluk.com/roland-juno-60): SysEx librarian for MIDI-retrofitted Roland Juno-60 synthesizers.
+- [Korg Wavestation Librarian](https://bipluk.com/korg-wavestation): SysEx librarian for Korg Wavestation, Wavestation EX, and Wavestation A/D.

@@ -1,0 +1,165 @@
+<!-- Comparison Table Partial (bipluk vs Legacy Alternatives) -->
+<div class="w-full max-w-4xl mx-auto mt-16 reveal" style="--delay: 300ms;">
+    <div class="text-center space-y-3 mb-8">
+        <span class="tag-lapis uppercase text-[10px] font-mono tracking-widest">Why Fellow Synth Heads Switch</span>
+        <h3 class="text-xl md:text-2xl font-pixel uppercase text-white tracking-wide">
+            How bipluk Compares to Legacy Software
+        </h3>
+        <p class="text-xs font-mono text-zinc-400 max-w-md mx-auto">
+            Stop struggling with 1990s desktop software installation and driver nightmare setups.
+        </p>
+    </div>
+
+    <!-- Responsive Comparison Table -->
+    <div class="overflow-x-auto rounded-2xl border border-zinc-900 bg-zinc-950/70 backdrop-blur-md shadow-2xl">
+        <table class="w-full text-left border-collapse text-xs">
+            <thead>
+                <tr class="border-b border-zinc-800 bg-zinc-900/60 font-pixel uppercase text-[11px] text-zinc-300">
+                    <th class="py-4 px-5 font-semibold">Feature / Capability</th>
+                    <th class="py-4 px-4 font-bold text-lapis-light bg-blue-500/10 border-x border-blue-500/20 text-center w-1/4">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <img src="/static/logo.svg" class="w-4 h-4 inline-block" alt="" style="image-rendering: pixelated;" />
+                            <span>bipluk+</span>
+                        </div>
+                    </th>
+                    <th class="py-4 px-4 font-normal text-zinc-400 text-center w-1/5">MIDI Quest</th>
+                    <th class="py-4 px-4 font-normal text-zinc-400 text-center w-1/5">SoundTower</th>
+                    <th class="py-4 px-4 font-normal text-zinc-400 text-center w-1/5">Legacy / MIDI-OX</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-900/80 font-sans text-zinc-300">
+                <!-- Row 1: Price -->
+                <tr class="hover:bg-zinc-900/30 transition-colors">
+                    <td class="py-3.5 px-5 font-semibold text-white font-mono">
+                        Pricing &amp; License
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-bold text-emerald-400 bg-blue-500/5 border-x border-blue-500/20">
+                        {{ pricing.symbol }}{{ pricing.personal_amount }} Lifetime
+                        <span class="block text-[9px] font-mono text-zinc-500 font-normal">No subscriptions</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-400 font-mono">
+                        $399.00
+                        <span class="block text-[9px] font-mono text-zinc-600">Per version update</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-400 font-mono">
+                        $199.00
+                        <span class="block text-[9px] font-mono text-zinc-600">Per synth model</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-400 font-mono">
+                        Free
+                        <span class="block text-[9px] font-mono text-zinc-600">Discontinued / Unsupported</span>
+                    </td>
+                </tr>
+
+                <!-- Row 2: Setup -->
+                <tr class="hover:bg-zinc-900/30 transition-colors">
+                    <td class="py-3.5 px-5 font-semibold text-white font-mono">
+                        Setup Time
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-emerald-400 bg-blue-500/5 border-x border-blue-500/20">
+                        ⚡ 0 Seconds
+                        <span class="block text-[9px] font-mono text-zinc-400 font-normal">Runs in browser via WebMIDI</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-rose-400/80 font-mono text-2xs">
+                        30+ Mins
+                        <span class="block text-[9px] text-zinc-500">Java / License keys</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-rose-400/80 font-mono text-2xs">
+                        15+ Mins
+                        <span class="block text-[9px] text-zinc-500">OS driver installation</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-rose-400/80 font-mono text-2xs">
+                        Hours
+                        <span class="block text-[9px] text-zinc-500">Baud rate &amp; cable tuning</span>
+                    </td>
+                </tr>
+
+                <!-- Row 3: Cloud Vault -->
+                <tr class="hover:bg-zinc-900/30 transition-colors">
+                    <td class="py-3.5 px-5 font-semibold text-white font-mono">
+                        Cloud Vault &amp; Export
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-emerald-400 bg-blue-500/5 border-x border-blue-500/20">
+                        ✅ Unlimited Cloud
+                        <span class="block text-[9px] font-mono text-zinc-400 font-normal">Instant .syx &amp; .zip export</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-500 font-mono text-2xs">
+                        ❌ Local Files Only
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-500 font-mono text-2xs">
+                        ❌ Local Files Only
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-500 font-mono text-2xs">
+                        ❌ Manual Folders
+                    </td>
+                </tr>
+
+                <!-- Row 4: Device Support -->
+                <tr class="hover:bg-zinc-900/30 transition-colors">
+                    <td class="py-3.5 px-5 font-semibold text-white font-mono">
+                        Cross-Platform Access
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-emerald-400 bg-blue-500/5 border-x border-blue-500/20">
+                        ✅ Any Browser
+                        <span class="block text-[9px] font-mono text-zinc-400 font-normal">Mac, PC, Chromebook, iPad</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-500 font-mono text-2xs">
+                        ❌ Desktop OS Only
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-500 font-mono text-2xs">
+                        ❌ Win or Mac Only
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-500 font-mono text-2xs">
+                        ❌ Windows 32-bit Only
+                    </td>
+                </tr>
+
+                <!-- Row 5: Preset Decoder -->
+                <tr class="hover:bg-zinc-900/30 transition-colors">
+                    <td class="py-3.5 px-5 font-semibold text-white font-mono">
+                        Preset Name Visualizer
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-emerald-400 bg-blue-500/5 border-x border-blue-500/20">
+                        ✅ Instant Decoder
+                        <span class="block text-[9px] font-mono text-zinc-400 font-normal">Decodes DX7, Juno, M1 names</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-400 font-mono text-2xs">
+                        ⚠️ Basic Text List
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-400 font-mono text-2xs">
+                        ⚠️ Single Model
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-rose-400/80 font-mono text-2xs">
+                        ❌ Raw Hex Dump Only
+                    </td>
+                </tr>
+
+                <!-- Row 6: Adaptive Pacing -->
+                <tr class="hover:bg-zinc-900/30 transition-colors">
+                    <td class="py-3.5 px-5 font-semibold text-white font-mono">
+                        Hardware Flash Protection
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-emerald-400 bg-blue-500/5 border-x border-blue-500/20">
+                        ✅ Adaptive Pacing
+                        <span class="block text-[9px] font-mono text-zinc-400 font-normal">Prevents buffer overflow</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-400 font-mono text-2xs">
+                        ⚠️ Manual Buffers
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-zinc-400 font-mono text-2xs">
+                        ⚠️ Fixed Delays
+                    </td>
+                    <td class="py-3.5 px-4 text-center text-rose-400/80 font-mono text-2xs">
+                        ❌ Frequent Crashes
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a href="/signup?plan=personal" class="text-xs font-mono text-lapis-light hover:text-white transition-colors underline inline-flex items-center gap-1">
+            <span>Switch to bipluk+ today for {{ pricing.symbol }}{{ pricing.personal_amount }} lifetime →</span>
+        </a>
+    </div>
+</div>

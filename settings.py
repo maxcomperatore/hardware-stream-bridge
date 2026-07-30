@@ -32,7 +32,7 @@ DATABASE_URL = require_env("DATABASE_URL") if IS_PRODUCTION else getenv("DATABAS
 SESSION_SECRET_KEY = require_env("SESSION_SECRET_KEY") if IS_PRODUCTION else getenv(
     "SESSION_SECRET_KEY", "dev-only-session-secret-change-me"
 )
-SITE_BASE = (getenv("SITE_BASE", "https://knob.monster") or "https://knob.monster").rstrip("/")
+SITE_BASE = (getenv("SITE_BASE", "https://bipluk.com") or "https://bipluk.com").rstrip("/")
 
 # Stripe
 STRIPE_SECRET_KEY = getenv("STRIPE_SECRET_KEY")
@@ -60,14 +60,14 @@ SMTP_HOST = getenv("SMTP_HOST", "smtp.resend.com")
 SMTP_PORT = getenv("SMTP_PORT", "587")
 SMTP_USER = getenv("SMTP_USER", "resend")
 SMTP_PASSWORD = getenv("SMTP_PASSWORD") or RESEND_API_KEY
-SMTP_FROM = getenv("SMTP_FROM", "Justin at knob.monster <support@knob.monster>")
+SMTP_FROM = getenv("SMTP_FROM", "Justin at bipluk <support@bipluk.com>")
 
 # Cron / internal auth
 CRON_SECRET = getenv("CRON_SECRET")
 
 # Analytics & alerts
 POSTHOG_API_KEY = getenv("POSTHOG_API_KEY")
-POSTHOG_HOST = getenv("POSTHOG_HOST", "https://e.knob.monster")
+POSTHOG_HOST = getenv("POSTHOG_HOST", "https://e.bipluk.com")
 # PostHog Support → Identity verification secret (not the phc_ project key)
 POSTHOG_CONVERSATIONS_IDENTITY_SECRET = getenv("POSTHOG_CONVERSATIONS_IDENTITY_SECRET")
 DISCORD_WEBHOOK_URL = getenv("DISCORD_WEBHOOK_URL")

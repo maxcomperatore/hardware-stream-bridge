@@ -9,10 +9,10 @@ jobs:
   uptime-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping knob.monster homepage
+      - name: Ping bipluk.com homepage
         id: check_site
         run: |
-          STATUS=$(curl -o /dev/null -s -w "%{http_code}" https://knob.monster/)
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" https://bipluk.com/)
           echo "HTTP Status Code: $STATUS"
           echo "status_code=$STATUS" >> $GITHUB_OUTPUT
           if [ "$STATUS" -ne 200 ]; then
@@ -29,9 +29,9 @@ jobs:
           CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           curl -X POST -H "Content-Type: application/json" -d "{
             \"username\": \"Knob Monster Monitor\",
-            \"avatar_url\": \"https://knob.monster/static/logo.png\",
+            \"avatar_url\": \"https://bipluk.com/static/logo.png\",
             \"embeds\": [{
-              \"title\": \"🚨 Uptime Alert: knob.monster is DOWN!\",
+              \"title\": \"🚨 Uptime Alert: bipluk.com is DOWN!\",
               \"description\": \"The site failed to return HTTP 200 during the hourly uptime check.\",
               \"color\": 15158332,
               \"fields\": [

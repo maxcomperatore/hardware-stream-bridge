@@ -1,13 +1,13 @@
-"""Official knob.monster FAQ corpus for AI Q&A and direct matching."""
+"""Official bipluk FAQ corpus for AI Q&A and direct matching."""
 
 import difflib
 import re
 
 FAQ_ENTRIES = [
     {
-        "question": "What is knob.monster?",
+        "question": "What is bipluk?",
         "answer": (
-            "knob.monster is a browser-native cloud SysEx librarian and patch manager designed for "
+            "bipluk is a browser-native cloud SysEx librarian and patch manager designed for "
             "vintage synthesizers from the 1980s and 90s. It eliminates the need for legacy drivers, "
             "desktop software, or complicated MIDI-OX configurations by connecting your instruments "
             "directly to the web."
@@ -23,12 +23,12 @@ FAQ_ENTRIES = [
         ),
     },
     {
-        "question": "Is knob.monster better than Snoize or MIDI-OX?",
+        "question": "Is bipluk better than Snoize or MIDI-OX?",
         "answer": (
             "Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics. "
             "MIDI-OX hasn't been updated since 2011, runs on Windows 95/XP, and its official website "
             "currently triggers invalid SSL certificate warnings. Beyond the security risks, manually "
-            "adjusting buffer settings on ancient desktop software is a headache. knob.monster runs "
+            "adjusting buffer settings on ancient desktop software is a headache. bipluk runs "
             "directly in your browser with zero installation, automatically manages buffer sizing to "
             "prevent transfer crashes, and keeps your library synced in the cloud."
         ),
@@ -37,16 +37,16 @@ FAQ_ENTRIES = [
         "question": "Why use this instead of free utilities or MIDI Quest?",
         "answer": (
             "Regardless of whether you understand the complex binary details of SysEx or have no clue "
-            "what that even is, knob.monster just works without any local installation or setup. It "
+            "what that even is, bipluk just works without any local installation or setup. It "
             "saves you time so you can focus on exploring soundbanks and making music. Plus, you get "
             "zero setup, no app sprawl, a secure cloud library, and transparent, fair pricing compared "
             "to legacy solutions like SoundQuest/MIDI Quest or SoundTower which cost hundreds of dollars."
         ),
     },
     {
-        "question": "Who is behind knob.monster?",
+        "question": "Who is behind bipluk?",
         "answer": (
-            "knob.monster is built by Half Radiation LLC, a small independent team of vintage synthesizer "
+            "bipluk is built by Half Radiation LLC, a small independent team of vintage synthesizer "
             "enthusiasts and software developers. We built this tool to solve the frustration of backing "
             "up and organizing our own classic hardware rigs."
         ),
@@ -54,15 +54,15 @@ FAQ_ENTRIES = [
     {
         "question": "Are my patches private and secure?",
         "answer": (
-            "Yes. All soundbanks and SysEx dumps uploaded to knob.monster are stored securely in your "
+            "Yes. All soundbanks and SysEx dumps uploaded to bipluk are stored securely in your "
             "private cloud account. We only read the ASCII patch names to display them in your private "
             "searchable library, and your raw .syx binary files are never shared."
         ),
     },
     {
-        "question": "Is knob.monster secure from a cybersecurity standpoint?",
+        "question": "Is bipluk secure from a cybersecurity standpoint?",
         "answer": (
-            "Yes. knob.monster is designed with a defense-in-depth security model. Because it is "
+            "Yes. bipluk is designed with a defense-in-depth security model. Because it is "
             "completely browser-native, you do not need to install local desktop executables, background "
             "drivers, or untrusted utilities, keeping your operating system completely isolated from "
             "security risks. On the backend, our processing engine runs in isolated environments with "
@@ -74,13 +74,13 @@ FAQ_ENTRIES = [
     {
         "question": "Can I export and download my SysEx files?",
         "answer": (
-            "Absolutely. Every backup captured using knob.monster can be downloaded as a standard .syx "
+            "Absolutely. Every backup captured using bipluk can be downloaded as a standard .syx "
             "binary file at any time. Your data is never locked in, allowing you to use your backups "
             "with classic tools like Snoize, MIDI-OX, or hardware sequencers."
         ),
     },
     {
-        "question": "Is knob.monster a subscription?",
+        "question": "Is bipluk a subscription?",
         "aliases": [
             "is this a subscription",
             "monthly fee",
@@ -90,22 +90,22 @@ FAQ_ENTRIES = [
             "saas",
         ],
         "answer": (
-            "No. knob.monster is not a subscription. Personal ($39) and Studio ($399) are one-time lifetime "
+            "No. bipluk is not a subscription. Personal ($39) and Studio ($399) are one-time lifetime "
             "purchases. Pay once, keep your vault, and download your .syx files whenever you want. There are no "
             "monthly fees and no automatic renewals."
         ),
     },
     {
-        "question": "What is the price of knob.monster?",
+        "question": "What is the price of bipluk?",
         "aliases": [
             "how much does it cost",
-            "how much is knob.monster",
+            "how much is bipluk",
             "pricing",
             "what does it cost",
         ],
         "answer": (
             "We offer lifetime pricing in two tiers: Personal ($39) for individual, non-commercial use, "
-            "and knob.monster+ Studio ($399) for commercial use at one location. Same features, different "
+            "and bipluk+ Studio ($399) for commercial use at one location. Same features, different "
             "license. Repair shops and multi-site operators should email us for bespoke commercial quotes. "
             "There are no recurring fees. Regional pricing may apply (EUR, GBP, CAD, AUD)."
         ),
@@ -148,7 +148,7 @@ FAQ_ENTRIES = [
         "question": "How do I prevent Buffer Overflow errors?",
         "answer": (
             "Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB "
-            "data. knob.monster's MIDI transmission protocol is fine-tuned to throttle outbound dumps into "
+            "data. bipluk's MIDI transmission protocol is fine-tuned to throttle outbound dumps into "
             "small packages with 60ms pauses, ensuring your physical hardware can write the data to "
             "memory without dropping packets."
         ),
@@ -156,7 +156,7 @@ FAQ_ENTRIES = [
     {
         "question": "Does it support editing patches in real time?",
         "answer": (
-            "knob.monster is primarily a librarian for backup, storage, organization, and quick retrieval "
+            "bipluk is primarily a librarian for backup, storage, organization, and quick retrieval "
             "of patch banks. While it does not feature a graphical synthesizer editor (with virtual "
             "sliders for every parameter), it allows you to audition and swap banks in one click."
         ),
@@ -176,7 +176,7 @@ FAQ_ENTRIES = [
 ]
 
 FAQ_SUGGESTIONS = [
-    "What is knob.monster?",
+    "What is bipluk?",
     "Is this a subscription?",
     "Which synthesizers are supported?",
     "What is the price?",

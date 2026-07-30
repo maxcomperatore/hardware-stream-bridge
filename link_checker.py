@@ -210,7 +210,7 @@ if broken_links:
 
     payload = {
         "username": "Knob Monster Link Checker",
-        "avatar_url": "https://knob.monster/static/logo.png",
+        "avatar_url": "https://bipluk/static/logo.png",
         "embeds": [{
             "title": "🚨 CI/CD Alert: Broken Links Detected!",
             "description": f"The scheduled link check found {len(broken_links)} broken internal link(s) or missing static assets in the templates.",

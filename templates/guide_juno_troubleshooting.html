@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include "partials/local_fonts.html" %}
-    <title>How to fix Juno-106 memory loss | knob.monster</title>
+    <title>How to fix Juno-106 memory loss | bipluk</title>
     <meta name="description"
         content="Use this interactive Juno-106 memory loss troubleshooter. Diagnose garbled characters, write protect errors, and restore lost presets using Web MIDI.">
     <meta name="keywords"
         content="juno 106 memory loss, roland juno 106 restore patches, juno 106 write error, voice chip failure, web midi sysex">
-    {% set seo_canonical = "https://knob.monster/how-to-fix-juno-106-memory-loss-troubleshooting-guide" %}
-    {% set seo_title = "How to fix Juno-106 memory loss | knob.monster" %}
+    {% set seo_canonical = "https://bipluk/how-to-fix-juno-106-memory-loss-troubleshooting-guide" %}
+    {% set seo_title = "How to fix Juno-106 memory loss | bipluk" %}
     {% set seo_description = "Use this interactive Juno-106 memory loss troubleshooter. Diagnose garbled characters, write protect errors, and restore lost presets using Web MIDI." %}
     {% set seo_schema_type = "HowTo" %}
     {% include 'partials/seo_article_meta.html' %}
@@ -97,7 +97,7 @@
                             style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
                     </div>
                     <span
-                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">knob.monster</span>
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">bipluk</span>
                 </a>
             </div>
 
@@ -239,7 +239,7 @@
                 If your patches are lost or replaced by random characters, you need to execute a factory SysEx restore. Traditional desktop software like MIDI-OX requires configuring specific millisecond delay intervals to prevent buffer overruns on the Juno's slow 8-bit CPU.
             </p>
             <p class="font-mono text-xs text-zinc-400">
-                I designed knob.monster with built-in pacing filters matched to the Juno-106's microchip specifications. You can reload the complete 64 factory presets in under 10 seconds directly inside your browser.
+                I designed bipluk with built-in pacing filters matched to the Juno-106's microchip specifications. You can reload the complete 64 factory presets in under 10 seconds directly inside your browser.
             </p>
         </section>
     </main>
@@ -307,7 +307,7 @@
                         "<strong>Step 1:</strong> Do not turn off your Juno. Connect to a Web MIDI librarian to see if you can extract any remaining patch structures.",
                         "<strong>Step 2:</strong> Purchase a standard CR2032 battery and a solder-in battery holder socket.",
                         "<strong>Step 3:</strong> Solder the new battery socket. Check voltage is above 3.0V.",
-                        "<strong>Step 4:</strong> Boot up and load the factory patch banks using knob.monster's one-click restore."
+                        "<strong>Step 4:</strong> Boot up and load the factory patch banks using bipluk's one-click restore."
                     ];
                 } else if (hwState === 'bat_recent') {
                     codeStr = "J106-SRAM-RESET";
@@ -315,7 +315,7 @@
                         "<strong>Step 1:</strong> Replacing the battery naturally wipes SRAM, leaving it in a garbled state.",
                         "<strong>Step 2:</strong> Set the rear panel MIDI function switch to position III.",
                         "<strong>Step 3:</strong> Turn the rear panel Protect Switch to OFF.",
-                        "<strong>Step 4:</strong> Connect to knob.monster and load a clean patch file to overwrite the memory registers."
+                        "<strong>Step 4:</strong> Connect to bipluk and load a clean patch file to overwrite the memory registers."
                     ];
                 } else if (hwState === 'midi_i') {
                     codeStr = "J106-MIDI-LOCK";
@@ -330,7 +330,7 @@
                     codeStr = "J106-MIDI-CH";
                     steps = [
                         "<strong>Step 1:</strong> Turn on your Juno-106. Press Key controller buttons to identify the MIDI channel.",
-                        "<strong>Step 2:</strong> Set both the Juno and knob.monster to run on MIDI Channel 1.",
+                        "<strong>Step 2:</strong> Set both the Juno and bipluk to run on MIDI Channel 1.",
                         "<strong>Step 3:</strong> Verify that your MIDI interface Tx/Rx cables are not plugged in backwards."
                     ];
                 } else if (hwState === 'voice_chip') {

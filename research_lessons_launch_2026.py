@@ -1,13 +1,13 @@
 """First-party launch lessons for /research/2026-browser-sysex-vault-launch-lessons."""
 
-LESSONS_PAGE_URL = "https://knob.monster/research/2026-browser-sysex-vault-launch-lessons"
+LESSONS_PAGE_URL = "https://bipluk/research/2026-browser-sysex-vault-launch-lessons"
 LESSONS_DATA_URL = f"{LESSONS_PAGE_URL}/data.json"
 
 LESSONS_LAUNCH_2026 = {
     "title": "Lessons from Launching a Browser SysEx Vault",
     "period": "June 1 to July 1, 2026",
     "method": (
-        "Operational data from Half Radiation LLC running knob.monster. Metrics include PostHog survey logs, "
+        "Operational data from Half Radiation LLC running bipluk. Metrics include PostHog survey logs, "
         "beta Discord support threads, and feedback from the Web MIDI launch thread on Hacker News. "
         "No marketing fluff. Just a founder field log."
     ),
@@ -25,7 +25,7 @@ LESSONS_LAUNCH_2026 = {
     },
     "hacker_news": {
         "thread_title": "How do you keep Web MIDI from crashing a 1983 synthesizer?",
-        "related_post": "https://knob.monster/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer",
+        "related_post": "https://bipluk/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer",
         "points": 52,
         "comments": 41,
         "timing": "Late June 2026 (Show HN window)",
@@ -170,7 +170,7 @@ LESSONS_LAUNCH_2026 = {
     ],
     "caveats": [
         "n=61 survey responses. Treat percentages as directional, not market-wide.",
-        "knob.monster visitors are biased toward people already searching for SysEx backup tools.",
+        "bipluk visitors are biased toward people already searching for SysEx backup tools.",
     ],
 }
 
@@ -181,7 +181,7 @@ def public_json() -> dict:
         "@type": "Dataset",
         "name": LESSONS_LAUNCH_2026["title"],
         "description": (
-            "First-party launch lessons from running knob.monster, a browser SysEx vault, "
+            "First-party launch lessons from running bipluk, a browser SysEx vault, "
             "June to July 2026. Includes Hacker News thread metrics, survey conversion rates, "
             "segmentation signals, and beta support patterns."
         ),
@@ -189,7 +189,7 @@ def public_json() -> dict:
         "creator": {
             "@type": "Organization",
             "name": "Half Radiation LLC",
-            "url": "https://knob.monster",
+            "url": "https://bipluk",
         },
         "datePublished": "2026-07-02",
         "temporalCoverage": "2026-06-01/2026-07-01",
@@ -206,7 +206,7 @@ def public_json() -> dict:
             f"{LESSONS_LAUNCH_2026['metrics']['supported_dump_flows']} dedicated dump flows at launch"
         ),
         "citation": (
-            f"Half Radiation LLC, {LESSONS_LAUNCH_2026['title']}, knob.monster, "
+            f"Half Radiation LLC, {LESSONS_LAUNCH_2026['title']}, bipluk, "
             f"{LESSONS_LAUNCH_2026['period']}."
         ),
         "data": LESSONS_LAUNCH_2026,

@@ -7,7 +7,7 @@
     {% include 'partials/seo_noindex.html' %}
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
-    <title>Register - knob.monster</title>
+    <title>Register - bipluk</title>
     {% include 'partials/tailwind_lapis.html' %}
     <style>
         /* Mobile specific fancy background pattern */
@@ -40,11 +40,11 @@
     <div class="w-full max-w-sm px-6 py-8 bg-zinc-950 border border-zinc-900 rounded-2xl shadow-2xl relative z-10">
         <div class="text-center mb-8">
             <img src="/static/logo.svg" alt="Knob Monster Logo" class="h-10 w-auto mx-auto object-contain mb-3">
-            <h2 class="font-pixel uppercase text-sm text-white tracking-widest">knob.monster</h2>
+            <h2 class="font-pixel uppercase text-sm text-white tracking-widest">bipluk</h2>
             <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start
                 backup</p>
             <p id="signup-plan-label" class="text-[9px] text-lapis-light uppercase font-pixel tracking-wider mt-2">
-                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% elif plan == 'studio' %}knob.monster+ Studio · {{
+                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% elif plan == 'studio' %}bipluk+ Studio · {{
                 plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{
                 plan_catalog.personal.price_display }} lifetime{% endif %}
             </p>
@@ -103,7 +103,7 @@
 
             {% if plan == 'studio' %}
             <p id="studio-license-note" class="text-[9px] text-zinc-500 leading-relaxed">
-                knob.monster+ Studio licenses cover commercial use at one location.
+                bipluk+ Studio licenses cover commercial use at one location.
             </p>
             {% elif plan != 'free' %}
             <div id="personal-license-ack">
@@ -223,7 +223,7 @@
         const PLAN_LABELS = {
             free: 'Free tier · {{ pricing.free_price_display | default("$0") }} · no card',
             personal: 'Personal plan · {{ plan_catalog.personal.price_display }} lifetime',
-            studio: 'knob.monster+ Studio · {{ plan_catalog.studio.price_display }} lifetime',
+            studio: 'bipluk+ Studio · {{ plan_catalog.studio.price_display }} lifetime',
         };
         const emailInput = document.getElementById('signup-email');
         const planInput = document.getElementById('signup-plan');

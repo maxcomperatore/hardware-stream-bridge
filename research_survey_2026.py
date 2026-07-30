@@ -1,11 +1,11 @@
 """First-party survey data for /research/2026-vintage-synth-owner-survey."""
 
-SURVEY_PAGE_URL = "https://knob.monster/research/2026-vintage-synth-owner-survey"
+SURVEY_PAGE_URL = "https://bipluk/research/2026-vintage-synth-owner-survey"
 SURVEY_DATA_URL = f"{SURVEY_PAGE_URL}/data.json"
 
 SURVEY_2026 = {    "title": "2026 Vintage Synth Owner Survey",
     "period": "June 25 – July 1, 2026",
-    "method": "In-product survey (PostHog) shown to knob.monster visitors. Question 1 required; Question 2 optional free text.",
+    "method": "In-product survey (PostHog) shown to bipluk visitors. Question 1 required; Question 2 optional free text.",
     "shown": 2417,
     "responses_q1": 61,
     "responses_q2": 24,
@@ -74,7 +74,7 @@ SURVEY_2026 = {    "title": "2026 Vintage Synth Owner Survey",
     "caveats": [
         "n=61 for segmentation; treat percentages as directional, not market-wide.",
         "Question 2 had 24 submissions; 6 were spam, tests, or jokes and excluded from gear analysis.",
-        "Survey shown only to knob.monster visitors (2.57% conversion) — biased toward people already curious about SysEx tools.",
+        "Survey shown only to bipluk visitors (2.57% conversion) — biased toward people already curious about SysEx tools.",
     ],
 }
 
@@ -86,13 +86,13 @@ def public_json() -> dict:
         "name": SURVEY_2026["title"],
         "description": (
             "First-party vintage synth owner segmentation and gear mentions "
-            "from knob.monster, June 25 to July 1, 2026."
+            "from bipluk, June 25 to July 1, 2026."
         ),
         "url": SURVEY_PAGE_URL,
         "creator": {
             "@type": "Organization",
             "name": "Half Radiation LLC",
-            "url": "https://knob.monster",
+            "url": "https://bipluk",
         },
         "datePublished": "2026-07-01",
         "temporalCoverage": "2026-06-25/2026-07-01",
@@ -100,7 +100,7 @@ def public_json() -> dict:
         "size": f"{SURVEY_2026['responses_q1']} segmentation responses, "
         f"{SURVEY_2026['responses_q2_valid']} valid gear lists",
         "citation": (
-            f"Half Radiation LLC, {SURVEY_2026['title']}, knob.monster, {SURVEY_2026['period']}."
+            f"Half Radiation LLC, {SURVEY_2026['title']}, bipluk, {SURVEY_2026['period']}."
         ),
         "data": SURVEY_2026,
     }

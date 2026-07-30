@@ -209,7 +209,7 @@ if broken_links:
         })
 
     payload = {
-        "username": "Knob Monster Link Checker",
+        "username": "bipluk Link Checker",
         "avatar_url": "https://bipluk/static/logo.png",
         "embeds": [{
             "title": "🚨 CI/CD Alert: Broken Links Detected!",

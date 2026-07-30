@@ -28,7 +28,7 @@ jobs:
         run: |
           CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           curl -X POST -H "Content-Type: application/json" -d "{
-            \"username\": \"Knob Monster Monitor\",
+            \"username\": \"bipluk Monitor\",
             \"avatar_url\": \"https://bipluk.com/static/logo.png\",
             \"embeds\": [{
               \"title\": \"🚨 Uptime Alert: bipluk.com is DOWN!\",

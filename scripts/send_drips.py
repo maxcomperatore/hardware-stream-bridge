@@ -18,7 +18,7 @@ RESEND_API_KEY = settings.RESEND_API_KEY
 
 
 def http_json(method: str, url: str, body: dict | None = None) -> dict:
-    headers = {"Authorization": f"Bearer {CRON_SECRET}", "User-Agent": "knob.monster-drip/1.0"}
+    headers = {"Authorization": f"Bearer {CRON_SECRET}", "User-Agent": "bipluk-drip/1.0"}
     data = None
     if body is not None:
         headers["Content-Type"] = "application/json"
@@ -42,7 +42,7 @@ def send_resend(to: str, subject: str, body: str, from_addr: str, reply_to: str)
         headers={
             "Authorization": f"Bearer {RESEND_API_KEY}",
             "Content-Type": "application/json",
-            "User-Agent": "knob.monster-drip/1.0",
+            "User-Agent": "bipluk-drip/1.0",
             "Accept": "application/json",
         },
         method="POST",

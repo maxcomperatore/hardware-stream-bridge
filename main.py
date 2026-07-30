@@ -219,7 +219,7 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
                 })
 
         payload = {
-            "username": "Knob Monster Bot",
+            "username": "bipluk Bot",
             "avatar_url": DISCORD_LOGO_URL,
             "embeds": [embed]
         }
@@ -248,7 +248,7 @@ def trigger_alert(event_type: str, message: str, properties: dict = None, distin
     thread.daemon = True
     thread.start()
 
-app = FastAPI(title="Knob Monster - Vintage Synth Patch Manager")
+app = FastAPI(title="bipluk - Vintage Synth Patch Manager")
 
 PENDING_CARD_UPDATES = {}
 
@@ -1708,7 +1708,7 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
             "Open your vault: https://bipluk.com/home\n\n"
             "Keep the analog alive,\n"
-            "Justin at Knob Monster"
+            "Justin at Bipluk"
         )
         ok, err = send_email_via_resend(
             to=email,
@@ -3534,21 +3534,21 @@ async def dynamic_synth_seo(synth_slug: str, request: Request):
 DRIP_SUBJECT = "your studio vault is locked"
 DRIP_BODY_TEMPLATE = """hey there,
 
-you signed up for knob monster, but you are currently on the free tier.
+you signed up for bipluk, but you are currently on the free tier.
 
 right now, your vault is restricted. you can't download your sysex banks back to your computer, upload a second soundbank, or use preset name decoding.
 
-if you successfully tested your synth connection and want to protect your entire collection, it's time to upgrade. knob monster is a professional tool built exclusively for producers who want a bulletproof cloud archive for their vintage synthesizers.
+if you successfully tested your synth connection and want to protect your entire collection, it's time to upgrade. bipluk is a professional tool built exclusively for producers who want a bulletproof cloud archive for their vintage synthesizers.
 
 if you have a juno-106, dx7, or m1 sitting in your studio right now, those sounds are vulnerable. all it takes is one internal battery failure or local drive crash to wipe your custom patches forever.
 
-unlock your vault and get full, unlimited access to knob monster today:
+unlock your vault and get full, unlimited access to bipluk today:
 
 👉 https://bipluk.com/home
 
 keep the analog alive,
 
-knob monster support
+bipluk support
 p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
                     
@@ -3588,7 +3588,7 @@ def send_welcome_email_task(email: str):
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
             "Open your vault: https://bipluk.com/home\n\n"
             "Keep the analog alive,\n"
-            "Justin at Knob Monster"
+            "Justin at bipluk"
         )
 
         ok, err = send_email_via_resend(

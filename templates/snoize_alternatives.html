@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
-    <title>Knob Monster vs Snoize SysEx Librarian: Which MIDI Tool is Best? (2026)</title>
+    <title>Bipluk vs Snoize SysEx Librarian: Which MIDI Tool is Best? (2026)</title>
     <meta name="description" content="A head-to-head comparison between Snoize SysEx Librarian and bipluk. Find the best MIDI patch manager for your macOS studio workflow.">
     {% set seo_canonical = "https://bipluk/knob-monster-vs-snoize-sysex-librarian" %}
-    {% set seo_title = "Knob Monster vs Snoize SysEx Librarian: Which MIDI Tool is Best? (2026)" %}
+    {% set seo_title = "Bipluk vs Snoize SysEx Librarian: Which MIDI Tool is Best? (2026)" %}
     {% set seo_description = "A head-to-head comparison between Snoize SysEx Librarian and bipluk. Find the best MIDI patch manager for your macOS studio workflow." %}
     {% include 'partials/seo_article_meta.html' %}
     {% include 'partials/tailwind_lapis.html' %}
@@ -113,8 +113,8 @@
     {
       "@context": "https://schema.org",
       "@type": "TechArticle",
-      "headline": "Knob Monster vs Snoize SysEx Librarian: Which MIDI Tool is Best? (2026)",
-      "description": "An in-depth technical comparison of Snoize SysEx Librarian vs Knob Monster. Compare Web MIDI cloud backup against legacy local .syx file storage.",
+      "headline": "Bipluk vs Snoize SysEx Librarian: Which MIDI Tool is Best? (2026)",
+      "description": "An in-depth technical comparison of Snoize SysEx Librarian vs Bipluk. Compare Web MIDI cloud backup against legacy local .syx file storage.",
       "image": "{{ asset_abs_url('dithered_knob_og.gif') }}",
       "author": {
         "@type": "Organization",
@@ -440,7 +440,7 @@
                 🎂 Birthday Week
             </span>
             <span class="text-zinc-250">
-                Knob Monster is {% if birthday_age > 0 %}turning {{ birthday_age }}{% else %}celebrating its launch{%
+                Bipluk is {% if birthday_age > 0 %}turning {{ birthday_age }}{% else %}celebrating its launch{%
                 endif %}! Get 20% off with code <span
                     class="text-rose-400 px-1.5 py-0.5 bg-rose-950/40 rounded border border-rose-900/40 select-all font-mono font-bold">{{
                     birthday_code }}</span> at checkout (Ends in <span id="promo-timer"
@@ -575,7 +575,7 @@
                 <a href="/" class="flex items-center gap-2.5 group">
                     <div class="relative spin-logo flex items-center justify-center"
                         style="transform-style: preserve-3d; width: 24px; height: 24px;">
-                        <img src="/static/logo.svg" alt="Knob Monster Logo" width="24" height="24"
+                        <img src="/static/logo.svg" alt="Bipluk Logo" width="24" height="24"
                             class="absolute w-6 h-6 object-contain"
                             style="transform: translateZ(0px); image-rendering: pixelated;">
                         <img src="/static/logo.svg" alt="" width="24" height="24"
@@ -628,10 +628,10 @@
                 VS Comparison
             </span>
             <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
-                Knob Monster vs Snoize SysEx Librarian
+                Bipluk vs Snoize SysEx Librarian
             </h1>
             <p class="text-sm md:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed font-mono">
-                Snoize has been the default macOS SysEx utility for over 20 years. It stores raw hex bytes on local drives. Knob Monster runs in the browser, parses preset names from binary, and syncs them to a cloud vault. This is a technical comparison of the two workflows.
+                Snoize has been the default macOS SysEx utility for over 20 years. It stores raw hex bytes on local drives. Bipluk runs in the browser, parses preset names from binary, and syncs them to a cloud vault. This is a technical comparison of the two workflows.
             </p>
         </article>
 
@@ -717,7 +717,7 @@
                 RAM and scroll through the LCD display manually.
             </p>
             <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
-                Knob Monster parses incoming MIDI streams in real-time. By reading the specific register format of
+                Bipluk parses incoming MIDI streams in real-time. By reading the specific register format of
                 supported models (like the Yamaha DX7 or Korg M1), the parser automatically extracts text strings from
                 the raw hex code. It names, labels, and indexes your presets automatically. You can search your entire
                 vault for the keyword "Bass" or "Lately" instantly.
@@ -734,7 +734,7 @@
                 backup their patches once a year, Snoize is still a phenomenal utility.
             </p>
             <p class="text-xs md:text-sm text-zinc-400 leading-relaxed">
-                Knob Monster is built for active synthesists, sound designers, and studio owners. The premium
+                Bipluk is built for active synthesists, sound designers, and studio owners. The premium
                 one-time payment ($39.00 lifetime access) funds ongoing browser compatibility maintenance, cloud
                 database
                 preservation, and custom parser support for new synths. It protects you from local hard drive crashes
@@ -745,7 +745,7 @@
         <!-- Technical Deep Dive: Latency Pacing -->
         <section class="mt-16 border-t border-zinc-900 pt-12 space-y-6">
             <h3 class="text-base font-pixel text-emerald-400 uppercase">
-                Under the Hood: How Knob Monster Handles the DX7 Handshake
+                Under the Hood: How Bipluk Handles the DX7 Handshake
             </h3>
             <p class="text-xs text-zinc-400 leading-relaxed font-mono">
                 When transferring 32 voice presets to a 1983 DX7, the synth expects a continuous 4096-byte packet
@@ -758,8 +758,8 @@ F0 43 00 09 20 00 (Header: Yamaha channel 1, 32-voice bulk dump format)
 XX (Checksum byte calculated by summing voice data modulo 128)
 F7 (End of System Exclusive message)</pre>
             <p class="text-xs text-zinc-400 leading-relaxed">
-                Snoize and Knob Monster both handle this protocol, but Knob Monster adds adaptive pacing. If your USB
-                MIDI cable has high latency variance, Knob Monster will split the buffer and introduce micro-second
+                Snoize and Bipluk both handle this protocol, but Bipluk adds adaptive pacing. If your USB
+                MIDI cable has high latency variance, Bipluk will split the buffer and introduce micro-second
                 delay gaps dynamically to prevent the classic <code>SysEx Receive Error</code>.
             </p>
         </section>

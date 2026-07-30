@@ -58,7 +58,7 @@ def send_stats_report():
     }
     
     payload = {
-        "username": "Knob Monster Bot",
+        "username": "bipluk Bot",
         "avatar_url": "https://bipluk/static/logo.png",
         "embeds": [embed]
     }

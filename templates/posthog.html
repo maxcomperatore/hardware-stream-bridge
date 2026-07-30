@@ -22,6 +22,15 @@
         script.src = 'https://us-assets.i.posthog.com/static/1.396.2/array.js';
         script.crossOrigin = 'anonymous';
         script.async = true;
+        script.onerror = function() {
+            window.posthog = window.posthog || {
+                init: function() {},
+                identify: function() {},
+                capture: function() {},
+                on: function() {},
+                get_distinct_id: function() { return ''; }
+            };
+        };
         script.onload = function() {
             try {
                 if (!window.posthog || typeof window.posthog.init !== 'function') {

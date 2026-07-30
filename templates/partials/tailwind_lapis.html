@@ -175,12 +175,20 @@
         background-color: oklch(35.46% 0.0842 251.90) !important; /* Deep Lapis */
         color: #fecdd3 !important; /* Light rose text */
         border: 3px double #f43f5e !important; /* Rose double border */
-        border-radius: 4px;
-        text-shadow: 0 1px 0px rgba(0, 0, 0, 0.6);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
         line-height: 1;
     }
 </style>
+<script>
+    // Suppress Tailwind CDN production warning in console
+    (function() {
+        var origWarn = console.warn;
+        console.warn = function() {
+            if (arguments[0] && typeof arguments[0] === 'string' && arguments[0].indexOf('cdn.tailwindcss.com') !== -1) return;
+            origWarn.apply(console, arguments);
+        };
+    })();
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
     tailwind.config = {

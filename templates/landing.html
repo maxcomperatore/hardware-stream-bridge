@@ -1882,9 +1882,16 @@
                     <div class="mt-8 text-center space-y-2">
                         <a href="/signup?plan=personal"
                             class="btn-lapis pricing-cta-personal w-full flex items-center justify-center gap-1.5 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
-                            Back Up My Patches Forever
+                            <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0 dinkie-lapis" alt="Lock" />
+                            <span>Back Up My Patches Forever</span>
                         </a>
-                        <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">One payment · yours forever · export .syx anytime</p>
+                        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/lock.svg" class="w-2.5 h-2.5 opacity-60" alt="" /> 256-Bit SSL Encrypted</span>
+                            <span>·</span>
+                            <span>One payment</span>
+                            <span>·</span>
+                            <span>yours forever</span>
+                        </div>
                 </div>
             </div>
 
@@ -1952,12 +1959,21 @@
                     <div class="mt-8 text-center space-y-2">
                         <a href="/signup?plan=studio"
                             class="btn-lapis pricing-cta-studio w-full flex items-center justify-center gap-1.5 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
-                            License My Shop
+                            <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0 dinkie-lapis" alt="Lock" />
+                            <span>License My Shop</span>
                         </a>
-                        <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">One payment · yours forever · export .syx anytime</p>
+                        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/lock.svg" class="w-2.5 h-2.5 opacity-60" alt="" /> 256-Bit SSL Encrypted</span>
+                            <span>·</span>
+                            <span>One payment</span>
+                            <span>·</span>
+                            <span>yours forever</span>
+                        </div>
                     </div>
                     </div>
                     </div>
+
+            {% include "partials/secure_payment_badge.html" %}
 
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">

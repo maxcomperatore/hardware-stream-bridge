@@ -180,8 +180,9 @@
                     </a>
                     {% else %}
                     <a href="/checkout-pack/{{ pack.id }}"
-                        class="inline-flex items-center px-5 py-2 rounded-lg bg-white hover:bg-zinc-200 text-black text-sm font-medium transition-colors">
-                        Buy {{ pack.price }}
+                        class="inline-flex items-center gap-1.5 px-5 py-2 rounded-lg bg-white hover:bg-zinc-200 text-black text-sm font-medium transition-colors">
+                        <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0" alt="Lock" />
+                        <span>Buy {{ pack.price }}</span>
                     </a>
                     {% endif %}
                 </div>
@@ -189,7 +190,9 @@
             {% endfor %}
         </div>
 
-        <p class="mt-10 text-xs text-zinc-600 leading-relaxed">
+        {% include "partials/secure_payment_badge.html" %}
+
+        <p class="mt-10 text-xs text-zinc-600 leading-relaxed text-center">
             Packs are tied to your knob.monster account. Load any pack from your vault on any computer with a browser and MIDI.
             Each listing matches the synth named on the card.
             Questions? <a href="mailto:halfradiationllc@gmail.com" class="text-zinc-500 hover:text-zinc-300 underline">halfradiationllc@gmail.com</a>

@@ -140,21 +140,24 @@
 
     <main class="max-w-4xl mx-auto px-6 py-20 relative z-10">
         <!-- Title Header -->
-        <article class="space-y-6 text-center mb-20">
-            <span class="tag-lapis">
-                Stripe Payments
+        <article class="space-y-6 text-center mb-12">
+            <span class="tag-lapis inline-flex items-center gap-1.5">
+                <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0 dinkie-lapis" alt="Lock" />
+                <span>256-Bit SSL Secured Checkout</span>
             </span>
             <h1
                 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
                 Accepted Payments
             </h1>
             <p class="text-xs font-mono text-zinc-500 max-w-lg mx-auto uppercase">
-                All the ways you can transfer us your hard-earned cash so we can keep paying our database storage bills.
+                All transactions are encrypted and processed through Stripe PCI-DSS Level 1 infrastructure.
             </p>
         </article>
 
+        {% include "partials/secure_payment_badge.html" %}
+
         <!-- Payment Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
 
             <!-- Visa & Mastercard -->
             <div class="payment-card rounded-2xl p-6 space-y-4">

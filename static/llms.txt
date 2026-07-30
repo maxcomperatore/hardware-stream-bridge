@@ -1,9 +1,12 @@
 # bipluk
 
-> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.
+> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required. 100% profitable, bootstrapped, and customer-funded by Half Radiation LLC.
 
-## Key Features
-- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.
+## Key Features & Proprietary Technology
+- **Browser-Native Web MIDI (BIPLUK Engine™):** Direct hardware handshake inside Chrome & Edge.
+- **Adaptive Flow Control (BIPLUK Pacing Protocol™):** 60ms buffer overrun prevention for 1980s 8-bit CPUs.
+- **Encrypted Vault (BIPLUK Vault™):** Byte-for-byte cloud preservation protecting against CR2032 battery failure.
+- **Real-Time Parser (BIPLUK Real-Time Hex Parser™):** Instant SysEx patch name extraction on the fly.
 - **Instant Search:** Fuzzy search through soundbanks by preset name.
 - **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
 - **Lifetime Pricing:** bipluk+ Personal $39 (non-commercial) or bipluk+ Studio $399 (commercial, one location). Sound packs from $9 in the Monster Shop.

@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="STOaPWGwgPycvNfxtzTRhyetLyvasi3uelnlo5SV_QA" />
     {% include "partials/local_fonts.html" %}
+    <title>{{ seo.title if seo else "bipluk | SysEx Librarian & Vintage Synth Cloud Backup" }}</title>
+    <meta name="description" content="{{ seo.description if seo else 'The browser-native SysEx librarian and patch manager for vintage synthesizers. Back up your Yamaha DX7, Roland Juno-106, Korg M1, and 80s/90s hardware patches to the cloud with WebMIDI. Zero drivers, zero local installs.' }}">
+    <meta name="keywords" content="{{ seo.keywords if seo else 'sysex librarian, vintage synth backup, dx7 backup, juno-106 patches, cloud backup for synthesizers, bipluk, midi-ox alternative mac' }}">
+    <link rel="canonical" href="https://bipluk.com/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="en" href="https://bipluk.com/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="x-default" href="https://bipluk.com/{{ seo_slug if seo_slug else '' }}">
+    {% include 'partials/favicon.html' %}
     <meta property="og:site_name" content="bipluk">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bipluk/{{ seo_slug if seo_slug else '' }}">

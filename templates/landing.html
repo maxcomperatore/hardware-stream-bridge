@@ -155,15 +155,19 @@
         }
 
         .btn-free {
-            background-color: var(--canvas-surface);
-            border: 2px solid var(--border-muted, #3F3F46);
-            color: var(--ink-primary);
-            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+            background: linear-gradient(180deg, #27272a 0%, #18181b 100%) !important;
+            border: 1px solid #52525b !important;
+            color: #ffffff !important;
+            opacity: 1 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            transition: all 0.2s ease-in-out !important;
         }
 
         .btn-free:hover {
-            border-color: var(--lapis-light);
-            box-shadow: 0 0 20px var(--lapis-glow-soft, rgba(74, 127, 184, 0.25));
+            background: linear-gradient(180deg, #3f3f46 0%, #27272a 100%) !important;
+            border-color: #71717a !important;
+            box-shadow: 0 0 24px rgba(161, 161, 170, 0.3), 0 6px 20px rgba(0, 0, 0, 0.7) !important;
+            opacity: 1 !important;
         }
 
         .btn-free:active {
@@ -171,23 +175,28 @@
         }
 
         .btn-lapis {
-            background: linear-gradient(180deg, var(--lapis-mid) 0%, var(--lapis-deep) 100%);
-            color: var(--gem-flash);
-            border: 1px solid var(--facet-border, rgba(232, 240, 248, 0.22));
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%) !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            border: 1px solid #60a5fa !important;
+            opacity: 1 !important;
             box-shadow:
-                0 0 28px var(--lapis-glow, rgba(74, 127, 184, 0.4)),
-                0 4px 16px var(--shadow-void, rgba(0, 0, 0, 0.35)),
-                inset 0 1px 0 oklch(100% 0 0 / 0.14);
-            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+                0 0 28px rgba(37, 99, 235, 0.7),
+                0 4px 16px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+            transition: all 0.2s ease-in-out !important;
         }
 
         .btn-lapis:hover {
-            background: linear-gradient(180deg, var(--lapis-light) 0%, var(--lapis-mid) 100%);
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%) !important;
+            color: #ffffff !important;
+            border-color: #93c5fd !important;
+            opacity: 1 !important;
             box-shadow:
-                0 0 36px var(--gem-glow-soft, rgba(248, 250, 252, 0.12)),
-                0 0 32px var(--lapis-glow-strong, rgba(74, 127, 184, 0.5)),
-                0 6px 18px var(--shadow-void, rgba(0, 0, 0, 0.38)),
-                inset 0 1px 0 oklch(100% 0 0 / 0.18);
+                0 0 40px rgba(59, 130, 246, 0.9),
+                0 6px 22px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+            transform: translateY(-1px) scale(1.02);
         }
 
         .btn-lapis:active {
@@ -1799,8 +1808,10 @@
             <!-- Pricing Cards -->
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                 <!-- Personal -->
-                <div class="glow-card pricing-card-featured rounded-2xl border bg-zinc-950/80 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale"
+                <div class="glow-card pricing-card-featured rounded-2xl border border-blue-500/50 bg-zinc-950/80 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale shadow-lapis-glow-md"
                     style="--delay: 200ms;">
+                    <!-- Most Popular Top Badge -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[9px] font-pixel uppercase tracking-widest px-3 py-0.5 rounded-b border-x border-b border-blue-400 shadow-lapis-glow-md z-20">MOST POPULAR</div>
                     <div class="absolute inset-0 bg-repeat opacity-15 pointer-events-none select-none z-0"
                         style="background-image: url('/static/grey_patterned_brick_floor_dark.png'); image-rendering: pixelated;"></div>
                     <div id="stamp-diamond"
@@ -1812,7 +1823,7 @@
                     </div>
                     <div class="space-y-5 relative z-10">
                         <div>
-                            <div class="flex items-center gap-2 flex-wrap pr-12">
+                            <div class="flex items-center gap-2 flex-wrap pr-12 pt-2">
                                 <h3 class="text-sm font-roman uppercase text-white tracking-wide">bipluk+</h3>
                             </div>
                             <p class="text-xs text-zinc-400 mt-1">Home &amp; hobby. Non-commercial.</p>
@@ -1893,12 +1904,11 @@
                         </div>
                     <div class="mt-8 text-center space-y-2">
                         <a href="/signup?plan=personal"
-                            class="btn-lapis pricing-cta-personal w-full flex items-center justify-center gap-1.5 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
-                            <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0 dinkie-lapis" alt="Lock" />
+                            class="btn-lapis pricing-cta-personal w-full flex items-center justify-center gap-1.5 py-3.5 md:py-4 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider shadow-lapis-glow-lg hover:scale-[1.02] transition-all duration-200">
                             <span>Back Up My Patches Forever</span>
                         </a>
-                        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
-                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/lock.svg" class="w-2.5 h-2.5 opacity-60" alt="" /> 256-Bit SSL Encrypted</span>
+                        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
+                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/lock.svg" class="w-3 h-3 opacity-90 brightness-0 invert" alt="" /> 256-Bit SSL Encrypted</span>
                             <span>·</span>
                             <span>One payment</span>
                             <span>·</span>
@@ -1971,12 +1981,11 @@
                     </div>
                     <div class="mt-8 text-center space-y-2">
                         <a href="/signup?plan=studio"
-                            class="btn-lapis pricing-cta-studio w-full flex items-center justify-center gap-1.5 py-3 md:py-3.5 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider">
-                            <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0 dinkie-lapis" alt="Lock" />
+                            class="btn-lapis pricing-cta-studio w-full flex items-center justify-center gap-1.5 py-3.5 md:py-4 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider shadow-lapis-glow-lg hover:scale-[1.02] transition-all duration-200">
                             <span>License My Shop</span>
                         </a>
-                        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
-                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/lock.svg" class="w-2.5 h-2.5 opacity-60" alt="" /> 256-Bit SSL Encrypted</span>
+                        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
+                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/lock.svg" class="w-3 h-3 opacity-90 brightness-0 invert" alt="" /> 256-Bit SSL Encrypted</span>
                             <span>·</span>
                             <span>One payment</span>
                             <span>·</span>

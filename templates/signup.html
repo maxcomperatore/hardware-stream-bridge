@@ -50,6 +50,12 @@
             </p>
         </div>
 
+        {% if plan == 'free' %}
+        <div class="mb-5 p-3 bg-blue-950/40 border border-blue-800/40 rounded-xl text-[10px] text-blue-200 font-mono text-center flex items-center justify-center gap-2 shadow-lapis-glow-sm">
+            <span>Free accounts save 1 bank slot. Upgrade anytime to <b>bipluk+</b> for unlimited vaults.</span>
+        </div>
+        {% endif %}
+
         {% if error %}
         <div
             class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">

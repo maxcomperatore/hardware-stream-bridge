@@ -1788,9 +1788,10 @@
                         class="absolute left-1/2 top-0 z-0 w-14 h-14 -translate-x-1/2 -translate-y-1 select-none pointer-events-none"
                         style="image-rendering: pixelated; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));">
                     <a href="/signup?plan=free" role="button"
-                        class="btn-free pricing-free-cta relative z-10 mx-auto w-full flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full cursor-pointer active:scale-[0.98] select-none">
-                        <span class="text-lg md:text-xl font-pixel uppercase tracking-widest">Start Free</span>
-                        <span id="pricing-free-subtext" class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-500">{{ pricing.free_price_display }} · no card · click to start</span>
+                        class="btn-free pricing-free-cta relative z-10 mx-auto w-full flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full cursor-pointer active:scale-[0.98] select-none overflow-hidden">
+                        <div class="absolute inset-0 bg-repeat opacity-20 pointer-events-none select-none z-0" style="background-image: url('/static/corrugated_iron_smooth.png'); image-rendering: pixelated;"></div>
+                        <span class="text-lg md:text-xl font-pixel uppercase tracking-widest relative z-10">Start Free</span>
+                        <span id="pricing-free-subtext" class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-400 relative z-10">{{ pricing.free_price_display }} · no card · click to start</span>
                     </a>
                 </div>
             </div>

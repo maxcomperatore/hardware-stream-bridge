@@ -1108,7 +1108,10 @@ def assert_cron_authorized(request: Request) -> None:
 # Initialize database on startup
 @app.on_event("startup")
 async def startup_event():
-    database.init_db()
+    try:
+        database.init_db()
+    except Exception as e:
+        print(f"Warning: Database initialization skipped on startup (DB down/quota reached): {e}")
 
 # Secure Cookie Session signing key
 SESSION_SECRET_KEY = settings.SESSION_SECRET_KEY

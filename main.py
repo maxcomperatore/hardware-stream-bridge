@@ -1393,11 +1393,13 @@ async def sysex_librarian_alternatives(request: Request):
 async def sysex_librarian_redirect():
     return RedirectResponse(url="/sysex-librarian-alternatives", status_code=301)
 
+@app.get("/bipluk-vs-snoize-sysex-librarian", response_class=HTMLResponse)
 @app.get("/knob-monster-vs-snoize-sysex-librarian", response_class=HTMLResponse)
 async def snoize_comparison(request: Request):
     user = get_current_user(request)
     return render_template("snoize_alternatives.html", request, {"user": user})
 
+@app.get("/bipluk-vs-midi-ox", response_class=HTMLResponse)
 @app.get("/knob-monster-vs-midi-ox", response_class=HTMLResponse)
 async def midi_ox_comparison(request: Request):
     user = get_current_user(request)
@@ -2656,8 +2658,10 @@ def build_sitemap_xml() -> str:
         (f"{SITE_BASE}/shop", "weekly", "0.9"),
         (f"{SITE_BASE}/vintage-synth-cloud-backup", "weekly", "1.0"),
         (f"{SITE_BASE}/sysex-librarian-alternatives", "weekly", "0.95"),
-        (f"{SITE_BASE}/knob-monster-vs-snoize-sysex-librarian", "weekly", "0.9"),
-        (f"{SITE_BASE}/knob-monster-vs-midi-ox", "weekly", "0.9"),
+        (f"{SITE_BASE}/bipluk-vs-snoize-sysex-librarian", "weekly", "0.9"),
+        (f"{SITE_BASE}/bipluk-vs-midi-ox", "weekly", "0.9"),
+        (f"{SITE_BASE}/knob-monster-vs-snoize-sysex-librarian", "weekly", "0.5"),
+        (f"{SITE_BASE}/knob-monster-vs-midi-ox", "weekly", "0.5"),
         (f"{SITE_BASE}/audit/midiox", "monthly", "0.85"),
         (f"{SITE_BASE}/resources", "weekly", "0.85"),
         (f"{SITE_BASE}/resources/sysex-inspector", "weekly", "0.95"),
@@ -2747,8 +2751,8 @@ async def llms_txt():
         "- [Vintage Synth Cloud Backup](https://bipluk.com/vintage-synth-cloud-backup): Pillar guide for DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.",
         "- [Monster Shop](https://bipluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
         "- [Alternatives Guide](https://bipluk.com/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.",
-        "- [Snoize Comparison](https://bipluk.com/knob-monster-vs-snoize-sysex-librarian): bipluk vs Snoize SysEx Librarian.",
-        "- [MIDI-OX Comparison](https://bipluk.com/knob-monster-vs-midi-ox): bipluk vs Windows MIDI-OX.",
+        "- [Snoize Comparison](https://bipluk.com/bipluk-vs-snoize-sysex-librarian): bipluk vs Snoize SysEx Librarian.",
+        "- [MIDI-OX Comparison](https://bipluk.com/bipluk-vs-midi-ox): bipluk vs Windows MIDI-OX.",
         "- [MIDI-OX TLS Audit](https://bipluk.com/audit/midiox): Independent transport-security review of midiox.com.",
         "- [Payment Methods](https://bipluk.com/payment-methods): Supported payment options.",
         "",

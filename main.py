@@ -163,9 +163,6 @@ except Exception as e:
     posthog_client = None
     logger.error(f"Failed to initialize PostHog SDK: {e}")
 
-DISCORD_WEBHOOK_URL = settings.DISCORD_WEBHOOK_URL
-DISCORD_LOGO_URL = f"{settings.SITE_BASE}/static/logo.png"
-
 def _sync_send_alert(event_type: str, message: str, properties: dict = None, distinct_id: str = "system"):
     # 1. PostHog client capture
     if posthog_client:
@@ -177,66 +174,6 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
             )
         except Exception as e:
             logger.error(f"PostHog capture failed: {e}")
-
-    # 2. Discord Webhook
-    if not DISCORD_WEBHOOK_URL:
-        return
-    try:
-        import urllib.request
-        import json
-        from datetime import datetime
-
-        # Determine color based on event type
-        color = 0x3498db  # Default info blue
-        if any(w in event_type for w in ["signup", "register", "activated", "success"]):
-            color = 0x2ecc71  # Green
-        elif any(w in event_type for w in ["failed", "error", "exception", "unauthorized"]):
-            color = 0xe74c3c  # Red
-        elif any(w in event_type for w in ["delete", "cancel"]):
-            color = 0xe67e22  # Orange
-
-        embed = {
-            "title": event_type.replace("_", " ").title(),
-            "description": message,
-            "color": color,
-            "fields": [],
-            "timestamp": datetime.utcnow().isoformat() + "Z",
-            "footer": {
-                "text": "bipluk alerts",
-                "icon_url": DISCORD_LOGO_URL,
-            }
-        }
-
-        if properties:
-            for k, v in properties.items():
-                val_str = str(v) if v is not None else "N/A"
-                if len(val_str) > 1024:
-                    val_str = val_str[:1021] + "..."
-                embed["fields"].append({
-                    "name": k.replace("_", " ").title(),
-                    "value": val_str,
-                    "inline": len(val_str) < 40
-                })
-
-        payload = {
-            "username": "Bipluk Bot",
-            "avatar_url": DISCORD_LOGO_URL,
-            "embeds": [embed]
-        }
-
-        req = urllib.request.Request(
-            DISCORD_WEBHOOK_URL,
-            data=json.dumps(payload).encode("utf-8"),
-            headers={
-                "Content-Type": "application/json",
-                "User-Agent": "Mozilla/5.0"
-            },
-            method="POST"
-        )
-        with urllib.request.urlopen(req, timeout=5) as response:
-            response.read()
-    except Exception as e:
-        logger.error(f"Discord webhook notification failed: {e}")
 
 def trigger_alert(event_type: str, message: str, properties: dict = None, distinct_id: str = "system"):
     """
@@ -1176,6 +1113,7 @@ def render_template(template_name: str, request: Request, context: dict = None, 
     # 2026 = Launch, 2027 = Turning 1, etc.
     birthday_age = now.year - 2026
     context["birthday_age"] = birthday_age
+    context["db_offline"] = database.is_db_offline()
     
     import inspect
     sig = inspect.signature(templates.TemplateResponse)

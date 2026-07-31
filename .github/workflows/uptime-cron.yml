@@ -19,25 +19,3 @@ jobs:
             echo "HTTP check failed with status $STATUS"
             exit 1
           fi
-        continue-on-error: true
-
-      - name: Alert Discord if Site is Down
-        if: steps.check_site.outcome == 'failure'
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          curl -X POST -H "Content-Type: application/json" -d "{
-            \"username\": \"bipluk Monitor\",
-            \"avatar_url\": \"https://bipluk.com/static/logo.png\",
-            \"embeds\": [{
-              \"title\": \"🚨 Uptime Alert: bipluk.com is DOWN!\",
-              \"description\": \"The site failed to return HTTP 200 during the hourly uptime check.\",
-              \"color\": 15158332,
-              \"fields\": [
-                {\"name\": \"HTTP Code Received\", \"value\": \"${{ steps.check_site.outputs.status_code }}\", \"inline\": true},
-                {\"name\": \"Severity\", \"value\": \"Critical\", \"inline\": true}
-              ],
-              \"timestamp\": \"$CURRENT_TIME\"
-            }]
-          }" "$DISCORD_WEBHOOK_URL"

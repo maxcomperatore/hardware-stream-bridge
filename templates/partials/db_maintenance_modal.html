@@ -1,0 +1,43 @@
+{% if db_offline %}
+<!-- Top Fixed Database Maintenance Banner -->
+<div id="db-maintenance-banner" class="fixed top-0 left-0 right-0 z-[9999] bg-zinc-950 border-b border-zinc-800 py-2.5 px-6 shadow-md flex items-center justify-center text-[10px] md:text-xs font-roman tracking-wide text-zinc-300">
+    <div class="relative max-w-7xl mx-auto w-full flex items-center justify-center text-center px-6">
+        <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+            <span class="font-semibold text-white">Maintenance Notice:</span>
+            <span>Cloud account sync and logins are temporarily paused until August 1st. Browser SysEx tools remain fully active.</span>
+        </div>
+        <button onclick="document.getElementById('db-maintenance-banner').remove()" class="absolute right-0 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1 transition-colors text-xs font-bold" title="Dismiss">
+            ✕
+        </button>
+    </div>
+</div>
+
+<script>
+    // Disable all database-reliant buttons and links when database is offline
+    document.addEventListener('DOMContentLoaded', () => {
+        const dbRequiredSelectors = [
+            'a[href*="/login"]',
+            'a[href*="/signup"]',
+            'button[type="submit"]',
+            '.db-required'
+        ];
+
+        document.querySelectorAll(dbRequiredSelectors.join(',')).forEach(el => {
+            // Do not disable search modal or non-database newsletter subscribe buttons
+            if (el.id === 'footer-subscribe-btn' || el.closest('#search-modal')) return;
+
+            el.classList.add('opacity-40', 'pointer-events-none', 'cursor-not-allowed');
+            el.setAttribute('tabindex', '-1');
+            el.setAttribute('aria-disabled', 'true');
+            if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+                el.disabled = true;
+            }
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }, true);
+        });
+    });
+</script>
+{% endif %}

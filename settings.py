@@ -70,7 +70,6 @@ POSTHOG_API_KEY = getenv("POSTHOG_API_KEY")
 POSTHOG_HOST = getenv("POSTHOG_HOST", "https://e.bipluk.com")
 # PostHog Support → Identity verification secret (not the phc_ project key)
 POSTHOG_CONVERSATIONS_IDENTITY_SECRET = getenv("POSTHOG_CONVERSATIONS_IDENTITY_SECRET")
-DISCORD_WEBHOOK_URL = getenv("DISCORD_WEBHOOK_URL")
 
 # LLM (FAQ / optional features)
 OPENROUTER_API_KEY = getenv("OPENROUTER_API_KEY")

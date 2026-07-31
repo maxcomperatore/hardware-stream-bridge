@@ -25,8 +25,6 @@ os.environ.setdefault("SESSION_SECRET_KEY", "link-checker-ci-dummy-secret")
 
 import settings
 
-DISCORD_WEBHOOK_URL = settings.DISCORD_WEBHOOK_URL
-
 try:
     from main import app, SEO_DATA
 except Exception as e:
@@ -191,48 +189,6 @@ if broken_links:
     print(f"\n🚨 Broken links found: {len(broken_links)}")
     for item in broken_links:
         print(f"- File: {item['file']} | Link: {item['url']} | Reason: {item['reason']}")
-        
-    # Construct Discord alert message
-    embed_fields = []
-    for item in broken_links[:10]:  # Limit to 10 to avoid Discord size limit
-        embed_fields.append({
-            "name": f"File: {item['file']}",
-            "value": f"Link: `{item['url']}`\nReason: *{item['reason']}*",
-            "inline": False
-        })
-        
-    if len(broken_links) > 10:
-        embed_fields.append({
-            "name": "And more...",
-            "value": f"Plus {len(broken_links) - 10} additional broken links.",
-            "inline": False
-        })
-
-    payload = {
-        "username": "bipluk Link Checker",
-        "avatar_url": "https://bipluk/static/logo.png",
-        "embeds": [{
-            "title": "🚨 CI/CD Alert: Broken Links Detected!",
-            "description": f"The scheduled link check found {len(broken_links)} broken internal link(s) or missing static assets in the templates.",
-            "color": 15158332, # Red color
-            "fields": embed_fields,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
-        }]
-    }
-
-    try:
-        req = urllib.request.Request(
-            DISCORD_WEBHOOK_URL,
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"},
-            method="POST"
-        )
-        with urllib.request.urlopen(req, timeout=10) as response:
-            response.read()
-        print("Successfully sent failure alert to Discord.")
-    except Exception as e:
-        print(f"Failed to send alert to Discord: {e}")
-        
     # Exit with code 1 to fail CI/CD build
     sys.exit(1)
 else:

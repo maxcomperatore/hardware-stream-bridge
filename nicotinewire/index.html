@@ -162,26 +162,37 @@
 
 <hr>
 
-<section id="ai-analyst-desk">
-    <fieldset>
-        <legend><strong>FINE-TUNED FDA &amp; M&amp;A AI ANALYST DESK (UNLIMITED ACCESS)</strong></legend>
-        <p><small>Ask our seasoned AI Analyst any question regarding FDA CTP dockets, PMTA compliance, synthetic L-nicotine pricing, or PE deal valuation multiples:</small></p>
-        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-            <input type="text" id="ai-input" placeholder="e.g. What is the PMTA deadline for synthetic pouches? Or Altria Q2 volume?" style="flex: 1; padding: 8px;" onkeypress="if(event.key==='Enter') askAi();">
-            <button onclick="askAi()" style="padding: 8px 16px; font-weight: bold; cursor: pointer;">ASK ANALYST</button>
-        </div>
-        <p><small><strong>1-Click Sample Prompts:</strong> 
-            <button onclick="setPrompt('What is the current M&amp;A valuation multiple for synthetic oral pouch manufacturers in 2026?')" style="padding: 3px 8px; margin-right: 4px; cursor: pointer;">Pouch M&amp;A Multiples</button>
-            <button onclick="setPrompt('What are the key regulatory risks in Altria Q2 2026 earnings report?')" style="padding: 3px 8px; margin-right: 4px; cursor: pointer;">Altria Q2 Risk</button>
-            <button onclick="setPrompt('What is the FDA CTP penalty for non-compliant PMTA recordkeeping?')" style="padding: 3px 8px; margin-right: 4px; cursor: pointer;">PMTA Fines</button>
-        </small></p>
-        <div id="ai-response" style="background: #f9f9f9; padding: 10px; border: 1px solid #e0e0e0; min-height: 48px; margin-top: 8px;">
-            <p><small><em>Analyst Desk standing by. Click a 1-click prompt above or enter your custom query.</em></small></p>
-        </div>
-    </fieldset>
-</section>
-
 <script src="app.js"></script>
+
+<!-- Floating AI Analyst Terminal Chat Widget -->
+<div id="ai-chat-drawer" style="display: none; position: fixed; bottom: 85px; right: 24px; width: 380px; max-width: 90vw; max-height: 540px; background: #ffffff; border: 2px solid #000000; box-shadow: 6px 6px 0px #000000; z-index: 10000; overflow-y: auto; font-size: 0.88rem;">
+    <div style="background: #111111; color: #FFD700; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000000;">
+        <strong style="font-family: 'Mozilla Headline', sans-serif; font-size: 0.95rem; text-transform: uppercase;">🤖 SENIOR AI ANALYST TERMINAL</strong>
+        <button onclick="toggleAiDrawer()" style="background: transparent; color: #ffffff; border: none; font-size: 1.2rem; cursor: pointer; font-weight: bold; padding: 0 4px; box-shadow: none;">✕</button>
+    </div>
+    <div style="padding: 14px;">
+        <p style="margin-top: 0; margin-bottom: 10px;"><small>Ask our fine-tuned AI Analyst any question on FDA CTP dockets, PMTA compliance, synthetic L-nicotine pricing, or PE M&amp;A ARR multiples:</small></p>
+        
+        <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+            <input type="text" id="ai-input" placeholder="Ask FDA or M&A question..." style="flex: 1; padding: 8px; border: 2px solid #000000; font-size: 0.85rem;" onkeypress="if(event.key==='Enter') askAi();">
+            <button onclick="askAi()" style="padding: 8px 12px; font-weight: bold; background: #FFEA00; border: 2px solid #000000; cursor: pointer; font-size: 0.8rem;">ASK</button>
+        </div>
+        
+        <p style="margin-bottom: 10px;"><small><strong>1-Click Prompts:</strong> 
+            <button onclick="setPrompt('What is the current M&amp;A valuation multiple for synthetic oral pouch manufacturers in 2026?')" style="padding: 2px 6px; margin-right: 2px; margin-bottom: 4px; font-size: 0.75rem; cursor: pointer;">Pouch M&amp;A Multiples</button>
+            <button onclick="setPrompt('What are the key regulatory risks in Altria Q2 2026 earnings report?')" style="padding: 2px 6px; margin-right: 2px; margin-bottom: 4px; font-size: 0.75rem; cursor: pointer;">Altria Q2 Risk</button>
+            <button onclick="setPrompt('What is the FDA CTP penalty for non-compliant PMTA recordkeeping?')" style="padding: 2px 6px; font-size: 0.75rem; cursor: pointer;">PMTA Fines</button>
+        </small></p>
+        
+        <div id="ai-response" style="background: #f9f9f9; padding: 10px; border: 1px solid #000000; min-height: 50px;">
+            <p><small><em>Analyst Desk standing by. Enter a query or click a prompt above.</em></small></p>
+        </div>
+    </div>
+</div>
+
+<button id="ai-chat-bubble-btn" onclick="toggleAiDrawer()" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: #FFEA00; color: #000000; border: 2px solid #000000; box-shadow: 4px 4px 0px #000000; padding: 12px 18px; font-family: 'Mozilla Headline', sans-serif; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; cursor: pointer; border-radius: 30px; display: flex; align-items: center; gap: 8px;">
+    <span>🤖</span> AI Analyst Terminal
+</button>
 
 <hr>
 

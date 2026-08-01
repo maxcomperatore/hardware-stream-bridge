@@ -14,6 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
     attachBlurPaywallToDetails();
 });
 
+function toggleAiDrawer() {
+    const drawer = document.getElementById('ai-chat-drawer');
+    if (!drawer) return;
+    if (drawer.style.display === 'none' || drawer.style.display === '') {
+        drawer.style.display = 'block';
+    } else {
+        drawer.style.display = 'none';
+    }
+}
+
 function setUserState(state) {
     currentUserState = state;
     localStorage.setItem('nw_user_state', state);

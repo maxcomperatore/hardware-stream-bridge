@@ -192,6 +192,10 @@ def run_crew_pipeline(raw_items: List[Dict[str, Any]]) -> List[Dict[str, str]]:
     
     published_stories = []
     for item in raw_items:
+        if len(published_stories) >= 6:
+            print("[CrewAI Early Exit] Reached max 6 premier briefings limit. Stopping AI generation early for 5x speed!")
+            break
+
         text_content = f"{item.get('title', '')} {item.get('raw_content', '')}"
         if not filter_relevant_item(text_content):
             print(f"[CrewAI Filter] Dropping non-tobacco noise: {item.get('title', '')[:40]}")
@@ -208,5 +212,5 @@ def run_crew_pipeline(raw_items: List[Dict[str, Any]]) -> List[Dict[str, str]]:
         final_story = editor_agent.process(item, analysis)
         published_stories.append(final_story)
         
-    print(f"[CrewAI Crew Complete] Generated {len(published_stories)} high-metric B2B stories.")
+    print(f"[CrewAI Crew Complete] Generated {len(published_stories)} premier B2B stories.")
     return published_stories

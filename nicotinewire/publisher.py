@@ -1,7 +1,7 @@
 """
 Publisher Module for NicotineWire.
 Takes generated B2B stories from CrewAI and updates nicotinewire/index.html with deduplication and clean section management.
-Hides raw metadata text lines for clean, ultra-executive presentation.
+Hides raw metadata text lines and limits output to the top 6 premier executive briefings.
 """
 
 import os
@@ -26,7 +26,7 @@ def update_index_ticker(ticker_data: Dict[str, str]) -> bool:
 
 
 def publish_articles_to_index(articles: List[Dict[str, str]]) -> bool:
-    """Replace and deduplicate articles in section 1 of nicotinewire/index.html."""
+    """Replace and deduplicate articles in section 1 of nicotinewire/index.html (Max 6 premier briefings)."""
     if not os.path.exists(INDEX_PATH):
         print(f"[Publisher Error] index.html not found at {INDEX_PATH}")
         return False
@@ -34,24 +34,37 @@ def publish_articles_to_index(articles: List[Dict[str, str]]) -> bool:
     with open(INDEX_PATH, "r", encoding="utf-8") as f:
         html_content = f.read()
         
-    start_heading = "<h2>LIVE REGULATORY & M&A INTELLIGENCE WIRE</h2>"
-    end_heading = "<h2>B2B NICOTINE SUPPLY CHAIN DIRECTORY</h2>"
-    
-    start_pos = html_content.find(start_heading)
-    end_pos = html_content.find(end_heading)
+    # Resilient heading matching
+    start_pos = html_content.find("LIVE REGULATORY")
+    end_pos = html_content.find("B2B NICOTINE SUPPLY CHAIN DIRECTORY")
     
     if start_pos == -1 or end_pos == -1:
         print("[Publisher Error] Heading markers not found in index.html.")
         return False
         
-    pre_content = html_content[:start_pos + len(start_heading)]
-    post_content = html_content[end_pos:]
+    # Find the closing </div> or </h2> after LIVE REGULATORY
+    heading_end_pos = html_content.find("</div>", start_pos)
+    if heading_end_pos == -1 or heading_end_pos > end_pos:
+        heading_end_pos = html_content.find("</h2>", start_pos) + len("</h2>")
+    else:
+        heading_end_pos += len("</div>")
+        
+    pre_content = html_content[:heading_end_pos]
     
-    # Deduplicate articles
+    # Find the opening <h2> for DIRECTORY
+    directory_heading_pos = html_content.rfind("<h2", 0, end_pos)
+    if directory_heading_pos == -1:
+        directory_heading_pos = end_pos
+    post_content = html_content[directory_heading_pos:]
+    
+    # Deduplicate articles and take MAX 6
     seen_titles = set()
     new_articles_html = []
     
     for art in articles:
+        if len(new_articles_html) >= 6:
+            break
+            
         title = sanitize_text(art.get("title", "Untitled Story"))
         summary = sanitize_text(art.get("summary", ""))
         
@@ -69,11 +82,11 @@ def publish_articles_to_index(articles: List[Dict[str, str]]) -> bool:
 </article>"""
         new_articles_html.append(article_card)
         
-    updated_middle = "\n".join(new_articles_html) + "\n\n<hr>\n\n"
-    full_updated_html = pre_content + "\n" + updated_middle + post_content
+    updated_middle = "\n" + "\n".join(new_articles_html) + "\n\n<hr>\n\n"
+    full_updated_html = pre_content + updated_middle + post_content
     
     with open(INDEX_PATH, "w", encoding="utf-8") as f:
         f.write(full_updated_html)
         
-    print(f"[Publisher Success] Published {len(new_articles_html)} deduplicated & ultra-clean articles to index.html.")
+    print(f"[Publisher Success] Published {len(new_articles_html)} premier executive briefings (Max 6) to index.html.")
     return True

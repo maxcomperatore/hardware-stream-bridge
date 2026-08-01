@@ -55,6 +55,29 @@
 
 <hr>
 
+<section id="ai-analyst-desk">
+    <fieldset>
+        <legend><strong>FINE-TUNED FDA &amp; M&amp;A AI ANALYST DESK (UNLIMITED ACCESS)</strong></legend>
+        <p><small>Ask our seasoned AI Analyst any question regarding FDA CTP dockets, PMTA compliance, synthetic L-nicotine pricing, or PE deal valuation multiples:</small></p>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <input type="text" id="ai-input" placeholder="e.g. What is the PMTA deadline for synthetic pouches? Or Altria Q2 volume?" style="flex: 1; padding: 8px;" onkeypress="if(event.key==='Enter') askAi();">
+            <button onclick="askAi()" style="padding: 8px 16px; font-weight: bold; cursor: pointer;">ASK ANALYST</button>
+        </div>
+        <p><small><strong>1-Click Sample Prompts:</strong> 
+            <button onclick="setPrompt('What is the current M&amp;A valuation multiple for synthetic oral pouch manufacturers in 2026?')" style="padding: 3px 8px; margin-right: 4px; cursor: pointer;">[ Pouch M&amp;A Multiples ]</button>
+            <button onclick="setPrompt('What are the key regulatory risks in Altria Q2 2026 earnings report?')" style="padding: 3px 8px; margin-right: 4px; cursor: pointer;">[ Altria Q2 Risk ]</button>
+            <button onclick="setPrompt('What is the FDA CTP penalty for non-compliant PMTA recordkeeping?')" style="padding: 3px 8px; margin-right: 4px; cursor: pointer;">[ PMTA Fines ]</button>
+        </small></p>
+        <div id="ai-response" style="background: #f9f9f9; padding: 10px; border: 1px solid #e0e0e0; min-height: 48px; margin-top: 8px;">
+            <p><small><em>Analyst Desk standing by. Click a 1-click prompt above or enter your custom query.</em></small></p>
+        </div>
+    </fieldset>
+</section>
+
+<script src="app.js"></script>
+
+<hr>
+
 <h2>LIVE REGULATORY & M&A INTELLIGENCE WIRE</h2>
 
 <article>
@@ -355,8 +378,8 @@
 
 <ul>
     <li><strong>Monthly Access Pass:</strong> $500/mo ($16.66/day) : Full Wire Access (7-Day Zero-Risk Free Trial) (<a href="pricing.html#monthly">Select Plan</a>)</li>
-    <li><strong>Quarterly Executive Pass (TRENDING):</strong> $1,000/qtr ($10.95/day) : Full Wire Access + Industry Slack Channel (7-Day Zero-Risk Free Trial) (<a href="pricing.html#quarterly">Select Plan</a>)</li>
-    <li><strong>Annual Enterprise Pass (MAX ROI : SAVE $4,000):</strong> $2,000/yr (Just <strong>$5.47/day</strong>) : Full Wire Access + B2B Supply Chain Directory + Priority Support + Industry Slack Channel (<a href="pricing.html#annual">Select Plan</a>)</li>
+    <li><strong>Quarterly Executive Pass (TRENDING):</strong> $1,000/qtr ($10.95/day) : Full Wire Access + Unlimited AI Analyst Chatbot + Industry Slack Channel (7-Day Zero-Risk Free Trial) (<a href="pricing.html#quarterly">Select Plan</a>)</li>
+    <li><strong>Annual Enterprise Pass (MAX ROI : SAVE $4,000):</strong> $2,000/yr (Just <strong>$5.47/day</strong>) : Full Wire Access + Unlimited AI Analyst Chatbot + B2B Supply Chain Directory + Priority Support + Industry Slack Channel (<a href="pricing.html#annual">Select Plan</a>)</li>
 </ul>
 
 <p><a href="pricing.html"><strong>&rarr; View Full Membership Features &amp; Institutional Options</strong></a></p>

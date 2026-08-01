@@ -9,31 +9,136 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Mozilla+Text:wght@200..700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #FAFAFA;
+            --text-color: #000000;
+            --accent-yellow: #FFEA00;
+            --border-black: #000000;
+            --muted-gray: #666666;
+        }
         body {
-            font-family: 'Mozilla Text', sans-serif;
-            max-width: 850px;
-            margin: 20px auto;
-            padding: 0 16px;
-            color: #111111;
+            font-family: 'Mozilla Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 880px;
+            margin: 28px auto;
+            padding: 0 20px;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
         }
-        h1, h2, h3, th {
+        h1, h2, h3, th, legend {
             font-family: 'Mozilla Headline', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            text-transform: uppercase;
         }
-        pre {
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2 {
+            font-size: 1.25rem;
+            border-left: 4px solid var(--accent-yellow);
+            padding-left: 10px;
+            margin-top: 28px;
+            margin-bottom: 14px;
+        }
+        hr {
+            border: none;
+            height: 2px;
+            background: var(--border-black);
+            margin: 24px 0;
+        }
+        .tagline {
             font-family: monospace;
-        }
-        details {
+            font-size: 1.05rem;
+            background: var(--accent-yellow);
+            display: inline-block;
+            padding: 2px 8px;
+            font-weight: bold;
+            border: 1px solid var(--border-black);
             margin-bottom: 12px;
-            padding: 6px 0;
-            border-bottom: 1px solid #eeeeee;
         }
-        summary {
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+            font-size: 0.9rem;
+            border: 2px solid var(--border-black);
+            background: #ffffff;
+        }
+        th {
+            background: #000000;
+            color: #ffffff;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        article {
+            background: #ffffff;
+            border: 1px solid var(--border-black);
+            margin-bottom: 14px;
+            padding: 14px 18px;
+            box-shadow: 3px 3px 0px #000000;
+            transition: transform 0.1s ease;
+        }
+        article:hover {
+            transform: translateY(-2px);
+        }
+        details summary {
             cursor: pointer;
+            font-size: 1.05rem;
+            line-height: 1.35;
+        }
+        details summary strong {
+            font-family: 'Mozilla Headline', sans-serif;
+            font-weight: 700;
+        }
+        button, .btn {
+            font-family: 'Mozilla Headline', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            background: #ffffff;
+            color: #000000;
+            border: 2px solid var(--border-black);
+            box-shadow: 2px 2px 0px #000000;
+            font-weight: bold;
+            transition: all 0.1s ease;
+        }
+        button:hover, .btn:hover {
+            background: var(--accent-yellow);
+            cursor: pointer;
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px #000000;
+        }
+        button:active, .btn:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px #000000;
+        }
+        fieldset {
+            border: 2px solid var(--border-black);
+            background: #ffffff;
+            padding: 16px;
+            box-shadow: 4px 4px 0px #000000;
         }
         .header-logo {
             vertical-align: middle;
-            height: 36px;
-            margin-right: 8px;
+            height: 40px;
+        }
+        a {
+            color: #000000;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        a:hover {
+            background: var(--accent-yellow);
         }
     </style>
 </head>
@@ -142,7 +247,7 @@
     <details>
         <summary><strong>PMTA Recordkeeping Mandate Squeezes Small Vape Brands While Giants Gear Up</strong></summary>
         <p><small>FDA / CTP ALERT | 2026-08-01 15:32 UTC | Federal Register Docket #2024-15570 (FDA)</small></p>
-        <p>The FDA’s proposed collection for premarket tobacco product applications and enhanced recordkeeping (Federal Register Docket #2024-15570) will bolster established manufacturers like Altria and Reynolds American while burdening boutique vape startups and emerging synthetic nicotine firms with $12,000–$25,000 in compliance costs per product portfolio. Early engagement in the 60-day public comment period (ending July 14, 2024) and automation of recordkeeping are critical to mitigate potential $50,000–$200,000 enforcement risks and $100,000–$300,000 opportunity costs. Check the Wire before you acquire.</p>
+        <p>The FDA’s proposed collection for premarket tobacco product applications and enhanced recordkeeping (Federal Register Docket #2024-15570) will bolster established manufacturers like Altria and Reynolds American while burdening boutique vape startups and emerging synthetic nicotine firms with $12,000–$25,000 in compliance costs per product portfolio. Early engagement in the 60-day public comment period (ending July 14, 2026) and automation of recordkeeping are critical to mitigate potential $50,000–$200,000 enforcement risks and $100,000–$300,000 opportunity costs. Check the Wire before you acquire.</p>
     </details>
 </article>
 
@@ -150,15 +255,15 @@
     <details>
         <summary><strong>FDA SER Mandate Squeezes Emerging Brands: Compliance Costs and Strategic Gaps in 2026</strong></summary>
         <p><small>FDA / CTP ALERT | 2026-08-01 15:32 UTC | Federal Register Docket #2024-15569 (FDA)</small></p>
-        <p>The FDA's proposed Substantial Equivalence Report (SER) collection for tobacco products imposes a $150K–$300K compliance burden per report, with a critical 60‑day comment deadline ending August 24, 2024. Large incumbents like Altria and BAT can leverage existing SER frameworks, while small brands risk procedural defaults and market delays. Early submission and strategic comment drafting are essential to avoid $10K PRA penalties and 6‑month review lags. Check the Wire before you acquire.</p>
+        <p>The FDA's proposed Substantial Equivalence Report (SER) collection for tobacco products imposes a $150K–$300K compliance burden per report, with a critical 60‑day comment deadline ending August 24, 2026. Large incumbents like Altria and BAT can leverage existing SER frameworks, while small brands risk procedural defaults and market delays. Early submission and strategic comment drafting are essential to avoid $10K PRA penalties and 6‑month review lags. Check the Wire before you acquire.</p>
     </details>
 </article>
 
 <article>
     <details>
-        <summary><strong>CTP Rulemaking Hits: 2024 Compliance Deadline Looms for Tobacco Manufacturers</strong></summary>
-        <p><small>FDA / CTP ALERT | 20June2026 15:32 UTC | Federal Register Docket #20-04591 (FDA)</small></p>
-        <p>The FDA’ s proposed manufacturing practice requirements for tobacco products, outlined in Docket #20-04591, impose stringent standards on finished and bulk tobacco production, aiming to bolster public health oversight. While compliance-first manufacturers stand to gain a competitive edge, small and midsize producers face steep operational overhauls and potential market exit risks, with estimated costs ranging from $5–$15 million per facility. Critical compliance planning must be completed by June 30, 2024, to avoid enforcement penalties and market share contraction. Strategic early engagement with the FDA and incremental process upgrades are essential to navigate this regulatory shift. Check the Wire before you acquire.</p>
+        <summary><strong>CTP Rulemaking Hits: 2026 Compliance Deadline Looms for Tobacco Manufacturers</strong></summary>
+        <p><small>FDA / CTP ALERT | 2026-08-01 15:32 UTC | Federal Register Docket #20-04591 (FDA)</small></p>
+        <p>The FDA’ s proposed manufacturing practice requirements for tobacco products, outlined in Docket #20-04591, impose stringent standards on finished and bulk tobacco production, aiming to bolster public health oversight. While compliance-first manufacturers stand to gain a competitive edge, small and midsize producers face steep operational overhauls and potential market exit risks, with estimated costs ranging from $5–$15 million per facility. Critical compliance planning must be completed by December 31, 2026, to avoid enforcement penalties and market share contraction. Strategic early engagement with the FDA and incremental process upgrades are essential to navigate this regulatory shift. Check the Wire before you acquire.</p>
     </details>
 </article>
 
@@ -190,7 +295,7 @@
     <details>
         <summary><strong>CTP Rulemaking Hits: FTC Data Grab Forces Tobacco Titans to Reveal Marketing Spend Secrets</strong></summary>
         <p><small>FDA / CTP ALERT | 2026-08-01 15:32 UTC | Federal Register Docket #2024-15480 (FDA)</small></p>
-        <p>The FTC’s extension of the Agency Information Collection Activities docket (OMB Review) now demands granular sales and marketing spend disclosures for cigarettes, smokeless tobacco, heated devices, and emerging nicotine lozenges/pouches. With the OMB clearance expiring August 31, 2024, the comment period is open for scope expansion. This forces the top 10 tobacco manufacturers to allocate $500k–$1M annually for compliance, risking reputational damage and legal exposure if data is inaccurate. Proactive data governance, legal readiness, strategic OMB comments, and temporary compliance teams are essential to avoid penalties. Check the Wire before you acquire.</p>
+        <p>The FTC’s extension of the Agency Information Collection Activities docket (OMB Review) now demands granular sales and marketing spend disclosures for cigarettes, smokeless tobacco, heated devices, and emerging nicotine lozenges/pouches. With the OMB clearance expiring August 31, 2026, the comment period is open for scope expansion. This forces the top 10 tobacco manufacturers to allocate $500k–$1M annually for compliance, risking reputational damage and legal exposure if data is inaccurate. Proactive data governance, legal readiness, strategic OMB comments, and temporary compliance teams are essential to avoid penalties. Check the Wire before you acquire.</p>
     </details>
 </article>
 

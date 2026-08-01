@@ -9,23 +9,66 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Mozilla+Text:wght@200..700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #FAFAFA;
+            --text-color: #000000;
+            --accent-yellow: #FFEA00;
+            --border-black: #000000;
+        }
         body {
-            font-family: 'Mozilla Text', sans-serif;
-            max-width: 850px;
-            margin: 20px auto;
-            padding: 0 16px;
-            color: #111111;
+            font-family: 'Mozilla Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 880px;
+            margin: 28px auto;
+            padding: 0 20px;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
         }
         h1, h2, h3, th {
             font-family: 'Mozilla Headline', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            text-transform: uppercase;
         }
-        pre {
-            font-family: monospace;
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2 {
+            font-size: 1.25rem;
+            border-left: 4px solid var(--accent-yellow);
+            padding-left: 10px;
+            margin-top: 28px;
+            margin-bottom: 14px;
+        }
+        hr {
+            border: none;
+            height: 2px;
+            background: var(--border-black);
+            margin: 24px 0;
+        }
+        section {
+            background: #ffffff;
+            border: 2px solid var(--border-black);
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 4px 4px 0px #000000;
         }
         .header-logo {
             vertical-align: middle;
-            height: 36px;
-            margin-right: 8px;
+            height: 40px;
+        }
+        a {
+            color: #000000;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        a:hover {
+            background: var(--accent-yellow);
         }
     </style>
 </head>

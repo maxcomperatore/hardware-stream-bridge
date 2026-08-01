@@ -7,12 +7,32 @@ const MODEL_NAME = "ibm-granite/granite-4.1-8b";
 let currentUserState = localStorage.getItem('nw_user_state') || 'visitor';
 let freeArticlesRead = 0;
 let aiQueriesCount = 0;
+let isAllExpanded = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     updateUserBannerUI();
     enforceStoryLimits();
     attachBlurPaywallToDetails();
 });
+
+function toggleExpandAll() {
+    const detailsList = document.querySelectorAll('article details');
+    const btn = document.getElementById('expand-all-btn');
+    isAllExpanded = !isAllExpanded;
+
+    detailsList.forEach(det => {
+        if (det.closest('article').style.display !== 'none') {
+            det.open = isAllExpanded;
+            if (isAllExpanded && currentUserState !== 'executive_paid' && !det.querySelector('.blur-paywall-overlay')) {
+                applyBlurOverlay(det);
+            }
+        }
+    });
+
+    if (btn) {
+        btn.innerText = isAllExpanded ? "COLLAPSE ALL BRIEFINGS" : "EXPAND ALL BRIEFINGS";
+    }
+}
 
 function toggleAiDrawer() {
     const drawer = document.getElementById('ai-chat-drawer');

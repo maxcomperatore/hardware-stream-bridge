@@ -1,7 +1,7 @@
 // NicotineWire Clean Executive Terminal Engine
 
 const OPENROUTER_KEY = "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";
-const MODEL_NAME = "ibm-granite/granite-4.1-8b";
+const MODEL_NAME = "deepseek/deepseek-v4-pro";
 
 let isAllExpanded = false;
 

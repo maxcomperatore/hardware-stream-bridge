@@ -1,9 +1,9 @@
-name: NicotineWire Daily AI Ingestion & Publishing
+name: NicotineWire Weekly Monday AI Ingestion & Publishing
 
 on:
   schedule:
-    # Runs daily at 06:00 UTC (1:00 AM EST)
-    - cron: '0 6 * * *'
+    # Runs every Monday at 08:00 UTC (3:00 AM EST)
+    - cron: '0 8 * * 1'
   workflow_dispatch: # Allows manual one-click execution from GitHub Actions UI
 
 jobs:
@@ -23,11 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r nicotinewire/requirements.txt
 
-      - name: Run NicotineWire Multi-Agent Pipeline
+      - name: Run NicotineWire 4-Agent Pipeline
         env:
           OPENROUTER_API_KEY: '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'
           OPENROUTER_BASE_URL: 'https://openrouter.ai/api/v1'
-          MODEL_NAME: 'ibm-granite/granite-4.1-8b'
+          MODEL_NAME: 'deepseek/deepseek-v4-pro'
         run: |
           python nicotinewire/run_pipeline.py
 
@@ -35,5 +35,5 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add nicotinewire/index.html nicotinewire/pricing.html nicotinewire/directory.html
-          git diff-index --quiet HEAD || (git commit -m "auto: daily NicotineWire AI story ingestion [skip ci]" && git push)
+          git add nicotinewire/index.html nicotinewire/pricing.html nicotinewire/directory.html nicotinewire/data/
+          git diff-index --quiet HEAD || (git commit -m "auto: weekly NicotineWire AI story ingestion [skip ci]" && git push)

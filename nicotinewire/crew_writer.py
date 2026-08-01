@@ -1,10 +1,10 @@
 """
 CrewAI Multi-Agent Pipeline for NicotineWire.
-Features a 4-Agent Architecture including a dedicated Compliance & Financial Judge Agent.
-1. Regulatory Analyst Agent
-2. M&A Deal Reporter Agent
-3. Senior B2B Editor Agent
-4. Compliance & Financial Judge Agent (Evaluates, Fact-Checks, & Approves Briefings)
+Features a 4-Agent Architecture with Bloomberg Financial & Legal Terminal Precision.
+1. Regulatory Analyst Agent (Legal Precision & Active Case Law)
+2. M&A Deal Reporter Agent (EV/EBITDA, EV/Sales, P/E Metrics)
+3. Senior B2B Editor Agent (Bloomberg Terminal Editorial Tone)
+4. Compliance Judge Agent (Fact-Checking & Tone Auditor)
 """
 
 import json
@@ -24,7 +24,7 @@ if os.path.exists(ENV_PATH):
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
 OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-MODEL_NAME = os.getenv("MODEL_NAME", "ibm-granite/granite-4.1-8b")
+MODEL_NAME = "deepseek/deepseek-v4-pro"
 
 
 def call_openrouter_completion(messages: List[Dict[str, str]]) -> str:
@@ -87,11 +87,12 @@ class RegulatoryAnalystAgent:
                 "role": "system",
                 "content": (
                     "You are a Senior Tobacco & Synthetic Nicotine Regulatory Legal Officer.\n"
-                    "REGULATORY LEGAL DIRECTIVES:\n"
-                    "1. Real Statutory Deadlines Only: Draft guidance documents DO NOT create binding PMTA deadlines. Cite actual 60-day or 90-day public comment windows instead of inventing arbitrary 30-day filing limits.\n"
-                    "2. Active Case Law Precision: Remember premium cigars and accessories are exempted under federal court rulings. Civil Money Penalties (CMPs) are statutory per-violation caps.\n"
-                    "3. Separate Agency Dialogue from Statutory Shift: Routine FDA webinars or small manufacturer roundtables do NOT lower statutory evidentiary standards or handicap well-capitalized leaders.\n"
-                    "4. Focus on institutional legal realities: Who wins? Who loses? What is the actual compliance trap or fee structure?"
+                    "STRICT FDA LEGAL & STATUTORY FACTS:\n"
+                    "1. ZERO FDA Listing Fees: The FDA does NOT charge government SKU taxes or listing fees for establishment registration. Overhead is private CRO lab/legal fees.\n"
+                    "2. Synthetic Nicotine Law: Synthetic nicotine is STRICTLY under FDA CTP authority (March 2022 Appropriations Law). There is NO open synthetic loophole.\n"
+                    "3. Premium Cigar & Pouch Exemption: Traditional premium cigars were VACATED from FDA deeming authority (Cigar Association of America v. FDA). The proposed nicotine ceiling rule applies STRICTLY to combusted cigarettes, explicitly EXEMPTING non-combustibles (oral pouches, ENDS) and premium cigars.\n"
+                    "4. Non-Binding Guidance: Draft guidance is non-binding; it does NOT create statutory PMTA submission deadlines. Real citations: #2026-13047 (Foreign Establishment Registration), #2026-04732 (Flavored ENDS Draft Guidance).\n"
+                    "5. CMP Caps: Civil Money Penalties (CMPs) are statutory maximum caps per violation, not automated fines for minor paperwork omissions."
                 )
             },
             {
@@ -111,11 +112,11 @@ class MADealReporterAgent:
                 "role": "system",
                 "content": (
                     "You are a Senior Wall Street M&A Analyst for PE funds and institutional buyers.\n"
-                    "FINANCIAL TERMINOLOGY DIRECTIVES:\n"
-                    "- ALWAYS use EV/EBITDA (7.5x-9.5x), P/E (11x-14x), or EV/Sales for legacy CPG & public tobacco giants (Altria, PMI, BAT, Imperial Brands).\n"
-                    "- ABSOLUTELY BANNED: Never use 'ARR' (Annual Recurring Revenue) for traditional consumer goods or tobacco companies! Reserve ARR strictly for B2B subscription software.\n"
+                    "STRICT FINANCIAL TERMINOLOGY:\n"
+                    "- Use EV/EBITDA (7.5x-9.5x), EV/Sales, or P/E (11x-14x) for legacy CPG & public tobacco giants (Altria, PMI, BAT, Imperial Brands).\n"
+                    "- BANNED: Never use 'ARR' (Annual Recurring Revenue) for non-subscription CPG companies! Reserve ARR strictly for SaaS platforms.\n"
                     "- For synthetic raw materials, use Spot Prices per kg ($3,450/kg).\n"
-                    "- For oral pouches and ENDS, use SKU compliance costs ($1.5M/flavor line) and Shipment Can Volumes."
+                    "- For oral pouches and ENDS, use SKU compliance costs and Can Shipment Volumes."
                 )
             },
             {
@@ -127,7 +128,7 @@ class MADealReporterAgent:
 
 
 class SeniorB2BEditorAgent:
-    """Senior Editorial Agent synthesizing analyst findings into memorable executive briefings."""
+    """Senior Editorial Agent synthesizing analyst findings into Bloomberg-grade institutional briefings."""
     
     def process(self, raw_item: Dict[str, Any], analysis: str) -> Dict[str, str]:
         current_year = datetime.now().year
@@ -135,17 +136,21 @@ class SeniorB2BEditorAgent:
             {
                 "role": "system",
                 "content": (
-                    f"You are the Executive Editor at NicotineWire. Write a punchy, highly memorable, and opinionated B2B executive intelligence story.\n"
-                    f"EDITORIAL DIRECTIVES:\n"
-                    f"1. TEMPORAL ACCURACY: Current year is dynamically {current_year}. Do not cite past years (2022-2025) as future deadlines.\n"
-                    f"2. FINANCIAL ACCURACY: Use EV/EBITDA, P/E, or EV/Sales for CPG/Tobacco firms. Never use ARR for non-SaaS companies.\n"
-                    f"3. VARY SIGN-OFFS: Do NOT append 'Check the Wire before you acquire' to every story! Vary conclusion sign-offs naturally.\n"
-                    f"4. HEADLINE VARIETY: Use diverse action openers (e.g., 'Border Seizure Alert:', 'PMTA Mandate Squeezes...', 'M&A Valuation Shift:', 'CTP Rulemaking Hits...', 'Import Barrier Surges:').\n"
+                    f"You are the Senior Executive Editor at NicotineWire.\n"
+                    f"BLOOMBERG EDITORIAL TONE MANDATE:\n"
+                    f"1. INSTITUTIONAL WALL STREET TONE: Write with objective, authoritative financial precision like Bloomberg Law, Goldman Sachs Research, or Reuters.\n"
+                    f"2. BAN SENSATIONALIST / PANIC WORDS: Banned words: 'death sentence', 'trap', 'crushes importers', 'procedural theater', 'hellscape'.\n"
+                    f"   - Replace 'death sentence' -> 'substantive evidentiary barrier'\n"
+                    f"   - Replace 'trap' -> 'regulatory bottleneck / compliance risk'\n"
+                    f"   - Replace 'crushes importers' -> 'imposes steep evidentiary overhead'\n"
+                    f"   - Replace 'procedural theater' -> 'non-binding educational forum'\n"
+                    f"3. TEMPORAL & FINANCIAL PRECISION: Current year is {current_year}. Use EV/EBITDA and P/E for CPG. Cite real dockets.\n"
+                    f"4. HEADLINE VARIETY: Use institutional action openers (e.g., 'Foreign Establishment Registration:', 'PMTA Compliance Bottleneck:', 'M&A Valuation Shift:', 'CTP Rulemaking Notice:').\n"
                     f"5. NO EM-DASHES, NO ASTERISKS, NO PLACEHOLDERS.\n"
                     f"Output strictly valid JSON with keys:\n"
-                    f" - 'title': Unique executive headline\n"
+                    f" - 'title': Unique institutional headline\n"
                     f" - 'category': Category tag (FDA / CTP ALERT, M&A INTELLIGENCE, CROP & COMMODITY)\n"
-                    f" - 'summary': 2-3 sentence punchy, opinionated executive briefing"
+                    f" - 'summary': 2-3 sentence authoritative, Bloomberg-grade executive briefing"
                 )
             },
             {
@@ -181,15 +186,16 @@ class ComplianceJudgeAgent:
                 "content": (
                     "You are the Senior Compliance Judge and Publisher Auditor at NicotineWire.\n"
                     "Your sole job is to review, audit, and polish executive drafts before publication.\n"
-                    "JUDGING & POLISHING AUDIT RULES:\n"
-                    "1. Financial Terminology: Replace any accidental 'ARR' usage for tobacco/CPG companies with EV/EBITDA, P/E, or EV/Sales.\n"
-                    "2. Temporal Precision: Replace any historical years (2022-2025) with 2026.\n"
-                    "3. Structural Variety: Ensure the briefing ends naturally with actionable strategic advice without repetitive boilerplate templates.\n"
-                    "4. Clean Formatting: Ensure zero em-dashes (—), zero markdown asterisks (**), and zero placeholders.\n"
+                    "BLOOMBERG AUDIT CHECKS:\n"
+                    "1. Tone Check: Purge any sensational panic words ('death sentence', 'trap', 'crushes importers', 'hellscape'). Enforce Bloomberg financial terminology.\n"
+                    "2. Zero Fake Listing Fees: Ensure draft does not claim FDA charges statutory SKU listing fees.\n"
+                    "3. Synthetic Nicotine & Premium Cigar Status: Synthetic is under CTP. Premium cigars and non-combustibles are exempt from nicotine ceiling.\n"
+                    "4. Financial Metrics: Replace any accidental 'ARR' usage for tobacco/CPG with EV/EBITDA, P/E, or EV/Sales.\n"
+                    "5. Clean Formatting: Zero em-dashes (—), zero markdown asterisks (**).\n"
                     "Output strictly valid JSON with keys:\n"
-                    " - 'title': Audited & polished headline\n"
+                    " - 'title': Audited & polished Bloomberg-grade headline\n"
                     " - 'category': Category tag\n"
-                    " - 'summary': Audited & polished executive briefing paragraph"
+                    " - 'summary': Audited & polished Bloomberg-grade executive briefing"
                 )
             },
             {

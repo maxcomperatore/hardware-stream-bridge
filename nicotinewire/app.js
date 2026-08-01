@@ -88,49 +88,47 @@ function applyBlurOverlay(detailsElem) {
     const pElems = detailsElem.querySelectorAll('p');
     if (pElems.length === 0) return;
 
-    if (pElems.length >= 2) {
-        const mainParagraph = pElems[1];
-        const originalText = mainParagraph.innerText;
-        
-        const wrapper = document.createElement('div');
-        wrapper.className = 'blur-paywall-overlay';
-        wrapper.style.position = 'relative';
-        wrapper.style.marginTop = '8px';
+    const mainParagraph = pElems[0];
+    const originalText = mainParagraph.innerText;
+    
+    const wrapper = document.createElement('div');
+    wrapper.className = 'blur-paywall-overlay';
+    wrapper.style.position = 'relative';
+    wrapper.style.marginTop = '8px';
 
-        const blurredDiv = document.createElement('div');
-        blurredDiv.className = 'blurred-content';
-        blurredDiv.style.filter = 'blur(6px)';
-        blurredDiv.style.userSelect = 'none';
-        blurredDiv.style.pointerEvents = 'none';
-        blurredDiv.style.opacity = '0.4';
-        blurredDiv.innerText = originalText;
+    const blurredDiv = document.createElement('div');
+    blurredDiv.className = 'blurred-content';
+    blurredDiv.style.filter = 'blur(6px)';
+    blurredDiv.style.userSelect = 'none';
+    blurredDiv.style.pointerEvents = 'none';
+    blurredDiv.style.opacity = '0.35';
+    blurredDiv.innerText = originalText;
 
-        const ctaDiv = document.createElement('div');
-        ctaDiv.className = 'paywall-cta-box';
-        ctaDiv.style.position = 'absolute';
-        ctaDiv.style.top = '50%';
-        ctaDiv.style.left = '50%';
-        ctaDiv.style.transform = 'translate(-50%, -50%)';
-        ctaDiv.style.background = '#111111';
-        ctaDiv.style.color = '#ffffff';
-        ctaDiv.style.padding = '14px 20px';
-        ctaDiv.style.borderRadius = '6px';
-        ctaDiv.style.textAlign = 'center';
-        ctaDiv.style.boxShadow = '0 8px 20px rgba(0,0,0,0.3)';
-        ctaDiv.style.width = '85%';
-        ctaDiv.style.zIndex = '10';
+    const ctaDiv = document.createElement('div');
+    ctaDiv.className = 'paywall-cta-box';
+    ctaDiv.style.position = 'absolute';
+    ctaDiv.style.top = '50%';
+    ctaDiv.style.left = '50%';
+    ctaDiv.style.transform = 'translate(-50%, -50%)';
+    ctaDiv.style.background = '#111111';
+    ctaDiv.style.color = '#ffffff';
+    ctaDiv.style.padding = '14px 20px';
+    ctaDiv.style.borderRadius = '6px';
+    ctaDiv.style.textAlign = 'center';
+    ctaDiv.style.boxShadow = '0 8px 20px rgba(0,0,0,0.3)';
+    ctaDiv.style.width = '85%';
+    ctaDiv.style.zIndex = '10';
 
-        ctaDiv.innerHTML = `
-            <strong style="color:#FFD700; font-size:14px; display:block; margin-bottom:4px;">⚠️ COMPETITIVE WARNING: EXECUTIVE WIRE ACCESS REQUIRED</strong>
-            <span style="font-size:12px; display:block; margin-bottom:10px; color:#ddd;">Your competitors are already reading this briefing to lock in deal valuation benchmarks and FDA warning thresholds. Don't get left behind.</span>
-            <a href="pricing.html" style="background:#FFEA00; color:#111; padding:6px 14px; text-decoration:none; font-weight:bold; border-radius:4px; font-size:12px;">Upgrade to Executive Pass &rarr;</a>
-        `;
+    ctaDiv.innerHTML = `
+        <strong style="color:#FFD700; font-size:14px; display:block; margin-bottom:4px;">⚠️ COMPETITIVE WARNING: EXECUTIVE WIRE ACCESS REQUIRED</strong>
+        <span style="font-size:12px; display:block; margin-bottom:10px; color:#ddd;">Your competitors are already reading this briefing to lock in deal valuation benchmarks and FDA warning thresholds. Don't get left behind.</span>
+        <a href="pricing.html" style="background:#FFEA00; color:#111; padding:6px 14px; text-decoration:none; font-weight:bold; border-radius:4px; font-size:12px;">Upgrade to Executive Pass &rarr;</a>
+    `;
 
-        wrapper.appendChild(blurredDiv);
-        wrapper.appendChild(ctaDiv);
+    wrapper.appendChild(blurredDiv);
+    wrapper.appendChild(ctaDiv);
 
-        mainParagraph.parentNode.replaceChild(wrapper, mainParagraph);
-    }
+    mainParagraph.parentNode.replaceChild(wrapper, mainParagraph);
 }
 
 function setPrompt(text) {

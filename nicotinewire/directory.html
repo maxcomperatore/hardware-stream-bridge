@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicotineWire - B2B Supply Chain Directory & RFQ Marketplace</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Mozilla+Text:wght@200..700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Mozilla Text', sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 16px;
+            color: #111111;
+        }
+        h1, h2, h3, th {
+            font-family: 'Mozilla Headline', sans-serif;
+        }
+        pre {
+            font-family: monospace;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        input[type="text"], input[type="email"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        button {
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .header-logo {
+            vertical-align: middle;
+            height: 36px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<p><a href="index.html">&larr; Return to Intelligence Wire</a> | <a href="pricing.html">Executive Membership Pricing</a></p>
+
+<h1><img src="logo.svg" alt="NicotineWire Logo" class="header-logo">B2B NICOTINE SUPPLY CHAIN DIRECTORY</h1>
+<p><strong>"Check the Wire before you acquire."</strong></p>
+<p>Verified supplier directory for synthetic nicotine chemistry, contract pouch OEMs, PMTA testing labs, and raw leaf exporters.</p>
+<hr>
+
+<h2>VERIFIED VENDORS &amp; CONTRACT MANUFACTURERS</h2>
+
+<table border="1" cellpadding="8" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Vendor / Lab Name</th>
+            <th>Supply Category</th>
+            <th>Compliance &amp; Certifications</th>
+            <th>Region</th>
+            <th>RFQ Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>PureSynth Labs Inc.</strong></td>
+            <td>Synthetic L-Nicotine (99.8% Purity)</td>
+            <td>US FDA DMF Filed #03941 / REACH Certified</td>
+            <td>USA / EU</td>
+            <td><a href="#rfq-form"><strong>[ Request RFQ / Intro ]</strong></a></td>
+        </tr>
+        <tr>
+            <td><strong>Apex Pouch Formulators AB</strong></td>
+            <td>White Pouch Contract OEM / Private Label</td>
+            <td>EU TPD3 Monograph Compliant / cGMP</td>
+            <td>Sweden / EU</td>
+            <td><a href="#rfq-form"><strong>[ Request RFQ / Intro ]</strong></a></td>
+        </tr>
+        <tr>
+            <td><strong>Deccan Leaf Exporters Ltd</strong></td>
+            <td>Nicotiana Tabacum Flue-Cured Virginia</td>
+            <td>Phytosanitary Verified / Board Authorized</td>
+            <td>India / Global</td>
+            <td><a href="#rfq-form"><strong>[ Request RFQ / Intro ]</strong></a></td>
+        </tr>
+        <tr>
+            <td><strong>VapeTech Analytics Laboratories</strong></td>
+            <td>PMTA Toxicology &amp; Aerosol Testing</td>
+            <td>GLP Accredited / ISO 17025 Certified</td>
+            <td>USA</td>
+            <td><a href="#rfq-form"><strong>[ Request RFQ / Intro ]</strong></a></td>
+        </tr>
+        <tr>
+            <td><strong>Nordic Monograph Synthetics</strong></td>
+            <td>Pharmaceutical Grade Nicotine Bitartrate</td>
+            <td>USP / EP Grade Monograph Certified</td>
+            <td>Denmark</td>
+            <td><a href="#rfq-form"><strong>[ Request RFQ / Intro ]</strong></a></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2 id="rfq-form">SUBMIT A B2B PROCUREMENT RFQ</h2>
+<p>Need custom contract manufacturing, synthetic bulk orders, or PMTA lab testing? Submit your procurement request below and the NicotineWire desk will route your inquiry to verified suppliers within 24 hours.</p>
+
+<form action="#" method="post" onsubmit="alert('RFQ Submitted Successfully. The NicotineWire Procurement Desk will contact you within 24 hours.'); return false;">
+    <div class="form-group">
+        <label for="buyer_name">Full Name / Executive Title:</label>
+        <input type="text" id="buyer_name" name="buyer_name" placeholder="e.g. Sarah Jenkins, VP Procurement" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="company_name">Company / Firm Name:</label>
+        <input type="text" id="company_name" name="company_name" placeholder="e.g. NextGen Pouch Brands LLC" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="corporate_email">Corporate Email Address:</label>
+        <input type="email" id="corporate_email" name="corporate_email" placeholder="s.jenkins@nextgenpouch.com" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="category_needed">Product or Service Category Needed:</label>
+        <select id="category_needed" name="category_needed" required>
+            <option value="">Select Category...</option>
+            <option value="synthetic_nicotine">Synthetic L-Nicotine (Bulk Raw Material)</option>
+            <option value="pouch_oem">White Pouch Contract Manufacturing (Private Label)</option>
+            <option value="pmta_lab">PMTA Analytical &amp; Toxicology Testing Lab</option>
+            <option value="raw_leaf">Flue-Cured / Burley Raw Leaf Sourcing</option>
+            <option value="regulatory_consulting">PMTA / TPD Regulatory Counsel</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="rfq_details">Estimated Volume / Timeline / Specifications:</label>
+        <textarea id="rfq_details" name="rfq_details" rows="4" placeholder="Specify target volume (e.g. 500kg synthetic L-nicotine or 2M pouch units/month) and compliance requirements." required></textarea>
+    </div>
+    
+    <button type="submit">SUBMIT PROCUREMENT RFQ</button>
+</form>
+
+<hr>
+
+<h2>LIST YOUR FACILITY IN THE DIRECTORY</h2>
+<fieldset>
+    <legend><strong>Verified Executive Supplier Application</strong></legend>
+    <p>Are you a synthetic chemistry lab, contract pouch manufacturer, or PMTA testing facility?</p>
+    <p>Get featured in front of over 1,400 private equity buyers, brand owners, and procurement directors with a <strong>Verified Executive Supplier Listing ($2,000/yr)</strong>.</p>
+    <p><a href="mailto:directory@nicotinewire.com?subject=Verified%20Supplier%20Listing%20Application"><strong>&rarr; Apply for Verified Vendor Status ($2,000/yr)</strong></a></p>
+</fieldset>
+
+<hr>
+
+<footer id="about">
+    <h2>ABOUT NICOTINEWIRE™</h2>
+    <p><strong>NicotineWire™</strong> is by far the nation's most influential independent source of news, commentary, and market intelligence for global tobacco, PMTA regulatory dockets, synthetic L-nicotine chemistry, and oral pouch M&amp;A transaction markets.</p>
+    <p>Boasting a readership that spans private equity partners, regulatory legal counsel, C-suite brand owners, and global procurement directors across 14 countries, NicotineWire is recognized for editorial independence, quantitative transaction benchmarks, and real-time FDA enforcement tracking.</p>
+    <p><small>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</small></p>
+</footer>
+
+</body>
+</html>

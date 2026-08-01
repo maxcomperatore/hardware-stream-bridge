@@ -1,0 +1,269 @@
+/* NicotineWire (nicotinewire.com) Barebones Aesthetic System */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Zilla+Slab:wght@400;600;700&display=swap');
+
+:root {
+    --bg: #09090b;
+    --surface: #121215;
+    --surface-border: #27272a;
+    --text: #f4f4f5;
+    --text-muted: #71717a;
+    --amber: #f59e0b;
+    --amber-glow: rgba(245, 158, 11, 0.15);
+    --green: #10b981;
+    --red: #ef4444;
+    --font-serif: 'Zilla Slab', serif;
+    --font-mono: 'Fira Code', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Container */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ASCII Header */
+.ascii-header {
+    font-family: var(--font-mono);
+    color: var(--amber);
+    white-space: pre;
+    font-size: 9px;
+    line-height: 1.1;
+    overflow-x: auto;
+    margin-bottom: 15px;
+    user-select: none;
+}
+
+.brand-bar {
+    border-bottom: 2px solid var(--amber);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tagline {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--amber);
+}
+
+.status-badge {
+    background: var(--amber-glow);
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    padding: 2px 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Navigation / Grid */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    border-bottom: 1px solid var(--surface-border);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Intelligence Feed */
+.feed-item {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--surface-border);
+}
+
+.feed-item:last-child {
+    border-bottom: none;
+}
+
+.feed-meta {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    display: flex;
+    gap: 10px;
+}
+
+.tag-fda { color: var(--red); font-weight: bold; }
+.tag-ma { color: var(--amber); font-weight: bold; }
+.tag-crop { color: var(--green); font-weight: bold; }
+
+.feed-title {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.feed-title:hover {
+    color: var(--amber);
+}
+
+/* Pricing Grid */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.price-card {
+    background: #000;
+    border: 1px solid var(--surface-border);
+    padding: 15px;
+    position: relative;
+}
+
+.price-card.featured {
+    border-color: var(--amber);
+    box-shadow: 0 0 15px var(--amber-glow);
+}
+
+.badge-featured {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: var(--amber);
+    color: #000;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 1px 6px;
+}
+
+.price-val {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--amber);
+    margin: 8px 0;
+}
+
+/* Testimonials / PFPs */
+.testimonial {
+    background: #000;
+    border: 1px solid var(--surface-border);
+    padding: 12px;
+    margin-top: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.pfp {
+    width: 36px;
+    height: 36px;
+    background: var(--surface-border);
+    border: 1px solid var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--amber);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.test-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.test-author {
+    font-size: 10px;
+    color: var(--text);
+    font-weight: bold;
+    margin-top: 4px;
+    font-style: normal;
+}
+
+/* Paywall Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: var(--bg);
+    border: 2px solid var(--amber);
+    max-width: 500px;
+    width: 100%;
+    padding: 24px;
+    box-shadow: 0 0 30px var(--amber-glow);
+}
+
+.btn {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: var(--amber);
+    color: #000;
+    font-weight: 700;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #d97706;
+}
+
+.hidden { display: none !important; }

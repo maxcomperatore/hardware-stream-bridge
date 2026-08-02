@@ -277,6 +277,61 @@ function openPreCheckoutModal(planType) {
         renewalDate.innerText = 'N/A (Instant Perpetual Access)';
         subtotal.innerText = '$1,500.00';
         totalDue.innerText = '$1,500.00';
+    } else if (planType === 'job_listing') {
+        planName.innerText = '30-Day Job or Buy/Sell Listing';
+        strikeMonthly.style.display = 'inline';
+        strikeMonthly.innerText = '$450.00';
+        monthlyRate.innerText = '$300.00 / 30 Days';
+        discountTag.innerText = '🏷️ Self-Serve Board Listing (30d)';
+        strikeTotal.style.display = 'inline';
+        strikeTotal.innerText = '$450.00';
+        totalText.innerText = '$300.00 One-time listing fee';
+        savedText.style.display = 'block';
+        savedText.innerText = '(-$150.00 Saved)';
+        renewalDate.innerText = 'Expires in 30 Days';
+        subtotal.innerText = '$300.00';
+        totalDue.innerText = '$300.00';
+    } else if (planType === 'sponsored_writing') {
+        planName.innerText = 'Sponsored Briefing & Executive Article';
+        strikeMonthly.style.display = 'inline';
+        strikeMonthly.innerText = '$2,250.00';
+        monthlyRate.innerText = '$1,500.00 / Article';
+        discountTag.innerText = '🏷️ Drafted & Distributed to 1,420+ PE Leaders';
+        strikeTotal.style.display = 'inline';
+        strikeTotal.innerText = '$2,250.00';
+        totalText.innerText = '$1,500.00 One-time placement';
+        savedText.style.display = 'block';
+        savedText.innerText = '(-$750.00 Launch Rate)';
+        renewalDate.innerText = 'Permanent Wire Archive';
+        subtotal.innerText = '$1,500.00';
+        totalDue.innerText = '$1,500.00';
+    } else if (planType === 'directory_listing') {
+        planName.innerText = 'B2B Directory Verified Supplier Listing';
+        strikeMonthly.style.display = 'inline';
+        strikeMonthly.innerText = '$1,000.00';
+        monthlyRate.innerText = '$500.00 / year';
+        discountTag.innerText = '🏷️ Directory Profile + 5% RFQ Match Routing';
+        strikeTotal.style.display = 'inline';
+        strikeTotal.innerText = '$1,000.00';
+        totalText.innerText = '$500.00 Billed annually';
+        savedText.style.display = 'block';
+        savedText.innerText = '(-$500.00 Saved)';
+        renewalDate.innerText = dateStr;
+        subtotal.innerText = '$500.00';
+        totalDue.innerText = '$500.00';
+    } else if (planType === 'banner_ad') {
+        planName.innerText = 'Self-Serve Banner Ad Placement (30d)';
+        strikeMonthly.style.display = 'inline';
+        strikeMonthly.innerText = '$1,500.00';
+        monthlyRate.innerText = '$1,000.00 / month';
+        discountTag.innerText = '🏷️ Header & Wire Feed Banner Placement';
+        strikeTotal.style.display = 'inline';
+        strikeTotal.innerText = '$1,500.00';
+        totalText.innerText = '$1,000.00 / month';
+        savedText.style.display = 'block';
+        savedText.innerText = '(-$500.00 Saved)';
+        renewalDate.innerText = '9/2/2026';
+        subtotal.innerText = '$1,000.00';
     } else {
         planName.innerText = 'Annual Enterprise Pass';
         strikeMonthly.style.display = 'inline';

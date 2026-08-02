@@ -3,297 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - B2B Nicotine & Tobacco Intelligence</title>
+    <title>NicotineWire - B2B Regulatory &amp; M&amp;A Intelligence</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Mozilla+Text:wght@200..700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #FAFAFA;
-            --text-color: #000000;
-            --accent-yellow: #FFEA00;
-            --border-black: #000000;
-            --muted-gray: #666666;
-        }
-        body {
-            font-family: 'Mozilla Text', -apple-system, BlinkMacSystemFont, sans-serif;
-            max-width: 880px;
-            margin: 28px auto;
-            padding: 0 20px;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            line-height: 1.55;
-            -webkit-font-smoothing: antialiased;
-        }
-        h1, h2, h3, th, legend {
-            font-family: 'Mozilla Headline', sans-serif;
-            font-weight: 800;
-            letter-spacing: -0.035em;
-            text-transform: uppercase;
-        }
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        h2 {
-            font-size: 1.25rem;
-            border-left: 4px solid var(--accent-yellow);
-            padding-left: 10px;
-            margin-top: 28px;
-            margin-bottom: 14px;
-        }
-        hr {
-            border: none;
-            height: 2px;
-            background: var(--border-black);
-            margin: 24px 0;
-        }
-        .tagline {
-            font-family: monospace;
-            font-size: 1.05rem;
-            background: var(--accent-yellow);
-            display: inline-block;
-            padding: 2px 8px;
-            font-weight: bold;
-            border: 1px solid var(--border-black);
-            margin-bottom: 12px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 16px 0;
-            font-size: 0.9rem;
-            border: 2px solid var(--border-black);
-            background: #ffffff;
-        }
-        th {
-            background: #000000;
-            color: #ffffff;
-            padding: 10px 12px;
-            text-align: left;
-            font-size: 0.85rem;
-        }
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        article {
-            background: #ffffff;
-            border: 1px solid var(--border-black);
-            margin-bottom: 14px;
-            padding: 14px 18px;
-            box-shadow: 3px 3px 0px #000000;
-            transition: transform 0.1s ease;
-        }
-        article:hover {
-            transform: translateY(-2px);
-        }
-        details summary {
-            cursor: pointer;
-            font-size: 1.05rem;
-            line-height: 1.35;
-        }
-        details summary strong {
-            font-family: 'Mozilla Headline', sans-serif;
-            font-weight: 700;
-        }
-        button, .btn {
-            font-family: 'Mozilla Headline', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-            background: #ffffff;
-            color: #000000;
-            border: 2px solid var(--border-black);
-            box-shadow: 2px 2px 0px #000000;
-            font-weight: bold;
-            transition: all 0.1s ease;
-        }
-        button:hover, .btn:hover {
-            background: var(--accent-yellow);
-            cursor: pointer;
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0px #000000;
-        }
-        button:active, .btn:active {
-            transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px #000000;
-        }
-        fieldset {
-            border: 2px solid var(--border-black);
-            background: #ffffff;
-            padding: 16px;
-            box-shadow: 4px 4px 0px #000000;
-        }
-        .header-logo {
-            vertical-align: middle;
-            height: 40px;
-        }
-        a {
-            color: #000000;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-        }
-        a:hover {
-            background: var(--accent-yellow);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1><img src="logo.svg" alt="NicotineWire Logo" class="header-logo">NICOTINEWIRE™</h1>
-<p><strong>"Check the Wire before you acquire."</strong></p>
+<div class="app-viewport">
+    <header>
+        <div>
+            <div class="brand-title">NICOTINE<span>WIRE</span>™</div>
+            <div class="brand-slogan">Check the Wire before you acquire.</div>
+        </div>
+        <nav>
+            <a href="index.html" class="active">Wire Feed</a>
+            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
+            <a href="directory.html">B2B Directory &amp; Jobs ($300)</a>
+            <a href="pricing.html">Pricing</a>
+        </nav>
+    </header>
 
-<p><small><strong>WEEKLY EXECUTIVE DIGEST:</strong> Published every Monday at 08:00 UTC. Over 1,420 Private Equity partners, M&amp;A lawyers, and procurement directors rely on NicotineWire to track regulatory dockets and secure deal pricing.</small></p>
+    <div class="ticker-strip">
+        <div class="ticker-cell">SYNTHETIC L-NICOTINE: <span class="val-up">$3,450/kg (+1.2%)</span></div>
+        <div>&bull;</div>
+        <div class="ticker-cell">VIRGINIA LEAF: <span class="val-up">$3.12/kg (+8.4%)</span></div>
+        <div>&bull;</div>
+        <div class="ticker-cell">ACTIVE PMTA DOCKETS: <b>58</b></div>
+        <div>&bull;</div>
+        <div class="ticker-cell">DIGEST: Mondays 08:00 UTC</div>
+    </div>
 
-<table border="1" cellpadding="6" cellspacing="0" width="100%">
-    <tr>
-        <td><strong>SYNTHETIC L-NICOTINE:</strong> $3,450/kg (+1.2%)</td>
-        <td><strong>LEAF SPOT:</strong> $3.12/kg (+8.4%)</td>
-        <td><a href="reports.html"><strong>PDF Reports Store ($1.5k-$3.5k)</strong></a></td>
-        <td><a href="pricing.html"><strong>Pricing &amp; Membership</strong></a></td>
-    </tr>
-</table>
+    <div class="grid-main">
+        <main>
+            <section>
+                <div class="section-head">
+                    <span>LIVE REGULATORY &amp; M&amp;A WIRE</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: normal; color: var(--text-muted);">2 FDA / 2 M&amp;A / 2 CROP</span>
+                </div>
+
+                <article class="story-item">
+                    <div class="story-meta">FDA CTP ALERT &bull; DOCKET 2026-13047 &bull; 14 HOURS AGO</div>
+                    <a href="#" class="story-headline">FDA Moves to Register Foreign Tobacco &amp; Synthetic Facilities Under Docket 2026-13047</a>
+                    <p class="story-desc">The FDA proposed extending 21 CFR Part 607 registration and product listing requirements to foreign synthetic nicotine establishments, closing overseas exemption gaps and impacting Chinese exporters.</p>
+                </article>
+
+                <article class="story-item">
+                    <div class="story-meta">M&amp;A INTELLIGENCE &bull; TRANSACTION BENCHMARK &bull; 1 DAY AGO</div>
+                    <a href="#" class="story-headline">European Oral Pouch Consolidation Accelerates at 8.8x EV/EBITDA Valuation Multiples</a>
+                    <p class="story-desc">Private Equity sponsors announce $420M roll-up of Scandinavian white-label contract manufacturers as demand for tobacco-free pouch formats surges 34% YoY across Western Europe.</p>
+                </article>
+
+                <article class="story-item">
+                    <div class="story-meta">CROP &amp; COMMODITY SPOT &bull; RAW MATERIAL BENCHMARK &bull; 2 DAYS AGO</div>
+                    <a href="#" class="story-headline">Synthetic L-Nicotine Spot Prices Stabilize at $3,450/kg Following Lab DMF Audits</a>
+                    <p class="story-desc">Global synthetic raw material prices hold steady after US lab verification standards cleared 12 primary formulators following ICH Q2(R1) validation benchmarks.</p>
+                </article>
+
+                <article class="story-item">
+                    <div class="story-meta">M&amp;A INTELLIGENCE &bull; DEAL AUDIT &bull; 3 DAYS AGO</div>
+                    <a href="#" class="story-headline">CBP Import Alert #99-43 Seizures Surge at Port of Long Beach</a>
+                    <p class="story-desc">US Customs &amp; Border Protection detentions of non-compliant disposable ENDS units reach quarterly peak, impacting un-filing brands lacking PMTA acceptance letters.</p>
+                </article>
+            </section>
+
+            <!-- PDF Showcase -->
+            <section style="margin-top: 40px;">
+                <div class="section-head">
+                    <span>INSTITUTIONAL INDUSTRY REPORTS ($1,500–$3,500)</span>
+                    <a href="reports.html" style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: normal; color: var(--text-main);">View Store &rarr;</a>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                    <div style="padding-bottom: 20px; border-bottom: 1px solid var(--border-light);">
+                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">CODE: NW-SYNTH-2026</div>
+                        <h4 style="font-size: 1.1rem; font-weight: 700; margin: 4px 0;">Synthetic L-Nicotine Report</h4>
+                        <div style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">$2,500</div>
+                        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">148-Page PDF + Excel Databook. Complete DMF lab audits of 38 global suppliers.</p>
+                        <a href="reports.html" class="link-action">View Details &rarr;</a>
+                    </div>
+                    <div style="padding-bottom: 20px; border-bottom: 1px solid var(--border-light);">
+                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-red); font-weight: bold;">MOST POPULAR</div>
+                        <h4 style="font-size: 1.1rem; font-weight: 700; margin: 4px 0;">Oral Pouch M&amp;A Playbook</h4>
+                        <div style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">$3,500</div>
+                        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">210-Page Valuation Playbook, EV/EBITDA multiples, and unit economics model.</p>
+                        <a href="reports.html" class="link-action">View Details &rarr;</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <aside>
+            <section style="margin-bottom: 40px;">
+                <div class="section-head">
+                    <span>EXECUTIVE PASS</span>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">Unlimited access to weekly regulatory intelligence, M&amp;A dockets, and B2B vendor directory.</p>
+                <div style="font-size: 2.2rem; font-weight: 800; margin-bottom: 14px;">$2,000 <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">/ yr</span></div>
+                <button onclick="openPreCheckoutModal('annual')" class="link-action" style="width: 100%; border: none; cursor: pointer; text-align: center; margin-bottom: 10px;">Join Annual Pass ($2,000) &rarr;</button>
+                <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center;">Includes 7-Day Money-Back Guarantee</p>
+            </section>
+
+            <section>
+                <div class="section-head">
+                    <span>JOB &amp; BUY/SELL BOARD</span>
+                </div>
+                <div style="margin-bottom: 16px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+                    <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-red);">EXECUTIVE JOB</div>
+                    <div style="font-weight: 700; font-size: 0.95rem; margin-top: 2px;">VP of Global Regulatory Affairs</div>
+                    <div style="color: var(--text-muted); font-size: 0.85rem;">Apex Pouch Brands &bull; Stockholm</div>
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-gold);">BUY / SELL</div>
+                    <div style="font-weight: 700; font-size: 0.95rem; margin-top: 2px;">3x High-Speed Pouch Lines</div>
+                    <div style="color: var(--text-muted); font-size: 0.85rem;">$185,000 FOB &bull; Sweden</div>
+                </div>
+                <a href="directory.html" class="link-action-outline" style="width: 100%; text-align: center;">Post Listing ($300 / 30d) &rarr;</a>
+            </section>
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</p>
+    </footer>
+</div>
 
 <script src="app.js"></script>
-
-<!-- Floating AI Analyst Terminal Chat Widget -->
-<div id="ai-chat-drawer" style="display: none; position: fixed; bottom: 85px; right: 24px; width: 380px; max-width: 90vw; max-height: 540px; background: #ffffff; border: 2px solid #000000; box-shadow: 6px 6px 0px #000000; z-index: 10000; overflow-y: auto; font-size: 0.88rem;">
-    <div style="background: #111111; color: #FFD700; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000000;">
-        <strong style="font-family: 'Mozilla Headline', sans-serif; font-size: 0.95rem; text-transform: uppercase;">🤖 SENIOR AI ANALYST TERMINAL</strong>
-        <button onclick="toggleAiDrawer()" style="background: transparent; color: #ffffff; border: none; font-size: 1.2rem; cursor: pointer; font-weight: bold; padding: 0 4px; box-shadow: none;">✕</button>
-    </div>
-    <div style="padding: 14px;">
-        <p style="margin-top: 0; margin-bottom: 10px;"><small>Ask our fine-tuned AI Analyst any question on FDA CTP dockets, PMTA compliance, synthetic L-nicotine pricing, or PE M&amp;A ARR multiples:</small></p>
-        
-        <div style="display: flex; gap: 6px; margin-bottom: 10px;">
-            <input type="text" id="ai-input" placeholder="Ask FDA or M&A question..." style="flex: 1; padding: 8px; border: 2px solid #000000; font-size: 0.85rem;" onkeypress="if(event.key==='Enter') askAi();">
-            <button onclick="askAi()" style="padding: 8px 12px; font-weight: bold; background: #FFEA00; border: 2px solid #000000; cursor: pointer; font-size: 0.8rem;">ASK</button>
-        </div>
-        
-        <p style="margin-bottom: 10px;"><small><strong>1-Click Prompts:</strong> 
-            <button onclick="setPrompt('What is the current M&amp;A valuation multiple for synthetic oral pouch manufacturers in 2026?')" style="padding: 2px 6px; margin-right: 2px; margin-bottom: 4px; font-size: 0.75rem; cursor: pointer;">Pouch M&amp;A Multiples</button>
-            <button onclick="setPrompt('What are the key regulatory risks in Altria Q2 2026 earnings report?')" style="padding: 2px 6px; margin-right: 2px; margin-bottom: 4px; font-size: 0.75rem; cursor: pointer;">Altria Q2 Risk</button>
-            <button onclick="setPrompt('What is the FDA CTP penalty for non-compliant PMTA recordkeeping?')" style="padding: 2px 6px; font-size: 0.75rem; cursor: pointer;">PMTA Fines</button>
-        </small></p>
-        
-        <div id="ai-response" style="background: #f9f9f9; padding: 10px; border: 1px solid #000000; min-height: 50px;">
-            <p><small><em>Analyst Desk standing by. Enter a query or click a prompt above.</em></small></p>
-        </div>
-    </div>
-</div>
-
-<button id="ai-chat-bubble-btn" onclick="toggleAiDrawer()" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: #FFEA00; color: #000000; border: 2px solid #000000; box-shadow: 4px 4px 0px #000000; padding: 12px 18px; font-family: 'Mozilla Headline', sans-serif; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; cursor: pointer; border-radius: 30px; display: flex; align-items: center; gap: 8px;">
-    <span>🤖</span> AI Analyst Terminal
-</button>
-
-<hr>
-
-<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 28px; margin-bottom: 14px;">
-    <h2 style="margin: 0;">LIVE REGULATORY &amp; M&amp;A INTELLIGENCE WIRE</h2>
-    <button id="expand-all-btn" onclick="toggleExpandAll()" style="padding: 6px 12px; font-size: 0.8rem; cursor: pointer;">EXPAND ALL BRIEFINGS</button>
-</div>
-
-<article>
-    <details>
-        <summary><strong>FDA Targets Foreign Data Gap With Zero-Fee Registration Mandate</strong></summary>
-        <p>The FDA issued a Notice of Proposed Rulemaking under Docket #2026-13047 to extend establishment registration and product listing requirements to foreign manufacturers, aiming to close what the Agency calls significant information gaps. The proposal carries a $0.00 government filing fee, with the financial burden on industry limited to private compliance costs such as retaining a U.S. Agent. If finalized, the rule would capture foreign synthetic nicotine manufacturers under CTP authority, while manufacturers of premium cigars vacated from FDA jurisdiction in Cigar Association of America v. FDA remain outside its scope.</p>
-    </details>
-</article>
-
-<article>
-    <details>
-        <summary><strong>FDA Draft Guidance Raises Evidentiary Bar for Flavored Vape PMTAs</strong></summary>
-        <p>The FDA published Draft Guidance Docket #2026-04732, outlining the agency's non-binding current thinking on evidentiary standards for flavored ENDS PMTAs under Section 910 of the FD&C Act. The document signals intensified scrutiny of the Appropriate for the Protection of Public Health standard, requiring applicants to quantitatively demonstrate that adult smoker conversion benefits decisively outweigh youth initiation risks. While failure to adopt the guidance does not automatically trigger statutory Civil Money Penalties, non-compliance materially elevates the probability of a Refuse to File or Marketing Denial Order, establishing a de facto litigation-proof standard for portfolio defense.</p>
-    </details>
-</article>
-
-<article>
-    <details>
-        <summary><strong>HSR Filing Overhaul Extends Deal Timelines, Compresses Multiples for CPG and Nicotine Targets</strong></summary>
-        <p>The FTC and DOJ final rule under the Merger Filing Fee Modernization Act of 2022 alters the premerger notification landscape, imposing a 15-20% increase in HSR compliance costs and extending filing preparation timelines to 45-60 days. This regulatory shift compresses entry EV/EBITDA multiples by 0.25x-0.5x to maintain target IRRs, while creating a regulatory certainty premium for acquirers with pre-prepared antitrust diligence rooms. For nicotine verticals, the mandate to disclose SKU-level shipment volumes and supply chain overlaps introduces binary deal risk, requiring a simulated HSR filing during confirmatory due diligence to pre-empt novel theories of harm before signing an LOI.</p>
-    </details>
-</article>
-
-<article>
-    <details>
-        <summary><strong>BAT New Category Contribution Reaches £257 Million, Fueling Sum-of-Parts Re-Rating</strong></summary>
-        <p>British American Tobacco's H1 2026 interim results signal a material inflection for its New Category segment, with a £257 million contribution that shifts the valuation framework from a declining combustible model to a high-growth consumer packaged goods narrative. The 54.7% contribution growth against a 19.8% revenue share implies the segment is approaching breakeven at the gross level, reducing the drag on consolidated EV/EBITDA and supporting a blended target multiple expansion to 9.5x to 10.0x. This critical mass also introduces strategic optionality for a partial IPO or tracking stock to unlock value obscured by the conglomerate discount, though synthetic nicotine input cost volatility at $3,450 per kilogram remains a key margin risk for the full-year outlook.</p>
-    </details>
-</article>
-
-<article>
-    <details>
-        <summary><strong>Customs Data Mandate Erodes De Minimis Arbitrage for Nicotine Importers</strong></summary>
-        <p>The proposed amendment to 19 CFR Parts 10, 143, and 163, detailed in Federal Register Docket #2026-00551, signals a structural logistics choke point for direct-to-consumer nicotine and ENDS hardware importers. The mandate for additional data elements at the shipment level, including 10-digit HTSUS classification and manufacturer identification, is expected to compress gross margins for portfolio companies reliant on sub-$800 de minimis entries from non-domestic manufacturing hubs. Institutional buyers should reclassify logistics savings derived from Section 321 Type 86 entries as non-recurring during quality of earnings assessments, as the regulatory shift permanently erodes the tax arbitrage advantage and extends delivery timelines, potentially compressing EV/EBITDA multiples by 1.0x to 1.5x for exposed targets.</p>
-    </details>
-</article>
-
-<hr>
-
-<h2>B2B NICOTINE SUPPLY CHAIN DIRECTORY</h2>
-<p><a href="directory.html"><strong>&rarr; View Full Marketplace &amp; Submit Procurement RFQs</strong></a></p>
-
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Vendor / Lab</th>
-            <th>Category</th>
-            <th>PMTA / Monograph Status</th>
-            <th>Region</th>
-            <th>RFQ Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>PureSynth Labs Inc.</td>
-            <td>Synthetic L-Nicotine</td>
-            <td>DMF Filed #03941</td>
-            <td>USA / EU</td>
-            <td><a href="directory.html#rfq-form"><strong>Submit RFQ</strong></a></td>
-        </tr>
-        <tr>
-            <td>Apex Pouch Formulators</td>
-            <td>White Pouch Contract OEM</td>
-            <td>TPD Compliant</td>
-            <td>Sweden</td>
-            <td><a href="directory.html#rfq-form"><strong>Submit RFQ</strong></a></td>
-        </tr>
-        <tr>
-            <td>Deccan Leaf Exporters</td>
-            <td>Nicotiana Tabacum Raw Leaf</td>
-            <td>Phytosanitary Verified</td>
-            <td>India</td>
-            <td><a href="directory.html#rfq-form"><strong>Submit RFQ</strong></a></td>
-        </tr>
-    </tbody>
-</table>
-
-<p><a href="directory.html"><strong>&rarr; Access Full Marketplace &amp; Supplier Directory</strong></a></p>
-
-<hr>
-
-<h2>EXECUTIVE MEMBERSHIP OPTIONS</h2>
-<p>Full regulatory risk assessments, FDA dockets, and leaf commodity pricing require an active NicotineWire Executive Pass. <em>84% of PE buyers choose Annual Enterprise to protect capital:</em></p>
-
-<ul>
-    <li><strong>Monthly Access Pass:</strong> $500/mo ($16.66/day) : Full Wire Access (7-Day Zero-Risk Free Trial) (<a href="pricing.html#monthly" onclick="openPreCheckoutModal('monthly'); return false;">Select Plan</a>)</li>
-    <li><strong>Quarterly Executive Pass (TRENDING):</strong> $1,000/qtr ($10.95/day) : Full Wire Access + Unlimited AI Analyst Chatbot + Industry Slack Channel (7-Day Zero-Risk Free Trial) (<a href="pricing.html#quarterly" onclick="openPreCheckoutModal('quarterly'); return false;">Select Plan</a>)</li>
-    <li><strong>Annual Enterprise Pass (MAX ROI : SAVE $4,000):</strong> $2,000/yr (Just <strong>$5.47/day</strong>) : Full Wire Access + Unlimited AI Analyst Chatbot + B2B Supply Chain Directory + Priority Support + Industry Slack Channel (<a href="pricing.html#annual" onclick="openPreCheckoutModal('annual'); return false;">Select Plan</a>)</li>
-</ul>
-
-<p><a href="pricing.html"><strong>&rarr; View Full Membership Features &amp; Institutional Options</strong></a></p>
-
-<hr>
-
-<footer id="about">
-    <h2>ABOUT NICOTINEWIRE™</h2>
-    <p><strong>NicotineWire™</strong> : Independent B2B market intelligence for the world's nicotine sector.</p>
-    <p><small>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</small></p>
-</footer>
-
 </body>
 </html>

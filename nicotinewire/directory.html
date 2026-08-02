@@ -3,325 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - B2B Supply Chain Directory & RFQ Marketplace</title>
+    <title>NicotineWire - B2B Directory &amp; Job Board</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Mozilla+Text:wght@200..700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #FAFAFA;
-            --text-color: #000000;
-            --accent-yellow: #FFEA00;
-            --border-black: #000000;
-        }
-        body {
-            font-family: 'Mozilla Text', -apple-system, BlinkMacSystemFont, sans-serif;
-            max-width: 900px;
-            margin: 28px auto;
-            padding: 0 20px;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            line-height: 1.55;
-            -webkit-font-smoothing: antialiased;
-        }
-        h1, h2, h3, th {
-            font-family: 'Mozilla Headline', sans-serif;
-            font-weight: 800;
-            letter-spacing: -0.035em;
-            text-transform: uppercase;
-        }
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        h2 {
-            font-size: 1.25rem;
-            border-left: 4px solid var(--accent-yellow);
-            padding-left: 10px;
-            margin-top: 28px;
-            margin-bottom: 14px;
-        }
-        hr {
-            border: none;
-            height: 2px;
-            background: var(--border-black);
-            margin: 24px 0;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 16px 0;
-            font-size: 0.9rem;
-            border: 2px solid var(--border-black);
-            background: #ffffff;
-        }
-        th {
-            background: #000000;
-            color: #ffffff;
-            padding: 10px 12px;
-            text-align: left;
-            font-size: 0.85rem;
-        }
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        fieldset {
-            border: 2px solid var(--border-black);
-            background: #ffffff;
-            padding: 20px;
-            box-shadow: 4px 4px 0px #000000;
-        }
-        .form-group {
-            margin-bottom: 14px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 4px;
-            font-size: 0.9rem;
-        }
-        input[type="text"], input[type="email"], select, textarea {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 2px solid var(--border-black);
-            font-family: inherit;
-        }
-        button, input[type="submit"] {
-            font-family: 'Mozilla Headline', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-            background: #ffffff;
-            color: #000000;
-            border: 2px solid var(--border-black);
-            box-shadow: 2px 2px 0px #000000;
-            font-weight: bold;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: all 0.1s ease;
-        }
-        button:hover, input[type="submit"]:hover {
-            background: var(--accent-yellow);
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0px #000000;
-        }
-        .header-logo {
-            vertical-align: middle;
-            height: 40px;
-        }
-        a {
-            color: #000000;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-        }
-        a:hover {
-            background: var(--accent-yellow);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<p><a href="index.html">&larr; Return to Intelligence Wire</a> | <a href="pricing.html">Executive Membership Pricing</a></p>
+<div class="app-viewport">
+    <header>
+        <div>
+            <div class="brand-title">NICOTINE<span>WIRE</span>™</div>
+            <div class="brand-slogan">Check the Wire before you acquire.</div>
+        </div>
+        <nav>
+            <a href="index.html">Wire Feed</a>
+            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
+            <a href="directory.html" class="active">B2B Directory &amp; Jobs ($300)</a>
+            <a href="pricing.html">Pricing</a>
+        </nav>
+    </header>
 
-<h1><img src="logo.svg" alt="NicotineWire Logo" class="header-logo">B2B NICOTINE SUPPLY CHAIN DIRECTORY</h1>
-<p><strong>"Check the Wire before you acquire."</strong></p>
-<p>Verified supplier directory for synthetic nicotine chemistry, contract pouch OEMs, PMTA testing labs, and raw leaf exporters.</p>
-<hr>
+    <section>
+        <div class="section-head">
+            <span>VERIFIED B2B NICOTINE VENDORS &amp; LABS</span>
+        </div>
 
-<h2>VERIFIED VENDORS &amp; CONTRACT MANUFACTURERS</h2>
+        <table class="min-table">
+            <thead>
+                <tr>
+                    <th>Vendor / Lab Name</th>
+                    <th>Supply Category</th>
+                    <th>Compliance &amp; Certifications</th>
+                    <th>Region</th>
+                    <th>RFQ Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>PureSynth Labs Inc.</b></td>
+                    <td>Synthetic L-Nicotine (99.8% Purity)</td>
+                    <td>US FDA DMF Filed #03941 / REACH Certified</td>
+                    <td>USA / EU</td>
+                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 700;">Submit RFQ &rarr;</a></td>
+                </tr>
+                <tr>
+                    <td><b>Apex Pouch Formulators AB</b></td>
+                    <td>White Pouch Contract OEM / Private Label</td>
+                    <td>EU TPD3 Monograph Compliant / cGMP</td>
+                    <td>Sweden / EU</td>
+                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 700;">Submit RFQ &rarr;</a></td>
+                </tr>
+                <tr>
+                    <td><b>Deccan Leaf Exporters Ltd</b></td>
+                    <td>Nicotiana Tabacum Flue-Cured Virginia</td>
+                    <td>Phytosanitary Verified / Board Authorized</td>
+                    <td>India / Global</td>
+                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 700;">Submit RFQ &rarr;</a></td>
+                </tr>
+                <tr>
+                    <td><b>VapeTech Analytics Laboratories</b></td>
+                    <td>PMTA Toxicology &amp; Aerosol Testing</td>
+                    <td>GLP Accredited / ISO 17025 Certified</td>
+                    <td>USA</td>
+                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 700;">Submit RFQ &rarr;</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Vendor / Lab Name</th>
-            <th>Supply Category</th>
-            <th>Compliance &amp; Certifications</th>
-            <th>Region</th>
-            <th>RFQ Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><strong>PureSynth Labs Inc.</strong></td>
-            <td>Synthetic L-Nicotine (99.8% Purity)</td>
-            <td>US FDA DMF Filed #03941 / REACH Certified</td>
-            <td>USA / EU</td>
-            <td><a href="#rfq-form"><strong>Submit RFQ / Intro</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong>Apex Pouch Formulators AB</strong></td>
-            <td>White Pouch Contract OEM / Private Label</td>
-            <td>EU TPD3 Monograph Compliant / cGMP</td>
-            <td>Sweden / EU</td>
-            <td><a href="#rfq-form"><strong>Submit RFQ / Intro</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong>Deccan Leaf Exporters Ltd</strong></td>
-            <td>Nicotiana Tabacum Flue-Cured Virginia</td>
-            <td>Phytosanitary Verified / Board Authorized</td>
-            <td>India / Global</td>
-            <td><a href="#rfq-form"><strong>Submit RFQ / Intro</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong>VapeTech Analytics Laboratories</strong></td>
-            <td>PMTA Toxicology &amp; Aerosol Testing</td>
-            <td>GLP Accredited / ISO 17025 Certified</td>
-            <td>USA</td>
-            <td><a href="#rfq-form"><strong>Submit RFQ / Intro</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong>Nordic Monograph Synthetics</strong></td>
-            <td>Pharmaceutical Grade Nicotine Bitartrate</td>
-            <td>USP / EP Grade Monograph Certified</td>
-            <td>Denmark</td>
-            <td><a href="#rfq-form"><strong>[ Request RFQ / Intro ]</strong></a></td>
-        </tr>
-    </tbody>
-</table>
+    <!-- Job Board -->
+    <section style="margin-top: 48px;">
+        <div class="section-head">
+            <span>B2B JOB BOARD &amp; EQUIPMENT BUY/SELL MARKETPLACE</span>
+            <button onclick="openPreCheckoutModal('job_listing')" class="link-action" style="border: none; cursor: pointer;">📢 Post 30-Day Listing ($300) &rarr;</button>
+        </div>
 
-<hr>
+        <table class="min-table">
+            <thead>
+                <tr>
+                    <th>Listing Type</th>
+                    <th>Title / Opportunity Description</th>
+                    <th>Company / Location</th>
+                    <th>Status / Rate</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-red);">EXECUTIVE JOB</span></td>
+                    <td><b>VP of Global Regulatory Affairs &amp; PMTA Strategy</b></td>
+                    <td>Apex Pouch Brands (Stockholm / Remote)</td>
+                    <td>Active (30d)</td>
+                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" style="color: var(--text-main); font-weight: 700;">Apply &rarr;</a></td>
+                </tr>
+                <tr>
+                    <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-red);">EXECUTIVE JOB</span></td>
+                    <td><b>Senior Analytical Chemist (ICH Q2 Validation Specialist)</b></td>
+                    <td>VapeTech Analytics (Raleigh, NC)</td>
+                    <td>Active (30d)</td>
+                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" style="color: var(--text-main); font-weight: 700;">Apply &rarr;</a></td>
+                </tr>
+                <tr>
+                    <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-gold);">BUY / SELL</span></td>
+                    <td><b>3x High-Speed Pouch Packaging Lines (200 cans/min)</b></td>
+                    <td>Surplus CPG Equipment (Gothenburg, Sweden)</td>
+                    <td>$185,000 FOB</td>
+                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" style="color: var(--text-main); font-weight: 700;">Inspect &rarr;</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-<h2 id="rfq-form">SUBMIT A B2B PROCUREMENT RFQ</h2>
-<p>Need custom contract manufacturing, synthetic bulk orders, or PMTA lab testing? Submit your procurement request below and the NicotineWire desk will route your inquiry to verified suppliers within 24 hours.</p>
-
-<form action="#" method="post" onsubmit="alert('RFQ Submitted Successfully. The NicotineWire Procurement Desk will contact you within 24 hours.'); return false;">
-    <div class="form-group">
-        <label for="buyer_name">Full Name / Executive Title:</label>
-        <input type="text" id="buyer_name" name="buyer_name" placeholder="e.g. Sarah Jenkins, VP Procurement" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="company_name">Company / Firm Name:</label>
-        <input type="text" id="company_name" name="company_name" placeholder="e.g. NextGen Pouch Brands LLC" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="corporate_email">Corporate Email Address:</label>
-        <input type="email" id="corporate_email" name="corporate_email" placeholder="s.jenkins@nextgenpouch.com" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="category_needed">Product or Service Category Needed:</label>
-        <select id="category_needed" name="category_needed" required>
-            <option value="">Select Category...</option>
-            <option value="synthetic_nicotine">Synthetic L-Nicotine (Bulk Raw Material)</option>
-            <option value="pouch_oem">White Pouch Contract Manufacturing (Private Label)</option>
-            <option value="pmta_lab">PMTA Analytical &amp; Toxicology Testing Lab</option>
-            <option value="raw_leaf">Flue-Cured / Burley Raw Leaf Sourcing</option>
-            <option value="regulatory_consulting">PMTA / TPD Regulatory Counsel</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="rfq_details">Estimated Volume / Timeline / Specifications:</label>
-        <textarea id="rfq_details" name="rfq_details" rows="4" placeholder="Specify target volume (e.g. 500kg synthetic L-nicotine or 2M pouch units/month) and compliance requirements." required></textarea>
-    </div>
-    
-    <button type="submit">SUBMIT PROCUREMENT RFQ</button>
-</form>
-
-<hr>
-
-<h2>💼 B2B JOB BOARD &amp; EQUIPMENT BUY/SELL MARKETPLACE</h2>
-<p>Self-serve placement for executive recruitment and commercial machinery liquidations. <strong>$300 / 30-Day Listing.</strong></p>
-
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Listing Type</th>
-            <th>Title / Opportunity Description</th>
-            <th>Company / Location</th>
-            <th>Status / Rate</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><strong style="color: #0066cc;">EXECUTIVE JOB</strong></td>
-            <td>VP of Global Regulatory Affairs &amp; PMTA Strategy</td>
-            <td>Apex Pouch Brands (Stockholm / Remote)</td>
-            <td>Active (30d)</td>
-            <td><a href="#post-listing" onclick="openPreCheckoutModal('job_listing'); return false;"><strong>Apply / Inquire</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong style="color: #0066cc;">EXECUTIVE JOB</strong></td>
-            <td>Senior Analytical Chemist (ICH Q2 Validation Specialist)</td>
-            <td>VapeTech Analytics (Raleigh, NC)</td>
-            <td>Active (30d)</td>
-            <td><a href="#post-listing" onclick="openPreCheckoutModal('job_listing'); return false;"><strong>Apply / Inquire</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong style="color: #cc6600;">BUY / SELL</strong></td>
-            <td>3x High-Speed Pouch Packaging Lines (200 cans/min)</td>
-            <td>Surplus CPG Equipment (Gothenburg, Sweden)</td>
-            <td>$185,000 FOB</td>
-            <td><a href="#post-listing" onclick="openPreCheckoutModal('job_listing'); return false;"><strong>Inspect / Buy</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong style="color: #cc6600;">BUY / SELL</strong></td>
-            <td>FDA Monograph Certified Synthetic Lab Facility (Turnkey)</td>
-            <td>Private Liquidation (Austin, TX)</td>
-            <td>$1.2M Asset Sale</td>
-            <td><a href="#post-listing" onclick="openPreCheckoutModal('job_listing'); return false;"><strong>Inspect / Buy</strong></a></td>
-        </tr>
-    </tbody>
-</table>
-
-<div style="background: #ffffff; border: 2px solid #000; padding: 18px; margin-top: 16px; box-shadow: 4px 4px 0px #000;">
-    <h3 style="margin-top: 0; font-size: 1.1rem;">POST YOUR OWN JOB OR BUY/SELL LISTING ($300 / 30 DAYS)</h3>
-    <p><small>Reach over 1,420 C-suite executives, PE dealmakers, and lab directors instantly.</small></p>
-    <button onclick="openPreCheckoutModal('job_listing')" style="background: #FFEA00; color: #000; border: 2px solid #000; font-weight: bold; cursor: pointer; padding: 10px 18px;">
-        📢 Post 30-Day Listing ($300) &rarr;
-    </button>
+    <footer>
+        <p>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</p>
+    </footer>
 </div>
-
-<hr>
-
-<h2>📣 SELF-SERVE MONETIZATION &amp; SPONSORED WRITING</h2>
-
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Monetization Offering</th>
-            <th>Description &amp; Reach</th>
-            <th>Pricing Rate</th>
-            <th>Self-Serve Order Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><strong>Sponsored Writing / Briefing</strong></td>
-            <td>Custom thought leadership article drafted by our senior editors &amp; distributed to 1,420+ PE subscribers.</td>
-            <td>$1,500 / Article</td>
-            <td><a href="#" onclick="openPreCheckoutModal('sponsored_writing'); return false;"><strong>Book Sponsored Writing ($1,500)</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong>B2B Directory Listing</strong></td>
-            <td>Annual verified listing on the NicotineWire Supply Chain Directory with direct 5% commission RFQ routing.</td>
-            <td>$500 / year</td>
-            <td><a href="#" onclick="openPreCheckoutModal('directory_listing'); return false;"><strong>List Company ($500/yr)</strong></a></td>
-        </tr>
-        <tr>
-            <td><strong>Self-Serve Banner Ad</strong></td>
-            <td>Header or Wire Feed high-impact banner ad placement (970x250 or 300x250) on index.html.</td>
-            <td>$1,000 / month</td>
-            <td><a href="#" onclick="openPreCheckoutModal('banner_ad'); return false;"><strong>Book Banner Ad ($1,000/mo)</strong></a></td>
-        </tr>
-    </tbody>
-</table>
-
-<hr>
-
-<footer id="about">
-    <h2>ABOUT NICOTINEWIRE™</h2>
-    <p><strong>NicotineWire™</strong> : Independent B2B market intelligence for the world's nicotine sector.</p>
-    <p><small>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</small></p>
-</footer>
 
 <script src="app.js"></script>
 </body>

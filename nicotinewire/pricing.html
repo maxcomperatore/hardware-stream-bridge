@@ -3,222 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - Executive Membership Pricing & Benefits</title>
+    <title>NicotineWire - Executive Membership Pricing</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Mozilla+Text:wght@200..700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #FAFAFA;
-            --text-color: #000000;
-            --accent-yellow: #FFEA00;
-            --border-black: #000000;
-        }
-        body {
-            font-family: 'Mozilla Text', -apple-system, BlinkMacSystemFont, sans-serif;
-            max-width: 880px;
-            margin: 28px auto;
-            padding: 0 20px;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            line-height: 1.55;
-            -webkit-font-smoothing: antialiased;
-        }
-        h1, h2, h3, th {
-            font-family: 'Mozilla Headline', sans-serif;
-            font-weight: 800;
-            letter-spacing: -0.035em;
-            text-transform: uppercase;
-        }
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        h2 {
-            font-size: 1.25rem;
-            border-left: 4px solid var(--accent-yellow);
-            padding-left: 10px;
-            margin-top: 28px;
-            margin-bottom: 14px;
-        }
-        hr {
-            border: none;
-            height: 2px;
-            background: var(--border-black);
-            margin: 24px 0;
-        }
-        section {
-            background: #ffffff;
-            border: 2px solid var(--border-black);
-            margin-bottom: 20px;
-            padding: 20px;
-            box-shadow: 4px 4px 0px #000000;
-        }
-        .header-logo {
-            vertical-align: middle;
-            height: 40px;
-        }
-        a {
-            color: #000000;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-        }
-        a:hover {
-            background: var(--accent-yellow);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<p><a href="index.html">&larr; Return to Intelligence Wire</a> | <a href="reports.html"><strong>PDF Reports Store ($1.5k - $3.5k)</strong></a> | <a href="directory.html">Supply Chain Directory</a></p>
+<div class="app-viewport">
+    <header>
+        <div>
+            <div class="brand-title">NICOTINE<span>WIRE</span>™</div>
+            <div class="brand-slogan">Check the Wire before you acquire.</div>
+        </div>
+        <nav>
+            <a href="index.html">Wire Feed</a>
+            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
+            <a href="directory.html">B2B Directory &amp; Jobs ($300)</a>
+            <a href="pricing.html" class="active">Pricing</a>
+        </nav>
+    </header>
 
-<h1><img src="logo.svg" alt="NicotineWire Logo" class="header-logo">NICOTINEWIRE™ PRICING &amp; BENEFITS</h1>
-<p><strong>"Check the Wire before you acquire."</strong></p>
-<hr>
+    <section>
+        <div class="section-head">
+            <span>EXECUTIVE MEMBERSHIP PLANS</span>
+        </div>
+        <p style="color: var(--text-muted); margin-bottom: 28px; font-size: 0.95rem;">NicotineWire does not just deliver data : it transforms you into the most informed, bulletproof dealmaker in the room. <em>84% of Private Equity Subscribers select Annual Enterprise for maximum capital protection.</em></p>
 
-<h2>EXECUTIVE MEMBERSHIP OPTIONS</h2>
-<div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin-bottom: 16px;">
-    <strong>⚠️ COMPETITIVE WARNING:</strong> Your rival funds and competing brand founders are already using NicotineWire to track FDA dockets, source B2B suppliers, and hire executive talent. Don't get caught uninformed in your next investment committee.
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px;">
+            <!-- Tier 1 -->
+            <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border-light);">
+                <h3 style="font-size: 1.15rem; font-weight: 700;">MONTHLY ACCESS PASS</h3>
+                <div style="font-size: 2.2rem; font-weight: 900; margin: 10px 0;">$500 <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">/ mo</span></div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Flexible month-to-month access to live terminal briefings &amp; PMTA docket tracking.</p>
+                <button onclick="openPreCheckoutModal('monthly')" class="link-action" style="width: 100%; border: none; cursor: pointer; text-align: center;">Select Monthly Pass ($500) &rarr;</button>
+            </div>
+
+            <!-- Tier 2 -->
+            <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border-light);">
+                <h3 style="font-size: 1.15rem; font-weight: 700;">QUARTERLY PASS</h3>
+                <div style="font-size: 2.2rem; font-weight: 900; margin: 10px 0;">$1,000 <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">/ qtr</span></div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Save 33% with quarterly billing. Full terminal access &amp; weekly executive summaries.</p>
+                <button onclick="openPreCheckoutModal('quarterly')" class="link-action" style="width: 100%; border: none; cursor: pointer; text-align: center;">Select Quarterly Pass ($1,000) &rarr;</button>
+            </div>
+
+            <!-- Tier 3 (Featured) -->
+            <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border-light);">
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: bold; color: var(--accent-red);">RECOMMENDED FOR FUNDS</div>
+                <h3 style="font-size: 1.15rem; font-weight: 700; margin-top: 4px;">ANNUAL ENTERPRISE PASS</h3>
+                <div style="font-size: 2.2rem; font-weight: 900; margin: 10px 0;">$2,000 <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">/ yr</span></div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Save 66% with annual billing. Complete access to weekly digests, M&amp;A models, and B2B vendor introductions.</p>
+                <button onclick="openPreCheckoutModal('annual')" class="link-action" style="width: 100%; border: none; cursor: pointer; text-align: center;">Join Annual Pass ($2,000) &rarr;</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</p>
+    </footer>
 </div>
-<p><strong>NicotineWire does not just deliver data : it transforms you into the most informed, bulletproof dealmaker in the room.</strong> <em>84% of Private Equity Subscribers select Annual Enterprise for maximum capital protection.</em></p>
-
-<section id="monthly">
-    <h3>MONTHLY ACCESS PASS</h3>
-    <p><strong>Your Executive Identity:</strong> <em>The Informed Practitioner</em> : Never get blindsided by unexpected regulatory deadlines or import alerts.</p>
-    <p><strong>Price:</strong> $500 / month (Includes 7-Day Zero-Risk Free Trial, Billed Monthly Thereafter)</p>
-    <p><strong>Daily Equivalent:</strong> Approx $16.66 / day</p>
-    <p><strong>Included Benefits:</strong> Full Wire Access.</p>
-    <p><a href="#checkout-monthly" onclick="openPreCheckoutModal('monthly'); return false;"><strong>Check the Wire before you send the wire : Start 7-Day Free Trial</strong></a></p>
-</section>
-
-<hr>
-
-<section id="quarterly">
-    <h3>QUARTERLY SEAT (RECOMMENDED)</h3>
-    <p><strong>Your Executive Identity:</strong> <em>The Connected Insider</em> : Direct peer access, real-time intelligence networking inside the Slack channel, and Unlimited AI Analyst Chatbot access.</p>
-    <p><strong>Price:</strong> $1,000 / quarter (Includes 7-Day Zero-Risk Free Trial, Billed Quarterly Thereafter)</p>
-    <p><strong>Daily Equivalent:</strong> Approx $10.95 / day</p>
-    <p><strong>Included Benefits:</strong> Full Wire Access + Unlimited AI Analyst Chatbot + Industry Slack Channel.</p>
-    <p><a href="#checkout-quarterly" onclick="openPreCheckoutModal('quarterly'); return false;"><strong>Check the Wire before you send the wire : Start 7-Day Free Trial</strong></a></p>
-</section>
-
-<hr>
-
-<section id="annual">
-    <h3>ANNUAL ENTERPRISE PASS (MAX ROI : MOST POPULAR)</h3>
-    <p><strong>Your Executive Identity:</strong> <em>The Untouchable Market Authority</em> : Complete institutional dominance with Unlimited AI Analyst Chatbot access, full B2B directory access, and priority analyst desk support.</p>
-    <p><strong>Price:</strong> $2,000 / year (Billed Annually : <strong>Save $4,000 vs Monthly Billing</strong>)</p>
-    <p><strong>Daily Equivalent:</strong> Just <strong>$5.47 / day</strong> (Less than a single daily espresso for complete regulatory immunity)</p>
-    <p><strong>Included Benefits:</strong> Full Wire Access + Unlimited AI Analyst Chatbot + B2B Supply Chain Directory + Priority Support + Industry Slack Channel.</p>
-    <p><a href="#checkout-annual" onclick="openPreCheckoutModal('annual'); return false;"><strong>Check the Wire before you send the wire : Lock In $2,000/yr Rate</strong></a></p>
-</section>
-
-<hr>
-
-<h2>FINANCIAL ROI &amp; CAPITAL PROTECTION COMPARISON</h2>
-<p>A single un-monitored FDA CTP import alert or undisclosed PMTA error costs between $50,000 and $14,000,000 in seized shipments or failed deals. Compare flying blind vs NicotineWire protection:</p>
-
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Executive Role</th>
-            <th>The Cost of Loss (Flying Blind)</th>
-            <th>NicotineWire Protection</th>
-            <th>Net Financial ROI</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><strong>M&amp;A Legal Counsel</strong></td>
-            <td>10+ hours spent manually digging through government PDFs ($8,000+ legal bill).</td>
-            <td>Instant B2B summaries with docket numbers and 15-day compliance deadlines.</td>
-            <td>Saves $8,000+ per transaction term sheet.</td>
-        </tr>
-        <tr>
-            <td><strong>Private Equity Associate</strong></td>
-            <td>20+ hours piecing together valuation multiples, ARR figures, and patent filings.</td>
-            <td>Immediate transaction benchmarks ($180M deal, 4.1x ARR).</td>
-            <td>Prevents overpaying on target deal multiples.</td>
-        </tr>
-        <tr>
-            <td><strong>Procurement Director</strong></td>
-            <td>Un-hedged leaf spot price spikes or Port of Long Beach shipment seizures.</td>
-            <td>Real-time commodity index alerts ($3.12/kg, +8.4%) and shortfall warnings.</td>
-            <td>Protects $50,000 to $5M+ in inventory assets.</td>
-        </tr>
-    </tbody>
-</table>
-
-<hr>
-
-<h2>BENEFITS OF A NICOTINEWIRE SUBSCRIPTION</h2>
-
-<article>
-    <h3>Intelligence &amp; Breaking News</h3>
-    <p>Unlimited access to breaking regulatory alerts, FDA CTP dockets, PMTA decisions, and M&amp;A transaction intelligence designed to protect your capital. Check the Wire before you acquire.</p>
-</article>
-
-<article>
-    <h3>Executive Community &amp; Slack Network</h3>
-    <p>Join over 1,400 senior executives, PE partners, and procurement directors in the most influential network in nicotine and tobacco. Direct access to our subscriber Slack channel.</p>
-</article>
-
-<article>
-    <h3>Customized Market &amp; Commodity Insights</h3>
-    <p>Track synthetic L-nicotine and leaf spot prices, compare regional vs global indices, and receive instant warnings on Port of Long Beach import bans.</p>
-</article>
-
-
-<article>
-    <h3>Expert Regulatory Analysis</h3>
-    <p>Exclusive access to senior analysts providing clear commentary on FDA PMTA dockets, civil money penalties, and EU TPD3 monograph compliance without dense legal jargon.</p>
-</article>
-
-<article>
-    <h3>Article &amp; Docket Sharing</h3>
-    <p>Easily share unlocked NicotineWire intelligence briefs with legal counsel, clients, and investment partners : positioning yourself as the executive always in the know.</p>
-</article>
-
-<hr>
-
-<h2>Verified Executive Subscriber Testimonials</h2>
-
-<blockquote>
-    <p>"NicotineWire saved us from a $14M acquisition that had undisclosed PMTA errors. Check the Wire before you acquire."</p>
-    <p><small>Marcus Vance, Managing Partner, Apex AgTech Capital</small></p>
-</blockquote>
-
-<blockquote>
-    <p>"The supply chain directory and FDA AI Chat paid for our annual subscription in the first 48 hours."</p>
-    <p><small>Dr. Aris Thorne, CTO, NextGen Delivery Labs</small></p>
-</blockquote>
-
-<blockquote>
-    <p>"Direct leaf pricing indices from Indian and Malawian tobacco farmers give us a 2-week lead on market pricing."</p>
-    <p><small>Elena Rostova, Procurement Director, Global Leaf Corp</small></p>
-</blockquote>
-
-<hr>
-
-<h2>INSTITUTIONAL ACCESS &amp; SEAT AVAILABILITY</h2>
-<fieldset>
-    <legend><strong>Check the Wire before you acquire.</strong></legend>
-    <p>Need multi-seat enterprise access for your regulatory, M&amp;A legal, or procurement teams?</p>
-    <p><strong>LIMITED INTRODUCTORY ALLOCATION:</strong> Only 5 Annual Enterprise seats remain for Q3 at the introductory rate of <strong>$2,000/yr</strong> total (Includes 5 Team Seats + API Feed).</p>
-    <p><a href="#checkout-enterprise"><strong>&rarr; UPGRADE TO INSTITUTIONAL ENTERPRISE ACCESS NOW</strong></a></p>
-</fieldset>
-
-<hr>
-
-<footer id="about">
-    <h2>ABOUT NICOTINEWIRE™</h2>
-    <p><strong>NicotineWire™</strong> : Independent B2B market intelligence for the world's nicotine sector.</p>
-    <p><small>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</small></p>
-</footer>
 
 <script src="app.js"></script>
 </body>

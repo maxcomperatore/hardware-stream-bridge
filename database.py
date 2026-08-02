@@ -12,34 +12,8 @@ _DB_OFFLINE_CACHE = False
 _DB_LAST_CHECK = 0.0
 
 def optimize_neon_url(url: str | None) -> str | None:
-    """If database URL points to Neon (*.neon.tech), ensure host uses PgBouncer pooler (-pooler)."""
-    if not url or ".neon.tech" not in url:
-        return url
-    try:
-        parsed = urlparse(url)
-        netloc = parsed.netloc
-        if "@" in netloc:
-            user_pass, host_port = netloc.split("@", 1)
-        else:
-            user_pass, host_port = "", netloc
-
-        if ":" in host_port:
-            host, port = host_port.split(":", 1)
-        else:
-            host, port = host_port, ""
-
-        if host.endswith(".neon.tech") and not host.endswith("-pooler.neon.tech"):
-            host = host.replace(".neon.tech", "-pooler.neon.tech")
-            host = host.replace("-pooler-pooler", "-pooler")
-
-        new_netloc = f"{user_pass}@{host}" if user_pass else host
-        if port:
-            new_netloc += f":{port}"
-
-        return urlunparse(parsed._replace(netloc=new_netloc))
-    except Exception as e:
-        print(f"Warning: Failed to optimize Neon DATABASE_URL: {e}")
-        return url
+    """Return clean database URL without host string corruption."""
+    return url
 
 DATABASE_URL = optimize_neon_url(RAW_DATABASE_URL)
 

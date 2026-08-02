@@ -235,6 +235,48 @@ function openPreCheckoutModal(planType) {
         renewalDate.innerText = '11/2/2026';
         subtotal.innerText = '$1,000.00';
         totalDue.innerText = '$1,000.00';
+    } else if (planType === 'report_synth') {
+        planName.innerText = 'Synthetic L-Nicotine Report (NW-SYNTH-2026)';
+        strikeMonthly.style.display = 'inline';
+        strikeMonthly.innerText = '$3,500.00';
+        monthlyRate.innerText = '$2,500.00 Single User';
+        discountTag.innerText = '🏷️ Instant PDF Download + Excel Databook';
+        strikeTotal.style.display = 'inline';
+        strikeTotal.innerText = '$3,500.00';
+        totalText.innerText = '$2,500.00 One-time purchase';
+        savedText.style.display = 'block';
+        savedText.innerText = '(-$1,000.00 Launch Discount)';
+        renewalDate.innerText = 'N/A (Instant Perpetual Access)';
+        subtotal.innerText = '$2,500.00';
+        totalDue.innerText = '$2,500.00';
+    } else if (planType === 'report_pouch') {
+        planName.innerText = 'Oral Pouch M&A Playbook (NW-MA-POUCH-2026)';
+        strikeMonthly.style.display = 'inline';
+        strikeMonthly.innerText = '$5,000.00';
+        monthlyRate.innerText = '$3,500.00 Single User';
+        discountTag.innerText = '🏷️ Instant PDF Download + Financial Model';
+        strikeTotal.style.display = 'inline';
+        strikeTotal.innerText = '$5,000.00';
+        totalText.innerText = '$3,500.00 One-time purchase';
+        savedText.style.display = 'block';
+        savedText.innerText = '(-$1,500.00 Launch Discount)';
+        renewalDate.innerText = 'N/A (Instant Perpetual Access)';
+        subtotal.innerText = '$3,500.00';
+        totalDue.innerText = '$3,500.00';
+    } else if (planType === 'report_fda') {
+        planName.innerText = 'FDA Seizure Risk Audit (NW-FDA-SEIZURE-2026)';
+        strikeMonthly.style.display = 'inline';
+        strikeMonthly.innerText = '$2,250.00';
+        monthlyRate.innerText = '$1,500.00 Single User';
+        discountTag.innerText = '🏷️ Instant PDF Download + Red List Data';
+        strikeTotal.style.display = 'inline';
+        strikeTotal.innerText = '$2,250.00';
+        totalText.innerText = '$1,500.00 One-time purchase';
+        savedText.style.display = 'block';
+        savedText.innerText = '(-$750.00 Launch Discount)';
+        renewalDate.innerText = 'N/A (Instant Perpetual Access)';
+        subtotal.innerText = '$1,500.00';
+        totalDue.innerText = '$1,500.00';
     } else {
         planName.innerText = 'Annual Enterprise Pass';
         strikeMonthly.style.display = 'inline';

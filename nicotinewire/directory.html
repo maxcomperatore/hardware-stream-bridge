@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - B2B Directory &amp; Job Board</title>
+    <title>NicotineWire - B2B Directory &amp; Executive Job Board</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -26,6 +26,7 @@
     <section>
         <div class="section-head">
             <span>VERIFIED B2B NICOTINE VENDORS &amp; LABS</span>
+            <button onclick="openPreCheckoutModal('vendor_directory')" class="link-action" style="border: none; cursor: pointer;">🏢 Get Verified Directory Listing ($1,000/yr) &rarr;</button>
         </div>
 
         <table class="min-table">
@@ -74,17 +75,17 @@
     <!-- Job Board -->
     <section style="margin-top: 48px;">
         <div class="section-head">
-            <span>B2B JOB BOARD &amp; EQUIPMENT BUY/SELL MARKETPLACE</span>
-            <button onclick="openPreCheckoutModal('job_listing')" class="link-action" style="border: none; cursor: pointer;">📢 Post 30-Day Listing ($300) &rarr;</button>
+            <span>EXECUTIVE B2B JOB BOARD</span>
+            <button onclick="openPreCheckoutModal('job_listing')" class="link-action" style="border: none; cursor: pointer;">📢 Post 30-Day Job Listing ($300) &rarr;</button>
         </div>
 
         <table class="min-table">
             <thead>
                 <tr>
-                    <th>Listing Type</th>
-                    <th>Title / Opportunity Description</th>
+                    <th>Position Type</th>
+                    <th>Job Title / Role Description</th>
                     <th>Company / Location</th>
-                    <th>Status / Rate</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -104,11 +105,11 @@
                     <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" style="color: var(--text-main); font-weight: 700;">Apply &rarr;</a></td>
                 </tr>
                 <tr>
-                    <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-gold);">BUY / SELL</span></td>
-                    <td><b>3x High-Speed Pouch Packaging Lines (200 cans/min)</b></td>
-                    <td>Surplus CPG Equipment (Gothenburg, Sweden)</td>
-                    <td>$185,000 FOB</td>
-                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" style="color: var(--text-main); font-weight: 700;">Inspect &rarr;</a></td>
+                    <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-red);">EXECUTIVE JOB</span></td>
+                    <td><b>Head of Corporate Development &amp; M&amp;A</b></td>
+                    <td>Global Nicotine Holdings (London, UK / Hybrid)</td>
+                    <td>Active (30d)</td>
+                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" style="color: var(--text-main); font-weight: 700;">Apply &rarr;</a></td>
                 </tr>
             </tbody>
         </table>

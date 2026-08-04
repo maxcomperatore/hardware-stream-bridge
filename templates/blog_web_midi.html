@@ -329,8 +329,9 @@ function sendSysExWithPacing(midiOutput, messages) {
             return fetch('/api/geoip')
                 .then(res => {
                     if (!res.ok) throw new Error();
-                    return res.json();
-                });
+                    return res.json().catch(() => ({}));
+                })
+                .catch(() => ({}));
         };
 
         fetchGeoData()

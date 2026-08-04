@@ -187,6 +187,10 @@ def trigger_alert(event_type: str, message: str, properties: dict = None, distin
 
 app = FastAPI(title="Bipluk - Vintage Synth Patch Manager")
 
+import knobkraft_api
+app.include_router(knobkraft_api.router)
+
+
 PENDING_CARD_UPDATES = {}
 
 from datetime import datetime

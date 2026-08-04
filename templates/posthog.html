@@ -47,7 +47,12 @@
                     before_send: function(event) {
                         if (event && event.event === '$exception') {
                             var val = event.properties && event.properties.$exception_value;
-                            if (val && (val.indexOf('Permission denied to access property') !== -1 || val.indexOf('nodeName') !== -1)) {
+                            if (val && (
+                                val.indexOf('Permission denied to access property') !== -1 ||
+                                val.indexOf('nodeName') !== -1 ||
+                                val.indexOf('Unexpected end of input') !== -1 ||
+                                val.indexOf('Script error.') !== -1
+                            )) {
                                 return null;
                             }
                         }

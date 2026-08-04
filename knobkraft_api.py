@@ -55,7 +55,7 @@ def initialize_adapters():
 # Initialize on module load
 initialize_adapters()
 
-router = APIRouter(prefix="/api/v1/knobkraft", tags=["KnobKraft SysEx Engine"])
+router = APIRouter(prefix="/api/v1/sysex", tags=["Universal SysEx Engine"])
 
 @router.get("/synths")
 def list_supported_synths():
@@ -79,7 +79,7 @@ async def parse_sysex_file(
     if synth_id not in ADAPTER_CACHE:
         raise HTTPException(
             status_code=400,
-            detail=f"Synthesizer ID '{synth_id}' not found. Check GET /api/v1/knobkraft/synths for available IDs."
+            detail=f"Synthesizer ID '{synth_id}' not found. Check GET /api/v1/sysex/synths for available IDs."
         )
 
     adapter = ADAPTER_CACHE[synth_id]

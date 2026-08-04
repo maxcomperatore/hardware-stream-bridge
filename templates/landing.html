@@ -1178,7 +1178,7 @@
 
     <!-- Top Announcement Banner -->
     <div id="announcement-banner"
-        class="w-full {% if is_birthday_week %}confetti-banner-bg border-b border-zinc-800{% elif is_christmas_week %}christmas-banner-bg border-b border-emerald-950/40{% else %}confetti-banner-bg border-b border-zinc-900{% endif %} py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+        class="w-full {% if is_birthday_week %}confetti-banner-bg border-b border-zinc-800{% elif is_christmas_week %}christmas-banner-bg border-b border-emerald-950/40{% else %}confetti-banner-bg border-b border-zinc-900{% endif %} py-2.5 px-6 relative z-[100] flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
         <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
             {% if is_birthday_week %}
             <span class="tag-lapis-audit animate-pulse">
@@ -1294,18 +1294,173 @@
                 Supported
             </span>
             <span class="inline-flex flex-wrap items-center justify-center gap-1.5">
-                <span
-                    class="px-2.5 py-0.5 rounded border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 font-pixel text-xs cursor-default">80+ Hardware Synths</span>
-                <a href="/dx7"
-                    class="px-2 py-0.5 rounded border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-white hover:border-emerald-500/30 transition-colors">Yamaha DX7</a>
-                <a href="/juno-106"
-                    class="px-2 py-0.5 rounded border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-white hover:border-emerald-500/30 transition-colors">Roland Juno-106</a>
-                <a href="/korg-m1"
-                    class="px-2 py-0.5 rounded border border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-white hover:border-emerald-500/30 transition-colors">Korg M1</a>
-                <a href="/blofeld"
-                    class="px-2 py-0.5 rounded border border-zinc-850 bg-zinc-900/60 text-zinc-400 hover:text-white hover:border-emerald-500/30 transition-colors">Waldorf Blofeld</a>
-                <a href="/matrix-1000"
-                    class="px-2 py-0.5 rounded border border-zinc-850 bg-zinc-900/60 text-zinc-400 hover:text-white hover:border-emerald-500/30 transition-colors">Oberheim Matrix</a>
+                <!-- Apple-style Hover Popover Trigger -->
+                <div class="relative inline-block group">
+                    <span
+                        class="px-2.5 py-0.5 rounded border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 font-pixel text-xs cursor-pointer flex items-center gap-1 group-hover:border-emerald-400 group-hover:text-white transition-all shadow-sm">
+                        80+ Hardware Synths
+                        <svg class="w-3 h-3 text-emerald-400 group-hover:translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </span>
+
+                    <!-- Apple-style Hover Popover Card -->
+                    <div
+                        class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-84 sm:w-[420px] p-4 rounded-2xl bg-zinc-950/95 border border-zinc-800/90 shadow-2xl backdrop-blur-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-[120] text-left">
+                        
+                        <!-- Top Pointer Arrow -->
+                        <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-zinc-950 border-t border-l border-zinc-800/90"></div>
+
+                        <!-- Header -->
+                        <div class="flex items-center justify-between border-b border-zinc-800/80 pb-2.5 mb-2.5">
+                            <span class="font-pixel text-xs text-white uppercase tracking-wider">Universal Hardware Engine</span>
+                            <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-semibold border border-emerald-500/30">83 Active Parsers</span>
+                        </div>
+
+                        <!-- Category List Grid (All 83 Synths) -->
+                        <div id="popover-synths-container" class="space-y-3 text-xs font-sans">
+                            
+                            <!-- Yamaha (8) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Yamaha</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DX7</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DX7II</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">TX7</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">TX81Z</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Reface DX</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Reface CP</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">FS1R</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">YC Series</span>
+                                </div>
+                            </div>
+
+                            <!-- Roland (12) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Roland</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Juno-106</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">D-50</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JX-8P</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JD-Xi</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Juno-DS</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JV-1080</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JV-80</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">XV-3080</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">MKS-70</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">SE-02</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">TD-07</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">U-20/U-220</span>
+                                </div>
+                            </div>
+
+                            <!-- Korg (8) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Korg</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">M1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">MS2000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">microKORG</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Minilogue XD</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DW-8000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DW-6000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">03R/W</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">R3</span>
+                                </div>
+                            </div>
+
+                            <!-- Sequential & DSI (14) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Sequential & DSI</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet-5</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet 6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet 12</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet 08</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet X</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pro 2</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pro 3</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Take 5</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Trigon-6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Evolver</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Mopho</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Mopho X4</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Tempest</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Tetra</span>
+                                </div>
+                            </div>
+
+                            <!-- Oberheim & Moog (8) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Oberheim & Moog</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Matrix-1000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Matrix 6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-8</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-X</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-X8</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-Xa</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Teo-5</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Moog Voyager</span>
+                                </div>
+                            </div>
+
+                            <!-- Waldorf & Elektron (7) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Waldorf & Elektron</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Blofeld</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Kyra</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Waldorf M</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">MicroWave 1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pulse</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Analog Rytm</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Digitone</span>
+                                </div>
+                            </div>
+
+                            <!-- Behringer, Kawai & Boutique (26) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Behringer, Kawai & Boutique</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DeepMind 12</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pro-800</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Behringer Wave</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Kawai K1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">K3</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">K4/K4r</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">K5000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Akai AX80</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Andromeda A6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">BC Kijimi</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">3rd Wave</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">E-mu Morpheus</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Ensoniq ESQ-1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">VFX</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JB Solaris</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Line 6 POD</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Zoom MS</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Novation AStation</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Bass Station II</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Summit</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">UltraNova</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Cyber-6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Electra One</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Toraiz AS-1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Sledge</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="border-t border-zinc-800/80 pt-2.5 mt-3 flex items-center justify-between text-[10px] text-zinc-400 font-mono">
+                            <span>Web MIDI Direct Backup</span>
+                            <span class="text-emerald-400 font-semibold">Zero Install</span>
+                        </div>
+                    </div>
+                </div>
             </span>
             {% endif %}
         </div>

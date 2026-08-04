@@ -2963,39 +2963,39 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
         if not email:
             return RedirectResponse("/login?error=Google+did+not+provide+a+valid+email.", status_code=303)
 
-            # Database Lookup & Auto-Registration
-            user = database.get_user_by_email(email)
-            if not user:
-                import secrets, hashlib
-                random_pwd = secrets.token_urlsafe(16)
-                hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
-                database.create_user(email, hashed_pwd)
+        # Database Lookup & Auto-Registration
+        user = database.get_user_by_email(email)
+        if not user:
+            import secrets, hashlib
+            random_pwd = secrets.token_urlsafe(16)
+            hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
+            database.create_user(email, hashed_pwd)
+            
+            # Upgrade if user has pending premium checkout
+            pending = database.get_pending_premium(email)
+            if pending:
+                database.update_user_tier(
+                    email,
+                    "premium",
+                    pending.get("stripe_customer_id"),
+                    plan=pending.get("plan", "personal")
+                )
+                database.delete_pending_premium(email)
                 
-                # Upgrade if user has pending premium checkout
-                pending = database.get_pending_premium(email)
-                if pending:
-                    database.update_user_tier(
-                        email,
-                        "premium",
-                        pending.get("stripe_customer_id"),
-                        plan=pending.get("plan", "personal")
-                    )
-                    database.delete_pending_premium(email)
-                    
-                user = database.get_user_by_email(email)
+            user = database.get_user_by_email(email)
 
-            response = RedirectResponse(url="/home", status_code=303)
-            session_data = {"email": email, "id": user.get("id") if user else None}
-            session_str = json.dumps(session_data)
-            response.set_cookie(
-                key="session_user",
-                value=session_str,
-                httponly=True,
-                max_age=30 * 24 * 3600,
-                samesite="lax",
-                secure=settings.IS_PRODUCTION
-            )
-            return response
+        response = RedirectResponse(url="/home", status_code=303)
+        session_data = {"email": email, "id": user.get("id") if user else None}
+        session_str = json.dumps(session_data)
+        response.set_cookie(
+            key="session_user",
+            value=session_str,
+            httponly=True,
+            max_age=30 * 24 * 3600,
+            samesite="lax",
+            secure=settings.IS_PRODUCTION
+        )
+        return response
 
     except Exception as e:
         logger.error(f"Google OAuth callback error: {e}")

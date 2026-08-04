@@ -2069,20 +2069,39 @@ async def upload_bank_file(
     
     # Parse voices
     try:
-        if synth_model == "Yamaha DX7":
-            patch_names = parser.parse_dx7_sysex(sysex_bytes)
-        elif synth_model == "Sequential Prophet":
-            patch_names = parser.parse_prophet_sysex(sysex_bytes)
-        elif synth_model == "Roland Juno-106":
-            patch_names = parser.parse_juno106_sysex(sysex_bytes)
-        elif synth_model == "Korg M1":
-            patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
-        elif synth_model == "Roland Jupiter-6":
-            patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
-        elif synth_model == "Casio CZ-101":
-            patch_names = parser.parse_cz101_sysex(sysex_bytes)
-        else:
-            patch_names = parser.parse_generic_sysex(sysex_bytes)
+        patch_names = []
+        if synth_model in ("Auto-Detect", "", "Generic Synth"):
+            import knobkraft_api
+            sysex_int_list = list(sysex_bytes)
+            for mod_name, mod in knobkraft_api.ADAPTER_CACHE.items():
+                try:
+                    if hasattr(mod, "isPartOfBankDump") and mod.isPartOfBankDump(sysex_int_list):
+                        detected_name = mod.name() if hasattr(mod, "name") else mod_name
+                        synth_model = detected_name
+                        if hasattr(mod, "extractPatchesFromBank"):
+                            extracted = mod.extractPatchesFromBank(sysex_int_list)
+                            patch_names = [p.name() if hasattr(p, "name") else f"Preset {i+1}" for i, p in enumerate(extracted)]
+                        elif hasattr(mod, "parse_bank"):
+                            patch_names = mod.parse_bank(sysex_bytes)
+                        break
+                except Exception:
+                    pass
+
+        if not patch_names:
+            if synth_model == "Yamaha DX7":
+                patch_names = parser.parse_dx7_sysex(sysex_bytes)
+            elif synth_model == "Sequential Prophet":
+                patch_names = parser.parse_prophet_sysex(sysex_bytes)
+            elif synth_model == "Roland Juno-106":
+                patch_names = parser.parse_juno106_sysex(sysex_bytes)
+            elif synth_model == "Korg M1":
+                patch_names = parser.parse_korg_m1_sysex(sysex_bytes)
+            elif synth_model == "Roland Jupiter-6":
+                patch_names = parser.parse_jupiter6_sysex(sysex_bytes)
+            elif synth_model == "Casio CZ-101":
+                patch_names = parser.parse_cz101_sysex(sysex_bytes)
+            else:
+                patch_names = parser.parse_generic_sysex(sysex_bytes)
 
         if not patch_names:
             trigger_alert(
@@ -2960,6 +2979,7 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
             profile = json.loads(resp.read().decode("utf-8"))
 
         email = profile.get("email", "").lower().strip()
+        picture_url = profile.get("picture", "").strip()
         if not email:
             return RedirectResponse("/login?error=Google+did+not+provide+a+valid+email.", status_code=303)
 
@@ -2983,6 +3003,9 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
                 database.delete_pending_premium(email)
                 
             user = database.get_user_by_email(email)
+
+        if picture_url:
+            database.update_user_picture(email, picture_url)
 
         response = RedirectResponse(url="/home", status_code=303)
         response.set_cookie(

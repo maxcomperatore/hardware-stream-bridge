@@ -2,6 +2,7 @@
 <script>
     (function() {
         const userEmail = "{{ user.email if user else '' }}";
+        const userPictureUrl = "{{ user.picture_url if user and user.picture_url else '' }}";
         const AVATAR_COUNT = 48;
         const AVATAR_BASE = '/static/avatars/Simple colors/Icon';
 
@@ -29,7 +30,8 @@
                 localStorage.setItem('visitor-avatar-key', avatarKey);
             }
 
-            const avatarSrc = avatarUrlForKey(avatarKey);
+            const isCustomPicture = Boolean(userPictureUrl);
+            const avatarSrc = userPictureUrl || avatarUrlForKey(avatarKey);
 
             [
                 'landing-lifetime-avatar',
@@ -43,7 +45,7 @@
                 const img = document.getElementById(id);
                 if (img) {
                     img.src = avatarSrc;
-                    img.style.imageRendering = 'pixelated';
+                    img.style.imageRendering = isCustomPicture ? 'auto' : 'pixelated';
                 }
             });
 

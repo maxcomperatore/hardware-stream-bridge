@@ -162,6 +162,7 @@ def init_db():
         # Add drip_email_sent tracking to users table
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(50);")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS picture_url TEXT;")
         cursor.execute("ALTER TABLE pending_premiums ADD COLUMN IF NOT EXISTS plan VARCHAR(50) DEFAULT 'personal';")
         
         conn.commit()
@@ -259,6 +260,18 @@ def update_user_tier(email: str, tier: str, stripe_customer_id: str = None, plan
             conn.close()
     except Exception as e:
         print(f"Database error in update_user_tier: {e}")
+
+def update_user_picture(email: str, picture_url: str):
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET picture_url = %s WHERE email = %s", (picture_url, email.lower().strip()))
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in update_user_picture: {e}")
         return None
 
 def update_user_tier_by_customer_id(stripe_customer_id: str, tier: str):

@@ -1,0 +1,648 @@
+#
+#   Copyright (c) 2022 Christof Ruch. All rights reserved.
+#
+#   Dual licensed: Distributed under Affero GPL license by default, an MIT license is available for purchase
+#
+import copy
+from typing import Optional
+
+import pytest
+import knobkraft
+import testing
+import functools
+
+from testing.librarian import Librarian
+from testing.mock_midi import MockMidiController, ScriptedMockDevice
+
+
+def require_testdata(test_data_field):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            paramA = kwargs['test_data']
+            if paramA is None:
+                pytest.skip('No test_data provided, skipping')
+            if not hasattr(paramA, test_data_field) or getattr(paramA, test_data_field) is None or getattr(paramA, test_data_field) == []:
+                pytest.skip(f'test_data does not provide "{test_data_field}", skipping')
+            func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def require_implemented(function_implemented):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            adaptation_module = kwargs['adaptation']
+            if adaptation_module is None:
+                raise Exception("No adaptation parameter specified, can't check require")
+            if not hasattr(adaptation_module, function_implemented):
+                pytest.skip(f'{function_implemented} is missing in adaptation, skipping')
+            func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+@pytest.fixture
+def test_data(request) -> Optional[testing.TestData]:
+    adaptation = request.getfixturevalue("adaptation")
+    if hasattr(adaptation, "make_test_data"):
+        return adaptation.make_test_data()
+    else:
+        return None
+
+
+#
+# These are generic tests every adaptation must pass
+#
+def test_name_is_not_none(adaptation):
+    name = adaptation.name()
+    assert name is not None
+    assert isinstance(name, str)
+
+
+@require_implemented("nameFromDump")
+@require_testdata("programs")
+def test_extract_name_from_program(adaptation, test_data: testing.TestData):
+    count = 0
+    # Loop all programs created by the generator, and if name is given check that we can extract it!
+    for program in test_data.programs:
+        #assert adaptation.isSingleProgramDump(program.message.byte_list)
+        if hasattr(program, "name") and program.name is not None:
+            knobkraft.list_compare(adaptation.nameFromDump(program.message.byte_list), program.name)
+            assert adaptation.nameFromDump(program.message.byte_list) == program.name
+            count += 1
+    if count == 0:
+        # Nothing was generated that has a name attached, but nameFromDump was implemented. Fail test!
+        pytest.fail(f"{adaptation.name()} did not generate a single program with name to test nameFromDump")
+
+
+@require_implemented("nameFromDump")
+@require_testdata("edit_buffers")
+def test_extract_name_from_edit_buffer(adaptation, test_data: testing.TestData):
+    count = 0
+    # Loop all programs created by the generator, and if name is given check that we can extract it!
+    for program in test_data.edit_buffers:
+        #assert adaptation.isEditBufferDump(program.message.byte_list)
+        if hasattr(program, "name") and program.name is not None:
+            assert adaptation.nameFromDump(program.message.byte_list) == program.name
+            count += 1
+    if count == 0:
+        # Nothing was generated that has a name attached, but nameFromDump was implemented. Fail test!
+        pytest.fail(f"{adaptation.name()} did not generate a single edit buffer with name to test nameFromDump")
+
+
+def get_rename_target_name(program, test_data):
+    if hasattr(program, "rename_name") and program.rename_name is not None:
+        return program.rename_name
+    elif hasattr(test_data, "rename_name") and test_data.rename_name is not None:
+        # Or we have specified one name for all programs?
+        return test_data.rename_name
+    else:
+        # We have specified nothing specific in make_test_data, just use "new name"
+        return "new name"
+
+
+def normalize_extension(extension):
+    if not isinstance(extension, str):
+        raise TypeError("Extension must be a string")
+    normalized = extension.strip().lower()
+    if normalized == "":
+        return normalized
+    if normalized == "*":
+        return normalized
+    if normalized.startswith("*."):
+        normalized = normalized[1:]
+    elif normalized.startswith("*"):
+        normalized = normalized[1:]
+    if not normalized.startswith("."):
+        normalized = "." + normalized
+    return normalized
+
+
+def test_normalize_extension_requires_string():
+    with pytest.raises(TypeError, match="Extension must be a string"):
+        normalize_extension(123)
+
+
+@require_implemented("nameFromDump")
+@require_implemented("renamePatch")
+@require_testdata("programs")
+def test_rename_programs(adaptation, test_data: testing.TestData):
+    for program in test_data.programs:
+        if program.dont_rename:
+            continue
+        binary = program.message.byte_list
+        # Rename to the name it already has
+        renamed = adaptation.renamePatch(binary, adaptation.nameFromDump(binary))
+        # This should not change the extracted name
+        assert knobkraft.list_compare(binary, renamed)
+        assert adaptation.nameFromDump(renamed) == adaptation.nameFromDump(binary)
+        # Now rename. We might have a specific name specified for this program to use
+        new_name = get_rename_target_name(program, test_data)
+        with_new_name = adaptation.renamePatch(binary, new_name)
+        renamed_name = adaptation.nameFromDump(with_new_name)
+        # Here, we need to strip because the target name specified might not contain enough spaces!
+        assert new_name.strip() == renamed_name.strip()
+
+
+@require_implemented("nameFromDump")
+@require_implemented("renamePatch")
+@require_testdata("edit_buffers")
+def test_rename_edit_buffers(adaptation, test_data: testing.TestData):
+    for program in test_data.edit_buffers:
+        if program.dont_rename:
+            continue
+        binary = program.message.byte_list
+        # Rename to the name it already has
+        renamed = adaptation.renamePatch(binary, adaptation.nameFromDump(binary))
+        # This should not change the extracted name
+        assert adaptation.nameFromDump(renamed) == adaptation.nameFromDump(binary)
+        # Now rename. We might have a specific name specified for this program to use
+        new_name = get_rename_target_name(program, test_data)
+        with_new_name = adaptation.renamePatch(binary, new_name)
+        renamed_name = adaptation.nameFromDump(with_new_name)
+        # Here, we need to strip because the target name specified might not contain enough spaces!
+        assert new_name.strip() == renamed_name.strip()
+
+
+@require_implemented("nameFromDump")
+@require_implemented("renamePatch")
+@require_implemented("calculateFingerprint")
+@require_testdata("programs")
+def test_rename_should_not_change_fingerprint(adaptation, test_data: testing.TestData):
+    for program in test_data.programs:
+        if program.dont_rename:
+            continue
+        binary = program.message.byte_list
+        new_name = get_rename_target_name(program, test_data)
+        renamed = adaptation.renamePatch(binary, new_name)
+        # This should not change the fingerprint
+        assert adaptation.calculateFingerprint(renamed) == adaptation.calculateFingerprint(binary)
+
+
+@require_implemented("isEditBufferDump")
+@require_testdata("edit_buffers")
+def test_is_edit_buffer(adaptation, test_data: testing.TestData):
+    count = 0
+    for program in test_data.edit_buffers:
+        assert adaptation.isEditBufferDump(program.message.byte_list)
+        count += 1
+    if count == 0:
+        # Nothing was generated
+        pytest.fail(f"{adaptation.name()} did not generate a single edit buffer to test isEditBufferDump")
+
+
+@require_implemented("isSingleProgramDump")
+@require_testdata("programs")
+def test_is_program_dump(adaptation, test_data: testing.TestData):
+    count = 0
+    for program in test_data.programs:
+        assert adaptation.isSingleProgramDump(program.message.byte_list)
+        count += 1
+    if count == 0:
+        # Nothing was generated. Maybe this should fail the test?
+        pytest.fail(f"{adaptation.name} did not generate a single program buffer to test")
+
+
+@require_implemented("convertToEditBuffer")
+@require_testdata("programs")
+def test_convert_programs_to_edit_buffer(adaptation, test_data: testing.TestData):
+    if not test_data.can_convert_program_to_edit_buffer:
+        pytest.skip("Adaptation flagged as not being able to convert program buffers to edit buffers")
+    for program_data in test_data.programs:
+        edit_buffer = adaptation.convertToEditBuffer(0x00, program_data.message.byte_list)
+        if test_data.convert_to_edit_buffer_produces_program_dump:
+            # This is a special case for the broken implementation of the Andromeda edit buffer
+            assert adaptation.isSingleProgramDump(edit_buffer)
+        else:
+            assert adaptation.isEditBufferDump(edit_buffer)
+
+
+@require_implemented("convertToEditBuffer")
+@require_testdata("edit_buffers")
+def test_convert_edit_buffers_to_edit_buffers(adaptation, test_data: testing.TestData):
+    # Now try to convert program buffers to edit buffers and back to program buffers
+    for buffer in test_data.edit_buffers:
+        edit_buffer = adaptation.convertToEditBuffer(0x00, buffer.message.byte_list)
+        if test_data.convert_to_edit_buffer_produces_program_dump:
+            # This is a special case for the broken implementation of the Andromeda edit buffer
+            assert adaptation.isSingleProgramDump(edit_buffer)
+        else:
+            assert adaptation.isEditBufferDump(edit_buffer)
+
+
+def get_target_program_no(program: testing.ProgramTestData):
+    if program.target_no is not None:
+        return program.target_no
+    else:
+        # Choose something random that hopefully all synths have
+        return 11
+
+
+@require_implemented("convertToProgramDump")
+@require_implemented("isSingleProgramDump")
+@require_testdata("edit_buffers")
+def test_convert_edit_buffers_to_programs(adaptation, test_data: testing.TestData):
+    if not test_data.can_convert_edit_buffer_to_program:
+        pytest.skip("Adaptation flagged not being able to converting edit buffers to programs")
+    for edit_buffer in test_data.edit_buffers:
+        target_no = get_target_program_no(edit_buffer)
+        program_buffer = adaptation.convertToProgramDump(0x00, edit_buffer.message.byte_list, target_no)
+
+        # Make sure neither number nor name were changed when extraction functions are implemented
+        assert adaptation.isSingleProgramDump(program_buffer)
+        if hasattr(adaptation, "numberFromDump"):
+            assert adaptation.numberFromDump(program_buffer) == target_no
+        if hasattr(adaptation, "nameFromDump"):
+            assert adaptation.nameFromDump(program_buffer) == adaptation.nameFromDump(edit_buffer.message.byte_list)
+
+
+@require_implemented("convertToProgramDump")
+@require_implemented("isSingleProgramDump")
+@require_testdata("programs")
+def test_convert_programs_to_programs(adaptation, test_data: testing.TestData):
+    if test_data.not_idempotent:
+        pytest.skip(f"Skipping program to program conversion test for {adaptation.name()} as it indicates this conversion is not idempotent")
+
+    for program_buffer in test_data.programs:
+        if hasattr(adaptation, "nameFromDump"):
+            original_name = adaptation.nameFromDump(program_buffer.message.byte_list)
+        target_no = get_target_program_no(program_buffer)
+        rebuild_program = adaptation.convertToProgramDump(0x00, program_buffer.message.byte_list, target_no)
+
+        # Make sure neither number nor name were changed when extraction functions are implemented
+        assert adaptation.isSingleProgramDump(rebuild_program)
+        if hasattr(adaptation, "numberFromDump"):
+            assert adaptation.numberFromDump(rebuild_program) == target_no
+        if hasattr(adaptation, "nameFromDump") and not program_buffer.change_number_changes_name:
+            assert adaptation.nameFromDump(rebuild_program) == original_name
+
+
+@require_implemented("numberFromDump")
+@require_testdata("programs")
+def test_number_from_dump(adaptation, test_data: testing.TestData):
+    count = 0
+    for program in test_data.programs:
+        if program.number is not None:
+            assert adaptation.numberFromDump(program.message.byte_list) == program.number
+            count += 1
+    if count == 0:
+        pytest.fail(f"{adaptation.name()} has not created a single program with program number to test numberFromDump")
+
+
+@require_implemented("friendlyProgramName")
+@require_testdata("programs")
+def test_program_name(adaptation, test_data: testing.TestData):
+    count = 0
+    for program in test_data.programs:
+        if program.friendly_number is not None:
+            assert adaptation.friendlyProgramName(adaptation.numberFromDump(program.message.byte_list)) == program.friendly_number
+            count += 1
+    if count == 0:
+        pytest.fail(f"{adaptation.name()} has not created a single program with program number to test numberFromDump")
+
+
+@require_implemented("layerName")
+@require_testdata("programs")
+def test_layer_name(adaptation, test_data: testing.TestData):
+    count = 0
+    for program in test_data.programs:
+        if program.second_layer_name is not None:
+            assert adaptation.layerName(program.message.byte_list, 1) == program.second_layer_name
+            count += 1
+    if count == 0:
+        pytest.fail(f"{adaptation.name} has not created a single program and given the second_layer_name to test layerName")
+
+
+@require_implemented("layerName")
+@require_implemented("setLayerName")
+@require_testdata("programs")
+def test_set_layer_name(adaptation, test_data: testing.TestData):
+    count = 0
+    for program in test_data.programs:
+        old_layer_name = adaptation.layerName(program.message.byte_list, 0)
+        new_program = adaptation.setLayerName(program.message.byte_list, 0, old_layer_name)
+        assert knobkraft.list_compare(program.message.byte_list, new_program)
+        new_messages = adaptation.setLayerName(program.message.byte_list, 1, 'changedlayer')
+        assert adaptation.layerName(new_messages, 1) == 'changedlayer'
+        new_messages = adaptation.setLayerName(program.message.byte_list, 0, 'changedlayer')
+        assert adaptation.layerName(new_messages, 0) == 'changedlayer'
+        count += 1
+    if count == 0:
+        pytest.fail(f"{adaptation.name} has not created a single program to test set_layer_name")
+
+
+@require_implemented("calculateFingerprint")
+@require_implemented("convertToProgramDump")
+@require_implemented("isSingleProgramDump")
+@require_testdata("programs")
+def test_fingerprinting_of_programs(adaptation, test_data: testing.TestData):
+    for program in test_data.programs:
+        md5 = adaptation.calculateFingerprint(program.message.byte_list)
+        # Change program place and make sure the fingerprint didn't change
+        changed_position = adaptation.convertToProgramDump(0x09, program.message.byte_list, get_target_program_no(program))
+        assert adaptation.calculateFingerprint(changed_position) == md5
+
+
+@require_implemented("calculateFingerprint")
+@require_implemented("convertToProgramDump")
+@require_implemented("isSingleProgramDump")
+@require_implemented("blankedOut")
+@require_testdata("programs")
+def test_blanked_out(adaptation, test_data: testing.TestData):
+    # The blank out is a generic mechanism to implement fingerprinting so names/program places and the like don't change the fingerprint
+    # But it is not required, just a helpful notion when implementing this. The advantage here is that the test is more
+    # meaningful in showing where the blank out fails than if you get just two different md5...
+    for program in test_data.programs:
+        blank1 = adaptation.blankedOut(program.message.byte_list)
+        # Change program place and make sure the fingerprint didn't change
+        changed_position = adaptation.convertToProgramDump(0x09, program.message.byte_list, 0x31)
+        blank2 = adaptation.blankedOut(changed_position)
+        assert knobkraft.list_compare(blank1, blank2)
+
+
+@require_implemented("calculateFingerprint")
+@require_testdata("edit_buffers")
+def test_fingerprinting_of_edit_buffers(adaptation, test_data: testing.TestData):
+    for program in test_data.edit_buffers:
+        # We can't do much, just make sure that an md5 is calculated
+        md5 = adaptation.calculateFingerprint(program.message.byte_list)
+        assert md5 is not None
+
+
+@require_implemented("createDeviceDetectMessage")
+@require_testdata("device_detect_call")
+def test_device_detect_message(adaptation, test_data: testing.TestData):
+    assert adaptation.createDeviceDetectMessage(0x00) == test_data.device_detect_call
+
+
+@require_implemented("channelIfValidDeviceResponse")
+@require_testdata("device_detect_reply")
+def test_device_detect_reply(adaptation, test_data: testing.TestData):
+    assert adaptation.channelIfValidDeviceResponse(test_data.device_detect_reply[0].byte_list) == test_data.device_detect_reply[1]
+
+
+@require_implemented("createProgramDumpRequest")
+@require_testdata("program_dump_request")
+def test_program_dump_request(adaptation, test_data: testing.TestData):
+    if isinstance(test_data.program_dump_request, tuple):
+        assert knobkraft.list_compare(adaptation.createProgramDumpRequest(test_data.program_dump_request[0], test_data.program_dump_request[1]),
+                                      test_data.program_dump_request[2].byte_list)
+    else:
+        assert knobkraft.list_compare(adaptation.createProgramDumpRequest(0x00, 0x00),
+                                      test_data.program_dump_request.byte_list)
+
+
+@require_implemented("friendlyBankName")
+@require_testdata("friendly_bank_name")
+def test_friendly_bank_name(adaptation, test_data: testing.TestData):
+    assert adaptation.friendlyBankName(test_data.friendly_bank_name[0]) == test_data.friendly_bank_name[1]
+
+
+@require_implemented("legacyLoadSupportedExtensions")
+@require_testdata("legacy_loader_cases")
+def test_legacy_loader_extensions(adaptation, test_data: testing.TestData):
+    supported_extensions = adaptation.legacyLoadSupportedExtensions()
+    assert isinstance(supported_extensions, list)
+    normalized_supported = {normalize_extension(x) for x in supported_extensions}
+    for case in test_data.legacy_loader_cases:
+        assert normalize_extension(case.file_extension) in normalized_supported
+
+
+@require_implemented("loadPatchesFromLegacyData")
+@require_implemented("legacyLoadSupportedExtensions")
+@require_testdata("legacy_loader_cases")
+def test_legacy_loader_data(adaptation, test_data: testing.TestData):
+    for case in test_data.legacy_loader_cases:
+        patches = adaptation.loadPatchesFromLegacyData(case.file_content)
+        assert isinstance(patches, list)
+        if case.expected_patch_count is not None:
+            assert len(patches) == case.expected_patch_count
+        for patch in patches:
+            assert isinstance(patch, list)
+            assert all(isinstance(x, int) and 0 <= x < 256 for x in patch)
+        if case.patch_inspector is not None:
+            case.patch_inspector(adaptation, patches)
+
+
+@require_implemented("extractPatchesFromBank")
+@require_testdata("banks")
+def test_extract_patches_from_bank(adaptation, test_data: testing.TestData):
+    for bank in test_data.banks:
+        if adaptation.isPartOfBankDump(bank):
+            patches = knobkraft.splitSysex(adaptation.extractPatchesFromBank(bank))
+            assert len(patches) > 0
+            for patch in patches:
+                # TODO: This seems like a peculiar assumption, that extracted patches are always Single Program Dumps
+                # unless the synth only supports edit buffer dumps
+                if hasattr(adaptation, "isSingleProgramDump") and not test_data.banks_are_edit_buffers:
+                    assert adaptation.isSingleProgramDump(patch)
+                else:
+                    assert adaptation.isEditBufferDump(patch)
+        else:
+            print(f"This is not a bank dump: {bank}")
+
+
+@require_implemented("extractPatchesFromAllBankMessages")
+@require_testdata("banks")
+def test_extract_patches_from_all_bank_messages(adaptation, test_data: testing.TestData):
+    for bank in test_data.banks:
+        bank_messages = []
+        for message in bank:
+            if adaptation.isPartOfBankDump(message):
+                bank_messages.append(message)
+            else:
+                print(f"Not a bank message: {knobkraft.syxToString(message)}")
+
+        patches = adaptation.extractPatchesFromAllBankMessages(bank_messages)
+        assert len(patches) > 0
+        for patch in patches:
+            # TODO: This seems like a peculiar assumption, that extracted patches are always Single Program Dumps
+            # unless the synth only supports edit buffer dumps
+            if hasattr(adaptation, "isSingleProgramDump") and not test_data.banks_are_edit_buffers:
+                assert adaptation.isSingleProgramDump(patch)
+            else:
+                assert adaptation.isEditBufferDump(patch)
+
+
+@require_implemented("extractPatchesFromBank")
+@require_implemented("convertPatchesToBankDump")
+@require_testdata("banks")
+def test_convert_patches_to_bank(adaptation, test_data: testing.TestData):
+    for bank in knobkraft.splitSysex(test_data.banks):
+        patches = adaptation.extractPatchesFromBank(bank)
+        assert len(patches) > 0
+
+        # Now revert the individual patches back to a bank
+        new_bank = adaptation.convertPatchesToBankDump(patches)
+        flat_list_output = [item for sublist in new_bank for item in sublist]
+        knobkraft.list_compare(bank, flat_list_output)
+
+
+@require_implemented("extractPatchesFromAllBankMessages")
+@require_implemented("convertPatchesToBankDump")
+@require_testdata("banks")
+def test_convert_patches_to_bank(adaptation, test_data: testing.TestData):
+    for bank in knobkraft.splitSysex(test_data.banks):
+        bank_messages = []
+        for message in bank:
+            if adaptation.isPartOfBankDump(message):
+                bank_messages.append(message)
+            else:
+                print(f"Not a bank message: {knobkraft.syxToString(message)}")
+
+        patches = adaptation.extractPatchesFromAllBankMessages(bank_messages)
+        assert len(patches) > 0
+
+        # Now revert the individual patches back to a bank
+        new_bank = adaptation.convertPatchesToBankDump(patches)
+        flat_list_input = [item for sublist in bank_messages for item in sublist]
+        flat_list_output = [item for sublist in new_bank for item in sublist]
+        knobkraft.list_compare(flat_list_input, flat_list_output)
+
+
+@require_testdata("sysex")
+def test_load_sysex_file_via_librarian(adaptation, test_data: testing.TestData):
+    # The simulated Librarian should also be able to load the provided sysex data
+    # This simulates the behavior of the C++ code much more closely
+    librarian = Librarian()
+    patches = librarian.load_sysex(adaptation, test_data.all_messages)
+    assert len(patches) == test_data.expected_patch_count
+
+
+def assert_librarian_download_finished(controller, result):
+    assert controller.finished, (
+        f"Mock download did not finish; sent={len(controller.sent_messages)} "
+        f"pending={len(controller.pending_replies)} loaded={len(result)}"
+    )
+
+
+def assert_librarian_downloaded_patches(adaptation, result):
+    for patch in result:
+        if hasattr(adaptation, "isSingleProgramDump") and adaptation.isSingleProgramDump(patch):
+            continue
+        if hasattr(adaptation, "isEditBufferDump") and adaptation.isEditBufferDump(patch):
+            continue
+        pytest.fail(f"Downloaded patch is neither a program dump nor an edit buffer: {knobkraft.syxToString(patch)}")
+
+
+def materialized_send_test_data(test_data: testing.TestData):
+    programs = test_data.programs if isinstance(test_data.programs, list) else list(test_data.programs)
+    edit_buffers = test_data.edit_buffers if isinstance(test_data.edit_buffers, list) else list(test_data.edit_buffers)
+    send_test_data = copy.copy(test_data)
+    send_test_data.programs = programs
+    send_test_data.edit_buffers = edit_buffers
+    return send_test_data
+
+
+def patch_for_send_to_synth(test_data: testing.TestData):
+    send_test_data = materialized_send_test_data(test_data)
+    programs = send_test_data.programs
+    edit_buffers = send_test_data.edit_buffers
+    if send_test_data.send_to_synth_patch is not None:
+        return send_test_data.send_to_synth_patch(send_test_data)
+    if programs:
+        return programs[0].message.byte_list
+    if edit_buffers:
+        return edit_buffers[0].message.byte_list
+    pytest.skip("test_data has no patch for send-to-synth test")
+
+
+@require_testdata("mock_device_factory")
+def test_download_all_patches_via_mock_device(adaptation, test_data: testing.TestData):
+    result = []
+    librarian = Librarian()
+    controller = MockMidiController(test_data.mock_device_factory(test_data, adaptation))
+
+    librarian.start_downloading_all_patches(
+        controller,
+        0,
+        adaptation,
+        test_data.wire_download_bank,
+        lambda patches: result.extend(patches),
+    )
+    controller.drain()
+
+    assert_librarian_download_finished(controller, result)
+
+    expected_count = test_data.expected_wire_patch_count
+    if expected_count is None:
+        expected_count = test_data.expected_patch_count
+    assert len(result) == expected_count
+
+    if test_data.expected_sent_messages is not None:
+        assert controller.sent_messages == test_data.expected_sent_messages(test_data, adaptation)
+
+    assert_librarian_downloaded_patches(adaptation, result)
+
+
+@require_testdata("expected_send_to_synth_messages")
+def test_send_patch_to_synth_via_mock_device(adaptation, test_data: testing.TestData):
+    send_test_data = materialized_send_test_data(test_data)
+    patch = patch_for_send_to_synth(send_test_data)
+    librarian = Librarian()
+    controller = MockMidiController(ScriptedMockDevice({}, ignore_unmatched=True))
+
+    messages = librarian.send_patch_to_synth(controller, 0, adaptation, patch)
+
+    expected_messages = send_test_data.expected_send_to_synth_messages(send_test_data, adaptation)
+    assert messages == expected_messages
+    assert controller.sent_messages == expected_messages
+    assert controller.sent_message_delays == [Librarian.message_delay(adaptation)] * len(expected_messages)
+
+
+@require_testdata("single_edit_buffer_mock_device_factory")
+def test_download_edit_buffer_via_mock_device(adaptation, test_data: testing.TestData):
+    result = []
+    librarian = Librarian()
+    controller = MockMidiController(test_data.single_edit_buffer_mock_device_factory(test_data, adaptation))
+
+    librarian.download_edit_buffer(
+        controller,
+        0,
+        adaptation,
+        lambda patches: result.extend(patches),
+    )
+    controller.drain()
+
+    assert_librarian_download_finished(controller, result)
+    assert len(result) == test_data.expected_single_edit_buffer_count
+
+    for patch in result:
+        assert adaptation.isEditBufferDump(patch)
+
+
+@require_testdata("wire_download_banks")
+def test_download_multiple_banks_via_mock_device(adaptation, test_data: testing.TestData):
+    if test_data.mock_device_factory is None:
+        pytest.skip("test_data does not provide mock_device_factory, skipping")
+
+    result = []
+    librarian = Librarian()
+    controller = MockMidiController(test_data.mock_device_factory(test_data, adaptation))
+
+    librarian.start_downloading_banks(
+        controller,
+        0,
+        adaptation,
+        test_data.wire_download_banks,
+        lambda patches: result.extend(patches),
+    )
+    controller.drain()
+
+    assert_librarian_download_finished(controller, result)
+
+    expected_count = test_data.expected_multi_bank_patch_count
+    if expected_count is None:
+        expected_count = test_data.expected_wire_patch_count
+    assert len(result) == expected_count
+
+    if test_data.expected_multi_bank_sent_messages is not None:
+        assert controller.sent_messages == test_data.expected_multi_bank_sent_messages(test_data, adaptation)
+
+    assert_librarian_downloaded_patches(adaptation, result)

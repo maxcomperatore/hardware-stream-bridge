@@ -2985,15 +2985,21 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
             user = database.get_user_by_email(email)
 
         response = RedirectResponse(url="/home", status_code=303)
-        session_data = {"email": email, "id": user.get("id") if user else None}
-        session_str = json.dumps(session_data)
         response.set_cookie(
             key="session_user",
-            value=session_str,
+            value=sign_session_cookie(email),
+            max_age=86400 * 30,
+            path="/",
             httponly=True,
-            max_age=30 * 24 * 3600,
-            samesite="lax",
-            secure=settings.IS_PRODUCTION
+            secure=settings.IS_PRODUCTION,
+            samesite="lax"
+        )
+        logger.info(f"User logged in via Google OAuth: {email}", extra={"email": email, "event_type": "google_oauth_login"})
+        trigger_alert(
+            "user_login", 
+            f"User `{email}` logged in via Google OAuth.",
+            {"email": email, "provider": "google"},
+            distinct_id=email
         )
         return response
 

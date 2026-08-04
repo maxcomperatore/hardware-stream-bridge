@@ -2902,6 +2902,24 @@ async def oauth_protected_resource():
     )
 
 
+# --- Google OAuth Routes ---
+@app.get("/auth/google")
+async def auth_google(request: Request):
+    if not settings.GOOGLE_CLIENT_ID:
+        return RedirectResponse("/login?error=Google+Sign-In+configuration+pending.+Please+sign+in+with+email.", status_code=303)
+    redirect_uri = f"{settings.SITE_BASE}/auth/google/callback"
+    params = {
+        "client_id": settings.GOOGLE_CLIENT_ID,
+        "redirect_uri": redirect_uri,
+        "response_type": "code",
+        "scope": "openid email profile",
+        "access_type": "offline",
+        "prompt": "select_account"
+    }
+    from urllib.parse import urlencode
+    url = "https://accounts.google.com/o/oauth2/v2/auth?" + urlencode(params)
+    return RedirectResponse(url)
+
 # --- auth.md: Agent Registration Discovery ---
 @app.get("/auth.md")
 async def auth_md():

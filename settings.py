@@ -71,6 +71,10 @@ POSTHOG_HOST = getenv("POSTHOG_HOST", "https://e.bipluk.com")
 # PostHog Support → Identity verification secret (not the phc_ project key)
 POSTHOG_CONVERSATIONS_IDENTITY_SECRET = getenv("POSTHOG_CONVERSATIONS_IDENTITY_SECRET")
 
+# Google OAuth
+GOOGLE_CLIENT_ID = getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = getenv("GOOGLE_CLIENT_SECRET")
+
 # LLM (FAQ / optional features)
 OPENROUTER_API_KEY = getenv("OPENROUTER_API_KEY")
 OPENROUTER_MODEL = getenv("OPENROUTER_MODEL", "google/gemini-3.1-flash-lite")

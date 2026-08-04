@@ -2920,6 +2920,81 @@ async def auth_google(request: Request):
     url = "https://accounts.google.com/o/oauth2/v2/auth?" + urlencode(params)
     return RedirectResponse(url)
 
+@app.get("/auth/google/callback")
+async def auth_google_callback(request: Request, code: str = None, error: str = None):
+    if error or not code:
+        return RedirectResponse("/login?error=Google+login+was+cancelled+or+failed.", status_code=303)
+    
+    if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
+        return RedirectResponse("/login?error=Google+Sign-In+is+not+configured+in+environment.", status_code=303)
+
+    redirect_uri = f"{settings.SITE_BASE}/auth/google/callback"
+    token_url = "https://oauth2.googleapis.com/token"
+    token_data = {
+        "client_id": settings.GOOGLE_CLIENT_ID,
+        "client_secret": settings.GOOGLE_CLIENT_SECRET,
+        "code": code,
+        "grant_type": "authorization_code",
+        "redirect_uri": redirect_uri,
+    }
+    
+    try:
+        import httpx
+        async with httpx.AsyncClient() as client:
+            res = await client.post(token_url, data=token_data)
+            token_json = res.json()
+            access_token = token_json.get("access_token")
+            if not access_token:
+                return RedirectResponse("/login?error=Failed+to+retrieve+Google+token.", status_code=303)
+
+            userinfo_res = await client.get(
+                "https://www.googleapis.com/oauth2/v2/userinfo",
+                headers={"Authorization": f"Bearer {access_token}"}
+            )
+            profile = userinfo_res.json()
+            email = profile.get("email", "").lower().strip()
+            
+            if not email:
+                return RedirectResponse("/login?error=Google+did+not+provide+a+valid+email.", status_code=303)
+
+            # Database Lookup & Auto-Registration
+            user = database.get_user_by_email(email)
+            if not user:
+                import secrets, hashlib
+                random_pwd = secrets.token_urlsafe(16)
+                hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
+                database.create_user(email, hashed_pwd)
+                
+                # Upgrade if user has pending premium checkout
+                pending = database.get_pending_premium(email)
+                if pending:
+                    database.update_user_tier(
+                        email,
+                        "premium",
+                        pending.get("stripe_customer_id"),
+                        plan=pending.get("plan", "personal")
+                    )
+                    database.delete_pending_premium(email)
+                    
+                user = database.get_user_by_email(email)
+
+            response = RedirectResponse(url="/home", status_code=303)
+            session_data = {"email": email, "id": user.get("id") if user else None}
+            session_str = json.dumps(session_data)
+            response.set_cookie(
+                key="session_user",
+                value=session_str,
+                httponly=True,
+                max_age=30 * 24 * 3600,
+                samesite="lax",
+                secure=settings.IS_PRODUCTION
+            )
+            return response
+
+    except Exception as e:
+        logger.error(f"Google OAuth callback error: {e}")
+        return RedirectResponse(f"/login?error=Google+login+error", status_code=303)
+
 # --- auth.md: Agent Registration Discovery ---
 @app.get("/auth.md")
 async def auth_md():

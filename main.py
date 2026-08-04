@@ -2939,23 +2939,29 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
     }
     
     try:
-        import httpx
-        async with httpx.AsyncClient() as client:
-            res = await client.post(token_url, data=token_data)
-            token_json = res.json()
-            access_token = token_json.get("access_token")
-            if not access_token:
-                return RedirectResponse("/login?error=Failed+to+retrieve+Google+token.", status_code=303)
+        import urllib.request
+        import urllib.parse
+        import json
 
-            userinfo_res = await client.get(
-                "https://www.googleapis.com/oauth2/v2/userinfo",
-                headers={"Authorization": f"Bearer {access_token}"}
-            )
-            profile = userinfo_res.json()
-            email = profile.get("email", "").lower().strip()
-            
-            if not email:
-                return RedirectResponse("/login?error=Google+did+not+provide+a+valid+email.", status_code=303)
+        encoded_data = urllib.parse.urlencode(token_data).encode("utf-8")
+        req = urllib.request.Request(token_url, data=encoded_data, headers={"Content-Type": "application/x-www-form-urlencoded"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            token_json = json.loads(resp.read().decode("utf-8"))
+        
+        access_token = token_json.get("access_token")
+        if not access_token:
+            return RedirectResponse("/login?error=Failed+to+retrieve+Google+token.", status_code=303)
+
+        userinfo_req = urllib.request.Request(
+            "https://www.googleapis.com/oauth2/v2/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"}
+        )
+        with urllib.request.urlopen(userinfo_req, timeout=10) as resp:
+            profile = json.loads(resp.read().decode("utf-8"))
+
+        email = profile.get("email", "").lower().strip()
+        if not email:
+            return RedirectResponse("/login?error=Google+did+not+provide+a+valid+email.", status_code=303)
 
             # Database Lookup & Auto-Registration
             user = database.get_user_by_email(email)

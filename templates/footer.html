@@ -249,14 +249,14 @@
                         </a>
 
                         <!-- Email -->
-                        <a href="mailto:halfradiationllc@gmail.com"
-                            class="flex items-center justify-center w-7 h-7 bg-zinc-950 border border-zinc-900 rounded-lg hover:border-zinc-500 hover:bg-zinc-800/40 transition-colors duration-200 group"
+                        <button type="button" data-open-contact-modal="true"
+                            class="flex items-center justify-center w-7 h-7 bg-zinc-950 border border-zinc-900 rounded-lg hover:border-zinc-500 hover:bg-zinc-800/40 transition-colors duration-200 group cursor-pointer"
                             aria-label="Email Support" title="Email Support: halfradiationllc@gmail.com">
                             <img src="/static/social/email.png" alt="Email" width="16" height="16"
                                 class="w-4 h-4 object-contain group-hover:hidden" style="image-rendering: pixelated;">
                             <img src="/static/social/emailpressed.png" alt="Email" width="16" height="16"
                                 class="w-4 h-4 object-contain hidden group-hover:block" style="image-rendering: pixelated;">
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <!-- Accepted Payments -->
@@ -516,3 +516,4 @@
 </script>
 {% include 'partials/db_maintenance_modal.html' %}
 {% include 'partials/external_link_modal.html' %}
+{% include 'partials/contact_modal.html' %}

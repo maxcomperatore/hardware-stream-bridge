@@ -437,13 +437,22 @@
                     <div class="flex items-center justify-between pl-1.5 pr-1">
                         <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider">Vault Library</h3>
                         {% if user.tier == 'premium' %}
-                        <a href="/banks/export-all"
-                           id="vault-export-all-link"
-                           title="Download entire vault as .zip"
-                           onclick="return handleVaultExportAll(event)"
-                           class="text-[7px] font-pixel uppercase text-emerald-500 hover:text-emerald-400 tracking-wider transition-colors">
-                            Export all
-                        </a>
+                        <div class="flex items-center gap-1.5">
+                            <a href="/banks/export-csv-all"
+                               id="vault-export-csv-link"
+                               title="Download patch catalog as CSV"
+                               class="text-[7px] font-pixel uppercase text-zinc-400 hover:text-zinc-200 tracking-wider transition-colors">
+                                Export CSV
+                            </a>
+                            <span class="text-[7px] text-zinc-700">|</span>
+                            <a href="/banks/export-all"
+                               id="vault-export-all-link"
+                               title="Download entire vault as .zip"
+                               onclick="return handleVaultExportAll(event)"
+                               class="text-[7px] font-pixel uppercase text-emerald-500 hover:text-emerald-400 tracking-wider transition-colors">
+                                Export all (.zip)
+                            </a>
+                        </div>
                         {% endif %}
                     </div>
 

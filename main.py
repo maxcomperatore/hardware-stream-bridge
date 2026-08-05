@@ -596,6 +596,7 @@ REGIONAL_PRICING_CATALOG = {
         "symbol": "$",
         "personal_amount": "39",
         "studio_amount": "399",
+        "competitor_amount": "200",
         "billing_label": "USD / ONE-TIME",
     },
     "eur": {
@@ -604,6 +605,7 @@ REGIONAL_PRICING_CATALOG = {
         "symbol": "€",
         "personal_amount": "39",
         "studio_amount": "399",
+        "competitor_amount": "200",
         "billing_label": "EUR / ONE-TIME",
     },
     "gbp": {
@@ -612,6 +614,7 @@ REGIONAL_PRICING_CATALOG = {
         "symbol": "£",
         "personal_amount": "39",
         "studio_amount": "399",
+        "competitor_amount": "200",
         "billing_label": "GBP / ONE-TIME",
     },
     "cad": {
@@ -620,6 +623,7 @@ REGIONAL_PRICING_CATALOG = {
         "symbol": "$",
         "personal_amount": "59",
         "studio_amount": "599",
+        "competitor_amount": "280",
         "billing_label": "CAD / ONE-TIME",
     },
     "aud": {
@@ -628,6 +632,7 @@ REGIONAL_PRICING_CATALOG = {
         "symbol": "$",
         "personal_amount": "59",
         "studio_amount": "599",
+        "competitor_amount": "280",
         "billing_label": "AUD / ONE-TIME",
     },
     "chf": {
@@ -636,6 +641,7 @@ REGIONAL_PRICING_CATALOG = {
         "symbol": "Fr.",
         "personal_amount": "39",
         "studio_amount": "399",
+        "competitor_amount": "200",
         "billing_label": "CHF / ONE-TIME",
     },
 }

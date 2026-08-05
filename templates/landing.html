@@ -2155,13 +2155,13 @@
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
-                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold">$200+</span>. <span class="text-brand-plus font-semibold">bipluk+</span> is
+                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold"><span id="pricing-anchor-competitor-symbol">{{ pricing.symbol }}</span><span id="pricing-anchor-competitor-amount">{{ pricing.competitor_amount if pricing.competitor_amount is defined else '200' }}</span>+</span>. <span class="text-brand-plus font-semibold">bipluk+</span> is just
                     <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{
                             pricing.symbol }}</span><span id="pricing-anchor-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount
                             }}</span></span>
-                    once. <span class="text-zinc-600">No monthly fee.</span>
-                        </p>
-                    </div>
+                    once. <span class="font-semibold" style="color: #10b981;">Saving over 80% never sounded <span class="inline-block align-middle h-[12px] w-[12px] mx-0.5 relative top-[-1px] bg-[#10b981]" style="-webkit-mask: url('/static/icons/dinkie/multiple-musical-notes.svg') no-repeat center; mask: url('/static/icons/dinkie/multiple-musical-notes.svg') no-repeat center; -webkit-mask-size: contain; mask-size: contain;" aria-hidden="true"></span> better.</span>
+                </p>
+            </div>
 
             <!-- Centered Meme Image -->
             <div class="flex items-center justify-center mt-8 reveal reveal-scale" style="--delay: 350ms;">
@@ -2198,11 +2198,11 @@
             const AU_COUNTRY_CODES = {{ au_country_codes | tojson if au_country_codes is defined else '[]' }};
             const CH_COUNTRY_CODES = {{ ch_country_codes | tojson if ch_country_codes is defined else '[]' }};
             const REGIONAL_PRICING_DISPLAY = {
-                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '39', studio: '399', free: '€0' },
-                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '39', studio: '399', free: '£0' },
-                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '59', studio: '599', free: '$0 CAD' },
-                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '59', studio: '599', free: '$0 AUD' },
-                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '39', studio: '399', free: 'Fr. 0' },
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '39', studio: '399', free: '€0', competitor: '200' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '39', studio: '399', free: '£0', competitor: '200' },
+                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '59', studio: '599', free: '$0 CAD', competitor: '280' },
+                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '59', studio: '599', free: '$0 AUD', competitor: '280' },
+                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '39', studio: '399', free: 'Fr. 0', competitor: '200' },
             };
 
             function resolveRegionalPricingRegion(data) {
@@ -2244,6 +2244,10 @@
                 if (studioAmount) studioAmount.textContent = cfg.studio;
                 if (personalBilling) personalBilling.textContent = cfg.billing;
                 if (studioBilling) studioBilling.textContent = cfg.billing;
+                const anchorCompetitorSymbol = document.getElementById('pricing-anchor-competitor-symbol');
+                const anchorCompetitorAmount = document.getElementById('pricing-anchor-competitor-amount');
+                if (anchorCompetitorSymbol) anchorCompetitorSymbol.textContent = cfg.symbol;
+                if (anchorCompetitorAmount && cfg.competitor) anchorCompetitorAmount.textContent = cfg.competitor;
                 const anchorPersonalSymbol = document.getElementById('pricing-anchor-personal-symbol');
                 const anchorPersonalAmount = document.getElementById('pricing-anchor-personal-amount');
                 const anchorStudioSymbol = document.getElementById('pricing-anchor-studio-symbol');
@@ -2253,6 +2257,13 @@
                     anchorPersonalSymbol.classList.add('pricing-gem-blue');
                 }
                 if (anchorPersonalAmount) anchorPersonalAmount.textContent = cfg.personal;
+                const sloganSymbol = document.getElementById('pricing-slogan-symbol');
+                const sloganAmount = document.getElementById('pricing-slogan-amount');
+                if (sloganSymbol) {
+                    sloganSymbol.textContent = cfg.symbol;
+                    sloganSymbol.classList.add('pricing-gem-blue');
+                }
+                if (sloganAmount) sloganAmount.textContent = cfg.personal;
                 if (anchorStudioSymbol) {
                     anchorStudioSymbol.textContent = cfg.symbol;
                     anchorStudioSymbol.classList.add('pricing-gem-blue');

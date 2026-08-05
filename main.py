@@ -1912,6 +1912,51 @@ async def export_all_banks(request: Request):
         headers={"Content-Disposition": 'attachment; filename="knob_monster_vault.zip"'}
     )
 
+@app.get("/banks/export-csv-all")
+async def export_csv_all(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    banks = database.get_all_banks(user["id"])
+    if not banks:
+        raise HTTPException(status_code=404, detail="No banks to export")
+
+    import csv, io
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Bank ID", "Bank Name", "Synth Model", "Preset Index", "Patch Name", "Created At"])
+
+    for bank in banks:
+        full_bank = database.get_bank(bank["id"], user["id"])
+        patches = full_bank.get("patches", []) if full_bank else []
+        if patches:
+            for p in patches:
+                writer.writerow([
+                    bank["id"],
+                    bank["name"],
+                    bank["synth_model"],
+                    p.get("patch_index", 0) + 1,
+                    p.get("name", "Unnamed"),
+                    bank.get("created_at", "")
+                ])
+        else:
+            writer.writerow([
+                bank["id"],
+                bank["name"],
+                bank["synth_model"],
+                1,
+                "Full Soundbank Dump",
+                bank.get("created_at", "")
+            ])
+
+    output.seek(0)
+    return StreamingResponse(
+        io.BytesIO(output.getvalue().encode("utf-8")),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=bipluk_vault_presets.csv"}
+    )
+
 @app.get("/banks/{bank_id}", response_class=HTMLResponse)
 async def get_bank_details(request: Request, bank_id: int):
     user = get_current_user(request)

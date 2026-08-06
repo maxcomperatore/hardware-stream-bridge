@@ -1745,6 +1745,30 @@ async def do_reset_password_confirm(request: Request, token: str = Form(...), pa
     )
     return RedirectResponse(url="/login?msg=Password+updated+successfully.+Please+sign+in.", status_code=303)
 
+@app.post("/delete-account")
+async def delete_account(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    email = user["email"]
+    user_id = user["id"]
+    
+    ok = database.delete_user(user_id)
+    if not ok:
+        raise HTTPException(status_code=500, detail="Failed to delete user account")
+    
+    trigger_alert(
+        "account_permanently_deleted",
+        f"User `{email}` (ID: {user_id}) permanently deleted their account and all soundbank vaults.",
+        {"email": email, "user_id": user_id},
+        distinct_id=email
+    )
+    
+    response = RedirectResponse(url="/login?msg=Your+account+and+all+vault+data+have+been+permanently+deleted.", status_code=303)
+    response.delete_cookie(key="session_user", path="/")
+    return response
+
 @app.get("/api/test-welcome-email")
 async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
     # Generate the personalized first name

@@ -564,11 +564,18 @@
                         {% if user.tier == 'premium' %}
                         <a href="/portal" class="text-zinc-400 hover:text-emerald-400 font-pixel text-[9px] uppercase tracking-wider underline transition-colors">BILLING</a>
                         {% endif %}
-                        <a href="/logout" onclick="event.preventDefault(); window.location.replace('/logout');"
-                            class="px-3 py-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 border border-red-800/40 text-rose-300 hover:text-white font-pixel text-[9px] uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
-                            <span>LOG OUT</span>
-                            <span class="text-xs">&rarr;</span>
-                        </a>
+                        <div class="flex items-center gap-2">
+                            <form action="/delete-account" method="POST" onsubmit="return confirm('WARNING: Are you sure you want to permanently delete your account and purge all saved soundbanks? This cannot be undone.');">
+                                <button type="submit" class="text-zinc-600 hover:text-rose-400 font-pixel text-[8px] uppercase tracking-wider transition-colors">
+                                    Delete
+                                </button>
+                            </form>
+                            <a href="/logout" onclick="event.preventDefault(); window.location.replace('/logout');"
+                                class="px-3 py-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 border border-red-800/40 text-rose-300 hover:text-white font-pixel text-[9px] uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                                <span>LOG OUT</span>
+                                <span class="text-xs">&rarr;</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

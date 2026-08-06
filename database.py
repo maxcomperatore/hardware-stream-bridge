@@ -287,6 +287,22 @@ def update_user_password(email: str, hashed_password: str):
         print(f"Database error in update_user_password: {e}")
         return None
 
+def delete_user(user_id: int) -> bool:
+    """Permanently delete user and all associated soundbank vaults."""
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM banks WHERE user_id = %s", (user_id,))
+            cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+            conn.commit()
+            return True
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in delete_user: {e}")
+        return False
+
 def update_user_tier_by_customer_id(stripe_customer_id: str, tier: str):
     try:
         conn = get_db_connection()

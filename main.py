@@ -3842,6 +3842,32 @@ keep the analog alive,
 bipluk support
 p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
+
+DRIP_HTML_TEMPLATE = """
+<div style="background-color: #050507; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <div style="max-width: 460px; margin: 0 auto; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; padding: 32px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+        <img src="https://bipluk.com/static/logo.svg" alt="bipluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
+        <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">bipluk</h1>
+        <p style="color: #71717a; font-size: 12px; margin: 0 0 24px 0; font-weight: 500;">Vault Status & Protection Alert</p>
+
+        <hr style="border: 0; border-top: 1px solid #18181b; margin: 0 0 24px 0;">
+
+        <h2 style="color: #f4f4f5; font-size: 16px; font-weight: 600; margin: 0 0 12px 0;">Your Studio Vault is Restricted</h2>
+        <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 0 0 16px 0; text-align: left;">
+            You signed up for bipluk, but you are currently on the free tier. Free vaults are restricted to 1 soundbank slot with export locks.
+        </p>
+        <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 0 0 24px 0; text-align: left;">
+            If you have a <strong style="color: #ffffff;">Juno-106, DX7, or M1</strong> in your studio, those custom patches are vulnerable. All it takes is one dead RAM battery or local disk crash to wipe your soundbanks forever.
+        </p>
+
+        <a href="https://bipluk.com/checkout?plan=personal" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px;">Unlock Unlimited Vault &rarr;</a>
+
+        <p style="color: #52525b; font-size: 11px; margin: 0;">
+            © 2026 bipluk · Web MIDI Cloud Librarian
+        </p>
+    </div>
+</div>
+"""
                     
 
 def calculate_avatar_idx(email: str) -> int:

@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" class="overflow-x-hidden" data-pricing-region="{{ pricing.region if pricing is defined else 'usd' }}">
+<html lang="en" class="h-full overflow-hidden" data-pricing-region="{{ pricing.region if pricing is defined else 'usd' }}">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     {% include 'partials/seo_noindex.html' %}
     {% include "partials/local_fonts.html" %}
     {% include 'partials/favicon.html' %}
     <title>Register - bipluk</title>
     {% include 'partials/tailwind_lapis.html' %}
     <style>
-        /* Mobile specific fancy background pattern */
+        html, body {
+            height: 100vh;
+            overflow: hidden !important;
+            touch-action: manipulation;
+        }
+
         .mobile-bg-pattern {
             background-image:
                 radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -30,42 +35,33 @@
     {% include 'posthog.html' %}
 </head>
 
-<body
-    class="bg-black text-zinc-100 font-sans antialiased overflow-hidden min-h-screen flex flex-col justify-center items-center relative">
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-hidden h-screen flex flex-col justify-center items-center relative select-none">
     <!-- Global Dither Overlay -->
     <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
-    <!-- Fancy Mobile Background Pattern -->
+    <!-- Mobile Background Pattern -->
     <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
 
-    <div class="w-full max-w-sm px-6 py-8 bg-zinc-950 border border-zinc-900 rounded-2xl shadow-2xl relative z-10">
-        <div class="text-center mb-8">
-            <img src="/static/logo.svg" alt="Bipluk Logo" class="h-10 w-auto mx-auto object-contain mb-3">
-            <h2 class="font-pixel uppercase text-sm text-white tracking-widest">bipluk</h2>
-            <p class="text-[9px] text-zinc-550 uppercase font-pixel tracking-wider mt-1.5">Create account to start
-                backup</p>
-            <p id="signup-plan-label" class="text-[9px] text-lapis-light uppercase font-pixel tracking-wider mt-2">
+    <div class="w-full max-w-sm px-6 py-5 sm:py-7 bg-black sm:bg-zinc-950 border-0 sm:border sm:border-zinc-900 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl relative z-10 my-auto">
+        <div class="text-center mb-4">
+            <img src="/static/logo.svg" alt="bipluk Logo" class="h-9 w-auto mx-auto object-contain mb-2">
+            <h1 class="font-pixel uppercase text-base text-white tracking-widest">bipluk</h1>
+            <p class="text-xs text-zinc-400 font-sans tracking-wide mt-1 font-medium">Create account to start backup</p>
+            <p id="signup-plan-label" class="text-[10px] text-lapis-light uppercase font-pixel tracking-wider mt-1.5">
                 {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% elif plan == 'studio' %}bipluk+ Studio · {{
                 plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{
                 plan_catalog.personal.price_display }} lifetime{% endif %}
             </p>
         </div>
 
-        {% if plan == 'free' %}
-        <div class="mb-5 p-3 bg-blue-950/40 border border-blue-800/40 rounded-xl text-[10px] text-blue-200 font-mono text-center flex items-center justify-center gap-2 shadow-lapis-glow-sm">
-            <span>Free accounts save 1 bank slot. Upgrade anytime to <b>bipluk+</b> for unlimited vaults.</span>
-        </div>
-        {% endif %}
-
         {% if error %}
-        <div
-            class="mb-4 p-3 bg-red-950/20 border border-red-900/50 rounded-lg text-[10px] text-rose-450 font-semibold tracking-wide text-center">
+        <div class="mb-3 p-2.5 bg-red-950/30 border border-red-800/50 rounded-xl text-xs text-rose-300 font-semibold tracking-wide text-center">
             {{ error }}
         </div>
         {% endif %}
 
         <!-- Google OAuth Button -->
         <a href="/auth/google"
-            class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 text-white text-xs font-medium flex items-center justify-center gap-3 transition-all duration-150 shadow-sm hover:border-zinc-700 active:scale-[0.98] mb-4">
+            class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-3">
             <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.1 9 5 12 5z"/>
                 <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
@@ -76,91 +72,79 @@
         </a>
 
         <!-- Divider -->
-        <div class="relative my-4 flex items-center justify-center">
+        <div class="relative my-3 flex items-center justify-center">
             <div class="absolute inset-0 flex items-center">
                 <div class="w-full border-t border-zinc-900"></div>
             </div>
-            <div class="relative px-3 bg-zinc-950 text-[9px] font-pixel text-zinc-500 uppercase tracking-widest">
+            <div class="relative px-3 bg-black sm:bg-zinc-950 text-[10px] font-pixel text-zinc-500 uppercase tracking-widest">
                 OR
             </div>
         </div>
 
-        <form action="/signup" method="POST" class="space-y-4">
+        <form action="/signup" method="POST" class="space-y-3">
             <input type="hidden" name="plan" id="signup-plan" value="{{ plan or 'free' }}">
             <div>
-                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Email
-                    Address</label>
+                <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Email Address</label>
                 <input type="email" name="email" id="signup-email" required placeholder="name@domain.com"
-                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm sm:text-base text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors">
             </div>
 
             <div>
-                <label
-                    class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Password</label>
+                <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Password</label>
                 <input type="password" name="password" id="password" required placeholder="••••••••"
-                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm sm:text-base text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors">
             </div>
 
             <div>
-                <label class="block text-[8px] font-pixel text-zinc-500 uppercase tracking-widest mb-1.5">Confirm
-                    Password</label>
+                <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Confirm Password</label>
                 <input type="password" name="confirm_password" id="confirm_password" required placeholder="••••••••"
-                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-zinc-700 transition-colors">
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm sm:text-base text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors">
             </div>
 
             <!-- Password Validation Rules -->
             <div id="password-rules"
-                class="bg-zinc-950/50 border border-zinc-900/80 rounded-lg p-3 space-y-1.5 text-[9px] font-mono hidden">
+                class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-2.5 space-y-1 text-xs font-mono hidden">
                 <div class="flex items-center gap-2 text-zinc-500 transition-colors duration-150" id="rule-length">
                     <span class="indicator shrink-0 w-3 h-3 flex items-center justify-center">
-                        <img src="/static/icons/dinkie/ballot-box-with-check.svg" alt="" width="12"
-                            height="12" class="h-3 w-3 opacity-30"
-                            style="filter: invert(0.45); image-rendering: pixelated;">
+                        <img src="/static/icons/dinkie/ballot-box-with-check.svg" alt="" width="12" height="12" class="h-3 w-3 opacity-30" style="filter: invert(0.45); image-rendering: pixelated;">
                     </span>
                     <span>8+ characters</span>
                 </div>
                 <div class="flex items-center gap-2 text-zinc-500 transition-colors duration-150" id="rule-match">
                     <span class="indicator shrink-0 w-3 h-3 flex items-center justify-center">
-                        <img src="/static/icons/dinkie/ballot-box-with-check.svg" alt="" width="12"
-                            height="12" class="h-3 w-3 opacity-30"
-                            style="filter: invert(0.45); image-rendering: pixelated;">
+                        <img src="/static/icons/dinkie/ballot-box-with-check.svg" alt="" width="12" height="12" class="h-3 w-3 opacity-30" style="filter: invert(0.45); image-rendering: pixelated;">
                     </span>
                     <span>Passwords match</span>
                 </div>
             </div>
 
             {% if plan == 'studio' %}
-            <p id="studio-license-note" class="text-[9px] text-zinc-500 leading-relaxed">
+            <p id="studio-license-note" class="text-[10px] text-zinc-400 leading-relaxed">
                 bipluk+ Studio licenses cover commercial use at one location.
             </p>
             {% elif plan != 'free' %}
             <div id="personal-license-ack">
-                <label class="flex items-start gap-2.5 cursor-pointer group">
+                <label class="flex items-start gap-2 cursor-pointer group">
                     <input type="checkbox" name="license_ack" id="license_ack" value="1" required
                         class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-lapis-mid focus:ring-0 focus:ring-offset-0">
-                    <span class="text-[9px] text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors">
-                        I confirm this license is for personal, non-commercial use only (bedroom studio, my own synths).
+                    <span class="text-[10px] text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">
+                        I confirm this license is for personal use only (bedroom studio, my own synths).
                     </span>
                 </label>
             </div>
             {% endif %}
 
             <button type="submit" id="register-btn"
-                class="w-full py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-[0.98]">
+                class="w-full py-3 rounded-xl bg-white hover:bg-zinc-200 text-black text-sm font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
                 Register
             </button>
         </form>
 
-        <p class="text-center text-[10px] text-zinc-650 font-normal mt-6">
-            Already have an account? <a href="/login" class="text-white hover:underline">Sign In</a>
-        </p>
-
-        <p class="text-center text-[9px] text-zinc-700 mt-4 leading-relaxed font-sans">
-            By registering, you agree to our <a href="/terms" target="_blank"
-                class="hover:text-zinc-500 underline">Terms of Service</a> <br class="hidden sm:inline"> and <a
-                href="/privacy" target="_blank" class="hover:text-zinc-500 underline">Privacy Policy</a>.
+        <p class="text-center text-xs text-zinc-400 font-normal mt-4">
+            Already have an account? <a href="/login" class="text-white font-semibold hover:underline">Sign In</a>
         </p>
     </div>
+
     <script>
         const passwordInput = document.getElementById('password');
         const confirmInput = document.getElementById('confirm_password');
@@ -239,68 +223,12 @@
             }
         }
 
-        // Initialize state
         submitBtn.setAttribute('disabled', 'true');
         submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
         passwordInput.addEventListener('input', checkValidation);
         confirmInput.addEventListener('input', checkValidation);
-
-        const CONSUMER_EMAIL_DOMAINS = new Set({{ consumer_email_domains | tojson if consumer_email_domains is defined else '[]' }});
-        const INITIAL_PLAN = {{ (plan or 'free') | tojson }};
-        const PLAN_LABELS = {
-            free: 'Free tier · {{ pricing.free_price_display | default("$0") }} · no card',
-            personal: 'Personal plan · {{ plan_catalog.personal.price_display }} lifetime',
-            studio: 'bipluk+ Studio · {{ plan_catalog.studio.price_display }} lifetime',
-        };
-        const emailInput = document.getElementById('signup-email');
-        const planInput = document.getElementById('signup-plan');
-        const planLabel = document.getElementById('signup-plan-label');
-        const personalAck = document.getElementById('personal-license-ack');
-        const licenseCheckbox = document.getElementById('license_ack');
-
-        function updatePlanUi(effectivePlan) {
-            if (planLabel) {
-                planLabel.textContent = PLAN_LABELS[effectivePlan] || PLAN_LABELS.free;
-            }
-            if (personalAck && licenseCheckbox) {
-                if (effectivePlan === 'studio' || effectivePlan === 'free') {
-                    personalAck.classList.add('hidden');
-                    licenseCheckbox.removeAttribute('required');
-                    licenseCheckbox.checked = false;
-                } else {
-                    personalAck.classList.remove('hidden');
-                    licenseCheckbox.setAttribute('required', 'required');
-                }
-            }
-        }
-
-        function applyPlanForEmail(email) {
-            if (!planInput) return;
-            if (INITIAL_PLAN === 'free') {
-                planInput.value = 'free';
-                updatePlanUi('free');
-                return;
-            }
-            if (INITIAL_PLAN === 'studio') {
-                planInput.value = 'studio';
-                updatePlanUi('studio');
-                return;
-            }
-            const domain = (email.split('@')[1] || '').toLowerCase().trim();
-            const useStudio = Boolean(domain && !CONSUMER_EMAIL_DOMAINS.has(domain));
-            planInput.value = useStudio ? 'studio' : 'personal';
-            updatePlanUi(planInput.value);
-        }
-
-        if (emailInput) {
-            emailInput.addEventListener('input', () => applyPlanForEmail(emailInput.value.trim()));
-            emailInput.addEventListener('blur', () => applyPlanForEmail(emailInput.value.trim()));
-            if (emailInput.value) applyPlanForEmail(emailInput.value.trim());
-        }
     </script>
-    {% include "mobile_nav.html" %}
-    {% include 'partials/db_maintenance_modal.html' %}
 </body>
 
 </html>

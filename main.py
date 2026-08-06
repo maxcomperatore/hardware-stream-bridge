@@ -1638,6 +1638,27 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
         distinct_id=email
     )
     return response
+
+@app.get("/forgot-password", response_class=HTMLResponse)
+async def forgot_password_page(request: Request, email: str = None, msg: str = None):
+    return render_template("forgot_password.html", request, {"email": email, "success_msg": msg})
+
+@app.post("/forgot-password", response_class=HTMLResponse)
+async def do_forgot_password(request: Request, email: str = Form(...)):
+    email_clean = email.lower().strip()
+    user = database.get_user_by_email(email_clean)
+    if user:
+        trigger_alert(
+            "password_reset_requested",
+            f"Password reset requested for user `{email_clean}`.",
+            {"email": email_clean},
+            distinct_id=email_clean
+        )
+        msg = f"Reset instructions sent to {email_clean}. Please check your inbox or spam folder."
+    else:
+        msg = f"If an account exists for {email_clean}, password reset instructions have been sent."
+    return render_template("forgot_password.html", request, {"email": email_clean, "success_msg": msg})
+
 @app.get("/api/test-welcome-email")
 async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
     # Generate the personalized first name

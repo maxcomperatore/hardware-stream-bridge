@@ -176,6 +176,35 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
         except Exception as e:
             logger.error(f"PostHog capture failed: {e}")
 
+    # 2. Echobell Webhook Alert (Realtime Push Notifications)
+    echobell_url = getattr(settings, "ECHOBELL_WEBHOOK_URL", "https://hook.echobell.one/d/in0itadp5366ko012gsu")
+    if echobell_url:
+        try:
+            import urllib.request, json
+            clean_title = f"[{event_type.upper()}] {message[:60]}".encode("ascii", "ignore").decode("ascii")
+            clean_topic = event_type.encode("ascii", "ignore").decode("ascii")
+            payload_data = {
+                "title": f"[{event_type.upper()}] {message[:60]}",
+                "message": f"User: {distinct_id}\nDetails: {message}",
+                "topic": event_type,
+                "user": distinct_id,
+                "properties": properties or {}
+            }
+            req = urllib.request.Request(
+                echobell_url,
+                data=json.dumps(payload_data).encode("utf-8"),
+                headers={
+                    "Content-Type": "application/json",
+                    "User-Agent": "BiplukAlerts/1.0",
+                    "Title": clean_title or "Bipluk Alert",
+                    "Topic": clean_topic or "activity"
+                },
+                method="POST"
+            )
+            urllib.request.urlopen(req, timeout=5)
+        except Exception as eb_err:
+            logger.error(f"Echobell alert dispatch error: {eb_err}")
+
 def trigger_alert(event_type: str, message: str, properties: dict = None, distinct_id: str = "system"):
     """
     Fire-and-forget alert to PostHog and Discord.
@@ -2716,6 +2745,10 @@ async def stripe_webhook(request: Request):
         metadata = getattr(session, 'metadata', None) or {}
         if not isinstance(metadata, dict):
             metadata = dict(metadata) if metadata else {}
+        amount_total = getattr(session, 'amount_total', 0) or 0
+        currency = (getattr(session, 'currency', 'usd') or 'usd').upper()
+        amount_formatted = f"${amount_total / 100:.2f} {currency}" if amount_total else ""
+        
         if metadata.get("purchase_type") == "sound_pack":
             pack_id = metadata.get("pack_id")
             if customer_email and pack_id:
@@ -2728,8 +2761,8 @@ async def stripe_webhook(request: Request):
                     )
                     trigger_alert(
                         "marketplace_pack_purchased",
-                        f"Sound pack `{pack['name']}` purchased via Stripe for `{customer_email}`.",
-                        {"email": customer_email, "pack_id": pack_id, "pack_name": pack["name"], "bank_id": bank_id},
+                        f"💵 SALE! {amount_formatted} Sound pack `{pack['name']}` purchased by `{customer_email}`.",
+                        {"email": customer_email, "pack_id": pack_id, "pack_name": pack["name"], "bank_id": bank_id, "amount": amount_formatted},
                         distinct_id=customer_email,
                     )
         elif metadata.get("plan"):
@@ -2741,8 +2774,8 @@ async def stripe_webhook(request: Request):
                     logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "plan": purchased_plan, "event_type": "subscription_activated"})
                     trigger_alert(
                         "subscription_activated",
-                        f"Subscription activated via Stripe for `{customer_email}` on plan `{purchased_plan}`.",
-                        {"email": customer_email, "customer_id": customer_id, "plan": purchased_plan},
+                        f"💵 NEW SALE! {amount_formatted} `{purchased_plan.upper()}` Lifetime Plan purchased by `{customer_email}`.",
+                        {"email": customer_email, "customer_id": customer_id, "plan": purchased_plan, "amount": amount_formatted},
                         distinct_id=customer_email
                     )
                 else:
@@ -2751,8 +2784,8 @@ async def stripe_webhook(request: Request):
                     logger.info(f"Pending premium parked (no account yet): {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "event_type": "subscription_pending"})
                     trigger_alert(
                         "subscription_pending",
-                        f"Subscription paid but pending registration for `{customer_email}`.",
-                        {"email": customer_email, "customer_id": customer_id},
+                        f"💵 NEW SALE! {amount_formatted} `{purchased_plan.upper()}` Plan paid by `{customer_email}` (Pending registration).",
+                        {"email": customer_email, "customer_id": customer_id, "amount": amount_formatted},
                         distinct_id=customer_email
                     )
 

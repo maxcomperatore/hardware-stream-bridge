@@ -34,6 +34,9 @@ SESSION_SECRET_KEY = require_env("SESSION_SECRET_KEY") if IS_PRODUCTION else get
 )
 SITE_BASE = (getenv("SITE_BASE", "https://bipluk.com") or "https://bipluk.com").rstrip("/")
 
+# Notifications / Webhooks
+ECHOBELL_WEBHOOK_URL = getenv("ECHOBELL_WEBHOOK_URL", "https://hook.echobell.one/d/in0itadp5366ko012gsu")
+
 # Stripe
 STRIPE_SECRET_KEY = getenv("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = getenv("STRIPE_WEBHOOK_SECRET")

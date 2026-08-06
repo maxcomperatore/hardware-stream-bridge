@@ -274,6 +274,19 @@ def update_user_picture(email: str, picture_url: str):
         print(f"Database error in update_user_picture: {e}")
         return None
 
+def update_user_password(email: str, hashed_password: str):
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET hashed_password = %s WHERE email = %s", (hashed_password, email.lower().strip()))
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in update_user_password: {e}")
+        return None
+
 def update_user_tier_by_customer_id(stripe_customer_id: str, tier: str):
     try:
         conn = get_db_connection()

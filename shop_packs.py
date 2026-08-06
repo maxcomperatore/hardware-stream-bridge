@@ -1,4 +1,4 @@
-"""Digital sound expansion packs for the Monster Shop."""
+"""Digital sound expansion packs for the Shop."""
 
 import json
 from pathlib import Path

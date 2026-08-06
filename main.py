@@ -1639,25 +1639,103 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
     )
     return response
 
+RESET_TOKENS: dict[str, dict] = {}
+RESET_CODES: dict[str, dict] = {}
+
 @app.get("/forgot-password", response_class=HTMLResponse)
-async def forgot_password_page(request: Request, email: str = None, msg: str = None):
-    return render_template("forgot_password.html", request, {"email": email, "success_msg": msg})
+async def forgot_password_page(request: Request, email: str = None, error: str = None):
+    return render_template("forgot_password.html", request, {"email": email, "error": error, "step": "request_code"})
 
 @app.post("/forgot-password", response_class=HTMLResponse)
 async def do_forgot_password(request: Request, email: str = Form(...)):
+    import random, time
     email_clean = email.lower().strip()
     user = database.get_user_by_email(email_clean)
-    if user:
-        trigger_alert(
-            "password_reset_requested",
-            f"Password reset requested for user `{email_clean}`.",
-            {"email": email_clean},
-            distinct_id=email_clean
-        )
-        msg = f"Reset instructions sent to {email_clean}. Please check your inbox or spam folder."
-    else:
-        msg = f"If an account exists for {email_clean}, password reset instructions have been sent."
-    return render_template("forgot_password.html", request, {"email": email_clean, "success_msg": msg})
+    
+    # Generate 6-digit confirmation code
+    code = f"{random.randint(100000, 999999)}"
+    RESET_CODES[code] = {"email": email_clean, "expires": time.time() + 1800}
+    
+    # Send standard transactional confirmation email via Resend
+    subject = "Your Password Reset Confirmation Code - bipluk"
+    body = f"Hello,\n\nYour bipluk password reset confirmation code is: {code}\n\nThis code will expire in 30 minutes."
+    html_content = f"""
+    <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; background: #09090b; border: 1px solid #27272a; border-radius: 16px; color: #f4f4f5;">
+        <h2 style="font-size: 18px; color: #ffffff; margin-bottom: 8px;">Reset Your bipluk Password</h2>
+        <p style="font-size: 13px; color: #a1a1aa; line-height: 1.5;">Enter the following 6-digit confirmation code on bipluk to set a new password for <strong>{email_clean}</strong>:</p>
+        <div style="margin: 20px 0; padding: 16px; background: #18181b; border-radius: 12px; text-align: center; font-size: 28px; font-weight: bold; letter-spacing: 6px; color: #10b981; font-family: monospace;">
+            {code}
+        </div>
+        <p style="font-size: 11px; color: #71717a;">This code will expire in 30 minutes. If you didn't request this, you can safely ignore this message.</p>
+    </div>
+    """
+    send_email_via_resend(email_clean, subject, body, html=html_content)
+    
+    trigger_alert(
+        "password_reset_code_sent",
+        f"Password reset confirmation code `{code}` sent to `{email_clean}`.",
+        {"email": email_clean, "code": code},
+        distinct_id=email_clean
+    )
+    
+    return render_template("forgot_password.html", request, {"email": email_clean, "step": "verify_code"})
+
+@app.post("/verify-reset-code", response_class=HTMLResponse)
+async def verify_reset_code(request: Request, email: str = Form(...), code: str = Form(...)):
+    import secrets, time
+    email_clean = email.lower().strip()
+    code_clean = code.strip()
+    
+    code_data = RESET_CODES.get(code_clean)
+    if not code_data or code_data["email"] != email_clean or time.time() > code_data.get("expires", 0):
+        return render_template("forgot_password.html", request, {
+            "email": email_clean,
+            "step": "verify_code",
+            "error": "Invalid or expired 6-digit confirmation code. Please try again."
+        })
+    
+    RESET_CODES.pop(code_clean, None)
+    token = secrets.token_urlsafe(32)
+    RESET_TOKENS[token] = {"email": email_clean, "expires": time.time() + 3600}
+    
+    return RedirectResponse(url=f"/reset-password-confirm?token={token}", status_code=303)
+
+@app.get("/reset-password-confirm", response_class=HTMLResponse)
+async def reset_password_confirm_page(request: Request, token: str):
+    import time
+    token_data = RESET_TOKENS.get(token)
+    if not token_data or time.time() > token_data.get("expires", 0):
+        return render_template("forgot_password.html", request, {"error": "Invalid or expired password reset token. Please request a new one."})
+    return render_template("reset_password_confirm.html", request, {"token": token, "email": token_data["email"]})
+
+@app.post("/reset-password-confirm", response_class=HTMLResponse)
+async def do_reset_password_confirm(request: Request, token: str = Form(...), password: str = Form(...), confirm_password: str = Form(...)):
+    import time
+    token_data = RESET_TOKENS.get(token)
+    if not token_data or time.time() > token_data.get("expires", 0):
+        return render_template("forgot_password.html", request, {"error": "Invalid or expired password reset token."})
+    
+    if len(password) < 8:
+        return render_template("reset_password_confirm.html", request, {"token": token, "email": token_data["email"], "error": "Password must be at least 8 characters long."})
+    
+    if password != confirm_password:
+        return render_template("reset_password_confirm.html", request, {"token": token, "email": token_data["email"], "error": "Passwords do not match. Please enter the new password twice."})
+    
+    email = token_data["email"]
+    # Hash password using bcrypt
+    new_hashed_password = hash_password(password)
+    database.update_user_password(email, new_hashed_password)
+    
+    # Invalidate token
+    RESET_TOKENS.pop(token, None)
+    
+    trigger_alert(
+        "password_reset_completed",
+        f"Password successfully reset for user `{email}` (bcrypt hashed).",
+        {"email": email},
+        distinct_id=email
+    )
+    return RedirectResponse(url="/login?error=Password+updated+successfully.+Please+sign+in.", status_code=303)
 
 @app.get("/api/test-welcome-email")
 async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
@@ -2784,12 +2862,12 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Lifetime Pricing:** bipluk+ Personal $39 (non-commercial) or bipluk+ Studio $399 (commercial, one location). Sound packs from $9 in the Monster Shop.",
+        "- **Lifetime Pricing:** bipluk+ Personal $39 (non-commercial) or bipluk+ Studio $399 (commercial, one location). Sound packs from $9 in the Shop.",
         "",
         "## Key Pages",
         "- [Home Page](https://bipluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
         "- [Vintage Synth Cloud Backup](https://bipluk.com/vintage-synth-cloud-backup): Pillar guide for DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.",
-        "- [Monster Shop](https://bipluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
+        "- [Shop](https://bipluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
         "- [Alternatives Guide](https://bipluk.com/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.",
         "- [Snoize Comparison](https://bipluk.com/bipluk-vs-snoize-sysex-librarian): bipluk vs Snoize SysEx Librarian.",
         "- [MIDI-OX Comparison](https://bipluk.com/bipluk-vs-midi-ox): bipluk vs Windows MIDI-OX.",

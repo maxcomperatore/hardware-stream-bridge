@@ -1658,15 +1658,43 @@ async def do_forgot_password(request: Request, email: str = Form(...)):
     
     # Send standard transactional confirmation email via Resend
     subject = "Your Password Reset Confirmation Code - bipluk"
-    body = f"Hello,\n\nYour bipluk password reset confirmation code is: {code}\n\nThis code will expire in 30 minutes."
+    body = f"Hello,\n\nYour bipluk password reset confirmation code is: {code}\n\nThis code will expire in 30 minutes.\n\nIf you did not request this, please ignore this message."
     html_content = f"""
-    <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; background: #09090b; border: 1px solid #27272a; border-radius: 16px; color: #f4f4f5;">
-        <h2 style="font-size: 18px; color: #ffffff; margin-bottom: 8px;">Reset Your bipluk Password</h2>
-        <p style="font-size: 13px; color: #a1a1aa; line-height: 1.5;">Enter the following 6-digit confirmation code on bipluk to set a new password for <strong>{email_clean}</strong>:</p>
-        <div style="margin: 20px 0; padding: 16px; background: #18181b; border-radius: 12px; text-align: center; font-size: 28px; font-weight: bold; letter-spacing: 6px; color: #10b981; font-family: monospace;">
-            {code}
+    <div style="background-color: #050507; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="max-width: 460px; margin: 0 auto; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; padding: 32px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+            <!-- Logo Header -->
+            <img src="{SITE_BASE}/static/logo.svg" alt="bipluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
+            <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">bipluk</h1>
+            <p style="color: #71717a; font-size: 12px; margin: 0 0 24px 0; font-weight: 500;">Vault Security & Account Recovery</p>
+
+            <hr style="border: 0; border-top: 1px solid #18181b; margin: 0 0 24px 0;">
+
+            <!-- Headline & Description -->
+            <h2 style="color: #f4f4f5; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Password Reset Confirmation Code</h2>
+            <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 0 0 24px 0;">
+                Enter the following 6-digit confirmation code on bipluk to set a new password for <span style="color: #ffffff; font-family: monospace;">{email_clean}</span>:
+            </p>
+
+            <!-- Giant 6-Digit Code Box -->
+            <div style="background-color: #121216; border: 1px solid #27272a; border-radius: 14px; padding: 20px; margin-bottom: 24px;">
+                <span style="font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 700; letter-spacing: 10px; color: #10b981; display: block; text-indent: 10px;">
+                    {code}
+                </span>
+                <span style="color: #71717a; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 8px; display: block;">Expires in 30 minutes</span>
+            </div>
+
+            <!-- Security Warning -->
+            <div style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; padding: 12px; margin-bottom: 24px; text-align: left;">
+                <p style="color: #fca5a5; font-size: 11px; margin: 0; line-height: 1.4;">
+                    <strong>Security Alert:</strong> bipluk staff will never ask for this code over email or social media. If you did not request a password reset, your account is safe and you can ignore this email.
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <p style="color: #52525b; font-size: 11px; margin: 0;">
+                © 2026 bipluk · Web MIDI Cloud Librarian
+            </p>
         </div>
-        <p style="font-size: 11px; color: #71717a;">This code will expire in 30 minutes. If you didn't request this, you can safely ignore this message.</p>
     </div>
     """
     send_email_via_resend(email_clean, subject, body, html=html_content)

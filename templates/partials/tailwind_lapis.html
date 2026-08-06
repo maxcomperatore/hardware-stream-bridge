@@ -127,6 +127,16 @@
         line-height: 1;
     }
 
+    @keyframes backgroundDriftSlow {
+        0% { background-position: 0 0, 0 0, 0 0; }
+        50% { background-position: 32px 32px, 48px -48px, -48px 48px; }
+        100% { background-position: 0 0, 0 0, 0 0; }
+    }
+
+    .mobile-bg-pattern, .dither-mesh, .audit-paper, .bg-mesh-pattern {
+        animation: backgroundDriftSlow 40s ease-in-out infinite !important;
+    }
+
     .tag-lapis-tool {
         display: inline-flex;
         align-items: center;
@@ -137,8 +147,8 @@
         text-transform: uppercase;
         letter-spacing: 0.12em;
         background-color: oklch(35.46% 0.0842 251.90) !important; /* Deep Lapis */
-        color: #fef08a !important; /* Gold text */
-        border: 3px double #f59e0b !important; /* Amber/Gold double border */
+        color: #a7f3d0 !important; /* Emerald green text */
+        border: 2px solid #059669 !important; /* Emerald border */
         border-radius: 4px;
         text-shadow: 0 1px 0px rgba(0, 0, 0, 0.6);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);

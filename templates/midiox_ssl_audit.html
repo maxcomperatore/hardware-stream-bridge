@@ -26,18 +26,18 @@
     {% include 'posthog.html' %}
 </head>
 
-<body class="bg-black text-zinc-300 font-sans antialiased min-h-screen flex flex-col audit-paper">
-    <header class="sticky top-0 bg-black/90 backdrop-blur-md border-b border-zinc-900 h-14 flex items-center px-6 z-40">
+<body class="bg-black text-zinc-300 font-sans antialiased min-h-screen flex flex-col audit-paper overflow-x-hidden w-full max-w-full">
+    <header class="sticky top-0 bg-black/90 backdrop-blur-md border-b border-zinc-900 h-14 flex items-center px-4 md:px-6 z-40 w-full max-w-full">
         <div class="max-w-3xl w-full mx-auto flex items-center justify-between">
             <a href="/" class="flex items-center gap-2 group">
                 <img src="/static/logo.svg" alt="" width="20" height="20" class="opacity-90 group-hover:opacity-100">
                 <span class="font-pixel text-2xs text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">bipluk</span>
             </a>
-            <a href="/knob-monster-vs-midi-ox" class="text-2xs font-mono text-zinc-500 hover:text-rose-400 transition-colors">MIDI-OX comparison →</a>
+            <a href="/knob-monster-vs-midi-ox" class="text-2xs font-mono text-zinc-500 hover:text-rose-400 transition-colors truncate max-w-[160px] sm:max-w-none">MIDI-OX comparison →</a>
         </div>
     </header>
 
-    <main class="flex-1 max-w-3xl w-full mx-auto px-6 py-12 md:py-16 space-y-10">
+    <main class="flex-1 max-w-3xl w-full mx-auto px-4 md:px-6 py-8 md:py-16 space-y-10 overflow-x-hidden">
         <article class="space-y-8">
             <header class="space-y-4 border-b border-zinc-900 pb-8">
                 <p class="text-2xs font-mono text-rose-400 uppercase tracking-[0.2em]">Security bulletin · HR-2026-061</p>

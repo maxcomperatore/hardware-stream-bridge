@@ -3217,7 +3217,7 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
             database.create_user(email, hashed_pwd)
             
             # Upgrade if user has pending premium checkout
-            pending = database.get_pending_premium(email)
+            pending = database.consume_pending_premium(email)
             if pending:
                 database.update_user_tier(
                     email,
@@ -3225,7 +3225,6 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
                     pending.get("stripe_customer_id"),
                     plan=pending.get("plan", "personal")
                 )
-                database.delete_pending_premium(email)
                 
             user = database.get_user_by_email(email)
 

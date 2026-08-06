@@ -359,6 +359,34 @@ def consume_pending_premium(email: str) -> dict | None:
         print(f"Database error in consume_pending_premium: {e}")
         return None
 
+def get_pending_premium(email: str) -> dict | None:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = get_db_cursor(conn)
+            cursor.execute("SELECT * FROM pending_premiums WHERE email = %s", (email.lower().strip(),))
+            row = cursor.fetchone()
+            return dict(row) if row else None
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in get_pending_premium: {e}")
+        return None
+
+def delete_pending_premium(email: str) -> bool:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM pending_premiums WHERE email = %s", (email.lower().strip(),))
+            conn.commit()
+            return True
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in delete_pending_premium: {e}")
+        return False
+
 # --- Bank & Patch scoped operations ---
 def save_bank(name: str, synth_model: str, sysex_hex: str, patch_names: list[str], user_id: int) -> int | None:
     try:

@@ -18,6 +18,7 @@ import logging
 import mimetypes
 import traceback
 import re
+import secrets
 import faq_knowledge
 import shop_packs
 import research_survey_2026
@@ -1648,7 +1649,7 @@ async def forgot_password_page(request: Request, email: str = None, error: str =
 
 @app.post("/forgot-password", response_class=HTMLResponse)
 async def do_forgot_password(request: Request, email: str = Form(...)):
-    import random, time
+    import secrets, time
     email_clean = email.lower().strip()
     user = database.get_user_by_email(email_clean)
     

@@ -1822,13 +1822,11 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
             "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
             "or desktop installers to do its job well. bipluk already comes with the features you "
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
-            "Open your vault: https://bipluk.com/home\n\n"
-            "Keep the analog alive,\n"
-            "Justin at Bipluk"
+            "Open your vault: https://bipluk.com/home"
         )
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to bipluk - Justin",
+            subject="welcome to bipluk",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -3903,14 +3901,12 @@ def send_welcome_email_task(email: str):
             "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
             "or desktop installers to do its job well. bipluk already comes with the features you "
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
-            "Open your vault: https://bipluk.com/home\n\n"
-            "Keep the analog alive,\n"
-            "Justin at bipluk"
+            "Open your vault: https://bipluk.com/home"
         )
 
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to bipluk - Justin",
+            subject="welcome to bipluk",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",

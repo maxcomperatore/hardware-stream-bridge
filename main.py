@@ -1652,9 +1652,9 @@ async def do_forgot_password(request: Request, email: str = Form(...)):
     email_clean = email.lower().strip()
     user = database.get_user_by_email(email_clean)
     
-    # Generate 6-digit confirmation code
-    code = f"{random.randint(100000, 999999)}"
-    RESET_CODES[code] = {"email": email_clean, "expires": time.time() + 1800}
+    # Generate 6-digit confirmation code using CSPRNG (secrets.randbelow)
+    code = f"{secrets.randbelow(900000) + 100000}"
+    RESET_CODES[code] = {"email": email_clean, "expires": time.time() + 1800, "attempts": 0}
     
     # Send standard transactional confirmation email via Resend
     subject = "Your Password Reset Confirmation Code - bipluk"
@@ -1716,6 +1716,18 @@ async def verify_reset_code(request: Request, email: str = Form(...), code: str 
     
     code_data = RESET_CODES.get(code_clean)
     if not code_data or code_data["email"] != email_clean or time.time() > code_data.get("expires", 0):
+        # Track failed attempts for email if code existed
+        for c, data in list(RESET_CODES.items()):
+            if data.get("email") == email_clean:
+                data["attempts"] = data.get("attempts", 0) + 1
+                if data["attempts"] >= 5:
+                    RESET_CODES.pop(c, None)
+                    return render_template("forgot_password.html", request, {
+                        "email": email_clean,
+                        "step": "request_code",
+                        "error": "Too many failed attempts. This confirmation code has been invalidated. Please request a new code."
+                    })
+        
         return render_template("forgot_password.html", request, {
             "email": email_clean,
             "step": "verify_code",

@@ -1593,11 +1593,11 @@ async def subscribe(request: Request, email: str = Form(...)):
     return Response(status_code=200)
 
 @app.get("/login", response_class=HTMLResponse)
-async def login_page(request: Request, error: str = None):
+async def login_page(request: Request, error: str = None, msg: str = None):
     next_url = request.query_params.get("next")
     if get_current_user(request):
         return RedirectResponse(url=safe_next_url(next_url))
-    return render_template("login.html", request, {"error": error, "next": next_url})
+    return render_template("login.html", request, {"error": error, "msg": msg, "next": next_url})
 
 @app.post("/login")
 async def do_login(request: Request, email: str = Form(...), password: str = Form(...), next: str = Form(None)):
@@ -1701,11 +1701,19 @@ async def verify_reset_code(request: Request, email: str = Form(...), code: str 
     return RedirectResponse(url=f"/reset-password-confirm?token={token}", status_code=303)
 
 @app.get("/reset-password-confirm", response_class=HTMLResponse)
-async def reset_password_confirm_page(request: Request, token: str):
+async def reset_password_confirm_page(request: Request, token: str = None):
     import time
+    if not token or token not in RESET_TOKENS:
+        return render_template("forgot_password.html", request, {
+            "error": "You must request and enter your 6-digit confirmation code first.",
+            "step": "request_code"
+        })
     token_data = RESET_TOKENS.get(token)
     if not token_data or time.time() > token_data.get("expires", 0):
-        return render_template("forgot_password.html", request, {"error": "Invalid or expired password reset token. Please request a new one."})
+        return render_template("forgot_password.html", request, {
+            "error": "Invalid or expired confirmation code session. Please enter your 6-digit code again.",
+            "step": "request_code"
+        })
     return render_template("reset_password_confirm.html", request, {"token": token, "email": token_data["email"]})
 
 @app.post("/reset-password-confirm", response_class=HTMLResponse)
@@ -1735,7 +1743,7 @@ async def do_reset_password_confirm(request: Request, token: str = Form(...), pa
         {"email": email},
         distinct_id=email
     )
-    return RedirectResponse(url="/login?error=Password+updated+successfully.+Please+sign+in.", status_code=303)
+    return RedirectResponse(url="/login?msg=Password+updated+successfully.+Please+sign+in.", status_code=303)
 
 @app.get("/api/test-welcome-email")
 async def test_welcome_email(email: str = "max@gmail.com", send: str = None):

@@ -48,7 +48,11 @@
             <p class="text-xs text-zinc-400 font-sans tracking-wide mt-1.5 font-medium">Sign in to sync your synth vault</p>
         </div>
 
-        {% if error %}
+        {% if msg %}
+        <div class="mb-4 p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 font-semibold tracking-wide text-center">
+            {{ msg }}
+        </div>
+        {% elif error %}
         <div class="mb-4 p-3 bg-red-950/30 border border-red-800/50 rounded-xl text-xs text-rose-300 font-semibold tracking-wide text-center">
             {{ error }}
         </div>

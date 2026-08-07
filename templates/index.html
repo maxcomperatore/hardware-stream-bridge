@@ -2387,11 +2387,10 @@
                 <a href="/checkout?plan=personal"
                     onclick="logToPostHog('update_paywall_checkout_click', { plan: 'personal' })"
                     class="w-full py-3 bg-gradient-to-r from-blue-500 to-amber-500 hover:from-blue-400 hover:to-amber-400 text-black text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center flex items-center justify-center gap-1.5">
-                    <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0" alt="Lock" />
                     <span>Install Update (Lifetime Access)</span>
                 </a>
-                <div class="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-500 uppercase">
-                    <img src="/static/icons/dinkie/lock.svg" class="w-2.5 h-2.5 opacity-60" alt="" />
+                <div class="flex items-center justify-center gap-1.5 text-[9px] font-mono text-zinc-500 uppercase">
+                    <img src="/static/icons/dinkie/lock.svg" class="w-3 h-3 opacity-70 dinkie-img dinkie-img--white" style="filter: brightness(0) invert(0.6);" alt="Lock" />
                     <span>256-Bit SSL Encrypted Checkout</span>
                 </div>
                 <button onclick="showUpgradeModal(); closeUpdatePaywallModal();"

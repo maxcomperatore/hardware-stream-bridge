@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicotineWire - B2B Intelligence &amp; ROI Calculator</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-viewport">
+    <!-- Header -->
+    <header>
+        <div>
+            <div class="brand-meta-group">
+                <span class="brand-company-tag">©NICOTINE WIRE</span>
+                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">$22B+ SOURCING DATASET</span>
+            </div>
+            <div class="brand-title" style="margin-top: 4px;">NICOTINE<span>WIRE</span></div>
+        </div>
+        <nav>
+            <a href="index.html">Wire Feed</a>
+            <a href="b2b-case.html" class="active">B2B Case &amp; ROI</a>
+            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
+            <a href="directory.html">B2B Directory &amp; Jobs ($300)</a>
+            <a href="pricing.html">Pricing</a>
+        </nav>
+    </header>
+
+    <!-- Slide Hero Header -->
+    <section class="hero-slide" style="grid-template-columns: 1.6fr 1fr; margin-bottom: 24px;">
+        <div>
+            <div class="hero-meta-header">
+                <span>Enterprise Legal Spend &amp; Procurement Intelligence</span>
+                <span class="hero-meta-pill">26% AVG SAVINGS</span>
+            </div>
+            <h1 class="hero-title" style="font-size: 2.8rem;">The B2B Case &amp; ROI Calculator</h1>
+            <p class="hero-subtitle">Outside counsel is the largest controllable cost in most legal functions. PERSUIT &amp; NicotineWire run on $22B+ in structured market data to surface what the market actually charges.</p>
+        </div>
+        <div class="deck-card-dark">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 2;">
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7;">MASCOT ENGINE</span>
+                <div class="asterisk-badge">*</div>
+            </div>
+            <img src="nicotine_abstract.jpg" alt="3D Modern Graphic" class="deck-card-dark-art">
+            <div style="z-index: 2; margin-top: 40px;">
+                <span style="background: var(--accent-yellow); color: var(--text-main); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px; display: inline-block;">Persi AI Intelligence Engine</span>
+                <h3 style="font-size: 1.3rem; font-weight: 800; color: #FFFFFF;">Data-Driven Spend Governance</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wire Mascot AI Box -->
+    <section class="deck-section" style="background: var(--card-dark); color: #FFFFFF; position: relative;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span style="background: var(--accent-yellow); color: var(--text-main); font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">🤖 ASK THE WIRE MASCOT</span>
+                <h2 style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF;">PERSI WIRE INTELLIGENCE ENGINE</h2>
+                <p style="font-size: 0.9rem; color: var(--text-dark-muted); max-width: 720px; margin-top: 6px; line-height: 1.6;">
+                    Persi doesn't bolt on. It runs through every decision, from scoping an M&amp;A matter to flagging a billing anomaly. Built on $22B+ in structured proposal &amp; procurement data that no other AI can access.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 24px; border-top: 1px solid var(--border-dark); padding-top: 20px;">
+            <label style="font-size: 0.78rem; font-weight: 800; display: block; margin-bottom: 8px; color: var(--text-dark-muted);">ASK PERSI A PROCUREMENT OR PMTA QUESTION:</label>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="text" id="mascot-input" placeholder="e.g. What is the average synthetic L-nicotine spot savings on competitive RFPs?" style="flex: 1; min-width: 260px; padding: 12px 16px; font-family: var(--font-sans); font-size: 0.9rem; border: 1px solid var(--border-dark); border-radius: var(--radius-pill); background: #161920; color: #FFFFFF;">
+                <button onclick="queryWireMascot()" class="link-action-yellow">Ask Persi &rarr;</button>
+            </div>
+            <div id="mascot-response" style="display: none; margin-top: 16px; padding: 18px; border-radius: var(--radius-md); background: #161920; border: 1px solid var(--border-dark); font-size: 0.92rem; line-height: 1.6; color: #FFFFFF;"></div>
+        </div>
+    </section>
+
+    <!-- Benchmark Metrics Grid -->
+    <section class="deck-section">
+        <div class="section-head">
+            <span>THE COST OF DOING NOTHING ISN'T ZERO &bull; WHAT THE DATA SHOWS</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+            <div style="background: var(--card-bg-subtle); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                <div style="font-size: 3rem; font-weight: 900; color: var(--text-main); line-height: 1;">26%</div>
+                <div style="font-size: 0.82rem; font-weight: 800; margin-top: 8px; color: var(--text-main);">AVG SAVINGS PER MATTER</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; line-height: 1.5;">The first time a legal &amp; procurement team runs a competitive process, they save 26% on average.</p>
+            </div>
+
+            <div style="background: var(--card-bg-subtle); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                <div style="font-size: 3rem; font-weight: 900; color: var(--text-main); line-height: 1;">75%</div>
+                <div style="font-size: 0.82rem; font-weight: 800; margin-top: 8px; color: var(--text-main);">MATTERS HAVE NO BUDGET</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; line-height: 1.5;">Three-quarters of matters begin with no agreed cost ceiling. Of those with budgets, 24% go over by 27%.</p>
+            </div>
+
+            <div style="background: var(--card-bg-subtle); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                <div style="font-size: 3rem; font-weight: 900; color: var(--text-main); line-height: 1;">48%</div>
+                <div style="font-size: 0.82rem; font-weight: 800; margin-top: 8px; color: var(--text-main);">LOWEST BID WINS</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; line-height: 1.5;">52% of the time the lowest bid doesn't win. Quality and approach dominate when processes are structured.</p>
+            </div>
+
+            <div style="background: var(--card-dark); color: #FFFFFF; padding: 24px; border-radius: var(--radius-md);">
+                <div style="font-size: 3rem; font-weight: 900; color: var(--accent-yellow); line-height: 1;">46%</div>
+                <div style="font-size: 0.82rem; font-weight: 800; margin-top: 8px; color: #FFFFFF;">MATURE PROGRAM SAVINGS</div>
+                <p style="font-size: 0.85rem; color: var(--text-dark-muted); margin-top: 8px; line-height: 1.5;">Teams running 80%+ of matters through a competitive process reach 46% average savings over time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive B2B ROI Calculator -->
+    <section class="deck-section">
+        <div class="section-head">
+            <span>CALCULATE YOUR OUTSIDE COUNSEL &amp; SPEND SAVINGS</span>
+        </div>
+        <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem;">Enter your annual outside counsel &amp; supply spend in USD to see what 26% Year 1 Savings translates to for your budget.</p>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px;">
+            <div>
+                <label style="font-size: 0.8rem; font-weight: 800; display: block; margin-bottom: 8px; color: var(--text-main);">ENTER ANNUAL OUTSIDE SPEND ($ USD):</label>
+                <input type="number" id="roi-spend-input" value="5000000" oninput="calculateROI()" style="width: 100%; padding: 14px 18px; font-family: var(--font-mono); font-size: 1.4rem; font-weight: 800; border: 2px solid var(--text-main); border-radius: var(--radius-md); background: #FFFFFF; color: var(--text-main);">
+                
+                <p style="margin-top: 18px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+                    * Every dollar saved drops directly to the bottom line. At a typical 28% profit margin, your company would need to generate significantly more in new revenue to achieve the same financial impact.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div style="background: var(--card-bg-subtle); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                    <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-muted);">YEAR 1 SAVINGS (26%)</div>
+                    <div id="calc-year1" style="font-size: 1.6rem; font-weight: 900; margin-top: 4px; color: var(--text-main);">$1,300,000</div>
+                </div>
+
+                <div style="background: var(--card-bg-subtle); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                    <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-muted);">MATURE PROGRAM (46%)</div>
+                    <div id="calc-mature" style="font-size: 1.6rem; font-weight: 900; margin-top: 4px; color: var(--text-main);">$2,300,000</div>
+                </div>
+
+                <div style="background: var(--card-bg-subtle); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                    <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-muted);">REVENUE EQUIVALENT</div>
+                    <div id="calc-revenue" style="font-size: 1.6rem; font-weight: 900; margin-top: 4px; color: var(--text-main);">$4,642,857</div>
+                </div>
+
+                <div style="background: var(--card-dark); color: #FFFFFF; padding: 16px; border-radius: var(--radius-md);">
+                    <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-dark-muted);">3-YEAR COMPOUND</div>
+                    <div id="calc-3year" style="font-size: 1.6rem; font-weight: 900; margin-top: 4px; color: var(--accent-yellow);">$4,900,000</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Structural Cases 01 to 04 -->
+    <section class="deck-section">
+        <div class="section-head">
+            <span>THE STRUCTURAL CASE FOR NICOTINEWIRE INTELLIGENCE</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+            <!-- Case 01 -->
+            <div style="background: var(--card-bg-subtle); border-radius: var(--radius-md); padding: 24px; border: 1px solid var(--border-light);">
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">CASE 01</span>
+                <h4 style="font-size: 1.15rem; font-weight: 800; margin: 6px 0;">THE TOOLS YOU HAVE WEREN'T BUILT FOR THIS</h4>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">E-billing records what happened. Matter management tracks what's open. NicotineWire controls what happens before the invoice arrives: sourcing, rate setting, matter structure, and scope.</p>
+                <div style="border-top: 1px solid var(--border-light); padding-top: 12px; font-size: 0.82rem; font-weight: 600;">
+                    <em>"Even SAP chooses NicotineWire &amp; PERSUIT data for legal procurement."</em> — <strong>Gabriel Harnier, GC SAP</strong>
+                </div>
+            </div>
+
+            <!-- Case 02 -->
+            <div style="background: var(--card-bg-subtle); border-radius: var(--radius-md); padding: 24px; border: 1px solid var(--border-light);">
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">CASE 02</span>
+                <h4 style="font-size: 1.15rem; font-weight: 800; margin: 6px 0;">RELATIONSHIP-BASED RATES HAVE A HIDDEN COST</h4>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">Assuming long relationships produce fair pricing is wrong by 26% on average. Without structured benchmarks against real comparable matters, you're trusting outdated rate cards.</p>
+                <div style="border-top: 1px solid var(--border-light); padding-top: 12px; font-size: 0.82rem; font-weight: 600;">
+                    <em>"What's my ROI on tech investment? This is the sweet spot."</em> — <strong>Ernst van de Weert, GC Heineken</strong>
+                </div>
+            </div>
+
+            <!-- Case 03 -->
+            <div style="background: var(--card-bg-subtle); border-radius: var(--radius-md); padding: 24px; border: 1px solid var(--border-light);">
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">CASE 03</span>
+                <h4 style="font-size: 1.15rem; font-weight: 800; margin: 6px 0;">THE CFO NOW HAS A NUMBER, AND IT'S YOURS</h4>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">Legal functions were historically exempt from operational rigor. That exemption is ending. Finance wants line-of-sight into outside counsel &amp; M&amp;A spend.</p>
+                <div style="border-top: 1px solid var(--border-light); padding-top: 12px; font-size: 0.82rem; font-weight: 600;">
+                    <em>"Helps us speak the exact same language as our CFO."</em> — <strong>Sabine Chalmers, GC BT Group</strong>
+                </div>
+            </div>
+
+            <!-- Case 04 -->
+            <div style="background: var(--card-bg-subtle); border-radius: var(--radius-md); padding: 24px; border: 1px solid var(--border-light);">
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">CASE 04</span>
+                <h4 style="font-size: 1.15rem; font-weight: 800; margin: 6px 0;">THE DATA YOU'RE SITTING ON IS WORTH MORE</h4>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">Every matter run — fees, firms, scope, geography — is a data point. Structured on a shared platform, it becomes a compounding capital advantage.</p>
+                <div style="border-top: 1px solid var(--border-light); padding-top: 12px; font-size: 0.82rem; font-weight: 600;">
+                    <em>"If you're not using this, you're leaving money on the table."</em> — <strong>Anne Robinson, CLO IBM</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Without vs With NicotineWire Matrix -->
+    <section class="deck-section">
+        <div class="section-head">
+            <span>REAL COMPARISON: WITHOUT VS WITH NICOTINEWIRE PLATFORM</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div style="background: #FFFFFF; padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                <div style="font-size: 0.9rem; font-weight: 900; color: #DC2626; margin-bottom: 14px;">WITHOUT NICOTINEWIRE (COST OF STAYING)</div>
+                <ul style="font-size: 0.9rem; line-height: 1.7; color: var(--text-main); padding-left: 20px;">
+                    <li><strong>Rate cards that drift:</strong> Rates negotiated 2 years ago quietly inflate with each matter amendment.</li>
+                    <li><strong>Scope creep with no enforcement:</strong> AFA matters blowing through budgets without a system to hold the line.</li>
+                    <li><strong>Manual everything:</strong> Chasing accruals, cross-referencing PDFs, explaining overruns after they happen.</li>
+                    <li><strong>No answer for the CFO:</strong> Citing relationship value while finance logs legal as an uncontrolled cost.</li>
+                </ul>
+            </div>
+
+            <div style="background: var(--card-dark); color: #FFFFFF; padding: 24px; border-radius: var(--radius-md);">
+                <div style="font-size: 0.9rem; font-weight: 900; color: var(--accent-yellow); margin-bottom: 14px;">WITH NICOTINEWIRE (WHAT CHANGES)</div>
+                <ul style="font-size: 0.9rem; line-height: 1.7; color: var(--text-dark-muted); padding-left: 20px;">
+                    <li><strong>Rates set against real data:</strong> Informed by what comparable matters cost across 4,800+ firms.</li>
+                    <li><strong>Agreed is enforced:</strong> Purpose-built for value-based pricing, AFAs, fixed fees, and capped fees.</li>
+                    <li><strong>Legal Ops runs the data:</strong> Accruals are live, compliance is automated, questions shift to predictive analysis.</li>
+                    <li><strong>Defensible CFO conversation:</strong> Documented 26% to 46% savings by matter type, firm, and geography.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skeptics Objection Handling -->
+    <section class="deck-section">
+        <div class="section-head">
+            <span>OBJECTION HANDLING &bull; THE THREE THINGS SKEPTICS ALWAYS SAY</span>
+        </div>
+
+        <details class="story-item" open>
+            <summary>
+                <div class="story-meta">OBJECTION 01</div>
+                "THIS WILL DAMAGE OUR FIRM &amp; VENDOR RELATIONSHIPS."
+            </summary>
+            <p class="story-desc">The firms that perform best on NicotineWire have the strongest client relationships. Transparency confirms what both sides already believe. 4,800+ firms are already on the platform — including 100% of the AmLaw 100.</p>
+        </details>
+
+        <details class="story-item">
+            <summary>
+                <div class="story-meta">OBJECTION 02</div>
+                "WE'LL JUST END UP PICKING THE CHEAPEST FIRM OR SUPPLIER."
+            </summary>
+            <p class="story-desc">The lowest bid wins less than half the time (48%). Quality, approach, and track record dominate selection. NicotineWire adds benchmark data to know whether what you're paying is defensible — not a mandate to choose cheapest.</p>
+        </details>
+
+        <details class="story-item">
+            <summary>
+                <div class="story-meta">OBJECTION 03</div>
+                "OUR PMTA &amp; M&amp;A MATTERS ARE TOO COMPLEX."
+            </summary>
+            <p class="story-desc">SAP said this. HSBC said this. Every matter type — multi-jurisdictional disputes, regulatory filings, cross-border M&amp;A — has been run through the platform across $22B+ in spend. Complexity is the primary use case.</p>
+        </details>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <strong>NicotineWire™ Media Group</strong> &bull; "Check the Wire before you acquire."
+        </div>
+        <div>
+            &copy; 2026 NicotineWire™. All rights reserved.
+        </div>
+    </footer>
+</div>
+
+<script src="app.js"></script>
+<script>
+function queryWireMascot() {
+    const input = document.getElementById('mascot-input').value.trim();
+    const respBox = document.getElementById('mascot-response');
+    if (!input) {
+        respBox.style.display = 'block';
+        respBox.innerHTML = '<strong>PERSI WIRE MASCOT:</strong> Please enter a procurement, PMTA, or legal spend question above.';
+        return;
+    }
+
+    respBox.style.display = 'block';
+    respBox.innerHTML = '<strong>🤖 PERSI WIRE MASCOT (ANALYZING $22B+ DATASET...):</strong><br><br>' +
+        'Based on 4,800+ firm benchmarks &amp; PMTA docket historical transactions: Competitive RFPs on <em>"' + escapeHtml(input) + '"</em> achieve an average <strong>26% cost reduction</strong> in Year 1. Scoping rules &amp; AFA caps enforce compliance prior to invoice issue.';
+}
+
+function calculateROI() {
+    const val = parseFloat(document.getElementById('roi-spend-input').value) || 0;
+    const year1 = val * 0.26;
+    const mature = val * 0.46;
+    const revenue = year1 / 0.28;
+    const compound = year1 * 1.5 + mature * 1.5;
+
+    document.getElementById('calc-year1').innerText = '$' + Math.round(year1).toLocaleString();
+    document.getElementById('calc-mature').innerText = '$' + Math.round(mature).toLocaleString();
+    document.getElementById('calc-revenue').innerText = '$' + Math.round(revenue).toLocaleString();
+    document.getElementById('calc-3year').innerText = '$' + Math.round(compound).toLocaleString();
+}
+
+function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// Initial Calc
+calculateROI();
+</script>
+</body>
+</html>

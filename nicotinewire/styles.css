@@ -8,7 +8,7 @@
     --card-dark: #0C0E12;
     --card-dark-hover: #161920;
     
-    /* Signature Electric Lime / Yellow Accent from Reference Deck */
+    /* Signature Electric Lime Accent */
     --accent-yellow: #E0FE00;
     --accent-yellow-hover: #CCEC00;
     --accent-yellow-text: #0C0E12;
@@ -52,15 +52,14 @@ body {
     padding: 24px 20px;
 }
 
-/* App Viewport / Presentation Deck Frame */
+/* App Viewport Container */
 .app-viewport {
     width: 100%;
     max-width: 1360px;
     margin: 0 auto;
-    background: transparent;
 }
 
-/* Deck Header Navigation Bar */
+/* Header */
 header {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
@@ -78,7 +77,7 @@ header {
 .brand-meta-group {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 }
 
 .brand-company-tag {
@@ -106,16 +105,10 @@ header {
     margin-left: 2px;
 }
 
-.brand-slogan {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: 600;
-}
-
 nav {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
 }
 
@@ -140,7 +133,7 @@ nav a.active {
     color: #FFFFFF;
 }
 
-/* Editorial Ticker Strip */
+/* Ticker Strip */
 .ticker-strip {
     background: var(--card-dark);
     color: #FFFFFF;
@@ -178,7 +171,7 @@ nav a.active {
     font-weight: 700;
 }
 
-/* Editorial Slide Hero Card */
+/* Hero Presentation Slide */
 .hero-slide {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
@@ -240,8 +233,9 @@ nav a.active {
 
 .hero-stat-row {
     display: flex;
-    gap: 24px;
+    gap: 16px;
     margin-bottom: 24px;
+    flex-wrap: wrap;
 }
 
 .hero-stat-card {
@@ -250,6 +244,7 @@ nav a.active {
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
     flex: 1;
+    min-width: 140px;
 }
 
 .hero-stat-number {
@@ -261,14 +256,14 @@ nav a.active {
 }
 
 .hero-stat-label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
     margin-top: 4px;
 }
 
-/* Feature Deck Card (Black Dark Card with Yellow Asterisk) */
+/* Feature Card Dark */
 .deck-card-dark {
     background: var(--card-dark);
     color: #FFFFFF;
@@ -299,14 +294,14 @@ nav a.active {
     position: absolute;
     right: -20px;
     bottom: -20px;
-    width: 60%;
+    width: 65%;
     opacity: 0.35;
     mix-blend-mode: lighten;
     pointer-events: none;
     border-radius: var(--radius-md);
 }
 
-/* Slide Style Grid Layout */
+/* Grid Layout */
 .grid-main {
     display: grid;
     grid-template-columns: 2.5fr 1fr;
@@ -319,7 +314,7 @@ nav a.active {
     }
 }
 
-/* Deck Slide Section Box */
+/* Section Container */
 .deck-section {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
@@ -329,9 +324,8 @@ nav a.active {
     margin-bottom: 24px;
 }
 
-/* Section Headings */
 .section-head {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -0.02em;
@@ -353,12 +347,12 @@ nav a.active {
     letter-spacing: 0.05em;
 }
 
-/* Numbered Editorial Column Grid (01, 02, 03, 04 from reference) */
+/* Numbered Grid (01, 02, 03, 04) */
 .numbered-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
 }
 
 @media (max-width: 900px) {
@@ -379,7 +373,7 @@ nav a.active {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 220px;
+    min-height: 200px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -428,13 +422,13 @@ nav a.active {
 }
 
 .num-card-big {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     font-weight: 900;
     letter-spacing: -0.04em;
     line-height: 1;
 }
 
-/* Accordion Feed Items - Premium Deck Style */
+/* Accordion Feed Items */
 details.story-item {
     background: var(--card-bg-subtle);
     border-radius: var(--radius-md);
@@ -460,7 +454,7 @@ details.story-item summary {
     list-style: none;
     cursor: pointer;
     user-select: none;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 800;
     letter-spacing: -0.02em;
     color: var(--text-main);
@@ -468,7 +462,7 @@ details.story-item summary {
     display: flex;
     flex-direction: column;
     position: relative;
-    padding-right: 32px;
+    padding-right: 36px;
 }
 
 details.story-item summary::-webkit-details-marker {
@@ -477,14 +471,14 @@ details.story-item summary::-webkit-details-marker {
 
 details.story-item summary::after {
     content: '→';
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 900;
     color: var(--text-main);
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    transition: transform 0.2s ease, color 0.2s ease;
+    transition: transform 0.2s ease;
     background: var(--card-bg);
     width: 28px;
     height: 28px;
@@ -555,6 +549,8 @@ details.story-item[open] summary::after {
     border-radius: var(--radius-pill);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: none;
+    cursor: pointer;
 }
 
 .link-action:hover {
@@ -577,6 +573,8 @@ details.story-item[open] summary::after {
     padding: 12px 22px;
     border-radius: var(--radius-pill);
     transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
 }
 
 .link-action-yellow:hover {
@@ -599,6 +597,7 @@ details.story-item[open] summary::after {
     border: 1.5px solid var(--text-main);
     border-radius: var(--radius-pill);
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .link-action-outline:hover {
@@ -608,47 +607,15 @@ details.story-item[open] summary::after {
     transform: translateY(-2px);
 }
 
-/* Institutional Report Showcase Deck Cards */
-.report-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.report-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-md);
-    padding: 24px;
-    border: 1px solid var(--border-light);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: all 0.2s ease;
-}
-
-.report-card:hover {
-    border-color: var(--text-main);
-    box-shadow: var(--shadow-float);
-    transform: translateY(-3px);
-}
-
-.report-card-featured {
-    background: var(--card-dark);
-    color: #FFFFFF;
-    position: relative;
-    overflow: hidden;
-}
-
-.report-card-featured .report-desc {
-    color: var(--text-dark-muted);
-}
-
 /* Tables */
 table.min-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     margin: 16px 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-light);
 }
 
 table.min-table th {
@@ -663,14 +630,6 @@ table.min-table th {
     font-weight: 700;
 }
 
-table.min-table th:first-child {
-    border-top-left-radius: var(--radius-sm);
-}
-
-table.min-table th:last-child {
-    border-top-right-radius: var(--radius-sm);
-}
-
 table.min-table td {
     padding: 16px;
     border-bottom: 1px solid var(--border-light);
@@ -680,14 +639,6 @@ table.min-table td {
 
 table.min-table tr:hover td {
     background: var(--card-bg-subtle);
-}
-
-/* Modal Overlay Styling */
-.modal-deck {
-    background: var(--card-bg) !important;
-    border-radius: var(--radius-lg) !important;
-    border: 2px solid var(--text-main) !important;
-    box-shadow: var(--shadow-float) !important;
 }
 
 /* Footer */

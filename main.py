@@ -177,6 +177,10 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
             logger.error(f"PostHog capture failed: {e}")
 
     # 2. Echobell Webhook Alert (Realtime Push Notifications)
+    # Ignore routine background cron noise (drip & re-engagement email events)
+    if event_type.startswith(("drip_", "reengagement_")) or distinct_id in ("drip_cron", "reengagement_cron"):
+        return
+
     echobell_url = getattr(settings, "ECHOBELL_WEBHOOK_URL", "https://hook.echobell.one/d/in0itadp5366ko012gsu")
     if echobell_url:
         try:

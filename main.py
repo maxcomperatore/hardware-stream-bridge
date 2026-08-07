@@ -1884,6 +1884,41 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
     return HTMLResponse(content=html_content)
 
 
+@app.get("/api/test-reengagement-email")
+async def test_reengagement_email(email: str = "max@gmail.com", send: str = None):
+    name_part = email.split('@')[0]
+    first_name = re.split(r'[\._-]', name_part)[0]
+    first_name_cap = first_name.capitalize() if first_name else "synth head"
+
+    template = templates.get_template("email_reengagement_sedo.html")
+    html_content = template.render({
+        "first_name": first_name_cap,
+    })
+
+    if send == "1":
+        plain_body = (
+            f"Hello {first_name_cap},\n\n"
+            "It's been a while since you logged into your bipluk account. It's worth taking a look around "
+            "your cloud vault and exploring our newly updated SysEx parsers and synth soundbanks again.\n\n"
+            "Log in: https://bipluk.com/login"
+        )
+        ok, err = send_email_via_resend(
+            to=email,
+            subject="We miss you at bipluk",
+            body=plain_body,
+            html=html_content,
+            reply_to="halfradiationllc@gmail.com",
+        )
+        return {
+            "status": "sent" if ok else "failed",
+            "error": err,
+            "resolved_name": first_name_cap,
+            "email": email,
+        }
+
+    return HTMLResponse(content=html_content)
+
+
 @app.get("/signup", response_class=HTMLResponse)
 async def signup_page(request: Request, error: str = None, plan: str = None):
     if get_current_user(request):
@@ -4073,6 +4108,117 @@ async def trigger_drip_cron(request: Request):
         "skipped_young": skipped_young,
         "pending_total": pending_total,
     }
+
+
+async def get_reengagement_eligible_users(min_days_inactive: int = 14) -> tuple[list[dict], int, int]:
+    """Return (eligible users, skipped_young, pending_total)."""
+    if not hasattr(database, "get_pending_reengagement_users"):
+        try:
+            import importlib
+            importlib.reload(database)
+        except Exception as reload_err:
+            logger.error(f"failed to reload database module: {reload_err}")
+
+    users = database.get_pending_reengagement_users()
+    eligible: list[dict] = []
+    skipped_young = 0
+    min_seconds = min_days_inactive * 86400
+
+    for u in users:
+        elapsed_seconds = 0
+        try:
+            created_at = datetime.fromisoformat(u["created_at"])
+            elapsed = datetime.now() - created_at
+            elapsed_seconds = int(elapsed.total_seconds())
+            if elapsed_seconds < min_seconds:
+                skipped_young += 1
+                continue
+        except Exception:
+            pass
+
+        email = u["email"]
+        name_part = email.split('@')[0]
+        first_name = re.split(r'[\._-]', name_part)[0]
+        first_name_cap = first_name.capitalize() if first_name else "synth head"
+
+        template = templates.get_template("email_reengagement_sedo.html")
+        html_content = template.render({"first_name": first_name_cap})
+        plain_body = (
+            f"Hello {first_name_cap},\n\n"
+            "It's been a while since you logged into your bipluk account. It's worth taking a look around "
+            "your cloud vault and exploring our newly updated SysEx parsers and synth soundbanks again.\n\n"
+            "We would be very happy to see you again! Please log into your account to check your backed-up "
+            "soundbanks and update your studio setup.\n\n"
+            "Log In To Your Account: https://bipluk.com/login\n\n"
+            "Best regards,\n"
+            "Your bipluk Team"
+        )
+
+        eligible.append(
+            {
+                "id": u["id"],
+                "email": u["email"],
+                "first_name": first_name_cap,
+                "html_content": html_content,
+                "plain_body": plain_body,
+                "elapsed_seconds": elapsed_seconds,
+            }
+        )
+    return eligible, skipped_young, len(users)
+
+
+@app.get("/api/cron/reengagement-pending")
+async def reengagement_pending(request: Request):
+    """Queue eligible re-engagement recipients for sending via Resend in GitHub Actions."""
+    assert_cron_authorized(request)
+    eligible, skipped_young, pending_total = await get_reengagement_eligible_users()
+    users_payload = [
+        {
+            "id": u["id"],
+            "email": u["email"],
+            "first_name": u["first_name"],
+            "html_content": u["html_content"],
+            "plain_body": u["plain_body"],
+        }
+        for u in eligible
+    ]
+    return {
+        "subject": "We miss you at bipluk",
+        "from": SMTP_FROM,
+        "reply_to": "halfradiationllc@gmail.com",
+        "users": users_payload,
+        "skipped_young": skipped_young,
+        "pending_total": pending_total,
+    }
+
+
+@app.post("/api/cron/reengagement-ack")
+async def reengagement_ack(request: Request):
+    """Mark re-engagement emails sent after delivery."""
+    assert_cron_authorized(request)
+    body = await request.json()
+    sent_items = body.get("sent") or []
+    failed_items = body.get("failed") or []
+
+    for item in sent_items:
+        database.mark_reengagement_sent(int(item["id"]))
+        trigger_alert(
+            "reengagement_email_sent",
+            f"re-engagement email sent to `{item['email']}`.",
+            {"email": item["email"], "via": "resend-github"},
+            distinct_id=item["email"],
+        )
+
+    for item in failed_items:
+        err = item.get("error") or "unknown"
+        trigger_alert(
+            "reengagement_email_failed",
+            f"re-engagement email failed for `{item['email']}`: {err}",
+            {"email": item["email"], "resend_error": err},
+            distinct_id=item["email"],
+        )
+
+    return {"status": "success", "sent": len(sent_items), "failed": len(failed_items)}
 
 NEWSLETTER_TOPICS = [
     "why the DX7 is FM hell to program — and the one operator trick that finally clicks",

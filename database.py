@@ -159,8 +159,9 @@ def init_db():
         )
         """)
         
-        # Add drip_email_sent tracking to users table
+        # Add drip_email_sent and reengagement_email_sent tracking to users table
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS reengagement_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(50);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS picture_url TEXT;")
         cursor.execute("ALTER TABLE pending_premiums ADD COLUMN IF NOT EXISTS plan VARCHAR(50) DEFAULT 'personal';")
@@ -539,6 +540,33 @@ def mark_drip_sent(user_id: int):
             conn.close()
     except Exception as e:
         print(f"Database error in mark_drip_sent: {e}")
+        return
+
+def get_pending_reengagement_users() -> list[dict]:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = get_db_cursor(conn)
+            cursor.execute("SELECT id, email, created_at FROM users WHERE reengagement_email_sent = FALSE")
+            rows = cursor.fetchall()
+            return rows
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in get_pending_reengagement_users: {e}")
+        return []
+
+def mark_reengagement_sent(user_id: int):
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET reengagement_email_sent = TRUE WHERE id = %s", (user_id,))
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in mark_reengagement_sent: {e}")
         return
 
 def add_to_unsubscribed(email: str):

@@ -10,10 +10,14 @@
 <body>
 
 <div class="app-viewport">
+    <!-- Header -->
     <header>
         <div>
-            <div class="brand-title">NICOTINE<span>WIRE</span>™</div>
-            <div class="brand-slogan">Check the Wire before you acquire.</div>
+            <div class="brand-meta-group">
+                <span class="brand-company-tag">©NICOTINE WIRE</span>
+                <span style="color: var(--text-muted); font-size: 0.75rem;">MARCH 2026 EDITION</span>
+            </div>
+            <div class="brand-title" style="margin-top: 4px;">NICOTINE<span>WIRE</span></div>
         </div>
         <nav>
             <a href="index.html" class="active">Wire Feed</a>
@@ -23,35 +27,130 @@
         </nav>
     </header>
 
+    <!-- Ticker Strip -->
     <div class="ticker-strip">
-        <div class="ticker-cell">SYNTHETIC L-NICOTINE: <span class="val-up">$3,450/kg (+1.2%)</span></div>
-        <div>&bull;</div>
+        <div class="ticker-cell"><span class="ticker-badge">LIVE</span> SYNTHETIC L-NICOTINE: <span class="val-up">$3,450/kg (+1.2%)</span></div>
+        <div style="opacity: 0.3;">|</div>
         <div class="ticker-cell">VIRGINIA LEAF: <span class="val-up">$3.12/kg (+8.4%)</span></div>
-        <div>&bull;</div>
+        <div style="opacity: 0.3;">|</div>
         <div class="ticker-cell">ACTIVE PMTA DOCKETS: <b>58</b></div>
-        <div>&bull;</div>
-        <div class="ticker-cell">DIGEST: Mondays 08:00 UTC</div>
+        <div style="opacity: 0.3;">|</div>
+        <div class="ticker-cell"><span class="ticker-badge">WEEKLY</span> DIGEST: Mondays 08:00 UTC</div>
     </div>
 
-    <div class="grid-main">
+    <!-- Editorial Hero Presentation Slide (Slide 1 Style) -->
+    <section class="hero-slide">
+        <div>
+            <div class="hero-meta-header">
+                <span>Where Ideas, Strategy, and Execution Create Value</span>
+                <span class="hero-meta-pill">2026 MONOGRAPH</span>
+            </div>
+            <h1 class="hero-title">Regulatory &amp;<br>-Wire Intelligence</h1>
+            <p class="hero-subtitle">Check the Wire before you acquire. The definitive terminal for Private Equity, M&amp;A directors, and regulatory counsel across global nicotine markets.</p>
+            
+            <div class="hero-stat-row">
+                <div class="hero-stat-card">
+                    <div class="hero-stat-number">$3.45K</div>
+                    <div class="hero-stat-label">Spot Price / kg</div>
+                </div>
+                <div class="hero-stat-card">
+                    <div class="hero-stat-number">99%</div>
+                    <div class="hero-stat-label">Verification Accuracy</div>
+                </div>
+                <div class="hero-stat-card" style="background: var(--accent-yellow);">
+                    <div class="hero-stat-number">8.8x</div>
+                    <div class="hero-stat-label" style="color: var(--text-main);">EV/EBITDA Pouch Multiple</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <a href="#wire-feed" class="link-action">Explore Wire Feed &rarr;</a>
+                <a href="reports.html" class="link-action-outline">View PDF Reports</a>
+            </div>
+        </div>
+
+        <div class="deck-card-dark">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 2;">
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7;">TERMINAL MONOGRAPH</span>
+                <div class="asterisk-badge">*</div>
+            </div>
+
+            <img src="nicotine_abstract.jpg" alt="3D Modern Metallic Graphic" class="deck-card-dark-art">
+
+            <div style="z-index: 2; margin-top: 60px;">
+                <span style="background: rgba(255,255,255,0.15); font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px; display: inline-block;">Strategic Growth Docket 2026</span>
+                <h3 style="font-size: 1.4rem; font-weight: 800; line-height: 1.2; color: #FFFFFF;">Quantitative Capital Protection &amp; Risk Audits</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Numbered Editorial Columns (Slide 2 Style: 01, 02, 03, 04) -->
+    <div class="numbered-grid">
+        <div class="num-card num-card-yellow">
+            <div>
+                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; opacity: 0.7;">SECTION 01</span>
+                <div class="num-card-head" style="margin-top: 8px;">Executive Briefings</div>
+                <div class="num-card-desc">Weekly curated regulatory and market intelligence.</div>
+            </div>
+            <div class="num-card-big">01</div>
+        </div>
+
+        <div class="num-card num-card-white">
+            <div>
+                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">SECTION 02</span>
+                <div class="num-card-head" style="margin-top: 8px;">PMTA &amp; CTP Tracking</div>
+                <div class="num-card-desc">Real-time dockets &amp; CBP import seizure alerts.</div>
+            </div>
+            <div class="num-card-big" style="color: var(--text-muted);">02</div>
+        </div>
+
+        <div class="num-card num-card-dark">
+            <img src="nicotine_wave.jpg" alt="3D Texture" class="num-card-dark-bg">
+            <div style="position: relative; z-index: 2;">
+                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; opacity: 0.7;">SECTION 03</span>
+                <div class="num-card-head" style="margin-top: 8px;">M&amp;A Valuations</div>
+                <div class="num-card-desc">EV/EBITDA models for oral pouches &amp; raw materials.</div>
+            </div>
+            <div class="num-card-big" style="position: relative; z-index: 2; color: var(--accent-yellow);">03</div>
+        </div>
+
+        <div class="num-card num-card-white">
+            <div>
+                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">SECTION 04</span>
+                <div class="num-card-head" style="margin-top: 8px;">B2B Directory</div>
+                <div class="num-card-desc">Verified labs, chemical suppliers, and executive talent.</div>
+            </div>
+            <div class="num-card-big" style="color: var(--text-muted);">04</div>
+        </div>
+    </div>
+
+    <!-- Main Content Layout Grid -->
+    <div class="grid-main" id="wire-feed">
         <main>
-            <section>
+            <!-- Live Wire Section -->
+            <section class="deck-section">
                 <div class="section-head">
                     <span>LIVE REGULATORY &amp; M&amp;A WIRE</span>
-                    <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: normal; color: var(--text-muted);">CLICK TO EXPAND DETAILS</span>
+                    <span class="section-tag">EXPAND STORY</span>
                 </div>
 
                 <details class="story-item" open>
                     <summary>
-                        <div class="story-meta">FDA CTP ALERT &bull; DOCKET 2026-13047 &bull; 14 HOURS AGO</div>
+                        <div class="story-meta">
+                            <span class="story-badge-yellow">FDA CTP ALERT</span>
+                            <span>DOCKET 2026-13047 &bull; 14 HOURS AGO</span>
+                        </div>
                         FDA Moves to Register Foreign Tobacco &amp; Synthetic Facilities Under Docket 2026-13047
                     </summary>
-                    <p class="story-desc">The FDA proposed extending 21 CFR Part 607 registration and product listing requirements to foreign synthetic nicotine establishments, closing overseas exemption gaps and impacting Chinese exporters.</p>
+                    <p class="story-desc">The FDA proposed extending 21 CFR Part 607 registration and product listing requirements to foreign synthetic nicotine establishments, closing overseas exemption gaps and directly impacting Chinese exporters and US importers.</p>
                 </details>
 
                 <details class="story-item">
                     <summary>
-                        <div class="story-meta">M&amp;A INTELLIGENCE &bull; TRANSACTION BENCHMARK &bull; 1 DAY AGO</div>
+                        <div class="story-meta">
+                            <span class="story-badge">M&amp;A INTELLIGENCE</span>
+                            <span>TRANSACTION BENCHMARK &bull; 1 DAY AGO</span>
+                        </div>
                         European Oral Pouch Consolidation Accelerates at 8.8x EV/EBITDA Valuation Multiples
                     </summary>
                     <p class="story-desc">Private Equity sponsors announce $420M roll-up of Scandinavian white-label contract manufacturers as demand for tobacco-free pouch formats surges 34% YoY across Western Europe.</p>
@@ -59,7 +158,10 @@
 
                 <details class="story-item">
                     <summary>
-                        <div class="story-meta">CROP &amp; COMMODITY SPOT &bull; RAW MATERIAL BENCHMARK &bull; 2 DAYS AGO</div>
+                        <div class="story-meta">
+                            <span class="story-badge">RAW MATERIAL SPOT</span>
+                            <span>CROP BENCHMARK &bull; 2 DAYS AGO</span>
+                        </div>
                         Synthetic L-Nicotine Spot Prices Stabilize at $3,450/kg Following Lab DMF Audits
                     </summary>
                     <p class="story-desc">Global synthetic raw material prices hold steady after US lab verification standards cleared 12 primary formulators following ICH Q2(R1) validation benchmarks.</p>
@@ -67,71 +169,96 @@
 
                 <details class="story-item">
                     <summary>
-                        <div class="story-meta">M&amp;A INTELLIGENCE &bull; DEAL AUDIT &bull; 3 DAYS AGO</div>
+                        <div class="story-meta">
+                            <span class="story-badge">IMPORT SEIZURES</span>
+                            <span>DEAL AUDIT &bull; 3 DAYS AGO</span>
+                        </div>
                         CBP Import Alert #99-43 Seizures Surge at Port of Long Beach
                     </summary>
-                    <p class="story-desc">US Customs &amp; Border Protection detentions of non-compliant disposable ENDS units reach quarterly peak, impacting un-filing brands lacking PMTA acceptance letters.</p>
+                    <p class="story-desc">US Customs &amp; Border Protection detentions of non-compliant disposable ENDS units reach quarterly peak, impacting un-filed brands lacking PMTA acceptance letters.</p>
                 </details>
             </section>
 
-            <!-- PDF Showcase -->
-            <section style="margin-top: 40px;">
+            <!-- PDF Showcase Section -->
+            <section class="deck-section">
                 <div class="section-head">
-                    <span>INSTITUTIONAL INDUSTRY REPORTS ($1,500–$3,500)</span>
-                    <a href="reports.html" style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: normal; color: var(--text-main);">View Store &rarr;</a>
+                    <span>INSTITUTIONAL INDUSTRY REPORTS ($1.5K–$3.5K)</span>
+                    <a href="reports.html" style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); text-decoration: none;">View Store &rarr;</a>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
-                    <div style="padding-bottom: 20px; border-bottom: 1px solid var(--border-light);">
-                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">CODE: NW-SYNTH-2026</div>
-                        <h4 style="font-size: 1.1rem; font-weight: 700; margin: 4px 0;">Synthetic L-Nicotine Report</h4>
-                        <div style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">$2,500</div>
-                        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">148-Page PDF + Excel Databook. Complete DMF lab audits of 38 global suppliers.</p>
-                        <a href="reports.html" class="link-action">View Details &rarr;</a>
+                <div class="report-grid">
+                    <div class="report-card">
+                        <div>
+                            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">CODE: NW-SYNTH-2026</div>
+                            <h4 style="font-size: 1.15rem; font-weight: 800; margin: 8px 0;">Synthetic L-Nicotine Report</h4>
+                            <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 8px;">$2,500</div>
+                            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px;">148-Page PDF + Excel Databook. Complete DMF lab audits of 38 global suppliers.</p>
+                        </div>
+                        <a href="reports.html" class="link-action-outline" style="width: 100%;">View Details &rarr;</a>
                     </div>
-                    <div style="padding-bottom: 20px; border-bottom: 1px solid var(--border-light);">
-                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-red); font-weight: bold;">MOST POPULAR</div>
-                        <h4 style="font-size: 1.1rem; font-weight: 700; margin: 4px 0;">Oral Pouch M&amp;A Playbook</h4>
-                        <div style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">$3,500</div>
-                        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">210-Page Valuation Playbook, EV/EBITDA multiples, and unit economics model.</p>
-                        <a href="reports.html" class="link-action">View Details &rarr;</a>
+
+                    <div class="report-card report-card-featured">
+                        <div>
+                            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-yellow); font-weight: 800;">★ MOST POPULAR FOR M&amp;A</div>
+                            <h4 style="font-size: 1.15rem; font-weight: 800; margin: 8px 0; color: #FFFFFF;">Oral Pouch M&amp;A Playbook</h4>
+                            <div style="font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; color: var(--accent-yellow);">$3,500</div>
+                            <p class="report-desc" style="font-size: 0.88rem; margin-bottom: 20px;">210-Page Valuation Playbook, EV/EBITDA multiples, and unit economics model.</p>
+                        </div>
+                        <a href="reports.html" class="link-action-yellow" style="width: 100%;">View Details &rarr;</a>
                     </div>
                 </div>
             </section>
         </main>
 
         <aside>
-            <section style="margin-bottom: 40px;">
-                <div class="section-head">
-                    <span>EXECUTIVE PASS</span>
+            <!-- Executive Pass Card -->
+            <section class="deck-section" style="background: var(--card-dark); color: #FFFFFF;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <span style="font-size: 0.7rem; font-weight: 800; background: var(--accent-yellow); color: var(--text-main); padding: 4px 10px; border-radius: 9999px;">RECOMMENDED FOR FUNDS</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dark-muted);">2026 PASS</span>
                 </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">Unlimited access to weekly regulatory intelligence, M&amp;A dockets, and B2B vendor directory.</p>
-                <div style="font-size: 2.2rem; font-weight: 800; margin-bottom: 14px;">$2,000 <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">/ yr</span></div>
-                <button onclick="openPreCheckoutModal('annual')" class="link-action" style="width: 100%; border: none; cursor: pointer; text-align: center; margin-bottom: 10px;">Join Annual Pass ($2,000) &rarr;</button>
-                <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center;">Includes 7-Day Money-Back Guarantee</p>
+
+                <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; color: #FFFFFF;">EXECUTIVE TERMINAL PASS</h3>
+                <p style="font-size: 0.88rem; color: var(--text-dark-muted); margin-bottom: 20px;">Unlimited access to weekly regulatory briefings, M&amp;A valuation models, and B2B vendor contacts.</p>
+
+                <div style="font-size: 2.4rem; font-weight: 900; margin-bottom: 16px; color: var(--accent-yellow);">$2,000 <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-dark-muted);">/ yr</span></div>
+
+                <button onclick="openPreCheckoutModal('annual')" class="link-action-yellow" style="width: 100%; border: none; cursor: pointer; text-align: center; margin-bottom: 12px;">Join Annual Pass ($2,000) &rarr;</button>
+                <p style="font-size: 0.75rem; color: var(--text-dark-muted); text-align: center;">Includes 7-Day Money-Back Guarantee</p>
             </section>
 
-            <section>
+            <!-- Executive Job Board Sidebar -->
+            <section class="deck-section">
                 <div class="section-head">
-                    <span>EXECUTIVE JOB BOARD</span>
+                    <span>EXECUTIVE JOBS</span>
+                    <span class="section-tag">HOT</span>
                 </div>
-                <div style="margin-bottom: 16px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
-                    <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-red);">FEATURED JOB</div>
-                    <div style="font-weight: 700; font-size: 0.95rem; margin-top: 2px;">VP of Global Regulatory Affairs</div>
-                    <div style="color: var(--text-muted); font-size: 0.85rem;">Apex Pouch Brands &bull; Stockholm</div>
+
+                <div style="margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-light);">
+                    <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">FEATURED ROLE</div>
+                    <div style="font-weight: 800; font-size: 0.95rem; margin-top: 4px;">VP of Global Regulatory Affairs</div>
+                    <div style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Apex Pouch Brands &bull; Stockholm</div>
                 </div>
-                <div style="margin-bottom: 18px;">
-                    <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--accent-red);">FEATURED JOB</div>
-                    <div style="font-weight: 700; font-size: 0.95rem; margin-top: 2px;">Senior Analytical Chemist</div>
-                    <div style="color: var(--text-muted); font-size: 0.85rem;">VapeTech Analytics &bull; Raleigh, NC</div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">FEATURED ROLE</div>
+                    <div style="font-weight: 800; font-size: 0.95rem; margin-top: 4px;">Senior Analytical Chemist</div>
+                    <div style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">VapeTech Analytics &bull; Raleigh, NC</div>
                 </div>
-                <a href="directory.html" class="link-action-outline" style="width: 100%; text-align: center;">Post Job Listing ($300 / mo) &rarr;</a>
+
+                <a href="directory.html" class="link-action-outline" style="width: 100%; text-align: center;">Post Job Listing ($300/mo) &rarr;</a>
             </section>
         </aside>
     </div>
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 NicotineWire™ Media Group. All rights reserved. "Check the Wire before you acquire."</p>
+        <div>
+            <strong>NicotineWire™ Media Group</strong> &bull; "Check the Wire before you acquire."
+        </div>
+        <div>
+            &copy; 2026 NicotineWire™. All rights reserved.
+        </div>
     </footer>
 </div>
 

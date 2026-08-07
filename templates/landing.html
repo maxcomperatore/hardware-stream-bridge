@@ -2447,47 +2447,10 @@
                     });
                 }
 
-                // Animated Pulsing & Rotating Favicon
+                // Static Favicon initialization (Prevents continuous log spamming)
                 const favIconElement = document.getElementById('favicon');
                 if (favIconElement) {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 32;
-                    canvas.height = 32;
-                    const ctx = canvas.getContext('2d');
-                    const favImg = new Image();
-                    favImg.src = '/static/logo.svg';
-                    favImg.onload = () => {
-                        let tick = 0;
-                        setInterval(() => {
-                            ctx.clearRect(0, 0, 32, 32);
-                            const pulse = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(tick));
-
-                            ctx.save();
-                            ctx.translate(16, 16);
-
-                            // 3D extrusion layers matching the main site logo
-                            // Deepest shadow layer
-                            ctx.globalAlpha = 0.2 * pulse;
-                            ctx.drawImage(favImg, -16 + 1.5, -16 + 1.5, 32, 32);
-
-                            // Mid shadow layer
-                            ctx.globalAlpha = 0.4 * pulse;
-                            ctx.drawImage(favImg, -16 + 1.0, -16 + 1.0, 32, 32);
-
-                            // Light shadow layer
-                            ctx.globalAlpha = 0.6 * pulse;
-                            ctx.drawImage(favImg, -16 + 0.5, -16 + 0.5, 32, 32);
-
-                            // Front face layer
-                            ctx.globalAlpha = 1.0 * pulse;
-                            ctx.drawImage(favImg, -16, -16, 32, 32);
-
-                            ctx.restore();
-                            favIconElement.href = canvas.toDataURL('image/png');
-
-                            tick += 0.12; // Pulse LFO speed
-                        }, 66); // ~15 FPS to keep background footprint negligible
-                    };
+                    favIconElement.href = '/static/logo.svg';
                 }
             });
 

@@ -471,7 +471,15 @@
 
                 <!-- Back Up My Synth Form -->
                 <div class="space-y-2 border-t border-zinc-850 pt-4">
-                    <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider pl-1.5">Back Up My Synth
+                    <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider pl-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <img src="/static/icons/dinkie/sparkles.svg" alt="Sparkles" width="12" height="12" class="w-3 h-3 shrink-0 object-contain dinkie-img dinkie-img--white opacity-80" />
+                            Back Up My Synth
+                        </span>
+                        <span class="text-[7px] font-mono text-emerald-400/80 uppercase tracking-tight flex items-center gap-1">
+                            <img src="/static/icons/dinkie/sparkles.svg" alt="Sparkles" width="10" height="10" class="w-2.5 h-2.5 shrink-0 object-contain dinkie-img dinkie-img--white opacity-80" />
+                            Auto
+                        </span>
                     </h3>
 
                     <form id="pull-bank-form" onsubmit="event.preventDefault(); initiateDumpSequence();"
@@ -479,7 +487,7 @@
                         <div>
                             <select id="pull-synth-model"
                                 class="block w-full text-3xs bg-zinc-950 border border-zinc-850 rounded py-1 px-1.5 text-zinc-400 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
-                                <option value="Auto-Detect" selected>✨ Auto-Detect (Automatic)</option>
+                                <option value="Auto-Detect" selected>Auto-Detect (Automatic)</option>
                                 <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
                                 <option value="Sequential Prophet">Sequential Prophet (128v)</option>
                                 <option value="Roland Juno-106">Roland Juno-106 (Gen)</option>
@@ -505,13 +513,17 @@
 
                 <!-- Manual Import -->
                 <div class="space-y-2 border-t border-zinc-850 pt-4">
-                    <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider pl-1.5">Import .SYX File
+                    <h3 class="text-[9px] font-pixel uppercase text-zinc-600 tracking-wider pl-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <img src="/static/icons/dinkie/sparkles.svg" alt="Sparkles" width="12" height="12" class="w-3 h-3 shrink-0 object-contain dinkie-img dinkie-img--white opacity-80" />
+                            Import .SYX File
+                        </span>
                     </h3>
                     <form id="upload-form" hx-post="/banks/upload" hx-encoding="multipart/form-data"
                         hx-target="#bank-list-container" onsubmit="showUploadProgress();" class="space-y-2 px-1">
                         <select name="synth_model" id="upload-synth-model"
                             class="block w-full text-3xs bg-zinc-950 border border-zinc-850 rounded py-1 px-1.5 text-zinc-400 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
-                            <option value="Auto-Detect" selected>✨ Auto-Detect (Automatic)</option>
+                            <option value="Auto-Detect" selected>Auto-Detect (Automatic)</option>
                             <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
                             <option value="Sequential Prophet">Sequential Prophet (128v)</option>
                             <option value="Roland Juno-106">Roland Juno-106</option>
@@ -2482,7 +2494,7 @@
                 const pullSelect = document.getElementById('pull-synth-model');
                 const uploadSelect = document.getElementById('upload-synth-model');
 
-                let html = '<option value="Auto-Detect" selected>✨ Auto-Detect (Automatic)</option>';
+                let html = '<option value="Auto-Detect" selected>Auto-Detect (Automatic)</option>';
                 synths.forEach(s => {
                     html += `<option value="${s.name}">${s.name}</option>`;
                 });

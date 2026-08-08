@@ -824,14 +824,8 @@ PLAN_CATALOG = {
 }
 
 def normalize_plan(plan: str) -> str:
-    if not plan:
+    if not plan or plan == "free":
         return "free"
-    if plan == "free":
-        return "free"
-    if plan in ("lifetime", "personal"):
-        return "personal"
-    if plan == "studio":
-        return "studio"
     return "personal"
 
 def user_has_premium(user: dict) -> bool:

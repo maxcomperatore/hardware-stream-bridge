@@ -47,9 +47,7 @@
             <h1 class="font-pixel uppercase text-base text-white tracking-widest">bipluk</h1>
             <p class="text-xs text-zinc-400 font-sans tracking-wide mt-1 font-medium">Create account to start backup</p>
             <p id="signup-plan-label" class="text-[10px] text-lapis-light uppercase font-pixel tracking-wider mt-1.5">
-                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% elif plan == 'studio' %}bipluk+ Studio · {{
-                plan_catalog.studio.price_display }} lifetime{% else %}Personal plan · {{
-                plan_catalog.personal.price_display }} lifetime{% endif %}
+                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% else %}bipluk+ Lifetime · {{ plan_catalog.personal.price_display }} lifetime{% endif %}
             </p>
         </div>
 
@@ -118,21 +116,7 @@
                 </div>
             </div>
 
-            {% if plan == 'studio' %}
-            <p id="studio-license-note" class="text-[10px] text-zinc-400 leading-relaxed">
-                bipluk+ Studio licenses cover commercial use at one location.
-            </p>
-            {% elif plan != 'free' %}
-            <div id="personal-license-ack">
-                <label class="flex items-start gap-2 cursor-pointer group">
-                    <input type="checkbox" name="license_ack" id="license_ack" value="1" required
-                        class="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-lapis-mid focus:ring-0 focus:ring-offset-0">
-                    <span class="text-[10px] text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">
-                        I confirm this license is for personal use only (bedroom studio, my own synths).
-                    </span>
-                </label>
-            </div>
-            {% endif %}
+
 
             <button type="submit" id="register-btn"
                 class="w-full py-3 rounded-xl bg-white hover:bg-zinc-200 text-black text-sm font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">

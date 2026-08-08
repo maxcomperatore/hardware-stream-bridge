@@ -90,8 +90,8 @@ FAQ_ENTRIES = [
             "saas",
         ],
         "answer": (
-            "No. bipluk is not a subscription. Personal ($39) and Studio ($399) are one-time lifetime "
-            "purchases. Pay once, keep your vault, and download your .syx files whenever you want. There are no "
+            "No. bipluk is not a subscription. bipluk+ is a simple $39 one-time lifetime "
+            "purchase. Pay once, keep your vault, and download your .syx files whenever you want. There are no "
             "monthly fees and no automatic renewals."
         ),
     },
@@ -104,10 +104,9 @@ FAQ_ENTRIES = [
             "what does it cost",
         ],
         "answer": (
-            "We offer lifetime pricing in two tiers: Personal ($39) for individual, non-commercial use, "
-            "and bipluk+ Studio ($399) for commercial use at one location. Same features, different "
-            "license. Repair shops and multi-site operators should email us for bespoke commercial quotes. "
-            "There are no recurring fees. Regional pricing may apply (EUR, GBP, CAD, AUD)."
+            "bipluk+ is $39 one-time for lifetime access. "
+            "Includes unlimited soundbank backups, preset decoding, and full .syx/.zip/.csv exports. "
+            "There are no recurring monthly fees."
         ),
     },
     {

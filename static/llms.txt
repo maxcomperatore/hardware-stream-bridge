@@ -9,7 +9,7 @@
 - **Real-Time Parser (BIPLUK Real-Time Hex Parser™):** Instant SysEx patch name extraction on the fly.
 - **Instant Search:** Fuzzy search through soundbanks by preset name.
 - **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
-- **Lifetime Pricing:** bipluk+ Personal $49. Sound packs from $9 in the Shop.
+- **Lifetime Pricing:** bipluk+ $49 lifetime. Sound packs from $9 in the Shop.
 
 ## Key Pages
 - [Home Page](https://bipluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.

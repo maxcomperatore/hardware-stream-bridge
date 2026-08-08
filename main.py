@@ -93,7 +93,7 @@ def is_consumer_email(email: str) -> bool:
 
 
 def resolve_plan_for_email(plan: str, email: str) -> str:
-    """Allow users to choose Personal ($39) or Studio ($399) regardless of email domain."""
+    """Allow users to choose Personal ($49) regardless of email domain."""
     return normalize_plan(plan)
 # Clean up/delete any generated mockup assets in static folder
 def clean_old_assets():
@@ -3001,7 +3001,7 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Lifetime Pricing:** bipluk+ Personal $39 (non-commercial) or bipluk+ Studio $399 (commercial, one location). Sound packs from $9 in the Shop.",
+        "- **Lifetime Pricing:** bipluk+ $49 lifetime. Sound packs from $9 in the Shop.",
         "",
         "## Key Pages",
         "- [Home Page](https://bipluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
@@ -3091,8 +3091,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 - **Universal Support**: Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers
 
 ## Pricing
-- **Personal**: $39 one-time lifetime. 1 user, non-commercial use.
-- **bipluk+ Studio**: $399 one-time lifetime. Commercial use at one location. Same features as Personal.
+- **bipluk+**: $49 one-time lifetime.
 - **Commercial / B2B**: Contact halfradiationllc@gmail.com for bespoke site licenses, white-labeling, and multi-site rollouts.
 
 ## API
@@ -3375,7 +3374,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access: bipluk+ ($39) or bipluk+ Studio ($399) lifetime plans. Checkout at `/checkout?plan=personal` or `/checkout?plan=studio`. Commercial/B2B via email.
+Premium access: bipluk+ ($49) lifetime plan. Checkout at `/checkout`. Commercial/B2B via email.
 
 ## Discovery Documents
 
@@ -3522,9 +3521,9 @@ async def openapi_spec():
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 3900,
+                        "amount": 4900,
                         "currency": "USD",
-                        "description": "Premium lifetime access required ($39 one-time)"
+                        "description": "Premium lifetime access required ($49 one-time)"
                     },
                     "security": [{"sessionCookie": []}],
                     "responses": {
@@ -3540,9 +3539,9 @@ async def openapi_spec():
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 3900,
+                        "amount": 4900,
                         "currency": "USD",
-                        "description": "Premium lifetime access required ($39 one-time)"
+                        "description": "Premium lifetime access required ($49 one-time)"
                     },
                     "security": [{"sessionCookie": []}],
                     "requestBody": {
@@ -3665,7 +3664,7 @@ async def acp_discovery():
             "status": f"{SITE_BASE}/status"
         },
         "pricing": {
-            "personal": {"amount": 3900, "currency": "USD", "interval": "one-time"},
+            "personal": {"amount": 4900, "currency": "USD", "interval": "one-time"},
             "studio": {"amount": 39900, "currency": "USD", "interval": "one-time", "commercial": True},
             "commercial": {"contact": "halfradiationllc@gmail.com"}
         }
@@ -4239,7 +4238,7 @@ NEWSLETTER_PRODUCT_FACTS = """
 PRODUCT FACTS (use only these — do not invent features or pricing):
 - bipluk is a browser SysEx librarian at https://bipluk.com (Chrome/Edge, Web MIDI + SysEx).
 - Dedicated parsers: Yamaha DX7, Roland Juno-106, Korg M1, Roland Jupiter-6, Casio CZ-101; generic scan for others.
-- Lifetime pricing: Personal $39 (non-commercial), Studio $399 (commercial). NOT a monthly subscription.
+- Lifetime pricing: bipluk+ $49 one-time. NOT a monthly subscription.
 - Shop sound packs from $9 at https://bipluk.com/shop
 - Users back up, search, download .syx, and flash banks via Web MIDI.
 - Built by Half Radiation LLC. Support: halfradiationllc@gmail.com

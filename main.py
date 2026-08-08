@@ -1040,9 +1040,14 @@ def send_email_via_resend(
         "to": [to],
         "subject": subject,
     }
+
+    # Auto-detect HTML in body if html param is not explicitly provided
+    if not html and body and (body.strip().startswith("<!DOCTYPE") or body.strip().startswith("<html") or body.strip().startswith("<div") or body.strip().startswith("<table")):
+        html = body
+
     if html:
         payload["html"] = html
-        if body:
+        if body and body != html:
             payload["text"] = body
     else:
         payload["text"] = body

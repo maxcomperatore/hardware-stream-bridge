@@ -159,9 +159,10 @@ def init_db():
         )
         """)
         
-        # Add drip_email_sent and reengagement_email_sent tracking to users table
+        # Add drip_email_sent, reengagement_email_sent, and last_marketing_email_sent tracking to users table
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS reengagement_email_sent BOOLEAN DEFAULT FALSE;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_marketing_email_sent VARCHAR(100);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(50);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS picture_url TEXT;")
         cursor.execute("ALTER TABLE pending_premiums ADD COLUMN IF NOT EXISTS plan VARCHAR(50) DEFAULT 'personal';")
@@ -569,6 +570,41 @@ def mark_reengagement_sent(user_id: int):
         print(f"Database error in mark_reengagement_sent: {e}")
         return
 
+def get_pending_marketing_users(days_interval: int = 14) -> list[dict]:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = get_db_cursor(conn)
+            # Find users who have never received a marketing email or received one older than days_interval
+            query = """
+                SELECT id, email, created_at, last_marketing_email_sent 
+                FROM users 
+                WHERE last_marketing_email_sent IS NULL 
+                   OR (CAST(last_marketing_email_sent AS TIMESTAMP) < NOW() - INTERVAL '%s days')
+            """
+            cursor.execute(query % int(days_interval))
+            rows = cursor.fetchall()
+            return dict(rows) if isinstance(rows, dict) else [dict(r) for r in rows]
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in get_pending_marketing_users: {e}")
+        return []
+
+def mark_marketing_sent(user_id: int):
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            now_iso = datetime.now().isoformat()
+            cursor.execute("UPDATE users SET last_marketing_email_sent = %s WHERE id = %s", (now_iso, user_id))
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in mark_marketing_sent: {e}")
+        return
+
 def add_to_unsubscribed(email: str):
     try:
         conn = get_db_connection()
@@ -585,6 +621,19 @@ def add_to_unsubscribed(email: str):
     except Exception as e:
         print(f"Database error in add_to_unsubscribed: {e}")
         return
+
+def is_unsubscribed(email: str) -> bool:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = get_db_cursor(conn)
+            cursor.execute("SELECT 1 FROM unsubscribed_emails WHERE email = %s", (email.lower().strip(),))
+            return cursor.fetchone() is not None
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in is_unsubscribed: {e}")
+        return False
 
 def get_all_newsletter_recipients() -> list[str]:
     try:

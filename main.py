@@ -625,7 +625,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "usd",
         "currency": "USD",
         "symbol": "$",
-        "personal_amount": "39",
+        "personal_amount": "49",
         "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "USD / ONE-TIME",
@@ -634,7 +634,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "eur",
         "currency": "EUR",
         "symbol": "€",
-        "personal_amount": "39",
+        "personal_amount": "49",
         "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "EUR / ONE-TIME",
@@ -643,7 +643,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "gbp",
         "currency": "GBP",
         "symbol": "£",
-        "personal_amount": "39",
+        "personal_amount": "49",
         "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "GBP / ONE-TIME",
@@ -652,7 +652,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "cad",
         "currency": "CAD",
         "symbol": "$",
-        "personal_amount": "59",
+        "personal_amount": "69",
         "studio_amount": "599",
         "competitor_amount": "280",
         "billing_label": "CAD / ONE-TIME",
@@ -661,7 +661,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "aud",
         "currency": "AUD",
         "symbol": "$",
-        "personal_amount": "59",
+        "personal_amount": "69",
         "studio_amount": "599",
         "competitor_amount": "280",
         "billing_label": "AUD / ONE-TIME",
@@ -670,7 +670,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "chf",
         "currency": "CHF",
         "symbol": "Fr.",
-        "personal_amount": "39",
+        "personal_amount": "49",
         "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "CHF / ONE-TIME",
@@ -809,8 +809,8 @@ def get_request_country_code(request: Request) -> str:
 PLAN_CATALOG = {
     "personal": {
         "label": "Personal",
-        "price_display": "$39",
-        "amount_cents": 3900,
+        "price_display": "$49",
+        "amount_cents": 4900,
         "stripe_price_id": STRIPE_PRICE_ID_PERSONAL,
         "commercial": False,
     },
@@ -3938,7 +3938,7 @@ DRIP_HTML_TEMPLATE = """
             If you have a <strong style="color: #ffffff;">Juno-106, DX7, or M1</strong> in your studio, those custom patches are vulnerable. All it takes is one dead RAM battery or local disk crash to wipe your soundbanks forever.
         </p>
 
-        <a href="https://bipluk.com/checkout?plan=personal" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px;">Unlock Unlimited Vault &rarr;</a>
+        <a href="https://bipluk.com/checkout" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px;">Unlock Unlimited Vault &rarr;</a>
 
         <p style="color: #52525b; font-size: 11px; margin: 0;">
             © 2026 bipluk · Web MIDI Cloud Librarian

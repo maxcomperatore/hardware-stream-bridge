@@ -90,7 +90,7 @@ FAQ_ENTRIES = [
             "saas",
         ],
         "answer": (
-            "No. bipluk is not a subscription. bipluk+ is a simple $39 one-time lifetime "
+            "No. bipluk is not a subscription. bipluk+ is a simple $49 one-time lifetime "
             "purchase. Pay once, keep your vault, and download your .syx files whenever you want. There are no "
             "monthly fees and no automatic renewals."
         ),
@@ -104,7 +104,7 @@ FAQ_ENTRIES = [
             "what does it cost",
         ],
         "answer": (
-            "bipluk+ is $39 one-time for lifetime access. "
+            "bipluk+ is $49 one-time for lifetime access. "
             "Includes unlimited soundbank backups, preset decoding, and full .syx/.zip/.csv exports. "
             "There are no recurring monthly fees."
         ),

@@ -603,11 +603,11 @@
       "offers": [
         {
           "@type": "Offer",
-          "name": "bipluk+ Personal",
-          "price": "39.00",
+          "name": "bipluk+",
+          "price": "49.00",
           "priceCurrency": "USD",
           "url": "https://bipluk/#pricing",
-          "description": "One-time lifetime license for personal, non-commercial use. Not a subscription."
+          "description": "One-time lifetime license. Not a subscription."
         },
         {
           "@type": "Offer",
@@ -746,7 +746,7 @@
           "name": "What is the price of bipluk?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We offer transparent lifetime pricing: bipluk+ at $39 (non-commercial) and bipluk+ Studio at $399 (commercial use at one location). Same product, different license. One payment each: no monthly fees, no automatic renewals. Paid tiers include unlimited .syx export. Repair shops and multi-site deployments can contact us for bespoke commercial licensing."
+            "text": "We offer transparent lifetime pricing: bipluk+ at $49. One-time payment, no monthly fees, no automatic renewals. Includes unlimited soundbank saving, preset decoding, and .syx export."
           }
         },
         {
@@ -1930,7 +1930,7 @@
         <!-- Pricing Grid -->
         <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
             {% if pricing is not defined %}
-            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '39', 'studio_amount': '399',
+            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '49', 'studio_amount': '399',
             'billing_label': 'USD / ONE-TIME', 'free_price_display': '$0'} %}
             {% endif %}
             <div class="text-center max-w-2xl mx-auto mb-8 reveal">
@@ -2113,11 +2113,11 @@
             const AU_COUNTRY_CODES = {{ au_country_codes | tojson if au_country_codes is defined else '[]' }};
             const CH_COUNTRY_CODES = {{ ch_country_codes | tojson if ch_country_codes is defined else '[]' }};
             const REGIONAL_PRICING_DISPLAY = {
-                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '39', studio: '399', free: '€0', competitor: '200' },
-                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '39', studio: '399', free: '£0', competitor: '200' },
-                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '59', studio: '599', free: '$0 CAD', competitor: '280' },
-                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '59', studio: '599', free: '$0 AUD', competitor: '280' },
-                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '39', studio: '399', free: 'Fr. 0', competitor: '200' },
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '49', studio: '399', free: '€0', competitor: '200' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '49', studio: '399', free: '£0', competitor: '200' },
+                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '69', studio: '599', free: '$0 CAD', competitor: '280' },
+                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '69', studio: '599', free: '$0 AUD', competitor: '280' },
+                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '49', studio: '399', free: 'Fr. 0', competitor: '200' },
             };
 
             function resolveRegionalPricingRegion(data) {
@@ -2870,8 +2870,7 @@
                             execute: async function () {
                                 return {
                                     plans: [
-                                        { name: "Personal", price: "$39 one-time", billing: "lifetime", commercial: false },
-                                        { name: "bipluk+ Studio", price: "$399 one-time", billing: "lifetime", commercial: true },
+                                        { name: "bipluk+", price: "$49 one-time", billing: "lifetime" },
                                         { name: "Commercial / B2B", price: "Contact for quote", billing: "custom", contact: "halfradiationllc@gmail.com", perks: ["White-labeling", "Multi-site licenses", "Repair shop deployments", "Dedicated onboarding"] }
                                     ],
                                     signup_url: "https://bipluk/signup",

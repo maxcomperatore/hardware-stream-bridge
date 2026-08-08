@@ -568,7 +568,6 @@
                             <button type="button" onclick="showLogoutModal()"
                                 class="px-2.5 py-1 rounded-md bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-white font-pixel text-[8px] uppercase tracking-wider transition-all inline-flex items-center gap-1 active:scale-95" title="Log out of session">
                                 <span>Log Out</span>
-                                <span class="text-[9px]">&rarr;</span>
                             </button>
                         </div>
                     </div>
@@ -2568,7 +2567,7 @@
                 </button>
                 <a href="/logout" onclick="event.preventDefault(); window.location.replace('/logout');"
                     class="flex-1 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-pixel uppercase tracking-wider text-center transition-all active:scale-[0.98]">
-                    Log Out &rarr;
+                    Log Out
                 </a>
             </div>
         </div>
@@ -2577,7 +2576,7 @@
     <!-- Dedicated Delete Account Confirmation Modal -->
     <div id="delete-account-modal"
         class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition select-none">
-        <div class="bg-[#0e0e11] border border-rose-950/60 rounded-2xl p-6 w-[25rem] max-w-[92vw] text-left shadow-2xl relative">
+        <div class="bg-[#0e0e11] border border-rose-950/60 rounded-2xl p-6 w-[26rem] max-w-[92vw] text-left shadow-2xl relative">
             <button onclick="closeDeleteAccountModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
                 <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" style="filter: invert(0.6);" alt="Close" />
             </button>
@@ -2592,9 +2591,20 @@
                 </div>
             </div>
 
-            <p class="text-xs text-rose-200/80 leading-relaxed font-sans mb-6">
+            <p class="text-xs text-rose-200/80 leading-relaxed font-sans mb-3">
                 WARNING: This will permanently delete your bipluk account and purge all your saved soundbank vaults and custom presets. This action cannot be undone.
             </p>
+
+            {% if user.tier == 'premium' %}
+            <div class="mb-5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-300 text-[11px] leading-relaxed font-sans flex items-start gap-2">
+                <img src="/static/icons/dinkie/shield-warning.svg" class="w-4 h-4 shrink-0 mt-0.5" style="filter: invert(75%) sepia(80%) saturate(600%) hue-rotate(350deg);" alt="" />
+                <div>
+                    <strong class="font-semibold text-amber-200">bipluk+ Lifetime Active:</strong> Deleting your account deletes your vault. If you ever want to reactivate in the future, your email receipt can be restored by contacting support.
+                </div>
+            </div>
+            {% else %}
+            <div class="mb-3"></div>
+            {% endif %}
 
             <div class="flex items-center gap-2">
                 <button onclick="closeDeleteAccountModal()"

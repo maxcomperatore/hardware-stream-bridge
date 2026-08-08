@@ -93,11 +93,8 @@ def is_consumer_email(email: str) -> bool:
 
 
 def resolve_plan_for_email(plan: str, email: str) -> str:
-    """Custom / business email domains must purchase Studio, not Personal."""
-    normalized = normalize_plan(plan)
-    if normalized == "personal" and not is_consumer_email(email):
-        return "studio"
-    return normalized
+    """Allow users to choose Personal ($39) or Studio ($399) regardless of email domain."""
+    return normalize_plan(plan)
 # Clean up/delete any generated mockup assets in static folder
 def clean_old_assets():
     static_dir = r"d:\crew\experiment\static"

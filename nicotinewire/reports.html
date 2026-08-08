@@ -21,6 +21,7 @@
         </div>
         <nav>
             <a href="index.html">Wire Feed</a>
+            <a href="newszoo-insights.html">Newszoo Insights</a>
             <a href="b2b-case.html">B2B Case &amp; ROI</a>
             <a href="reports.html" class="active">PDF Reports ($1.5k–$3.5k)</a>
             <a href="directory.html">B2B Directory &amp; Jobs ($300)</a>
@@ -33,7 +34,7 @@
         <div>
             <div class="hero-meta-header">
                 <span>Quantitative Research &amp; Legal Audits</span>
-                <span class="hero-meta-pill">2026 EDITIONS</span>
+                <span class="hero-meta-pill">TANGIBLE PDF REPORTS</span>
             </div>
             <h1 class="hero-title" style="font-size: 2.8rem;">Institutional Industry Reports</h1>
             <p class="hero-subtitle">Quantitative benchmark reports, legal risk audits, and M&amp;A valuation playbooks relied on by Private Equity partners, corporate M&amp;A directors, and regulatory counsel across 14 countries.</p>
@@ -75,8 +76,8 @@
             <p style="color: #334155; margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6;">The definitive quantitative analysis of the global synthetic L-nicotine market following the March 2022 Congressional Appropriations Law. Includes Drug Master File (DMF) lab audits of 38 global suppliers, pricing benchmarks ($3,450/kg spot averages), and PMTA evidentiary requirements.</p>
 
             <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-                <button onclick="openSampleModal('NW-SYNTH-2026', 'The 2026 Global Synthetic L-Nicotine & PMTA Benchmark Report')" class="link-action-outline">📄 Download Free Executive Sample</button>
-                <button onclick="openPreCheckoutModal('report_synth')" class="link-action">🛒 Buy Full Report PDF ($2,500) &rarr;</button>
+                <button onclick="downloadPdfReport('NW-SYNTH-2026')" class="link-action-outline">📄 Download Tangible PDF Report</button>
+                <button onclick="openSampleModal('NW-SYNTH-2026', 'The 2026 Global Synthetic L-Nicotine & PMTA Benchmark Report')" class="link-action">🛒 Request Executive Access &rarr;</button>
             </div>
         </article>
 
@@ -97,8 +98,8 @@
             <p style="color: var(--text-dark-muted); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6;">Built specifically for Private Equity partners, corporate development teams, and M&amp;A legal counsel. Analyzes modern oral pouch transaction benchmarks, EV/EBITDA multiples (7.5x–9.5x), unit economics per pouch can, and contract OEM capacity across North America and Europe.</p>
 
             <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-                <button onclick="openSampleModal('NW-MA-POUCH-2026', 'The Oral Pouch M&A & Valuation Multiples Playbook')" class="link-action-outline" style="color: #FFFFFF; border-color: #FFFFFF;">📄 Download Free Executive Sample</button>
-                <button onclick="openPreCheckoutModal('report_pouch')" class="link-action-yellow">🛒 Buy Full Report PDF ($3,500) &rarr;</button>
+                <button onclick="downloadPdfReport('NW-MA-POUCH-2026')" class="link-action-outline" style="color: #FFFFFF; border-color: #FFFFFF;">📄 Download Tangible PDF Playbook</button>
+                <button onclick="openSampleModal('NW-MA-POUCH-2026', 'The Oral Pouch M&A & Valuation Multiples Playbook')" class="link-action-yellow">🛒 Request Executive Access &rarr;</button>
             </div>
         </article>
 
@@ -119,8 +120,8 @@
             <p style="color: #334155; margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6;">A practical risk management report tracking FDA Center for Tobacco Products (CTP) enforcement patterns, US Customs &amp; Border Protection (CBP) Import Alert #99-43 holds, Red List manufacturer additions, and Civil Money Penalty (CMP) statutory caps.</p>
 
             <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-                <button onclick="openSampleModal('NW-FDA-SEIZURE-2026', 'FDA CTP Enforcement & Import Seizure Risk Audit')" class="link-action-outline">📄 Download Free Executive Sample</button>
-                <button onclick="openPreCheckoutModal('report_fda')" class="link-action">🛒 Buy Full Report PDF ($1,500) &rarr;</button>
+                <button onclick="downloadPdfReport('NW-FDA-SEIZURE-2026')" class="link-action-outline">📄 Download Tangible PDF Audit</button>
+                <button onclick="openSampleModal('NW-FDA-SEIZURE-2026', 'FDA CTP Enforcement & Import Seizure Risk Audit')" class="link-action">🛒 Request Executive Access &rarr;</button>
             </div>
         </article>
     </section>
@@ -140,7 +141,7 @@
 <div id="sample-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(12,14,18,0.7); backdrop-filter: blur(8px); z-index: 99999; padding: 40px 16px;">
     <div style="max-width: 480px; margin: 40px auto; background: #FFFFFF; border: 2px solid var(--text-main); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-float);">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 14px; margin-bottom: 20px;">
-            <strong style="font-size: 1.15rem; color: var(--text-main); font-weight: 800;">📄 Download Executive Sample</strong>
+            <strong style="font-size: 1.15rem; color: var(--text-main); font-weight: 800;">📄 Tangible Executive PDF Report</strong>
             <button onclick="closeSampleModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">✕</button>
         </div>
         <form onsubmit="submitSampleRequest(event)">
@@ -162,7 +163,7 @@
                 <input type="text" required placeholder="e.g. Apex Private Equity Partners" style="width: 100%; background: #FFF; border: 1px solid var(--border-light); color: var(--text-main); padding: 12px; font-size: 0.88rem; border-radius: var(--radius-sm);">
             </div>
             <button type="submit" class="link-action" style="width: 100%;">
-                📥 Download Free Executive Sample PDF &rarr;
+                📥 Download Tangible Executive PDF Report &rarr;
             </button>
         </form>
     </div>
@@ -182,7 +183,8 @@ function closeSampleModal() {
 
 function submitSampleRequest(e) {
     e.preventDefault();
-    alert('Thank you! Your executive sample PDF has been sent to your business email.');
+    const code = document.getElementById('sample-report-code').value;
+    downloadPdfReport(code);
     closeSampleModal();
 }
 </script>

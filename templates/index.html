@@ -2360,6 +2360,36 @@
             }
         }
 
+        // --- Log Out & Delete Confirmation Modals ---
+        function showLogoutModal() {
+            const modal = document.getElementById('logout-confirm-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+            }
+        }
+        function closeLogoutModal() {
+            const modal = document.getElementById('logout-confirm-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
+        function showDeleteAccountModal() {
+            const modal = document.getElementById('delete-account-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+            }
+        }
+        function closeDeleteAccountModal() {
+            const modal = document.getElementById('delete-account-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
+
         document.body.addEventListener('triggerUpgradeModal', () => {
             closeStatusOverlay();
             showUpgradeModal();
@@ -2525,6 +2555,78 @@
                     class="w-full py-2 bg-transparent text-zinc-500 hover:text-zinc-400 text-[10px] font-mono uppercase tracking-wider transition-colors">
                     Not now
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Log Out Confirmation Modal -->
+    <div id="logout-confirm-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition select-none">
+        <div class="bg-[#0e0e11] border border-zinc-800 rounded-2xl p-6 w-[24rem] max-w-[92vw] text-left shadow-2xl relative">
+            <button onclick="closeLogoutModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" style="filter: invert(0.6);" alt="Close" />
+            </button>
+
+            <div class="flex items-center gap-3 mb-3">
+                <div class="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300">
+                    <img src="/static/icons/dinkie/revert.svg" class="w-5 h-5" style="filter: brightness(0) invert(1);" alt="" />
+                </div>
+                <div>
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-zinc-500">Session</span>
+                    <h3 class="text-sm font-semibold text-white mt-0.5">Log out of bipluk?</h3>
+                </div>
+            </div>
+
+            <p class="text-xs text-zinc-400 leading-relaxed font-sans mb-6">
+                You are about to sign out of your current session. Your soundbanks and custom presets will remain safely backed up in your vault.
+            </p>
+
+            <div class="flex items-center gap-2">
+                <button onclick="closeLogoutModal()"
+                    class="flex-1 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-pixel uppercase tracking-wider transition-all active:scale-[0.98]">
+                    Cancel
+                </button>
+                <a href="/logout" onclick="event.preventDefault(); window.location.replace('/logout');"
+                    class="flex-1 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-pixel uppercase tracking-wider text-center transition-all active:scale-[0.98]">
+                    Log Out &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Delete Account Confirmation Modal -->
+    <div id="delete-account-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition select-none">
+        <div class="bg-[#0e0e11] border border-rose-950/60 rounded-2xl p-6 w-[25rem] max-w-[92vw] text-left shadow-2xl relative">
+            <button onclick="closeDeleteAccountModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" style="filter: invert(0.6);" alt="Close" />
+            </button>
+
+            <div class="flex items-center gap-3 mb-3">
+                <div class="p-2.5 rounded-xl bg-rose-950/40 border border-rose-900/50 text-rose-400">
+                    <img src="/static/icons/dinkie/black-cross-square.svg" class="w-5 h-5 dinkie-rose" style="filter: invert(36%) sepia(85%) saturate(2078%) hue-rotate(331deg) brightness(98%) contrast(92%);" alt="" />
+                </div>
+                <div>
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-rose-400">Permanent Action</span>
+                    <h3 class="text-sm font-semibold text-white mt-0.5">Delete account &amp; purge data?</h3>
+                </div>
+            </div>
+
+            <p class="text-xs text-rose-200/80 leading-relaxed font-sans mb-6">
+                WARNING: This will permanently delete your bipluk account and purge all your saved soundbank vaults and custom presets. This action cannot be undone.
+            </p>
+
+            <div class="flex items-center gap-2">
+                <button onclick="closeDeleteAccountModal()"
+                    class="flex-1 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-pixel uppercase tracking-wider transition-all active:scale-[0.98]">
+                    Cancel
+                </button>
+                <form action="/delete-account" method="POST" class="flex-1">
+                    <button type="submit"
+                        class="w-full py-2.5 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-800/60 text-rose-300 hover:text-white text-xs font-pixel uppercase tracking-wider transition-all active:scale-[0.98]">
+                        Delete Account
+                    </button>
+                </form>
             </div>
         </div>
     </div>

@@ -154,18 +154,15 @@
             {% endif %}
 
             <div class="mt-6 flex items-center justify-center gap-3">
-                <a href="/logout"
-                    onclick="event.preventDefault(); window.location.replace('/logout');"
+                <button type="button" onclick="showLogoutModal()"
                     class="flex-1 text-center rounded-full bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-white text-xs font-pixel uppercase tracking-wider py-2.5 active:scale-[0.98] transition-all">
                     Log Out &rarr;
-                </a>
+                </button>
 
-                <form action="/delete-account" method="POST" onsubmit="return confirm('WARNING: Are you sure you want to permanently delete your account and purge all saved soundbank vaults? This action cannot be undone.');" class="flex-1">
-                    <button type="submit"
-                        class="w-full text-center rounded-full bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-rose-400 text-xs font-pixel uppercase tracking-wider py-2.5 active:scale-[0.98] transition-all">
-                        Delete Account
-                    </button>
-                </form>
+                <button type="button" onclick="showDeleteAccountModal()"
+                    class="flex-1 text-center rounded-full bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-rose-400 text-xs font-pixel uppercase tracking-wider py-2.5 active:scale-[0.98] transition-all">
+                    Delete Account
+                </button>
             </div>
         </div>
 

@@ -351,19 +351,23 @@
             </div>
 
             <!-- Devices Trigger -->
-            <button onclick="toggleDevicePopover()" id="device-menu-btn"
-                class="flex items-center gap-1.5 px-3 py-1.5 bg-[#141417] border border-zinc-800/80 rounded-lg hover:bg-zinc-900 transition-all text-2xs text-white font-semibold font-mono tactical-button">
-                <span id="midi-status-dot" class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                <span>Devices</span>
-                <img src="/static/icons/dinkie/backhand-index-pointing-down.svg" class="h-3 w-3 opacity-60"
-                    style="filter: invert(1);" />
-            </button>
-            <!-- Shop Pack Button -->
-            <a href="/shop"
-                class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:text-white rounded-lg transition-all text-2xs font-semibold font-mono tactical-button shadow-sm">
-                <img src="/static/icons/dinkie/shopping-bag.svg" class="h-3.5 w-3.5 shrink-0" style="filter: invert(62%) sepia(61%) saturate(459%) hue-rotate(106deg) brightness(92%) contrast(92%);" alt="Shop" />
-                <span>Shop</span>
-            </a>
+            <div class="relative">
+                <button onclick="dismissDevicesCallout(); toggleDevicePopover();" id="device-menu-btn"
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-[#141417] border border-zinc-800/80 rounded-lg hover:bg-zinc-900 transition-all text-2xs text-white font-semibold font-mono tactical-button">
+                    <span id="midi-status-dot" class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                    <span>Devices</span>
+                    <img src="/static/icons/dinkie/backhand-index-pointing-down.svg" class="h-3 w-3 opacity-60"
+                        style="filter: invert(1);" />
+                </button>
+
+                <!-- First-Time Visitors Arrow Doodle Callout -->
+                <div id="devices-callout-doodle" class="absolute top-10 right-0 flex flex-col items-end pointer-events-none z-30 animate-bounce">
+                    <div class="flex items-center gap-1 bg-amber-500/15 border border-amber-500/40 text-amber-300 px-2.5 py-1 rounded-md shadow-xl backdrop-blur-xs whitespace-nowrap">
+                        <span class="text-[9px] font-pixel uppercase tracking-wider">Connect MIDI ports here</span>
+                        <span class="text-amber-400 font-bold text-xs">↑</span>
+                    </div>
+                </div>
+            </div>
 
             {% if user.tier != 'premium' %}
             <button onclick="showUpdatePaywallModal()"
@@ -452,7 +456,17 @@
                     </button>
                 </div>
 
-
+                <!-- Sound Pack Shop -->
+                <div class="space-y-1.5">
+                    <a href="/shop"
+                        class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition-all shadow-sm group">
+                        <span class="flex items-center gap-2 font-mono uppercase text-[10px] tracking-wider">
+                            <img src="/static/icons/dinkie/shopping-bag.svg" class="h-4 w-4 shrink-0 dinkie-emerald" style="filter: invert(62%) sepia(61%) saturate(459%) hue-rotate(106deg) brightness(92%) contrast(92%);" alt="Shop" />
+                            Sound Pack Shop
+                        </span>
+                        <span class="text-[10px] font-pixel text-emerald-400 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    </a>
+                </div>
 
                 <!-- Vault Banks Playlists -->
                 <div class="space-y-1.5">
@@ -962,12 +976,21 @@
             }
         }
 
-        // Restore sidebar state on load
+        function dismissDevicesCallout() {
+            const doodle = document.getElementById('devices-callout-doodle');
+            if (doodle) doodle.classList.add('hidden');
+            try { localStorage.setItem('knob_devices_doodle_dismissed', 'true'); } catch(e){}
+        }
+
+        // Restore sidebar & callout states on load
         document.addEventListener('DOMContentLoaded', () => {
             try {
                 if (localStorage.getItem('knob_sidebar_collapsed') === 'true') {
                     const sidebar = document.getElementById('main-sidebar');
                     if (sidebar) sidebar.classList.add('sidebar-collapsed');
+                }
+                if (localStorage.getItem('knob_devices_doodle_dismissed') === 'true') {
+                    dismissDevicesCallout();
                 }
             } catch (e) {}
         });

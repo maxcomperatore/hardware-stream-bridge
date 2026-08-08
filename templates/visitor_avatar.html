@@ -73,46 +73,12 @@
             }
         }
 
-        function injectMidiBadge() {
-            const container = document.querySelector('header .flex.items-center.gap-4') || document.querySelector('header div > div:last-child');
-            if (!container || document.getElementById('web-midi-badge')) return;
-
-            const badge = document.createElement('div');
-            badge.id = 'web-midi-badge';
-            badge.className = 'hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-zinc-950/80 border border-zinc-800 rounded-full text-[9px] font-mono tracking-widest text-zinc-400 select-none';
-
-            const dot = document.createElement('span');
-            dot.className = 'w-1.5 h-1.5 rounded-full';
-
-            const text = document.createElement('span');
-            text.className = 'font-pixel uppercase tracking-widest';
-
-            if (navigator.requestMIDIAccess) {
-                dot.className += ' bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse';
-                text.textContent = 'MIDI: OK';
-                badge.title = 'Web MIDI is supported on your browser!';
-            } else {
-                dot.className += ' bg-rose-500 shadow-[0_0_8px_#f43f5e]';
-                text.textContent = 'MIDI: NO';
-                badge.classList.remove('border-zinc-800', 'text-zinc-400');
-                badge.classList.add('border-rose-950/40', 'text-rose-400', 'bg-rose-950/10');
-                badge.style.cursor = 'help';
-                badge.title = 'Web MIDI is not supported on Safari or Firefox. Please use Google Chrome, Edge, or Opera.';
-            }
-
-            badge.appendChild(dot);
-            badge.appendChild(text);
-            container.insertBefore(badge, container.firstChild);
-        }
-
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 initVisitorAvatar();
-                injectMidiBadge();
             });
         } else {
             initVisitorAvatar();
-            injectMidiBadge();
         }
     })();
 </script>

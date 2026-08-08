@@ -973,11 +973,11 @@ def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[
     currency = regional["currency"].lower()
     if normalized == "studio":
         unit_amount = int(regional["studio_amount"]) * 100
-        name = "bipluk+ Studio (lifetime)"
+        name = "bipluk+"
         description = "Commercial lifetime license for studios & repair benches. Unlimited Web MIDI cloud backup, zero drivers, unlimited .syx exports. One-time payment."
     else:
         unit_amount = int(regional["personal_amount"]) * 100
-        name = "bipluk+ Personal (lifetime)"
+        name = "bipluk+"
         description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
 
     return [

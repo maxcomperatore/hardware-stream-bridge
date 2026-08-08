@@ -213,6 +213,20 @@
             transform: translate(2px, 2px);
         }
 
+        /* Smooth collapsible sidebar */
+        #main-sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.3s ease;
+        }
+        #main-sidebar.sidebar-collapsed {
+            width: 0 !important;
+            min-width: 0 !important;
+            opacity: 0;
+            overflow: hidden !important;
+            pointer-events: none;
+            border-right-width: 0 !important;
+            padding: 0 !important;
+        }
+
         .tactical-pink-button {
             border: 1px solid oklch(48.42% 0.1129 251.34);
             border-bottom: 3px solid oklch(42.72% 0.1149 254.84);
@@ -278,6 +292,10 @@
         <div class="flex items-center gap-5 w-1/4">
             <!-- Transport Buttons styled as Tactile Hardware Keys -->
             <div class="flex items-center gap-1.5 p-1 bg-zinc-950 border border-zinc-900 rounded-lg">
+                <button onclick="toggleSidebar()" id="sidebar-toggle-btn" title="Toggle Sidebar (Expand/Collapse)"
+                    class="p-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded transition-all active:scale-95 flex items-center justify-center tactical-button">
+                    <img src="/static/icons/dinkie/sidebar.svg" class="h-4 w-4 opacity-80" style="filter: brightness(0) invert(1);" alt="Sidebar" />
+                </button>
                 <button onclick="toggleAuditionPlay()" id="player-play-btn" title="Play sound preset"
                     class="p-2 bg-white text-black rounded hover:bg-zinc-200 transition-all active:scale-95 flex items-center justify-center tactical-button">
                     <img id="play-icon" src="/static/icons/dinkie/right-black-triangle-filled.svg" class="h-4 w-4" />
@@ -417,15 +435,21 @@
     <main class="hidden md:flex flex-1 overflow-hidden">
 
         <!-- Left Sidebar: Library Controls -->
-        <aside class="w-64 border-r border-zinc-900 bg-[#0a0a0d] flex flex-col justify-between select-none shrink-0 overflow-hidden">
+        <aside id="main-sidebar" class="w-64 border-r border-zinc-900 bg-[#0a0a0d] flex flex-col justify-between select-none shrink-0 overflow-hidden">
             <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-4 space-y-5">
 
                 <!-- Brand Logo Header -->
-                <div class="flex items-center gap-2.5 px-1 pb-1">
-                    <img src="/static/logo.svg" alt="Bipluk Logo"
-                        class="h-8 w-8 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none"
-                        style="image-rendering: pixelated;">
-                    <span class="font-pixel uppercase text-xs text-white tracking-wider">bipluk</span>
+                <div class="flex items-center justify-between px-1 pb-1">
+                    <div class="flex items-center gap-2.5">
+                        <img src="/static/logo.svg" alt="Bipluk Logo"
+                            class="h-8 w-8 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none"
+                            style="image-rendering: pixelated;">
+                        <span class="font-pixel uppercase text-xs text-white tracking-wider">bipluk</span>
+                    </div>
+                    <button onclick="toggleSidebar()" title="Collapse sidebar"
+                        class="p-1 rounded hover:bg-zinc-850 text-zinc-500 hover:text-white transition-colors">
+                        <img src="/static/icons/dinkie/sidebar.svg" class="w-3.5 h-3.5 opacity-60 hover:opacity-100" style="filter: brightness(0) invert(1);" alt="Collapse" />
+                    </button>
                 </div>
 
 
@@ -923,6 +947,30 @@
             resizer.addEventListener('mousedown', onMouseDown);
             resizer.addEventListener('touchstart', onMouseDown, { passive: false });
         })();
+
+        // --- Sidebar Expand/Collapse Controller ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('main-sidebar');
+            if (!sidebar) return;
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+            if (isCollapsed) {
+                sidebar.classList.remove('sidebar-collapsed');
+                localStorage.setItem('knob_sidebar_collapsed', 'false');
+            } else {
+                sidebar.classList.add('sidebar-collapsed');
+                localStorage.setItem('knob_sidebar_collapsed', 'true');
+            }
+        }
+
+        // Restore sidebar state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                if (localStorage.getItem('knob_sidebar_collapsed') === 'true') {
+                    const sidebar = document.getElementById('main-sidebar');
+                    if (sidebar) sidebar.classList.add('sidebar-collapsed');
+                }
+            } catch (e) {}
+        });
 
         // --- UI Scaling Options ---
         const UI_SCALE_KEY = 'knob_ui_scale';

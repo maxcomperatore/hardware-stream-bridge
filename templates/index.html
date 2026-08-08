@@ -580,16 +580,15 @@
                         <a href="/portal" class="text-zinc-400 hover:text-emerald-400 font-pixel text-[9px] uppercase tracking-wider underline transition-colors">INVOICES &amp; RECEIPTS</a>
                         {% endif %}
                         <div class="flex items-center gap-1.5">
-                            <form action="/delete-account" method="POST" onsubmit="return confirm('WARNING: Are you sure you want to permanently delete your account and purge all saved soundbanks? This cannot be undone.');" class="inline-block">
-                                <button type="submit" class="px-2.5 py-1 rounded-md bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-rose-400 font-pixel text-[8px] uppercase tracking-wider transition-all inline-flex items-center gap-1 active:scale-95" title="Permanently delete account">
-                                    <span>Delete</span>
-                                </button>
-                            </form>
-                            <a href="/logout" onclick="event.preventDefault(); window.location.replace('/logout');"
+                            <button type="button" onclick="showDeleteAccountModal()"
+                                class="px-2.5 py-1 rounded-md bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-rose-400 font-pixel text-[8px] uppercase tracking-wider transition-all inline-flex items-center gap-1 active:scale-95" title="Permanently delete account">
+                                <span>Delete</span>
+                            </button>
+                            <button type="button" onclick="showLogoutModal()"
                                 class="px-2.5 py-1 rounded-md bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-white font-pixel text-[8px] uppercase tracking-wider transition-all inline-flex items-center gap-1 active:scale-95" title="Log out of session">
                                 <span>Log Out</span>
                                 <span class="text-[9px]">&rarr;</span>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -676,9 +675,13 @@
             </section>
 
             <!-- MIDI System Monitor / Log Panel -->
-            <div class="h-28 border-t border-zinc-900 bg-[#0e0e11] flex flex-col font-mono text-[9px] select-none">
+            <div id="midi-monitor-panel" class="border-t border-zinc-900 bg-[#0e0e11] flex flex-col font-mono text-[9px] select-none relative shrink-0" style="height: 140px; min-height: 40px; max-height: 70vh;">
+                <!-- Drag Resize Handle -->
+                <div id="midi-monitor-resizer" class="h-2 w-full bg-zinc-950 hover:bg-blue-600/30 cursor-ns-resize transition-colors flex items-center justify-center group select-none relative z-20 shrink-0 border-b border-zinc-900" title="Drag up or down to resize MIDI Monitor">
+                    <div class="w-10 h-0.5 bg-zinc-700 group-hover:bg-blue-400 rounded-full transition-colors"></div>
+                </div>
                 <div
-                    class="px-4 py-1.5 border-b border-zinc-900/60 bg-[#0b0b0d] flex items-center justify-between text-zinc-500 font-roman uppercase tracking-wider text-[7px]">
+                    class="px-4 py-1.5 border-b border-zinc-900/60 bg-[#0b0b0d] flex items-center justify-between text-zinc-500 font-roman uppercase tracking-wider text-[7px] shrink-0">
                     <div class="flex items-center gap-1.5">
                         <img src="/static/icons/dinkie/placard-alt.svg" alt="Placard" width="12" height="12" class="w-3 h-3 shrink-0 object-contain dinkie-img dinkie-img--white" style="filter: brightness(0) invert(1);" />
                         <span>MIDI SYSTEM MONITOR</span>
@@ -890,6 +893,57 @@
                 consoleEl.innerHTML = '<div class="text-zinc-600">[SYSTEM] Log cleared. Monitoring MIDI bus...</div>';
             }
         }
+
+        // --- MIDI System Monitor Drag-to-Resize Handler ---
+        (function initMidiMonitorResize() {
+            const resizer = document.getElementById('midi-monitor-resizer');
+            const panel = document.getElementById('midi-monitor-panel');
+            if (!resizer || !panel) return;
+
+            const SAVED_HEIGHT_KEY = 'knob_midi_monitor_height';
+            const savedHeight = localStorage.getItem(SAVED_HEIGHT_KEY);
+            if (savedHeight) {
+                const h = parseInt(savedHeight, 10);
+                if (h >= 40) {
+                    panel.style.height = `${Math.min(h, Math.floor(window.innerHeight * 0.7))}px`;
+                }
+            }
+
+            let startY = 0;
+            let startHeight = 0;
+
+            function onMouseMove(e) {
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const deltaY = startY - clientY;
+                const maxH = Math.floor(window.innerHeight * 0.7);
+                const newHeight = Math.max(40, Math.min(startHeight + deltaY, maxH));
+                panel.style.height = `${newHeight}px`;
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+                document.removeEventListener('touchmove', onMouseMove);
+                document.removeEventListener('touchend', onMouseUp);
+                document.body.classList.remove('select-none', 'cursor-ns-resize');
+                const currentH = parseInt(panel.style.height, 10);
+                if (currentH) localStorage.setItem(SAVED_HEIGHT_KEY, currentH);
+            }
+
+            function onMouseDown(e) {
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                startHeight = panel.offsetHeight;
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+                document.addEventListener('touchmove', onMouseMove, { passive: false });
+                document.addEventListener('touchend', onMouseUp);
+                document.body.classList.add('select-none', 'cursor-ns-resize');
+            }
+
+            resizer.addEventListener('mousedown', onMouseDown);
+            resizer.addEventListener('touchstart', onMouseDown, { passive: false });
+        })();
 
         // --- UI Scaling Options ---
         const UI_SCALE_KEY = 'knob_ui_scale';

@@ -213,23 +213,21 @@
             transform: translate(2px, 2px);
         }
 
-        /* Smooth collapsible sidebar */
+        /* Smooth collapsible sidebar (Sliding Mask Technique) */
         #main-sidebar {
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.3s ease;
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+            overflow: hidden !important;
         }
         #main-sidebar.sidebar-collapsed {
             width: 0 !important;
             min-width: 0 !important;
             opacity: 0;
-            overflow: hidden !important;
             pointer-events: none;
             border-right-width: 0 !important;
-            padding: 0 !important;
-            margin: 0 !important;
         }
-        #main-sidebar.sidebar-collapsed * {
-            display: none !important;
-            overflow: hidden !important;
+        #main-sidebar-content {
+            width: 16rem;
+            min-width: 16rem;
         }
 
         .tactical-pink-button {

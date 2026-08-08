@@ -153,18 +153,20 @@
             </a>
             {% endif %}
 
-            <a href="/logout"
-                onclick="event.preventDefault(); window.location.replace('/logout');"
-                class="mt-6 block text-center rounded-full bg-red-950/30 border border-red-800/50 text-rose-300 hover:text-white text-xs font-pixel uppercase tracking-wider py-3 active:scale-[0.98] transition-transform shadow-sm">
-                Log Out &rarr;
-            </a>
+            <div class="mt-6 flex items-center justify-center gap-3">
+                <a href="/logout"
+                    onclick="event.preventDefault(); window.location.replace('/logout');"
+                    class="flex-1 text-center rounded-full bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-white text-xs font-pixel uppercase tracking-wider py-2.5 active:scale-[0.98] transition-all">
+                    Log Out &rarr;
+                </a>
 
-            <form action="/delete-account" method="POST" onsubmit="return confirm('WARNING: Are you sure you want to permanently delete your account and purge all saved soundbank vaults? This action cannot be undone.');" class="mt-3">
-                <button type="submit"
-                    class="w-full text-center rounded-full bg-zinc-950 border border-zinc-900 text-zinc-600 hover:text-rose-400 text-[10px] font-pixel uppercase tracking-wider py-2.5 active:scale-[0.98] transition-colors">
-                    Delete Account & Purge Data
-                </button>
-            </form>
+                <form action="/delete-account" method="POST" onsubmit="return confirm('WARNING: Are you sure you want to permanently delete your account and purge all saved soundbank vaults? This action cannot be undone.');" class="flex-1">
+                    <button type="submit"
+                        class="w-full text-center rounded-full bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-rose-400 text-xs font-pixel uppercase tracking-wider py-2.5 active:scale-[0.98] transition-all">
+                        Delete Account
+                    </button>
+                </form>
+            </div>
         </div>
 
         {% include 'partials/dashboard_mobile_nav.html' %}

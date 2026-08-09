@@ -2740,7 +2740,7 @@
             <div class="mb-4">
                 <div class="text-4xl mb-2">🎉</div>
                 <span class="text-[9px] font-pixel text-emerald-400 uppercase tracking-widest font-semibold">bipluk+ unlocked</span>
-                <h3 class="text-lg font-pixel text-white uppercase mt-1.5 tracking-wide">You're in. Your patches are safe forever.</h3>
+                <h3 class="text-lg font-pixel text-white uppercase mt-1.5 tracking-wide">Welcome home. Your sounds are safe now.</h3>
             </div>
 
             <!-- Sushi & Ramen Badge -->
@@ -2749,7 +2749,7 @@
                     <img src="/static/Ghostpixxells_pixelfood/98_sushi_dish.png" class="w-6 h-6 object-contain" alt="Sushi" style="image-rendering: pixelated;" />
                     <img src="/static/Ghostpixxells_pixelfood/87_ramen.png" class="w-6 h-6 object-contain" alt="Ramen" style="image-rendering: pixelated;" />
                 </div>
-                <span class="text-[11px] font-mono text-zinc-300">Thanks for the sushi & ramen!</span>
+                <span class="text-[11px] font-mono text-zinc-300">You just bought indie devs sushi & ramen 🍣</span>
             </div>
 
             <!-- Getting Started Checklist -->
@@ -2806,6 +2806,7 @@
             modal.style.display = 'flex';
             requestAnimationFrame(() => modal.classList.remove('hidden'));
             startPaymentConfetti();
+            playSuccessChime();
             // Clean URL
             const url = new URL(window.location);
             url.searchParams.delete('payment');
@@ -2816,6 +2817,51 @@
             const modal = document.getElementById('payment-success-modal');
             if (modal) { modal.style.display = 'none'; modal.classList.add('hidden'); }
             stopPaymentConfetti();
+        }
+
+        // DX7-style FM bell chime using Web Audio API
+        function playSuccessChime() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = ctx.currentTime;
+
+                // FM synthesis: modulator -> carrier (classic DX7 bell)
+                function fmBell(freq, startTime, duration, volume) {
+                    // Modulator
+                    const mod = ctx.createOscillator();
+                    const modGain = ctx.createGain();
+                    mod.frequency.value = freq * 3.5; // ratio for bell-like timbre
+                    modGain.gain.setValueAtTime(freq * 2, startTime);
+                    modGain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+                    mod.connect(modGain);
+
+                    // Carrier
+                    const car = ctx.createOscillator();
+                    const carGain = ctx.createGain();
+                    car.frequency.value = freq;
+                    modGain.connect(car.frequency); // FM connection
+                    carGain.gain.setValueAtTime(volume, startTime);
+                    carGain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+                    car.connect(carGain);
+                    carGain.connect(ctx.destination);
+
+                    mod.start(startTime);
+                    car.start(startTime);
+                    mod.stop(startTime + duration);
+                    car.stop(startTime + duration);
+                }
+
+                // Gentle ascending arpeggio: E5 -> G#5 -> B5 -> E6
+                fmBell(659.25, now, 1.2, 0.08);        // E5
+                fmBell(830.61, now + 0.12, 1.0, 0.06); // G#5
+                fmBell(987.77, now + 0.24, 0.9, 0.05); // B5
+                fmBell(1318.5, now + 0.4, 1.5, 0.04);  // E6 (longer ring)
+
+                // Auto-close context
+                setTimeout(() => ctx.close(), 3000);
+            } catch (e) {
+                // Web Audio not available, silent fail
+            }
         }
 
         let confettiAnimId = null;

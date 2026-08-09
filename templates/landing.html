@@ -2899,6 +2899,30 @@
             }
         })();
     </script>
+{% if pricing is defined and pricing.ppp_enabled %}
+    <script>
+    /* PPP Live Price Fetcher — silently updates price for PPP-eligible countries */
+    (async () => {
+        const country = "{{ pricing.country_code | default('AR') }}";
+        try {
+            const res = await fetch(`/api/ppp-price?country=${country}`);
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data.error) return;
+            const display = data.display;
+            const symbol = display.display.replace(/[\d.,\s]/g, '').trim() || display.currency;
+            const amount = display.display.replace(symbol, '').trim();
+            document.querySelectorAll('#pricing-personal-amount, #pricing-anchor-personal-amount')
+                .forEach(el => { el.textContent = amount; });
+            document.querySelectorAll('#pricing-personal-currency, #pricing-anchor-personal-symbol')
+                .forEach(el => { (el.querySelector('.pricing-gem-blue') || el).textContent = symbol; });
+            document.querySelectorAll('#pricing-personal-billing')
+                .forEach(el => { el.textContent = `${display.currency} · PAGO ÚNICO`; });
+        } catch (e) { /* silently keep static price on error */ }
+    })();
+    </script>
+{% endif %}
 </body>
+
 
 </html>

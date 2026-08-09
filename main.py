@@ -24,6 +24,7 @@ import shop_packs
 import research_survey_2026
 import research_lessons_launch_2026
 import pricing_geo_titles
+import ppp_pricing
 from icon_paths import (
     brand_icon,
     dinkie_cover_icon,
@@ -745,7 +746,14 @@ def format_free_price_display(regional: dict) -> str:
 
 def enrich_regional_pricing(country_code: str | None = None) -> dict:
     regional = get_regional_pricing(country_code)
-    return {**regional, "free_price_display": format_free_price_display(regional)}
+    code = normalize_country_code(country_code)
+    ppp_countries = os.environ.get("PPP_ENABLED_COUNTRIES", "AR").upper().split(",")
+    return {
+        **regional,
+        "free_price_display": format_free_price_display(regional),
+        "ppp_enabled": code in ppp_countries,  # tells template to fetch live price via JS
+        "country_code": code,
+    }
 
 def resolve_client_ip(request: Request) -> tuple[str, bool]:
     client_ip = request.client.host if request.client else "127.0.0.1"
@@ -946,19 +954,37 @@ def render_signup(request: Request, **kwargs):
     return render_template("signup.html", request, signup_template_context(request, **kwargs))
 
 
-def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[dict]:
-    """Inline price_data avoids catalog/adaptive-pricing hosted Checkout failures."""
+async def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[dict]:
+    """Inline price_data avoids catalog/adaptive-pricing hosted Checkout failures.
+
+    For PPP-eligible countries (e.g. AR), dynamically computes the price using
+    the ppp_pricing engine (GDP-per-capita + live FX/ARS-blue-dollar rate).
+    For all other regions, falls back to the static REGIONAL_PRICING_CATALOG.
+    """
     normalized = normalize_plan(plan)
     use_catalog = os.environ.get("STRIPE_PLAN_USE_CATALOG_PRICE", "").strip().lower() in ("1", "true", "yes")
     if use_catalog:
         return [{"price": get_plan_price_id(normalized, country_code), "quantity": 1}]
 
+    ppp_countries = os.environ.get("PPP_ENABLED_COUNTRIES", "AR").upper().split(",")
+    code = (country_code or "US").upper().strip()
+    description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
+
+    if code in ppp_countries:
+        # PPP dynamic path: fetch live FX + GDP formula
+        try:
+            ppp_result = await ppp_pricing.compute_ppp_checkout(code)
+            line_item = {k: v for k, v in ppp_result.items() if k != "_meta"}
+            return [line_item]
+        except Exception as exc:
+            logger.warning("PPP pricing failed for %s, falling back to static: %s", code, exc)
+
+    # Static regional path (existing behaviour)
     regional = get_regional_pricing(country_code)
     currency = regional["currency"].lower()
     personal_clean = int(str(regional["personal_amount"]).replace(",", ""))
     unit_amount = personal_clean * 100
     name = "bipluk+"
-    description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
 
     return [
         {
@@ -1574,6 +1600,27 @@ async def get_geoip(request: Request):
         "chf_pricing_enabled": chf_pricing_enabled(),
         "jpy_pricing_enabled": jpy_pricing_enabled(),
     }
+
+
+@app.get("/api/ppp-price")
+async def ppp_price_debug(request: Request, country: str = "AR"):
+    """Debug endpoint: compute live PPP price for any country code.
+    Usage: GET /api/ppp-price?country=AR
+           GET /api/ppp-price?country=IN
+           GET /api/ppp-price?country=BR
+    """
+    try:
+        result = await ppp_pricing.compute_ppp_checkout(country.upper())
+        display = await ppp_pricing.get_ppp_display_price(country.upper())
+        return {
+            "country": country.upper(),
+            "stripe_line_item": {k: v for k, v in result.items() if k != "_meta"},
+            "meta": result["_meta"],
+            "display": display,
+            "base_usd": ppp_pricing.BASE_USD_PRICE,
+        }
+    except Exception as exc:
+        return {"error": str(exc), "country": country.upper()}
 
 
 @app.post("/subscribe")
@@ -2612,13 +2659,17 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
     allow_promo = is_birthday or is_christmas
     
     try:
+        ppp_currency = None
         if checkout_mode == "payment":
-            line_items = build_plan_checkout_line_items(normalized_plan, country_code)
+            line_items = await build_plan_checkout_line_items(normalized_plan, country_code)
+            # For PPP countries, use the currency from the dynamic line item
+            if line_items and line_items[0].get("price_data"):
+                ppp_currency = line_items[0]["price_data"].get("currency", "").upper()
         else:
             line_items = [{"price": price_id, "quantity": 1}]
  
         pricing_region = get_regional_pricing(country_code)
-        checkout_currency = pricing_region["currency"] if checkout_mode == "payment" else "usd"
+        checkout_currency = ppp_currency or (pricing_region["currency"] if checkout_mode == "payment" else "usd")
  
         checkout_kwargs = {
             "line_items": line_items,

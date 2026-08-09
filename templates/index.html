@@ -2457,7 +2457,7 @@
             if (params.get('welcome') === '1') {
                 showToast("Account Ready", "Free vault created. Connect MIDI and save your first bank.", "success");
             } else if (params.get('payment') === 'success') {
-                showToast("Upgrade Successful", "Welcome to bipluk+!", "success");
+                showPaymentSuccessModal();
             } else if (params.get('payment') === 'cancel') {
                 showToast("No Charge", "Checkout closed. Your free vault is still ready.", "info");
             } else if (params.get('mock_portal') === '1') {
@@ -2723,6 +2723,177 @@
             }
         })();
     </script>
+
+    <!-- Payment Success Celebration Modal -->
+    <div id="payment-success-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-[60] hidden items-center justify-center hidden-transition select-none"
+        style="display: none;">
+        <div class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-[30rem] max-w-[92vw] text-center shadow-2xl relative animate-in"
+            style="animation: modalSlideIn 0.4s ease-out;">
+            <button onclick="closePaymentSuccessModal()"
+                class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors z-10">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
+                    style="filter: invert(0.6);" />
+            </button>
+
+            <!-- Celebration Header -->
+            <div class="mb-4">
+                <div class="text-4xl mb-2">🎉</div>
+                <span class="text-[9px] font-pixel text-emerald-400 uppercase tracking-widest font-semibold">bipluk+ unlocked</span>
+                <h3 class="text-lg font-pixel text-white uppercase mt-1.5 tracking-wide">You're in. Your patches are safe forever.</h3>
+            </div>
+
+            <!-- Sushi & Ramen Badge -->
+            <div class="flex items-center justify-center gap-2 py-2.5 px-4 bg-zinc-950 border border-zinc-900 rounded-xl mb-4">
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <img src="/static/Ghostpixxells_pixelfood/98_sushi_dish.png" class="w-6 h-6 object-contain" alt="Sushi" style="image-rendering: pixelated;" />
+                    <img src="/static/Ghostpixxells_pixelfood/87_ramen.png" class="w-6 h-6 object-contain" alt="Ramen" style="image-rendering: pixelated;" />
+                </div>
+                <span class="text-[11px] font-mono text-zinc-300">Thanks for the sushi & ramen!</span>
+            </div>
+
+            <!-- Getting Started Checklist -->
+            <div class="text-left bg-zinc-950/60 border border-zinc-900 rounded-xl p-4 space-y-3 mb-4">
+                <span class="text-[9px] font-pixel text-zinc-400 uppercase tracking-widest">What to do first</span>
+                <div class="space-y-2.5">
+                    <div class="flex items-start gap-2.5">
+                        <span class="text-emerald-400 text-sm leading-none mt-0.5">①</span>
+                        <div>
+                            <p class="text-xs text-white font-semibold">Connect your synth</p>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">Plug in your USB-to-MIDI adapter and click <strong class="text-zinc-300">Devices</strong> in the top bar.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <span class="text-emerald-400 text-sm leading-none mt-0.5">②</span>
+                        <div>
+                            <p class="text-xs text-white font-semibold">Dump your first bank</p>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">Select your synth model, hit <strong class="text-zinc-300">Pull</strong>, and watch patch names appear in real-time.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <span class="text-emerald-400 text-sm leading-none mt-0.5">③</span>
+                        <div>
+                            <p class="text-xs text-white font-semibold">You're backed up</p>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">Every bank is stored in your private cloud vault. Export .syx files anytime.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <button onclick="closePaymentSuccessModal()"
+                class="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
+                Start Backing Up
+            </button>
+            <p class="text-[9px] text-zinc-500 font-mono mt-2 uppercase tracking-wider">Lifetime access · Zero monthly rent · Yours forever</p>
+        </div>
+    </div>
+
+    <!-- Payment Success Confetti Canvas -->
+    <canvas id="payment-confetti-canvas" class="fixed inset-0 pointer-events-none z-[55]" style="display: none;"></canvas>
+
+    <style>
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+
+    <script>
+        function showPaymentSuccessModal() {
+            const modal = document.getElementById('payment-success-modal');
+            if (!modal) return;
+            modal.style.display = 'flex';
+            requestAnimationFrame(() => modal.classList.remove('hidden'));
+            startPaymentConfetti();
+            // Clean URL
+            const url = new URL(window.location);
+            url.searchParams.delete('payment');
+            window.history.replaceState({}, '', url);
+        }
+
+        function closePaymentSuccessModal() {
+            const modal = document.getElementById('payment-success-modal');
+            if (modal) { modal.style.display = 'none'; modal.classList.add('hidden'); }
+            stopPaymentConfetti();
+        }
+
+        let confettiAnimId = null;
+        let confettiTimeout = null;
+
+        function startPaymentConfetti() {
+            const canvas = document.getElementById('payment-confetti-canvas');
+            if (!canvas) return;
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            const colors = ['#ec4899', '#26619C', '#10b981', '#eab308', '#a855f7', '#f97316', '#06b6d4'];
+            const numParticles = 120;
+            const particles = [];
+
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * -height * 0.5 - 20,
+                    r: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleInc: Math.random() * 0.07 + 0.03,
+                    tiltAngle: 0,
+                    speed: Math.random() * 2.5 + 1.5,
+                    wobble: Math.random() * 10
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                for (const p of particles) {
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r / 2;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+                }
+                update();
+                confettiAnimId = requestAnimationFrame(draw);
+            }
+
+            function update() {
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.y += p.speed;
+                    p.tiltAngle += p.tiltAngleInc;
+                    p.tilt = Math.sin(p.tiltAngle) * 15;
+                    p.x += Math.sin(p.wobble) * 0.5;
+                    p.wobble += 0.02;
+                    if (p.y > height + 20) {
+                        particles[i].x = Math.random() * width;
+                        particles[i].y = -20;
+                    }
+                }
+            }
+
+            draw();
+
+            // Auto-stop confetti after 8 seconds
+            confettiTimeout = setTimeout(() => stopPaymentConfetti(), 8000);
+        }
+
+        function stopPaymentConfetti() {
+            if (confettiAnimId) { cancelAnimationFrame(confettiAnimId); confettiAnimId = null; }
+            if (confettiTimeout) { clearTimeout(confettiTimeout); confettiTimeout = null; }
+            const canvas = document.getElementById('payment-confetti-canvas');
+            if (canvas) {
+                canvas.style.display = 'none';
+                const ctx = canvas.getContext('2d');
+                if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+    </script>
+
 </body>
 
 </html>

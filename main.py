@@ -690,6 +690,24 @@ def normalize_country_code(raw: str | None) -> str:
         return value
     return COUNTRY_NAME_TO_ISO.get(value, "US")
 
+def eur_pricing_enabled() -> bool:
+    return True
+
+def gbp_pricing_enabled() -> bool:
+    return True
+
+def cad_pricing_enabled() -> bool:
+    return True
+
+def aud_pricing_enabled() -> bool:
+    return True
+
+def chf_pricing_enabled() -> bool:
+    return True
+
+def jpy_pricing_enabled() -> bool:
+    return True
+
 def get_pricing_region(country_code: str | None) -> str:
     code = normalize_country_code(country_code)
     if code in JP_JPY_COUNTRY_CODES:
@@ -1301,11 +1319,13 @@ async def index(request: Request):
             "cad_pricing_enabled": cad_pricing_enabled(),
             "aud_pricing_enabled": aud_pricing_enabled(),
             "chf_pricing_enabled": chf_pricing_enabled(),
+            "jpy_pricing_enabled": jpy_pricing_enabled(),
             "eu_country_codes": sorted(EU_EUR_COUNTRY_CODES),
             "gb_country_codes": sorted(GB_GBP_COUNTRY_CODES),
             "ca_country_codes": sorted(CA_CAD_COUNTRY_CODES),
             "au_country_codes": sorted(AU_AUD_COUNTRY_CODES),
             "ch_country_codes": sorted(CH_CHF_COUNTRY_CODES),
+            "jp_country_codes": sorted(JP_JPY_COUNTRY_CODES),
             "faq_suggestions": faq_knowledge.FAQ_SUGGESTIONS,
         },
     )

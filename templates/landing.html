@@ -2081,7 +2081,7 @@
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
 
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
-                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold"><span id="pricing-anchor-competitor-symbol">{{ pricing.symbol }}</span><span id="pricing-anchor-competitor-amount">{{ pricing.competitor_amount if pricing.competitor_amount is defined else '200' }}</span>+</span>. <span class="text-brand-plus font-semibold">bipluk+</span> is just
+                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold">USD $<span id="pricing-anchor-competitor-amount">{{ pricing.competitor_amount if pricing.competitor_amount is defined else '200' }}</span>+</span>. <span class="text-brand-plus font-semibold">bipluk+</span> is just
                     <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{
                             pricing.symbol }}</span><span id="pricing-anchor-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount
                             }}</span></span>
@@ -2161,10 +2161,6 @@
                 if (personalCurrency) personalCurrency.innerHTML = symbolMarkup;
                 if (personalAmount) personalAmount.textContent = cfg.personal;
                 if (personalBilling) personalBilling.textContent = cfg.billing;
-                const anchorCompetitorSymbol = document.getElementById('pricing-anchor-competitor-symbol');
-                const anchorCompetitorAmount = document.getElementById('pricing-anchor-competitor-amount');
-                if (anchorCompetitorSymbol) anchorCompetitorSymbol.textContent = cfg.symbol;
-                if (anchorCompetitorAmount && cfg.competitor) anchorCompetitorAmount.textContent = cfg.competitor;
                 const anchorPersonalSymbol = document.getElementById('pricing-anchor-personal-symbol');
                 const anchorPersonalAmount = document.getElementById('pricing-anchor-personal-amount');
                 if (anchorPersonalSymbol) {
@@ -2926,10 +2922,6 @@
             // Anchor: already a .pricing-gem-blue span — text only
             const anchorSymbol = document.getElementById('pricing-anchor-personal-symbol');
             if (anchorSymbol) anchorSymbol.textContent = symbol;
-
-            // Competitor symbol
-            const compSymbol = document.getElementById('pricing-anchor-competitor-symbol');
-            if (compSymbol) compSymbol.textContent = symbol;
 
             // Billing label — neutral English everywhere
             document.querySelectorAll('#pricing-personal-billing')

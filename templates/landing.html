@@ -2912,10 +2912,26 @@
             const display = data.display;
             const symbol = display.display.replace(/[\d.,\s]/g, '').trim() || display.currency;
             const amount = display.display.replace(symbol, '').trim();
+
+            // Amount spans — straightforward text swap
             document.querySelectorAll('#pricing-personal-amount, #pricing-anchor-personal-amount')
                 .forEach(el => { el.textContent = amount; });
-            document.querySelectorAll('#pricing-personal-currency, #pricing-anchor-personal-symbol')
-                .forEach(el => { (el.querySelector('.pricing-gem-blue') || el).textContent = symbol; });
+
+            // Main price slot: replace innerHTML so the $ gets the shimmer span
+            // (server may have rendered the USD icon branch with no .pricing-gem-blue inside)
+            const symbolHTML = `<span class="pricing-gem-blue select-none text-2xl leading-none" style="transform:translateY(-2px)">${symbol}</span>`;
+            const mainSlot = document.getElementById('pricing-personal-currency');
+            if (mainSlot) mainSlot.innerHTML = symbolHTML;
+
+            // Anchor comparison: already IS a .pricing-gem-blue span — just swap text
+            const anchorSymbol = document.getElementById('pricing-anchor-personal-symbol');
+            if (anchorSymbol) anchorSymbol.textContent = symbol;
+
+            // Competitor symbol (the red strikethrough price) — plain text swap
+            const compSymbol = document.getElementById('pricing-anchor-competitor-symbol');
+            if (compSymbol) compSymbol.textContent = symbol;
+
+            // Billing label
             document.querySelectorAll('#pricing-personal-billing')
                 .forEach(el => { el.textContent = `${display.currency} · PAGO ÚNICO`; });
         } catch (e) { /* silently keep static price on error */ }

@@ -747,11 +747,12 @@ def format_free_price_display(regional: dict) -> str:
 def enrich_regional_pricing(country_code: str | None = None) -> dict:
     regional = get_regional_pricing(country_code)
     code = normalize_country_code(country_code)
-    ppp_countries = os.environ.get("PPP_ENABLED_COUNTRIES", "AR").upper().split(",")
+    _ppp_raw = os.environ.get("PPP_ENABLED_COUNTRIES", "ALL").upper()
+    ppp_enabled = _ppp_raw == "ALL" or normalize_country_code(country_code) in _ppp_raw.split(",")
     return {
         **regional,
         "free_price_display": format_free_price_display(regional),
-        "ppp_enabled": code in ppp_countries,  # tells template to fetch live price via JS
+        "ppp_enabled": ppp_enabled and code != "US",  # US never gets PPP JS fetch
         "country_code": code,
     }
 
@@ -966,11 +967,12 @@ async def build_plan_checkout_line_items(plan: str, country_code: str | None) ->
     if use_catalog:
         return [{"price": get_plan_price_id(normalized, country_code), "quantity": 1}]
 
-    ppp_countries = os.environ.get("PPP_ENABLED_COUNTRIES", "AR").upper().split(",")
+    _ppp_raw = os.environ.get("PPP_ENABLED_COUNTRIES", "ALL").upper()
     code = (country_code or "US").upper().strip()
+    ppp_active = _ppp_raw == "ALL" or code in _ppp_raw.split(",")
     description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
 
-    if code in ppp_countries:
+    if ppp_active and code != "US":  # never PPP-discount USD baseline
         # PPP dynamic path: fetch live FX + GDP formula
         try:
             ppp_result = await ppp_pricing.compute_ppp_checkout(code)

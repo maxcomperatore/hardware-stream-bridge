@@ -1572,6 +1572,7 @@ async def get_geoip(request: Request):
         "cad_pricing_enabled": cad_pricing_enabled(),
         "aud_pricing_enabled": aud_pricing_enabled(),
         "chf_pricing_enabled": chf_pricing_enabled(),
+        "jpy_pricing_enabled": jpy_pricing_enabled(),
     }
 
 

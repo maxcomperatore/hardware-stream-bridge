@@ -629,7 +629,6 @@ REGIONAL_PRICING_CATALOG = {
         "currency": "USD",
         "symbol": "$",
         "personal_amount": "49",
-        "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "USD / ONE-TIME",
     },
@@ -638,7 +637,6 @@ REGIONAL_PRICING_CATALOG = {
         "currency": "EUR",
         "symbol": "€",
         "personal_amount": "49",
-        "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "EUR / ONE-TIME",
     },
@@ -647,7 +645,6 @@ REGIONAL_PRICING_CATALOG = {
         "currency": "GBP",
         "symbol": "£",
         "personal_amount": "49",
-        "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "GBP / ONE-TIME",
     },
@@ -656,7 +653,6 @@ REGIONAL_PRICING_CATALOG = {
         "currency": "CAD",
         "symbol": "$",
         "personal_amount": "69",
-        "studio_amount": "599",
         "competitor_amount": "280",
         "billing_label": "CAD / ONE-TIME",
     },
@@ -665,7 +661,6 @@ REGIONAL_PRICING_CATALOG = {
         "currency": "AUD",
         "symbol": "$",
         "personal_amount": "69",
-        "studio_amount": "599",
         "competitor_amount": "280",
         "billing_label": "AUD / ONE-TIME",
     },
@@ -674,7 +669,6 @@ REGIONAL_PRICING_CATALOG = {
         "currency": "CHF",
         "symbol": "Fr.",
         "personal_amount": "49",
-        "studio_amount": "399",
         "competitor_amount": "200",
         "billing_label": "CHF / ONE-TIME",
     },
@@ -683,7 +677,6 @@ REGIONAL_PRICING_CATALOG = {
         "currency": "JPY",
         "symbol": "¥",
         "personal_amount": "7,800",
-        "studio_amount": "59,800",
         "competitor_amount": "32,000",
         "billing_label": "JPY / ONE-TIME",
     },
@@ -697,46 +690,19 @@ def normalize_country_code(raw: str | None) -> str:
         return value
     return COUNTRY_NAME_TO_ISO.get(value, "US")
 
-def eur_pricing_enabled() -> bool:
-    return bool(STRIPE_PRICE_ID_PERSONAL_EUR and STRIPE_PRICE_ID_STUDIO_EUR)
-
-def gbp_pricing_enabled() -> bool:
-    return bool(STRIPE_PRICE_ID_PERSONAL_GBP and STRIPE_PRICE_ID_STUDIO_GBP)
-
-def cad_pricing_enabled() -> bool:
-    return bool(STRIPE_PRICE_ID_PERSONAL_CAD and STRIPE_PRICE_ID_STUDIO_CAD)
-
-def aud_pricing_enabled() -> bool:
-    return bool(STRIPE_PRICE_ID_PERSONAL_AUD and STRIPE_PRICE_ID_STUDIO_AUD)
-
-def chf_pricing_enabled() -> bool:
-    return bool(STRIPE_PRICE_ID_PERSONAL_CHF and STRIPE_PRICE_ID_STUDIO_CHF)
-
-def jpy_pricing_enabled() -> bool:
-    return bool(STRIPE_PRICE_ID_PERSONAL_JPY and STRIPE_PRICE_ID_STUDIO_JPY)
-
-REGIONAL_PRICE_IDS = {
-    "gbp": (STRIPE_PRICE_ID_PERSONAL_GBP, STRIPE_PRICE_ID_STUDIO_GBP),
-    "eur": (STRIPE_PRICE_ID_PERSONAL_EUR, STRIPE_PRICE_ID_STUDIO_EUR),
-    "cad": (STRIPE_PRICE_ID_PERSONAL_CAD, STRIPE_PRICE_ID_STUDIO_CAD),
-    "aud": (STRIPE_PRICE_ID_PERSONAL_AUD, STRIPE_PRICE_ID_STUDIO_AUD),
-    "chf": (STRIPE_PRICE_ID_PERSONAL_CHF, STRIPE_PRICE_ID_STUDIO_CHF),
-    "jpy": (STRIPE_PRICE_ID_PERSONAL_JPY, STRIPE_PRICE_ID_STUDIO_JPY),
-}
-
 def get_pricing_region(country_code: str | None) -> str:
     code = normalize_country_code(country_code)
-    if (jpy_pricing_enabled() or True) and code in JP_JPY_COUNTRY_CODES:
+    if code in JP_JPY_COUNTRY_CODES:
         return "jpy"
-    if gbp_pricing_enabled() and code in GB_GBP_COUNTRY_CODES:
+    if code in GB_GBP_COUNTRY_CODES:
         return "gbp"
-    if chf_pricing_enabled() and code in CH_CHF_COUNTRY_CODES:
+    if code in CH_CHF_COUNTRY_CODES:
         return "chf"
-    if cad_pricing_enabled() and code in CA_CAD_COUNTRY_CODES:
+    if code in CA_CAD_COUNTRY_CODES:
         return "cad"
-    if aud_pricing_enabled() and code in AU_AUD_COUNTRY_CODES:
+    if code in AU_AUD_COUNTRY_CODES:
         return "aud"
-    if eur_pricing_enabled() and code in EU_EUR_COUNTRY_CODES:
+    if code in EU_EUR_COUNTRY_CODES:
         return "eur"
     return "usd"
 
@@ -752,6 +718,8 @@ def format_free_price_display(regional: dict) -> str:
         return "€0"
     if region == "chf":
         return "Fr. 0"
+    if region == "jpy":
+        return "¥0"
     if region == "usd":
         return "$0"
     return f"{regional['symbol']}0 {regional['currency']}"
@@ -831,13 +799,6 @@ PLAN_CATALOG = {
         "amount_cents": 4900,
         "stripe_price_id": STRIPE_PRICE_ID_PERSONAL,
         "commercial": False,
-    },
-    "studio": {
-        "label": "bipluk+ Studio",
-        "price_display": "$399",
-        "amount_cents": 39900,
-        "stripe_price_id": STRIPE_PRICE_ID_STUDIO,
-        "commercial": True,
     },
 }
 
@@ -925,19 +886,12 @@ def build_pack_checkout_line_items(pack_id: str, pack: dict) -> list[dict]:
 def create_pack_checkout_session(user: dict, pack_id: str, pack: dict):
     return stripe.checkout.Session.create(**build_pack_checkout_kwargs(user, pack_id, pack))
 
-def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
-    normalized = normalize_plan(plan)
-    region = get_pricing_region(country_code)
-    if region in REGIONAL_PRICE_IDS:
-        personal_id, studio_id = REGIONAL_PRICE_IDS[region]
-        return studio_id if normalized == "studio" else personal_id
-    if normalized == "studio":
-        return STRIPE_PRICE_ID_STUDIO or ""
-    return PLAN_CATALOG[normalized]["stripe_price_id"]
+def get_plan_price_id(plan: str = "personal", country_code: str | None = None) -> str:
+    return STRIPE_PRICE_ID_PERSONAL or STRIPE_PRICE_ID_LIFETIME or ""
 
 
-def format_plan_price_display(regional: dict, plan: str) -> str:
-    amount = regional["personal_amount"] if plan == "personal" else regional["studio_amount"]
+def format_plan_price_display(regional: dict, plan: str = "personal") -> str:
+    amount = regional["personal_amount"]
     symbol = regional["symbol"]
     if regional["region"] in ("usd", "jpy"):
         return f"{symbol}{amount}"
@@ -949,7 +903,6 @@ def format_plan_price_display(regional: dict, plan: str) -> str:
 def get_plan_catalog(country_code: str | None = None) -> dict:
     regional = get_regional_pricing(country_code)
     personal_clean = int(str(regional["personal_amount"]).replace(",", ""))
-    studio_clean = int(str(regional["studio_amount"]).replace(",", ""))
     return {
         "personal": {
             "label": "Personal",
@@ -957,13 +910,6 @@ def get_plan_catalog(country_code: str | None = None) -> dict:
             "amount_cents": personal_clean * 100,
             "stripe_price_id": get_plan_price_id("personal", country_code),
             "commercial": False,
-        },
-        "studio": {
-            "label": "bipluk+ Studio",
-            "price_display": format_plan_price_display(regional, "studio"),
-            "amount_cents": studio_clean * 100,
-            "stripe_price_id": get_plan_price_id("studio", country_code),
-            "commercial": True,
         },
     }
 
@@ -991,14 +937,10 @@ def build_plan_checkout_line_items(plan: str, country_code: str | None) -> list[
 
     regional = get_regional_pricing(country_code)
     currency = regional["currency"].lower()
-    if normalized == "studio":
-        unit_amount = int(regional["studio_amount"]) * 100
-        name = "bipluk+"
-        description = "Commercial lifetime license for studios & repair benches. Unlimited Web MIDI cloud backup, zero drivers, unlimited .syx exports. One-time payment."
-    else:
-        unit_amount = int(regional["personal_amount"]) * 100
-        name = "bipluk+"
-        description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
+    personal_clean = int(str(regional["personal_amount"]).replace(",", ""))
+    unit_amount = personal_clean * 100
+    name = "bipluk+"
+    description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
 
     return [
         {

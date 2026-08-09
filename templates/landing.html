@@ -2071,7 +2071,7 @@
                                 <img src="/static/Ghostpixxells_pixelfood/98_sushi_dish.png" class="w-5 h-5 object-contain hover:scale-110 transition-transform" alt="Sushi" style="image-rendering: pixelated;" />
                                 <img src="/static/Ghostpixxells_pixelfood/87_ramen.png" class="w-5 h-5 object-contain hover:scale-110 transition-transform" alt="Ramen" style="image-rendering: pixelated;" />
                             </div>
-                            <span>You're supporting an indie dev for sushi &amp; ramen!</span>
+                            <span>You're supporting indie devs for sushi &amp; ramen!</span>
                         </div>
                     </div>
                 </div>
@@ -2124,26 +2124,23 @@
             const AU_COUNTRY_CODES = {{ au_country_codes | tojson if au_country_codes is defined else '[]' }};
             const CH_COUNTRY_CODES = {{ ch_country_codes | tojson if ch_country_codes is defined else '[]' }};
             const REGIONAL_PRICING_DISPLAY = {
-                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '49', studio: '399', free: '€0', competitor: '200' },
-                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '49', studio: '399', free: '£0', competitor: '200' },
-                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '69', studio: '599', free: '$0 CAD', competitor: '280' },
-                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '69', studio: '599', free: '$0 AUD', competitor: '280' },
-                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '49', studio: '399', free: 'Fr. 0', competitor: '200' },
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '49', free: '€0', competitor: '200' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '49', free: '£0', competitor: '200' },
+                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '69', free: '$0 CAD', competitor: '280' },
+                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '69', free: '$0 AUD', competitor: '280' },
+                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '49', free: 'Fr. 0', competitor: '200' },
+                jpy: { symbol: '¥', billing: 'JPY / ONE-TIME', personal: '7,800', free: '¥0', competitor: '32,000' },
             };
 
             function resolveRegionalPricingRegion(data) {
                 if (!data) return null;
-                if (data.pricing_region === 'gbp' && GBP_PRICING_ENABLED) return 'gbp';
-                if (data.pricing_region === 'chf' && CHF_PRICING_ENABLED) return 'chf';
-                if (data.pricing_region === 'cad' && CAD_PRICING_ENABLED) return 'cad';
-                if (data.pricing_region === 'aud' && AUD_PRICING_ENABLED) return 'aud';
-                if (data.pricing_region === 'eur' && EUR_PRICING_ENABLED) return 'eur';
                 const code = (data.country || '').toUpperCase();
-                if (GBP_PRICING_ENABLED && GB_COUNTRY_CODES.includes(code)) return 'gbp';
-                if (CHF_PRICING_ENABLED && CH_COUNTRY_CODES.includes(code)) return 'chf';
-                if (CAD_PRICING_ENABLED && CA_COUNTRY_CODES.includes(code)) return 'cad';
-                if (AUD_PRICING_ENABLED && AU_COUNTRY_CODES.includes(code)) return 'aud';
-                if (EUR_PRICING_ENABLED && EU_COUNTRY_CODES.includes(code)) return 'eur';
+                if (data.pricing_region === 'jpy' || code === 'JP') return 'jpy';
+                if (data.pricing_region === 'gbp' || GB_COUNTRY_CODES.includes(code)) return 'gbp';
+                if (data.pricing_region === 'chf' || CH_COUNTRY_CODES.includes(code)) return 'chf';
+                if (data.pricing_region === 'cad' || CA_COUNTRY_CODES.includes(code)) return 'cad';
+                if (data.pricing_region === 'aud' || AU_COUNTRY_CODES.includes(code)) return 'aud';
+                if (data.pricing_region === 'eur' || EU_COUNTRY_CODES.includes(code)) return 'eur';
                 return null;
             }
 
@@ -2158,26 +2155,18 @@
                 const cfg = REGIONAL_PRICING_DISPLAY[region];
                 if (!cfg) return;
                 const personalCurrency = document.getElementById('pricing-personal-currency');
-                const studioCurrency = document.getElementById('pricing-studio-currency');
                 const personalAmount = document.getElementById('pricing-personal-amount');
-                const studioAmount = document.getElementById('pricing-studio-amount');
                 const personalBilling = document.getElementById('pricing-personal-billing');
-                const studioBilling = document.getElementById('pricing-studio-billing');
                 const symbolMarkup = pricingCurrencyMarkup(cfg.symbol);
                 if (personalCurrency) personalCurrency.innerHTML = symbolMarkup;
-                if (studioCurrency) studioCurrency.innerHTML = symbolMarkup;
                 if (personalAmount) personalAmount.textContent = cfg.personal;
-                if (studioAmount) studioAmount.textContent = cfg.studio;
                 if (personalBilling) personalBilling.textContent = cfg.billing;
-                if (studioBilling) studioBilling.textContent = cfg.billing;
                 const anchorCompetitorSymbol = document.getElementById('pricing-anchor-competitor-symbol');
                 const anchorCompetitorAmount = document.getElementById('pricing-anchor-competitor-amount');
                 if (anchorCompetitorSymbol) anchorCompetitorSymbol.textContent = cfg.symbol;
                 if (anchorCompetitorAmount && cfg.competitor) anchorCompetitorAmount.textContent = cfg.competitor;
                 const anchorPersonalSymbol = document.getElementById('pricing-anchor-personal-symbol');
                 const anchorPersonalAmount = document.getElementById('pricing-anchor-personal-amount');
-                const anchorStudioSymbol = document.getElementById('pricing-anchor-studio-symbol');
-                const anchorStudioAmount = document.getElementById('pricing-anchor-studio-amount');
                 if (anchorPersonalSymbol) {
                     anchorPersonalSymbol.textContent = cfg.symbol;
                     anchorPersonalSymbol.classList.add('pricing-gem-blue');
@@ -2190,11 +2179,6 @@
                     sloganSymbol.classList.add('pricing-gem-blue');
                 }
                 if (sloganAmount) sloganAmount.textContent = cfg.personal;
-                if (anchorStudioSymbol) {
-                    anchorStudioSymbol.textContent = cfg.symbol;
-                    anchorStudioSymbol.classList.add('pricing-gem-blue');
-                }
-                if (anchorStudioAmount) anchorStudioAmount.textContent = cfg.studio;
                 const freeSubtext = document.getElementById('pricing-free-subtext');
                 if (freeSubtext && cfg.free) {
                     freeSubtext.textContent = `${cfg.free} · no card · click to start`;

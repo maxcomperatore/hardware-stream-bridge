@@ -194,42 +194,91 @@ def _compute_ppp_price_usd(country_code: str) -> float:
     return max(MIN_USD_FLOOR, min(adjusted_usd, MAX_USD_CEIL))
 
 
+def _snap_ending_9(whole: float) -> int:
+    """Nearest whole amount ending in 9 (479, 489, 499…)."""
+    n = max(9, int(round(whole)))
+    # Prefer the floor-to-x9 so we don't inflate past the PPP target much
+    base = (n // 10) * 10
+    candidates = [base - 1, base + 9, base + 19]
+    candidates = [c for c in candidates if c >= 9]
+    return min(candidates, key=lambda c: abs(c - n))
+
+
+def _snap_ending_99(whole: float) -> int:
+    """Nearest whole amount ending in 99 (399, 499, 999…)."""
+    n = max(99, int(round(whole)))
+    base = (n // 100) * 100
+    candidates = [base - 1, base + 99]
+    candidates = [c for c in candidates if c >= 99]
+    return min(candidates, key=lambda c: abs(c - n))
+
+
 def _psychological_round(amount: float, currency: str) -> int:
     """
-    Round to psychologically appealing price points.
-    Returns integer unit in the smallest currency unit (cents for most, 1 for JPY).
+    Round to culture-local price endings. Returns Stripe unit_amount
+    (cents for most currencies; whole units for zero-decimal).
 
     Examples:
-        USD 14.73 → 1499 (=$14.99)
-        ARS 27350 → 2749900 (=ARS 27,499 → stored as cents)
-        JPY 1923  → 1900
+        USD 14.73  → 1499   ($14.99)
+        BRL 149.73 → 14990  (R$149,90)
+        MXN 480.99 → 47900  (MX$479 — no centavos)
+        ARS 27350  → 2749900 (ARS 27.499)
+        JPY 1923   → 1900
     """
-    # True zero-decimal currencies (Stripe stores whole units, no cents)
+    # Stripe zero-decimal (amount is the whole unit)
     zero_decimal = {"JPY", "KRW", "VND", "IDR", "CLP", "PYG", "HUF"}
 
-    # High-inflation / large-number currencies: Stripe stores cents but
-    # nobody prices in centavos/fils/etc — round to nearest 100 pesos
-    round_to_hundreds = {"ARS", "COP", "UYU", "BOB", "DOP", "PYG", "NGN", "EGP", "PKR", "BDT"}
+    # High-inflation: whole pesos, charm ending …999 (stored as cents)
+    round_to_x999 = {"ARS", "COP", "UYU", "BOB", "DOP", "NGN", "EGP", "PKR", "BDT"}
+
+    # Developing markets: no fractional display — whole units ending in 9
+    # (Mexico, Peru, Turkey, SEA, Africa, CIS, etc.)
+    whole_ending_9 = {
+        "MXN", "PEN", "TRY", "THB", "MYR", "PHP", "ZAR", "UAH",
+        "GEL", "KZT", "UZS", "AZN", "INR",
+    }
+
+    # Brazil: classic ,90 charm pricing
+    ending_90 = {"BRL"}
+
+    # Developed markets that use .99
+    ending_99 = {"USD", "CAD", "AUD", "NZD", "SGD", "HKD", "GBP", "CHF", "EUR"}
 
     cur = currency.upper()
 
     if cur in zero_decimal:
-        return int(round(amount / 100.0) * 100)
+        snapped = _snap_ending_9(amount) if amount < 1000 else _snap_ending_99(amount)
+        # Keep clean hundreds for very large units (KRW/VND/IDR)
+        if amount >= 1000:
+            return int(round(amount / 100.0) * 100)
+        return max(1, snapped)
 
-    if cur in round_to_hundreds:
-        # Round to nearest 100 pesos, then convert to cents for Stripe
-        rounded_pesos = round(amount / 100.0) * 100
-        # Snap to a clean psychological number (x99 or x000)
-        thousands = rounded_pesos / 1000
+    if cur in round_to_x999:
+        rounded = round(amount / 100.0) * 100
+        thousands = rounded / 1000
         snapped = (math.floor(thousands) + 0.999) * 1000
-        return int(round(snapped * 100))   # → Stripe cents
+        return int(round(snapped * 100))
 
-    # Standard 2-decimal currencies: snap to .99
-    dollars = amount
-    floored = math.floor(dollars)
-    snapped = (floored - 1 + 0.99) if dollars - floored < 0.5 else (floored + 0.99)
-    result = int(round(snapped * 100))
-    return max(99, result)
+    if cur in ending_90:
+        # Nearest R$X,90 (Brazil charm pricing)
+        floor_major = math.floor(amount)
+        candidates = [floor_major - 1 + 0.90, floor_major + 0.90, floor_major + 1 + 0.90]
+        snapped = min((c for c in candidates if c >= 0.90), key=lambda c: abs(c - amount))
+        return max(90, int(round(snapped * 100)))
+
+    if cur in whole_ending_9:
+        # MX$479 — whole pesos/rupees, no centavos in the charm price
+        whole = _snap_ending_9(amount) if amount < 1000 else _snap_ending_99(amount)
+        return max(900, whole * 100)
+
+    if cur in ending_99:
+        floored = math.floor(amount)
+        snapped = (floored - 1 + 0.99) if amount - floored < 0.5 else (floored + 0.99)
+        return max(99, int(round(snapped * 100)))
+
+    # Fallback: whole units ending in 9 (no random cents)
+    whole = _snap_ending_9(amount)
+    return max(900, whole * 100)
 
 
 # ---------------------------------------------------------------------------
@@ -238,7 +287,7 @@ def _psychological_round(amount: float, currency: str) -> int:
 
 async def compute_ppp_checkout(
     country_code: str,
-    product_name: str = "bipluk+ Lifetime Access",
+    product_name: str = "bipluk+",
     product_description: str = "One-time payment. Yours forever. Zero monthly rent.",
 ) -> dict[str, Any]:
     """
@@ -324,20 +373,32 @@ async def get_ppp_display_price(country_code: str) -> dict[str, Any]:
     unit = meta["unit_amount_cents"]
 
     zero_decimal = {"JPY", "KRW", "VND", "IDR", "CLP", "PYG", "HUF"}
-    round_to_hundreds = {"ARS", "COP", "UYU", "BOB", "DOP", "NGN", "EGP", "PKR", "BDT"}
+    # Whole major units on the label (no .xx) — developing + high-inflation
+    whole_display = {
+        "ARS", "COP", "UYU", "BOB", "DOP", "NGN", "EGP", "PKR", "BDT",
+        "MXN", "PEN", "TRY", "THB", "MYR", "PHP", "ZAR", "UAH",
+        "GEL", "KZT", "UZS", "AZN", "INR",
+    }
+    # Brazil keeps cultural ,90
+    ending_90_display = {"BRL"}
     cur = currency.upper()
+
     if cur in zero_decimal:
         display_amount = f"{unit:,}"
-    elif cur in round_to_hundreds:
-        # Show whole pesos, no centavos  e.g. "27.499"
-        pesos = unit // 100
-        display_amount = f"{pesos:,}"
+    elif cur in whole_display:
+        major = unit // 100
+        display_amount = f"{major:,}"
+    elif cur in ending_90_display:
+        # R$149,90 — Brazilian decimal comma
+        major = unit // 100
+        cents = unit % 100
+        display_amount = f"{major:,}".replace(",", ".") + f",{cents:02d}"
     else:
         display_amount = f"{unit / 100:,.2f}"
 
     symbols = {
         "USD": "$", "EUR": "€", "GBP": "£", "JPY": "¥", "CHF": "Fr.",
-        "ARS": "$", "BRL": "R$", "MXN": "$", "INR": "₹", "KRW": "₩",
+        "ARS": "$", "BRL": "R$", "MXN": "MX$", "INR": "₹", "KRW": "₩",
         "AUD": "$", "CAD": "$", "NZD": "$", "SGD": "$", "HKD": "$",
         "CLP": "$", "COP": "$", "PEN": "S/.", "PLN": "zł", "CZK": "Kč",
         "HUF": "Ft", "RON": "lei", "TRY": "₺", "ZAR": "R", "NGN": "₦",

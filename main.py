@@ -752,7 +752,8 @@ def enrich_regional_pricing(country_code: str | None = None) -> dict:
     return {
         **regional,
         "free_price_display": format_free_price_display(regional),
-        "ppp_enabled": ppp_enabled and code != "US",  # US never gets PPP JS fetch
+        # US + EU keep static catalog pricing (no PPP fetch / discount).
+        "ppp_enabled": ppp_enabled and code != "US" and code not in EU_EUR_COUNTRY_CODES,
         "country_code": code,
     }
 
@@ -972,8 +973,8 @@ async def build_plan_checkout_line_items(plan: str, country_code: str | None) ->
     ppp_active = _ppp_raw == "ALL" or code in _ppp_raw.split(",")
     description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
 
-    if ppp_active and code != "US":  # never PPP-discount USD baseline
-        # PPP dynamic path: fetch live FX + GDP formula
+    # US + EU: never PPP — keep static catalog (€49 / $49 / etc).
+    if ppp_active and code != "US" and code not in EU_EUR_COUNTRY_CODES:
         try:
             ppp_result = await ppp_pricing.compute_ppp_checkout(code)
             line_item = {k: v for k, v in ppp_result.items() if k != "_meta"}

@@ -32,19 +32,15 @@ MAX_USD_CEIL   = 49.00          # Never exceed base price
 # ---------------------------------------------------------------------------
 GDP_PER_CAPITA_USD: dict[str, float] = {
     # --- Tier 0: Ultra-High Income (No discount) ---
-    "US": 85_373,  "CH": 105_669, "NO": 94_660, "LU": 131_384,
-    "SG": 88_447,  "IE": 106_059, "IS": 78_837,  "DK": 68_827,
-    "AU": 64_964,  "SE": 59_267,  "NL": 63_754,  "FI": 55_715,
-    "AT": 58_013,  "CA": 53_247,  "DE": 54_291,  "BE": 54_080,
-    "GB": 49_100,  "FR": 45_592,  "JP": 33_950,  "NZ": 46_377,
+    # EU countries intentionally omitted — they use static EUR catalog pricing.
+    "US": 85_373,  "CH": 105_669, "NO": 94_660,
+    "SG": 88_447,  "IS": 78_837,
+    "AU": 64_964,  "CA": 53_247,
+    "GB": 49_100,  "JP": 33_950,  "NZ": 46_377,
     "AE": 49_000,  "QA": 76_000,
 
     # --- Tier 1: High Income (5–20% discount) ---
-    "IL": 54_771,  "KR": 35_196,  "IT": 38_000,  "ES": 33_090,
-    "PT": 27_100,  "CZ": 30_500,  "SI": 33_900,  "MT": 33_000,
-    "EE": 31_700,  "SK": 24_200,  "LV": 24_500,  "LT": 29_300,
-    "CY": 35_700,  "HR": 22_800,  "PL": 22_300,  "HU": 22_700,
-    "GR": 22_000,  "RO": 19_500,  "BG": 15_600,  "TR": 15_700,
+    "IL": 54_771,  "KR": 35_196,  "TR": 15_700,
     "SA": 28_000,  "TW": 35_000,  "HK": 53_000,
 
     # --- Tier 2: Upper-Middle Income (20–40% discount) ---
@@ -268,22 +264,13 @@ async def compute_ppp_checkout(
             "GB": "GBP", "AU": "AUD", "CA": "CAD", "JP": "JPY",
             "CH": "CHF", "LI": "CHF", "MX": "MXN", "BR": "BRL",
             "IN": "INR", "CL": "CLP", "CO": "COP", "PE": "PEN",
-            "PL": "PLN", "CZ": "CZK", "HU": "HUF", "RO": "RON",
             "TR": "TRY", "KR": "KRW", "SG": "SGD", "HK": "HKD",
             "NZ": "NZD", "ZA": "ZAR", "NG": "NGN", "EG": "EGP",
             "ID": "IDR", "TH": "THB", "MY": "MYR", "PH": "PHP",
             "VN": "VND", "PK": "PKR", "BD": "BDT", "UA": "UAH",
             "GE": "GEL", "KZ": "KZT", "UZ": "UZS", "AZ": "AZN",
         }
-        # EU block → EUR
-        eu_countries = {
-            "DE", "FR", "IT", "ES", "PT", "NL", "BE", "AT", "FI", "IE",
-            "GR", "SK", "SI", "EE", "LV", "LT", "LU", "MT", "CY", "HR",
-        }
-        if code in eu_countries:
-            currency = "EUR"
-        else:
-            currency = currency_map.get(code, "USD")
+        currency = currency_map.get(code, "USD")
 
         fx_rate = await get_fx_rate(currency) if currency != "USD" else 1.0
 

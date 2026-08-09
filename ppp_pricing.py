@@ -4,6 +4,7 @@ ppp_pricing.py — Purchasing Power Parity Dynamic Pricing Engine
 Fetches real-time exchange rates + ARS MEP/Blue dollar (dolarapi.com),
 calculates a complex GDP-per-capita PPP discount formula for every country,
 and returns a Stripe-ready `price_data` dict with unit_amount in cents.
+Geolocalized checkout descriptions included.
 
 No hardcoded Stripe Price IDs needed. Everything is computed on the fly.
 """
@@ -146,12 +147,6 @@ def _sigmoid_ppp_discount(gdp_ratio: float) -> float:
     gdp_ratio = target_country_gdp / US_gdp  (0.0 → 1.0+)
 
     Returns a discount factor between 0.0 (no discount) and 0.80 (80% off).
-
-    Formula:
-        raw_discount = 1 - gdp_ratio^alpha
-        discount = clamp(raw_discount * steepness_multiplier, 0, max_discount)
-
-    The sigmoid ensures smooth transitions and avoids cliff-edges.
     """
     alpha = 0.45           # Power curve shaping (< 0.5 = more generous to poor countries)
     max_discount = 0.80    # Maximum 80% discount
@@ -164,7 +159,6 @@ def _sigmoid_ppp_discount(gdp_ratio: float) -> float:
     discounted = min(raw * steepness, max_discount)
 
     # Apply sigmoid smoothing to prevent abrupt jumps
-    # sigmoid(x) = 1 / (1 + e^(-k*(x-0.5)))
     k = 8.0
     smoothed = 1.0 / (1.0 + math.exp(-k * (discounted - 0.5)))
     # Rescale from sigmoid output [~0.018, ~0.982] back to [0, max_discount]
@@ -175,9 +169,6 @@ def _sigmoid_ppp_discount(gdp_ratio: float) -> float:
 def _compute_ppp_price_usd(country_code: str) -> float:
     """
     Compute the final PPP-adjusted price in USD for a given country.
-
-    Uses GDP per capita ratio with sigmoid discount curve.
-    Argentina gets an extra adjustment for the blue dollar reality gap.
     """
     gdp = GDP_PER_CAPITA_USD.get(country_code.upper(), US_GDP_BASELINE)
     gdp_ratio = gdp / US_GDP_BASELINE
@@ -187,7 +178,6 @@ def _compute_ppp_price_usd(country_code: str) -> float:
 
     # Argentina specific: halve the price further to reflect
     # the gap between official and blue dollar purchasing power.
-    # Real Argentine purchasing power is ~40-50% lower than GDP implies.
     if country_code.upper() == "AR":
         adjusted_usd *= 0.55
 
@@ -197,7 +187,6 @@ def _compute_ppp_price_usd(country_code: str) -> float:
 def _snap_ending_9(whole: float) -> int:
     """Nearest whole amount ending in 9 (479, 489, 499…)."""
     n = max(9, int(round(whole)))
-    # Prefer the floor-to-x9 so we don't inflate past the PPP target much
     base = (n // 10) * 10
     candidates = [base - 1, base + 9, base + 19]
     candidates = [c for c in candidates if c >= 9]
@@ -214,41 +203,20 @@ def _snap_ending_99(whole: float) -> int:
 
 
 def _psychological_round(amount: float, currency: str) -> int:
-    """
-    Round to culture-local price endings. Returns Stripe unit_amount
-    (cents for most currencies; whole units for zero-decimal).
-
-    Examples:
-        USD 14.73  → 1499   ($14.99)
-        BRL 149.73 → 14990  (R$149,90)
-        MXN 480.99 → 47900  (MX$479 — no centavos)
-        ARS 27350  → 2749900 (ARS 27.499)
-        JPY 1923   → 1900
-    """
-    # Stripe zero-decimal (amount is the whole unit)
+    """Round to culture-local price endings."""
     zero_decimal = {"JPY", "KRW", "VND", "IDR", "CLP", "PYG", "HUF"}
-
-    # High-inflation: whole pesos, charm ending …999 (stored as cents)
     round_to_x999 = {"ARS", "COP", "UYU", "BOB", "DOP", "NGN", "EGP", "PKR", "BDT"}
-
-    # Developing markets: no fractional display — whole units ending in 9
-    # (Mexico, Peru, Turkey, SEA, Africa, CIS, etc.)
     whole_ending_9 = {
         "MXN", "PEN", "TRY", "THB", "MYR", "PHP", "ZAR", "UAH",
         "GEL", "KZT", "UZS", "AZN", "INR",
     }
-
-    # Brazil: classic ,90 charm pricing
     ending_90 = {"BRL"}
-
-    # Developed markets that use .99
     ending_99 = {"USD", "CAD", "AUD", "NZD", "SGD", "HKD", "GBP", "CHF", "EUR"}
 
     cur = currency.upper()
 
     if cur in zero_decimal:
         snapped = _snap_ending_9(amount) if amount < 1000 else _snap_ending_99(amount)
-        # Keep clean hundreds for very large units (KRW/VND/IDR)
         if amount >= 1000:
             return int(round(amount / 100.0) * 100)
         return max(1, snapped)
@@ -260,14 +228,12 @@ def _psychological_round(amount: float, currency: str) -> int:
         return int(round(snapped * 100))
 
     if cur in ending_90:
-        # Nearest R$X,90 (Brazil charm pricing)
         floor_major = math.floor(amount)
         candidates = [floor_major - 1 + 0.90, floor_major + 0.90, floor_major + 1 + 0.90]
         snapped = min((c for c in candidates if c >= 0.90), key=lambda c: abs(c - amount))
         return max(90, int(round(snapped * 100)))
 
     if cur in whole_ending_9:
-        # MX$479 — whole pesos/rupees, no centavos in the charm price
         whole = _snap_ending_9(amount) if amount < 1000 else _snap_ending_99(amount)
         return max(900, whole * 100)
 
@@ -276,7 +242,6 @@ def _psychological_round(amount: float, currency: str) -> int:
         snapped = (floored - 1 + 0.99) if amount - floored < 0.5 else (floored + 0.99)
         return max(99, int(round(snapped * 100)))
 
-    # Fallback: whole units ending in 9 (no random cents)
     whole = _snap_ending_9(amount)
     return max(900, whole * 100)
 
@@ -285,20 +250,48 @@ def _psychological_round(amount: float, currency: str) -> int:
 # 5.  MAIN PUBLIC API
 # ---------------------------------------------------------------------------
 
+def _get_localized_description(country_code: str) -> str:
+    """Returns a culturally localized Stripe checkout description."""
+    code = country_code.upper()
+    
+    descriptions = {
+        # --- Spanish Variants ---
+        "AR": "Pago único. Tuyo para siempre. Olvidate de pagar por mes.", # Argentinian voseo
+        "MX": "Pago único. Tuyo para siempre. Cero rentas mensuales.",     # Mexican phrasing
+        "ES": "Pago único. Tuyo para siempre. Cero cuotas mensuales.",     # Castilian Spanish
+        "CL": "Pago único. Tuyo para siempre. Cero mensualidades.",        # Chilean phrasing
+        "CO": "Pago único. Tuyo para siempre. Sin cobros mensuales.",      # Colombian phrasing
+        "PE": "Pago único. Tuyo para siempre. Nada de pagos mensuales.",   # Peruvian phrasing
+        
+        # --- Brazil ---
+        "BR": "Pagamento único. Seu para sempre. Sem mensalidades.",       # Portuguese
+        
+        # --- Europe ---
+        "FR": "Paiement unique. À vous pour toujours. Zéro abonnement mensuel.",
+        "DE": "Einmalige Zahlung. Gehört für immer dir. Keine monatlichen Gebühren.",
+        "IT": "Pagamento unico. Tuo per sempre. Nessun canone mensile.",
+        
+        # --- Asia ---
+        "JP": "買い切り。ずっとあなたのもの。月額料金ゼロ。",
+        "KR": "일회성 결제. 평생 소장. 월 구독료 제로.",
+    }
+    
+    # Default fallback for US, GB, AU, IN, and any unmapped countries
+    return descriptions.get(code, "One-time payment. Yours forever. Zero monthly rent.")
+
+
 async def compute_ppp_checkout(
     country_code: str,
     product_name: str = "bipluk+",
-    product_description: str = "One-time payment. Yours forever. Zero monthly rent.",
+    product_description: str | None = None,
 ) -> dict[str, Any]:
     """
     Compute a fully dynamic Stripe `price_data` line item dict for a given country.
-
-    For ARS, fetches live blue dollar rate from dolarapi.com.
-    For all others, fetches live FX from open.er-api.com.
-
-    Returns a dict ready to pass directly to stripe.checkout.Session.create().
     """
     code = country_code.upper()
+    
+    # Localized text injection
+    desc = product_description or _get_localized_description(code)
 
     # Step 1: Compute PPP-adjusted USD price
     ppp_usd = _compute_ppp_price_usd(code)
@@ -308,7 +301,6 @@ async def compute_ppp_checkout(
         currency = "ARS"
         fx_rate = await get_ars_blue_rate()
     else:
-        # Map country → currency (simplified for major markets)
         currency_map = {
             "GB": "GBP", "AU": "AUD", "CA": "CAD", "JP": "JPY",
             "CH": "CHF", "LI": "CHF", "MX": "MXN", "BR": "BRL",
@@ -320,7 +312,6 @@ async def compute_ppp_checkout(
             "GE": "GEL", "KZ": "KZT", "UZ": "UZS", "AZ": "AZN",
         }
         currency = currency_map.get(code, "USD")
-
         fx_rate = await get_fx_rate(currency) if currency != "USD" else 1.0
 
     # Step 3: Convert PPP USD price to local currency
@@ -329,7 +320,7 @@ async def compute_ppp_checkout(
     # Step 4: Psychological rounding → Stripe cents
     unit_amount = _psychological_round(local_amount, currency)
 
-    # Step 5: Compute effective USD discount % for logging/display
+    # Step 5: Compute effective USD discount %
     effective_usd = ppp_usd
     discount_pct = round((1 - effective_usd / BASE_USD_PRICE) * 100, 1)
 
@@ -345,11 +336,10 @@ async def compute_ppp_checkout(
             "unit_amount": unit_amount,
             "product_data": {
                 "name": product_name[:250],
-                "description": product_description[:500],
+                "description": desc[:500],
             },
         },
         "quantity": 1,
-        # Extra metadata (not sent to Stripe, for logging / display)
         "_meta": {
             "country_code": code,
             "currency": currency,
@@ -365,7 +355,6 @@ async def compute_ppp_checkout(
 async def get_ppp_display_price(country_code: str) -> dict[str, Any]:
     """
     Lightweight version for template display (landing page, pricing section).
-    Returns human-readable price string + metadata without building full line item.
     """
     result = await compute_ppp_checkout(country_code)
     meta = result["_meta"]
@@ -373,13 +362,11 @@ async def get_ppp_display_price(country_code: str) -> dict[str, Any]:
     unit = meta["unit_amount_cents"]
 
     zero_decimal = {"JPY", "KRW", "VND", "IDR", "CLP", "PYG", "HUF"}
-    # Whole major units on the label (no .xx) — developing + high-inflation
     whole_display = {
         "ARS", "COP", "UYU", "BOB", "DOP", "NGN", "EGP", "PKR", "BDT",
         "MXN", "PEN", "TRY", "THB", "MYR", "PHP", "ZAR", "UAH",
         "GEL", "KZT", "UZS", "AZN", "INR",
     }
-    # Brazil keeps cultural ,90
     ending_90_display = {"BRL"}
     cur = currency.upper()
 
@@ -389,7 +376,6 @@ async def get_ppp_display_price(country_code: str) -> dict[str, Any]:
         major = unit // 100
         display_amount = f"{major:,}"
     elif cur in ending_90_display:
-        # R$149,90 — Brazilian decimal comma
         major = unit // 100
         cents = unit % 100
         display_amount = f"{major:,}".replace(",", ".") + f",{cents:02d}"
@@ -409,8 +395,8 @@ async def get_ppp_display_price(country_code: str) -> dict[str, Any]:
 
     return {
         "display": f"{symbol}{display_amount}",
-        "symbol": symbol,           # separate — no regex needed on client
-        "amount_display": display_amount,  # just the number part
+        "symbol": symbol,
+        "amount_display": display_amount,
         "currency": currency,
         "discount_pct": meta["discount_pct"],
         "ppp_usd": meta["ppp_usd_price"],

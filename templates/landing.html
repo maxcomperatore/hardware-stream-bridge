@@ -2064,11 +2064,22 @@
                             <span>·</span>
                             <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/squint-smiling-face.svg" class="w-3 h-3 opacity-90 brightness-0 invert" alt="Forever" /> yours forever</span>
                         </div>
+
+                        <!-- Independent Pixel Food Support Badge -->
+                        <div class="pt-2.5 border-t border-zinc-850/60 mt-3 flex items-center justify-center gap-2 text-[11px] font-mono text-zinc-400 text-center">
+                            <div class="flex items-center gap-1.5 shrink-0 select-none">
+                                <img src="/static/Ghostpixxells_pixelfood/98_sushi_dish.png" class="w-5 h-5 object-contain hover:scale-110 transition-transform" alt="Sushi" style="image-rendering: pixelated;" />
+                                <img src="/static/Ghostpixxells_pixelfood/87_ramen.png" class="w-5 h-5 object-contain hover:scale-110 transition-transform" alt="Ramen" style="image-rendering: pixelated;" />
+                            </div>
+                            <span>You're supporting an indie dev for <strong class="text-zinc-200 font-semibold">sushi &amp; ramen!</strong></span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Value anchor -->
             <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
+
                 <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
                     <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold"><span id="pricing-anchor-competitor-symbol">{{ pricing.symbol }}</span><span id="pricing-anchor-competitor-amount">{{ pricing.competitor_amount if pricing.competitor_amount is defined else '200' }}</span>+</span>. <span class="text-brand-plus font-semibold">bipluk+</span> is just
                     <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{

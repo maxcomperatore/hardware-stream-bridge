@@ -251,32 +251,107 @@ def _psychological_round(amount: float, currency: str) -> int:
 # ---------------------------------------------------------------------------
 
 def _get_localized_description(country_code: str) -> str:
-    """Returns a culturally localized Stripe checkout description."""
+    """Returns a culturally localized Stripe checkout description for every market."""
     code = country_code.upper()
     
     descriptions = {
-        # --- Spanish Variants ---
+        # --- Latin America & Spain ---
         "AR": "Pago único. Tuyo para siempre. Olvidate de pagar por mes.", # Argentinian voseo
-        "MX": "Pago único. Tuyo para siempre. Cero rentas mensuales.",     # Mexican phrasing
-        "ES": "Pago único. Tuyo para siempre. Cero cuotas mensuales.",     # Castilian Spanish
-        "CL": "Pago único. Tuyo para siempre. Cero mensualidades.",        # Chilean phrasing
-        "CO": "Pago único. Tuyo para siempre. Sin cobros mensuales.",      # Colombian phrasing
-        "PE": "Pago único. Tuyo para siempre. Nada de pagos mensuales.",   # Peruvian phrasing
+        "MX": "Pago único. Tuyo para siempre. Cero rentas mensuales.",     # Mexico
+        "ES": "Pago único. Tuyo para siempre. Cero cuotas mensuales.",     # Spain
+        "CL": "Pago único. Tuyo para siempre. Cero mensualidades.",        # Chile
+        "CO": "Pago único. Tuyo para siempre. Sin cobros mensuales.",      # Colombia
+        "PE": "Pago único. Tuyo para siempre. Nada de pagos mensuales.",   # Peru
+        "UY": "Pago único. Tuyo para siempre. Cero cuotas.",               # Uruguay
+        "PY": "Pago único. Tuyo para siempre. Sin cuotas mensuales.",      # Paraguay
+        "BO": "Pago único. Tuyo para siempre. Sin pagos mensuales.",       # Bolivia
+        "VE": "Pago único. Tuyo para siempre. Sin mensualidades.",         # Venezuela
+        "EC": "Pago único. Tuyo para siempre. Cero pagos mensuales.",      # Ecuador
         
-        # --- Brazil ---
-        "BR": "Pagamento único. Seu para sempre. Sem mensalidades.",       # Portuguese
+        # --- Brazil & Portugal ---
+        "BR": "Pagamento único. Seu para sempre. Sem mensalidades.",       # Brazil
+        "PT": "Pagamento único. Teu para sempre. Sem mensalidades.",       # Portugal
         
-        # --- Europe ---
-        "FR": "Paiement unique. À vous pour toujours. Zéro abonnement mensuel.",
-        "DE": "Einmalige Zahlung. Gehört für immer dir. Keine monatlichen Gebühren.",
-        "IT": "Pagamento unico. Tuo per sempre. Nessun canone mensile.",
+        # --- Western & Northern Europe ---
+        "FR": "Paiement unique. À vous pour toujours. Zéro abonnement mensuel.", # France
+        "DE": "Einmalige Zahlung. Gehört für immer dir. Keine monatlichen Gebühren.", # Germany
+        "AT": "Einmalige Zahlung. Gehört für immer dir. Keine monatlichen Gebühren.", # Austria
+        "CH": "Einmalige Zahlung. Gehört für immer dir. Keine monatlichen Gebühren.", # Switzerland
+        "IT": "Pagamento unico. Tuo per sempre. Nessun canone mensile.",   # Italy
+        "NO": "Engangsbetaling. Din for alltid. Ingen månedlige avgifter.",# Norway
+        "IS": "Eingreiðsla. Þitt að eilífu. Engin mánaðargjöld.",          # Iceland
+        "SE": "Engångsbetalning. Din för alltid. Inga månadsavgifter.",    # Sweden
+        "DK": "Engangsbetaling. Din for evigt. Ingen månedlige gebyrer.",  # Denmark
+        "FI": "Kertamaksu. Sinun ikuisesti. Ei kuukausimaksuja.",          # Finland
+        "NL": "Eenmalige betaling. Voor altijd van jou. Geen maandelijkse kosten.", # Netherlands
         
-        # --- Asia ---
-        "JP": "買い切り。ずっとあなたのもの。月額料金ゼロ。",
-        "KR": "일회성 결제. 평생 소장. 월 구독료 제로.",
+        # --- Eastern Europe & Balkans ---
+        "UA": "Одноразовий платіж. Ваше назавжди. Жодних щомісячних платежів.", # Ukraine
+        "RS": "Jednokratno plaćanje. Zauvek tvoje. Bez mesečnih pretplata.",  # Serbia
+        "BA": "Jednokratno plaćanje. Zauvijek tvoje. Bez mjesečnih pretplata.",# Bosnia
+        "ME": "Jednokratno plaćanje. Zauvijek tvoje. Bez mjesečnih pretplata.",# Montenegro
+        "MK": "Еднократна уплата. Твое засекогаш. Без месечни претплати.",    # North Macedonia
+        "AL": "Pagesë e vetme. E jotja përgjithmonë. Zero tarifa mujore.",    # Albania
+        "PL": "Jednorazowa płatność. Twoje na zawsze. Brak miesięcznych opłat.",# Poland
+        "CZ": "Jednorázová platba. Navždy vaše. Žádné měsíční poplatky.",     # Czechia
+        "HU": "Egyszeri fizetés. Örökre a tied. Nincs havidíj.",              # Hungary
+        "RO": "Plată unică. Al tău pentru totdeauna. Fără abonament lunar.",  # Romania
+        
+        # --- CIS & Caucasus ---
+        "KZ": "Единоразовый платеж. Ваше навсегда. Никаких ежемесячных плат.", # Kazakhstan (Russian widely used in tech)
+        "UZ": "Bir martalik to'lov. Umrbod sizniki. Oylik to'lovlarsiz.",      # Uzbekistan
+        "GE": "ერთჯერადი გადახდა. შენი სამუდამოდ. ყოველთვიური გადასახადის გარეშე.", # Georgia
+        "AM": "Միանվագ վճարում: Ձերն է ընդմիշտ: Առանց ամսական վճարի:",            # Armenia
+        "AZ": "Birdəfəlik ödəniş. Həmişəlik sənin. Aylıq ödəniş yoxdur.",      # Azerbaijan
+        "MD": "Plată unică. Al tău pentru totdeauna. Fără abonament lunar.",  # Moldova (Romanian)
+        
+        # --- Middle East & North Africa (Arabic & Hebrew & Turkish) ---
+        "IL": "תשלום חד-פעמי. שלך לתמיד. ללא מנוי חודשי.",                 # Israel
+        "TR": "Tek seferlik ödeme. Sonsuza kadar senin. Aylık ücret yok.", # Turkey
+        "AE": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # UAE
+        "QA": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Qatar
+        "SA": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Saudi Arabia
+        "EG": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Egypt
+        "MA": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Morocco
+        "TN": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Tunisia
+        "SY": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Syria
+        "YE": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Yemen
+        "SD": "دفع لمرة واحدة. لك للأبد. بدون اشتراك شهري.",                 # Sudan
+        
+        # --- East Asia ---
+        "JP": "買い切り。ずっとあなたのもの。月額料金ゼロ。",                 # Japan
+        "KR": "일회성 결제. 평생 소장. 월 구독료 제로.",                      # South Korea
+        "CN": "一次性付款。永久拥有。零月租。",                              # China (Simplified)
+        "TW": "一次性付款。永久擁有。零月租。",                              # Taiwan (Traditional)
+        "HK": "一次性付款。永久擁有。零月租。",                              # Hong Kong (Traditional)
+        "MN": "Нэг удаагийн төлбөр. Үүрд таных. Сар бүрийн хураамжгүй.",   # Mongolia
+        
+        # --- South & Southeast Asia ---
+        "IN": "एक बार का भुगतान। हमेशा के लिए आपका। कोई मासिक किराया नहीं।",    # India (Hindi)
+        "BD": "এককালীন পেমেন্ট। চিরকালের জন্য আপনার। কোনো মাসিক ভাড়া নেই।",      # Bangladesh
+        "PK": "ایک بار کی ادائیگی۔ ہمیشہ کے لیے آپ کا۔ کوئی ماہانہ کرایہ نہیں۔", # Pakistan (Urdu)
+        "NP": "एकमुष्ट भुक्तानी। सधैंको लागि तपाईंको। कुनै मासिक भाडा छैन।",      # Nepal
+        "ID": "Sekali bayar. Milikmu selamanya. Tanpa biaya bulanan.",     # Indonesia
+        "MY": "Bayaran sekali. Milik anda selamanya. Tiada yuran bulanan.",# Malaysia
+        "TH": "จ่ายครั้งเดียว. เป็นของคุณตลอดไป. ไม่มีรายเดือน.",                 # Thailand
+        "VN": "Thanh toán một lần. Sở hữu trọn đời. Không phí hàng tháng.",# Vietnam
+        "PH": "Isang bayad lang. Sayo na habang buhay. Walang monthly fee.", # Philippines (Taglish)
+        "KH": "បង់ប្រាក់តែម្តង។ ជារបស់អ្នកជារៀងរហូត។ គ្មានការជួលប្រចាំខែ។",         # Cambodia
+        "LA": "ຈ່າຍຄັ້ງດຽວ. ເປັນຂອງທ່ານຕະຫຼອດໄປ. ບໍ່ມີຄ່າເຊົ່າລາຍເດືອນ.",            # Laos
+        "MM": "တစ်ကြိမ်တည်းပေးချေပါ။ သင့်အတွက်ထာဝရ။ လစဉ်ကြေးမရှိပါ။",               # Myanmar
+        
+        # --- Africa (Non-Arabic) ---
+        "ZA": "One-time payment. Yours forever. Zero monthly rent.",       # South Africa (English default)
+        "NG": "One-time payment. Yours forever. Zero monthly rent.",       # Nigeria (English)
+        "KE": "Malipo ya mara moja. Yako milele. Hakuna ada za kila mwezi.",# Kenya (Swahili)
+        "TZ": "Malipo ya mara moja. Yako milele. Hakuna ada za kila mwezi.",# Tanzania (Swahili)
+        "UG": "One-time payment. Yours forever. Zero monthly rent.",       # Uganda (English)
+        "GH": "One-time payment. Yours forever. Zero monthly rent.",       # Ghana (English)
+        "RW": "Kwishyura inshuro imwe. Ni ibyawe iteka. Nta bukode bwa buri kwezi.", # Rwanda (Kinyarwanda)
+        "ET": "አንድ ጊዜ ክፍያ። ለዘላለም የእርስዎ። ምንም ወርሃዊ ክፍያ የለም።",         # Ethiopia (Amharic)
     }
     
-    # Default fallback for US, GB, AU, IN, and any unmapped countries
+    # English default fallback for US, GB, AU, CA, NZ, SG, and unmapped countries
     return descriptions.get(code, "One-time payment. Yours forever. Zero monthly rent.")
 
 

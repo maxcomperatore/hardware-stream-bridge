@@ -47,7 +47,7 @@
             <h1 class="font-pixel uppercase text-base text-white tracking-widest">bipluk</h1>
             <p class="text-xs text-zinc-400 font-sans tracking-wide mt-1 font-medium">Create account to start backup</p>
             <p id="signup-plan-label" class="text-[10px] text-lapis-light uppercase font-pixel tracking-wider mt-1.5">
-                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% else %}bipluk+ Lifetime · {{ plan_catalog.personal.price_display }} lifetime{% endif %}
+                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% else %}bipluk+ · {{ plan_catalog.personal.price_display }} · lifetime{% endif %}
             </p>
         </div>
 

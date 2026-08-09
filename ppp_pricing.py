@@ -361,6 +361,8 @@ async def get_ppp_display_price(country_code: str) -> dict[str, Any]:
 
     return {
         "display": f"{symbol}{display_amount}",
+        "symbol": symbol,           # separate — no regex needed on client
+        "amount_display": display_amount,  # just the number part
         "currency": currency,
         "discount_pct": meta["discount_pct"],
         "ppp_usd": meta["ppp_usd_price"],

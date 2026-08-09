@@ -47,7 +47,7 @@
             <h1 class="font-pixel uppercase text-base text-white tracking-widest">bipluk</h1>
             <p class="text-xs text-zinc-400 font-sans tracking-wide mt-1 font-medium">Create account to start backup</p>
             <p id="signup-plan-label" class="text-[10px] text-lapis-light uppercase font-pixel tracking-wider mt-1.5">
-                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% else %}bipluk+ · {{ plan_catalog.personal.price_display }} · lifetime{% endif %}
+                {% if plan == 'free' %}Free tier · {{ pricing.free_price_display | default('$0') }} · no card{% else %}bipluk+ · <span id="signup-price-display">{{ plan_catalog.personal.price_display }}</span> · lifetime{% endif %}
             </p>
         </div>
 
@@ -213,6 +213,22 @@
         passwordInput.addEventListener('input', checkValidation);
         confirmInput.addEventListener('input', checkValidation);
     </script>
+{% if pricing is defined and pricing.ppp_enabled and plan != 'free' %}
+    <script>
+    (async () => {
+        const country = "{{ pricing.country_code | default('US') }}";
+        try {
+            const res = await fetch('/api/ppp-price?country=' + country);
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data.error) return;
+            const d = data.display;
+            const el = document.getElementById('signup-price-display');
+            if (el) el.textContent = d.symbol + d.amount_display + ' ' + d.currency;
+        } catch(e) {}
+    })();
+    </script>
+{% endif %}
 </body>
 
 </html>

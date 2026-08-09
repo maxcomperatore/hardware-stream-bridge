@@ -15,7 +15,7 @@
     {% include 'partials/favicon.html' %}
     <meta property="og:site_name" content="bipluk">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bipluk/{{ seo_slug if seo_slug else '' }}">
+    <meta property="og:url" content="https://bipluk.com/{{ seo_slug if seo_slug else '' }}">
     <meta property="og:title"
         content="{{ seo.title if seo else 'bipluk | The iCloud for Vintage Synthesizers' }}">
     <meta property="og:description"
@@ -27,7 +27,7 @@
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://bipluk/{{ seo_slug if seo_slug else '' }}">
+    <meta property="twitter:url" content="https://bipluk.com/{{ seo_slug if seo_slug else '' }}">
     <meta property="twitter:title"
         content="{{ seo.title if seo else 'bipluk | The iCloud for Vintage Synthesizers' }}">
     <meta property="twitter:description"
@@ -606,7 +606,7 @@
           "name": "bipluk+",
           "price": "49.00",
           "priceCurrency": "USD",
-          "url": "https://bipluk/#pricing",
+          "url": "https://bipluk.com/#pricing",
           "description": "One-time lifetime license. Not a subscription."
         },
         {
@@ -614,7 +614,7 @@
           "name": "bipluk+ Studio",
           "price": "399.00",
           "priceCurrency": "USD",
-          "url": "https://bipluk/#pricing",
+          "url": "https://bipluk.com/#pricing",
           "description": "One-time lifetime commercial license for one business location. Not a subscription."
         }
       ],
@@ -634,7 +634,7 @@
         "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
-        "contentUrl": "https://bipluk/static/1.mp4?v=20260701b"
+        "contentUrl": "https://bipluk.com/static/1.mp4?v=20260701b"
       },
       {
         "@context": "https://schema.org",
@@ -644,7 +644,7 @@
         "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
         "uploadDate": "2026-05-30T08:00:00+00:00",
         "duration": "PT0M10S",
-        "contentUrl": "https://bipluk/static/2.mp4?v=20260701b"
+        "contentUrl": "https://bipluk.com/static/2.mp4?v=20260701b"
       }
     ]
     </script>
@@ -789,9 +789,9 @@
       {
         "@context": "https://schema.org/",
         "@type": "ImageObject",
-        "contentUrl": "https://bipluk/static/logo.svg",
-        "license": "https://bipluk/terms",
-        "acquireLicensePage": "https://bipluk/#pricing",
+        "contentUrl": "https://bipluk.com/static/logo.svg",
+        "license": "https://bipluk.com/terms",
+        "acquireLicensePage": "https://bipluk.com/#pricing",
         "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
@@ -803,8 +803,8 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('studio_detail.avif') }}",
-        "license": "https://bipluk/terms",
-        "acquireLicensePage": "https://bipluk/#pricing",
+        "license": "https://bipluk.com/terms",
+        "acquireLicensePage": "https://bipluk.com/#pricing",
         "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
@@ -816,8 +816,8 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('midi_handshake.avif') }}",
-        "license": "https://bipluk/terms",
-        "acquireLicensePage": "https://bipluk/#pricing",
+        "license": "https://bipluk.com/terms",
+        "acquireLicensePage": "https://bipluk.com/#pricing",
         "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
@@ -829,8 +829,8 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('index_extraction.avif') }}",
-        "license": "https://bipluk/terms",
-        "acquireLicensePage": "https://bipluk/#pricing",
+        "license": "https://bipluk.com/terms",
+        "acquireLicensePage": "https://bipluk.com/#pricing",
         "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
@@ -842,8 +842,8 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('recall_button.avif') }}",
-        "license": "https://bipluk/terms",
-        "acquireLicensePage": "https://bipluk/#pricing",
+        "license": "https://bipluk.com/terms",
+        "acquireLicensePage": "https://bipluk.com/#pricing",
         "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
@@ -855,8 +855,8 @@
         "@context": "https://schema.org/",
         "@type": "ImageObject",
         "contentUrl": "{{ asset_abs_url('trade_offer.avif') }}",
-        "license": "https://bipluk/terms",
-        "acquireLicensePage": "https://bipluk/#pricing",
+        "license": "https://bipluk.com/terms",
+        "acquireLicensePage": "https://bipluk.com/#pricing",
         "creditText": "bipluk",
         "creator": {
           "@type": "Organization",
@@ -2868,7 +2868,7 @@
                                         { name: "bipluk+", price: "$49 one-time", billing: "lifetime" },
                                         { name: "Commercial / B2B", price: "Contact for quote", billing: "custom", contact: "halfradiationllc@gmail.com", perks: ["White-labeling", "Multi-site licenses", "Repair shop deployments", "Dedicated onboarding"] }
                                     ],
-                                    signup_url: "https://bipluk/signup",
+                                    signup_url: "https://bipluk.com/signup",
                                     payment_methods: ["Visa", "Mastercard", "Amex", "Apple Pay", "Google Pay", "Cash App Pay", "Pix", "Naver Pay", "USDC"]
                                 };
                             }
@@ -2887,8 +2887,8 @@
                                         "Roland Juno-60 (MIDI modded)", "Korg Wavestation",
                                         "Generic (universal ASCII patch name scanner)"
                                     ],
-                                    api_docs: "https://bipluk/openapi.json",
-                                    llms_txt: "https://bipluk/llms.txt"
+                                    api_docs: "https://bipluk.com/openapi.json",
+                                    llms_txt: "https://bipluk.com/llms.txt"
                                 };
                             }
                         }

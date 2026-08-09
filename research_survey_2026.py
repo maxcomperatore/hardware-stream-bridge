@@ -1,6 +1,6 @@
 """First-party survey data for /research/2026-vintage-synth-owner-survey."""
 
-SURVEY_PAGE_URL = "https://bipluk/research/2026-vintage-synth-owner-survey"
+SURVEY_PAGE_URL = "https://bipluk.com/research/2026-vintage-synth-owner-survey"
 SURVEY_DATA_URL = f"{SURVEY_PAGE_URL}/data.json"
 
 SURVEY_2026 = {    "title": "2026 Vintage Synth Owner Survey",
@@ -92,7 +92,7 @@ def public_json() -> dict:
         "creator": {
             "@type": "Organization",
             "name": "Half Radiation LLC",
-            "url": "https://bipluk",
+            "url": "https://bipluk.com",
         },
         "datePublished": "2026-07-01",
         "temporalCoverage": "2026-06-25/2026-07-01",

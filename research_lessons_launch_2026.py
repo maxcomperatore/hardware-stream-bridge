@@ -1,6 +1,6 @@
 """First-party launch lessons for /research/2026-browser-sysex-vault-launch-lessons."""
 
-LESSONS_PAGE_URL = "https://bipluk/research/2026-browser-sysex-vault-launch-lessons"
+LESSONS_PAGE_URL = "https://bipluk.com/research/2026-browser-sysex-vault-launch-lessons"
 LESSONS_DATA_URL = f"{LESSONS_PAGE_URL}/data.json"
 
 LESSONS_LAUNCH_2026 = {
@@ -25,7 +25,7 @@ LESSONS_LAUNCH_2026 = {
     },
     "hacker_news": {
         "thread_title": "How do you keep Web MIDI from crashing a 1983 synthesizer?",
-        "related_post": "https://bipluk/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer",
+        "related_post": "https://bipluk.com/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer",
         "points": 52,
         "comments": 41,
         "timing": "Late June 2026 (Show HN window)",
@@ -189,7 +189,7 @@ def public_json() -> dict:
         "creator": {
             "@type": "Organization",
             "name": "Half Radiation LLC",
-            "url": "https://bipluk",
+            "url": "https://bipluk.com",
         },
         "datePublished": "2026-07-02",
         "temporalCoverage": "2026-06-01/2026-07-01",

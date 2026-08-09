@@ -31,10 +31,12 @@ PRICING_TITLE_BY_LOCALE: dict[str, str] = {
     "lt": "Kainos synth fanams su per daug dėžių",
     "lv": "Cenas synth ēstiem ar pilnu pagrabu",
     "et": "Hinnad synth-hulludele kellel on liiga palju kaste",
+    "ja": "シンセ愛好家向け価格",
 }
 
 # Listed countries → locale slang (English-speaking entries use the in-{country} template).
 COUNTRY_PRICING_LOCALE: dict[str, str] = {
+    "JP": "ja",
     "DE": "de",
     "AT": "de",
     "CH": "de",
@@ -71,6 +73,7 @@ COUNTRY_PRICING_LOCALE: dict[str, str] = {
 }
 
 COUNTRY_DISPLAY_NAMES: dict[str, str] = {
+    "JP": "Japan",
     "US": "the USA",
     "GB": "the UK",
     "CA": "Canada",

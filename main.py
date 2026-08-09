@@ -563,6 +563,8 @@ STRIPE_PRICE_ID_PERSONAL_AUD = settings.STRIPE_PRICE_ID_PERSONAL_AUD
 STRIPE_PRICE_ID_STUDIO_AUD = settings.STRIPE_PRICE_ID_STUDIO_AUD
 STRIPE_PRICE_ID_PERSONAL_CHF = settings.STRIPE_PRICE_ID_PERSONAL_CHF
 STRIPE_PRICE_ID_STUDIO_CHF = settings.STRIPE_PRICE_ID_STUDIO_CHF
+STRIPE_PRICE_ID_PERSONAL_JPY = settings.STRIPE_PRICE_ID_PERSONAL_JPY
+STRIPE_PRICE_ID_STUDIO_JPY = settings.STRIPE_PRICE_ID_STUDIO_JPY
 STRIPE_PRICE_ID_SOUND_PACK = settings.STRIPE_PRICE_ID_SOUND_PACK
 PACK_STRIPE_PRICE_ENV_KEYS = {
     "m1_matrix": "STRIPE_PRICE_ID_PACK_M1_MATRIX",
@@ -580,6 +582,7 @@ GB_GBP_COUNTRY_CODES = frozenset({"GB"})
 CA_CAD_COUNTRY_CODES = frozenset({"CA"})
 AU_AUD_COUNTRY_CODES = frozenset({"AU"})
 CH_CHF_COUNTRY_CODES = frozenset({"CH", "LI"})
+JP_JPY_COUNTRY_CODES = frozenset({"JP"})
 
 COUNTRY_NAME_TO_ISO = {
     "GERMANY": "DE",
@@ -675,6 +678,15 @@ REGIONAL_PRICING_CATALOG = {
         "competitor_amount": "200",
         "billing_label": "CHF / ONE-TIME",
     },
+    "jpy": {
+        "region": "jpy",
+        "currency": "JPY",
+        "symbol": "¥",
+        "personal_amount": "7,800",
+        "studio_amount": "59,800",
+        "competitor_amount": "32,000",
+        "billing_label": "JPY / ONE-TIME",
+    },
 }
 
 def normalize_country_code(raw: str | None) -> str:
@@ -700,16 +712,22 @@ def aud_pricing_enabled() -> bool:
 def chf_pricing_enabled() -> bool:
     return bool(STRIPE_PRICE_ID_PERSONAL_CHF and STRIPE_PRICE_ID_STUDIO_CHF)
 
+def jpy_pricing_enabled() -> bool:
+    return bool(STRIPE_PRICE_ID_PERSONAL_JPY and STRIPE_PRICE_ID_STUDIO_JPY)
+
 REGIONAL_PRICE_IDS = {
     "gbp": (STRIPE_PRICE_ID_PERSONAL_GBP, STRIPE_PRICE_ID_STUDIO_GBP),
     "eur": (STRIPE_PRICE_ID_PERSONAL_EUR, STRIPE_PRICE_ID_STUDIO_EUR),
     "cad": (STRIPE_PRICE_ID_PERSONAL_CAD, STRIPE_PRICE_ID_STUDIO_CAD),
     "aud": (STRIPE_PRICE_ID_PERSONAL_AUD, STRIPE_PRICE_ID_STUDIO_AUD),
     "chf": (STRIPE_PRICE_ID_PERSONAL_CHF, STRIPE_PRICE_ID_STUDIO_CHF),
+    "jpy": (STRIPE_PRICE_ID_PERSONAL_JPY, STRIPE_PRICE_ID_STUDIO_JPY),
 }
 
 def get_pricing_region(country_code: str | None) -> str:
     code = normalize_country_code(country_code)
+    if (jpy_pricing_enabled() or True) and code in JP_JPY_COUNTRY_CODES:
+        return "jpy"
     if gbp_pricing_enabled() and code in GB_GBP_COUNTRY_CODES:
         return "gbp"
     if chf_pricing_enabled() and code in CH_CHF_COUNTRY_CODES:
@@ -921,7 +939,7 @@ def get_plan_price_id(plan: str, country_code: str | None = None) -> str:
 def format_plan_price_display(regional: dict, plan: str) -> str:
     amount = regional["personal_amount"] if plan == "personal" else regional["studio_amount"]
     symbol = regional["symbol"]
-    if regional["region"] == "usd":
+    if regional["region"] in ("usd", "jpy"):
         return f"{symbol}{amount}"
     if regional["region"] == "chf":
         return f"Fr. {amount}"
@@ -930,18 +948,20 @@ def format_plan_price_display(regional: dict, plan: str) -> str:
 
 def get_plan_catalog(country_code: str | None = None) -> dict:
     regional = get_regional_pricing(country_code)
+    personal_clean = int(str(regional["personal_amount"]).replace(",", ""))
+    studio_clean = int(str(regional["studio_amount"]).replace(",", ""))
     return {
         "personal": {
             "label": "Personal",
             "price_display": format_plan_price_display(regional, "personal"),
-            "amount_cents": int(regional["personal_amount"]) * 100,
+            "amount_cents": personal_clean * 100,
             "stripe_price_id": get_plan_price_id("personal", country_code),
             "commercial": False,
         },
         "studio": {
             "label": "bipluk+ Studio",
             "price_display": format_plan_price_display(regional, "studio"),
-            "amount_cents": int(regional["studio_amount"]) * 100,
+            "amount_cents": studio_clean * 100,
             "stripe_price_id": get_plan_price_id("studio", country_code),
             "commercial": True,
         },

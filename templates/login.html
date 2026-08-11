@@ -48,6 +48,8 @@
             <p class="text-xs text-zinc-400 font-sans tracking-wide mt-1.5 font-medium">Sign in to sync your synth vault</p>
         </div>
 
+        <div id="magic-feedback" class="hidden mb-4 p-3 rounded-xl text-xs font-semibold tracking-wide text-center"></div>
+
         {% if msg %}
         <div class="mb-4 p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 font-semibold tracking-wide text-center">
             {{ msg }}
@@ -72,8 +74,11 @@
 
         <!-- Magic Link Passwordless Button -->
         <button type="button" onclick="sendMagicLink()" id="magic-btn"
-            class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-emerald-400 hover:text-emerald-300 text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-150 shadow-sm active:scale-[0.98] mb-4">
-            <span>✨</span>
+            class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-4">
+            <svg class="w-5 h-5 shrink-0 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2.5"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
             <span>Sign in with Magic Link</span>
         </button>
 
@@ -94,18 +99,18 @@
             <div>
                 <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Email Address</label>
                 <input type="email" name="email" id="login-email" required placeholder="name@domain.com"
-                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-base text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors">
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-base text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-400 transition-colors">
             </div>
 
             <div>
                 <div class="flex justify-between items-center mb-2">
                     <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Password</label>
-                    <a href="/forgot-password" class="text-xs font-semibold text-blue-400 hover:text-blue-300 uppercase tracking-wider transition-colors">
+                    <a href="/forgot-password" class="text-xs font-semibold text-zinc-400 hover:text-white uppercase tracking-wider transition-colors">
                         Forgot?
                     </a>
                 </div>
                 <input type="password" name="password" id="login-password" required placeholder="••••••••"
-                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-base text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors">
+                    class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-base text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-400 transition-colors">
             </div>
 
             <button type="submit" id="login-btn" disabled
@@ -123,6 +128,18 @@
         const emailInput = document.getElementById('login-email');
         const passwordInput = document.getElementById('login-password');
         const submitBtn = document.getElementById('login-btn');
+        const feedbackEl = document.getElementById('magic-feedback');
+
+        function showFeedback(msg, isError = false) {
+            if (!feedbackEl) return;
+            feedbackEl.classList.remove('hidden', 'bg-red-950/30', 'border-red-800/50', 'text-rose-300', 'bg-emerald-950/40', 'border-emerald-500/40', 'text-emerald-300');
+            if (isError) {
+                feedbackEl.classList.add('bg-red-950/30', 'border', 'border-red-800/50', 'text-rose-300');
+            } else {
+                feedbackEl.classList.add('bg-emerald-950/40', 'border', 'border-emerald-500/40', 'text-emerald-300');
+            }
+            feedbackEl.textContent = msg;
+        }
 
         function checkLoginValidation() {
             if (emailInput.value.trim().length > 0 && passwordInput.value.length > 0) {
@@ -135,7 +152,11 @@
         }
 
         if (emailInput && passwordInput && submitBtn) {
-            emailInput.addEventListener('input', checkLoginValidation);
+            emailInput.addEventListener('input', () => {
+                emailInput.classList.remove('border-rose-500', 'ring-1', 'ring-rose-500');
+                emailInput.classList.add('border-zinc-800');
+                checkLoginValidation();
+            });
             passwordInput.addEventListener('input', checkLoginValidation);
             checkLoginValidation();
         }
@@ -143,15 +164,20 @@
         async function sendMagicLink() {
             const email = emailInput ? emailInput.value.trim() : '';
             if (!email || !email.includes('@') || !email.includes('.')) {
-                alert('Please enter a valid Email Address in the input field first.');
-                if (emailInput) emailInput.focus();
+                showFeedback('Please enter a valid Email Address in the field below.', true);
+                if (emailInput) {
+                    emailInput.classList.remove('border-zinc-800');
+                    emailInput.classList.add('border-rose-500', 'ring-1', 'ring-rose-500');
+                    emailInput.focus();
+                }
                 return;
             }
 
             const magicBtn = document.getElementById('magic-btn');
+            const magicIcon = `<svg class="w-5 h-5 shrink-0 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2.5"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`;
             if (magicBtn) {
                 magicBtn.disabled = true;
-                magicBtn.innerHTML = '<span>⏳</span><span>Sending Magic Link...</span>';
+                magicBtn.innerHTML = magicIcon + '<span>Sending Magic Link...</span>';
             }
 
             try {
@@ -162,16 +188,16 @@
                 });
                 const data = await res.json();
                 if (res.ok && data.ok) {
-                    alert(data.message || '✨ Magic link sent to your email! Check your inbox.');
+                    showFeedback(data.message || 'Magic link sent to your email! Check your inbox.', false);
                 } else {
-                    alert(data.error || 'Failed to send magic link. Please try again.');
+                    showFeedback(data.error || 'Failed to send magic link. Please try again.', true);
                 }
             } catch (err) {
-                alert('Network error while sending magic link.');
+                showFeedback('Network error while sending magic link.', true);
             } finally {
                 if (magicBtn) {
                     magicBtn.disabled = false;
-                    magicBtn.innerHTML = '<span>✨</span><span>Sign in with Magic Link</span>';
+                    magicBtn.innerHTML = magicIcon + '<span>Sign in with Magic Link</span>';
                 }
             }
         }

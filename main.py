@@ -1742,7 +1742,7 @@ async def do_magic_request(request: Request):
 
     magic_url = f"{SITE_BASE}/auth/magic-verify?token={token}"
 
-    subject = "✨ Your bipluk Magic Sign-In Link"
+    subject = "Your bipluk Magic Sign-In Link"
     body = f"Hello,\n\nClick the link below to sign in to bipluk automatically:\n{magic_url}\n\nOr enter this 6-digit passcode: {code}\n\nThis link & code will expire in 15 minutes."
     
     html_content = f"""
@@ -1759,7 +1759,7 @@ async def do_magic_request(request: Request):
             </p>
 
             <a href="{magic_url}" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;">
-                ✨ Sign In To bipluk &rarr;
+                Sign In To bipluk &rarr;
             </a>
 
             <p style="color: #71717a; font-size: 12px; margin: 0 0 12px 0;">Or enter this 6-digit passcode on the sign-in page:</p>
@@ -1789,11 +1789,11 @@ async def do_magic_request(request: Request):
     if "application/json" in request.headers.get("content-type", ""):
         return JSONResponse({
             "ok": True,
-            "message": f"✨ Magic link sent to {email_clean}! Check your inbox."
+            "message": f"Magic link sent to {email_clean}! Check your inbox."
         })
 
     return render_template("login.html", request, {
-        "msg": f"✨ Magic link sent to {email_clean}! Check your email inbox to sign in.",
+        "msg": f"Magic link sent to {email_clean}! Check your email inbox to sign in.",
         "next": next_url
     })
 

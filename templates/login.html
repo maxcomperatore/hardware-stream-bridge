@@ -60,7 +60,7 @@
 
         <!-- Google OAuth Button -->
         <a href="/auth/google"
-            class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-4">
+            class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-3">
             <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.1 9 5 12 5z"/>
                 <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
@@ -70,13 +70,20 @@
             <span>Sign in with Google</span>
         </a>
 
+        <!-- Magic Link Passwordless Button -->
+        <button type="button" onclick="sendMagicLink()" id="magic-btn"
+            class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-emerald-400 hover:text-emerald-300 text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-150 shadow-sm active:scale-[0.98] mb-4">
+            <span>✨</span>
+            <span>Sign in with Magic Link</span>
+        </button>
+
         <!-- Divider -->
         <div class="relative my-4 flex items-center justify-center">
             <div class="absolute inset-0 flex items-center">
                 <div class="w-full border-t border-zinc-900"></div>
             </div>
             <div class="relative px-3 bg-black sm:bg-zinc-950 text-xs font-pixel text-zinc-500 uppercase tracking-widest">
-                OR
+                OR PASSWORD
             </div>
         </div>
 
@@ -86,7 +93,7 @@
             {% endif %}
             <div>
                 <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Email Address</label>
-                <input type="email" name="email" required placeholder="name@domain.com"
+                <input type="email" name="email" id="login-email" required placeholder="name@domain.com"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-base text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors">
             </div>
 
@@ -97,12 +104,12 @@
                         Forgot?
                     </a>
                 </div>
-                <input type="password" name="password" required placeholder="••••••••"
+                <input type="password" name="password" id="login-password" required placeholder="••••••••"
                     class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-base text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors">
             </div>
 
-            <button type="submit"
-                class="w-full py-3.5 rounded-xl bg-white hover:bg-zinc-200 text-black text-sm font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] mt-2">
+            <button type="submit" id="login-btn" disabled
+                class="w-full py-3.5 rounded-xl bg-white hover:bg-zinc-200 text-black text-sm font-semibold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] mt-2 opacity-50 cursor-not-allowed">
                 Sign In
             </button>
         </form>
@@ -113,6 +120,62 @@
     </div>
 
     <script>
+        const emailInput = document.getElementById('login-email');
+        const passwordInput = document.getElementById('login-password');
+        const submitBtn = document.getElementById('login-btn');
+
+        function checkLoginValidation() {
+            if (emailInput.value.trim().length > 0 && passwordInput.value.length > 0) {
+                submitBtn.removeAttribute('disabled');
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                submitBtn.setAttribute('disabled', 'true');
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        if (emailInput && passwordInput && submitBtn) {
+            emailInput.addEventListener('input', checkLoginValidation);
+            passwordInput.addEventListener('input', checkLoginValidation);
+            checkLoginValidation();
+        }
+
+        async function sendMagicLink() {
+            const email = emailInput ? emailInput.value.trim() : '';
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                alert('Please enter a valid Email Address in the input field first.');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+
+            const magicBtn = document.getElementById('magic-btn');
+            if (magicBtn) {
+                magicBtn.disabled = true;
+                magicBtn.innerHTML = '<span>⏳</span><span>Sending Magic Link...</span>';
+            }
+
+            try {
+                const res = await fetch('/auth/magic-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                const data = await res.json();
+                if (res.ok && data.ok) {
+                    alert(data.message || '✨ Magic link sent to your email! Check your inbox.');
+                } else {
+                    alert(data.error || 'Failed to send magic link. Please try again.');
+                }
+            } catch (err) {
+                alert('Network error while sending magic link.');
+            } finally {
+                if (magicBtn) {
+                    magicBtn.disabled = false;
+                    magicBtn.innerHTML = '<span>✨</span><span>Sign in with Magic Link</span>';
+                }
+            }
+        }
+
         (function() {
             history.pushState(null, null, window.location.href);
             window.onpopstate = function() {

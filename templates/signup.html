@@ -59,7 +59,7 @@
 
         <!-- Google OAuth Button -->
         <a href="/auth/google"
-            class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-3">
+            class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-2.5">
             <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.1 9 5 12 5z"/>
                 <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
@@ -69,13 +69,20 @@
             <span>Sign in with Google</span>
         </a>
 
+        <!-- Magic Link Passwordless Button -->
+        <button type="button" onclick="sendMagicLink()" id="magic-btn"
+            class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-emerald-400 hover:text-emerald-300 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-150 shadow-sm active:scale-[0.98] mb-3">
+            <span>✨</span>
+            <span>Sign in with Magic Link</span>
+        </button>
+
         <!-- Divider -->
         <div class="relative my-3 flex items-center justify-center">
             <div class="absolute inset-0 flex items-center">
                 <div class="w-full border-t border-zinc-900"></div>
             </div>
             <div class="relative px-3 bg-black sm:bg-zinc-950 text-[10px] font-pixel text-zinc-500 uppercase tracking-widest">
-                OR
+                OR PASSWORD
             </div>
         </div>
 
@@ -209,6 +216,43 @@
 
         submitBtn.setAttribute('disabled', 'true');
         submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        async function sendMagicLink() {
+            const emailInput = document.getElementById('signup-email');
+            const email = emailInput ? emailInput.value.trim() : '';
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                alert('Please enter a valid Email Address in the input field first.');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+
+            const magicBtn = document.getElementById('magic-btn');
+            if (magicBtn) {
+                magicBtn.disabled = true;
+                magicBtn.innerHTML = '<span>⏳</span><span>Sending Magic Link...</span>';
+            }
+
+            try {
+                const res = await fetch('/auth/magic-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                const data = await res.json();
+                if (res.ok && data.ok) {
+                    alert(data.message || '✨ Magic link sent to your email! Check your inbox.');
+                } else {
+                    alert(data.error || 'Failed to send magic link. Please try again.');
+                }
+            } catch (err) {
+                alert('Network error while sending magic link.');
+            } finally {
+                if (magicBtn) {
+                    magicBtn.disabled = false;
+                    magicBtn.innerHTML = '<span>✨</span><span>Sign in with Magic Link</span>';
+                }
+            }
+        }
 
         passwordInput.addEventListener('input', checkValidation);
         confirmInput.addEventListener('input', checkValidation);

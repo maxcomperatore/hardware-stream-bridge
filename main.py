@@ -1704,6 +1704,209 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
 
 RESET_TOKENS: dict[str, dict] = {}
 RESET_CODES: dict[str, dict] = {}
+MAGIC_TOKENS: dict[str, dict] = {}
+MAGIC_CODES: dict[str, dict] = {}
+
+@app.post("/auth/magic-request")
+async def do_magic_request(request: Request):
+    import secrets, time
+    
+    email = ""
+    next_url = None
+    try:
+        content_type = request.headers.get("content-type", "")
+        if "application/json" in content_type:
+            data = await request.json()
+            email = data.get("email", "")
+            next_url = data.get("next")
+        else:
+            form = await request.form()
+            email = form.get("email", "")
+            next_url = form.get("next")
+    except Exception:
+        email = ""
+        next_url = None
+
+    email_clean = email.lower().strip()
+    if not email_clean or "@" not in email_clean or "." not in email_clean:
+        if "application/json" in request.headers.get("content-type", ""):
+            return JSONResponse({"ok": False, "error": "Please enter a valid email address."}, status_code=400)
+        return render_template("login.html", request, {"error": "Please enter a valid email address.", "next": next_url})
+
+    token = secrets.token_urlsafe(32)
+    code = f"{secrets.randbelow(900000) + 100000}"
+    expires = time.time() + 900  # 15 minutes
+
+    MAGIC_TOKENS[token] = {"email": email_clean, "expires": expires, "next": next_url}
+    MAGIC_CODES[code] = {"email": email_clean, "expires": expires, "attempts": 0, "next": next_url}
+
+    magic_url = f"{SITE_BASE}/auth/magic-verify?token={token}"
+
+    subject = "✨ Your bipluk Magic Sign-In Link"
+    body = f"Hello,\n\nClick the link below to sign in to bipluk automatically:\n{magic_url}\n\nOr enter this 6-digit passcode: {code}\n\nThis link & code will expire in 15 minutes."
+    
+    html_content = f"""
+    <div style="background-color: #050507; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="max-width: 460px; margin: 0 auto; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; padding: 32px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+            <img src="{SITE_BASE}/static/logo.svg" alt="bipluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
+            <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">bipluk</h1>
+            <p style="color: #71717a; font-size: 12px; margin: 0 0 24px 0; font-weight: 500;">Passwordless Vault Sign-In</p>
+            <hr style="border: 0; border-top: 1px solid #18181b; margin: 0 0 24px 0;">
+            
+            <h2 style="color: #f4f4f5; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Sign In With Magic Link</h2>
+            <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 0 0 24px 0;">
+                Click the button below to sign in to <span style="color: #ffffff; font-family: monospace;">{email_clean}</span> automatically without a password:
+            </p>
+
+            <a href="{magic_url}" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;">
+                ✨ Sign In To bipluk &rarr;
+            </a>
+
+            <p style="color: #71717a; font-size: 12px; margin: 0 0 12px 0;">Or enter this 6-digit passcode on the sign-in page:</p>
+            <div style="background-color: #121216; border: 1px solid #27272a; border-radius: 14px; padding: 16px; margin-bottom: 24px;">
+                <span style="font-family: 'Courier New', Courier, monospace; font-size: 28px; font-weight: 700; letter-spacing: 8px; color: #10b981; display: block; text-indent: 8px;">
+                    {code}
+                </span>
+                <span style="color: #71717a; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; display: block;">Expires in 15 minutes</span>
+            </div>
+
+            <p style="color: #52525b; font-size: 11px; margin: 0;">
+                If you didn't request this email, you can safely ignore it.
+            </p>
+        </div>
+    </div>
+    """
+
+    send_email_via_resend(email_clean, subject, body, html=html_content)
+
+    trigger_alert(
+        "magic_link_sent",
+        f"Magic sign-in link sent to `{email_clean}`.",
+        {"email": email_clean},
+        distinct_id=email_clean
+    )
+
+    if "application/json" in request.headers.get("content-type", ""):
+        return JSONResponse({
+            "ok": True,
+            "message": f"✨ Magic link sent to {email_clean}! Check your inbox."
+        })
+
+    return render_template("login.html", request, {
+        "msg": f"✨ Magic link sent to {email_clean}! Check your email inbox to sign in.",
+        "next": next_url
+    })
+
+@app.get("/auth/magic-verify")
+async def do_magic_verify(request: Request):
+    import secrets, hashlib, time
+    token = request.query_params.get("token")
+    if not token:
+        return RedirectResponse(url="/login?error=Missing+magic+link+token.", status_code=303)
+
+    token_data = MAGIC_TOKENS.pop(token, None)
+    if not token_data or time.time() > token_data.get("expires", 0):
+        return RedirectResponse(url="/login?error=Invalid+or+expired+magic+link.+Please+request+a+new+one.", status_code=303)
+
+    email = token_data["email"]
+    next_url = token_data.get("next")
+
+    # Database Lookup & Auto-Registration
+    user = database.get_user_by_email(email)
+    if not user:
+        random_pwd = secrets.token_urlsafe(16)
+        hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
+        database.create_user(email, hashed_pwd)
+        
+        pending = database.consume_pending_premium(email)
+        if pending:
+            database.update_user_tier(
+                email,
+                "premium",
+                pending.get("stripe_customer_id"),
+                plan=pending.get("plan", "personal")
+            )
+        user = database.get_user_by_email(email)
+
+    if user.get("tier") == "banned":
+        return RedirectResponse(url="/login?error=Your+account+has+been+suspended.", status_code=303)
+
+    redirect_target = safe_next_url(next_url) if next_url else "/home"
+    response = RedirectResponse(url=redirect_target, status_code=303)
+    response.set_cookie(
+        key="session_user",
+        value=sign_session_cookie(email),
+        max_age=86400 * 30,
+        path="/",
+        httponly=True,
+        secure=settings.IS_PRODUCTION,
+        samesite="lax"
+    )
+    logger.info(f"User logged in via magic link: {email}", extra={"email": email, "event_type": "magic_login"})
+    trigger_alert(
+        "magic_login_success",
+        f"User `{email}` logged in via magic link.",
+        {"email": email},
+        distinct_id=email
+    )
+    return response
+
+@app.post("/auth/magic-code-verify")
+async def do_magic_code_verify(request: Request, email: str = Form(...), code: str = Form(...), next: str = Form(None)):
+    import secrets, hashlib, time
+    email_clean = email.lower().strip()
+    code_clean = code.strip()
+
+    code_data = MAGIC_CODES.get(code_clean)
+    if not code_data or code_data["email"] != email_clean or time.time() > code_data.get("expires", 0):
+        for c, data in list(MAGIC_CODES.items()):
+            if data.get("email") == email_clean:
+                data["attempts"] = data.get("attempts", 0) + 1
+                if data["attempts"] >= 5:
+                    MAGIC_CODES.pop(c, None)
+                    return render_template("login.html", request, {
+                        "error": "Too many failed attempts. Please request a new magic link or code.",
+                        "next": next
+                    })
+
+        return render_template("login.html", request, {
+            "error": "Invalid or expired passcode. Please request a new magic link.",
+            "next": next
+        })
+
+    MAGIC_CODES.pop(code_clean, None)
+
+    user = database.get_user_by_email(email_clean)
+    if not user:
+        random_pwd = secrets.token_urlsafe(16)
+        hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
+        database.create_user(email_clean, hashed_pwd)
+        
+        pending = database.consume_pending_premium(email_clean)
+        if pending:
+            database.update_user_tier(
+                email_clean,
+                "premium",
+                pending.get("stripe_customer_id"),
+                plan=pending.get("plan", "personal")
+            )
+        user = database.get_user_by_email(email_clean)
+
+    if user.get("tier") == "banned":
+        return RedirectResponse(url="/login?error=Your+account+has+been+suspended.", status_code=303)
+
+    redirect_target = safe_next_url(next) if next else "/home"
+    response = RedirectResponse(url=redirect_target, status_code=303)
+    response.set_cookie(
+        key="session_user",
+        value=sign_session_cookie(email_clean),
+        max_age=86400 * 30,
+        path="/",
+        httponly=True,
+        secure=settings.IS_PRODUCTION,
+        samesite="lax"
+    )
+    return response
 
 @app.get("/forgot-password", response_class=HTMLResponse)
 async def forgot_password_page(request: Request, email: str = None, error: str = None):

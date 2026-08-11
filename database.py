@@ -165,6 +165,9 @@ def init_db():
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_marketing_email_sent VARCHAR(100);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(50);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS picture_url TEXT;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS onboarding_completed BOOLEAN DEFAULT FALSE;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS synths_owned TEXT DEFAULT '';")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS workflow_goal TEXT DEFAULT '';")
         cursor.execute("ALTER TABLE pending_premiums ADD COLUMN IF NOT EXISTS plan VARCHAR(50) DEFAULT 'personal';")
         
         conn.commit()
@@ -194,6 +197,29 @@ def create_user(email: str, hashed_password: str) -> int:
     except Exception as e:
         print(f"Database error in create_user: {e}")
         raise RuntimeError("Database is undergoing monthly quota reset. Registration will resume tomorrow!")
+
+def save_user_onboarding(email: str, synths_owned: str = "", workflow_goal: str = "") -> bool:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE users
+                SET onboarding_completed = TRUE,
+                    synths_owned = %s,
+                    workflow_goal = %s
+                WHERE email = %s
+                """,
+                (synths_owned, workflow_goal, email.lower().strip())
+            )
+            conn.commit()
+            return True
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in save_user_onboarding: {e}")
+        return False
 
 def get_user_by_email(email: str) -> dict | None:
     try:

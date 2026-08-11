@@ -1767,7 +1767,7 @@ async def do_magic_request(request: Request):
         magic_url += f"&next={quote(next_url)}"
 
     subject = "Your bipluk Magic Sign-In Link"
-    body = f"Hello,\n\nClick the link below to sign in to bipluk automatically:\n{magic_url}\n\nOr enter this 6-digit passcode: {code}\n\nThis link & code will expire in 15 minutes."
+    body = f"Hello,\n\nClick the link below to sign in to bipluk automatically:\n{magic_url}\n\nThis link will expire in 15 minutes."
     
     html_content = f"""
     <div style="background-color: #050507; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
@@ -1782,17 +1782,13 @@ async def do_magic_request(request: Request):
                 Click the button below to sign in to <span style="color: #ffffff; font-family: monospace;">{email_clean}</span> automatically without a password:
             </p>
 
-            <a href="{magic_url}" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;">
+            <a href="{magic_url}" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin: 12px 0 24px 0;">
                 Sign In To bipluk &rarr;
             </a>
 
-            <p style="color: #71717a; font-size: 12px; margin: 0 0 12px 0;">Or enter this 6-digit passcode on the sign-in page:</p>
-            <div style="background-color: #121216; border: 1px solid #27272a; border-radius: 14px; padding: 16px; margin-bottom: 24px;">
-                <span style="font-family: 'Courier New', Courier, monospace; font-size: 28px; font-weight: 700; letter-spacing: 8px; color: #10b981; display: block; text-indent: 8px;">
-                    {code}
-                </span>
-                <span style="color: #71717a; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; display: block;">Expires in 15 minutes</span>
-            </div>
+            <p style="color: #71717a; font-size: 11px; margin: 0 0 16px 0;">
+                This sign-in link will expire in 15 minutes.
+            </p>
 
             <p style="color: #52525b; font-size: 11px; margin: 0;">
                 If you didn't request this email, you can safely ignore it.
@@ -2419,13 +2415,16 @@ async def home_page(request: Request):
         card_updated = True
         card_last4 = PENDING_CARD_UPDATES.pop(user_email)
 
+    show_onboarding = not bool(user.get("onboarding_completed", False))
+
     banks = database.get_all_banks(user["id"])
     context = {
         "banks": banks,
         "user": user,
         "pricing": enrich_regional_pricing(get_request_country_code(request)),
         "card_updated": card_updated,
-        "card_last4": card_last4
+        "card_last4": card_last4,
+        "show_onboarding": show_onboarding
     }
     context.update(posthog_support_context(user, enable_conversations=True))
     response = render_template("index.html", request, context)
@@ -2433,6 +2432,23 @@ async def home_page(request: Request):
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
+
+@app.post("/api/user/onboarding")
+async def handle_user_onboarding(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return JSONResponse({"ok": False, "error": "Unauthorized"}, status_code=401)
+    
+    try:
+        data = await request.json()
+        synths = data.get("synths", [])
+        workflow = data.get("workflow", "")
+        synths_str = ",".join(synths) if isinstance(synths, list) else str(synths)
+        
+        database.save_user_onboarding(user["email"], synths_owned=synths_str, workflow_goal=workflow)
+        return JSONResponse({"ok": True})
+    except Exception as e:
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=400)
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard_redirect(request: Request):

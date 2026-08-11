@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 import settings
+import time
 import io
 import os
 import zipfile
@@ -1707,6 +1708,27 @@ RESET_CODES: dict[str, dict] = {}
 MAGIC_TOKENS: dict[str, dict] = {}
 MAGIC_CODES: dict[str, dict] = {}
 
+def create_magic_token(email: str, expires_in: int = 900) -> str:
+    import time
+    expires_at = int(time.time()) + expires_in
+    payload = f"{email.lower().strip()}:{expires_at}"
+    return cookie_signer.sign(payload.encode("utf-8")).decode("utf-8")
+
+def verify_magic_token(token: str) -> tuple[str | None, str | None]:
+    import time
+    try:
+        unsigned = cookie_signer.unsign(token.encode("utf-8")).decode("utf-8")
+        parts = unsigned.split(":")
+        if len(parts) != 2:
+            return None, "invalid_structure"
+        email, expires_str = parts[0], parts[1]
+        expires_at = int(expires_str)
+        if time.time() > expires_at:
+            return None, "expired"
+        return email, None
+    except Exception as e:
+        return None, f"invalid_signature: {e}"
+
 @app.post("/auth/magic-request")
 async def do_magic_request(request: Request):
     import secrets, time
@@ -1733,14 +1755,16 @@ async def do_magic_request(request: Request):
             return JSONResponse({"ok": False, "error": "Please enter a valid email address."}, status_code=400)
         return render_template("login.html", request, {"error": "Please enter a valid email address.", "next": next_url})
 
-    token = secrets.token_urlsafe(32)
+    token = create_magic_token(email_clean, expires_in=900)
     code = f"{secrets.randbelow(900000) + 100000}"
     expires = time.time() + 900  # 15 minutes
 
-    MAGIC_TOKENS[token] = {"email": email_clean, "expires": expires, "next": next_url}
     MAGIC_CODES[code] = {"email": email_clean, "expires": expires, "attempts": 0, "next": next_url}
 
     magic_url = f"{SITE_BASE}/auth/magic-verify?token={token}"
+    if next_url:
+        from urllib.parse import quote
+        magic_url += f"&next={quote(next_url)}"
 
     subject = "Your bipluk Magic Sign-In Link"
     body = f"Hello,\n\nClick the link below to sign in to bipluk automatically:\n{magic_url}\n\nOr enter this 6-digit passcode: {code}\n\nThis link & code will expire in 15 minutes."
@@ -1801,15 +1825,15 @@ async def do_magic_request(request: Request):
 async def do_magic_verify(request: Request):
     import secrets, hashlib, time
     token = request.query_params.get("token")
+    next_url = request.query_params.get("next")
+    
     if not token:
         return RedirectResponse(url="/login?error=Missing+magic+link+token.", status_code=303)
 
-    token_data = MAGIC_TOKENS.pop(token, None)
-    if not token_data or time.time() > token_data.get("expires", 0):
+    email, err = verify_magic_token(token)
+    if not email:
+        logger.warning(f"Magic token verification failed: {err}")
         return RedirectResponse(url="/login?error=Invalid+or+expired+magic+link.+Please+request+a+new+one.", status_code=303)
-
-    email = token_data["email"]
-    next_url = token_data.get("next")
 
     # Database Lookup & Auto-Registration
     user = database.get_user_by_email(email)

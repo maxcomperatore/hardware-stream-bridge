@@ -2155,6 +2155,102 @@ async def test_reengagement_email(email: str = "max@gmail.com", send: str = None
     return HTMLResponse(content=html_content)
 
 
+VAULT_LIMIT_NOTIFIED_USERS: set = set()
+
+def notify_vault_limit_reached(email: str):
+    email_clean = email.lower().strip()
+    if email_clean not in VAULT_LIMIT_NOTIFIED_USERS:
+        VAULT_LIMIT_NOTIFIED_USERS.add(email_clean)
+        try:
+            send_vault_limit_email(email_clean)
+        except Exception as e:
+            logger.error(f"Failed to send vault limit email to {email_clean}: {e}")
+
+def send_vault_limit_email(email: str) -> tuple[bool, str]:
+    email_clean = email.lower().strip()
+    unsubscribe_token = cookie_signer.sign(email_clean.encode()).decode()
+    template = templates.get_template("email_vault_limit.html")
+    html_content = template.render({
+        "email": email_clean,
+        "unsubscribe_token": unsubscribe_token,
+    })
+    plain_body = (
+        f"Your bipluk soundbank vault is full!\n\n"
+        "You have reached your 1 free soundbank slot. Upgrade to bipluk+ Lifetime to store unlimited synth vaults.\n\n"
+        "Upgrade now: https://bipluk.com/signup?plan=personal"
+    )
+    return send_email_via_resend(
+        to=email_clean,
+        subject="Your bipluk soundbank vault is full! Unlock unlimited storage",
+        body=plain_body,
+        html=html_content,
+        reply_to="halfradiationllc@gmail.com",
+    )
+
+def send_battery_warning_email(email: str) -> tuple[bool, str]:
+    email_clean = email.lower().strip()
+    unsubscribe_token = cookie_signer.sign(email_clean.encode()).decode()
+    template = templates.get_template("email_battery_warning.html")
+    html_content = template.render({
+        "email": email_clean,
+        "unsubscribe_token": unsubscribe_token,
+    })
+    plain_body = (
+        "⚠️ Hardware Synth Battery Health Warning\n\n"
+        "Vintage synthesizers (Juno-106, DX7, microKORG, M1) rely on internal RAM batteries that degrade over time.\n"
+        "Protect your custom patch vault today: https://bipluk.com/home"
+    )
+    return send_email_via_resend(
+        to=email_clean,
+        subject="⚠️ Reminder: Have you backed up your hardware synth patches recently?",
+        body=plain_body,
+        html=html_content,
+        reply_to="halfradiationllc@gmail.com",
+    )
+
+def send_vip_purchase_email(email: str, plan: str = "personal") -> tuple[bool, str]:
+    email_clean = email.lower().strip()
+    template = templates.get_template("email_purchase_vip.html")
+    html_content = template.render({
+        "email": email_clean,
+        "plan": plan,
+    })
+    plain_body = (
+        f"🎉 Welcome to bipluk+ Lifetime!\n\n"
+        "Your purchase has been confirmed and your studio vault is now unlocked.\n\n"
+        "Open your VIP vault: https://bipluk.com/home"
+    )
+    return send_email_via_resend(
+        to=email_clean,
+        subject="🎉 Welcome to bipluk+ Lifetime! Your studio vault is unlocked",
+        body=plain_body,
+        html=html_content,
+        reply_to="halfradiationllc@gmail.com",
+    )
+
+@app.get("/api/test-smart-email")
+async def test_smart_email(email: str = "max@gmail.com", type: str = "battery", send: str = None):
+    if type == "battery":
+        if send == "1":
+            ok, err = send_battery_warning_email(email)
+            return {"status": "sent" if ok else "failed", "error": err, "type": "battery", "email": email}
+        template = templates.get_template("email_battery_warning.html")
+        return HTMLResponse(content=template.render({"email": email, "unsubscribe_token": "test"}))
+    elif type == "vault_limit":
+        if send == "1":
+            ok, err = send_vault_limit_email(email)
+            return {"status": "sent" if ok else "failed", "error": err, "type": "vault_limit", "email": email}
+        template = templates.get_template("email_vault_limit.html")
+        return HTMLResponse(content=template.render({"email": email, "unsubscribe_token": "test"}))
+    elif type == "vip_purchase":
+        if send == "1":
+            ok, err = send_vip_purchase_email(email)
+            return {"status": "sent" if ok else "failed", "error": err, "type": "vip_purchase", "email": email}
+        template = templates.get_template("email_purchase_vip.html")
+        return HTMLResponse(content=template.render({"email": email, "plan": "personal"}))
+    return JSONResponse({"error": "Invalid email type. Supported: battery, vault_limit, vip_purchase"}, status_code=400)
+
+
 @app.get("/signup", response_class=HTMLResponse)
 async def signup_page(request: Request, error: str = None, plan: str = None):
     if get_current_user(request):
@@ -2474,6 +2570,7 @@ async def create_bank(
 
     banks = database.get_all_banks(user["id"])
     if user["tier"] != "premium" and len(banks) >= 1:
+        notify_vault_limit_reached(user["email"])
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
@@ -2575,6 +2672,7 @@ async def upload_bank_file(
 
     banks = database.get_all_banks(user["id"])
     if user["tier"] != "premium" and len(banks) >= 1:
+        notify_vault_limit_reached(user["email"])
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/checkout"})
         return RedirectResponse(url="/checkout")
@@ -3046,6 +3144,10 @@ async def stripe_webhook(request: Request):
                 existing_user = database.get_user_by_email(customer_email)
                 if existing_user:
                     database.update_user_tier(customer_email, "premium", customer_id, plan=purchased_plan)
+                    try:
+                        send_vip_purchase_email(customer_email, plan=purchased_plan)
+                    except Exception as e:
+                        logger.error(f"Failed to send VIP purchase email to {customer_email}: {e}")
                     logger.info(f"Subscription activated via Stripe: {customer_email}", extra={"email": customer_email, "customer_id": customer_id, "plan": purchased_plan, "event_type": "subscription_activated"})
                     trigger_alert(
                         "subscription_activated",

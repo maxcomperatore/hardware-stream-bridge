@@ -74,8 +74,8 @@
 
         <!-- Magic Link Passwordless Button -->
         <button type="button" onclick="sendMagicLink()" id="magic-btn"
-            class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-4">
-            <svg class="w-5 h-5 shrink-0 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            class="w-full py-3 px-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 opacity-60 text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-200 shadow-sm active:scale-[0.98] mb-4">
+            <svg class="w-5 h-5 shrink-0 text-zinc-400" id="magic-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="16" x="2" y="4" rx="2.5"/>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
             </svg>
@@ -129,6 +129,8 @@
         const passwordInput = document.getElementById('login-password');
         const submitBtn = document.getElementById('login-btn');
         const feedbackEl = document.getElementById('magic-feedback');
+        const magicBtn = document.getElementById('magic-btn');
+        const magicIcon = document.getElementById('magic-btn-icon');
 
         function showFeedback(msg, isError = false) {
             if (!feedbackEl) return;
@@ -139,6 +141,27 @@
                 feedbackEl.classList.add('bg-emerald-950/40', 'border', 'border-emerald-500/40', 'text-emerald-300');
             }
             feedbackEl.textContent = msg;
+        }
+
+        function updateMagicHighlight() {
+            if (!magicBtn || !emailInput) return;
+            const val = emailInput.value.trim();
+            const isValid = val.length > 3 && val.includes('@') && val.includes('.');
+            if (isValid) {
+                magicBtn.classList.remove('border-zinc-800', 'text-zinc-400', 'opacity-60');
+                magicBtn.classList.add('border-zinc-300', 'ring-1', 'ring-zinc-300', 'text-white', 'opacity-100');
+                if (magicIcon) {
+                    magicIcon.classList.remove('text-zinc-400');
+                    magicIcon.classList.add('text-white');
+                }
+            } else {
+                magicBtn.classList.remove('border-zinc-300', 'ring-1', 'ring-zinc-300', 'text-white', 'opacity-100');
+                magicBtn.classList.add('border-zinc-800', 'text-zinc-400', 'opacity-60');
+                if (magicIcon) {
+                    magicIcon.classList.remove('text-white');
+                    magicIcon.classList.add('text-zinc-400');
+                }
+            }
         }
 
         function checkLoginValidation() {
@@ -155,10 +178,12 @@
             emailInput.addEventListener('input', () => {
                 emailInput.classList.remove('border-rose-500', 'ring-1', 'ring-rose-500');
                 emailInput.classList.add('border-zinc-800');
+                updateMagicHighlight();
                 checkLoginValidation();
             });
             passwordInput.addEventListener('input', checkLoginValidation);
             checkLoginValidation();
+            updateMagicHighlight();
         }
 
         async function sendMagicLink() {

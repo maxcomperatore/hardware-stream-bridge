@@ -73,8 +73,8 @@
 
         <!-- Magic Link Passwordless Button -->
         <button type="button" onclick="sendMagicLink()" id="magic-btn"
-            class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150 shadow-sm active:scale-[0.98] mb-3">
-            <svg class="w-4 h-4 shrink-0 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 opacity-60 text-xs sm:text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-200 shadow-sm active:scale-[0.98] mb-3">
+            <svg class="w-4 h-4 shrink-0 text-zinc-400" id="magic-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="16" x="2" y="4" rx="2.5"/>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
             </svg>
@@ -278,11 +278,37 @@
         }
 
         const signupEmailInput = document.getElementById('signup-email');
+        const magicBtn = document.getElementById('magic-btn');
+        const magicIcon = document.getElementById('magic-btn-icon');
+
+        function updateMagicHighlight() {
+            if (!magicBtn || !signupEmailInput) return;
+            const val = signupEmailInput.value.trim();
+            const isValid = val.length > 3 && val.includes('@') && val.includes('.');
+            if (isValid) {
+                magicBtn.classList.remove('border-zinc-800', 'text-zinc-400', 'opacity-60');
+                magicBtn.classList.add('border-zinc-300', 'ring-1', 'ring-zinc-300', 'text-white', 'opacity-100');
+                if (magicIcon) {
+                    magicIcon.classList.remove('text-zinc-400');
+                    magicIcon.classList.add('text-white');
+                }
+            } else {
+                magicBtn.classList.remove('border-zinc-300', 'ring-1', 'ring-zinc-300', 'text-white', 'opacity-100');
+                magicBtn.classList.add('border-zinc-800', 'text-zinc-400', 'opacity-60');
+                if (magicIcon) {
+                    magicIcon.classList.remove('text-white');
+                    magicIcon.classList.add('text-zinc-400');
+                }
+            }
+        }
+
         if (signupEmailInput) {
             signupEmailInput.addEventListener('input', () => {
                 signupEmailInput.classList.remove('border-rose-500', 'ring-1', 'ring-rose-500');
                 signupEmailInput.classList.add('border-zinc-800');
+                updateMagicHighlight();
             });
+            updateMagicHighlight();
         }
 
         passwordInput.addEventListener('input', checkValidation);

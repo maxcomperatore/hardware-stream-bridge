@@ -2616,7 +2616,7 @@
 
     <!-- Dedicated Log Out Confirmation Modal -->
     <div id="logout-confirm-modal"
-        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition select-none">
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-[100] flex items-center justify-center hidden-transition select-none p-4">
         <div class="bg-[#0e0e11] border border-zinc-800 rounded-2xl p-6 w-[24rem] max-w-[92vw] text-left shadow-2xl relative">
             <button onclick="closeLogoutModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
                 <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" style="filter: invert(0.6);" alt="Close" />
@@ -2641,8 +2641,8 @@
                     class="flex-1 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-pixel uppercase tracking-wider transition-all active:scale-[0.98]">
                     Cancel
                 </button>
-                <a href="/logout" onclick="event.preventDefault(); window.location.replace('/logout');"
-                    class="flex-1 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-pixel uppercase tracking-wider text-center transition-all active:scale-[0.98]">
+                <a href="/logout"
+                    class="flex-1 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-pixel uppercase tracking-wider text-center transition-all active:scale-[0.98] inline-block">
                     Log Out
                 </a>
             </div>
@@ -2651,7 +2651,7 @@
 
     <!-- Dedicated Delete Account Confirmation Modal -->
     <div id="delete-account-modal"
-        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition select-none">
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-[100] flex items-center justify-center hidden-transition select-none p-4">
         <div class="bg-[#0e0e11] border border-rose-950/60 rounded-2xl p-6 w-[26rem] max-w-[92vw] text-left shadow-2xl relative">
             <button onclick="closeDeleteAccountModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
                 <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" style="filter: invert(0.6);" alt="Close" />

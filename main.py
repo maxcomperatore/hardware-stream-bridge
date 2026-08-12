@@ -4381,31 +4381,8 @@ def send_welcome_email_task(email: str):
 
 
 async def get_drip_eligible_users() -> tuple[list[dict], int, int]:
-    """Return (eligible users, skipped_young, pending_total)."""
-    if not hasattr(database, "get_pending_drip_users"):
-        try:
-            import importlib
-            importlib.reload(database)
-        except Exception as reload_err:
-            logger.error(f"failed to reload database module: {reload_err}")
-
-    users = database.get_pending_drip_users()
-    eligible: list[dict] = []
-    skipped_young = 0
-    for u in users:
-        created_at = datetime.fromisoformat(u["created_at"])
-        elapsed = datetime.now() - created_at
-        if elapsed.total_seconds() < 3600:
-            skipped_young += 1
-            continue
-        eligible.append(
-            {
-                "id": u["id"],
-                "email": u["email"],
-                "elapsed_seconds": int(elapsed.total_seconds()),
-            }
-        )
-    return eligible, skipped_young, len(users)
+    """Return (eligible users, skipped_young, pending_total). Paywall drip campaign killed per owner request."""
+    return [], 0, 0
 
 
 @app.get("/api/cron/drip-pending")

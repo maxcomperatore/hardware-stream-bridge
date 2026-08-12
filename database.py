@@ -12,7 +12,24 @@ _DB_OFFLINE_CACHE = False
 _DB_LAST_CHECK = 0.0
 
 def optimize_neon_url(url: str | None) -> str | None:
-    """Return clean database URL without host string corruption."""
+    """Ensure Neon PostgreSQL connection URL uses the pooled connection string (-pooler.neon.tech) for serverless efficiency."""
+    if not url or "neon.tech" not in url:
+        return url
+    if "-pooler" in url:
+        return url
+    try:
+        parsed = urlparse(url)
+        if parsed.hostname and "neon.tech" in parsed.hostname:
+            host_parts = parsed.hostname.split(".")
+            host_parts[0] = f"{host_parts[0]}-pooler"
+            new_host = ".".join(host_parts)
+            user_pass = f"{parsed.username}:{parsed.password}" if parsed.password else (parsed.username or "")
+            netloc_auth = f"{user_pass}@" if user_pass else ""
+            port_str = f":{parsed.port}" if parsed.port else ""
+            new_netloc = f"{netloc_auth}{new_host}{port_str}"
+            return urlunparse((parsed.scheme, new_netloc, parsed.path, parsed.params, parsed.query, parsed.fragment))
+    except Exception:
+        pass
     return url
 
 DATABASE_URL = optimize_neon_url(RAW_DATABASE_URL)
@@ -23,19 +40,10 @@ def mark_db_offline():
     _DB_LAST_CHECK = time.time()
 
 def is_db_offline() -> bool:
-    global _DB_OFFLINE_CACHE, _DB_LAST_CHECK
-    now = time.time()
-    # Cache result for 30s to avoid repeated timeouts
-    if _DB_OFFLINE_CACHE and (now - _DB_LAST_CHECK < 30):
-        return True
-    try:
-        conn = psycopg2.connect(DATABASE_URL, connect_timeout=3)
-        conn.close()
-        _DB_OFFLINE_CACHE = False
-        return False
-    except Exception as e:
-        mark_db_offline()
-        return True
+    global _DB_OFFLINE_CACHE
+    # Return cached status without opening a connection on passive page renders.
+    # Real DB operations update _DB_OFFLINE_CACHE when connections fail or succeed.
+    return _DB_OFFLINE_CACHE
 
 def get_db_connection(max_retries=1, retry_delay=0.5):
     """

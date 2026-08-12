@@ -139,23 +139,21 @@ async def get_ars_blue_rate() -> float:
 
 def _sigmoid_ppp_discount(gdp_ratio: float, is_tech_audience: bool = True) -> float:
     """
-    Sigmoid-based PPP discount curve.
-    Adjusts max discount based on audience demographics to maximize revenue.
+    Capitalist Max-Revenue Extraction PPP Curve.
+    Calibrated for synth/music gear producers who have higher disposable income
+    than standard per-capita GDP. Maximizes AOV and global ARR while retaining conversion lift.
     """
-    alpha = 0.45
-    max_discount = 0.65 if is_tech_audience else 0.80
-    steepness = 1.15 if is_tech_audience else 1.25
-
     if gdp_ratio >= 1.0:
         return 0.0
 
-    raw = 1.0 - (gdp_ratio ** alpha)
-    discounted = min(raw * steepness, max_discount)
+    # Max discount capped at 55% for max margin retention (tech & gear audience)
+    max_discount = 0.55
 
-    k = 8.0
-    smoothed = 1.0 / (1.0 + math.exp(-k * (discounted - 0.5)))
-    normalized = (smoothed - 0.5) * max_discount * 1.65
-    return max(0.0, min(normalized, max_discount))
+    # Power exponent alpha = 0.32 prevents over-discounting in mid-income producer hubs
+    alpha = 0.32
+    raw_discount = (1.0 - (gdp_ratio ** alpha)) * max_discount
+
+    return max(0.0, min(raw_discount, max_discount))
 
 
 def _compute_ppp_price_usd(country_code: str) -> float:
@@ -169,9 +167,9 @@ def _compute_ppp_price_usd(country_code: str) -> float:
     adjusted_usd = BASE_USD_PRICE * (1.0 - discount)
 
     if country_code.upper() == "AR":
-        adjusted_usd *= 0.55
+        adjusted_usd = max(21.99, adjusted_usd * 0.75)
 
-    return max(MIN_USD_FLOOR, min(adjusted_usd, MAX_USD_CEIL))
+    return max(19.00, min(adjusted_usd, MAX_USD_CEIL))
 
 
 def _snap_ending_9(whole: float) -> int:
@@ -228,6 +226,8 @@ def _psychological_round(amount: float, currency: str) -> int:
         return max(900, whole * 100)
 
     if cur in ending_99:
+        if abs(amount - round(amount)) < 0.01:
+            return int(round(amount * 100))
         floored = math.floor(amount)
         snapped = (floored - 1 + 0.99) if amount - floored < 0.5 else (floored + 0.99)
         return max(99, int(round(snapped * 100)))

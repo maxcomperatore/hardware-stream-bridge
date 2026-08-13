@@ -1751,10 +1751,34 @@ async def do_magic_request(request: Request):
         next_url = None
 
     email_clean = email.lower().strip()
-    if not email_clean or "@" not in email_clean or "." not in email_clean:
+    typo_domains = {
+        "gmai.com": "gmail.com",
+        "gmaill.com": "gmail.com",
+        "gamil.com": "gmail.com",
+        "gmai.co": "gmail.com",
+        "gmai.con": "gmail.com",
+        "gmai.org": "gmail.com",
+        "gmal.com": "gmail.com",
+        "hotmial.com": "hotmail.com",
+        "hotmai.com": "hotmail.com",
+        "outlok.com": "outlook.com",
+        "yaho.com": "yahoo.com",
+        "iclaud.com": "icloud.com",
+    }
+    
+    validation_err = None
+    if not email_clean or not EMAIL_REGEX.match(email_clean):
+        validation_err = "Please enter a valid email address."
+    elif "@" in email_clean:
+        domain = email_clean.split("@")[1]
+        if domain in typo_domains:
+            suggested = f"{email_clean.split('@')[0]}@{typo_domains[domain]}"
+            validation_err = f"Did you mean {suggested}?"
+
+    if validation_err:
         if "application/json" in request.headers.get("content-type", ""):
-            return JSONResponse({"ok": False, "error": "Please enter a valid email address."}, status_code=400)
-        return render_template("login.html", request, {"error": "Please enter a valid email address.", "next": next_url})
+            return JSONResponse({"ok": False, "error": validation_err}, status_code=400)
+        return render_template("login.html", request, {"error": validation_err, "next": next_url})
 
     token = create_magic_token(email_clean, expires_in=900)
     code = f"{secrets.randbelow(900000) + 100000}"
@@ -2274,12 +2298,9 @@ async def test_smart_email(email: str = "max@gmail.com", type: str = "battery", 
     return JSONResponse({"error": "Invalid email type. Supported: battery, vault_limit, vip_purchase"}, status_code=400)
 
 
-@app.get("/signup", response_class=HTMLResponse)
+@app.get("/signup")
 async def signup_page(request: Request, error: str = None, plan: str = None):
-    if get_current_user(request):
-        return RedirectResponse(url="/home")
-    plan = normalize_plan(plan)
-    return render_signup(request, error=error, plan=plan)
+    return RedirectResponse(url="/login", status_code=302)
 
 @app.post("/signup")
 async def do_signup(

@@ -1,0 +1,113 @@
+<!-- Contact & Support Email Modal -->
+<div id="contact-email-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+    <div class="relative w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-6 md:p-8 shadow-2xl space-y-6 text-left transform scale-95 transition-transform duration-300" id="contact-modal-card">
+        <!-- Close Button (X) -->
+        <button type="button" id="contact-modal-close-x" class="absolute top-4 right-4 text-zinc-500 hover:text-white text-lg font-mono p-1 transition-colors" aria-label="Close modal">&times;</button>
+        
+        <div class="space-y-3">
+            <span class="inline-block text-[10px] font-pixel uppercase tracking-widest text-emerald-400 font-semibold px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded">Official Support</span>
+            <h3 id="contact-modal-title" class="text-xl font-pixel uppercase text-white tracking-wide">Contact & Support</h3>
+        </div>
+
+        <p class="text-xs text-zinc-300 leading-relaxed font-sans">
+            Need help with your soundbank library, licensing, or synth support? Reach out directly to our team anytime.
+        </p>
+
+        <!-- Email Address Box with 1-Click Copy -->
+        <div class="p-4 rounded-xl border border-zinc-800 bg-zinc-900/60 space-y-2">
+            <span class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider block">Official Email</span>
+            <div class="flex items-center justify-between gap-2">
+                <span id="contact-email-address" class="font-mono text-sm text-white select-all font-semibold">halfradiationllc@gmail.com</span>
+                <button type="button" id="copy-contact-email-btn" class="px-3 py-1.5 text-[11px] font-mono bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-lg transition-colors flex items-center gap-1.5 border border-zinc-700">
+                    <span id="copy-email-text">Copy</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="text-[11px] text-zinc-400 font-sans leading-normal">
+            Response time: Usually within <strong class="text-white">2 to 4 hours</strong> for technical support and licensing.
+        </p>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <a href="mailto:halfradiationllc@gmail.com" class="w-full sm:flex-1 py-3 px-5 text-center text-xs font-pixel uppercase tracking-wider bg-emerald-500 text-black font-bold rounded-xl hover:bg-emerald-400 transition-all shadow-lg hover:shadow-emerald-500/20">
+                OPEN MAIL APP
+            </a>
+            <button type="button" id="contact-modal-close-btn" class="w-full sm:flex-1 py-3 px-5 text-center text-xs font-pixel uppercase tracking-wider bg-zinc-900 border border-zinc-800 text-zinc-300 font-semibold rounded-xl hover:bg-zinc-800 hover:text-white transition-all">
+                CLOSE
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contactModal = document.getElementById('contact-email-modal');
+    const contactModalCard = document.getElementById('contact-modal-card');
+    const closeBtn = document.getElementById('contact-modal-close-btn');
+    const closeX = document.getElementById('contact-modal-close-x');
+    const copyBtn = document.getElementById('copy-contact-email-btn');
+    const copyText = document.getElementById('copy-email-text');
+    const emailAddress = 'halfradiationllc@gmail.com';
+
+    function openContactModal() {
+        if (!contactModal) return;
+        contactModal.classList.remove('hidden');
+        setTimeout(function() {
+            contactModal.classList.remove('opacity-0');
+            contactModalCard.classList.remove('scale-95');
+            contactModalCard.classList.add('scale-100');
+        }, 10);
+    }
+
+    function closeContactModal() {
+        if (!contactModal) return;
+        contactModal.classList.add('opacity-0');
+        contactModalCard.classList.remove('scale-100');
+        contactModalCard.classList.add('scale-95');
+        setTimeout(function() {
+            contactModal.classList.add('hidden');
+        }, 300);
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeContactModal);
+    if (closeX) closeX.addEventListener('click', closeContactModal);
+
+    if (contactModal) {
+        contactModal.addEventListener('click', function(e) {
+            if (e.target === contactModal) {
+                closeContactModal();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && contactModal && !contactModal.classList.contains('hidden')) {
+            closeContactModal();
+        }
+    });
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(emailAddress).then(function() {
+                copyText.textContent = 'Copied!';
+                copyBtn.classList.add('bg-emerald-500/20', 'border-emerald-500/40', 'text-emerald-400');
+                setTimeout(function() {
+                    copyText.textContent = 'Copy';
+                    copyBtn.classList.remove('bg-emerald-500/20', 'border-emerald-500/40', 'text-emerald-400');
+                }, 2000);
+            }).catch(function() {
+                copyText.textContent = 'halfradiationllc@gmail.com';
+            });
+        });
+    }
+
+    // Attach click listeners to email contact links/buttons
+    document.addEventListener('click', function(e) {
+        const trigger = e.target.closest('[data-open-contact-modal]');
+        if (trigger) {
+            e.preventDefault();
+            openContactModal();
+        }
+    });
+});
+</script>

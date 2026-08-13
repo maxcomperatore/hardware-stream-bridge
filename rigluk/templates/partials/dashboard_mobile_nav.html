@@ -1,0 +1,20 @@
+<nav id="mobile-dashboard-nav"
+    class="shrink-0 bg-[#0a0a0c]/95 backdrop-blur-xl border-t border-white/5 flex items-stretch justify-around px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-50 relative">
+    <button type="button" data-mobile-tab="home" id="mobile-nav-btn-home"
+        class="mobile-nav-btn flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl text-emerald-400">
+        <img src="/static/icons/dinkie/file-folder-filled.svg" class="h-5 w-5" alt=""
+            style="filter: invert(60%) sepia(43%) saturate(1352%) hue-rotate(124deg) brightness(97%) contrast(92%);" />
+        <span class="text-[9px] font-pixel uppercase tracking-wider">Library</span>
+    </button>
+    <button type="button" data-mobile-tab="search" id="mobile-nav-btn-search"
+        class="mobile-nav-btn flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl text-zinc-500">
+        <img src="/static/icons/dinkie/left-magnifying-glass.svg" class="h-5 w-5 opacity-50" alt=""
+            style="filter: invert(1);" />
+        <span class="text-[9px] font-pixel uppercase tracking-wider">Search</span>
+    </button>
+    <button type="button" data-mobile-tab="you" id="mobile-nav-btn-you"
+        class="mobile-nav-btn flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl text-zinc-500">
+        <img id="mobile-nav-avatar" src="" class="h-5 w-5 rounded-full border border-zinc-700 object-cover" alt="" width="20" height="20" />
+        <span class="text-[9px] font-pixel uppercase tracking-wider">You</span>
+    </button>
+</nav>

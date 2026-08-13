@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to rigluk</title>
+</head>
+<body style="background-color: #050507; color: #d4d4d8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #050507; table-layout: fixed;">
+        <tr>
+            <td align="center" style="padding: 36px 16px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; overflow: hidden; border-collapse: separate; box-shadow: 0 24px 48px rgba(0,0,0,0.85);">
+                    
+                    <!-- Top Synth LED Accent Bar -->
+                    <tr>
+                        <td style="height: 3px; background: linear-gradient(90deg, #2563eb 0%, #10b981 50%, #3b82f6 100%); line-height: 0; font-size: 0;">&nbsp;</td>
+                    </tr>
+
+                    <!-- Header Logo -->
+                    <tr>
+                        <td style="padding: 28px 32px 20px 32px; border-bottom: 1px solid #18181b; text-align: center;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="vertical-align: middle; padding-right: 10px;">
+                                        <img src="https://rigluk.com/static/logo.svg" width="36" height="36" style="display: block; image-rendering: pixelated; border: none;" alt="rigluk Logo">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <span style="font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 19px; color: #ffffff; letter-spacing: 3px; text-transform: uppercase;">rigluk</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="color: #71717a; font-size: 11px; margin: 6px 0 0 0; font-family: monospace; text-transform: uppercase; letter-spacing: 1.5px;">Web MIDI Cloud Librarian</p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 32px;">
+                            
+                            <!-- Avatar Section -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+                                <tr>
+                                    <td style="padding-right: 16px; vertical-align: middle;">
+                                        <img src="{{ avatar_url }}" width="56" height="56" style="display: block; border-radius: 28px; border: 2px solid #2563eb; background-color: #18181b; image-rendering: pixelated;" alt="Avatar">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <h1 style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0; padding: 0;">Hi {{ first_name }},</h1>
+                                        <span style="display: inline-block; font-size: 10px; font-family: monospace; color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 2px 8px; border-radius: 4px; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">● Vault Active</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Intro -->
+                            <p style="font-size: 14px; line-height: 22px; margin-top: 0; margin-bottom: 14px; color: #d4d4d8;">
+                                We believe a good SysEx librarian shouldn’t rely on dusty legacy drivers, virtual COM ports, or desktop installers. <strong style="color: #ffffff;">rigluk</strong> runs with byte-for-byte precision directly inside your web browser.
+                            </p>
+                            <p style="font-size: 14px; line-height: 22px; margin-top: 0; margin-bottom: 24px; color: #a1a1aa;">
+                                Whether backing up a custom patch collection, restoring factory banks, or protecting vintage hardware from static RAM battery failure, your cloud vault is ready.
+                            </p>
+
+                            <!-- Hardware Tags -->
+                            <div style="background-color: #121216; border: 1px solid #1f1f24; border-radius: 12px; padding: 14px; margin-bottom: 28px; text-align: center;">
+                                <p style="color: #71717a; font-size: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 8px 0;">Instant SysEx Support For:</p>
+                                <div style="font-family: monospace; font-size: 11px; color: #a1a1aa; line-height: 18px;">
+                                    <span style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.2);">DX7</span> &nbsp;
+                                    <span style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.2);">JUNO-106</span> &nbsp;
+                                    <span style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.2);">KORG M1</span> &nbsp;
+                                    <span style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.2);">ROLAND S-1</span> &nbsp;
+                                    <span style="color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">83+ SYNTHS</span>
+                                </div>
+                            </div>
+
+                            <!-- Setup Steps Heading -->
+                            <h3 style="color: #ffffff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 0; margin-bottom: 16px; font-family: 'Courier New', Courier, monospace;">3-Step Quick Start:</h3>
+                            
+                            <!-- Step 1 Card -->
+                            <div style="background-color: #121216; border: 1px solid #27272a; border-radius: 12px; padding: 16px; margin-bottom: 12px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 32px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 16px; font-weight: bold; color: #3b82f6;">01</td>
+                                        <td style="padding-left: 8px; vertical-align: top;">
+                                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Connect your MIDI interface</h4>
+                                            <p style="color: #a1a1aa; font-size: 12px; line-height: 18px; margin: 0;">Plug in your pedal using a USB cable or MIDI interface.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Step 2 Card -->
+                            <div style="background-color: #121216; border: 1px solid #27272a; border-radius: 12px; padding: 16px; margin-bottom: 12px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 32px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 16px; font-weight: bold; color: #3b82f6;">02</td>
+                                        <td style="padding-left: 8px; vertical-align: top;">
+                                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Capture your soundbank</h4>
+                                            <p style="color: #a1a1aa; font-size: 12px; line-height: 18px; margin: 0;">Open your dashboard, click <strong style="color: #ffffff;">Capture Preset Bank</strong>, and press SEND on your guitar pedal.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Step 3 Card -->
+                            <div style="background-color: #121216; border: 1px solid #27272a; border-radius: 12px; padding: 16px; margin-bottom: 28px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 32px; vertical-align: top; font-family: 'Courier New', Courier, monospace; font-size: 16px; font-weight: bold; color: #10b981;">03</td>
+                                        <td style="padding-left: 8px; vertical-align: top;">
+                                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Organize & Protect</h4>
+                                            <p style="color: #a1a1aa; font-size: 12px; line-height: 18px; margin: 0;">Search preset names, export raw .syx files, and restore hardware anytime in 1 click.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Primary CTA Button -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 12px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://rigluk.com/home" style="display: inline-block; background-color: #2563eb; color: #ffffff; text-decoration: none; padding: 14px 36px; border-radius: 9999px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 20px rgba(37, 99, 235, 0.45);">Open Your Vault</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="text-align: center; color: #71717a; font-size: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 16px 0;">
+                                Zero Installers · Browser-Native Web MIDI
+                            </p>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 24px 32px; background-color: #050507; border-top: 1px solid #18181b; text-align: center;">
+                            <p style="font-size: 11px; line-height: 18px; color: #71717a; margin: 0 0 8px 0;">
+                                Questions or setting up MIDI? Reply directly to this email for support.
+                            </p>
+                            <p style="font-size: 11px; line-height: 18px; color: #52525b; margin: 0;">
+                                &copy; 2026 rigluk · Web MIDI Cloud Librarian
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

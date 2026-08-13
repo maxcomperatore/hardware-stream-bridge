@@ -1,0 +1,3081 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'partials/seo_noindex.html' %}
+    {% include "partials/local_fonts.html" %}
+    <title>rigluk</title>
+
+    {% include 'partials/favicon.html' %}
+    <!-- HTMX -->
+    <script src="/static/js/htmx.min.js"></script>
+
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        .dinkie-img {
+            image-rendering: pixelated;
+        }
+
+        .dinkie-img--white {
+            filter: brightness(0) invert(1) !important;
+        }
+
+        /* Smooth, premium scrollbars */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0e0e11;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 999px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+
+        /* Clean Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #27272a;
+            height: 4px;
+            border-radius: 999px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #3f3f46;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: oklch(48.42% 0.1129 251.34);
+        }
+
+        /* LCD Screen Ambient Glow */
+        @keyframes subtle-glow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 6px oklch(58.50% 0.1049 251.61 / 0.2);
+            }
+
+            50% {
+                text-shadow: 0 0 14px oklch(58.50% 0.1049 251.61 / 0.6);
+            }
+        }
+
+        .lcd-glow {
+            animation: subtle-glow 4s infinite ease-in-out;
+        }
+
+        .hidden-transition {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .visible-transition {
+            opacity: 1;
+            pointer-events: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dither effect on images */
+        .dithered {
+            filter: grayscale(100%) contrast(130%) brightness(110%) url(#dither-filter);
+            image-rendering: pixelated;
+            will-change: filter;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* 1-bit style dither mesh with retro ASCII characters */
+        /* Mobile specific fancy background pattern */
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        .mobile-vault-glow {
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(74, 127, 184, 0.18), transparent),
+                radial-gradient(ellipse 60% 40% at 100% 50%, rgba(16, 185, 129, 0.08), transparent);
+        }
+
+        .mobile-scroll {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .mobile-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mobile-cover-tile {
+            overflow: hidden;
+            border: 1px solid #27272a;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .mobile-cover-img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mobile-bank-hero {
+            background: linear-gradient(180deg, rgba(20, 20, 28, 0.95) 0%, transparent 100%);
+        }
+
+        .mobile-patch-art {
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            opacity: 1;
+        }
+
+        #mobile-patch-sheet.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        #mobile-patch-sheet.open .mobile-patch-sheet-backdrop,
+        #mobile-patch-sheet.open #mobile-patch-sheet-panel {
+            pointer-events: auto;
+        }
+
+        #mobile-patch-sheet.open #mobile-patch-sheet-panel {
+            transform: translateY(0);
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        /* CRT Screen scanline overlay */
+        .crt-scanlines {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crt-scanlines::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Brutalist physical hardware buttons */
+        .tactical-button {
+            border: 1px solid #27272a;
+            border-bottom: 3px solid #18181b;
+            border-right: 3px solid #18181b;
+            transition: all 0.05s ease;
+        }
+
+        .tactical-button:active {
+            border-bottom-width: 1px;
+            border-right-width: 1px;
+            transform: translate(2px, 2px);
+        }
+
+        /* Smooth collapsible sidebar (Sliding Mask Technique) */
+        #main-sidebar {
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+            overflow: hidden !important;
+        }
+        #main-sidebar.sidebar-collapsed {
+            width: 0 !important;
+            min-width: 0 !important;
+            opacity: 0;
+            pointer-events: none;
+            border-right-width: 0 !important;
+        }
+        #main-sidebar-content {
+            width: 16rem;
+            min-width: 16rem;
+        }
+
+        .tactical-pink-button {
+            border: 1px solid oklch(48.42% 0.1129 251.34);
+            border-bottom: 3px solid oklch(42.72% 0.1149 254.84);
+            border-right: 3px solid oklch(42.72% 0.1149 254.84);
+            transition: all 0.05s ease;
+        }
+
+        .tactical-pink-button:active {
+            border-bottom-width: 1px;
+            border-right-width: 1px;
+            transform: translate(2px, 2px);
+        }
+
+        /* Synth bezel container */
+        .synth-bezel {
+            border: 2px solid #1f1f23;
+            border-top-color: #0c0c0e;
+            border-left-color: #0c0c0e;
+            box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .font-pixel {
+            font-family: 'Silkscreen', monospace;
+        }
+
+        .font-lcd {
+            font-family: 'VT323', monospace;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body
+    class="bg-[#0b0b0d] text-zinc-300 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500/30 selection:text-white overflow-hidden relative">
+
+    {% include 'partials/dashboard_mobile.html' %}
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100 hidden md:block"></div>
+    <!-- Fancy Mobile Background Pattern -->
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <!-- SVG Dither Filter definition -->
+    <svg class="absolute h-0 w-0 pointer-events-none" width="0" height="0">
+        <filter id="dither-filter">
+            <!-- Generate heavy fractal noise grain -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />
+            <!-- Convert noise to high-contrast dither matrix -->
+            <feColorMatrix type="matrix" values="0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 15 -7" result="dither" />
+            <!-- Composite the noise over the source graphic -->
+            <feComposite in="SourceGraphic" in2="dither" operator="in" />
+        </filter>
+    </svg>
+
+    <!-- Top Navigation Player Bar -->
+    <header
+        class="hidden md:flex h-16 border-b border-zinc-900 bg-[#0e0e11] px-5 items-center justify-between z-10 shadow-md select-none">
+
+        <!-- Left: Quick play & Audition Volume -->
+        <div class="flex items-center gap-5 w-1/4">
+            <!-- Transport Buttons styled as Tactile Hardware Keys -->
+            <div class="flex items-center gap-1.5 p-1 bg-zinc-950 border border-zinc-900 rounded-lg">
+                <button onclick="toggleSidebar()" id="sidebar-toggle-btn" title="Toggle Sidebar (Expand/Collapse)"
+                    class="p-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded transition-all active:scale-95 flex items-center justify-center tactical-button">
+                    <img src="/static/icons/dinkie/sidebar.svg" class="h-4 w-4 opacity-80" style="filter: brightness(0) invert(1);" alt="Sidebar" />
+                </button>
+                <button onclick="toggleAuditionPlay()" id="player-play-btn" title="Play sound preset"
+                    class="p-2 bg-white text-black rounded hover:bg-zinc-200 transition-all active:scale-95 flex items-center justify-center tactical-button">
+                    <img id="play-icon" src="/static/icons/dinkie/right-black-triangle-filled.svg" class="h-4 w-4" />
+                    <img id="stop-icon" src="/static/icons/dinkie/black-square-for-stop-filled.svg"
+                        class="h-4 w-4 hidden" />
+                </button>
+            </div>
+        </div>
+
+        <!-- Center: LCD Display Console with CRT scanlines & Plastic bezel -->
+        <div
+            class="w-2/5 bg-[#050507] rounded-lg px-4 py-2 flex flex-col items-center justify-center relative select-none crt-scanlines synth-bezel h-[52px]">
+            <!-- LED Status -->
+            <div class="absolute top-1 right-2.5 flex items-center gap-1 z-10">
+                <span class="text-[5.5px] font-pixel text-zinc-600 tracking-widest uppercase">Midi In</span>
+                <span id="lcd-sync-dot"
+                    class="h-1.5 w-1.5 rounded-full bg-zinc-800 transition-colors duration-300"></span>
+            </div>
+
+            <div class="w-full text-center z-10">
+                <p id="lcd-status-text"
+                    class="text-[7.5px] font-pixel text-zinc-550 uppercase tracking-widest truncate leading-tight">
+                    SYSTEM RDY
+                </p>
+                <p id="lcd-patch-title"
+                    class="text-base font-lcd font-semibold text-emerald-400 lcd-glow tracking-widest truncate leading-none mt-0.5">
+                    SELECT PRESET BANK
+                </p>
+            </div>
+
+            <!-- LCD progress line -->
+            <div class="w-full bg-[#111115] h-[2px] rounded-full mt-1.5 overflow-hidden z-10">
+                <div id="lcd-progress-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-150"
+                    style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Right: Connections Popover -->
+        <div class="flex items-center justify-end gap-3 w-1/4 relative">
+
+            <!-- UI Scale Selector (Hidden) -->
+            <div class="hidden flex items-center gap-1.5 px-2.5 py-1.5 bg-[#141417] border border-zinc-800/80 rounded-lg select-none text-2xs font-semibold font-mono text-white">
+                <span class="text-[7.5px] font-pixel text-zinc-500 uppercase tracking-wider">Scale</span>
+                <select id="ui-scale-select" onchange="setUiScale(this.value)"
+                    class="bg-transparent text-white font-mono cursor-pointer focus:outline-none border-none outline-none p-0 text-2xs">
+                    <option value="0.9" class="bg-[#0e0e11]">90%</option>
+                    <option value="1.0" class="bg-[#0e0e11]" selected>100%</option>
+                    <option value="1.1" class="bg-[#0e0e11]">110%</option>
+                    <option value="1.2" class="bg-[#0e0e11]">120%</option>
+                    <option value="1.3" class="bg-[#0e0e11]">130%</option>
+                    <option value="1.4" class="bg-[#0e0e11]">140%</option>
+                </select>
+            </div>
+
+            <!-- Devices Trigger -->
+            <div class="relative">
+                <button onclick="dismissDevicesCallout(); toggleDevicePopover();" id="device-menu-btn"
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-[#141417] border border-zinc-800/80 rounded-lg hover:bg-zinc-900 transition-all text-2xs text-white font-semibold font-mono tactical-button">
+                    <span id="midi-status-dot" class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                    <span>Devices</span>
+                    <img src="/static/icons/dinkie/backhand-index-pointing-down.svg" class="h-3 w-3 opacity-60"
+                        style="filter: invert(1);" />
+                </button>
+
+                <!-- First-Time Visitors Arrow Doodle Callout -->
+                <div id="devices-callout-doodle" class="absolute top-10 right-0 flex flex-col items-end pointer-events-none z-30 animate-bounce">
+                    <div class="flex items-center gap-1 bg-amber-500/15 border border-amber-500/40 text-amber-300 px-2.5 py-1 rounded-md shadow-xl backdrop-blur-xs whitespace-nowrap">
+                        <span class="text-[9px] font-pixel uppercase tracking-wider">Connect MIDI ports here</span>
+                        <span class="text-amber-400 font-bold text-xs">↑</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if user.tier != 'premium' %}
+            <button onclick="showUpdatePaywallModal()"
+                class="flex items-center gap-1.5 px-3 py-1.5 bg-lapis-deep border border-blue-700/30 rounded-lg hover:bg-lapis-mid transition-all text-2xs text-white font-semibold font-mono tactical-button">
+                <img src="/static/icons/dinkie/arrows-maximize.svg" alt="Maximize" width="12" height="12" class="w-3 h-3 shrink-0 object-contain dinkie-img dinkie-img--white" style="filter: brightness(0) invert(1);" />
+                <span>Update Available</span>
+            </button>
+            {% endif %}
+
+            <!-- Setup Popover Dropdown -->
+            <div id="device-popover"
+                class="absolute right-0 top-full mt-2 w-72 bg-[#0e0e11] border border-zinc-800 rounded-xl p-4 shadow-2xl z-20 flex-col gap-3.5 select-none hidden">
+                <h4 class="font-pixel uppercase text-[8px] tracking-wider text-white border-b border-zinc-850 pb-2">MIDI
+                    Interface Setup</h4>
+
+                <div class="space-y-3.5">
+                    <div>
+                        <label class="block text-[7px] font-pixel text-zinc-500 uppercase mb-1 tracking-wider">Midi
+                            Input Port</label>
+                        <select id="midi-input-select"
+                            class="block w-full text-2xs bg-zinc-950 border border-zinc-850 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
+                            <option value="">No MIDI inputs detected</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[7px] font-pixel text-zinc-500 uppercase mb-1 tracking-wider">Midi
+                            Output Port</label>
+                        <select id="midi-output-select"
+                            class="block w-full text-2xs bg-zinc-950 border border-zinc-850 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
+                            <option value="">No MIDI outputs detected</option>
+                        </select>
+                    </div>
+
+                    <button onclick="initializeMidiAccess(true); toggleDevicePopover();"
+                        class="w-full flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-450 hover:text-white text-3xs font-pixel uppercase tracking-wider transition-colors tactical-button">
+                        Re-scan Ports
+                    </button>
+
+                    <div class="border-t border-zinc-850 pt-3 space-y-2.5">
+                        <h5 class="text-[7px] font-pixel text-zinc-500 uppercase tracking-wider">SysEx Flash Pacing</h5>
+                        <div>
+                            <label class="block text-[7px] font-pixel text-zinc-600 uppercase mb-1 tracking-wider">Inter-message delay</label>
+                            <select id="midi-delay-preset" onchange="saveMidiFlashSettings()"
+                                class="block w-full text-2xs bg-zinc-950 border border-zinc-850 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
+                                <option value="normal">Normal (60 ms)</option>
+                                <option value="slow">Slow (120 ms)</option>
+                                <option value="cakewalk">Cakewalk-style (~100 µs/byte)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[7px] font-pixel text-zinc-600 uppercase mb-1 tracking-wider">Synth pacing profile</label>
+                            <select id="midi-synth-profile" onchange="saveMidiFlashSettings()"
+                                class="block w-full text-2xs bg-zinc-950 border border-zinc-850 rounded py-1.5 px-2 text-zinc-300 focus:outline-none focus:border-zinc-700 cursor-pointer font-mono">
+                                <option value="auto">Auto (from bank)</option>
+                                <option value="dx7">Yamaha DX7</option>
+                                <option value="juno">Roland Juno</option>
+                                <option value="prophet">Sequential Prophet</option>
+                                <option value="generic">Generic</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="hidden md:flex flex-1 overflow-hidden">
+
+        <!-- Left Sidebar: Library Controls -->
+        <aside id="main-sidebar" class="w-64 border-r border-zinc-900 bg-[#0a0a0d] flex flex-col justify-between select-none shrink-0 overflow-hidden">
+            <div id="main-sidebar-content" class="w-64 h-full flex flex-col justify-between">
+                <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-4 space-y-5">
+
+                <!-- Brand Logo Header -->
+                <div class="flex items-center justify-between px-1 pb-1">
+                    <div class="flex items-center gap-2.5">
+                        <img src="/static/logo.svg" alt="Rigluk Logo"
+                            class="h-8 w-8 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none"
+                            style="image-rendering: pixelated;">
+                        <span class="font-pixel uppercase text-xs text-white tracking-wider">rigluk</span>
+                    </div>
+                    <button onclick="toggleSidebar()" title="Collapse sidebar"
+                        class="p-1 rounded hover:bg-zinc-850 text-zinc-500 hover:text-white transition-colors">
+                        <img src="/static/icons/dinkie/sidebar.svg" class="w-3.5 h-3.5 opacity-60 hover:opacity-100" style="filter: brightness(0) invert(1);" alt="Collapse" />
+                    </button>
+                </div>
+
+                <!-- Sound Pack Shop -->
+                <div class="space-y-1.5">
+                    <a href="/shop"
+                        class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition-all shadow-sm group">
+                        <span class="flex items-center gap-2 font-mono uppercase text-[10px] tracking-wider">
+                            <img src="/static/icons/dinkie/shopping-bag.svg" class="h-4 w-4 shrink-0 dinkie-emerald" style="filter: invert(62%) sepia(61%) saturate(459%) hue-rotate(106deg) brightness(92%) contrast(92%);" alt="Shop" />
+                            Sound Pack Shop
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Vault Banks Playlists -->
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between pl-1.5 pr-1">
+                        <h3 class="text-[10px] font-pixel uppercase text-zinc-500 tracking-wider">Vault Library</h3>
+                        {% if user.tier == 'premium' %}
+                        <div class="flex items-center gap-1.5">
+                            <a href="/banks/export-csv-all"
+                               id="vault-export-csv-link"
+                               title="Download patch catalog as CSV"
+                               class="text-[8px] font-pixel uppercase text-zinc-400 hover:text-zinc-200 tracking-wider transition-colors">
+                                Export CSV
+                            </a>
+                            <span class="text-[8px] text-zinc-700">|</span>
+                            <a href="/banks/export-all"
+                               id="vault-export-all-link"
+                               title="Download entire vault as .zip"
+                               onclick="return handleVaultExportAll(event)"
+                               class="text-[8px] font-pixel uppercase text-emerald-500 hover:text-emerald-400 tracking-wider transition-colors">
+                                Export all (.zip)
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Soundbanks list populated here -->
+                    <div class="space-y-1 max-h-[220px] overflow-y-auto custom-scrollbar" id="bank-list-container">
+                        {% include 'bank_list.html' %}
+                    </div>
+                </div>
+
+                <!-- Back Up My Synth Form -->
+                <div class="space-y-2.5 border-t border-zinc-850 pt-4">
+                    <h3 class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider pl-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <img src="/static/icons/dinkie/sparkles.svg" alt="Sparkles" width="14" height="14" class="w-3.5 h-3.5 shrink-0 object-contain dinkie-img dinkie-img--white" style="filter: brightness(0) invert(1);" />
+                            Back Up My Synth
+                        </span>
+                    </h3>
+
+                    <form id="pull-bank-form" onsubmit="event.preventDefault(); initiateDumpSequence();"
+                        class="space-y-2 px-1">
+                        <div>
+                            <select id="pull-synth-model"
+                                class="block w-full text-xs bg-zinc-950 border border-zinc-800 rounded-lg py-2 px-2.5 text-zinc-200 focus:outline-none focus:border-zinc-600 cursor-pointer font-mono">
+                                <option value="Auto-Detect" selected>Auto-Detect (Automatic)</option>
+                                <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
+                                <option value="Sequential Prophet">Sequential Prophet (128v)</option>
+                                <option value="Roland Juno-106">Roland Juno-106 (Gen)</option>
+                                <option value="Korg M1">Korg M1 (Gen)</option>
+                                <option value="Roland Jupiter-6">Roland Jupiter-6 (Europa)</option>
+                                <option value="Casio CZ-101">Casio CZ-101 (Handshake)</option>
+                                <option value="Generic Synth">Generic Synth</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <input type="text" id="pull-bank-name" required placeholder="Name this backup..."
+                                class="block w-full text-xs bg-zinc-950 border border-zinc-800 rounded-lg py-2 px-2.5 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 font-mono">
+                        </div>
+
+                        <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-white font-roman uppercase text-[9px] tracking-wider transition-colors bg-lapis-deep hover:bg-lapis-mid border border-blue-700/20 tactical-pink-button shadow-sm">
+                            <img src="/static/icons/dinkie/download.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                            Capture Soundbank
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Manual Import -->
+                <div class="space-y-2.5 border-t border-zinc-850 pt-4">
+                    <h3 class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider pl-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <img src="/static/icons/dinkie/sparkles.svg" alt="Sparkles" width="14" height="14" class="w-3.5 h-3.5 shrink-0 object-contain dinkie-img dinkie-img--white" style="filter: brightness(0) invert(1);" />
+                            Import .SYX File
+                        </span>
+                    </h3>
+                    <form id="upload-form" hx-post="/banks/upload" hx-encoding="multipart/form-data"
+                        hx-target="#bank-list-container" onsubmit="showUploadProgress();" class="space-y-2 px-1">
+                        <select name="synth_model" id="upload-synth-model"
+                            class="block w-full text-xs bg-zinc-950 border border-zinc-800 rounded-lg py-2 px-2.5 text-zinc-200 focus:outline-none focus:border-zinc-600 cursor-pointer font-mono">
+                            <option value="Auto-Detect" selected>Auto-Detect (Automatic)</option>
+                            <option value="Yamaha DX7">Yamaha DX7 (32v)</option>
+                            <option value="Sequential Prophet">Sequential Prophet (128v)</option>
+                            <option value="Roland Juno-106">Roland Juno-106</option>
+                            <option value="Korg M1">Korg M1</option>
+                            <option value="Roland Jupiter-6">Roland Jupiter-6 (Europa)</option>
+                            <option value="Casio CZ-101">Casio CZ-101</option>
+                            <option value="Generic Synth">Generic Synth</option>
+                        </select>
+                        <input type="text" name="name" id="upload-bank-name" required placeholder="Import label..."
+                            class="block w-full text-xs bg-zinc-950 border border-zinc-800 rounded-lg py-2 px-2.5 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 font-mono">
+
+                        <div
+                            class="relative border border-dashed border-zinc-800 hover:border-zinc-600 rounded-lg p-3 text-center cursor-pointer bg-zinc-950/40 transition-colors">
+                            <input type="file" name="file" id="file-input" required accept=".syx,.bin"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <span class="block text-xs font-semibold text-zinc-400 truncate" id="file-label">Select .syx file...</span>
+                        </div>
+                        <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-white font-roman uppercase text-[9px] tracking-wider transition-colors bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 tactical-button shadow-sm">
+                            <img src="/static/icons/dinkie/download.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                            Upload & Parse
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sidebar Bottom Info -->
+            <div class="p-4 border-t border-zinc-900 flex flex-col gap-3 shrink-0 bg-[#0a0a0d] z-10">
+                <!-- User Profile Card -->
+                <div
+                    class="p-2.5 rounded-xl border border-zinc-850 bg-zinc-900/10 flex items-center justify-between gap-2 shadow-sm">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <img id="sidebar-user-avatar" src=""
+                            class="h-5.5 w-5.5 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0 select-none"
+                            width="22" height="22" />
+                        <span class="text-[8px] font-mono text-zinc-400 truncate max-w-[90px]"
+                            title="{{ user.email }}">{{ user.email.split('@')[0] }}</span>
+                    </div>
+                    {% if user.tier == 'premium' %}
+                    <span class="tag-lapis-tool select-none">PRO</span>
+                    {% else %}
+                    <span class="tag-lapis select-none">FREE</span>
+                    {% endif %}
+                </div>
+
+                <div class="flex items-center justify-between border-t border-zinc-900/40 pt-1">
+                        {% if user.tier == 'premium' %}
+                        <a href="/portal" class="text-zinc-400 hover:text-emerald-400 font-pixel text-[9px] uppercase tracking-wider underline transition-colors">INVOICES &amp; RECEIPTS</a>
+                        {% endif %}
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="showDeleteAccountModal()"
+                                class="px-2.5 py-1 rounded-md bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-rose-400 font-pixel text-[8px] uppercase tracking-wider transition-all inline-flex items-center gap-1 active:scale-95" title="Permanently delete account">
+                                <span>Delete</span>
+                            </button>
+                            <button type="button" onclick="showLogoutModal()"
+                                class="px-2.5 py-1 rounded-md bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800/80 text-zinc-400 hover:text-white font-pixel text-[8px] uppercase tracking-wider transition-all inline-flex items-center gap-1 active:scale-95" title="Log out of session">
+                                <span>Log Out</span>
+                            </button>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </aside>
+
+        <!-- Center/Right Container: Explorer and MIDI Monitor Panel -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Center/Right Pane: Song/Patch Table (iTunes Grid) -->
+            <section class="flex-1 bg-[#09090b] flex flex-col overflow-hidden" id="patch-explorer-content">
+                <div class="flex-1 flex flex-col items-center justify-center p-8 select-none max-w-2xl mx-auto w-full">
+                    <div
+                        class="w-full border border-zinc-800 rounded-2xl overflow-hidden bg-zinc-900/40 shadow-2xl flex flex-col backdrop-blur-sm">
+                        <div
+                            class="bg-zinc-950/80 border-b border-zinc-800 px-5 py-3 flex items-center justify-between text-[10px] font-pixel text-zinc-400 uppercase tracking-widest">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span>GET STARTED</span>
+                            </div>
+                        </div>
+
+                        <div class="p-8 text-center">
+                            <h3 class="text-xl font-pixel text-white uppercase tracking-wider mb-2">Welcome to Rigluk</h3>
+                            <p class="text-sm text-zinc-400 max-w-md mx-auto leading-relaxed font-sans mb-8">
+                                Follow these 3 simple steps to backup your first synthesizer soundbank.
+                            </p>
+
+                            <!-- Onboarding Step Cards -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mt-4">
+                                <!-- Step 1 -->
+                                <div
+                                    class="p-5 bg-zinc-950/60 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors flex flex-col relative">
+                                    <div
+                                        class="absolute -top-4 -left-4 h-9 w-9 rounded-full bg-[#09090b] border-2 border-emerald-500 text-emerald-400 flex items-center justify-center font-pixel text-xs shadow-[0_0_10px_rgba(38,97,156,0.25)]">
+                                        1</div>
+                                    <div class="flex-1 mt-1">
+                                        <img src="/static/icons/dinkie/personal-computer.svg"
+                                            class="h-6 w-6 mb-3 text-white opacity-80" style="filter: invert(1);" />
+                                        <h4 class="text-[11px] font-pixel text-zinc-200 uppercase mb-2">Connect Cable
+                                        </h4>
+                                        <p class="text-xs text-zinc-400 font-sans leading-relaxed">Plug your standard
+                                            USB-MIDI cable into your computer and your synthesizer.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div
+                                    class="p-5 bg-zinc-950/60 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors flex flex-col relative">
+                                    <div
+                                        class="absolute -top-4 -left-4 h-9 w-9 rounded-full bg-[#09090b] border-2 border-blue-500 text-blue-400 flex items-center justify-center font-pixel text-xs shadow-[0_0_10px_rgba(74,127,184,0.25)]">
+                                        2</div>
+                                    <div class="flex-1 mt-1">
+                                        <img src="/static/icons/dinkie/high-voltage-sign.svg"
+                                            class="h-6 w-6 mb-3 text-white opacity-80" style="filter: invert(1);" />
+                                        <h4 class="text-[11px] font-pixel text-zinc-200 uppercase mb-2"><span
+                                                id="step-2-highlight">Select Ports</span></h4>
+                                        <p class="text-xs text-zinc-400 font-sans leading-relaxed">Click <strong
+                                                class="text-white bg-zinc-800 px-1 py-0.5 rounded text-[10px]">Devices</strong>
+                                            (top right) to select your MIDI Input and Output.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3 -->
+                                <div
+                                    class="p-5 bg-zinc-950/60 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-colors flex flex-col relative">
+                                    <div
+                                        class="absolute -top-4 -left-4 h-9 w-9 rounded-full bg-[#09090b] border-2 border-rose-500 text-rose-400 flex items-center justify-center font-pixel text-xs shadow-[0_0_10px_rgba(244,63,94,0.2)]">
+                                        3</div>
+                                    <div class="flex-1 mt-1">
+                                        <img src="/static/icons/dinkie/download.svg"
+                                            class="h-6 w-6 mb-3 text-white opacity-80" style="filter: invert(1);" />
+                                        <h4 class="text-[11px] font-pixel text-zinc-200 uppercase mb-2"><span
+                                                id="step-3-highlight">Capture Bank</span></h4>
+                                        <p class="text-xs text-zinc-400 font-sans leading-relaxed">Select synth model
+                                            (left), name it, and hit <strong
+                                                class="text-white text-[10px] bg-blue-600 px-1 py-0.5 rounded">Capture
+                                                Soundbank</strong>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MIDI System Monitor / Log Panel -->
+            <div id="midi-monitor-panel" class="border-t border-zinc-900 bg-[#0e0e11] flex flex-col font-mono text-[9px] select-none relative shrink-0" style="height: 140px; min-height: 40px; max-height: 320px;">
+                <!-- Drag Resize Handle -->
+                <div id="midi-monitor-resizer" class="h-2 w-full bg-zinc-950 hover:bg-blue-600/30 cursor-ns-resize transition-colors flex items-center justify-center group select-none relative z-20 shrink-0 border-b border-zinc-900" title="Drag up or down to resize MIDI Monitor">
+                    <div class="w-10 h-0.5 bg-zinc-700 group-hover:bg-blue-400 rounded-full transition-colors"></div>
+                </div>
+                <div
+                    class="px-4 py-1.5 border-b border-zinc-900/60 bg-[#0b0b0d] flex items-center justify-between text-zinc-500 font-roman uppercase tracking-wider text-[7px] shrink-0">
+                    <div class="flex items-center gap-1.5">
+                        <img src="/static/icons/dinkie/placard-alt.svg" alt="Placard" width="12" height="12" class="w-3 h-3 shrink-0 object-contain dinkie-img dinkie-img--white" style="filter: brightness(0) invert(1);" />
+                        <span>MIDI SYSTEM MONITOR</span>
+                    </div>
+                    <button onclick="clearMidiLog()"
+                        class="hover:text-white text-zinc-500 transition-colors uppercase text-[6px] tracking-wide bg-zinc-950 border border-zinc-850 px-1.5 py-0.5 rounded flex items-center gap-1 tactical-button">
+                        <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-3 w-3"
+                            style="filter: invert(0.6);" />
+                        Clear Log
+                    </button>
+                </div>
+                <div id="midi-log-console"
+                    class="flex-1 p-3 overflow-y-auto custom-scrollbar space-y-1 text-zinc-650 select-text">
+                    <div class="text-zinc-600 font-mono">[SYSTEM] Initializing MIDI interface console... ready.</div>
+                    <div class="text-zinc-600 font-mono">[SYSTEM] Connect your synth via USB-to-MIDI and open Devices to
+                        select ports.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Progress / Sync Ingestion Popup -->
+    <div id="status-overlay"
+        class="fixed inset-0 bg-black/85 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
+        <div
+            class="bg-[#0e0e11] border border-zinc-900 rounded-xl p-5 w-80 max-w-[90vw] text-center shadow-2xl shadow-black select-none">
+            <!-- Spinner / Success check -->
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-3.5"
+                id="overlay-icon-container">
+                <img src="/static/icons/dinkie/revert.svg" class="h-5 w-5 animate-spin" style="filter: invert(1);"
+                    id="overlay-spinner" />
+                <img src="/static/icons/dinkie/checkmark-circled.svg" class="h-6 w-6 hidden"
+                    style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);"
+                    id="overlay-check" />
+            </div>
+
+            <h3 class="text-xs font-bold text-white mb-0.5" id="overlay-title">Backing Up Synthesizer</h3>
+            <p class="text-[10px] text-zinc-500" id="overlay-message">Initiating handshake with vintage hardware...</p>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-zinc-950 rounded-full h-1 mt-3.5 overflow-hidden">
+                <div id="overlay-progress" class="bg-emerald-500 h-full rounded-full transition-all duration-150"
+                    style="width: 0%"></div>
+            </div>
+
+            <div class="flex items-center justify-between text-[8px] font-mono text-zinc-500 mt-2">
+                <span id="overlay-status-left">0%</span>
+                <span id="overlay-status-right">WAITING</span>
+            </div>
+
+            <!-- Abort button -->
+            <button onclick="closeStatusOverlay()" id="overlay-close-btn"
+                class="mt-5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-semibold text-[10px] rounded border border-zinc-800 transition-colors w-full">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Cheap-cable warning before first flash -->
+    <div id="midi-cable-warning"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 flex items-center justify-center hidden-transition">
+        <div class="bg-[#0e0e11] border border-amber-500/30 rounded-xl p-5 w-96 max-w-[90vw] text-center shadow-2xl select-none">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-3.5">
+                <img src="/static/icons/dinkie/high-voltage-sign.svg" class="h-5 w-5" style="filter: invert(70%) sepia(80%) saturate(1000%) hue-rotate(350deg);" />
+            </div>
+            <h3 class="text-xs font-bold text-white mb-1">Check your MIDI cable</h3>
+            <p class="text-[10px] text-zinc-400 leading-relaxed">
+                Cheap USB-MIDI cables often drop SysEx. For reliable flashing, use a known-good adapter
+                (e.g. Roland UM-ONE, MOTU, or your synth's built-in USB port).
+            </p>
+            <div class="flex flex-col gap-2 mt-4">
+                <button id="midi-cable-warning-continue" type="button"
+                    class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-pixel uppercase tracking-wider rounded-lg transition-colors">
+                    Got it — flash anyway
+                </button>
+                <button onclick="dismissCableWarning(false)" type="button"
+                    class="w-full py-2 text-zinc-500 hover:text-zinc-300 text-[9px] font-pixel uppercase tracking-wider transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast"
+        class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 transition-all duration-300 ease-out bg-[#0e0e11] border border-zinc-900 rounded-xl px-4 py-3 flex items-center gap-3 shadow-2xl max-w-sm pointer-events-none select-none">
+        <div id="toast-icon-wrapper" class="flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center">
+            <!-- Icon injected by JS -->
+        </div>
+        <div class="flex-1">
+            <p id="toast-title" class="text-xs font-bold text-white leading-tight"></p>
+            <p id="toast-desc" class="text-3xs text-zinc-400 mt-0.5 leading-normal"></p>
+        </div>
+    </div>
+
+    <!-- Web MIDI & Audio Library Script -->
+    <script>
+        // --- PostHog Custom Telemetry Logging ---
+        function logToPostHog(eventName, properties = {}) {
+            if (window.posthog) {
+                try {
+                    window.posthog.capture(eventName, {
+                        ...properties,
+                        user_email: "{{ user.email if user else 'anonymous' }}",
+                        distinct_id: "{{ user.email if user else 'anonymous' }}",
+                        timestamp: new Date().toISOString()
+                    });
+                } catch (e) {
+                    console.error("Failed to capture PostHog telemetry:", e);
+                }
+            }
+        }
+
+        // Global uncaught error handling
+        window.addEventListener('error', (event) => {
+            logToPostHog('client_js_error', {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno,
+                stack: event.error ? event.error.stack : null
+            });
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            logToPostHog('client_unhandled_rejection', {
+                reason: event.reason ? (event.reason.stack || event.reason.toString()) : null
+            });
+        });
+
+        // Global HTMX response/send error tracking
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.addEventListener('htmx:responseError', (evt) => {
+                logToPostHog('htmx_response_error', {
+                    path: evt.detail.pathInfo ? evt.detail.pathInfo.path : null,
+                    status: evt.detail.xhr ? evt.detail.xhr.status : null,
+                    responseText: evt.detail.xhr ? evt.detail.xhr.responseText : null
+                });
+            });
+
+            document.body.addEventListener('htmx:sendError', (evt) => {
+                logToPostHog('htmx_send_error', {
+                    path: evt.detail.pathInfo ? evt.detail.pathInfo.path : null
+                });
+            });
+        });
+
+        // --- Web MIDI & Audio API Core State ---
+        let midiAccess = null;
+        let selectedInput = null;
+        let selectedOutput = null;
+
+        let dumpTimeout = null;
+        let ingestIdleTimeout = null;
+        let isIngesting = false;
+        let ingestedBytes = [];
+        let currentIngestSynthModel = null;
+
+        // Currently selected bank state
+        let currentActiveBank = null;
+        let currentActivePatches = [];
+        let currentPatchIndex = -1; // -1 means none playing
+
+        // --- MIDI Console Logging ---
+        function logMidiEvent(direction, dataHex) {
+            // Track only high-level SYSTEM/error messages in PostHog to prevent network bottlenecks
+            if (direction === 'SYSTEM') {
+                logToPostHog('midi_system_event', {
+                    direction: direction,
+                    message: dataHex
+                });
+            }
+
+            const consoleEl = document.getElementById('midi-log-console');
+            if (!consoleEl) return;
+
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
+
+            const logLine = document.createElement('div');
+
+            if (direction === 'IN') {
+                logLine.className = 'text-emerald-500/80';
+                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-emerald-400">MIDI IN:</span> <span class="tracking-wide">${dataHex.toUpperCase()}</span>`;
+            } else if (direction === 'OUT') {
+                logLine.className = 'text-emerald-400/80';
+                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-emerald-300">MIDI OUT:</span> <span class="tracking-wide">${dataHex.toUpperCase()}</span>`;
+            } else if (direction === 'SYSTEM') {
+                logLine.className = 'text-amber-500/80';
+                logLine.innerHTML = `[${timeStr}] <span class="font-semibold text-amber-400">[SYS]</span> ${dataHex}`;
+            } else {
+                logLine.className = 'text-zinc-500';
+                logLine.innerHTML = `[${timeStr}] <span class="text-zinc-650">[MSG]</span> ${dataHex}`;
+            }
+
+            consoleEl.appendChild(logLine);
+
+            // Cap the console lines at 150 nodes to avoid memory bloat and layout thrashing
+            while (consoleEl.children.length > 150) {
+                consoleEl.removeChild(consoleEl.firstChild);
+            }
+
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function clearMidiLog() {
+            const consoleEl = document.getElementById('midi-log-console');
+            if (consoleEl) {
+                consoleEl.innerHTML = '<div class="text-zinc-600">[SYSTEM] Log cleared. Monitoring MIDI bus...</div>';
+            }
+        }
+
+        // --- MIDI System Monitor Drag-to-Resize Handler ---
+        (function initMidiMonitorResize() {
+            const resizer = document.getElementById('midi-monitor-resizer');
+            const panel = document.getElementById('midi-monitor-panel');
+            if (!resizer || !panel) return;
+
+            const SAVED_HEIGHT_KEY = 'knob_midi_monitor_height';
+            const savedHeight = localStorage.getItem(SAVED_HEIGHT_KEY);
+            if (savedHeight) {
+                const h = parseInt(savedHeight, 10);
+                if (h >= 40) {
+                    panel.style.height = `${Math.min(h, 320, Math.floor(window.innerHeight * 0.4))}px`;
+                }
+            }
+
+            let startY = 0;
+            let startHeight = 0;
+
+            function onMouseMove(e) {
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const deltaY = startY - clientY;
+                const maxH = Math.min(320, Math.floor(window.innerHeight * 0.4));
+                const newHeight = Math.max(40, Math.min(startHeight + deltaY, maxH));
+                panel.style.height = `${newHeight}px`;
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+                document.removeEventListener('touchmove', onMouseMove);
+                document.removeEventListener('touchend', onMouseUp);
+                document.body.classList.remove('select-none', 'cursor-ns-resize');
+                const currentH = parseInt(panel.style.height, 10);
+                if (currentH) localStorage.setItem(SAVED_HEIGHT_KEY, currentH);
+            }
+
+            function onMouseDown(e) {
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                startHeight = panel.offsetHeight;
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+                document.addEventListener('touchmove', onMouseMove, { passive: false });
+                document.addEventListener('touchend', onMouseUp);
+                document.body.classList.add('select-none', 'cursor-ns-resize');
+            }
+
+            resizer.addEventListener('mousedown', onMouseDown);
+            resizer.addEventListener('touchstart', onMouseDown, { passive: false });
+        })();
+
+        // --- Sidebar Expand/Collapse Controller ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('main-sidebar');
+            if (!sidebar) return;
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+            if (isCollapsed) {
+                sidebar.classList.remove('sidebar-collapsed');
+                localStorage.setItem('knob_sidebar_collapsed', 'false');
+            } else {
+                sidebar.classList.add('sidebar-collapsed');
+                localStorage.setItem('knob_sidebar_collapsed', 'true');
+            }
+        }
+
+        function dismissDevicesCallout() {
+            const doodle = document.getElementById('devices-callout-doodle');
+            if (doodle) doodle.classList.add('hidden');
+            try { localStorage.setItem('knob_devices_doodle_dismissed', 'true'); } catch(e){}
+        }
+
+        // Restore sidebar & callout states on load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                if (localStorage.getItem('knob_sidebar_collapsed') === 'true') {
+                    const sidebar = document.getElementById('main-sidebar');
+                    if (sidebar) sidebar.classList.add('sidebar-collapsed');
+                }
+                if (localStorage.getItem('knob_devices_doodle_dismissed') === 'true') {
+                    dismissDevicesCallout();
+                }
+            } catch (e) {}
+        });
+
+        // --- UI Scaling Options ---
+        const UI_SCALE_KEY = 'knob_ui_scale';
+        function loadUiScale() {
+            try {
+                const scale = localStorage.getItem(UI_SCALE_KEY);
+                if (scale) {
+                    const select = document.getElementById('ui-scale-select');
+                    if (select) select.value = scale;
+                    applyUiScale(scale);
+                }
+            } catch (e) {
+                console.warn('Could not load UI scale', e);
+            }
+        }
+        function setUiScale(scale) {
+            try {
+                localStorage.setItem(UI_SCALE_KEY, scale);
+                applyUiScale(scale);
+                logToPostHog('ui_scale_changed', { scale: scale });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        function applyUiScale(scale) {
+            const scaleVal = parseFloat(scale);
+            if (!isNaN(scaleVal)) {
+                // Apply scaling only on desktop screens
+                if (!window.matchMedia('(max-width: 767px)').matches) {
+                    document.body.style.zoom = scaleVal;
+                } else {
+                    document.body.style.zoom = 1.0;
+                }
+            }
+        }
+        window.addEventListener('resize', () => {
+            const select = document.getElementById('ui-scale-select');
+            if (select) {
+                applyUiScale(select.value);
+            }
+        });
+
+        // Init MIDI Access
+        window.addEventListener('DOMContentLoaded', () => {
+            loadUiScale();
+            initMobileDashboardNav();
+            loadMidiFlashSettings();
+            syncVaultExportLink();
+            if (!window.matchMedia('(max-width: 767px)').matches) {
+                initializeMidiAccess(false);
+            }
+
+            // Custom file label updates on dropzone select
+            const fileInput = document.getElementById('file-input');
+            const fileLabel = document.getElementById('file-label');
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    const filename = fileInput.files[0].name;
+                    fileLabel.textContent = filename;
+                    const nameInput = document.getElementById('upload-bank-name');
+                    if (nameInput) {
+                        const cleanName = filename.replace(/\.[^/.]+$/, "");
+                        nameInput.value = cleanName.replace(/[_-]/g, " ");
+                    }
+                }
+            });
+        });
+
+        // Toggle popover menu
+        function toggleDevicePopover() {
+            const popover = document.getElementById('device-popover');
+            popover.classList.toggle('hidden');
+        }
+
+        // Close popover if clicked outside
+        document.addEventListener('click', (e) => {
+            const popover = document.getElementById('device-popover');
+            const btn = document.getElementById('device-menu-btn');
+            if (popover && btn && !popover.contains(e.target) && !btn.contains(e.target)) {
+                popover.classList.add('hidden');
+            }
+        });
+
+        // Update MIDI Status Badge
+        function updateMidiBadge(status, text) {
+            const dot = document.getElementById('midi-status-dot');
+            const syncDot = document.getElementById('lcd-sync-dot');
+
+            dot.className = "h-1.5 w-1.5 rounded-full";
+
+            if (status === "active") {
+                dot.classList.add("bg-emerald-500");
+                syncDot.className = "h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse";
+            } else if (status === "inactive") {
+                dot.classList.add("bg-zinc-600");
+                syncDot.className = "h-1.5 w-1.5 rounded-full bg-zinc-800";
+            } else {
+                dot.classList.add("bg-rose-500");
+                syncDot.className = "h-1.5 w-1.5 rounded-full bg-rose-600";
+            }
+        }
+
+        // Query browser MIDI API
+        function initializeMidiAccess(interactive) {
+            logToPostHog('midi_access_request', { interactive: interactive });
+            if (!navigator.requestMIDIAccess) {
+                updateMidiBadge("error", "Web MIDI API Un-supported");
+                logMidiEvent("SYSTEM", "Web MIDI API is unsupported in this browser.");
+                logToPostHog('midi_unsupported_browser', { interactive: interactive });
+                if (interactive) {
+                    showToast("Compatibility Warning", "Your browser does not support Web MIDI API. Please switch to Google Chrome or Microsoft Edge.", "warning");
+                }
+                return;
+            }
+
+            logMidiEvent("SYSTEM", "Requesting hardware MIDI access with SysEx capability...");
+            navigator.requestMIDIAccess({ sysex: true })
+                .then(access => {
+                    midiAccess = access;
+                    updateMidiBadge("active", "Hardware MIDI Access Live");
+                    logMidiEvent("SYSTEM", "Hardware MIDI access granted successfully.");
+                    logToPostHog('midi_access_granted', { interactive: interactive });
+
+                    // Listen for hardware connections changes
+                    midiAccess.onstatechange = (e) => {
+                        updatePortsDropdowns();
+                        logMidiEvent("SYSTEM", `MIDI Port State Change: ${e.port.name} is now ${e.port.state}`);
+                        logToPostHog('midi_port_state_change', {
+                            port_name: e.port.name,
+                            port_state: e.port.state,
+                            port_type: e.port.type
+                        });
+                    };
+
+                    updatePortsDropdowns();
+                    updateMidiPortLabel();
+
+                    if (interactive) {
+                        showToast("MIDI Connected", "Found your MIDI cables and ports.", "success");
+                    }
+                })
+                .catch(err => {
+                    console.error("MIDI access denied:", err);
+                    updateMidiBadge("error", "Permission Denied / Failed");
+                    logMidiEvent("SYSTEM", `MIDI Access Denied: ${err.message}`);
+                    logToPostHog('midi_access_denied', {
+                        error: err.message || err.toString(),
+                        interactive: interactive
+                    });
+                    if (interactive) {
+                        showToast("MIDI Access Blocked", "Please grant MIDI permission in your browser URL bar to talk to synths.", "warning");
+                    }
+                });
+        }
+
+        function updateMidiPortLabel() {
+            const portLbl = document.getElementById('midi-port-lbl');
+            if (!portLbl || !midiAccess) return;
+
+            if (selectedInput && selectedOutput) {
+                const inputPort = midiAccess.inputs.get(selectedInput);
+                const outputPort = midiAccess.outputs.get(selectedOutput);
+                if (inputPort && outputPort) {
+                    portLbl.textContent = `${inputPort.name} / ${outputPort.name}`;
+                    return;
+                }
+            }
+            portLbl.textContent = selectedInput || selectedOutput ? "Partial connection" : "Not connected";
+        }
+
+        // Update real ports select lists
+        function updatePortsDropdowns() {
+            const inputSelect = document.getElementById('midi-input-select');
+            const outputSelect = document.getElementById('midi-output-select');
+            const prevInput = selectedInput;
+            const prevOutput = selectedOutput;
+
+            inputSelect.innerHTML = '';
+            outputSelect.innerHTML = '';
+
+            const inputs = Array.from(midiAccess.inputs.values());
+            const outputs = Array.from(midiAccess.outputs.values());
+
+            if (inputs.length === 0) {
+                inputSelect.innerHTML = '<option value="">No MIDI inputs detected</option>';
+                selectedInput = null;
+            } else {
+                inputs.forEach(input => {
+                    const opt = document.createElement('option');
+                    opt.value = input.id;
+                    const lowerName = (input.name || "").toLowerCase();
+                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential', 'usb', 'midi', 'interface', 'port', 'link', 'um-one', 'mio', 'scarlett', 'focusrite', 'presonus', 'motu', 'audio', 'key', 'control', 'instr', 'device', 'cable'].some(kw => lowerName.includes(kw));
+                    const suffix = isSupported ? " (SUPPORTED!)" : " (unsupported)";
+                    opt.textContent = `${input.name || "MIDI Input"}${suffix} (${input.manufacturer || 'Generic'})`;
+                    inputSelect.appendChild(opt);
+                });
+                if (prevInput && inputs.some(input => input.id === prevInput)) {
+                    inputSelect.value = prevInput;
+                    selectedInput = prevInput;
+                } else {
+                    selectedInput = inputSelect.value;
+                }
+            }
+
+            if (outputs.length === 0) {
+                outputSelect.innerHTML = '<option value="">No MIDI outputs detected</option>';
+                selectedOutput = null;
+            } else {
+                outputs.forEach(output => {
+                    const opt = document.createElement('option');
+                    opt.value = output.id;
+                    const lowerName = (output.name || "").toLowerCase();
+                    const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential', 'usb', 'midi', 'interface', 'port', 'link', 'um-one', 'mio', 'scarlett', 'focusrite', 'presonus', 'motu', 'audio', 'key', 'control', 'instr', 'device', 'cable'].some(kw => lowerName.includes(kw));
+                    const suffix = isSupported ? " (SUPPORTED!)" : " (unsupported)";
+                    opt.textContent = `${output.name || "MIDI Output"}${suffix} (${output.manufacturer || 'Generic'})`;
+                    outputSelect.appendChild(opt);
+                });
+                if (prevOutput && outputs.some(output => output.id === prevOutput)) {
+                    outputSelect.value = prevOutput;
+                    selectedOutput = prevOutput;
+                } else {
+                    selectedOutput = outputSelect.value;
+                }
+            }
+
+            // Listeners
+            inputSelect.onchange = () => {
+                selectedInput = inputSelect.value;
+                updateMidiPortLabel();
+                logToPostHog('midi_input_port_selected', { port_id: selectedInput });
+            };
+            outputSelect.onchange = () => {
+                selectedOutput = outputSelect.value;
+                updateMidiPortLabel();
+                logToPostHog('midi_output_port_selected', { port_id: selectedOutput });
+            };
+            updateMidiPortLabel();
+        }
+
+        function countSysexMessages(bytes) {
+            let count = 0;
+            let inMsg = false;
+            for (let i = 0; i < bytes.length; i++) {
+                if (bytes[i] === 0xF0) inMsg = true;
+                else if (bytes[i] === 0xF7 && inMsg) {
+                    count++;
+                    inMsg = false;
+                }
+            }
+            return count;
+        }
+
+        const MIDI_FLASH_SETTINGS_KEY = 'knob_midi_flash_settings';
+        const MIDI_CABLE_WARN_KEY = 'midi_cable_warn_seen';
+        let pendingFlashArgs = null;
+
+        const SYNTH_PROFILE_MULTIPLIERS = { dx7: 1.25, juno: 1.5, prophet: 2.0, generic: 1.0 };
+        const SYNTH_MODEL_PROFILES = {
+            'yamaha dx7': 'dx7',
+            'sequential prophet': 'prophet',
+            'roland juno-106': 'juno',
+            'roland jupiter-6': 'generic',
+            'korg m1': 'generic',
+            'casio cz-101': 'generic',
+            'generic synth': 'generic',
+        };
+        let activeFlashTimers = [];
+
+        function loadMidiFlashSettings() {
+            try {
+                const raw = localStorage.getItem(MIDI_FLASH_SETTINGS_KEY);
+                if (raw) {
+                    const saved = JSON.parse(raw);
+                    const delayEl = document.getElementById('midi-delay-preset');
+                    const profileEl = document.getElementById('midi-synth-profile');
+                    if (delayEl && saved.delayPreset) delayEl.value = saved.delayPreset;
+                    if (profileEl && saved.synthProfile) profileEl.value = saved.synthProfile;
+                }
+            } catch (e) {
+                console.warn('Could not load MIDI flash settings', e);
+            }
+        }
+
+        function saveMidiFlashSettings() {
+            const delayEl = document.getElementById('midi-delay-preset');
+            const profileEl = document.getElementById('midi-synth-profile');
+            if (!delayEl || !profileEl) return;
+            localStorage.setItem(MIDI_FLASH_SETTINGS_KEY, JSON.stringify({
+                delayPreset: delayEl.value,
+                synthProfile: profileEl.value
+            }));
+        }
+
+        function resolveSynthProfile(synthModel) {
+            const profileEl = document.getElementById('midi-synth-profile');
+            const manual = profileEl ? profileEl.value : 'auto';
+            if (manual !== 'auto') return manual;
+            const model = (synthModel || '').toLowerCase().trim();
+            if (SYNTH_MODEL_PROFILES[model]) return SYNTH_MODEL_PROFILES[model];
+            if (model.includes('juno')) return 'juno';
+            if (model.includes('dx7') || model.includes('dx-7') || model.includes('dx9')) return 'dx7';
+            if (model.includes('prophet') || model.includes('sequential')) return 'prophet';
+            return 'generic';
+        }
+
+        function clearFlashTimers() {
+            activeFlashTimers.forEach(t => clearTimeout(t));
+            activeFlashTimers = [];
+        }
+
+        function syncVaultExportLink() {
+            const link = document.getElementById('vault-export-all-link');
+            if (!link) return;
+            const hasBanks = document.querySelectorAll('#bank-list-container > a[id^="bank-item-"]').length > 0;
+            link.classList.toggle('opacity-30', !hasBanks);
+            link.classList.toggle('pointer-events-none', !hasBanks);
+            link.title = hasBanks ? 'Download entire vault as .zip' : 'Save a soundbank first';
+        }
+
+        function handleVaultExportAll(event) {
+            const hasBanks = document.querySelectorAll('#bank-list-container > a[id^="bank-item-"]').length > 0;
+            if (!hasBanks) {
+                event.preventDefault();
+                showToast("Nothing to export", "Save a soundbank to your vault first.", "info");
+                return false;
+            }
+            logToPostHog('vault_export_all', {});
+            return true;
+        }
+
+        function getDelayPreset() {
+            const delayEl = document.getElementById('midi-delay-preset');
+            return delayEl ? delayEl.value : 'normal';
+        }
+
+        function getMessageDelayMs(preset, messageLength, synthModel) {
+            const profile = resolveSynthProfile(synthModel);
+            const multiplier = SYNTH_PROFILE_MULTIPLIERS[profile] || 1.0;
+            if (preset === 'cakewalk') {
+                return Math.max(20, Math.round(messageLength * 0.1 * multiplier + 20));
+            }
+            const base = preset === 'slow' ? 120 : 60;
+            return Math.round(base * multiplier);
+        }
+
+        function formatByteCount(bytes) {
+            if (bytes >= 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+            return `${bytes} B`;
+        }
+
+        function dismissCableWarning(continueFlash) {
+            const modal = document.getElementById('midi-cable-warning');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+            if (continueFlash) {
+                localStorage.setItem(MIDI_CABLE_WARN_KEY, '1');
+                const args = pendingFlashArgs;
+                pendingFlashArgs = null;
+                if (args) runFlashBank(args.bankId, args.bankName, args.synthModel);
+            } else {
+                pendingFlashArgs = null;
+            }
+        }
+
+        function maybeShowCableWarning(bankId, bankName, synthModel) {
+            if (localStorage.getItem(MIDI_CABLE_WARN_KEY) === '1') {
+                runFlashBank(bankId, bankName, synthModel);
+                return;
+            }
+            pendingFlashArgs = { bankId, bankName, synthModel };
+            const modal = document.getElementById('midi-cable-warning');
+            if (!modal) {
+                runFlashBank(bankId, bankName, synthModel);
+                return;
+            }
+            modal.classList.remove('hidden-transition');
+            modal.classList.add('visible-transition');
+            const btn = document.getElementById('midi-cable-warning-continue');
+            if (btn) btn.onclick = () => dismissCableWarning(true);
+        }
+
+        // --- Status Overlay Utils ---
+        function showStatusOverlay(title, initialMessage, isCancelable, leftStatus, rightStatus) {
+            const overlay = document.getElementById('status-overlay');
+            const titleEl = document.getElementById('overlay-title');
+            const msgEl = document.getElementById('overlay-message');
+            const progressEl = document.getElementById('overlay-progress');
+            const cancelBtn = document.getElementById('overlay-close-btn');
+            const spinner = document.getElementById('overlay-spinner');
+            const check = document.getElementById('overlay-check');
+
+            const leftEl = document.getElementById('overlay-status-left');
+            const rightEl = document.getElementById('overlay-status-right');
+
+            titleEl.textContent = title;
+            msgEl.textContent = initialMessage;
+            progressEl.style.width = "0%";
+            leftEl.textContent = leftStatus || "0%";
+            rightEl.textContent = rightStatus || "PENDING";
+
+            spinner.classList.remove('hidden');
+            check.classList.add('hidden');
+
+            if (isCancelable) {
+                cancelBtn.style.display = 'block';
+                cancelBtn.textContent = 'Cancel';
+            } else {
+                cancelBtn.style.display = 'none';
+            }
+
+            overlay.classList.remove('hidden-transition');
+            overlay.classList.add('visible-transition');
+        }
+
+        function updateStatusOverlay(progressPercent, message, leftStatus, rightStatus) {
+            const progressEl = document.getElementById('overlay-progress');
+            const msgEl = document.getElementById('overlay-message');
+            const leftEl = document.getElementById('overlay-status-left');
+            const rightEl = document.getElementById('overlay-status-right');
+
+            progressEl.style.width = `${progressPercent}%`;
+            msgEl.textContent = message;
+            if (leftStatus) leftEl.textContent = leftStatus;
+            if (rightStatus) rightEl.textContent = rightStatus;
+
+            // Update iTunes Top LCD simultaneously
+            const lcdStatus = document.getElementById('lcd-status-text');
+            const lcdTitle = document.getElementById('lcd-patch-title');
+            const lcdProgress = document.getElementById('lcd-progress-bar');
+
+            lcdStatus.textContent = rightStatus || "SYNCING";
+            lcdTitle.textContent = message;
+            lcdProgress.style.width = `${progressPercent}%`;
+        }
+
+        function completeStatusOverlay(title, successMessage, duration = 1200, leftStatus = null) {
+            const titleEl = document.getElementById('overlay-title');
+            const msgEl = document.getElementById('overlay-message');
+            const spinner = document.getElementById('overlay-spinner');
+            const check = document.getElementById('overlay-check');
+            const progressEl = document.getElementById('overlay-progress');
+
+            titleEl.textContent = title;
+            msgEl.textContent = successMessage;
+            progressEl.style.width = "100%";
+
+            spinner.classList.add('hidden');
+            check.classList.remove('hidden');
+
+            document.getElementById('overlay-status-left').textContent = leftStatus || "100%";
+            document.getElementById('overlay-status-right').textContent = "COMPLETED";
+
+            // LCD update
+            const lcdStatus = document.getElementById('lcd-status-text');
+            const lcdTitle = document.getElementById('lcd-patch-title');
+            const lcdProgress = document.getElementById('lcd-progress-bar');
+
+            lcdStatus.textContent = "DONE";
+            lcdTitle.textContent = successMessage;
+            lcdProgress.style.width = "100%";
+
+            setTimeout(() => {
+                closeStatusOverlay();
+                lcdStatus.textContent = "READY";
+                lcdProgress.style.width = "0%";
+            }, duration);
+        }
+
+        function closeStatusOverlay() {
+            const overlay = document.getElementById('status-overlay');
+            overlay.classList.remove('visible-transition');
+            overlay.classList.add('hidden-transition');
+            clearFlashTimers();
+
+            // Terminate any active hardware listeners/timeouts
+            if (isIngesting) {
+                stopMidiIngestion(false);
+            }
+        }
+
+        // --- Ingest and Pull SysEx Logic ---
+        function initiateDumpSequence() {
+            const synthModel = document.getElementById('pull-synth-model').value;
+            const bankName = document.getElementById('pull-bank-name').value;
+
+            logToPostHog('dump_sequence_initiated', {
+                synth_model: synthModel,
+                bank_name: bankName,
+                input_port: selectedInput,
+                output_port: selectedOutput
+            });
+
+            if (!selectedInput || !selectedOutput) {
+                showToast("Devices Not Connected", "Please select valid MIDI Input and Output ports first.", "warning");
+                logToPostHog('dump_sequence_aborted_no_ports');
+                return;
+            }
+
+            showStatusOverlay("Backing Up Synth", "Sending backup request to synthesizer...", true);
+            startMidiIngestion(bankName, synthModel);
+        }
+
+        // Live MIDI Ingestion
+        function startMidiIngestion(bankName, synthModel) {
+            isIngesting = true;
+            ingestedBytes = [];
+            currentIngestSynthModel = synthModel;
+
+            const inputPort = midiAccess.inputs.get(selectedInput);
+            const outputPort = midiAccess.outputs.get(selectedOutput);
+
+            if (!inputPort || !outputPort) {
+                closeStatusOverlay();
+                showToast("Connection Lost", "The MIDI interface was unplugged.", "error");
+                logMidiEvent("SYSTEM", "MIDI hardware error: interface disconnected.");
+                logToPostHog('dump_sequence_failed_interface_unplugged', {
+                    synth_model: synthModel,
+                    bank_name: bankName
+                });
+                return;
+            }
+
+            logMidiEvent("SYSTEM", `Opening MIDI Input listener on '${inputPort.name}'...`);
+            inputPort.onmidimessage = handleIncomingMidiBytes;
+
+            let dumpRequestCommand;
+            if (synthModel === "Yamaha DX7") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x43, 0x20, 0x09, 0xF7]);
+            } else if (synthModel === "Korg M1") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x42, 0x30, 0x19, 0x10, 0xF7]);
+            } else if (synthModel === "Roland Jupiter-6") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x41, 0x36, 0x00, 0x20, 0x00, 0xF7]);
+            } else if (synthModel === "Casio CZ-101") {
+                dumpRequestCommand = new Uint8Array([0xF0, 0x44, 0x00, 0x00, 0x70, 0x10, 0xF7]);
+            } else {
+                // Default dump request command
+                dumpRequestCommand = new Uint8Array([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]); // Universal Identity Request
+            }
+
+            if (synthModel === "Roland Juno-106" || synthModel === "Sequential Prophet") {
+                const isProphet = synthModel === "Sequential Prophet";
+                const instructions = isProphet
+                    ? "Initiate Bank Dump in the Prophet's Global menu (e.g. Dump Bank)..."
+                    : "Press WRITE on the Juno-106 to dump all 128 patches...";
+                updateStatusOverlay(10, instructions, "0 B", "AWAITING SYNTH");
+                logMidiEvent("SYSTEM", `${synthModel} requires manual trigger. ${instructions}`);
+                dumpTimeout = setTimeout(() => {
+                    if (isIngesting && ingestedBytes.length === 0) {
+                        stopMidiIngestion(false);
+                        closeStatusOverlay();
+                        const toastMsg = isProphet
+                            ? "Verify MIDI Cables and that you initiated the dump on the synth."
+                            : "Press WRITE on the Juno-106 while this dialog is open.";
+                        showToast("No response from synth", toastMsg, "warning");
+                        logToPostHog('midi_dump_timeout', {
+                            synth_model: synthModel,
+                            bank_name: bankName,
+                            timeout_ms: 60000,
+                            reason: "No response from manual trigger"
+                        });
+                    }
+                }, 60000);
+            } else {
+                updateStatusOverlay(10, "Sending dump request command...", "0 B", "HANDSHAKE");
+                logMidiEvent("SYSTEM", `Sending SysEx Bulk Dump Request command to ${synthModel}...`);
+                outputPort.send(dumpRequestCommand);
+                logMidiEvent("OUT", Array.from(dumpRequestCommand).map(b => b.toString(16).padStart(2, '0')).join(' '));
+
+                dumpTimeout = setTimeout(() => {
+                    if (isIngesting && ingestedBytes.length === 0) {
+                        stopMidiIngestion(false);
+                        closeStatusOverlay();
+                        showToast("No response from synth", "Verify MIDI Cables (In to Out) and device MIDI channel.", "warning");
+                        logToPostHog('midi_dump_timeout', {
+                            synth_model: synthModel,
+                            bank_name: bankName,
+                            timeout_ms: 15000,
+                            reason: "No response to dump request command"
+                        });
+                    }
+                }, 15000);
+            }
+        }
+
+        function handleIncomingMidiBytes(event) {
+            if (!isIngesting) return;
+
+            const dataBytes = event.data;
+            const hex = Array.from(dataBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
+            logMidiEvent("IN", hex.length > 50 ? hex.slice(0, 47) + "..." : hex);
+
+            for (let i = 0; i < dataBytes.length; i++) {
+                const b = dataBytes[i];
+                // Filter out real-time MIDI messages (0xF8 - 0xFF) like MIDI clock/active sensing
+                // to prevent SysEx buffer corruption
+                if (b < 0xF8) {
+                    ingestedBytes.push(b);
+                }
+            }
+
+            if (dumpTimeout) {
+                clearTimeout(dumpTimeout);
+                dumpTimeout = null;
+            }
+            if (ingestIdleTimeout) {
+                clearTimeout(ingestIdleTimeout);
+                ingestIdleTimeout = null;
+            }
+
+            const isJuno = currentIngestSynthModel === "Roland Juno-106";
+            const isProphet = currentIngestSynthModel === "Sequential Prophet";
+            const msgCount = countSysexMessages(ingestedBytes);
+
+            if (isJuno || isProphet) {
+                const targetMsgCount = 128;
+                const progress = Math.min(Math.floor((msgCount / targetMsgCount) * 100), 99);
+                updateStatusOverlay(
+                    progress,
+                    isProphet ? `Receiving Prophet patches... (${msgCount}/128)` : `Receiving Juno patches... (${msgCount}/128)`,
+                    `${ingestedBytes.length} Bytes`,
+                    "CAPTURING"
+                );
+
+                if (msgCount >= targetMsgCount) {
+                    stopMidiIngestion(true);
+                    return;
+                }
+                
+                // Generous 4-second timeout to allow for slower synthesizers serialization gaps
+                ingestIdleTimeout = setTimeout(() => {
+                    if (isIngesting && ingestedBytes.length > 0) {
+                        stopMidiIngestion(true);
+                    }
+                }, 4000);
+            } else {
+                const expectedSize = 4104;
+                const progress = Math.min(Math.floor((ingestedBytes.length / expectedSize) * 100), 99);
+                updateStatusOverlay(
+                    progress,
+                    `Receiving presets stream...`,
+                    `${ingestedBytes.length} Bytes`,
+                    "CAPTURING"
+                );
+
+                const lastByte = ingestedBytes[ingestedBytes.length - 1];
+                if (lastByte === 0xF7 && ingestedBytes.length >= expectedSize - 100) {
+                    stopMidiIngestion(true);
+                } else {
+                    ingestIdleTimeout = setTimeout(() => {
+                        if (isIngesting && ingestedBytes.length >= 100) {
+                            stopMidiIngestion(true);
+                        }
+                    }, 2000);
+                }
+            }
+        }
+
+        function stopMidiIngestion(saveData) {
+            const synthModel = document.getElementById('pull-synth-model').value;
+            const bankName = document.getElementById('pull-bank-name').value;
+            const msgCount = countSysexMessages(ingestedBytes);
+
+            isIngesting = false;
+            currentIngestSynthModel = null;
+
+            if (midiAccess && selectedInput) {
+                const inputPort = midiAccess.inputs.get(selectedInput);
+                if (inputPort) inputPort.onmidimessage = null;
+            }
+
+            if (dumpTimeout) {
+                clearTimeout(dumpTimeout);
+                dumpTimeout = null;
+            }
+            if (ingestIdleTimeout) {
+                clearTimeout(ingestIdleTimeout);
+                ingestIdleTimeout = null;
+            }
+
+            if (!saveData) {
+                logMidiEvent("SYSTEM", "MIDI Ingestion aborted or timed out.");
+                logToPostHog('midi_ingest_aborted', {
+                    synth_model: synthModel,
+                    bank_name: bankName,
+                    bytes_received: ingestedBytes.length,
+                    msg_count: msgCount
+                });
+                return;
+            }
+
+            const hexString = Array.from(ingestedBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+
+            logMidiEvent("SYSTEM", `SysEx Stream completed. Received ${ingestedBytes.length} bytes (${msgCount} messages). Parsing patch names...`);
+            updateStatusOverlay(100, "Extracting patch names...", `${ingestedBytes.length} B`, "VERIFYING");
+
+            if (synthModel === "Roland Juno-106" && msgCount < 128) {
+                logMidiEvent("SYSTEM", `Warning: expected 128 Juno-106 patches, captured ${msgCount}.`);
+            }
+
+            const formData = new FormData();
+            formData.append('name', bankName);
+            formData.append('synth_model', synthModel);
+            formData.append('sysex_hex', hexString);
+
+            fetch('/banks', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`Server returned ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    completeStatusOverlay("Backup Completed", "Soundbank successfully archived and parsed.");
+                    showToast("Bank Archived", `"${bankName}" saved in library.`, "success");
+                    document.getElementById('bank-list-container').innerHTML = html;
+                    syncVaultExportLink();
+                    document.getElementById('pull-bank-form').reset();
+                    logToPostHog('bank_backup_success', {
+                        synth_model: synthModel,
+                        bank_name: bankName,
+                        byte_count: ingestedBytes.length,
+                        msg_count: msgCount
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    closeStatusOverlay();
+                    showToast("Save Failed", "Error processing SysEx dump.", "error");
+                    logToPostHog('bank_backup_failed', {
+                        synth_model: synthModel,
+                        bank_name: bankName,
+                        byte_count: ingestedBytes.length,
+                        msg_count: msgCount,
+                        error: err.message || err.toString()
+                    });
+                });
+        }
+
+        // --- Flashing SysEx to Synthesizer ---
+        function flashBank(bankId, bankName, synthModel) {
+            logToPostHog('flash_bank_initiated', { bank_id: bankId, bank_name: bankName, synth_model: synthModel });
+            if (!selectedOutput) {
+                showToast("Flash Aborted", "Select a MIDI Output port first.", "warning");
+                logMidiEvent("SYSTEM", "Flash aborted: No output MIDI port selected.");
+                logToPostHog('flash_bank_aborted_no_output', { bank_id: bankId, bank_name: bankName });
+                return;
+            }
+            maybeShowCableWarning(bankId, bankName, synthModel || 'Generic Synth');
+        }
+
+        function runFlashBank(bankId, bankName, synthModel) {
+            showStatusOverlay("Flashing Synth Memory", "Preparing SysEx transfer...", false, "0 / ?", "PREP");
+            logMidiEvent("SYSTEM", `Retrieving bank '${bankName}' from storage...`);
+
+            fetch(`/banks/${bankId}/hex`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Failed to fetch bank");
+                    return res.text();
+                })
+                .then(text => {
+                    if (!text) throw new Error("Empty response from bank server");
+                    return JSON.parse(text);
+                })
+                .then(data => {
+                    const hex = data.sysex_hex;
+                    if (!hex || hex.length % 2 !== 0) {
+                        throw new Error('Invalid SysEx data in vault');
+                    }
+                    const bytes = new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+                    const messages = splitSysexMessages(bytes);
+                    const msgCount = messages.length;
+                    const byteLen = bytes.length;
+                    const summary = `Sending ${msgCount} SysEx message${msgCount === 1 ? '' : 's'}, ${formatByteCount(byteLen)}`;
+                    logMidiEvent("SYSTEM", `Retrieved ${summary} from database.`);
+                    logToPostHog('flash_data_fetched', {
+                        bank_id: bankId,
+                        bank_name: bankName,
+                        byte_count: byteLen,
+                        message_count: msgCount,
+                        synth_model: synthModel
+                    });
+                    updateStatusOverlay(0, summary, `0 / ${msgCount}`, "PREP");
+                    executeMidiFlash(messages, bankName, synthModel, byteLen);
+                })
+                .catch(err => {
+                    console.error(err);
+                    closeStatusOverlay();
+                    const detail = err.message && err.message.includes('SysEx')
+                        ? err.message
+                        : "Cannot retrieve SysEx dump from database.";
+                    showToast("Flash Failed", detail, "error");
+                    logMidiEvent("SYSTEM", `Flash error: Database fetch failed: ${err.message}`);
+                    logToPostHog('flash_data_fetch_failed', {
+                        bank_id: bankId,
+                        bank_name: bankName,
+                        error: err.message || err.toString()
+                    });
+                });
+        }
+
+        function splitSysexMessages(bytes) {
+            const messages = [];
+            let start = -1;
+
+            for (let i = 0; i < bytes.length; i++) {
+                if (bytes[i] === 0xF0) {
+                    start = i;
+                }
+                if (bytes[i] === 0xF7 && start !== -1) {
+                    messages.push(bytes.slice(start, i + 1));
+                    start = -1;
+                }
+            }
+
+            if (start !== -1) {
+                throw new Error('SysEx dump is missing an F7 terminator.');
+            }
+
+            if (messages.length === 0) {
+                throw new Error('No complete SysEx messages found in bank data.');
+            }
+
+            return messages;
+        }
+
+        function executeMidiFlash(messages, bankName, synthModel, byteLen) {
+            try {
+                const outputPort = midiAccess.outputs.get(selectedOutput);
+                if (!outputPort) {
+                    closeStatusOverlay();
+                    showToast("Port Unavailable", "The target output MIDI device is disconnected.", "error");
+                    logMidiEvent("SYSTEM", "Flash aborted: Selected output port was lost.");
+                    logToPostHog('flash_execution_aborted_port_lost', { bank_name: bankName });
+                    return;
+                }
+
+                const msgCount = messages.length;
+                const preset = getDelayPreset();
+                const profile = resolveSynthProfile(synthModel);
+                const summary = `Sending ${msgCount} SysEx message${msgCount === 1 ? '' : 's'}, ${formatByteCount(byteLen)}`;
+                const progressLabel = `${msgCount} / ${msgCount}`;
+
+                logMidiEvent("SYSTEM", `${summary} to '${outputPort.name}' (${preset} delay, ${profile} profile)...`);
+                clearFlashTimers();
+
+                let offset = 0;
+
+                messages.forEach((message, index) => {
+                    outputPort.send(message, performance.now() + offset);
+                    const fireAt = offset;
+                    activeFlashTimers.push(setTimeout(() => {
+                        const pct = Math.round(((index + 1) / messages.length) * 100);
+                        updateStatusOverlay(
+                            pct,
+                            summary,
+                            `${index + 1} / ${messages.length}`,
+                            "WRITING"
+                        );
+                    }, fireAt));
+                    logMidiEvent("OUT", Array.from(message.slice(0, 12)).map(b => b.toString(16).padStart(2, '0')).join(' ') + (message.length > 12 ? ' ... f7' : ''));
+                    offset += getMessageDelayMs(preset, message.length, synthModel);
+                });
+
+                activeFlashTimers.push(setTimeout(() => {
+                    clearFlashTimers();
+                    completeStatusOverlay("Sync Finished", "Synth memory loaded successfully!", 1200, progressLabel);
+                    showToast("Synth Memory Updated", `Physical sounds overwritten with "${bankName}".`, "success");
+                    logToPostHog('flash_execution_success', {
+                        bank_name: bankName,
+                        output_port: selectedOutput,
+                        byte_count: byteLen,
+                        message_count: msgCount,
+                        delay_preset: preset,
+                        synth_profile: profile
+                    });
+                }, offset + 40));
+
+            } catch (err) {
+                console.error("Midi flash error:", err);
+                closeStatusOverlay();
+                showToast("Flash Failed", "Error transmitting MIDI data packet.", "error");
+                logMidiEvent("SYSTEM", `Flash transmission failed: ${err.message}`);
+                logToPostHog('flash_execution_failed', {
+                    bank_name: bankName,
+                    error: err.message || err.toString()
+                });
+            }
+        }
+
+        // --- Audition Patch Note ---
+        function selectPatch(index, name) {
+            currentPatchIndex = index;
+            logToPostHog('patch_selected', { index: index, name: name });
+
+            // Set current playing patch layout details
+            const lcdTitle = document.getElementById('lcd-patch-title');
+            const lcdStatus = document.getElementById('lcd-status-text');
+
+            lcdTitle.textContent = `${(index + 1).toString().padStart(2, '0')} : ${name}`;
+            lcdStatus.textContent = "Audition Selected";
+
+            // Highlight selected row in table
+            document.querySelectorAll('.patch-row').forEach(row => {
+                row.classList.remove('bg-zinc-900/60', 'border-zinc-800/80');
+            });
+            const selectedRow = document.getElementById(`patch-row-${index}`);
+            if (selectedRow) {
+                selectedRow.classList.add('bg-zinc-900/60', 'border-zinc-800/80');
+            }
+        }
+
+        function toggleAuditionPlay() {
+            if (currentPatchIndex === -1) {
+                showToast("No preset selected", "Choose a preset row in the list first.", "info");
+                return;
+            }
+
+            const playIcon = document.getElementById('play-icon');
+            const stopIcon = document.getElementById('stop-icon');
+
+            if (playIcon.classList.contains('hidden')) {
+                playIcon.classList.remove('hidden');
+                stopIcon.classList.add('hidden');
+                document.getElementById('lcd-status-text').textContent = "Stopped";
+            } else {
+                playIcon.classList.add('hidden');
+                stopIcon.classList.remove('hidden');
+                document.getElementById('lcd-status-text').textContent = "Playing...";
+                executeMidiNoteOn(currentPatchIndex);
+            }
+        }
+
+        function executeMidiNoteOn(index) {
+            logToPostHog('patch_play_triggered', { index: index, note: 60 });
+            if (!selectedOutput) return;
+            const outputPort = midiAccess.outputs.get(selectedOutput);
+            if (!outputPort) return;
+
+            // Program change to index
+            outputPort.send(new Uint8Array([0xC0, index]));
+            logMidiEvent("OUT", `c0 ${index.toString(16).padStart(2, '0')} [Program Change to Preset ${index + 1}]`);
+
+            // Volume
+            const volumeEl = document.getElementById('midi-volume');
+            const volume = volumeEl ? parseInt(volumeEl.value, 10) : 100;
+            outputPort.send(new Uint8Array([0xB0, 0x07, volume]));
+            logMidiEvent("OUT", `b0 07 ${volume.toString(16).padStart(2, '0')} [Control Change: Channel Volume]`);
+
+            // Note On C4
+            outputPort.send(new Uint8Array([0x90, 60, 100]));
+            logMidiEvent("OUT", "90 3c 64 [Note On C4, Velocity 100]");
+
+            // Trigger automatic Note Off after 1 sec
+            setTimeout(() => {
+                outputPort.send(new Uint8Array([0x80, 60, 0]));
+                logMidiEvent("OUT", "80 3c 00 [Note Off C4]");
+                // Reset buttons visually
+                const playIcon = document.getElementById('play-icon');
+                const stopIcon = document.getElementById('stop-icon');
+                if (playIcon) {
+                    playIcon.classList.remove('hidden');
+                    stopIcon.classList.add('hidden');
+                }
+                document.getElementById('lcd-status-text').textContent = "Audition Selected";
+            }, 1000);
+        }
+
+        function navigatePatch(dir) {
+            if (currentActivePatches.length === 0) return;
+
+            let nextIndex = currentPatchIndex + dir;
+            if (nextIndex < 0) nextIndex = currentActivePatches.length - 1;
+            if (nextIndex >= currentActivePatches.length) nextIndex = 0;
+
+            selectPatch(nextIndex, currentActivePatches[nextIndex].name);
+            logToPostHog('patch_navigation_triggered', { direction: dir, next_index: nextIndex });
+
+            // Play note on navigation if play was active
+            const playIcon = document.getElementById('play-icon');
+            if (playIcon.classList.contains('hidden')) {
+                executeMidiNoteOn(nextIndex);
+            }
+        }
+
+        // Send MIDI volume slider value
+        function sendMidiVolume(val) {
+            const volValue = parseInt(val);
+            logToPostHog('midi_volume_changed', { value: volValue });
+            const statusText = document.getElementById('lcd-status-text');
+            statusText.textContent = `Synth Volume: ${Math.floor((volValue / 127) * 100)}%`;
+
+            if (selectedOutput) {
+                const outputPort = midiAccess.outputs.get(selectedOutput);
+                if (outputPort) {
+                    outputPort.send(new Uint8Array([0xB0, 0x07, volValue]));
+                    logMidiEvent("OUT", `b0 07 ${volValue.toString(16).padStart(2, '0')} [Control Change: Channel Volume]`);
+                }
+            }
+
+            setTimeout(() => {
+                statusText.textContent = "Audition Selected";
+            }, 1200);
+        }
+
+        // --- Search & Sidebar UI Helpers ---
+        let cachedBankCards = null;
+        document.body.addEventListener('htmx:afterSwap', (evt) => {
+            if (evt.detail.target && evt.detail.target.id === 'bank-list-container') {
+                cachedBankCards = null;
+                syncVaultExportLink();
+            }
+        });
+
+        function filterBanks() {
+            if (!cachedBankCards) {
+                cachedBankCards = document.querySelectorAll('#bank-list-container > a');
+            }
+            const bankSearchEl = document.getElementById('bank-search');
+            if (!bankSearchEl) {
+                return;
+            }
+            const query = bankSearchEl.value.toLowerCase();
+            for (let i = 0; i < cachedBankCards.length; i++) {
+                const card = cachedBankCards[i];
+                const span = card.querySelector('span');
+                const name = span ? span.textContent.toLowerCase() : "";
+                if (name.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }
+
+        function selectBank(bankId, bankName, synthModel) {
+            logToPostHog('bank_selected', { bank_id: bankId, bank_name: bankName, synth_model: synthModel });
+            // Reset active sidebar items
+            document.querySelectorAll('#bank-list-container > a').forEach(a => {
+                a.classList.remove('bg-[#141417]', 'text-white');
+                a.classList.add('text-zinc-400');
+            });
+
+            // Highlight selected
+            const selectedElem = document.getElementById(`bank-item-${bankId}`);
+            if (selectedElem) {
+                selectedElem.classList.add('bg-[#141417]', 'text-white');
+                selectedElem.classList.remove('text-zinc-400');
+            }
+
+            currentActiveBank = bankId;
+
+            // Load patch list view in central pane via HTMX
+            const content = document.getElementById('patch-explorer-content');
+            content.innerHTML = `
+                <div class="flex-1 flex flex-col items-center justify-center p-8 text-center select-none">
+                    <img src="/static/icons/dinkie/revert.svg" class="h-5 w-5 animate-spin mb-2" style="filter: invert(0.4);" />
+                    <span class="block text-2xs font-semibold text-zinc-500 font-mono">Decompressing bank...</span>
+                </div>
+            `;
+
+            htmx.ajax('GET', `/banks/${bankId}`, { target: '#patch-explorer-content', swap: 'innerHTML' });
+
+            if (window.matchMedia('(max-width: 767px)').matches) {
+                openMobileBank(bankId, bankName, synthModel);
+            }
+        }
+
+        function isMobileVault() {
+            return window.matchMedia('(max-width: 767px)').matches;
+        }
+
+        function stripeCoverUrl(key) {
+            const files = window.stripeCoverFiles || [];
+            if (!files.length) {
+                return '/static/covers/stripes/stripe-01.svg';
+            }
+            let hash = 5381;
+            const s = String(key);
+            for (let i = 0; i < s.length; i++) {
+                hash = ((hash << 5) + hash) + s.charCodeAt(i);
+            }
+            return `/static/covers/stripes/${files[Math.abs(hash) % files.length]}`;
+        }
+
+        function openMobileBank(bankId, bankName, synthModel) {
+            const home = document.getElementById('mobile-screen-home');
+            const bankScreen = document.getElementById('mobile-screen-bank');
+            if (!home || !bankScreen) return;
+
+            home.classList.add('hidden');
+            home.classList.remove('flex');
+            bankScreen.classList.remove('hidden');
+            bankScreen.classList.add('flex');
+
+            const heroImg = document.getElementById('mobile-bank-hero-img');
+            if (heroImg) heroImg.src = stripeCoverUrl('bank-' + bankId);
+
+            const detail = document.getElementById('mobile-bank-detail');
+            if (detail) {
+                detail.innerHTML = `
+                    <div class="flex flex-1 flex-col items-center justify-center p-8 text-center min-h-[12rem]">
+                        <div class="h-8 w-8 rounded-full border-2 border-zinc-700 border-t-emerald-500 animate-spin mb-3"></div>
+                        <p class="text-xs text-zinc-500">Loading presets…</p>
+                    </div>`;
+            }
+
+            htmx.ajax('GET', `/banks/${bankId}?mobile=1`, { target: '#mobile-bank-detail', swap: 'innerHTML' });
+        }
+
+        function closeMobileBank() {
+            const home = document.getElementById('mobile-screen-home');
+            const bankScreen = document.getElementById('mobile-screen-bank');
+            if (!home || !bankScreen) return;
+            bankScreen.classList.add('hidden');
+            bankScreen.classList.remove('flex');
+            home.classList.remove('hidden');
+            home.classList.add('flex');
+            closeMobilePatchDetail();
+        }
+
+        function mobileNavTo(tab) {
+            const panels = { home: 'mobile-panel-home', search: 'mobile-panel-search', you: 'mobile-panel-you' };
+            const titles = { home: 'Library', search: 'Search', you: 'You' };
+
+            Object.entries(panels).forEach(([key, id]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const active = key === tab;
+                el.classList.toggle('hidden', !active);
+            });
+
+            document.querySelectorAll('.mobile-nav-btn').forEach((btn) => {
+                const isActive = btn.getAttribute('data-mobile-tab') === tab;
+                btn.classList.toggle('text-emerald-400', isActive);
+                btn.classList.toggle('text-zinc-500', !isActive);
+            });
+
+            const headerTitle = document.getElementById('mobile-header-title');
+            if (headerTitle) headerTitle.textContent = titles[tab] || 'Library';
+
+            if (tab === 'search') {
+                mobileGlobalSearch();
+                const input = document.getElementById('mobile-global-search');
+                if (input) setTimeout(() => input.focus(), 50);
+            }
+        }
+
+        function openMobileBankById(bankId) {
+            const bank = (window.mobileBankCatalog || []).find((b) => b.id === Number(bankId));
+            if (bank) {
+                openMobileBank(bank.id, bank.name, bank.synth);
+            }
+        }
+
+        function initMobileDashboardNav() {
+            const app = document.getElementById('mobile-app');
+            if (!app || app.dataset.bound === '1') return;
+            app.dataset.bound = '1';
+
+            app.addEventListener('click', (e) => {
+                const bankBtn = e.target.closest('.mobile-open-bank');
+                if (bankBtn) {
+                    e.preventDefault();
+                    openMobileBankById(bankBtn.getAttribute('data-bank-id'));
+                    return;
+                }
+                const patchBtn = e.target.closest('.mobile-open-patch');
+                if (patchBtn) {
+                    e.preventDefault();
+                    const idx = Number(patchBtn.getAttribute('data-patch-index'));
+                    const patches = window.mobileActivePatches || [];
+                    const patch = patches.find((p) => p.index === idx);
+                    if (patch) {
+                        openMobilePatchDetail(idx, patch.name);
+                    }
+                    return;
+                }
+                if (e.target.closest('#mobile-close-bank-btn')) {
+                    e.preventDefault();
+                    closeMobileBank();
+                    return;
+                }
+                if (e.target.closest('[data-close-patch-sheet]')) {
+                    e.preventDefault();
+                    closeMobilePatchDetail();
+                }
+            });
+
+            app.addEventListener('input', (e) => {
+                if (e.target.id === 'mobile-patch-search') {
+                    filterMobilePatches();
+                }
+            });
+
+            const nav = document.getElementById('mobile-dashboard-nav');
+            if (nav && nav.dataset.bound !== '1') {
+                nav.dataset.bound = '1';
+                nav.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-mobile-tab]');
+                    if (!btn) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    mobileNavTo(btn.getAttribute('data-mobile-tab'));
+                });
+            }
+            const searchInput = document.getElementById('mobile-global-search');
+            if (searchInput && searchInput.dataset.bound !== '1') {
+                searchInput.dataset.bound = '1';
+                searchInput.addEventListener('input', mobileGlobalSearch);
+            }
+            const bankSearch = document.getElementById('mobile-bank-search');
+            if (bankSearch && bankSearch.dataset.bound !== '1') {
+                bankSearch.dataset.bound = '1';
+                bankSearch.addEventListener('input', filterMobileBanks);
+            }
+        }
+
+        function filterMobileBanks() {
+            const q = (document.getElementById('mobile-bank-search')?.value || '').toLowerCase();
+            document.querySelectorAll('.mobile-bank-row').forEach((row) => {
+                const name = row.getAttribute('data-name') || '';
+                const synth = row.getAttribute('data-synth') || '';
+                row.classList.toggle('hidden', q && !name.includes(q) && !synth.includes(q));
+            });
+        }
+
+        function filterMobilePatches() {
+            const q = (document.getElementById('mobile-patch-search')?.value || '').toLowerCase();
+            document.querySelectorAll('.mobile-patch-row').forEach((row) => {
+                const name = row.getAttribute('data-name') || '';
+                const index = row.getAttribute('data-index') || '';
+                row.classList.toggle('hidden', q && !name.includes(q) && !index.includes(q));
+            });
+        }
+
+        function mobileGlobalSearch() {
+            const q = (document.getElementById('mobile-global-search')?.value || '').toLowerCase().trim();
+            const out = document.getElementById('mobile-global-results');
+            if (!out) return;
+            if (!q) {
+                out.innerHTML = '<p class="text-xs text-zinc-600 px-2 py-4">Type to search your soundbanks.</p>';
+                return;
+            }
+            const catalog = window.mobileBankCatalog || [];
+            const hits = catalog.filter((bank) =>
+                bank.name.toLowerCase().includes(q) || bank.synth.toLowerCase().includes(q)
+            );
+            if (!hits.length) {
+                out.innerHTML = '<p class="text-xs text-zinc-600 px-2 py-4">No soundbanks match.</p>';
+                return;
+            }
+            out.replaceChildren();
+            hits.forEach((bank) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'mobile-open-bank w-full text-left px-3 py-3 rounded-xl active:bg-white/10';
+                btn.setAttribute('data-bank-id', String(bank.id));
+                btn.innerHTML = `<p class="text-sm font-semibold text-white">${escapeMobileHtml(bank.name)}</p>
+                    <p class="text-[11px] text-zinc-500">${escapeMobileHtml(bank.synth)} · ${bank.count} presets</p>`;
+                out.appendChild(btn);
+            });
+        }
+
+        function escapeMobileHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function openMobilePatchDetail(index, name) {
+            const sheet = document.getElementById('mobile-patch-sheet');
+            const meta = window.mobileActiveBankMeta || {};
+            document.getElementById('mobile-patch-sheet-name').textContent = name;
+            document.getElementById('mobile-patch-sheet-meta').textContent =
+                `${meta.synth || 'Synth'} · Slot ${index + 1}`;
+            const sheetImg = document.getElementById('mobile-patch-sheet-img');
+            if (sheetImg) {
+                sheetImg.src = stripeCoverUrl(`${meta.id || 0}-${index}`);
+            }
+            sheet.classList.add('open');
+            sheet.classList.remove('invisible');
+            sheet.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeMobilePatchDetail() {
+            const sheet = document.getElementById('mobile-patch-sheet');
+            if (!sheet) return;
+            sheet.classList.remove('open');
+            sheet.classList.add('invisible');
+            sheet.setAttribute('aria-hidden', 'true');
+        }
+
+        window.mobileNavTo = mobileNavTo;
+        window.openMobileBank = openMobileBank;
+        window.closeMobileBank = closeMobileBank;
+        window.openMobilePatchDetail = openMobilePatchDetail;
+        window.closeMobilePatchDetail = closeMobilePatchDetail;
+        window.filterMobileBanks = filterMobileBanks;
+        window.filterMobilePatches = filterMobilePatches;
+        window.mobileGlobalSearch = mobileGlobalSearch;
+        window.stripeCoverUrl = stripeCoverUrl;
+
+        function showUploadProgress() {
+            const uploadForm = document.getElementById('upload-form');
+            const bankName = uploadForm ? uploadForm.querySelector('[name="name"]')?.value : null;
+            const synthModel = uploadForm ? uploadForm.querySelector('[name="synth_model"]')?.value : null;
+            logToPostHog('file_upload_initiated', { bank_name: bankName, synth_model: synthModel });
+
+            showStatusOverlay("Uploading Backup File", "Transferring .SYX dump to cloud database...", false);
+
+            document.body.addEventListener('htmx:afterOnLoad', function listener(evt) {
+                if (evt.detail.target.id === 'bank-list-container') {
+                    completeStatusOverlay("Upload Complete", "Soundbank successfully imported.");
+                    showToast("Import Successful", "Parsed and loaded to Vault Library.", "success");
+                    syncVaultExportLink();
+                    document.getElementById('upload-form').reset();
+                    document.getElementById('file-label').textContent = "Select .syx backup";
+                    logToPostHog('file_upload_success', { bank_name: bankName, synth_model: synthModel });
+                    document.body.removeEventListener('htmx:afterOnLoad', listener);
+                }
+            });
+        }
+
+        // --- Elegant Toast Alerts ---
+        let toastTimeout = null;
+        function showToast(title, description, type = "info") {
+            const toast = document.getElementById('toast');
+            const iconWrapper = document.getElementById('toast-icon-wrapper');
+            const titleEl = document.getElementById('toast-title');
+            const descEl = document.getElementById('toast-desc');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+
+            titleEl.textContent = title;
+            descEl.textContent = description;
+
+            iconWrapper.className = "flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center";
+            if (type === "success") {
+                iconWrapper.classList.add("bg-emerald-500/10", "text-emerald-400", "border", "border-emerald-500/20");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                `;
+            } else if (type === "warning") {
+                iconWrapper.classList.add("bg-amber-500/10", "text-amber-400", "border", "border-amber-500/20");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                `;
+            } else if (type === "error") {
+                iconWrapper.classList.add("bg-rose-500/10", "text-rose-400", "border", "border-rose-500/20");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                `;
+            } else {
+                iconWrapper.classList.add("bg-zinc-800", "text-zinc-400");
+                iconWrapper.innerHTML = `
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                `;
+            }
+
+            toast.classList.remove('translate-y-12', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-12', 'opacity-0');
+            }, 4000);
+        }
+
+        // --- Premium Paywall Modal & Hooks ---
+        function showUpgradeModal() {
+            const modal = document.getElementById('upgrade-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+            }
+        }
+        function closeUpgradeModal() {
+            const modal = document.getElementById('upgrade-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
+        function showUpdatePaywallModal() {
+            const modal = document.getElementById('update-paywall-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+                logToPostHog('update_paywall_opened', { source: 'dashboard_header' });
+            }
+        }
+        function closeUpdatePaywallModal() {
+            const modal = document.getElementById('update-paywall-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
+
+        // --- Log Out & Delete Confirmation Modals ---
+        function showLogoutModal() {
+            const modal = document.getElementById('logout-confirm-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+            }
+        }
+        function closeLogoutModal() {
+            const modal = document.getElementById('logout-confirm-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
+        function showDeleteAccountModal() {
+            const modal = document.getElementById('delete-account-modal');
+            if (modal) {
+                modal.classList.remove('hidden-transition');
+                modal.classList.add('visible-transition');
+            }
+        }
+        function closeDeleteAccountModal() {
+            const modal = document.getElementById('delete-account-modal');
+            if (modal) {
+                modal.classList.remove('visible-transition');
+                modal.classList.add('hidden-transition');
+            }
+        }
+
+        document.body.addEventListener('triggerUpgradeModal', () => {
+            closeStatusOverlay();
+            showUpgradeModal();
+            showToast("Upgrade Required", "Free vault is limited to one soundbank.", "warning");
+        });
+
+        // Show success/cancel billing status notifications
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('welcome') === '1') {
+                showToast("Account Ready", "Free vault created. Connect MIDI and save your first bank.", "success");
+            } else if (params.get('payment') === 'success') {
+                showPaymentSuccessModal();
+            } else if (params.get('payment') === 'cancel') {
+                showToast("No Charge", "Checkout closed. Your free vault is still ready.", "info");
+            } else if (params.get('mock_portal') === '1') {
+                showToast("Billing Portal", "Mock billing portal opened.", "success");
+            } else if (params.get('payment') === 'pack_success') {
+                showToast("Expansion Unlocked", "Sound pack added to your library!", "success");
+            }
+
+            {% if card_updated %}
+            showToast("Card Updated", "Your card was automatically updated to your new one ending in {{ card_last4 }}. No action needed!", "success");
+            {% endif %}
+        });
+
+        function showSavedBanks(e) {
+            if (e) e.preventDefault();
+            window.location.reload();
+        }
+    </script>
+
+    <!-- Update-Style Upgrade Modal (Free users) -->
+    <div id="update-paywall-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
+        <div
+            class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-[30rem] max-w-[92vw] text-left shadow-2xl relative select-none">
+            <button onclick="closeUpdatePaywallModal()"
+                class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
+                    style="filter: invert(0.6);" />
+            </button>
+            <span class="text-[9px] font-pixel text-blue-300 uppercase tracking-widest">Release Notes v1.8</span>
+            <h3 class="text-sm font-pixel text-white uppercase mt-2">New dashboard update is ready</h3>
+            <p class="text-xs text-zinc-450 mt-3 leading-relaxed font-sans">
+                This release adds stronger SysEx flash reliability and full-vault export. Upgrade to unlock every new
+                module on your account.
+            </p>
+
+            <div class="mt-4 p-3 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2">
+                <div class="flex items-center justify-between text-2xs font-mono">
+                    <span class="text-zinc-400">Adaptive SysEx pacing profiles</span>
+                    <span class="text-amber-400 uppercase text-[9px] font-pixel">PRO</span>
+                </div>
+                <div class="flex items-center justify-between text-2xs font-mono">
+                    <span class="text-zinc-400">One-click full vault export (.zip)</span>
+                    <span class="text-amber-400 uppercase text-[9px] font-pixel">PRO</span>
+                </div>
+                <div class="flex items-center justify-between text-2xs font-mono">
+                    <span class="text-zinc-400">Unlimited cloud bank backups</span>
+                    <span class="text-amber-400 uppercase text-[9px] font-pixel">PRO</span>
+                </div>
+            </div>
+
+            <div class="mt-4 p-3 bg-zinc-950/60 border border-zinc-900 rounded-xl">
+                <p class="text-[10px] text-zinc-500 leading-relaxed">
+                    Why paid: parser updates, cloud vault storage, and hardware compatibility testing are ongoing work.
+                    You pay once, keep it forever, and export your data anytime.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-4">
+                <a href="/checkout"
+                    onclick="logToPostHog('update_paywall_checkout_click', { plan: 'personal' })"
+                    class="w-full py-3 bg-gradient-to-r from-blue-500 to-amber-500 hover:from-blue-400 hover:to-amber-400 text-black text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center flex items-center justify-center gap-1.5">
+                    <span>Install Update (Lifetime Access)</span>
+                </a>
+                <div class="flex items-center justify-center gap-1.5 text-[9px] font-mono text-zinc-500 uppercase">
+                    <img src="/static/icons/dinkie/lock.svg" class="w-3 h-3 opacity-70 dinkie-img dinkie-img--white" style="filter: brightness(0) invert(0.6);" alt="Lock" />
+                    <span>256-Bit SSL Encrypted Checkout</span>
+                </div>
+                <button onclick="showUpgradeModal(); closeUpdatePaywallModal();"
+                    class="w-full py-2 bg-transparent text-zinc-450 hover:text-zinc-300 text-[10px] font-pixel uppercase tracking-wider transition-colors">
+                    See full plan details
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Upgrade Paywall Modal -->
+    <div id="upgrade-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-50 hidden md:flex items-center justify-center hidden-transition">
+        <div
+            class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-[30rem] max-w-[92vw] text-left shadow-2xl relative select-none">
+            <button onclick="closeUpgradeModal()"
+                class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
+                    style="filter: invert(0.6);" />
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <img id="dashboard-upgrade-avatar" src="" alt=""
+                    class="h-10 w-10 rounded-full border border-zinc-800 bg-zinc-950 object-cover shrink-0" />
+                <div>
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-lapis-light">rigluk+</span>
+                    <h3 class="text-sm font-semibold text-white mt-0.5">Unlock your full vault</h3>
+                </div>
+            </div>
+
+            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                Free accounts hold <strong class="text-zinc-200">one soundbank</strong>. Upgrade once for unlimited
+                backups, .syx export, and every parser we ship.
+            </p>
+
+            <div class="mt-4 p-3 bg-zinc-950 border border-zinc-900 rounded-xl space-y-2.5">
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Unlimited cloud soundbanks</span>
+                </div>
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Export .syx + full vault .zip anytime</span>
+                </div>
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Adaptive SysEx flash pacing (DX7, Juno, M1…)</span>
+                </div>
+                <div class="flex items-center gap-2 text-2xs font-mono text-zinc-400">
+                    <img src="/static/icons/dinkie/checkmark-circled-small.svg" class="h-3.5 w-3.5 shrink-0"
+                        style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                    <span>Live MIDI monitor + preset name decoding</span>
+                </div>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between">
+                <p class="text-[10px] text-zinc-500 leading-relaxed font-sans">
+                    One payment. Own it forever. No subscriptions.
+                </p>
+                <div class="inline-flex items-center gap-1 text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                    <img src="/static/icons/dinkie/lock.svg" class="w-2.5 h-2.5 dinkie-emerald" alt="" />
+                    <span>256-Bit SSL</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-4">
+                <a href="/checkout"
+                    onclick="logToPostHog('upgrade_modal_checkout_click', { plan: 'personal' })"
+                    class="w-full py-3 bg-gradient-to-r from-lapis-mid to-lapis-deep hover:from-lapis-light hover:to-lapis-mid text-white text-xs font-semibold uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center border border-blue-700/30 flex items-center justify-center gap-1.5 shadow-lapis-glow-md">
+                    <img src="/static/icons/dinkie/lock.svg" class="w-3.5 h-3.5 shrink-0 dinkie-lapis" alt="Lock" />
+                    <span>Unlock rigluk+ Lifetime · {{ pricing.symbol }}{{ pricing.personal_amount }}</span>
+                </a>
+                <div class="flex items-center justify-center gap-3 pt-1">
+                    <img src="/static/icons/brands/visa.svg" class="h-3 w-auto opacity-70" alt="Visa" />
+                    <img src="/static/icons/brands/mastercard.svg" class="h-3 w-auto opacity-70" alt="Mastercard" />
+                    <img src="/static/icons/brands/applepay.svg" class="h-3 w-auto opacity-70" alt="Apple Pay" />
+                    <img src="/static/icons/brands/google-pay.svg" class="h-2.5 w-auto opacity-70" alt="Google Pay" />
+                    <img src="/static/icons/brands/pix.svg" class="h-3 w-auto opacity-70" alt="Pix" />
+                </div>
+                <button onclick="closeUpgradeModal()"
+                    class="w-full py-2 bg-transparent text-zinc-500 hover:text-zinc-400 text-[10px] font-mono uppercase tracking-wider transition-colors">
+                    Not now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Log Out Confirmation Modal -->
+    <div id="logout-confirm-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-[100] flex items-center justify-center hidden-transition select-none p-4">
+        <div class="bg-[#0e0e11] border border-zinc-800 rounded-2xl p-6 w-[24rem] max-w-[92vw] text-left shadow-2xl relative">
+            <button onclick="closeLogoutModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" style="filter: invert(0.6);" alt="Close" />
+            </button>
+
+            <div class="flex items-center gap-3 mb-3">
+                <div class="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300">
+                    <img src="/static/icons/dinkie/revert.svg" class="w-5 h-5" style="filter: brightness(0) invert(1);" alt="" />
+                </div>
+                <div>
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-zinc-500">Session</span>
+                    <h3 class="text-sm font-semibold text-white mt-0.5">Log out of rigluk?</h3>
+                </div>
+            </div>
+
+            <p class="text-xs text-zinc-400 leading-relaxed font-sans mb-6">
+                You are about to sign out of your current session. Your soundbanks and custom presets will remain safely backed up in your vault.
+            </p>
+
+            <div class="flex items-center gap-2">
+                <button onclick="closeLogoutModal()"
+                    class="flex-1 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-pixel uppercase tracking-wider transition-all active:scale-[0.98]">
+                    Cancel
+                </button>
+                <a href="/logout"
+                    class="flex-1 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-pixel uppercase tracking-wider text-center transition-all active:scale-[0.98] inline-block">
+                    Log Out
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Delete Account Confirmation Modal -->
+    <div id="delete-account-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-[100] flex items-center justify-center hidden-transition select-none p-4">
+        <div class="bg-[#0e0e11] border border-rose-950/60 rounded-2xl p-6 w-[26rem] max-w-[92vw] text-left shadow-2xl relative">
+            <button onclick="closeDeleteAccountModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" style="filter: invert(0.6);" alt="Close" />
+            </button>
+
+            <div class="flex items-center gap-3 mb-3">
+                <div class="p-2.5 rounded-xl bg-rose-950/40 border border-rose-900/50 text-rose-400">
+                    <img src="/static/icons/dinkie/black-cross-square.svg" class="w-5 h-5 dinkie-rose" style="filter: invert(36%) sepia(85%) saturate(2078%) hue-rotate(331deg) brightness(98%) contrast(92%);" alt="" />
+                </div>
+                <div>
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-rose-400">Permanent Action</span>
+                    <h3 class="text-sm font-semibold text-white mt-0.5">Delete account &amp; purge data?</h3>
+                </div>
+            </div>
+
+            <p class="text-xs text-rose-200/80 leading-relaxed font-sans mb-3">
+                WARNING: This will permanently delete your rigluk account and purge all your saved soundbank vaults and custom presets. This action cannot be undone.
+            </p>
+
+            {% if user.tier == 'premium' %}
+            <div class="mb-5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-300 text-[11px] leading-relaxed font-sans flex items-start gap-2">
+                <img src="/static/icons/dinkie/shield-warning.svg" class="w-4 h-4 shrink-0 mt-0.5" style="filter: invert(75%) sepia(80%) saturate(600%) hue-rotate(350deg);" alt="" />
+                <div>
+                    <strong class="font-semibold text-amber-200">rigluk+ Lifetime Active:</strong> Deleting your account deletes your vault. If you ever want to reactivate in the future, your email receipt can be restored by contacting support.
+                </div>
+            </div>
+            {% else %}
+            <div class="mb-3"></div>
+            {% endif %}
+
+            <div class="flex items-center gap-2">
+                <button onclick="closeDeleteAccountModal()"
+                    class="flex-1 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-pixel uppercase tracking-wider transition-all active:scale-[0.98]">
+                    Cancel
+                </button>
+                <form action="/delete-account" method="POST" class="flex-1">
+                    <button type="submit"
+                        class="w-full py-2.5 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-800/60 text-rose-300 hover:text-white text-xs font-pixel uppercase tracking-wider transition-all active:scale-[0.98]">
+                        Delete Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include 'visitor_avatar.html' %}
+
+    <script>
+        (async function populateSynthDropdowns() {
+            try {
+                const res = await fetch('/api/v1/sysex/synths');
+                if (!res.ok) return;
+                const data = await res.json();
+                const synths = data.synths || [];
+                if (!synths.length) return;
+
+                const pullSelect = document.getElementById('pull-synth-model');
+                const uploadSelect = document.getElementById('upload-synth-model');
+
+                let html = '<option value="Auto-Detect" selected>Auto-Detect (Automatic)</option>';
+                synths.forEach(s => {
+                    html += `<option value="${s.name}">${s.name}</option>`;
+                });
+
+                if (pullSelect) pullSelect.innerHTML = html;
+                if (uploadSelect) uploadSelect.innerHTML = html;
+            } catch (e) {
+                console.warn('Could not load 83 synth adaptation list:', e);
+            }
+        })();
+    </script>
+
+    <!-- Payment Success Celebration Modal -->
+    <div id="payment-success-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xs z-[60] hidden items-center justify-center hidden-transition select-none"
+        style="display: none;">
+        <div class="bg-[#0e0e11] border border-zinc-900 rounded-2xl p-6 w-[30rem] max-w-[92vw] text-center shadow-2xl relative animate-in"
+            style="animation: modalSlideIn 0.4s ease-out;">
+            <button onclick="closePaymentSuccessModal()"
+                class="absolute top-4 right-4 text-zinc-550 hover:text-white transition-colors z-10">
+                <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-4 w-4" width="16" height="16"
+                    style="filter: invert(0.6);" />
+            </button>
+
+            <!-- Celebration Header -->
+            <div class="mb-4">
+                <div class="text-4xl mb-2">🎉</div>
+                <span class="text-[9px] font-pixel text-emerald-400 uppercase tracking-widest font-semibold">rigluk+ unlocked</span>
+                <h3 class="text-lg font-pixel text-white uppercase mt-1.5 tracking-wide">Welcome home. Your sounds are safe now.</h3>
+            </div>
+
+            <!-- Sushi & Ramen Badge -->
+            <div class="flex items-center justify-center gap-2 py-2.5 px-4 bg-zinc-950 border border-zinc-900 rounded-xl mb-4">
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <img src="/static/Ghostpixxells_pixelfood/98_sushi_dish.png" class="w-6 h-6 object-contain" alt="Sushi" style="image-rendering: pixelated;" />
+                    <img src="/static/Ghostpixxells_pixelfood/87_ramen.png" class="w-6 h-6 object-contain" alt="Ramen" style="image-rendering: pixelated;" />
+                </div>
+                <span class="text-[11px] font-mono text-zinc-300">You just bought indie devs sushi & ramen 🍣</span>
+            </div>
+
+            <!-- Getting Started Checklist -->
+            <div class="text-left bg-zinc-950/60 border border-zinc-900 rounded-xl p-4 space-y-3 mb-4">
+                <span class="text-[9px] font-pixel text-zinc-400 uppercase tracking-widest">What to do first</span>
+                <div class="space-y-2.5">
+                    <div class="flex items-start gap-2.5">
+                        <span class="text-emerald-400 text-sm leading-none mt-0.5">①</span>
+                        <div>
+                            <p class="text-xs text-white font-semibold">Connect your synth</p>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">Plug in your USB-to-MIDI adapter and click <strong class="text-zinc-300">Devices</strong> in the top bar.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <span class="text-emerald-400 text-sm leading-none mt-0.5">②</span>
+                        <div>
+                            <p class="text-xs text-white font-semibold">Dump your first bank</p>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">Select your synth model, hit <strong class="text-zinc-300">Pull</strong>, and watch patch names appear in real-time.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <span class="text-emerald-400 text-sm leading-none mt-0.5">③</span>
+                        <div>
+                            <p class="text-xs text-white font-semibold">You're backed up</p>
+                            <p class="text-[10px] text-zinc-400 mt-0.5">Every bank is stored in your private cloud vault. Export .syx files anytime.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <button onclick="closePaymentSuccessModal()"
+                class="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-pixel uppercase tracking-wider rounded-full transition-all active:scale-[0.98] text-center">
+                Start Backing Up
+            </button>
+            <p class="text-[9px] text-zinc-500 font-mono mt-2 uppercase tracking-wider">Lifetime access · Zero monthly rent · Yours forever</p>
+        </div>
+    </div>
+
+    <!-- Payment Success Confetti Canvas -->
+    <canvas id="payment-confetti-canvas" class="fixed inset-0 pointer-events-none z-[55]" style="display: none;"></canvas>
+
+    <style>
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+
+    <script>
+        function showPaymentSuccessModal() {
+            const modal = document.getElementById('payment-success-modal');
+            if (!modal) return;
+            modal.style.display = 'flex';
+            requestAnimationFrame(() => modal.classList.remove('hidden'));
+            startPaymentConfetti();
+            playSuccessChime();
+            // Clean URL
+            const url = new URL(window.location);
+            url.searchParams.delete('payment');
+            window.history.replaceState({}, '', url);
+        }
+
+        function closePaymentSuccessModal() {
+            const modal = document.getElementById('payment-success-modal');
+            if (modal) { modal.style.display = 'none'; modal.classList.add('hidden'); }
+            stopPaymentConfetti();
+        }
+
+        // DX7-style FM bell chime using Web Audio API
+        function playSuccessChime() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = ctx.currentTime;
+
+                // FM synthesis: modulator -> carrier (classic DX7 bell)
+                function fmBell(freq, startTime, duration, volume) {
+                    // Modulator
+                    const mod = ctx.createOscillator();
+                    const modGain = ctx.createGain();
+                    mod.frequency.value = freq * 3.5; // ratio for bell-like timbre
+                    modGain.gain.setValueAtTime(freq * 2, startTime);
+                    modGain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+                    mod.connect(modGain);
+
+                    // Carrier
+                    const car = ctx.createOscillator();
+                    const carGain = ctx.createGain();
+                    car.frequency.value = freq;
+                    modGain.connect(car.frequency); // FM connection
+                    carGain.gain.setValueAtTime(volume, startTime);
+                    carGain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+                    car.connect(carGain);
+                    carGain.connect(ctx.destination);
+
+                    mod.start(startTime);
+                    car.start(startTime);
+                    mod.stop(startTime + duration);
+                    car.stop(startTime + duration);
+                }
+
+                // Gentle ascending arpeggio: E5 -> G#5 -> B5 -> E6
+                fmBell(659.25, now, 1.2, 0.08);        // E5
+                fmBell(830.61, now + 0.12, 1.0, 0.06); // G#5
+                fmBell(987.77, now + 0.24, 0.9, 0.05); // B5
+                fmBell(1318.5, now + 0.4, 1.5, 0.04);  // E6 (longer ring)
+
+                // Auto-close context
+                setTimeout(() => ctx.close(), 3000);
+            } catch (e) {
+                // Web Audio not available, silent fail
+            }
+        }
+
+        let confettiAnimId = null;
+        let confettiTimeout = null;
+
+        function startPaymentConfetti() {
+            const canvas = document.getElementById('payment-confetti-canvas');
+            if (!canvas) return;
+            canvas.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            const colors = ['#ec4899', '#26619C', '#10b981', '#eab308', '#a855f7', '#f97316', '#06b6d4'];
+            const numParticles = 120;
+            const particles = [];
+
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * -height * 0.5 - 20,
+                    r: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleInc: Math.random() * 0.07 + 0.03,
+                    tiltAngle: 0,
+                    speed: Math.random() * 2.5 + 1.5,
+                    wobble: Math.random() * 10
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                for (const p of particles) {
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r / 2;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+                }
+                update();
+                confettiAnimId = requestAnimationFrame(draw);
+            }
+
+            function update() {
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.y += p.speed;
+                    p.tiltAngle += p.tiltAngleInc;
+                    p.tilt = Math.sin(p.tiltAngle) * 15;
+                    p.x += Math.sin(p.wobble) * 0.5;
+                    p.wobble += 0.02;
+                    if (p.y > height + 20) {
+                        particles[i].x = Math.random() * width;
+                        particles[i].y = -20;
+                    }
+                }
+            }
+
+            draw();
+
+            // Auto-stop confetti after 8 seconds
+            confettiTimeout = setTimeout(() => stopPaymentConfetti(), 8000);
+        }
+
+        function stopPaymentConfetti() {
+            if (confettiAnimId) { cancelAnimationFrame(confettiAnimId); confettiAnimId = null; }
+            if (confettiTimeout) { clearTimeout(confettiTimeout); confettiTimeout = null; }
+            const canvas = document.getElementById('payment-confetti-canvas');
+            if (canvas) {
+                canvas.style.display = 'none';
+                const ctx = canvas.getContext('2d');
+                if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+    </script>
+
+{% if show_onboarding %}
+<!-- Ultra-Fast 2-Question Studio Setup Onboarding Modal -->
+<div id="onboarding-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300">
+    <div class="relative w-full max-w-lg bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6 overflow-hidden">
+        <!-- Accent Glow -->
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="flex items-start justify-between">
+            <div>
+                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-400 uppercase tracking-widest mb-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Studio Setup (10s)
+                </div>
+                <h3 class="text-lg font-pixel text-white uppercase tracking-wider">Tailor Your Preset Vault</h3>
+            </div>
+            <button type="button" onclick="closeOnboarding(true)" class="text-zinc-500 hover:text-white transition-colors p-1" title="Skip setup">
+                ✕
+            </button>
+        </div>
+
+        <!-- Question 1: Synths Owned -->
+        <div class="space-y-2">
+            <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+                1. Which synths do you have in your studio? <span class="text-zinc-500 font-normal lowercase">(select all that apply)</span>
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1" id="onboarding-synths">
+                <button type="button" onclick="toggleSynthChip(this, 'Juno-106')" class="synth-chip text-left text-xs font-mono px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-zinc-700 transition-all flex items-center justify-between">
+                    <span>Juno-106</span> <span class="chip-check text-emerald-400 hidden">✓</span>
+                </button>
+                <button type="button" onclick="toggleSynthChip(this, 'Yamaha DX7')" class="synth-chip text-left text-xs font-mono px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-zinc-700 transition-all flex items-center justify-between">
+                    <span>Yamaha DX7</span> <span class="chip-check text-emerald-400 hidden">✓</span>
+                </button>
+                <button type="button" onclick="toggleSynthChip(this, 'Korg M1')" class="synth-chip text-left text-xs font-mono px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-zinc-700 transition-all flex items-center justify-between">
+                    <span>Korg M1</span> <span class="chip-check text-emerald-400 hidden">✓</span>
+                </button>
+                <button type="button" onclick="toggleSynthChip(this, 'Roland D-50')" class="synth-chip text-left text-xs font-mono px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-zinc-700 transition-all flex items-center justify-between">
+                    <span>Roland D-50</span> <span class="chip-check text-emerald-400 hidden">✓</span>
+                </button>
+                <button type="button" onclick="toggleSynthChip(this, 'Matrix-1000')" class="synth-chip text-left text-xs font-mono px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-zinc-700 transition-all flex items-center justify-between">
+                    <span>Matrix-1000</span> <span class="chip-check text-emerald-400 hidden">✓</span>
+                </button>
+                <button type="button" onclick="toggleSynthChip(this, 'MicroKorg')" class="synth-chip text-left text-xs font-mono px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-zinc-700 transition-all flex items-center justify-between">
+                    <span>MicroKorg</span> <span class="chip-check text-emerald-400 hidden">✓</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Question 2: Primary Goal -->
+        <div class="space-y-2">
+            <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+                2. What is your primary SysEx workflow goal?
+            </label>
+            <div class="space-y-2 pt-1" id="onboarding-goals">
+                <label onclick="selectGoal(this, 'backup')" class="goal-option flex items-center gap-3 p-3 rounded-xl bg-zinc-800 border border-emerald-500/50 text-white cursor-pointer transition-all">
+                    <input type="radio" name="workflow_goal" value="backup" checked class="hidden">
+                    <span class="radio-dot w-4 h-4 rounded-full border border-zinc-600 flex items-center justify-center shrink-0">
+                        <span class="inner-dot w-2 h-2 rounded-full bg-emerald-400"></span>
+                    </span>
+                    <span class="text-xs font-sans text-zinc-200">Backup & preserve custom patch banks from my synths</span>
+                </label>
+                <label onclick="selectGoal(this, 'load')" class="goal-option flex items-center gap-3 p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-zinc-700 cursor-pointer transition-all">
+                    <input type="radio" name="workflow_goal" value="load" class="hidden">
+                    <span class="radio-dot w-4 h-4 rounded-full border border-zinc-700 flex items-center justify-center shrink-0">
+                        <span class="inner-dot w-2 h-2 rounded-full bg-emerald-400 hidden"></span>
+                    </span>
+                    <span class="text-xs font-sans text-zinc-300">Download & transfer curated preset packs via Web MIDI</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex items-center justify-between pt-2 border-t border-zinc-900">
+            <button type="button" onclick="closeOnboarding(true)" class="text-xs text-zinc-500 hover:text-zinc-300 font-mono transition-colors">
+                Skip for now →
+            </button>
+            <button type="button" onclick="submitOnboarding()" class="px-6 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black text-xs font-semibold uppercase tracking-wider transition-all duration-150 active:scale-[0.98]">
+                Save & Open Vault →
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedSynths = new Set();
+    let selectedGoal = 'backup';
+
+    function toggleSynthChip(btn, synthName) {
+        const check = btn.querySelector('.chip-check');
+        if (selectedSynths.has(synthName)) {
+            selectedSynths.delete(synthName);
+            btn.classList.remove('bg-zinc-800', 'border-emerald-500/50', 'text-white');
+            btn.classList.add('bg-zinc-900', 'border-zinc-800', 'text-zinc-400');
+            if (check) check.classList.add('hidden');
+        } else {
+            selectedSynths.add(synthName);
+            btn.classList.remove('bg-zinc-900', 'border-zinc-800', 'text-zinc-400');
+            btn.classList.add('bg-zinc-800', 'border-emerald-500/50', 'text-white');
+            if (check) check.classList.remove('hidden');
+        }
+    }
+
+    function selectGoal(label, goalVal) {
+        selectedGoal = goalVal;
+        document.querySelectorAll('.goal-option').forEach(el => {
+            el.classList.remove('border-emerald-500/50', 'bg-zinc-800', 'text-white');
+            el.classList.add('border-zinc-800', 'bg-zinc-900', 'text-zinc-400');
+            const dot = el.querySelector('.inner-dot');
+            if (dot) dot.classList.add('hidden');
+        });
+        label.classList.remove('border-zinc-800', 'bg-zinc-900', 'text-zinc-400');
+        label.classList.add('border-emerald-500/50', 'bg-zinc-800', 'text-white');
+        const dot = label.querySelector('.inner-dot');
+        if (dot) dot.classList.remove('hidden');
+    }
+
+    async function closeOnboarding(isSkip = false) {
+        const modal = document.getElementById('onboarding-modal');
+        if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => { if (modal) modal.remove(); }, 300);
+
+        try {
+            await fetch('/api/user/onboarding', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ synths: isSkip ? [] : Array.from(selectedSynths), workflow: isSkip ? 'skipped' : selectedGoal })
+            });
+        } catch (e) {
+            console.error('Failed to save onboarding preference', e);
+        }
+    }
+
+    async function submitOnboarding() {
+        await closeOnboarding(false);
+    }
+</script>
+{% endif %}
+
+</body>
+
+</html>

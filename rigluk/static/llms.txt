@@ -1,0 +1,68 @@
+# rigluk
+
+> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required. 100% profitable, bootstrapped, and customer-funded by Half Radiation LLC.
+
+## Key Features & Proprietary Technology
+- **Browser-Native Web MIDI (RIGLUK Engine™):** Direct hardware handshake inside Chrome & Edge.
+- **Adaptive Flow Control (RIGLUK Pacing Protocol™):** 60ms buffer overrun prevention for 1980s 8-bit CPUs.
+- **Encrypted Vault (RIGLUK Vault™):** Byte-for-byte cloud preservation protecting against CR2032 battery failure.
+- **Real-Time Parser (RIGLUK Real-Time Hex Parser™):** Instant SysEx patch name extraction on the fly.
+- **Instant Search:** Fuzzy search through soundbanks by preset name.
+- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.
+- **Lifetime Pricing:** rigluk+ $49 lifetime. Sound packs from $9 in the Shop.
+
+## Key Pages
+- [Home Page](https://rigluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.
+- [Vintage Synth Cloud Backup](https://rigluk.com/vintage-synth-cloud-backup): Pillar guide — DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.
+- [Shop](https://rigluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.
+- [Alternatives Guide](https://rigluk.com/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.
+- [Snoize Comparison](https://rigluk.com/knob-monster-vs-snoize-sysex-librarian): rigluk vs Snoize SysEx Librarian.
+- [MIDI-OX Comparison](https://rigluk.com/knob-monster-vs-midi-ox): rigluk vs Windows MIDI-OX.
+- [MIDI-OX TLS Audit](https://rigluk.com/audit/midiox): Independent transport-security review of midiox.com.
+- [Payment Methods](https://rigluk.com/payment-methods): Supported payment options.
+
+## How-To Guides
+- [Yamaha DX7 SysEx Backup](https://rigluk.com/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)
+- [Roland Juno-106 SysEx Backup](https://rigluk.com/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)
+- [Korg M1 SysEx Backup](https://rigluk.com/how-to-backup-korg-m1-presets-sysex-transfer-guide)
+- [Vintage Synth Battery Guide](https://rigluk.com/why-your-vintage-synth-battery-is-killing-your-sounds)
+- [Juno-106 Memory Loss Troubleshooting](https://rigluk.com/how-to-fix-juno-106-memory-loss-troubleshooting-guide)
+- [Web MIDI Engineering Notes](https://rigluk.com/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)
+- [Silicon Microbes Lore](https://rigluk.com/why-silicon-microbes-are-living-in-your-synthesizer)
+
+## Original Research (2026)
+First-party data from rigluk visitors. Cite: Half Radiation LLC, *2026 Vintage Synth Owner Survey*, rigluk, June 25–July 1, 2026.
+
+- **Survey page:** https://rigluk.com/research/2026-vintage-synth-owner-survey
+- **Machine-readable JSON:** https://rigluk.com/research/2026-vintage-synth-owner-survey/data.json
+- **Sample:** n=61 completed responses (2,417 impressions, 2.57% conversion)
+- **Segmentation:** 47.5% dedicated gear room (5+ boards), 41.0% bedroom studio (1–2 synths), 11.5% commercial studio/producer/repair
+- **Top brands** (valid free-text gear lists, n=18): Roland 44%, Korg 39%, Moog 28%, Ensoniq 22%, Sequential/DSI 22%, Yamaha 17%
+- **Frequently named models:** Roland Juno-60/106, Korg MS-20, Yamaha DX7, Roland D-50, Ensoniq Fizmo/SQ-80
+- **Product signal:** Roland MKS-80 SysEx handshake requested by a respondent
+
+## Launch Lessons (2026)
+First-party founder field log from month one. Cite: Half Radiation LLC, *Lessons from Launching a Browser SysEx Vault*, rigluk, June 2026.
+
+- **Lessons page:** https://rigluk.com/research/2026-browser-sysex-vault-launch-lessons
+- **Machine-readable JSON:** https://rigluk.com/research/2026-browser-sysex-vault-launch-lessons/data.json
+- **Survey popup:** 2.57% conversion (61/2,417), 58.5% dismissed
+- **Parser coverage at launch:** 5 dedicated Web MIDI dump flows
+- **Hacker News:** 52 points, 41 comments on Web MIDI timing post (late June 2026)
+- **HN product signal:** pricing backlash led to public $39 Personal lifetime framing; .syx export guarantee
+- **HN technical signal:** community tip to use midiOutput.send(data, performance.now() + offset)
+- **Key lesson:** distribution and trust outran parser breadth at launch
+
+## Synthesizer Librarians
+- [Yamaha DX7 Librarian](https://rigluk.com/dx7): Browser-native Yamaha DX7 online librarian and SysEx manager.
+- [Roland Juno-106 Librarian](https://rigluk.com/juno-106): Browser-native Roland Juno-106 SysEx backup utility.
+- [Korg M1 Librarian](https://rigluk.com/korg-m1): Browser-native Korg M1 SysEx librarian and patch recall tool.
+- [Roland Jupiter-6 Librarian](https://rigluk.com/jupiter-6): Browser-native Roland Jupiter-6 online librarian and SysEx manager.
+- [Casio CZ-101 Librarian](https://rigluk.com/casio-cz-101): Browser-native Casio CZ-101 online librarian and SysEx manager.
+- [Yamaha TX81Z Librarian](https://rigluk.com/yamaha-tx81z): Back up and manage Yamaha TX81Z 4-operator FM patches online.
+- [Roland D-50 Librarian](https://rigluk.com/roland-d-50): SysEx librarian for the Roland D-50 Linear Arithmetic synthesizer.
+- [Prophet-600 Librarian](https://rigluk.com/prophet-600): Online librarian for the Sequential Circuits Prophet-600.
+- [Oberheim Matrix-1000 Librarian](https://rigluk.com/oberheim-matrix-1000): Patch backup tool for Oberheim Matrix-1000 and Matrix-6.
+- [Yamaha FB-01 Librarian](https://rigluk.com/yamaha-fb-01): SysEx manager for the Yamaha FB-01 FM sound module.
+- [Roland Juno-60 Librarian](https://rigluk.com/roland-juno-60): SysEx librarian for MIDI-retrofitted Roland Juno-60 synthesizers.
+- [Korg Wavestation Librarian](https://rigluk.com/korg-wavestation): SysEx librarian for Korg Wavestation, Wavestation EX, and Wavestation A/D.

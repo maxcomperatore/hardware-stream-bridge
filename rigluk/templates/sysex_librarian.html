@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>5 Best SysEx Librarian Alternatives for Windows & macOS (2026)</title>
+    <meta name="description" content="Explore the top 5 SysEx librarian alternatives for Windows and macOS in 2026. Compare classic offline tools like Snoize with modern browser-native web vaults.">
+    {% set seo_canonical = "https://rigluk/sysex-librarian-alternatives" %}
+    {% set seo_title = "5 Best SysEx Librarian Alternatives for Windows & macOS (2026)" %}
+    {% set seo_description = "Explore the top 5 SysEx librarian alternatives for Windows and macOS in 2026. Compare classic offline tools like Snoize with modern browser-native web vaults." %}
+    {% include 'partials/seo_article_meta.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* 3D spin animation for logo */
+        @keyframes logo-spin {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        /* 1-bit dither mesh overlay */
+        /* Mobile specific fancy background pattern */
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        /* Hover glows */
+        .glow-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .glow-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -15px rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-active {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Looping Confetti Banner Effect */
+        @keyframes confetti-loop {
+            0% {
+                background-position: 0 0, 0 0, 0 0;
+            }
+
+            100% {
+                background-position: 0 0, 200px 200px, -160px 320px;
+            }
+        }
+
+        .confetti-banner-bg {
+            background-image:
+                linear-gradient(to right, rgba(20, 20, 23, 0.8) 0%, rgba(9, 9, 11, 0.85) 100%),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%233b83f6%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%233b83f6%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E"),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%23f43f5e%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.75%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%23eab308%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.8%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%23a855f7%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%233b83f6%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%23ec4899%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%23f43f5e%27 opacity%3D%270.8%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%23eab308%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%233b83f6%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%23a855f7%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.7%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+            background-size: auto, 200px 200px, 160px 160px;
+            animation: confetti-loop 7s linear infinite;
+        }
+
+        /* Looping Christmas Snow Banner Effect */
+        @keyframes snow-loop {
+            0% {
+                background-position: 0 0, 0 0, 0 0;
+            }
+
+            100% {
+                background-position: 0 0, 150px 300px, -100px 150px;
+            }
+        }
+
+        .christmas-banner-bg {
+            background-image:
+                linear-gradient(to right, rgba(12, 28, 18, 0.8) 0%, rgba(9, 9, 11, 0.85) 100%),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27150%27 height%3D%27150%27 viewBox%3D%270 0 150 150%27%3E%3Ccircle cx%3D%2720%27 cy%3D%2730%27 r%3D%272.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27120%27 cy%3D%2740%27 r%3D%271.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.6%27%2F%3E%3Ccircle cx%3D%2780%27 cy%3D%2790%27 r%3D%273%27 fill%3D%27%23ffffff%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2740%27 cy%3D%27120%27 r%3D%272%27 fill%3D%27%23ffffff%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27140%27 cy%3D%27110%27 r%3D%272%27 fill%3D%27%23ffffff%27 opacity%3D%270.7%27%2F%3E%3C%2Fsvg%3E"),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27100%27 height%3D%27100%27 viewBox%3D%270 0 100 100%27%3E%3Ccircle cx%3D%2715%27 cy%3D%2725%27 r%3D%271.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.5%27%2F%3E%3Ccircle cx%3D%2785%27 cy%3D%2775%27 r%3D%272.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.7%27%2F%3E%3Ccircle cx%3D%2750%27 cy%3D%2750%27 r%3D%271.2%27 fill%3D%27%23ffffff%27 opacity%3D%270.6%27%2F%3E%3C%2Fsvg%3E");
+            background-size: auto, 150px 150px, 100px 100px;
+            animation: snow-loop 12s linear infinite;
+        }
+    </style>
+
+    <!-- Schema.org JSON-LD for Search Engine Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "5 Best SysEx Librarian Alternatives for Windows & macOS (2026)",
+      "description": "A comprehensive review and ranking of the top MIDI SysEx librarian tools and alternatives for vintage synthesizers like the DX7, Juno, and M1.",
+      "image": "{{ asset_abs_url('dithered_knob_og.gif') }}",
+      "author": {
+        "@type": "Organization",
+        "name": "rigluk"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "rigluk",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://rigluk/static/logo.svg"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://rigluk/sysex-librarian-alternatives"
+      }
+    }
+    </script>
+    {% if is_halloween_week %}
+    <!-- Google Spooky Fonts -->
+    <style>
+        /* Spooky Font & Color Overrides */
+        h1,
+        h2,
+        h3,
+        .logo-text,
+        .font-pixel {
+            font-family: 'Kablammo', cursive !important;
+            letter-spacing: 0.05em !important;
+        }
+
+        /* Spooky orange and violet/purple colors replacing emerald green theme */
+        :root {
+            --halloween-orange: #f97316;
+            --halloween-purple: #8b5cf6;
+        }
+
+        /* Border, Text, and Background overrides to transform Emerald -> Spooky Orange */
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
+            border-color: rgba(249, 115, 22, 0.3) !important;
+        }
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
+            color: #f97316 !important;
+        }
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
+            background-color: rgba(249, 115, 22, 0.1) !important;
+        }
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
+            background-color: #f97316 !important;
+            color: #000000 !important;
+        }
+
+        /* Change hover backgrounds and colors */
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
+            background-color: #ea580c !important;
+        }
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
+            color: #f97316 !important;
+        }
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
+            border-color: #f97316 !important;
+        }
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
+            --tw-ring-color: #f97316 !important;
+        }
+
+        /* Spooky Card and Glow Hovering effects */
+        .glow-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.4) !important;
+            border-color: #f97316 !important;
+        }
+
+        /* Spin Logo hue rotate to give a creepy alien green/orange look */
+        .spin-logo img {
+            filter: hue-rotate(60deg) saturate(1.8) !important;
+        }
+
+        /* Creepy vignette overlay on body */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(139, 92, 246, 0.12) 100%);
+            pointer-events: none;
+            z-index: 49;
+        }
+
+        /* Floating title keyframes */
+        @keyframes float-spooky {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-4px) rotate(0.5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        h1,
+        h2 {
+            animation: float-spooky 4s ease-in-out infinite;
+            text-shadow: 0 0 12px rgba(249, 115, 22, 0.6) !important;
+            color: #f97316 !important;
+        }
+
+        /* Spooky blinking light effect in the background */
+        @keyframes spooky-flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            96% {
+                opacity: 0.8;
+            }
+
+            97% {
+                opacity: 1;
+            }
+
+            98% {
+                opacity: 0.7;
+            }
+
+            99% {
+                opacity: 1;
+            }
+        }
+
+        .glow-card {
+            animation: spooky-flicker 10s infinite;
+        }
+    </style>
+    {% endif %}
+    {% if is_birthday_week %}
+    <style>
+        /* Birthday Party Theme: Rose Pink & Violet accents replacing Emerald Green */
+        :root {
+            --birthday-rose: #ec4899;
+            --birthday-violet: #8b5cf6;
+        }
+
+        /* Border, Text, and Background overrides to transform Emerald -> Party Pink/Purple */
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
+            border-color: rgba(236, 72, 153, 0.3) !important;
+        }
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
+            color: #ec4899 !important;
+        }
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
+            background-color: rgba(236, 72, 153, 0.1) !important;
+        }
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
+            background-color: #ec4899 !important;
+            color: #ffffff !important;
+        }
+
+        /* Change hover backgrounds and colors */
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
+            background-color: #db2777 !important;
+        }
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
+            color: #ec4899 !important;
+        }
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
+            border-color: #ec4899 !important;
+        }
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
+            --tw-ring-color: #ec4899 !important;
+        }
+
+        /* Premium Glow Cards for birthday party night */
+        .glow-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.4) !important;
+            border-color: #ec4899 !important;
+        }
+
+        /* Festive background radial gradient overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(236, 72, 153, 0.08) 100%);
+            pointer-events: none;
+            z-index: 49;
+        }
+    </style>
+    {% endif %}
+    {% if is_christmas_week %}
+    <style>
+        /* Cozy Christmas Theme: Fireplace Red & Warm Gold accents replacing Emerald Green */
+        :root {
+            --christmas-red: #ef4444;
+            --christmas-gold: #f59e0b;
+        }
+
+        /* Border, Text, and Background overrides to transform Emerald -> Holiday Red/Gold */
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
+            border-color: rgba(239, 68, 68, 0.3) !important;
+        }
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
+            color: #ef4444 !important;
+        }
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
+            background-color: rgba(239, 68, 68, 0.1) !important;
+        }
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+        }
+
+        /* Change hover backgrounds and colors */
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
+            background-color: #dc2626 !important;
+        }
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
+            color: #ef4444 !important;
+        }
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
+            border-color: #ef4444 !important;
+        }
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
+            --tw-ring-color: #ef4444 !important;
+        }
+
+        /* Premium Glow Cards for cozy Christmas night */
+        .glow-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.4) !important;
+            border-color: #ef4444 !important;
+        }
+
+        /* Cozy fire glow radial gradient overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(239, 68, 68, 0.08) 100%);
+            pointer-events: none;
+            z-index: 49;
+        }
+    </style>
+    {% endif %}
+</head>
+
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <!-- Fancy Mobile Background Pattern -->
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    {% if is_birthday_week %}
+    <!-- Birthday Announcement Banner -->
+    <div id="birthday-banner"
+        class="w-full confetti-banner-bg border-b border-zinc-800 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+        <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
+            <span class="tag-lapis-audit animate-pulse">
+                🎂 Birthday Week
+            </span>
+            <span class="text-zinc-250">
+                Rigluk is {% if birthday_age > 0 %}turning {{ birthday_age }}{% else %}celebrating its launch{%
+                endif %}! Get 20% off with code <span
+                    class="text-rose-400 px-1.5 py-0.5 bg-rose-950/40 rounded border border-rose-900/40 select-all font-mono font-bold">{{
+                    birthday_code }}</span> at checkout (Ends in <span id="promo-timer"
+                    class="font-mono text-rose-400 font-bold bg-rose-950/20 px-1.5 py-0.5 rounded border border-rose-900/30">--h
+                    --m --s</span>)!
+            </span>
+        </div>
+        <button onclick="document.getElementById('birthday-banner').style.display='none'"
+            class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center"
+            aria-label="Close Announcement">
+            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+    <script>
+            (function () {
+                const currentYear = new Date().getFullYear();
+                let targetDate = new Date(`June 6, ${currentYear} 23:59:59`).getTime();
+                const now = new Date().getTime();
+
+                if (targetDate <= now) {
+                    // Rolling 24h countdown for preview/testing
+                    targetDate = now + 24 * 60 * 60 * 1000;
+                }
+
+                function updateTimer() {
+                    const timerElement = document.getElementById('promo-timer');
+                    if (!timerElement) return;
+
+                    const currentNow = new Date().getTime();
+                    const distance = targetDate - currentNow;
+
+                    if (distance < 0) {
+                        timerElement.innerHTML = "Expired";
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    let timeStr = "";
+                    if (days > 0) {
+                        timeStr += days + "d ";
+                    }
+                    timeStr += String(hours).padStart(2, '0') + "h " +
+                        String(minutes).padStart(2, '0') + "m " +
+                        String(seconds).padStart(2, '0') + "s";
+
+                    timerElement.innerHTML = timeStr;
+                }
+
+                updateTimer();
+                setInterval(updateTimer, 1000);
+            })();
+    </script>
+    {% elif is_christmas_week %}
+    <!-- Christmas Holiday Announcement Banner -->
+    <div id="christmas-banner"
+        class="w-full christmas-banner-bg border-b border-emerald-950/40 py-2.5 px-6 relative z-50 flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+        <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
+            <span class="tag-lapis-audit animate-pulse">
+                🎄 Holiday Sale
+            </span>
+            <span class="text-zinc-250">
+                Merry Christmas! Get 20% off with code <span
+                    class="text-emerald-400 px-1.5 py-0.5 bg-emerald-950/40 rounded border border-emerald-900/40 select-all font-mono font-bold">{{
+                    christmas_code }}</span> at checkout (Ends in <span id="xmas-timer"
+                    class="font-mono text-emerald-400 font-bold bg-emerald-950/20 px-1.5 py-0.5 rounded border border-emerald-900/30">--h
+                    --m --s</span>)!
+            </span>
+        </div>
+        <button onclick="document.getElementById('christmas-banner').style.display='none'"
+            class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center"
+            aria-label="Close Announcement">
+            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+    <script>
+        (function () {
+            const currentYear = new Date().getFullYear();
+            let targetDate = new Date(`December 31, ${currentYear} 23:59:59`).getTime();
+            const now = new Date().getTime();
+
+            if (targetDate <= now) {
+                // Rolling 24h countdown for preview/testing
+                targetDate = now + 24 * 60 * 60 * 1000;
+            }
+
+            function updateTimer() {
+                const timerElement = document.getElementById('xmas-timer');
+                if (!timerElement) return;
+
+                const currentNow = new Date().getTime();
+                const distance = targetDate - currentNow;
+
+                if (distance < 0) {
+                    timerElement.innerHTML = "Expired";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                let timeStr = "";
+                if (days > 0) {
+                    timeStr += days + "d ";
+                }
+                timeStr += String(hours).padStart(2, '0') + "h " +
+                    String(minutes).padStart(2, '0') + "m " +
+                    String(seconds).padStart(2, '0') + "s";
+
+                timerElement.innerHTML = timeStr;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        })();
+    </script>
+    {% endif %}
+
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Rigluk Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-lapis-light transition-colors">rigluk</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="hover:text-white transition-colors duration-200">Resources</a>
+                <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                {% if user %}
+                <a href="/home" id="nav-dashboard-link-user"
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Open
+                </a>
+                {% else %}
+                <a href="/login" id="nav-login-link"
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Enter
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-16 relative z-10">
+        <!-- Hero Title -->
+        <article class="space-y-6 text-center max-w-3xl mx-auto">
+            <span class="tag-lapis">
+                Technical Review
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
+                Best SysEx Librarian Alternatives for Windows &amp; macOS
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed font-mono">
+                Vintage synthesizers store presets in battery-backed SRAM. Managing these libraries historically meant installing desktop utilities last updated in the Clinton administration. This is an evaluation of the leading SysEx managers for modern operating systems.
+            </p>
+        </article>
+
+        <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2 max-w-2xl mx-auto">
+            <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+            <p class="text-xs text-zinc-400 leading-relaxed font-mono text-left">
+                SysEx transfers are highly sensitive to latency. Operating system updates frequently break legacy USB-MIDI drivers, turning once-stable desktop software into a source of silent data corruption.
+            </p>
+        </div>
+
+        <!-- OS Filter Tabs -->
+        <section class="flex justify-center mt-12 mb-8">
+            <div class="inline-flex flex-wrap items-center justify-center p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1 max-w-full"
+                id="filter-container">
+                <button onclick="filterOS('all')" id="btn-filter-all"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg transition-colors tab-active">
+                    All
+                </button>
+                <button onclick="filterOS('windows')" id="btn-filter-win"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                    Windows
+                </button>
+                <button onclick="filterOS('macos')" id="btn-filter-mac"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                    macOS
+                </button>
+                <button onclick="filterOS('web')" id="btn-filter-web"
+                    class="px-4 py-2 text-2xs font-pixel uppercase tracking-wider rounded-lg text-zinc-400 hover:text-white transition-colors">
+                    Web Native
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Alternatives Cards -->
+        <section class="space-y-6 mt-8" id="cards-container">
+
+            <!-- rigluk Card (Editor's Choice) -->
+            <div id="rigluk"
+                class="glow-card border-2 border-emerald-500/30 bg-zinc-950/40 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows macos web">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="tag-lapis mb-2">
+                            Editor's Choice
+                        </span>
+                        <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">1. rigluk</h2>
+                    </div>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Web
+                        Browser Native</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    rigluk is a modern cloud librarian that runs directly in your web browser. Using the Web MIDI
+                    API, it connects to your MIDI interfaces without needing local software installs or driver setups.
+                    It automatically parses, indexes, and normalizes patch banks.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Zero installation required (run instantly in your browser)</li>
+                            <li>Instant 1-click cloud backups (never lose custom patches again)</li>
+                            <li>Auto-decodes patch names from raw binary (saves hours of manual typing)</li>
+                            <li>Integrated search across your entire vault</li>
+                            <li>Dedicated custom parsers for DX7, Juno, M1, Jupiter-6 & CZ-101</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>None</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900 flex justify-between items-center">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: $49.00 one-time</span>
+                    <a href="/signup" id="card-cta-knobmonster"
+                        class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-lg text-3xs font-pixel uppercase tracking-widest transition-colors">
+                        Try Browser MIDI
+                    </a>
+                </div>
+            </div>
+
+            <!-- Snoize Card -->
+            <div id="snoize" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="macos">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">2. Snoize SysEx Librarian</h2>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">macOS
+                        Native</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    The legacy standard for Mac users. Snoize SysEx Librarian is a basic local utility for macOS. It has
+                    stable packet timing, but lacks any modern database, naming, indexing, or backup features.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Free and open-source</li>
+                            <li>Auto-detects connected MIDI ports</li>
+                            <li>Excellent packet timing buffers</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>macOS only (no Windows or cross-platform support)</li>
+                            <li>No built-in patch metadata search or text querying</li>
+                            <li>Local disk only: vulnerable to drive crashes and data loss</li>
+                            <li>No real-time preset name decoding (you only see hex code files)</li>
+                            <li>No cloud backup or multi-device sync</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free / Open-Source (Abandoned/Legacy local-only
+                        software)</span>
+                </div>
+            </div>
+
+            <!-- MIDI-OX Card -->
+            <div id="midi-ox" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">3. MIDI-OX</h2>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows
+                        Native</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    The classic Windows utility. MIDI-OX is a deep monitoring tool, but it was designed in the Windows
+                    95 era and suffers from a highly complex, outdated interface.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Incredibly deep diagnostic tools</li>
+                            <li>Custom buffer size adjustments</li>
+                            <li>Advanced MIDI routing matrix</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Windows only (no macOS or mobile support)</li>
+                            <li>Extremely complex, outdated Windows 95/98-style UI</li>
+                            <li>Requires manual buffer/delay tuning to prevent frequent buffer overflows</li>
+                            <li>No automatic preset name decoding or database searching</li>
+                            <li>Local storage only with zero cloud backups or sync</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free for non-commercial use (Archaic desktop
+                        client)</span>
+                </div>
+            </div>
+
+            <!-- Bome SendSX Card -->
+            <div id="bome-sendsx"
+                class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows macos">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">4. Bome SendSX</h2>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Windows
+                        / macOS</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    A basic utility designed purely to send/receive raw hex strings. It is extremely lightweight but
+                    lacks any bank database, searching, or structure.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Extremely lightweight</li>
+                            <li>Real-time raw hex output display</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>No bank database search, organization, or tagging</li>
+                            <li>No automatic decoding of preset names</li>
+                            <li>Too bare-bones to serve as a proper database for synth setups</li>
+                            <li>Requires paid license for commercial use</li>
+                            <li>No cloud integration or automatic sync</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Donationware (No database features)</span>
+                </div>
+            </div>
+
+            <!-- Dexed Card -->
+            <div id="dexed" class="glow-card border border-zinc-900 bg-zinc-950/20 rounded-2xl p-6 md:p-8 space-y-4"
+                data-os="windows macos">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">5. Dexed (Virtual Cartridge)</h2>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-3 py-1 rounded-full border border-zinc-800 self-start sm:self-auto">Cross-Platform
+                        VST / Standalone</span>
+                </div>
+                <p class="text-xs md:text-sm text-zinc-300 leading-relaxed font-sans">
+                    A software plugin emulation of the DX7. While it features a cartridge loader for DX7 files, it is
+                    not a general-purpose librarian.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-2">
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-1">Pros:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Free and cross-platform</li>
+                            <li>Allows local preview of patch parameters</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text-rose-400 font-bold block mb-1">Cons:</span>
+                        <ul class="list-disc list-inside space-y-1 text-zinc-400">
+                            <li>Strictly limited to 6-operator Yamaha DX7 patches</li>
+                            <li>Absolutely no support for Juno, Korg M1, Oberheim, or other synthesizers</li>
+                            <li>Clunky, non-intuitive VST dashboard for librarian duties</li>
+                            <li>No automatic cloud backup or centralized storage database</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-zinc-900">
+                    <span class="text-2xs font-mono text-zinc-500">Cost: Free (Strictly limited to Yamaha
+                        DX7/TX81Z)</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Technical Deep Dive Section (Authoritative Content for Search Ranking) -->
+        <section class="mt-20 border-t border-zinc-900 pt-16 space-y-6 max-w-2xl mx-auto">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase tracking-wide">
+                Why Modern USB Interfaces Drop SysEx Packets
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-mono">
+                A 4104-byte bulk dump sent to a vintage synthesizer frequently triggers a <code>Buffer Overflow</code> or <code>MIDI Communication Error</code>. The issue is packet timing, not file integrity.
+            </p>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-mono">
+                1980s synthesizers run on slow internal microprocessors (like the 2MHz Motorola 6809 or Intel 8031). They receive MIDI data at the hardware rate of 31,250 bits per second.
+            </p>
+            <p class="text-xs md:text-sm text-zinc-400 leading-relaxed font-mono">
+                Modern USB interfaces send data at high-speed USB rates. Without strict software pacing, they flood the synth's memory buffer before the microprocessor can write the bytes to SRAM.
+            </p>
+            <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-4 md:p-6 space-y-3 font-mono text-2xs md:text-xs">
+                <span class="text-emerald-400 font-semibold block uppercase tracking-wider">How to Fix Timing Errors:</span>
+                <ul class="list-decimal list-inside space-y-2 text-zinc-300">
+                    <li><strong>Chunk output:</strong> Send data in blocks of 256 bytes instead of single streams.</li>
+                    <li><strong>Inject delays:</strong> Introduce a 60-millisecond delay between each packet to allow SRAM writing.</li>
+                    <li><strong>Avoid generic cables:</strong> Low-cost USB-MIDI cables lack optocouplers and discard messages exceeding 100 bytes.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Call To Action -->
+        <section class="mt-20 border-t border-zinc-900 pt-16 text-center space-y-6">
+            <h2 class="text-xl md:text-2xl font-pixel text-white uppercase">
+                Want to Skip the Driver Configuration?
+            </h2>
+            <p class="text-xs md:text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">
+                Connect your interface, select your synthesizer model, and back up your sounds directly to the cloud in
+                one click.
+            </p>
+            <div>
+                <a href="/signup" id="footer-cta-signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-6 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-150 inline-block">
+                    Launch Your Vault
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+    <script>
+        const RECT_FLAGS_MAP = {{ (rect_flags_map or {}) | tojson | safe }};
+        function getFlagUrl(code) {
+            const codeUpper = (code || '').toUpperCase();
+            const filename = RECT_FLAGS_MAP[codeUpper];
+            if (filename) return `/static/icons/flags/Rect/${filename}`;
+            return `/static/icons/flags/Rect/${codeUpper}_rect.png`;
+        }
+        // Interactive Filter Script
+        function filterOS(os) {
+            const cards = document.querySelectorAll('#cards-container > div');
+            const buttons = document.querySelectorAll('#filter-container button');
+
+            // Toggle active tab styling
+            buttons.forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-zinc-400');
+            });
+
+            if (os === 'all') {
+                document.getElementById('btn-filter-all').classList.add('tab-active');
+                document.getElementById('btn-filter-all').classList.remove('text-zinc-400');
+            } else if (os === 'windows') {
+                document.getElementById('btn-filter-win').classList.add('tab-active');
+                document.getElementById('btn-filter-win').classList.remove('text-zinc-400');
+            } else if (os === 'macos') {
+                document.getElementById('btn-filter-mac').classList.add('tab-active');
+                document.getElementById('btn-filter-mac').classList.remove('text-zinc-400');
+            } else if (os === 'web') {
+                document.getElementById('btn-filter-web').classList.add('tab-active');
+                document.getElementById('btn-filter-web').classList.remove('text-zinc-400');
+            }
+
+            // Show/Hide matching cards
+            cards.forEach(card => {
+                const supportedOS = card.getAttribute('data-os').split(' ');
+                if (os === 'all' || supportedOS.includes(os)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Call the secure same-origin server-side proxy to get geoip details
+        const fetchGeoData = () => {
+            return fetch('/api/geoip')
+                .then(res => {
+                    if (!res.ok) throw new Error();
+                    return res.json().catch(() => ({}));
+                })
+                .catch(() => ({}));
+        };
+
+        fetchGeoData()
+            .then(data => {
+                if (data.country_name && data.country) {
+                    const country = data.country_name;
+                    const code = data.country.toLowerCase();
+
+                    let countryName = country;
+                    if (code === 'us') countryName = 'the USA';
+                    else if (code === 'gb') countryName = 'the UK';
+                    else if (code === 'nl') countryName = 'the Netherlands';
+                    else if (code === 'uae') countryName = 'the UAE';
+                    else if (code === 'ph') countryName = 'the Philippines';
+
+                    const tag = document.getElementById('visitor-geo-tag');
+                    if (tag) {
+                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="${getFlagUrl(code)}" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
+                    }
+                }
+            })
+            .catch(() => {
+                const tag = document.getElementById('visitor-geo-tag');
+                if (tag) tag.textContent = 'Made for geniuses everywhere';
+            });
+
+        // Footer email subscription logic
+        function submitFooterSubscribe(event) {
+            event.preventDefault();
+            const form = event.target;
+            const emailInput = document.getElementById('footer-subscribe-email');
+            const email = emailInput.value.trim();
+            const statusDiv = document.getElementById('footer-subscribe-status');
+            const submitBtn = document.getElementById('footer-subscribe-btn');
+
+            // Email Regex Validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                statusDiv.textContent = "that.. doesn't look like an email address. Want to double check?";
+                statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                return;
+            }
+
+            statusDiv.textContent = "Connecting to preset database...";
+            statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
+            submitBtn.disabled = true;
+
+            fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `email=${encodeURIComponent(email)}`
+            })
+                .then(res => {
+                    if (res.ok) {
+                        statusDiv.textContent = "Subscribed. Updates about twice a month. Unsubscribe anytime.";
+                        statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                        form.reset();
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    statusDiv.textContent = "Subscribed. Updates about twice a month. Unsubscribe anytime.";
+                    statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                    form.reset();
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
+        }
+    </script>
+
+    {% if is_christmas_week %}
+    <!-- Dynamic falling snow canvas overlay for Christmas week -->
+    <canvas id="christmas-snow-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+    <script>
+        (function () {
+            const canvas = document.getElementById('christmas-snow-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const numFlakes = 100;
+            const flakes = [];
+
+            for (let i = 0; i < numFlakes; i++) {
+                flakes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 2 + 1,
+                    d: Math.random() * numFlakes,
+                    speed: Math.random() * 1 + 0.5,
+                    density: Math.random() * 20
+                });
+            }
+
+            let angle = 0;
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+                ctx.beginPath();
+                for (let i = 0; i < numFlakes; i++) {
+                    const f = flakes[i];
+                    ctx.moveTo(f.x, f.y);
+                    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+                }
+                ctx.fill();
+                update();
+            }
+
+            function update() {
+                angle += 0.01;
+                for (let i = 0; i < numFlakes; i++) {
+                    const f = flakes[i];
+                    f.y += f.speed;
+                    f.x += Math.sin(angle + f.density) * 0.5;
+
+                    if (f.y > height) {
+                        flakes[i] = {
+                            x: Math.random() * width,
+                            y: -10,
+                            r: f.r,
+                            d: f.d,
+                            speed: f.speed,
+                            density: f.density
+                        };
+                    }
+                }
+            }
+
+            function tick() {
+                draw();
+                requestAnimationFrame(tick);
+            }
+            tick();
+        })();
+    </script>
+    {% endif %}
+
+    {% if is_birthday_week %}
+    <!-- Dynamic floating confetti canvas overlay for Birthday week -->
+    <canvas id="birthday-confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+    <script>
+        (function () {
+            const canvas = document.getElementById('birthday-confetti-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const colors = ['#ec4899', '#26619C', '#10b981', '#eab308', '#a855f7', '#f97316'];
+            const numParticles = 75;
+            const particles = [];
+
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * -height - 20,
+                    r: Math.random() * 4 + 3,
+                    d: Math.random() * numParticles,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+                    tiltAngle: 0,
+                    speed: Math.random() * 1.5 + 1
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < numParticles; i++) {
+                    const p = particles[i];
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r / 2;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+                }
+                update();
+            }
+
+            function update() {
+                for (let i = 0; i < numParticles; i++) {
+                    const p = particles[i];
+                    p.y += p.speed;
+                    p.tiltAngle += p.tiltAngleIncremental;
+                    p.tilt = Math.sin(p.tiltAngle) * 12;
+
+                    if (p.y > height) {
+                        particles[i] = {
+                            x: Math.random() * width,
+                            y: -20,
+                            r: p.r,
+                            d: p.d,
+                            color: p.color,
+                            tilt: Math.random() * 10 - 5,
+                            tiltAngleIncremental: p.tiltAngleIncremental,
+                            tiltAngle: 0,
+                            speed: p.speed
+                        };
+                    }
+                }
+            }
+
+            function tick() {
+                draw();
+                requestAnimationFrame(tick);
+            }
+            tick();
+        })();
+    </script>
+    {% endif %}
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

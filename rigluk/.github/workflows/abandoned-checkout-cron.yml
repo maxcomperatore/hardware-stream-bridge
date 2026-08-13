@@ -1,0 +1,26 @@
+name: Abandoned Checkout Email Cron
+
+on:
+  schedule:
+    - cron: "0 14 * * *"   # Run daily at 14:00 UTC (9 AM EST)
+  workflow_dispatch:
+
+jobs:
+  send-abandoned-checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install python-dotenv
+
+      - name: Send 24-hour abandoned checkout recovery emails via Resend
+        env:
+          CRON_SECRET: "knob_drip_cron_secret_7788"
+          RESEND_API_KEY: "re_5rAcGtwY_8gvPwzV8vQovvdeAPdAoPKCd"
+        run: python scripts/send_abandoned_checkout.py

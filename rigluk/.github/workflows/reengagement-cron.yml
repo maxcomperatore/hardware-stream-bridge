@@ -1,0 +1,26 @@
+name: Re-engagement Email Cron
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"   # weekly on Monday at 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  send-reengagement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install python-dotenv
+
+      - name: Send re-engagement win-back emails via Resend
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: python scripts/send_reengagement.py

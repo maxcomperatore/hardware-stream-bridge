@@ -1,0 +1,63 @@
+<div class="flex flex-col min-h-0 flex-1" data-bank-id="{{ bank.id }}">
+    <div class="px-4 pb-3">
+        <p class="text-[10px] font-pixel uppercase tracking-[0.2em] text-emerald-400/90">Soundbank</p>
+        <h1 class="text-2xl font-bold text-white tracking-tight leading-tight mt-0.5">{{ bank.name }}</h1>
+        <p class="text-xs text-zinc-400 mt-1 font-medium">
+            {{ bank.synth_model }} · {{ bank.patches | length }} presets
+        </p>
+        <p class="text-[10px] text-zinc-600 font-mono mt-0.5">Saved {{ bank.created_at }}</p>
+    </div>
+
+    <div class="px-4 pb-3">
+        <div class="relative">
+            <img src="/static/icons/dinkie/left-magnifying-glass.svg" alt=""
+                class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-40 pointer-events-none"
+                style="filter: invert(1);" />
+            <input type="search" id="mobile-patch-search" placeholder="Search presets"
+                class="w-full rounded-full bg-zinc-900/80 border border-zinc-800/80 pl-10 pr-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-colors" />
+        </div>
+    </div>
+
+    {% if user.tier == 'premium' %}
+    <div class="px-4 pb-3">
+        <a href="/banks/{{ bank.id }}/download"
+            onclick="logToPostHog('bank_downloaded', { bank_id: {{ bank.id }}, bank_name: '{{ bank.name }}', mobile: true })"
+            class="inline-flex items-center gap-2 rounded-full bg-white text-black text-xs font-semibold px-4 py-2 active:scale-[0.98] transition-transform">
+            <img src="/static/icons/dinkie/download.svg" class="h-3.5 w-3.5" alt="" />
+            Download .syx
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="flex-1 overflow-y-auto mobile-scroll px-2 pb-4" id="mobile-patch-list">
+        {% for patch in bank.patches %}
+        <button type="button"
+            class="mobile-open-patch mobile-patch-row w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left active:bg-white/10 transition-colors"
+            data-patch-index="{{ patch.index }}"
+            data-name="{{ patch.name | lower }}"
+            data-index="{{ patch.index + 1 }}">
+            <span class="w-7 text-center text-xs font-lcd text-zinc-500 tabular-nums">{{ "%02d" | format(patch.index + 1) }}</span>
+            <div class="mobile-cover-tile h-11 w-11 rounded-lg shrink-0">
+                <img src="{{ stripe_cover_icon(bank.id ~ '-' ~ patch.index) }}" alt="" width="44" height="44"
+                    class="mobile-cover-img" loading="lazy" />
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-white truncate">{{ patch.name }}</p>
+                <p class="text-[11px] text-zinc-500 truncate">{{ bank.synth_model }} · Slot {{ patch.index + 1 }}</p>
+            </div>
+            <span class="text-[10px] font-mono text-zinc-600 shrink-0">128B</span>
+        </button>
+        {% else %}
+        <div class="px-4 py-12 text-center text-zinc-500 text-sm">No presets in this bank.</div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    window.mobileActivePatches = {{ bank.patches | tojson | safe }};
+    window.mobileActiveBankMeta = {
+        id: {{ bank.id }},
+        name: {{ bank.name | tojson }},
+        synth: {{ bank.synth_model | tojson }}
+    };
+</script>

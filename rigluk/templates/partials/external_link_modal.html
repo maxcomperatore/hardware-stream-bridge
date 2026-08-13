@@ -1,0 +1,110 @@
+<!-- Third-Party External Link Confirmation Modal (Shake Shack Corporate Style) -->
+<div id="external-link-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0" role="dialog" aria-modal="true" aria-labelledby="ext-modal-title">
+    <div class="relative w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-6 md:p-8 shadow-2xl space-y-6 text-left transform scale-95 transition-transform duration-300" id="ext-modal-card">
+        <!-- Close Button (X) -->
+        <button type="button" id="ext-modal-cancel-x" class="absolute top-4 right-4 text-zinc-500 hover:text-white text-lg font-mono p-1 transition-colors" aria-label="Close modal">&times;</button>
+        
+        <div class="space-y-3">
+            <span class="inline-block text-[10px] font-pixel uppercase tracking-widest text-blue-400 font-semibold px-2 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded">External Redirect</span>
+            <h3 id="ext-modal-title" class="text-xl font-pixel uppercase text-white tracking-wide">Continue to Third Party Site</h3>
+        </div>
+
+        <p class="text-xs text-zinc-300 leading-relaxed font-sans">
+            You are about to leave <strong class="text-white">rigluk</strong>'s website and enter a third party website (<span id="ext-modal-target-domain" class="font-mono text-blue-400 underline">external site</span>). The site hosts an independent entity that provides services, external documentation, or archives.
+        </p>
+        
+        <p class="text-[11px] text-zinc-400 font-sans leading-normal">
+            To continue to the website, click <strong class="text-white uppercase font-mono">"ACCEPT"</strong>. If you want to stay on rigluk's website, click <strong class="text-white uppercase font-mono">"CANCEL"</strong>.
+        </p>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <a id="ext-modal-accept-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:flex-1 py-3 px-5 text-center text-xs font-pixel uppercase tracking-wider bg-emerald-500 text-black font-bold rounded-xl hover:bg-emerald-400 transition-all shadow-lg hover:shadow-emerald-500/20">
+                ACCEPT
+            </a>
+            <button type="button" id="ext-modal-cancel-btn" class="w-full sm:flex-1 py-3 px-5 text-center text-xs font-pixel uppercase tracking-wider bg-zinc-900 border border-zinc-800 text-zinc-300 font-semibold rounded-xl hover:bg-zinc-800 hover:text-white transition-all">
+                CANCEL
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('external-link-modal');
+    const modalCard = document.getElementById('ext-modal-card');
+    const targetDomainSpan = document.getElementById('ext-modal-target-domain');
+    const acceptBtn = document.getElementById('ext-modal-accept-btn');
+    const cancelBtn = document.getElementById('ext-modal-cancel-btn');
+    const cancelX = document.getElementById('ext-modal-cancel-x');
+
+    let targetUrl = '';
+
+    function openModal(url) {
+        targetUrl = url;
+        try {
+            const parsed = new URL(url);
+            targetDomainSpan.textContent = parsed.hostname;
+        } catch(e) {
+            targetDomainSpan.textContent = 'external site';
+        }
+        acceptBtn.setAttribute('href', targetUrl);
+        
+        modal.classList.remove('hidden');
+        setTimeout(function() {
+            modal.classList.remove('opacity-0');
+            modalCard.classList.remove('scale-95');
+            modalCard.classList.add('scale-100');
+        }, 10);
+    }
+
+    function closeModal() {
+        modal.classList.add('opacity-0');
+        modalCard.classList.remove('scale-100');
+        modalCard.classList.add('scale-95');
+        setTimeout(function() {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    acceptBtn.addEventListener('click', function(e) {
+        if (targetUrl) {
+            window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        }
+        closeModal();
+    });
+
+    cancelBtn.addEventListener('click', closeModal);
+    if (cancelX) cancelX.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+    // Intercept clicks on all external links leaving the domain
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('/') || href.startsWith('javascript:')) return;
+
+        try {
+            const linkUrl = new URL(href, window.location.origin);
+            if (linkUrl.origin !== window.location.origin) {
+                e.preventDefault();
+                openModal(href);
+            }
+        } catch(err) {
+            // invalid URL, ignore
+        }
+    });
+});
+</script>

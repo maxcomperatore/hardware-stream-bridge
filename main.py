@@ -4437,6 +4437,29 @@ def send_abandoned_checkout_email_task(email: str, username: str = None):
         logger.error(f"Error in send_abandoned_checkout_email_task for {email}: {str(e)}")
 
 
+@app.get("/api/cron/abandoned-checkout")
+async def trigger_abandoned_checkout_cron(request: Request, background_tasks: BackgroundTasks):
+    """Triggers automated 24-hour abandoned checkout email to free users registered between 20-28 hours ago."""
+    assert_cron_authorized(request)
+    users = database.get_all_users() if hasattr(database, "get_all_users") else []
+    count = 0
+    now = datetime.now()
+    for u in users:
+        if u.get("tier", "free") in ["vip", "studio", "pro"]:
+            continue
+        try:
+            created_at = datetime.fromisoformat(u["created_at"])
+            elapsed_hours = (now - created_at).total_seconds() / 3600
+            if 20 <= elapsed_hours <= 28:
+                email = u["email"]
+                username = u.get("username") or email.split("@")[0].capitalize()
+                background_tasks.add_task(send_abandoned_checkout_email_task, email, username)
+                count += 1
+        except Exception:
+            pass
+    return {"status": "success", "queued_abandoned_checkout_emails": count}
+
+
 async def get_drip_eligible_users() -> tuple[list[dict], int, int]:
     """Return (eligible users, skipped_young, pending_total). Paywall drip campaign killed per owner request."""
     return [], 0, 0

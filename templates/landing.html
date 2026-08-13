@@ -2934,6 +2934,12 @@
             document.querySelectorAll('#pricing-personal-billing')
                 .forEach(el => { el.textContent = `${currency} / ONE-TIME`; });
 
+            // Free button subtext — dynamic local currency symbol (₺0, R$0, €0, $0)
+            const freeSubtext = document.getElementById('pricing-free-subtext');
+            if (freeSubtext) {
+                freeSubtext.textContent = `${symbol}0 · no card · click to start`;
+            }
+
         } catch (e) { /* silently keep static price on error */ }
     })();
     </script>

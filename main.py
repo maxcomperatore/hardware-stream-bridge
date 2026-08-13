@@ -732,6 +732,7 @@ def get_regional_pricing(country_code: str | None) -> dict:
 
 def format_free_price_display(regional: dict) -> str:
     region = regional["region"]
+    symbol = regional.get("symbol", "$")
     if region == "gbp":
         return "£0"
     if region == "eur":
@@ -742,7 +743,7 @@ def format_free_price_display(regional: dict) -> str:
         return "¥0"
     if region == "usd":
         return "$0"
-    return f"{regional['symbol']}0 {regional['currency']}"
+    return f"{symbol}0"
 
 
 def enrich_regional_pricing(country_code: str | None = None) -> dict:

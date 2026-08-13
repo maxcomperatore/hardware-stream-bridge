@@ -4468,6 +4468,8 @@ async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]
     for u in users:
         if u.get("tier", "free") in ["vip", "studio", "pro"]:
             continue
+        if u.get("abandoned_checkout_sent"):
+            continue
         try:
             created_at = datetime.fromisoformat(u["created_at"])
             elapsed_hours = (now - created_at).total_seconds() / 3600
@@ -4519,6 +4521,8 @@ async def abandoned_checkout_ack(request: Request):
     sent_items = body.get("sent") or []
     failed_items = body.get("failed") or []
     for item in sent_items:
+        if "id" in item and hasattr(database, "mark_abandoned_checkout_sent"):
+            database.mark_abandoned_checkout_sent(int(item["id"]))
         trigger_alert("abandoned_checkout_email_sent", f"abandoned checkout email sent to `{item['email']}`.", {"email": item["email"]}, distinct_id=item["email"])
     return {"status": "success", "sent": len(sent_items), "failed": len(failed_items)}
 

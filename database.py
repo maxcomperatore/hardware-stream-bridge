@@ -170,6 +170,7 @@ def init_db():
         # Add drip_email_sent, reengagement_email_sent, and last_marketing_email_sent tracking to users table
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS reengagement_email_sent BOOLEAN DEFAULT FALSE;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS abandoned_checkout_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_marketing_email_sent VARCHAR(100);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(50);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS picture_url TEXT;")
@@ -602,6 +603,19 @@ def mark_reengagement_sent(user_id: int):
             conn.close()
     except Exception as e:
         print(f"Database error in mark_reengagement_sent: {e}")
+        return
+
+def mark_abandoned_checkout_sent(user_id: int):
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET abandoned_checkout_sent = TRUE WHERE id = %s", (user_id,))
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in mark_abandoned_checkout_sent: {e}")
         return
 
 def get_pending_marketing_users(days_interval: int = 14) -> list[dict]:

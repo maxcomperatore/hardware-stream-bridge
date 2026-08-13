@@ -1655,36 +1655,21 @@
             </div>
 
             <!-- Real Technical Specs Banner -->
-            <div class="border-t border-zinc-900 py-10 mt-16 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center reveal"
+            <div class="border-t border-zinc-900 py-10 mt-16 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center reveal"
                 style="--delay: 200ms;">
                 <div>
-                    <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">80+</span>
-                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">DEDICATED
-                        LIBRARIANS</span>
-                </div>
-                <div class="relative group">
                     <span id="live-patch-counter" data-initial="{{ total_patches | default(1000) }}"
                         class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{
                         total_patches | default(1000) }}</span>
-                    <span
-                        class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider flex items-center justify-center gap-1.5">
-                        <span class="relative flex h-1.5 w-1.5">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                        </span>
-                        PATCHES BACKED UP
-                    </span>
+                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">PATCHES BACKED UP</span>
+                </div>
+                <div>
+                    <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">{{ user_count | default(0) }}</span>
+                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">ACTIVE USERS</span>
                 </div>
                 <div>
                     <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">100%</span>
-                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">BROWSER
-                        NATIVE</span>
-                </div>
-                <div>
-                    <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">0</span>
-                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">INSTALL
-                        DRIVERS</span>
+                    <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">BROWSER NATIVE</span>
                 </div>
             </div>
 

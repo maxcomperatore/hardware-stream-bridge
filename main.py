@@ -1342,6 +1342,7 @@ async def index(request: Request):
             "user": user,
             "remaining_slots": remaining_slots,
             "total_patches": total_patches,
+            "user_count": user_count,
             "pricing": enrich_regional_pricing(country_code),
             "pricing_title_html": pricing_title["html"],
             "pricing_title_fallback": pricing_geo_titles.DEFAULT_PRICING_TITLE,

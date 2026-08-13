@@ -41,7 +41,7 @@
     <!-- Mobile Background Pattern -->
     <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
 
-    <div class="w-full max-w-sm px-6 py-7 sm:py-8 bg-zinc-950/90 border border-zinc-800/60 rounded-2xl shadow-2xl backdrop-blur-xl relative z-10 my-auto text-center">
+    <div class="w-full max-w-sm px-6 py-6 relative z-10 my-auto text-center">
         <div class="mb-6">
             <img src="/static/logo.svg" alt="bipluk Logo" class="h-11 w-auto mx-auto object-contain mb-2.5">
             <h1 class="font-pixel uppercase text-base text-white tracking-widest">bipluk</h1>
@@ -69,14 +69,11 @@
             <span>Continue with Google</span>
         </a>
 
-        <!-- Divider -->
-        <div class="relative my-4 flex items-center justify-center">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-zinc-900"></div>
-            </div>
-            <div class="relative px-3 bg-zinc-950 text-[10px] font-pixel text-zinc-500 uppercase tracking-widest">
-                OR EMAIL MAGIC LINK
-            </div>
+        <!-- Sleek Hairline Divider -->
+        <div class="flex items-center gap-3 my-5 text-xs text-zinc-500 font-medium">
+            <div class="h-px bg-gradient-to-r from-transparent via-zinc-800 to-zinc-800 flex-1"></div>
+            <span class="text-[11px] text-zinc-400 font-mono">or sign in with email link</span>
+            <div class="h-px bg-gradient-to-l from-transparent via-zinc-800 to-zinc-800 flex-1"></div>
         </div>
 
         <div id="magic-feedback" class="hidden mb-3 p-2.5 rounded-xl text-xs font-semibold tracking-wide text-center"></div>

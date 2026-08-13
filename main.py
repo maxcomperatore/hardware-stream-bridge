@@ -4393,6 +4393,50 @@ def send_welcome_email_task(email: str):
         logger.error(f"Error in send_welcome_email_task for {email}: {str(e)}")
 
 
+def send_abandoned_checkout_email_task(email: str, username: str = None):
+    if not email:
+        return
+    email_clean = email.lower().strip()
+    try:
+        if not username:
+            name_part = email_clean.split('@')[0]
+            first_name = re.split(r'[\._-]', name_part)[0]
+            username = first_name.capitalize() if first_name else "there"
+
+        template = templates.get_template("email_abandoned_checkout.html")
+        html_content = template.render({
+            "username": username,
+            "email": email_clean,
+        })
+
+        plain_body = (
+            f"Hi {username},\n\n"
+            "Just following up: you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
+            "Here’s what synth owners are doing with bipluk right now:\n"
+            "- Zero-Driver Web MIDI Backups\n"
+            "- RAM Battery Protection\n"
+            "- Instant Preset Name Decoder\n"
+            "- One-Time Lifetime Access\n\n"
+            "Complete your vault access: https://bipluk.com/signup?plan=personal\n\n"
+            "If anything tripped you up during checkout, just reply directly to this email.\n\n"
+            "Justin & the bipluk Team"
+        )
+
+        ok, err = send_email_via_resend(
+            to=email,
+            subject="Still thinking it over?",
+            body=plain_body,
+            html=html_content,
+            reply_to="halfradiationllc@gmail.com",
+        )
+        if ok:
+            logger.info(f"Abandoned checkout email successfully sent to {email}")
+        else:
+            logger.error(f"Failed to send abandoned checkout email to {email}: {err}")
+    except Exception as e:
+        logger.error(f"Error in send_abandoned_checkout_email_task for {email}: {str(e)}")
+
+
 async def get_drip_eligible_users() -> tuple[list[dict], int, int]:
     """Return (eligible users, skipped_young, pending_total). Paywall drip campaign killed per owner request."""
     return [], 0, 0

@@ -4460,6 +4460,69 @@ async def trigger_abandoned_checkout_cron(request: Request, background_tasks: Ba
     return {"status": "success", "queued_abandoned_checkout_emails": count}
 
 
+async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]:
+    users = database.get_all_users() if hasattr(database, "get_all_users") else []
+    eligible: list[dict] = []
+    skipped_young = 0
+    now = datetime.now()
+    for u in users:
+        if u.get("tier", "free") in ["vip", "studio", "pro"]:
+            continue
+        try:
+            created_at = datetime.fromisoformat(u["created_at"])
+            elapsed_hours = (now - created_at).total_seconds() / 3600
+            if elapsed_hours < 20:
+                skipped_young += 1
+                continue
+            if 20 <= elapsed_hours <= 36:
+                email = u["email"]
+                name_part = email.split('@')[0]
+                username = u.get("username") or (name_part.capitalize() if name_part else "there")
+                template = templates.get_template("email_abandoned_checkout.html")
+                html_content = template.render({"username": username, "email": email})
+                plain_body = (
+                    f"Hi {username},\n\n"
+                    "Just following up—you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
+                    "Complete your vault access: https://bipluk.com/signup?plan=personal\n\n"
+                    "Justin & the bipluk Team"
+                )
+                eligible.append({
+                    "id": u.get("id", 0),
+                    "email": email,
+                    "username": username,
+                    "html_content": html_content,
+                    "plain_body": plain_body
+                })
+        except Exception:
+            pass
+    return eligible, skipped_young, len(users)
+
+
+@app.get("/api/cron/abandoned-checkout-pending")
+async def abandoned_checkout_pending(request: Request):
+    assert_cron_authorized(request)
+    eligible, skipped_young, pending_total = await get_abandoned_checkout_eligible_users()
+    return {
+        "subject": "Still thinking it over?",
+        "from": SMTP_FROM,
+        "reply_to": "halfradiationllc@gmail.com",
+        "users": eligible,
+        "skipped_young": skipped_young,
+        "pending_total": pending_total,
+    }
+
+
+@app.post("/api/cron/abandoned-checkout-ack")
+async def abandoned_checkout_ack(request: Request):
+    assert_cron_authorized(request)
+    body = await request.json()
+    sent_items = body.get("sent") or []
+    failed_items = body.get("failed") or []
+    for item in sent_items:
+        trigger_alert("abandoned_checkout_email_sent", f"abandoned checkout email sent to `{item['email']}`.", {"email": item["email"]}, distinct_id=item["email"])
+    return {"status": "success", "sent": len(sent_items), "failed": len(failed_items)}
+
+
 async def get_drip_eligible_users() -> tuple[list[dict], int, int]:
     """Return (eligible users, skipped_young, pending_total). Paywall drip campaign killed per owner request."""
     return [], 0, 0

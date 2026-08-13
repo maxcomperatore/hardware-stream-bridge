@@ -1514,15 +1514,18 @@
                 <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
             </nav>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                {% if user %}
+                <a href="/home"
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Open
+                </a>
+                {% else %}
                 <a href="/login"
-                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
-                    Sign In
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Enter
                 </a>
-                <a href="/signup"
-                    class="btn-lapis px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider active:scale-95 flex items-center">
-                    Sign Up
-                </a>
+                {% endif %}
             </div>
         </div>
     </header>

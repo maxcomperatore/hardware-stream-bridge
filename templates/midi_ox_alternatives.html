@@ -602,20 +602,16 @@
                 <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
             </nav>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
                 {% if user %}
                 <a href="/home" id="nav-dashboard-link-user"
-                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Open Vault
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Open
                 </a>
                 {% else %}
                 <a href="/login" id="nav-login-link"
-                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
-                    Sign In
-                </a>
-                <a href="/signup" id="nav-signup-link"
-                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
-                    Sign Up
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Enter
                 </a>
                 {% endif %}
             </div>

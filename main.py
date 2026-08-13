@@ -1818,7 +1818,7 @@ async def do_magic_request(request: Request):
     })
 
 @app.get("/auth/magic-verify")
-async def do_magic_verify(request: Request):
+async def do_magic_verify(request: Request, background_tasks: BackgroundTasks):
     import secrets, hashlib, time
     token = request.query_params.get("token")
     next_url = request.query_params.get("next")
@@ -1837,6 +1837,7 @@ async def do_magic_verify(request: Request):
         random_pwd = secrets.token_urlsafe(16)
         hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
         database.create_user(email, hashed_pwd)
+        background_tasks.add_task(send_welcome_email_task, email)
         
         pending = database.consume_pending_premium(email)
         if pending:
@@ -1872,7 +1873,7 @@ async def do_magic_verify(request: Request):
     return response
 
 @app.post("/auth/magic-code-verify")
-async def do_magic_code_verify(request: Request, email: str = Form(...), code: str = Form(...), next: str = Form(None)):
+async def do_magic_code_verify(request: Request, background_tasks: BackgroundTasks, email: str = Form(...), code: str = Form(...), next: str = Form(None)):
     import secrets, hashlib, time
     email_clean = email.lower().strip()
     code_clean = code.strip()
@@ -1901,6 +1902,7 @@ async def do_magic_code_verify(request: Request, email: str = Form(...), code: s
         random_pwd = secrets.token_urlsafe(16)
         hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
         database.create_user(email_clean, hashed_pwd)
+        background_tasks.add_task(send_welcome_email_task, email_clean)
         
         pending = database.consume_pending_premium(email_clean)
         if pending:
@@ -3614,7 +3616,7 @@ async def auth_google(request: Request):
     return RedirectResponse(url)
 
 @app.get("/auth/google/callback")
-async def auth_google_callback(request: Request, code: str = None, error: str = None):
+async def auth_google_callback(request: Request, background_tasks: BackgroundTasks, code: str = None, error: str = None):
     if error or not code:
         return RedirectResponse("/login?error=Google+login+was+cancelled+or+failed.", status_code=303)
     
@@ -3664,6 +3666,7 @@ async def auth_google_callback(request: Request, code: str = None, error: str = 
             random_pwd = secrets.token_urlsafe(16)
             hashed_pwd = hashlib.sha256(random_pwd.encode()).hexdigest()
             database.create_user(email, hashed_pwd)
+            background_tasks.add_task(send_welcome_email_task, email)
             
             # Upgrade if user has pending premium checkout
             pending = database.consume_pending_premium(email)
@@ -4338,10 +4341,19 @@ def calculate_avatar_idx(email: str) -> int:
     return (abs(h) % 48) + 1
 
 
+_WELCOME_SENT_EMAILS = set()
+
 def send_welcome_email_task(email: str):
+    if not email:
+        return
+    email_clean = email.lower().strip()
+    if email_clean in _WELCOME_SENT_EMAILS:
+        logger.info(f"Skipping duplicate welcome email for {email_clean}")
+        return
+    _WELCOME_SENT_EMAILS.add(email_clean)
     try:
         # Generate the personalized first name
-        name_part = email.split('@')[0]
+        name_part = email_clean.split('@')[0]
         first_name = re.split(r'[\._-]', name_part)[0]
         first_name_cap = first_name.capitalize() if first_name else "synth head"
 

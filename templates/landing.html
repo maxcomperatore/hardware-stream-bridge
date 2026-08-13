@@ -38,7 +38,11 @@
     <style>
         html,
         body {
-            background-color: #000000 !important;
+            background-color: #09090b !important;
+            background-image: 
+                radial-gradient(ellipse 90% 60% at 50% -10%, rgba(38, 97, 156, 0.24), transparent 70%),
+                radial-gradient(circle 600px at 50% 500px, rgba(16, 185, 129, 0.05), transparent 80%) !important;
+            background-attachment: fixed !important;
             color: #f4f4f5 !important;
             color-scheme: dark;
             overflow-x: hidden !important;
@@ -1632,19 +1636,19 @@
             </p>
 
             <!-- Press & Social Proof Trust Bar -->
-            <div class="mt-10 mb-6 max-w-2xl mx-auto flex flex-col items-center justify-center gap-2.5 text-xs font-mono text-zinc-400 select-none reveal text-center">
+            <div class="mt-10 mb-6 max-w-2xl mx-auto flex flex-col items-center justify-center gap-2 text-xs font-mono text-zinc-400 select-none reveal text-center px-2">
                 <span class="text-[9px] font-pixel uppercase tracking-widest text-zinc-500">AS FEATURED IN</span>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 flex-wrap">
-                    <span class="font-serif font-bold text-xs uppercase tracking-wider text-zinc-100">Synthtopia</span>
-                    <span class="text-zinc-700 hidden sm:inline">•</span>
-                    <div class="inline-flex items-center gap-1.5 text-zinc-100 font-mono font-bold text-xs">
-                        <img src="/static/modwiggler.svg" alt="ModWiggler" class="h-4 w-4 object-contain inline-block text-zinc-100" style="filter: brightness(0) invert(1);" />
+                <div class="flex items-center justify-center gap-2 sm:gap-4 flex-nowrap w-full">
+                    <span class="font-serif font-bold text-[10px] sm:text-xs uppercase tracking-wider text-zinc-100 shrink-0">Synthtopia</span>
+                    <span class="text-zinc-700 text-[10px] shrink-0">•</span>
+                    <div class="inline-flex items-center gap-1 text-zinc-100 font-mono font-bold text-[10px] sm:text-xs shrink-0">
+                        <img src="/static/modwiggler.svg" alt="ModWiggler" class="h-3.5 w-3.5 sm:h-4 sm:w-4 object-contain inline-block text-zinc-100" style="filter: brightness(0) invert(1);" />
                         <span>ModWiggler</span>
                     </div>
-                    <span class="text-zinc-700 hidden sm:inline">•</span>
+                    <span class="text-zinc-700 text-[10px] shrink-0">•</span>
                     <img src="https://ecosistemastartup.com/wp-content/themes/esup-child/assets/img/logo-light.svg"
                         alt="Ecosistema Startup"
-                        class="h-3.5 w-auto object-contain inline-block align-middle opacity-100"
+                        class="h-3 sm:h-3.5 w-auto object-contain inline-block align-middle opacity-100 shrink-0"
                         style="filter: brightness(0) invert(1);" />
                 </div>
             </div>

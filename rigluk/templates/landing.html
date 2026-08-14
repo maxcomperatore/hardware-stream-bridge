@@ -1647,19 +1647,19 @@
             </div>
 
             <!-- Stats Counter Band -->
-            <div class="border-t border-zinc-900 py-10 mt-16 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center reveal"
+            <div class="border-t border-zinc-900 py-10 mt-16 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-zinc-800/80 text-center reveal"
                 style="--delay: 200ms;">
-                <div>
+                <div class="px-4 py-2">
                     <span id="live-patch-counter" data-initial="{{ total_patches | default(740) }}"
                         class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{
                         total_patches | default(740) }}</span>
                     <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">PRESETS BACKED UP</span>
                 </div>
-                <div>
+                <div class="px-4 py-2">
                     <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">{{ user_count | default(0) }}</span>
                     <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">ACTIVE USERS</span>
                 </div>
-                <div>
+                <div class="px-4 py-2">
                     <span class="block text-4xl font-lcd text-emerald-400 tracking-wider leading-none">{{ paid_user_count | default(0) }}</span>
                     <span class="text-[10px] font-roman uppercase text-zinc-400 mt-1 block tracking-wider">HAPPY RIGLUKERS</span>
                 </div>

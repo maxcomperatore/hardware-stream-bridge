@@ -1318,12 +1318,16 @@ async def index(request: Request):
     if user:
         return RedirectResponse(url="/home", status_code=303)
     user_count = 6
+    paid_user_count = 2
     total_patches = 1000
     try:
         conn = database.get_db_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM users;")
         user_count = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM users WHERE tier != 'free';")
+        paid_user_count = cursor.fetchone()[0]
 
         cursor.execute("SELECT COUNT(*) FROM patches;")
         total_patches = cursor.fetchone()[0]
@@ -1343,6 +1347,7 @@ async def index(request: Request):
             "remaining_slots": remaining_slots,
             "total_patches": total_patches,
             "user_count": user_count,
+            "paid_user_count": paid_user_count,
             "pricing": enrich_regional_pricing(country_code),
             "pricing_title_html": pricing_title["html"],
             "pricing_title_fallback": pricing_geo_titles.DEFAULT_PRICING_TITLE,

@@ -168,6 +168,8 @@ def init_db():
         """)
         
         # Add drip_email_sent, reengagement_email_sent, and last_marketing_email_sent tracking to users table
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS login_count INTEGER DEFAULT 1;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login_at VARCHAR(100);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS reengagement_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS abandoned_checkout_sent BOOLEAN DEFAULT FALSE;")
@@ -709,3 +711,70 @@ def get_all_newsletter_recipients() -> list[str]:
     except Exception as e:
         print(f"Database error in get_all_newsletter_recipients: {e}")
         return []
+
+def record_user_login(user_id: int):
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            now_str = datetime.now().isoformat()
+            cursor.execute(
+                "UPDATE users SET login_count = COALESCE(login_count, 0) + 1, last_login_at = %s WHERE id = %s",
+                (now_str, user_id)
+            )
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in record_user_login: {e}")
+
+def get_icp_user_segmentation() -> dict[str, list[dict]]:
+    """Analyzes PostgreSQL database and groups users into actionable ICP segments."""
+    segments: dict[str, list[dict]] = {
+        "LURKER_ZERO_USAGE": [],       # Registered, 0 banks, <= 2 logins (High churn risk -> needs demo bank)
+        "ENGAGED_FREE_USER": [],       # 1 bank uploaded, >= 2 logins, Free tier (Prime upgrade candidate!)
+        "BOUNCED_ONETIMER": [],        # 1 login, 0 banks, registered > 48h ago (Bounced prospect)
+        "HAPPY_CUSTOMERS": [],         # Paid plan (Personal, Studio, VIP)
+    }
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cursor.execute("""
+                SELECT u.id, u.email, u.tier, u.plan, u.created_at, u.login_count, u.last_login_at,
+                       COALESCE(b.bank_count, 0) as bank_count
+                FROM users u
+                LEFT JOIN (
+                    SELECT user_id, COUNT(*) as bank_count FROM banks GROUP BY user_id
+                ) b ON u.id = b.user_id
+                ORDER BY u.created_at DESC;
+            """)
+            users = cursor.fetchall()
+            now = datetime.now()
+            for u in users:
+                user_data = dict(u)
+                tier = (u.get("tier") or "free").lower()
+                plan = (u.get("plan") or "").lower()
+                bank_count = u.get("bank_count", 0)
+                login_count = u.get("login_count") or 1
+
+                created_at_raw = str(u.get("created_at", ""))
+                try:
+                    created_at = datetime.fromisoformat(created_at_raw)
+                    age_hours = (now - created_at).total_seconds() / 3600
+                except Exception:
+                    age_hours = 0
+
+                if tier != "free" or plan in ("personal", "studio", "vip", "pro"):
+                    segments["HAPPY_CUSTOMERS"].append(user_data)
+                elif bank_count >= 1:
+                    segments["ENGAGED_FREE_USER"].append(user_data)
+                elif login_count == 1 and age_hours >= 48:
+                    segments["BOUNCED_ONETIMER"].append(user_data)
+                else:
+                    segments["LURKER_ZERO_USAGE"].append(user_data)
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in get_icp_user_segmentation: {e}")
+    return segments

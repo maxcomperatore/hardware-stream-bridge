@@ -1692,6 +1692,7 @@ async def do_login(request: Request, email: str = Form(...), password: str = For
         )
         return render_template("login.html", request, {"error": "Your account has been suspended.", "next": next})
     
+    database.record_user_login(user["id"])
     response = RedirectResponse(url=safe_next_url(next), status_code=303)
     response.set_cookie(
         key="session_user",
@@ -1884,6 +1885,7 @@ async def do_magic_verify(request: Request, background_tasks: BackgroundTasks):
     if user.get("tier") == "banned":
         return RedirectResponse(url="/login?error=Your+account+has+been+suspended.", status_code=303)
 
+    database.record_user_login(user["id"])
     redirect_target = safe_next_url(next_url) if next_url else "/home"
     response = RedirectResponse(url=redirect_target, status_code=303)
     response.set_cookie(
@@ -4475,6 +4477,18 @@ def send_welcome_email_task(email: str):
     except Exception as e:
         logger.error(f"Error in send_welcome_email_task for {email}: {str(e)}")
 
+
+@app.get("/api/admin/icp-intelligence")
+async def admin_icp_intelligence(request: Request):
+    user = get_current_user(request)
+    segments = database.get_icp_user_segmentation()
+    total_users = sum(len(users) for users in segments.values())
+    return {
+        "status": "success",
+        "total_users": total_users,
+        "segment_counts": {k: len(v) for k, v in segments.items()},
+        "segments": segments
+    }
 
 def send_onboarding_activation_email_task(email: str, username: str = None):
     if not email:

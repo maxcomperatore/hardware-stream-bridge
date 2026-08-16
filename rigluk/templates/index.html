@@ -3127,7 +3127,10 @@
     async function submitOnboarding() {
         await closeOnboarding(false);
     }
+</script>
+{% endif %}
 
+<script>
     function startDriverJsTour() {
         if (typeof window.driver === 'undefined' || !window.driver.js) {
             console.warn('Driver.js is loading...');
@@ -3163,7 +3166,6 @@
         driverObj.drive();
     }
 </script>
-{% endif %}
 
 </body>
 

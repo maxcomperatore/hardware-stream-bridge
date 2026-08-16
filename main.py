@@ -2753,13 +2753,6 @@ async def load_demo_pack(request: Request, pack_id: str = "dx7_retro"):
     if not pack:
         raise HTTPException(status_code=404, detail="Demo pack not found")
 
-    # Check bank limit if non-premium
-    banks = database.get_all_banks(user["id"])
-    if user.get("tier") != "premium" and len(banks) >= 1:
-        if "hx-request" in request.headers:
-            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
-        return RedirectResponse(url="/checkout", status_code=303)
-
     try:
         data = pack_generator.generate_pack_bytes(pack["id"], patch_names=pack["patches"], seed=pack.get("seed", 0))
         sysex_hex = data.hex()

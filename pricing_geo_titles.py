@@ -18,7 +18,7 @@ PRICING_TITLE_BY_LOCALE: dict[str, str] = {
     "nl": "Prijzen voor synth-maniakken zoals jij",
     "pl": "Ceny dla synthomaniaków z pełną piwnicą",
     "da": "Priser til synth-nørder der ikke kan stoppe",
-    "fi": "Hinnat synth-hinttereille joilla on liikaa rakkia",
+    "fi": "Hinnat synth-nörteille, joilla on liikaa laitteita",
     "no": "Priser for synth-nerder som trenger enda en",
     "cs": "Ceny pro lidi s příliš mnoha synthy doma",
     "ro": "Prețuri pentru dependenți de synth",
@@ -103,7 +103,7 @@ def flag_markup(country_code: str) -> str:
     )
 
 
-def build_pricing_title(country_code: str | None, country_name: str | None = None) -> dict:
+def build_pricing_title(country_code: str | None, country_name: str | None = None, accept_language: str | None = None) -> dict:
     """Return pricing headline text + HTML (always with flag when country is known)."""
     if not country_code:
         return {
@@ -117,8 +117,15 @@ def build_pricing_title(country_code: str | None, country_name: str | None = Non
     display = display_country_name(code, country_name)
     flag = flag_markup(code)
 
+    # Respect Accept-Language header if browser explicitly prefers English
+    prefers_english = False
+    if accept_language:
+        lang_first = accept_language.split(',')[0].split(';')[0].strip().lower()
+        if lang_first.startswith("en"):
+            prefers_english = True
+
     locale = COUNTRY_PRICING_LOCALE.get(code)
-    if locale and locale != "en":
+    if locale and locale != "en" and not prefers_english:
         text = PRICING_TITLE_BY_LOCALE.get(locale, ENGLISH_TITLE_TEMPLATE.format(country=display))
         text = text.rstrip(".")
     else:
@@ -128,7 +135,7 @@ def build_pricing_title(country_code: str | None, country_name: str | None = Non
         "text": text,
         "html": f"{text} {flag}",
         "country_code": code.lower(),
-        "localized": bool(locale and locale != "en"),
+        "localized": bool(locale and locale != "en" and not prefers_english),
     }
 
 

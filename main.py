@@ -1338,7 +1338,8 @@ async def index(request: Request):
     country_code = get_request_country_code(request)
     client_ip, is_private = resolve_client_ip(request)
     geo = lookup_geo_country(client_ip, is_private)
-    pricing_title = pricing_geo_titles.build_pricing_title(country_code, geo.get("country_name"))
+    accept_lang = request.headers.get("accept-language")
+    pricing_title = pricing_geo_titles.build_pricing_title(country_code, geo.get("country_name"), accept_language=accept_lang)
     return render_template(
         "landing.html",
         request,

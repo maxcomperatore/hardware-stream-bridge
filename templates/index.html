@@ -690,6 +690,49 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Instant 1-Click Starter Pack Launcher (No Synth Needed) -->
+                            <div class="mt-8 pt-6 border-t border-zinc-800/80 text-left">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-[10px] font-pixel text-zinc-300 uppercase tracking-widest flex items-center gap-1.5">
+                                        <span class="h-2 w-2 rounded-full bg-blue-400 animate-ping"></span>
+                                        <span>No synth connected right now? Try a 1-Click Demo Bank</span>
+                                    </span>
+                                    <span class="text-[9px] font-mono text-zinc-500">100% Free · Instantly Populates Vault</span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <form hx-post="/banks/load-demo-pack" hx-trigger="submit" class="block">
+                                        <input type="hidden" name="pack_id" value="dx7_retro">
+                                        <button type="submit" class="w-full p-3 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 rounded-xl text-left transition-all group cursor-pointer">
+                                            <div class="font-bold text-xs text-white group-hover:text-blue-400 flex items-center justify-between">
+                                                <span>🎹 DX7 FM Classics</span>
+                                                <span class="text-[9px] font-mono text-blue-400 opacity-0 group-hover:opacity-100">Load &rarr;</span>
+                                            </div>
+                                            <div class="text-[10px] text-zinc-500 mt-0.5">32 FM Voices &amp; Basses</div>
+                                        </button>
+                                    </form>
+                                    <form hx-post="/banks/load-demo-pack" hx-trigger="submit" class="block">
+                                        <input type="hidden" name="pack_id" value="juno_nostalgia">
+                                        <button type="submit" class="w-full p-3 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 rounded-xl text-left transition-all group cursor-pointer">
+                                            <div class="font-bold text-xs text-white group-hover:text-blue-400 flex items-center justify-between">
+                                                <span>🎹 Juno-106 Legends</span>
+                                                <span class="text-[9px] font-mono text-blue-400 opacity-0 group-hover:opacity-100">Load &rarr;</span>
+                                            </div>
+                                            <div class="text-[10px] text-zinc-500 mt-0.5">128 Chorus Pads &amp; Plucks</div>
+                                        </button>
+                                    </form>
+                                    <form hx-post="/banks/load-demo-pack" hx-trigger="submit" class="block">
+                                        <input type="hidden" name="pack_id" value="m1_matrix">
+                                        <button type="submit" class="w-full p-3 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 rounded-xl text-left transition-all group cursor-pointer">
+                                            <div class="font-bold text-xs text-white group-hover:text-blue-400 flex items-center justify-between">
+                                                <span>🎹 Korg M1 Matrix</span>
+                                                <span class="text-[9px] font-mono text-blue-400 opacity-0 group-hover:opacity-100">Load &rarr;</span>
+                                            </div>
+                                            <div class="text-[10px] text-zinc-500 mt-0.5">32 House Pianos &amp; Stabs</div>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

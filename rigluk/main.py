@@ -2726,6 +2726,53 @@ async def create_bank(
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
 
+@app.post("/banks/load-demo-pack", response_class=HTMLResponse)
+async def load_demo_pack(request: Request, pack_id: str = Form("dx7_retro")):
+    user = get_current_user(request)
+    if not user:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/login"})
+        return RedirectResponse(url="/login", status_code=303)
+
+    import shop_packs
+    import pack_generator
+    pack = shop_packs.SHOP_PACKS.get(pack_id) or shop_packs.SHOP_PACKS.get("dx7_retro")
+    if not pack:
+        raise HTTPException(status_code=404, detail="Demo pack not found")
+
+    # Check bank limit if non-premium
+    banks = database.get_all_banks(user["id"])
+    if user.get("tier") != "premium" and len(banks) >= 1:
+        if "hx-request" in request.headers:
+            return HTMLResponse(headers={"HX-Redirect": "/checkout"})
+        return RedirectResponse(url="/checkout", status_code=303)
+
+    try:
+        data = pack_generator.get_pack_bytes(pack["id"])
+        sysex_hex = data.hex()
+        patch_names = pack["patches"]
+        bank_name = f"{pack['name']} (Factory Demo)"
+
+        bank_id = database.save_bank(
+            name=bank_name,
+            synth_model=pack["synth"],
+            sysex_hex=sysex_hex,
+            patch_names=patch_names,
+            user_id=user["id"]
+        )
+        trigger_alert(
+            "demo_pack_loaded",
+            f"Demo pack `{pack_id}` loaded into vault for user `{user['email']}`.",
+            {"email": user["email"], "pack_id": pack_id, "bank_id": bank_id},
+            distinct_id=user["email"]
+        )
+    except Exception as e:
+        logger.error(f"Failed to load demo pack {pack_id} for user {user['email']}: {e}")
+
+    if "hx-request" in request.headers:
+        return HTMLResponse(headers={"HX-Redirect": "/home"})
+    return RedirectResponse(url="/home", status_code=303)
+
 @app.post("/banks/upload", response_class=HTMLResponse)
 async def upload_bank_file(
     request: Request,
@@ -4418,6 +4465,47 @@ def send_welcome_email_task(email: str):
     except Exception as e:
         logger.error(f"Error in send_welcome_email_task for {email}: {str(e)}")
 
+
+def send_onboarding_activation_email_task(email: str, username: str = None):
+    if not email:
+        return
+    email_clean = email.lower().strip()
+    try:
+        if not username:
+            name_part = email_clean.split('@')[0]
+            first_name = re.split(r'[\._-]', name_part)[0]
+            username = first_name.capitalize() if first_name else "there"
+
+        template = templates.get_template("email_onboarding_activation.html")
+        html_content = template.render({
+            "username": username,
+            "email": email_clean,
+        })
+        plain_body = (
+            f"Hi {username},\n\n"
+            "Noticed you logged into rigluk earlier today! You don’t even need a USB cable connected right now to test out the preset vault UI.\n\n"
+            "We added 3 Instant 1-Click Factory Demo Banks (Strymon, Line 6 HX, Eventide) directly inside your dashboard.\n\n"
+            "Open your vault: https://rigluk.com/home"
+        )
+        send_email_via_resend(
+            to=email_clean,
+            subject="Need a sample bank for rigluk? (No pedalboard needed to test)",
+            body=plain_body,
+            html=html_content,
+            reply_to="halfradiationllc@gmail.com",
+        )
+    except Exception as e:
+        logger.error(f"Error in send_onboarding_activation_email_task for {email}: {e}")
+
+@app.get("/api/test-onboarding-email")
+async def test_onboarding_email(email: str = "jfrandol@gmail.com", send: str = "1"):
+    if send == "1":
+        send_onboarding_activation_email_task(email)
+        return {"status": "sent", "email": email, "type": "onboarding_activation"}
+    template = templates.get_template("email_onboarding_activation.html")
+    name_part = email.split('@')[0]
+    username = name_part.capitalize() if name_part else "there"
+    return HTMLResponse(content=template.render({"username": username, "email": email}))
 
 def send_abandoned_checkout_email_task(email: str, username: str = None):
     if not email:

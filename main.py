@@ -4525,6 +4525,45 @@ async def test_onboarding_email(email: str = "jfrandol@gmail.com", send: str = "
     username = name_part.capitalize() if name_part else "there"
     return HTMLResponse(content=template.render({"username": username, "email": email}))
 
+def send_inactivity_warning_email_task(email: str, username: str = None):
+    if not email:
+        return
+    email_clean = email.lower().strip()
+    try:
+        if not username:
+            name_part = email_clean.split('@')[0]
+            first_name = re.split(r'[\._-]', name_part)[0]
+            username = first_name.capitalize() if first_name else "there"
+
+        template = templates.get_template("email_inactivity_warning.html")
+        html_content = template.render({
+            "username": username,
+            "email": email_clean,
+        })
+        plain_body = (
+            f"Action Required: Your bipluk soundbank vault is scheduled for archival in 30 days due to inactivity.\n\n"
+            f"Log in now to keep your account & backups 100% active: https://bipluk.com/home"
+        )
+        send_email_via_resend(
+            to=email_clean,
+            subject="Urgent: Your bipluk soundbank vault will be archived in 30 days",
+            body=plain_body,
+            html=html_content,
+            reply_to="halfradiationllc@gmail.com",
+        )
+    except Exception as e:
+        logger.error(f"Error in send_inactivity_warning_email_task for {email}: {e}")
+
+@app.get("/api/test-inactivity-warning")
+async def test_inactivity_warning(email: str = "jfrandol@gmail.com", send: str = "1"):
+    if send == "1":
+        send_inactivity_warning_email_task(email)
+        return {"status": "sent", "email": email, "type": "inactivity_warning"}
+    template = templates.get_template("email_inactivity_warning.html")
+    name_part = email.split('@')[0]
+    username = name_part.capitalize() if name_part else "there"
+    return HTMLResponse(content=template.render({"username": username, "email": email}))
+
 def send_abandoned_checkout_email_task(email: str, username: str = None):
     if not email:
         return

@@ -179,6 +179,9 @@ def init_db():
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS onboarding_completed BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS synths_owned TEXT DEFAULT '';")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS workflow_goal TEXT DEFAULT '';")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS inactivity_warning_sent BOOLEAN DEFAULT FALSE;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_archived BOOLEAN DEFAULT FALSE;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS archived_at VARCHAR(100);")
         cursor.execute("ALTER TABLE pending_premiums ADD COLUMN IF NOT EXISTS plan VARCHAR(50) DEFAULT 'personal';")
         
         conn.commit()
@@ -719,7 +722,7 @@ def record_user_login(user_id: int):
             cursor = conn.cursor()
             now_str = datetime.now().isoformat()
             cursor.execute(
-                "UPDATE users SET login_count = COALESCE(login_count, 0) + 1, last_login_at = %s WHERE id = %s",
+                "UPDATE users SET login_count = COALESCE(login_count, 0) + 1, last_login_at = %s, inactivity_warning_sent = FALSE, is_archived = FALSE, archived_at = NULL WHERE id = %s",
                 (now_str, user_id)
             )
             conn.commit()

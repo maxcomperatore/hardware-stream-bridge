@@ -4466,25 +4466,41 @@ def send_abandoned_checkout_email_task(email: str, username: str = None):
 
 @app.get("/api/cron/abandoned-checkout")
 async def trigger_abandoned_checkout_cron(request: Request, background_tasks: BackgroundTasks):
-    """Triggers automated 24-hour abandoned checkout email to free users registered between 20-28 hours ago."""
+    """Triggers automated abandoned checkout email to free users registered over 1 hour ago."""
     assert_cron_authorized(request)
     users = database.get_all_users() if hasattr(database, "get_all_users") else []
     count = 0
     now = datetime.now()
     for u in users:
-        if u.get("tier", "free") in ["vip", "studio", "pro"]:
+        if u.get("tier", "free") in ["vip", "studio", "pro", "personal"]:
+            continue
+        if u.get("abandoned_checkout_sent"):
             continue
         try:
-            created_at = datetime.fromisoformat(u["created_at"])
+            created_at = datetime.fromisoformat(str(u["created_at"]))
             elapsed_hours = (now - created_at).total_seconds() / 3600
-            if 20 <= elapsed_hours <= 28:
+            if elapsed_hours >= 1:
                 email = u["email"]
                 username = u.get("username") or email.split("@")[0].capitalize()
                 background_tasks.add_task(send_abandoned_checkout_email_task, email, username)
+                if hasattr(database, "mark_abandoned_checkout_sent") and u.get("id"):
+                    database.mark_abandoned_checkout_sent(int(u["id"]))
                 count += 1
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error(f"Error checking abandoned checkout for user {u.get('email')}: {e}")
     return {"status": "success", "queued_abandoned_checkout_emails": count}
+
+
+@app.get("/api/test-abandoned-checkout")
+async def test_abandoned_checkout(email: str = "jfrandol@gmail.com", send: str = "1"):
+    """Test endpoint to trigger immediate abandoned checkout email to any email address."""
+    if send == "1":
+        send_abandoned_checkout_email_task(email)
+        return {"status": "sent", "email": email, "type": "abandoned_checkout"}
+    template = templates.get_template("email_abandoned_checkout.html")
+    name_part = email.split('@')[0]
+    username = name_part.capitalize() if name_part else "there"
+    return HTMLResponse(content=template.render({"username": username, "email": email}))
 
 
 async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]:
@@ -4493,35 +4509,36 @@ async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]
     skipped_young = 0
     now = datetime.now()
     for u in users:
-        if u.get("tier", "free") in ["vip", "studio", "pro"]:
+        if u.get("tier", "free") in ["vip", "studio", "pro", "personal"]:
             continue
         if u.get("abandoned_checkout_sent"):
             continue
         try:
-            created_at = datetime.fromisoformat(u["created_at"])
+            created_at = datetime.fromisoformat(str(u["created_at"]))
             elapsed_hours = (now - created_at).total_seconds() / 3600
-            if elapsed_hours < 20:
+            if elapsed_hours < 1:
                 skipped_young += 1
                 continue
-            if 20 <= elapsed_hours <= 36:
-                email = u["email"]
-                name_part = email.split('@')[0]
-                username = u.get("username") or (name_part.capitalize() if name_part else "there")
-                template = templates.get_template("email_abandoned_checkout.html")
-                html_content = template.render({"username": username, "email": email})
-                plain_body = (
-                    f"Hi {username},\n\n"
-                    "Just following up—you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
-                    "Complete your vault access: https://bipluk.com/signup?plan=personal\n\n"
-                    "Justin & the bipluk Team"
-                )
-                eligible.append({
-                    "id": u.get("id", 0),
-                    "email": email,
-                    "username": username,
-                    "html_content": html_content,
-                    "plain_body": plain_body
-                })
+            email = u["email"]
+            name_part = email.split('@')[0]
+            username = u.get("username") or (name_part.capitalize() if name_part else "there")
+            template = templates.get_template("email_abandoned_checkout.html")
+            html_content = template.render({"username": username, "email": email})
+            plain_body = (
+                f"Hi {username},\n\n"
+                "Just following up—you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
+                "Complete your vault access: https://bipluk.com/signup?plan=personal\n\n"
+                "Justin & the bipluk Team"
+            )
+            eligible.append({
+                "id": u.get("id", 0),
+                "email": email,
+                "username": username,
+                "subject": "Still thinking it over?",
+                "html": html_content,
+                "text": plain_body,
+                "elapsed_hours": round(elapsed_hours, 1)
+            })
         except Exception:
             pass
     return eligible, skipped_young, len(users)

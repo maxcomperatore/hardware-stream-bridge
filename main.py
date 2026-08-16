@@ -2728,13 +2728,22 @@ async def create_bank(
     banks = database.get_all_banks(user["id"])
     return render_template("bank_list.html", request, {"banks": banks})
 
-@app.post("/banks/load-demo-pack", response_class=HTMLResponse)
-async def load_demo_pack(request: Request, pack_id: str = Form("dx7_retro")):
+@app.api_route("/banks/load-demo-pack", methods=["GET", "POST"], response_class=HTMLResponse)
+async def load_demo_pack(request: Request, pack_id: str = "dx7_retro"):
     user = get_current_user(request)
     if not user:
         if "hx-request" in request.headers:
             return HTMLResponse(headers={"HX-Redirect": "/login"})
         return RedirectResponse(url="/login", status_code=303)
+
+    if request.method == "POST":
+        try:
+            form_data = await request.form()
+            pack_id = form_data.get("pack_id") or pack_id
+        except Exception:
+            pass
+    elif request.query_params.get("pack_id"):
+        pack_id = request.query_params.get("pack_id")
 
     import shop_packs
     import pack_generator
@@ -2750,7 +2759,7 @@ async def load_demo_pack(request: Request, pack_id: str = Form("dx7_retro")):
         return RedirectResponse(url="/checkout", status_code=303)
 
     try:
-        data = pack_generator.get_pack_bytes(pack["id"])
+        data = pack_generator.generate_pack_bytes(pack["id"], patch_names=pack["patches"], seed=pack.get("seed", 0))
         sysex_hex = data.hex()
         patch_names = pack["patches"]
         bank_name = f"{pack['name']} (Factory Demo)"

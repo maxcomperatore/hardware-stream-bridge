@@ -2955,6 +2955,58 @@ async def download_bank(request: Request, bank_id: int):
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
 
+@app.get("/banks/{bank_id}/export-txt")
+async def export_bank_txt(request: Request, bank_id: int):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    bank = database.get_bank(bank_id, user["id"])
+    if not bank:
+        raise HTTPException(status_code=404, detail="Bank not found")
+
+    patches = bank.get("patches", [])
+    lines = [f"# {bank['name']} ({bank['synth_model']}) - Hardware Sequential Patch List", ""]
+    for p in patches:
+        idx = p.get("patch_index", 0) + 1
+        name = p.get("name", "Unnamed")
+        lines.append(f"{idx:03d}: {name}")
+
+    content = "\n".join(lines)
+    safe_name = bank["name"].lower().replace(" ", "_")
+    return Response(
+        content=content,
+        media_type="text/plain",
+        headers={"Content-Disposition": f'attachment; filename="{safe_name}_patches.txt"'}
+    )
+
+@app.get("/banks/{bank_id}/export-csv")
+async def export_bank_csv(request: Request, bank_id: int):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    bank = database.get_bank(bank_id, user["id"])
+    if not bank:
+        raise HTTPException(status_code=404, detail="Bank not found")
+
+    import csv, io
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Index", "Patch Name", "Bank Name", "Synth Model"])
+
+    patches = bank.get("patches", [])
+    for p in patches:
+        idx = p.get("patch_index", 0) + 1
+        writer.writerow([idx, p.get("name", "Unnamed"), bank["name"], bank["synth_model"]])
+
+    safe_name = bank["name"].lower().replace(" ", "_")
+    return Response(
+        content=output.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{safe_name}_patches.csv"'}
+    )
+
 @app.get("/banks/{bank_id}/hex")
 async def get_bank_hex(request: Request, bank_id: int):
     user = get_current_user(request)

@@ -1593,20 +1593,27 @@
                 dumpRequestCommand = new Uint8Array([0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7]); // Universal Identity Request
             }
 
-            if (synthModel === "Roland Juno-106" || synthModel === "Sequential Prophet") {
+            if (synthModel === "Roland Juno-106" || synthModel === "Sequential Prophet" || synthModel.includes("LXR-02") || synthModel.includes("Erica Synths")) {
+                const isLXR = synthModel.includes("LXR-02") || synthModel.includes("Erica Synths");
                 const isProphet = synthModel === "Sequential Prophet";
-                const instructions = isProphet
-                    ? "Initiate Bank Dump in the Prophet's Global menu (e.g. Dump Bank)..."
-                    : "Press WRITE on the Juno-106 to dump all 128 patches...";
-                updateStatusOverlay(10, instructions, "0 B", "AWAITING SYNTH");
+                let instructions = "Press WRITE on the Juno-106 to dump all 128 patches...";
+                if (isLXR) {
+                    instructions = "Press SHIFT + SAVE (or SysEx Dump) on your LXR-02 panel to transmit kit data...";
+                } else if (isProphet) {
+                    instructions = "Initiate Bank Dump in the Prophet's Global menu (e.g. Dump Bank)...";
+                }
+                updateStatusOverlay(10, instructions, "0 B", "AWAITING SYNTH DUMP");
                 logMidiEvent("SYSTEM", `${synthModel} requires manual trigger. ${instructions}`);
                 dumpTimeout = setTimeout(() => {
                     if (isIngesting && ingestedBytes.length === 0) {
                         stopMidiIngestion(false);
                         closeStatusOverlay();
-                        const toastMsg = isProphet
-                            ? "Verify MIDI Cables and that you initiated the dump on the synth."
-                            : "Press WRITE on the Juno-106 while this dialog is open.";
+                        let toastMsg = "Press WRITE on the Juno-106 while this dialog is open.";
+                        if (isLXR) {
+                            toastMsg = "Press SHIFT + SAVE on the LXR-02 to send SysEx kit data.";
+                        } else if (isProphet) {
+                            toastMsg = "Verify MIDI Cables and that you initiated the dump on the synth.";
+                        }
                         showToast("No response from synth", toastMsg, "warning");
                         logToPostHog('midi_dump_timeout', {
                             synth_model: synthModel,

@@ -1011,7 +1011,7 @@ SMTP_HOST = settings.SMTP_HOST
 SMTP_PORT = settings.SMTP_PORT
 SMTP_USER = settings.SMTP_USER
 SMTP_PASSWORD = settings.SMTP_PASSWORD
-SMTP_FROM = settings.SMTP_FROM
+SMTP_FROM = "Rigluk <support@bipluk.com>"
 CRON_SECRET = settings.CRON_SECRET or ""
 
 

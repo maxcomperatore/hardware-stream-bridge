@@ -489,6 +489,13 @@
                                 Export CSV
                             </a>
                             <span class="text-[8px] text-zinc-700">|</span>
+                            <a href="/banks/export-txt-all"
+                               id="vault-export-txt-link"
+                               title="Download patch catalog as plain text TXT"
+                               class="text-[8px] font-pixel uppercase text-zinc-400 hover:text-zinc-200 tracking-wider transition-colors">
+                                Export TXT
+                            </a>
+                            <span class="text-[8px] text-zinc-700">|</span>
                             <a href="/banks/export-all"
                                id="vault-export-all-link"
                                title="Download entire vault as .zip"
@@ -1692,12 +1699,13 @@
                     return;
                 }
                 
-                // Generous 4-second timeout to allow for slower synthesizers serialization gaps
+                // Generous 8-second timeout for Prophet & synth serialization gaps
+                const idleDelay = isProphet ? 8000 : 4000;
                 ingestIdleTimeout = setTimeout(() => {
                     if (isIngesting && ingestedBytes.length > 0) {
                         stopMidiIngestion(true);
                     }
-                }, 4000);
+                }, idleDelay);
             } else {
                 const expectedSize = 4104;
                 const progress = Math.min(Math.floor((ingestedBytes.length / expectedSize) * 100), 99);

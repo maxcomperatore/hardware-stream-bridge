@@ -2606,6 +2606,45 @@ async def export_csv_all(request: Request):
         headers={"Content-Disposition": "attachment; filename=bipluk_vault_presets.csv"}
     )
 
+@app.get("/banks/export-txt-all")
+async def export_txt_all(request: Request):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login")
+        
+    banks = database.get_all_banks(user["id"])
+    if not banks:
+        raise HTTPException(status_code=404, detail="No banks to export")
+
+    lines = [
+        "=" * 80,
+        "BIPLUK SYNTHESIS VAULT — COMPLETE PATCH CATALOG EXPORT",
+        "=" * 80,
+        ""
+    ]
+
+    for bank in banks:
+        full_bank = database.get_bank(bank["id"], user["id"])
+        patches = full_bank.get("patches", []) if full_bank else []
+        lines.append(f"BANK: {bank['name']}")
+        lines.append(f"SYNTH: {bank['synth_model']}")
+        lines.append("-" * 40)
+        if patches:
+            for p in patches:
+                idx = p.get("patch_index", 0) + 1
+                lines.append(f"{idx:03d}  {p.get('name', 'Unnamed')}")
+        else:
+            lines.append("001  Full Soundbank Dump")
+        lines.append("")
+        lines.append("")
+
+    content = "\n".join(lines)
+    return Response(
+        content=content,
+        media_type="text/plain",
+        headers={"Content-Disposition": 'attachment; filename="bipluk_vault_catalog.txt"'}
+    )
+
 @app.get("/banks/{bank_id}", response_class=HTMLResponse)
 async def get_bank_details(request: Request, bank_id: int):
     user = get_current_user(request)

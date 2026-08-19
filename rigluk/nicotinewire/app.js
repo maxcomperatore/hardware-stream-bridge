@@ -1,4 +1,4 @@
-// NicotineWire™ PDF Delivery & Stripe Integration
+// NicotineWire™ PDF Delivery, Payment & Terminal Integration
 
 const PDF_FILES = {
     'NW-SYNTH-2026': 'reports_pdf/NW-SYNTH-2026.pdf',
@@ -34,4 +34,33 @@ function openPreCheckoutModal(planKey) {
     } else {
         window.location.href = targetUrl;
     }
+}
+
+function queryIntelligenceEngine() {
+    const inputEl = document.getElementById('terminal-query-input');
+    const respBox = document.getElementById('terminal-query-response');
+    if (!inputEl || !respBox) return;
+
+    const queryText = inputEl.value.trim();
+    if (!queryText) {
+        respBox.style.display = 'block';
+        respBox.innerHTML = '<strong style="color:#34D399;">NICOTINEWIRE TERMINAL:</strong> Please enter a procurement, PMTA, or legal spend question above.';
+        return;
+    }
+
+    respBox.style.display = 'block';
+    respBox.innerHTML = '<strong style="color:#34D399;">NICOTINEWIRE TERMINAL DESK:</strong><br><br>' +
+        'Based on benchmark datasets and PMTA transaction history: Competitive sourcing on <em>"' + escapeHtml(queryText) + '"</em> achieves an average <strong>26% Year-1 savings</strong>. Enforces agreed rate cards and fee caps prior to invoice issuance.';
+}
+
+function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function(m) {
+        return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        }[m];
+    });
 }

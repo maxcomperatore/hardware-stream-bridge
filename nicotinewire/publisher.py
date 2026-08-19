@@ -35,28 +35,28 @@ def publish_articles_to_index(articles: List[Dict[str, str]]) -> bool:
         html_content = f.read()
         
     # Resilient heading matching
-    start_pos = html_content.find("LIVE REGULATORY")
-    end_pos = html_content.find("B2B NICOTINE SUPPLY CHAIN DIRECTORY")
+    start_pos = html_content.find("Live Regulatory &")
+    if start_pos == -1:
+        start_pos = html_content.find("Live Regulatory")
     
-    if start_pos == -1 or end_pos == -1:
+    if start_pos == -1:
         print("[Publisher Error] Heading markers not found in index.html.")
         return False
         
-    # Find the closing </div> or </h2> after LIVE REGULATORY
-    heading_end_pos = html_content.find("</div>", start_pos)
-    if heading_end_pos == -1 or heading_end_pos > end_pos:
-        heading_end_pos = html_content.find("</h2>", start_pos) + len("</h2>")
+    heading_end_pos = html_content.find('class="nw-feed-container">', start_pos)
+    if heading_end_pos != -1:
+        heading_end_pos += len('class="nw-feed-container">')
     else:
-        heading_end_pos += len("</div>")
-        
+        print("[Publisher Error] nw-feed-container not found.")
+        return False
+
+    end_pos = html_content.find('</main>', heading_end_pos)
+    if end_pos == -1:
+        end_pos = html_content.find('</div>', heading_end_pos)
+
     pre_content = html_content[:heading_end_pos]
-    
-    # Find the opening <h2> for DIRECTORY
-    directory_heading_pos = html_content.rfind("<h2", 0, end_pos)
-    if directory_heading_pos == -1:
-        directory_heading_pos = end_pos
-    post_content = html_content[directory_heading_pos:]
-    
+    post_content = html_content[end_pos:]
+
     # Deduplicate articles and take MAX 6
     seen_titles = set()
     new_articles_html = []
@@ -68,25 +68,30 @@ def publish_articles_to_index(articles: List[Dict[str, str]]) -> bool:
         title = sanitize_text(art.get("title", "Untitled Story"))
         summary = sanitize_text(art.get("summary", ""))
         
-        # Deduplication check
         if title.lower() in seen_titles:
             continue
         seen_titles.add(title.lower())
         
         article_card = f"""
-<article>
-    <details>
-        <summary><strong>{title}</strong></summary>
-        <p>{summary}</p>
-    </details>
-</article>"""
+                <details class="nw-feed-item">
+                    <summary>
+                        <div class="nw-feed-meta">
+                            <span class="nw-badge nw-badge-emerald">REGULATORY BRIEFING</span>
+                            <span>NICOTINEWIRE DESK</span>
+                        </div>
+                        {title}
+                    </summary>
+                    <div class="nw-feed-body">
+                        {summary}
+                    </div>
+                </details>"""
         new_articles_html.append(article_card)
         
-    updated_middle = "\n" + "\n".join(new_articles_html) + "\n\n<hr>\n\n"
+    updated_middle = "\n" + "\n".join(new_articles_html) + "\n            </div>\n        "
     full_updated_html = pre_content + updated_middle + post_content
     
     with open(INDEX_PATH, "w", encoding="utf-8") as f:
         f.write(full_updated_html)
         
-    print(f"[Publisher Success] Published {len(new_articles_html)} premier executive briefings (Max 6) to index.html.")
+    print(f"[Publisher Success] Published {len(new_articles_html)} premier executive briefings to index.html.")
     return True

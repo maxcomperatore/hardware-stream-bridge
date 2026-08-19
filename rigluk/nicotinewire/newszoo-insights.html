@@ -3,146 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - Newszoo Insights &amp; Empire Intelligence</title>
+    <title>NicotineWire — Newszoo Insights & Market Feed</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<!-- Top Utility Ticker Bar -->
+<div class="top-utility-bar">
+    <div class="top-utility-left">
+        <span class="ticker-pulse"></span>
+        <span class="top-utility-pill">NEWSZOO MARKET FEED</span>
+        <span>Market Share Audits & Public Earnings Citations</span>
+    </div>
+    <div class="top-utility-right">
+        <span>CITED ON 4 PUBLIC EARNINGS CALLS</span>
+        <span>|</span>
+        <span>WEEKLY MONDAY DISPATCH</span>
+    </div>
+</div>
+
+<!-- Main Executive Header -->
+<header class="nw-header">
+    <a href="index.html" class="nw-brand">
+        <div class="nw-logo-icon">N</div>
+        <div>
+            <div class="nw-brand-text">NICOTINE<span>WIRE</span></div>
+            <div class="nw-brand-sub">Institutional Terminal</div>
+        </div>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="index.html" class="nw-nav-link">Wire Feed</a>
+        <a href="reports.html" class="nw-nav-link">M&amp;A Reports</a>
+        <a href="directory.html" class="nw-nav-link">B2B Directory</a>
+        <a href="newszoo-insights.html" class="nw-nav-link active">News &amp; Insights</a>
+        <a href="report-template.html" class="nw-nav-link">Report Viewer</a>
+        <a href="b2b-case.html" class="nw-nav-link">B2B ROI</a>
+        <a href="pricing.html" class="nw-nav-link">Terminal Pass</a>
+    </nav>
+
+    <div class="nw-header-actions">
+        <a href="pricing.html" class="btn-terminal">
+            <span>Terminal Access</span>
+            <span style="opacity: 0.7; font-weight: 500;">$2,000/yr</span>
+        </a>
+    </div>
+</header>
+
 <div class="app-viewport">
-    <!-- Header -->
-    <header>
+    <!-- Hero Header -->
+    <section class="nw-hero-banner" style="margin-bottom: 28px;">
         <div>
-            <div class="brand-meta-group">
-                <span class="brand-company-tag">©NICOTINE WIRE</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">NEWSZOO EMPIRE INTELLIGENCE</span>
+            <div class="nw-hero-tag">
+                <span class="ticker-pulse"></span>
+                MARKET SHARE INTELLIGENCE &amp; EARNINGS PROOF
             </div>
-            <div class="brand-title" style="margin-top: 4px;">NICOTINE<span>WIRE</span></div>
+            <h1 class="nw-hero-title">Newszoo Insights &amp; Market Feed</h1>
+            <p class="nw-hero-subtitle">Independent third-party research tracking market share shifts in modern oral and synthetic nicotine. Cited on public earnings calls across Wall Street and European exchanges.</p>
         </div>
-        <nav>
-            <a href="index.html">Wire Feed</a>
-            <a href="newszoo-insights.html" class="active">Newszoo Insights</a>
-            <a href="b2b-case.html">B2B Case &amp; ROI</a>
-            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
-            <a href="directory.html">B2B Directory &amp; Jobs ($300)</a>
-            <a href="pricing.html">Pricing</a>
-        </nav>
-    </header>
 
-    <!-- Slide Hero Header -->
-    <section class="hero-slide" style="grid-template-columns: 1.6fr 1fr; margin-bottom: 24px;">
-        <div>
-            <div class="hero-meta-header">
-                <span>Moated Market Share Intelligence &amp; Earnings Citations</span>
-                <span class="hero-meta-pill">EMPIRE DATASET</span>
-            </div>
-            <h1 class="hero-title" style="font-size: 2.8rem;">Newszoo Insights &amp; Market Feed</h1>
-            <p class="hero-subtitle">Third-party quantitative research tracking who gained market share in modern oral &amp; synthetic nicotine. Cited on public company earnings calls across Wall Street and European exchanges.</p>
-        </div>
-        <div class="deck-card-dark">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 2;">
-                <span style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7;">EMPIRE ACQUISITION</span>
-                <div class="asterisk-badge">*</div>
-            </div>
-            <img src="nicotine_abstract.jpg" alt="3D Modern Graphic" class="deck-card-dark-art">
-            <div style="z-index: 2; margin-top: 40px;">
-                <span style="background: var(--accent-yellow); color: var(--text-main); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px; display: inline-block;">Tobacco Reporter Acquisition</span>
-                <h3 style="font-size: 1.3rem; font-weight: 800; color: #FFFFFF;">Consolidating Industry Monograph Power</h3>
+        <div class="nw-stat-card-hero">
+            <div class="nw-stat-label">Media Consolidation</div>
+            <div class="nw-stat-val" style="color: var(--accent-amber);">1874 Archive</div>
+            <div class="nw-stat-desc">Tobacco Reporter Acquisition</div>
+            <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-dark); font-size: 0.76rem; color: var(--text-dark-muted);">
+                "Consolidating 152 years of trade monographs into NicotineWire."
             </div>
         </div>
     </section>
 
-    <!-- Filter & Live Search Bar -->
-    <section class="deck-section" style="padding: 20px 24px; margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button onclick="filterNewszoo('all')" class="link-action-yellow" style="font-size: 0.78rem; padding: 6px 14px;">ALL INSIGHTS</button>
-                <button onclick="filterNewszoo('earnings')" class="link-action-outline" style="font-size: 0.78rem; padding: 6px 14px;">EARNINGS CITATIONS</button>
-                <button onclick="filterNewszoo('empire')" class="link-action-outline" style="font-size: 0.78rem; padding: 6px 14px;">EMPIRE M&amp;A</button>
-                <button onclick="filterNewszoo('moat')" class="link-action-outline" style="font-size: 0.78rem; padding: 6px 14px;">MOAT &amp; MARKET SHARE</button>
+    <!-- Filter Buttons -->
+    <div style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;">
+        <button onclick="filterNewszoo('all')" class="btn-terminal-emerald" style="font-size: 0.78rem; padding: 6px 14px;">ALL INSIGHTS</button>
+        <button onclick="filterNewszoo('earnings')" class="btn-terminal-outline" style="font-size: 0.78rem; padding: 6px 14px;">EARNINGS CITATIONS</button>
+        <button onclick="filterNewszoo('empire')" class="btn-terminal-outline" style="font-size: 0.78rem; padding: 6px 14px;">MEDIA CONSOLIDATION</button>
+        <button onclick="filterNewszoo('moat')" class="btn-terminal-outline" style="font-size: 0.78rem; padding: 6px 14px;">DATA MOAT</button>
+    </div>
+
+    <!-- Feed Items -->
+    <div class="nw-feed-container" id="newszoo-feed-container">
+        <!-- Story 1 -->
+        <details class="nw-feed-item newszoo-item earnings moat" open>
+            <summary>
+                <div class="nw-feed-meta">
+                    <span class="nw-badge nw-badge-amber">EARNINGS CALL CITATION</span>
+                    <span>PUBLIC MARKET SHARE &bull; Q1 2026</span>
+                </div>
+                NicotineWire Data Cited in Q1 Earnings Calls as Independent Audit of Market Share Gains
+            </summary>
+            <div class="nw-feed-body">
+                <strong>Newszoo Insight:</strong> Executive leadership teams at major public nicotine conglomerates cited NicotineWire's proprietary market share tracking during Q1 earnings calls. Independent third-party data verified that next-generation oral pouch brands captured +4.2% market share from legacy combustible lines.
+                <br><br>
+                <strong>Data Moat:</strong> Unlike generic panel surveys, NicotineWire tracks real-time chemical DMF filings, customs import manifests, and RFP pricing benchmarking.
             </div>
-            <div style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">
-                CITED ON 4 PUBLIC EARNINGS CALLS
+        </details>
+
+        <!-- Story 2 -->
+        <details class="nw-feed-item newszoo-item empire" open>
+            <summary>
+                <div class="nw-feed-meta">
+                    <span class="nw-badge nw-badge-emerald">MEDIA CONSOLIDATION</span>
+                    <span>PUBLISHING M&amp;A &bull; 6 HOURS AGO</span>
+                </div>
+                NicotineWire™ Media Group Acquires Legacy Journal 'Tobacco Reporter'
+            </summary>
+            <div class="nw-feed-body">
+                <strong>Newszoo Insight:</strong> NicotineWire Media Group has acquired <em>Tobacco Reporter Trade Journal</em> (founded 1874), consolidating 152 years of archival trade data, global OEM supplier networks, and international subscriber lists into the NicotineWire monograph terminal.
             </div>
-        </div>
-    </section>
+        </details>
 
-    <!-- Newszoo Insights Feed Grid -->
-    <section class="deck-section">
-        <div class="section-head">
-            <span>NEWSZOO FEATURED EXECUTIVE BRIEFINGS &amp; EARNINGS PROOF</span>
-            <span class="section-tag">2026 EDITION</span>
-        </div>
-
-        <div id="newszoo-feed-container">
-            <!-- Story 1: Public Earnings Citation & Market Share -->
-            <details class="story-item newszoo-item earnings moat" open>
-                <summary>
-                    <div class="story-meta">
-                        <span class="story-badge-yellow">EARNINGS CALL CITATION</span>
-                        <span>PUBLIC COMPANY MARKET SHARE &bull; Q1 2026</span>
-                    </div>
-                    NicotineWire Data Cited in Q1 Earnings Calls as Independent Audit of Market Share Gains
-                </summary>
-                <p class="story-desc">
-                    <strong>Newszoo Insight:</strong> Executive leadership teams at major public nicotine conglomerates cited NicotineWire's proprietary market share tracking during Q1 2026 earnings calls. Independent third-party data verified that next-generation oral pouch brands captured +4.2% market share from legacy combustible lines.
-                    <br><br>
-                    <strong>The Data Moat:</strong> Unlike generic market research firms relying on delayed retail panel surveys, NicotineWire tracks real-time chemical DMF filings, customs import manifests, and RFP pricing benchmarking. When CFOs need defensible data for Wall Street analysts, NicotineWire is the cited gold standard.
-                </p>
-            </details>
-
-            <!-- Story 2: Empire Acquisition -->
-            <details class="story-item newszoo-item empire" open>
-                <summary>
-                    <div class="story-meta">
-                        <span class="story-badge">EMPIRE CONSOLIDATION</span>
-                        <span>PUBLISHING M&amp;A &bull; 6 HOURS AGO</span>
-                    </div>
-                    NicotineWire™ Media Group Acquires Legacy Journal 'Tobacco Reporter' to Expand Monograph Empire
-                </summary>
-                <p class="story-desc">
-                    <strong>Newszoo Insight:</strong> NicotineWire Media Group has acquired <em>Tobacco Reporter Trade Journal</em> (founded 1874), consolidating 152 years of archival trade data, global OEM supplier networks, and international subscriber lists into the NicotineWire monograph terminal.
-                    <br><br>
-                    <strong>Strategic Expansion:</strong> The acquisition merges legacy trade journalism with NicotineWire's $22B+ algorithmic procurement intelligence engine, creating an unassailable media and data empire across North America, Europe, and Asia-Pacific.
-                </p>
-            </details>
-
-            <!-- Story 3: Paid Slides vs Real Moats -->
-            <details class="story-item newszoo-item moat">
-                <summary>
-                    <div class="story-meta">
-                        <span class="story-badge">MONOGRAPH EDITORIAL</span>
-                        <span>CORPORATE GOVERNANCE &bull; 1 DAY AGO</span>
-                    </div>
-                    Why "Best Place to Work" Badges &amp; Paid Analyst Slides Are Vapor — The Real Moat is $22B+ Data
-                </summary>
-                <p class="story-desc">
-                    <strong>Newszoo Insight:</strong> The industry is full of paid-for slide badges and vanity corporate awards. But in boardroom budget defense, vanity metrics don't save 26% on outside counsel or prevent $1.2M CBP container seizures.
-                    <br><br>
-                    <strong>PERSUIT Partnership:</strong> By combining PERSUIT's $22B+ legal sourcing dataset with NicotineWire's DMF chemical audits, enterprise GCs get defensible data that drops straight to the CFO's bottom line — not marketing fluff.
-                </p>
-            </details>
-
-            <!-- Story 4: FDA & CTP -->
-            <details class="story-item newszoo-item fda">
-                <summary>
-                    <div class="story-meta">
-                        <span class="story-badge">FDA / CTP DOCKET</span>
-                        <span>REGULATORY ALERT &bull; 2 DAYS AGO</span>
-                    </div>
-                    FDA Proposed Docket 2026-13047: Foreign Establishments Must Register Synthetic Facilities
-                </summary>
-                <p class="story-desc">
-                    <strong>Newszoo Summary:</strong> The FDA CTP published a notice extending Part 607 facility listing requirements to overseas synthetic L-nicotine labs. US brand owners using unverified suppliers face impoundment under Import Alert #99-43.
-                </p>
-            </details>
-        </div>
-    </section>
+        <!-- Story 3 -->
+        <details class="nw-feed-item newszoo-item moat">
+            <summary>
+                <div class="nw-feed-meta">
+                    <span class="nw-badge nw-badge-dark">EDITORIAL</span>
+                    <span>CORPORATE GOVERNANCE &bull; 1 DAY AGO</span>
+                </div>
+                Why Paid Analyst Badges Are Vapor — The Real Moat is Benchmark Data
+            </summary>
+            <div class="nw-feed-body">
+                <strong>Newszoo Insight:</strong> Boardrooms need defensible cost benchmarks, not vanity marketing slides. NicotineWire's chemical DMF lab audits and RFP benchmarking give enterprise legal counsel actionable data that drops directly to the CFO's bottom line.
+            </div>
+        </details>
+    </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="nw-footer">
         <div>
-            <strong>NicotineWire™ Media Group</strong> &bull; "Check the Wire before you acquire."
+            <strong>NicotineWire™ Terminal</strong> &bull; Half Radiation, LLC &bull; "Check the Wire before you acquire."
         </div>
         <div>
             &copy; 2026 NicotineWire™. All rights reserved.
@@ -152,10 +141,10 @@
 
 <script src="app.js"></script>
 <script>
-function filterNewszoo(cat) {
+function filterNewszoo(category) {
     const items = document.querySelectorAll('.newszoo-item');
     items.forEach(item => {
-        if (cat === 'all' || item.classList.contains(cat)) {
+        if (category === 'all' || item.classList.contains(category)) {
             item.style.display = 'block';
         } else {
             item.style.display = 'none';

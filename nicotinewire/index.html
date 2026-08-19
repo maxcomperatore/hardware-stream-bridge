@@ -3,213 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - B2B Regulatory &amp; M&amp;A Intelligence</title>
+    <title>NicotineWire — Regulatory & Market Intelligence</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 </head>
 <body>
 
+<header class="nw-header">
+    <a href="index.html" class="nw-brand">
+        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <span class="nw-brand-text">NicotineWire</span>
+        <span class="nw-brand-sub">Terminal</span>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="index.html" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
+        <a href="reports.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
+        <a href="directory.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
+        <a href="newszoo-insights.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
+        <a href="report-template.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
+        <a href="b2b-case.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
+        <a href="pricing.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+    </nav>
+
+    <div>
+        <a href="pricing.html" class="btn-moz-blue">
+            <span class="iconify" data-icon="pixelarticons:terminal"></span>
+            <span>Terminal Pass</span>
+            <span style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
+        </a>
+    </div>
+</header>
+
 <div class="app-viewport">
-    <!-- Header -->
-    <header>
-        <div style="display: flex; align-items: center; gap: 16px;">
-            <img src="nicotine_sketch_logo.jpg" alt="Nicotine Molecule Hand-Sketch Mascot Logo" style="width: 60px; height: 60px; border-radius: 12px; border: 2px solid var(--text-main); object-fit: cover; background: #FFF;">
-            <div>
-                <div class="brand-meta-group">
-                    <span class="brand-company-tag">©NICOTINE WIRE</span>
-                    <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">CITED IN PUBLIC EARNINGS CALLS</span>
-                </div>
-                <div class="brand-title" style="margin-top: 2px;">NICOTINE<span>WIRE</span></div>
-            </div>
-        </div>
-        <nav>
-            <a href="index.html" class="active">Wire Feed</a>
-            <a href="report-template.html">Report Template</a>
-            <a href="newszoo-insights.html">Newszoo Insights</a>
-            <a href="b2b-case.html">B2B Case &amp; ROI</a>
-            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
-            <a href="directory.html">B2B Directory &amp; Jobs ($300/mo)</a>
-            <a href="pricing.html">Pricing</a>
-        </nav>
-    </header>
+    <div class="nw-grid-layout">
+        <aside class="nw-sidebar">
+            <div class="nw-sidebar-title">Categories</div>
+            <ul class="nw-sidebar-menu">
+                <li><a href="index.html" class="active"><span><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</span> <span class="nw-tag-count">Live</span></a></li>
+                <li><a href="reports.html"><span><span class="iconify" data-icon="pixelarticons:file-text"></span> M&amp;A Databooks</span> <span class="nw-tag-count">$1.5k+</span></a></li>
+                <li><a href="directory.html"><span><span class="iconify" data-icon="pixelarticons:briefcase"></span> B2B Directory</span> <span class="nw-tag-count">$300/m</span></a></li>
+                <li><a href="newszoo-insights.html"><span><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights &amp; Proof</span> <span class="nw-tag-count">Pro</span></a></li>
+                <li><a href="report-template.html"><span><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Monograph Viewer</span> <span class="nw-tag-count">PDF</span></a></li>
+                <li><a href="b2b-case.html"><span><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</span> <span class="nw-tag-count">Moat</span></a></li>
+                <li><a href="pricing.html"><span><span class="iconify" data-icon="pixelarticons:card"></span> Pass Pricing</span> <span class="nw-tag-count">$2,000</span></a></li>
+            </ul>
+        </aside>
 
-    <!-- Ticker Strip -->
-    <div class="ticker-strip">
-        <div class="ticker-cell"><span class="ticker-badge">CITED</span> IN Q1 EARNINGS CALLS BY 4 PUBLIC GIANTS</div>
-        <div style="opacity: 0.3;">|</div>
-        <div class="ticker-cell">SYNTHETIC L-NICOTINE: <span class="val-up">$3,450/kg (+1.2%)</span></div>
-        <div style="opacity: 0.3;">|</div>
-        <div class="ticker-cell">ACTIVE PMTA DOCKETS: <b>58</b></div>
-        <div style="opacity: 0.3;">|</div>
-        <div class="ticker-cell"><span class="ticker-badge">MASCOT</span> PERSI THE NICOTINE MOLECULE ACTIVE</div>
-    </div>
-
-    <!-- Editorial Hero Presentation Slide -->
-    <section class="hero-slide">
-        <div>
-            <div class="hero-meta-header">
-                <span>Third-Party Research Cited in Wall Street Earnings</span>
-                <span class="hero-meta-pill">UNASSAILABLE MOAT</span>
-            </div>
-            <h1 class="hero-title">Regulatory &amp;<br>-Wire Intelligence</h1>
-            <p class="hero-subtitle">Check the Wire before you acquire. The moated intelligence terminal relied on by public company CFOs, Private Equity partners, and legal ops leaders worldwide.</p>
-            
-            <div class="hero-stat-row">
-                <div class="hero-stat-card">
-                    <div class="hero-stat-number">4 Public</div>
-                    <div class="hero-stat-label">Earnings Citations</div>
-                </div>
-                <div class="hero-stat-card">
-                    <div class="hero-stat-number">$22B+</div>
-                    <div class="hero-stat-label">PERSUIT Data Moat</div>
-                </div>
-                <div class="hero-stat-card" style="background: var(--accent-yellow);">
-                    <div class="hero-stat-number">8.8x</div>
-                    <div class="hero-stat-label" style="color: var(--text-main);">EV/EBITDA Pouch Multiple</div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                <a href="report-template.html" class="link-action-yellow">View Full Report Template &rarr;</a>
-                <a href="newszoo-insights.html" class="link-action-outline">Newszoo Insights</a>
-            </div>
-        </div>
-
-        <div class="deck-card-dark">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 2;">
-                <span style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7;">MASCOT BRAND LOGO</span>
-                <div class="asterisk-badge">*</div>
-            </div>
-
-            <img src="nicotine_sketch_logo.jpg" alt="Bizarre Anthropomorphic Nicotine Mascot Logo" style="width: 100%; border-radius: var(--radius-md); margin-top: 16px; border: 2px solid var(--accent-yellow); object-fit: cover; background: #FFF;">
-
-            <div style="z-index: 2; margin-top: 20px;">
-                <span style="background: var(--accent-yellow); color: var(--text-main); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px; display: inline-block;">Persi the Nicotine Molecule</span>
-                <h3 style="font-size: 1.3rem; font-weight: 800; line-height: 1.2; color: #FFFFFF;">The Anthropomorphic Corporate Mascot</h3>
-            </div>
-        </div>
-    </section>
-
-    <!-- Numbered Editorial Columns -->
-    <div class="numbered-grid">
-        <div class="num-card num-card-yellow">
-            <div>
-                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; opacity: 0.7;">SECTION 01</span>
-                <div class="num-card-head" style="margin-top: 8px;">Full PDF Template</div>
-                <div class="num-card-desc">Interactive Canva-style PDF report viewer &amp; download.</div>
-            </div>
-            <div class="num-card-big">01</div>
-        </div>
-
-        <div class="num-card num-card-white">
-            <div>
-                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">SECTION 02</span>
-                <div class="num-card-head" style="margin-top: 8px;">PERSUIT Data Moat</div>
-                <div class="num-card-desc">$22B+ in real procurement &amp; rate card benchmarks.</div>
-            </div>
-            <div class="num-card-big" style="color: var(--text-muted);">02</div>
-        </div>
-
-        <div class="num-card num-card-dark">
-            <img src="nicotine_wave.jpg" alt="3D Texture" class="num-card-dark-bg">
-            <div style="position: relative; z-index: 2;">
-                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; opacity: 0.7;">SECTION 03</span>
-                <div class="num-card-head" style="margin-top: 8px;">Empire Media Consolidation</div>
-                <div class="num-card-desc">Acquired 152-year-old Tobacco Reporter Journal.</div>
-            </div>
-            <div class="num-card-big" style="position: relative; z-index: 2; color: var(--accent-yellow);">03</div>
-        </div>
-
-        <div class="num-card num-card-white">
-            <div>
-                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">SECTION 04</span>
-                <div class="num-card-head" style="margin-top: 8px;">B2B Directory &amp; ROI</div>
-                <div class="num-card-desc">Verified labs, chemical suppliers, and executive talent.</div>
-            </div>
-            <div class="num-card-big" style="color: var(--text-muted);">04</div>
-        </div>
-    </div>
-
-    <!-- Main Content Layout Grid -->
-    <div class="grid-main" id="wire-feed">
         <main>
-            <!-- Live Wire Section -->
-            <section class="deck-section">
-                <div class="section-head">
-                    <span>LIVE REGULATORY &amp; M&amp;A WIRE</span>
-                    <a href="report-template.html" style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); text-decoration: none;">View Report Template &rarr;</a>
+            <!-- Fullscreen Centered Hero Banner -->
+            <section class="nw-hero-banner">
+                <h1 class="nw-hero-title">
+                    <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+                    Check the Wire Before You Acquire.
+                </h1>
+                <p class="nw-hero-subtitle">Independent regulatory intelligence and transaction benchmarks.</p>
+            </section>
+
+            <!-- Cards Section Title -->
+            <div class="nw-section-title">
+                <h2><span class="iconify" data-icon="pixelarticons:file-text"></span> Featured Reports</h2>
+                <a href="reports.html" style="color: var(--moz-blue); font-size: 0.78rem; text-decoration: none;">View All &rarr;</a>
+            </div>
+
+            <!-- Fullscreen Product Cards Grid -->
+            <div class="nw-cards-grid">
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:float-right-sharp"></span> M&amp;A</span>
+                            <span class="nw-card-price">$3,500</span>
+                        </div>
+                        <h3 class="nw-card-title">Q1 Global Oral Pouch M&amp;A Report</h3>
+                        <p class="nw-card-text">Analysis of brand share shifts, valuation multiples, and OEM capacities.</p>
+                    </div>
+                    <div class="nw-card-footer">
+                        <span>PDF + Databook</span>
+                        <a href="reports.html" class="btn-moz-outline">View &rarr;</a>
+                    </div>
                 </div>
 
-                <details class="story-item" open>
-                    <summary>
-                        <div class="story-meta">
-                            <span class="story-badge-yellow">EARNINGS CALL CITATION</span>
-                            <span>WALL STREET RESEARCH &bull; Q1 2026</span>
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:alert"></span> FDA</span>
+                            <span class="nw-card-price">$2,000</span>
                         </div>
-                        NicotineWire Third-Party Market Share Data Cited in Public Company Earnings Calls
+                        <h3 class="nw-card-title">FDA PMTA Docket 2026-13047 Intelligence</h3>
+                        <p class="nw-card-text">Part 607 registration breakdown for foreign synthetic exporters.</p>
+                    </div>
+                    <div class="nw-card-footer">
+                        <span>Live Feed</span>
+                        <a href="pricing.html" class="btn-moz-outline">Unlock &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:briefcase"></span> LABS</span>
+                            <span class="nw-card-price">$300/mo</span>
+                        </div>
+                        <h3 class="nw-card-title">Synthetic L-Nicotine Supplier Directory</h3>
+                        <p class="nw-card-text">Audited directory of 142 global GLP labs &amp; DMF holders.</p>
+                    </div>
+                    <div class="nw-card-footer">
+                        <span>142 Labs</span>
+                        <a href="directory.html" class="btn-moz-outline">Access &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> ARCHIVE</span>
+                            <span class="nw-card-price">$1,500</span>
+                        </div>
+                        <h3 class="nw-card-title">Tobacco Reporter Monograph Terminal</h3>
+                        <p class="nw-card-text">Digitised archive of trade monographs &amp; patents from 1874.</p>
+                    </div>
+                    <div class="nw-card-footer">
+                        <span>PDF Download</span>
+                        <a href="reports.html" class="btn-moz-outline">Download &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feed Accordions -->
+            <div class="nw-section-title">
+                <h2><span class="iconify" data-icon="pixelarticons:zap"></span> Live Wire Feed</h2>
+                <a href="report-template.html" style="color: var(--moz-blue); font-size: 0.78rem; text-decoration: none;">Viewer &rarr;</a>
+            </div>
+
+            <div class="nw-feed-container">
+                <details class="nw-feed-item" open>
+                    <summary>
+                        <div class="nw-feed-meta">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:trending-up"></span> EARNINGS</span>
+                            <span>Q1 2026</span>
+                        </div>
+                        NicotineWire Third-Party Market Share Data Cited in Public Earnings Calls
                     </summary>
-                    <p class="story-desc">Independent third-party research by NicotineWire tracking brand market share shifts was cited during Q1 earnings calls across 4 major public nicotine conglomerates. Wall Street analysts highlighted NicotineWire's data moat in verifying +4.2% oral pouch expansion.</p>
+                    <div class="nw-feed-body">
+                        Independent research by NicotineWire tracking brand market share shifts was cited during Q1 earnings calls across 4 major public nicotine conglomerates.
+                    </div>
                 </details>
 
-                <details class="story-item">
+                <details class="nw-feed-item">
                     <summary>
-                        <div class="story-meta">
-                            <span class="story-badge">EMPIRE M&amp;A</span>
-                            <span>PUBLISHING CONSOLIDATION &bull; 6 HOURS AGO</span>
+                        <div class="nw-feed-meta">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:float-right-sharp"></span> M&amp;A</span>
+                            <span>6h ago</span>
                         </div>
                         NicotineWire Media Group Acquires 152-Year-Old 'Tobacco Reporter' Trade Journal
                     </summary>
-                    <p class="story-desc">NicotineWire has acquired legacy journal <em>Tobacco Reporter</em> (est. 1874), consolidating 1.5 centuries of global trade archives into the NicotineWire monograph terminal and strengthening its unassailable market intelligence empire.</p>
+                    <div class="nw-feed-body">
+                        NicotineWire has acquired legacy publication <em>Tobacco Reporter</em> (est. 1874), consolidating 1.5 centuries of trade archives.
+                    </div>
                 </details>
 
-                <details class="story-item">
+                <details class="nw-feed-item">
                     <summary>
-                        <div class="story-meta">
-                            <span class="story-badge">FDA CTP ALERT</span>
-                            <span>DOCKET 2026-13047 &bull; 14 HOURS AGO</span>
+                        <div class="nw-feed-meta">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:alert"></span> FDA</span>
+                            <span>14h ago</span>
                         </div>
-                        FDA Moves to Register Foreign Tobacco &amp; Synthetic Facilities Under Docket 2026-13047
+                        FDA Moves to Register Foreign Synthetic Facilities Under Docket 2026-13047
                     </summary>
-                    <p class="story-desc">The FDA proposed extending Part 607 registration and product listing requirements to foreign synthetic nicotine establishments, closing overseas exemption gaps and directly impacting Chinese exporters and US importers.</p>
+                    <div class="nw-feed-body">
+                        The FDA proposed extending Part 607 registration requirements to foreign synthetic nicotine establishments.
+                    </div>
                 </details>
-            </section>
+            </div>
         </main>
-
-        <aside>
-            <!-- Mascot Card -->
-            <section class="deck-section" style="text-align: center;">
-                <img src="nicotine_sketch_logo.jpg" alt="Persi Mascot Logo" style="width: 120px; height: 120px; border-radius: 20px; border: 3px solid var(--text-main); margin-bottom: 12px; object-fit: cover; background: #FFF;">
-                <h4 style="font-size: 1.1rem; font-weight: 800;">Nico / Persi</h4>
-                <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Anthropomorphic Chemical Mascot &amp; Official Procurement Mascot of NicotineWire™</p>
-            </section>
-
-            <!-- Executive Pass Card -->
-            <section class="deck-section" style="background: var(--card-dark); color: #FFFFFF;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <span style="font-size: 0.7rem; font-weight: 800; background: var(--accent-yellow); color: var(--text-main); padding: 4px 10px; border-radius: 9999px;">RECOMMENDED FOR FUNDS</span>
-                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dark-muted);">2026 PASS</span>
-                </div>
-
-                <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; color: #FFFFFF;">EXECUTIVE TERMINAL PASS</h3>
-                <p style="font-size: 0.88rem; color: var(--text-dark-muted); margin-bottom: 20px;">Unlimited access to weekly regulatory briefings, M&amp;A valuation models, and B2B vendor contacts.</p>
-
-                <div style="font-size: 2.4rem; font-weight: 900; margin-bottom: 16px; color: var(--accent-yellow);">$2,000 <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-dark-muted);">/ yr</span></div>
-
-                <button onclick="openPreCheckoutModal('annual')" class="link-action-yellow" style="width: 100%; border: none; cursor: pointer; text-align: center; margin-bottom: 12px;">Join Annual Pass ($2,000) &rarr;</button>
-            </section>
-        </aside>
     </div>
 
-    <!-- Footer -->
-    <footer>
+    <!-- Pitch Black Minimalist Footer -->
+    <footer class="nw-footer">
         <div>
-            <strong>NicotineWire™ Media Group</strong> &bull; "Check the Wire before you acquire."
+            <strong>NicotineWire™ Intelligence</strong> &bull; Half Radiation, LLC
         </div>
         <div>
-            &copy; 2026 NicotineWire™. All rights reserved.
+            &copy; 2026 NicotineWire™.
         </div>
     </footer>
 </div>
+
+<!-- Clash Royale Mobile Bottom Floating Navigation Dock -->
+<nav class="cr-mobile-bottom-nav">
+    <a href="index.html" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+        <span>Wire</span>
+    </a>
+    <a href="reports.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+        <span>Reports</span>
+    </a>
+    <a href="directory.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+        <span>Directory</span>
+    </a>
+    <a href="newszoo-insights.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+        <span>Insights</span>
+    </a>
+    <a href="pricing.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+        <span>Terminal</span>
+    </a>
+</nav>
 
 <script src="app.js"></script>
 </body>

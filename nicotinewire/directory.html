@@ -3,158 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - B2B Directory &amp; Executive Job Board</title>
+    <title>NicotineWire — B2B Directory & Jobs</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 </head>
 <body>
 
+<header class="nw-header">
+    <a href="index.html" class="nw-brand">
+        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <span class="nw-brand-text">NicotineWire</span>
+        <span class="nw-brand-sub">Terminal</span>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="index.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
+        <a href="reports.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
+        <a href="directory.html" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
+        <a href="newszoo-insights.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
+        <a href="report-template.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
+        <a href="b2b-case.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
+        <a href="pricing.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+    </nav>
+
+    <div>
+        <button onclick="openPreCheckoutModal('job_listing')" class="btn-moz-outline">
+            <span class="iconify" data-icon="pixelarticons:user-plus"></span>
+            <span>Post Job ($300/mo)</span>
+        </button>
+        <a href="pricing.html" class="btn-moz-blue">
+            <span class="iconify" data-icon="pixelarticons:terminal"></span>
+            <span>Terminal Pass</span>
+        </a>
+    </div>
+</header>
+
 <div class="app-viewport">
-    <!-- Header -->
-    <header>
-        <div>
-            <div class="brand-meta-group">
-                <span class="brand-company-tag">©NICOTINE WIRE</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">DIRECTORY &amp; JOBS</span>
+    <div class="nw-grid-layout">
+        <aside class="nw-sidebar">
+            <div class="nw-sidebar-title">Categories</div>
+            <ul class="nw-sidebar-menu">
+                <li><a href="index.html"><span><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</span> <span class="nw-tag-count">Live</span></a></li>
+                <li><a href="reports.html"><span><span class="iconify" data-icon="pixelarticons:file-text"></span> M&amp;A Databooks</span> <span class="nw-tag-count">$1.5k+</span></a></li>
+                <li><a href="directory.html" class="active"><span><span class="iconify" data-icon="pixelarticons:briefcase"></span> B2B Directory</span> <span class="nw-tag-count">$300/m</span></a></li>
+                <li><a href="newszoo-insights.html"><span><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights &amp; Proof</span> <span class="nw-tag-count">Pro</span></a></li>
+                <li><a href="report-template.html"><span><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Monograph Viewer</span> <span class="nw-tag-count">PDF</span></a></li>
+                <li><a href="b2b-case.html"><span><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</span> <span class="nw-tag-count">Moat</span></a></li>
+                <li><a href="pricing.html"><span><span class="iconify" data-icon="pixelarticons:card"></span> Pass Pricing</span> <span class="nw-tag-count">$2,000</span></a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <!-- Directory Table -->
+            <div class="nw-section-title">
+                <h2><span class="iconify" data-icon="pixelarticons:briefcase"></span> Verified B2B Vendors &amp; Labs</h2>
+                <button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-blue">Get Listed ($1,000/yr) &rarr;</button>
             </div>
-            <div class="brand-title" style="margin-top: 4px;">NICOTINE<span>WIRE</span></div>
-        </div>
-        <nav>
-            <a href="index.html">Wire Feed</a>
-            <a href="newszoo-insights.html">Newszoo Insights</a>
-            <a href="b2b-case.html">B2B Case &amp; ROI</a>
-            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
-            <a href="directory.html" class="active">B2B Directory &amp; Jobs ($300/mo)</a>
-            <a href="pricing.html">Pricing</a>
-        </nav>
-    </header>
 
-    <!-- Slide Hero Header -->
-    <section class="hero-slide" style="grid-template-columns: 1.6fr 1fr; margin-bottom: 24px;">
-        <div>
-            <div class="hero-meta-header">
-                <span>Verified Ecosystem Network</span>
-                <span class="hero-meta-pill">B2B NETWORK</span>
+            <div style="border: 1px solid var(--moz-border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 20px;">
+                <table class="nw-table">
+                    <thead>
+                        <tr>
+                            <th>Vendor Name</th>
+                            <th>Category</th>
+                            <th>DMF Filing</th>
+                            <th>Region</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>PureSynth Labs Inc.</b></td>
+                            <td>Synthetic L-Nicotine</td>
+                            <td>US FDA DMF #03941</td>
+                            <td>USA / EU</td>
+                            <td><button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-outline" style="padding: 2px 6px; font-size: 0.7rem;">RFQ &rarr;</button></td>
+                        </tr>
+                        <tr>
+                            <td><b>Apex Pouch Formulators AB</b></td>
+                            <td>White Pouch OEM</td>
+                            <td>TPD3 Monograph</td>
+                            <td>Sweden</td>
+                            <td><button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-outline" style="padding: 2px 6px; font-size: 0.7rem;">RFQ &rarr;</button></td>
+                        </tr>
+                        <tr>
+                            <td><b>Deccan Leaf Exporters Ltd</b></td>
+                            <td>Flue-Cured Leaf</td>
+                            <td>Phytosanitary Verified</td>
+                            <td>India</td>
+                            <td><button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-outline" style="padding: 2px 6px; font-size: 0.7rem;">RFQ &rarr;</button></td>
+                        </tr>
+                        <tr>
+                            <td><b>VapeTech Analytics Laboratories</b></td>
+                            <td>PMTA Testing</td>
+                            <td>ISO 17025 Certified</td>
+                            <td>USA</td>
+                            <td><button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-outline" style="padding: 2px 6px; font-size: 0.7rem;">RFQ &rarr;</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <h1 class="hero-title" style="font-size: 2.8rem;">B2B Directory &amp; Job Board</h1>
-            <p class="hero-subtitle">Connect with audit-verified synthetic L-nicotine formulators, GLP-certified PMTA testing labs, white-label pouch manufacturers, and senior executive leaders.</p>
-        </div>
-        <div class="deck-card-dark">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 2;">
-                <span style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7;">VERIFIED VENDORS</span>
-                <div class="asterisk-badge">*</div>
+
+            <!-- Job Board -->
+            <div class="nw-section-title">
+                <h2><span class="iconify" data-icon="pixelarticons:user"></span> Executive Jobs</h2>
+                <button onclick="openPreCheckoutModal('job_listing')" class="btn-moz-outline">Post Role ($300/mo) &rarr;</button>
             </div>
-            <img src="nicotine_abstract.jpg" alt="3D Modern Graphic" class="deck-card-dark-art">
-            <div style="z-index: 2; margin-top: 40px;">
-                <span style="background: var(--accent-yellow); color: var(--text-main); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 9999px; margin-bottom: 12px; display: inline-block;">Get Verified Directory Listing</span>
-                <h3 style="font-size: 1.3rem; font-weight: 800; color: #FFFFFF;">High-Impact Corporate Visibility</h3>
+
+            <div style="border: 1px solid var(--moz-border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 20px;">
+                <table class="nw-table">
+                    <thead>
+                        <tr>
+                            <th>Role Title</th>
+                            <th>Company &amp; Location</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>VP of Global Regulatory Affairs &amp; PMTA</b></td>
+                            <td>Apex Pouch Brands (Stockholm)</td>
+                            <td><button onclick="openPreCheckoutModal('job_listing')" class="btn-moz-blue" style="padding: 2px 6px; font-size: 0.7rem;">Apply &rarr;</button></td>
+                        </tr>
+                        <tr>
+                            <td><b>Senior Analytical Chemist</b></td>
+                            <td>VapeTech Analytics (Raleigh, NC)</td>
+                            <td><button onclick="openPreCheckoutModal('job_listing')" class="btn-moz-blue" style="padding: 2px 6px; font-size: 0.7rem;">Apply &rarr;</button></td>
+                        </tr>
+                        <tr>
+                            <td><b>Head of Corporate Development &amp; M&amp;A</b></td>
+                            <td>Global Nicotine Holdings (London)</td>
+                            <td><button onclick="openPreCheckoutModal('job_listing')" class="btn-moz-blue" style="padding: 2px 6px; font-size: 0.7rem;">Apply &rarr;</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-    </section>
-
-    <!-- Directory Section -->
-    <section class="deck-section">
-        <div class="section-head">
-            <span>VERIFIED B2B NICOTINE VENDORS &amp; LABS</span>
-            <button onclick="openPreCheckoutModal('vendor_directory')" class="link-action-yellow">🏢 Get Verified Directory Listing ($1,000/yr) &rarr;</button>
-        </div>
-
-        <table class="min-table">
-            <thead>
-                <tr>
-                    <th>Vendor / Lab Name</th>
-                    <th>Supply Category</th>
-                    <th>Compliance &amp; Certifications</th>
-                    <th>Region</th>
-                    <th>RFQ Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>PureSynth Labs Inc.</b></td>
-                    <td>Synthetic L-Nicotine (99.8% Purity)</td>
-                    <td>US FDA DMF Filed #03941 / REACH Certified</td>
-                    <td>USA / EU</td>
-                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 800; text-decoration: none; background: var(--accent-yellow); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem;">Submit RFQ &rarr;</a></td>
-                </tr>
-                <tr>
-                    <td><b>Apex Pouch Formulators AB</b></td>
-                    <td>White Pouch Contract OEM / Private Label</td>
-                    <td>EU TPD3 Monograph Compliant / cGMP</td>
-                    <td>Sweden / EU</td>
-                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 800; text-decoration: none; background: var(--accent-yellow); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem;">Submit RFQ &rarr;</a></td>
-                </tr>
-                <tr>
-                    <td><b>Deccan Leaf Exporters Ltd</b></td>
-                    <td>Nicotiana Tabacum Flue-Cured Virginia</td>
-                    <td>Phytosanitary Verified / Board Authorized</td>
-                    <td>India / Global</td>
-                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 800; text-decoration: none; background: var(--accent-yellow); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem;">Submit RFQ &rarr;</a></td>
-                </tr>
-                <tr>
-                    <td><b>VapeTech Analytics Laboratories</b></td>
-                    <td>PMTA Toxicology &amp; Aerosol Testing</td>
-                    <td>GLP Accredited / ISO 17025 Certified</td>
-                    <td>USA</td>
-                    <td><a href="#rfq-form" style="color: var(--text-main); font-weight: 800; text-decoration: none; background: var(--accent-yellow); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem;">Submit RFQ &rarr;</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- Job Board Section -->
-    <section class="deck-section">
-        <div class="section-head">
-            <span>EXECUTIVE B2B JOB BOARD</span>
-            <button onclick="openPreCheckoutModal('job_listing')" class="link-action">📢 Post Job Listing ($300 / mo) &rarr;</button>
-        </div>
-
-        <table class="min-table">
-            <thead>
-                <tr>
-                    <th>Position Type</th>
-                    <th>Job Title / Role Description</th>
-                    <th>Company / Location</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><span style="font-family: var(--font-mono); font-weight: 800; background: var(--accent-yellow); color: var(--text-main); padding: 3px 8px; border-radius: 4px; font-size: 0.72rem;">EXECUTIVE JOB</span></td>
-                    <td><b>VP of Global Regulatory Affairs &amp; PMTA Strategy</b></td>
-                    <td>Apex Pouch Brands (Stockholm / Remote)</td>
-                    <td>Active (30d)</td>
-                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" class="link-action-outline" style="font-size: 0.78rem; padding: 4px 12px;">Apply &rarr;</a></td>
-                </tr>
-                <tr>
-                    <td><span style="font-family: var(--font-mono); font-weight: 800; background: var(--accent-yellow); color: var(--text-main); padding: 3px 8px; border-radius: 4px; font-size: 0.72rem;">EXECUTIVE JOB</span></td>
-                    <td><b>Senior Analytical Chemist (ICH Q2 Validation Specialist)</b></td>
-                    <td>VapeTech Analytics (Raleigh, NC)</td>
-                    <td>Active (30d)</td>
-                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" class="link-action-outline" style="font-size: 0.78rem; padding: 4px 12px;">Apply &rarr;</a></td>
-                </tr>
-                <tr>
-                    <td><span style="font-family: var(--font-mono); font-weight: 800; background: var(--accent-yellow); color: var(--text-main); padding: 3px 8px; border-radius: 4px; font-size: 0.72rem;">EXECUTIVE JOB</span></td>
-                    <td><b>Head of Corporate Development &amp; M&amp;A</b></td>
-                    <td>Global Nicotine Holdings (London, UK / Hybrid)</td>
-                    <td>Active (30d)</td>
-                    <td><a href="#" onclick="openPreCheckoutModal('job_listing'); return false;" class="link-action-outline" style="font-size: 0.78rem; padding: 4px 12px;">Apply &rarr;</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        </main>
+    </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="nw-footer">
         <div>
-            <strong>NicotineWire™ Media Group</strong> &bull; "Check the Wire before you acquire."
+            <strong>NicotineWire™ Intelligence</strong> &bull; Half Radiation, LLC
         </div>
         <div>
-            &copy; 2026 NicotineWire™. All rights reserved.
+            &copy; 2026 NicotineWire™.
         </div>
     </footer>
 </div>
+
+<!-- Clash Royale Mobile Bottom Floating Navigation Dock -->
+<nav class="cr-mobile-bottom-nav">
+    <a href="index.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+        <span>Wire</span>
+    </a>
+    <a href="reports.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+        <span>Reports</span>
+    </a>
+    <a href="directory.html" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+        <span>Directory</span>
+    </a>
+    <a href="newszoo-insights.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+        <span>Insights</span>
+    </a>
+    <a href="pricing.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+        <span>Terminal</span>
+    </a>
+</nav>
 
 <script src="app.js"></script>
 </body>

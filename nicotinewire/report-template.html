@@ -3,314 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire - Executive PDF Report Template Viewer</title>
+    <title>NicotineWire — Canva Monograph Report Viewer</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 </head>
 <body>
 
+<header class="nw-header">
+    <a href="index.html" class="nw-brand">
+        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <span class="nw-brand-text">NicotineWire</span>
+        <span class="nw-brand-sub">Terminal</span>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="index.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
+        <a href="reports.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
+        <a href="directory.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
+        <a href="newszoo-insights.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
+        <a href="report-template.html" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
+        <a href="b2b-case.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
+        <a href="pricing.html" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+    </nav>
+
+    <div>
+        <a href="reports_pdf/NW-SYNTH-FULL-TEMPLATE-2026.pdf" download="NW-SYNTH-FULL-TEMPLATE-2026.pdf" class="btn-moz-blue">
+            <span class="iconify" data-icon="pixelarticons:download"></span>
+            <span>Download PDF</span>
+        </a>
+    </div>
+</header>
+
 <div class="app-viewport">
-    <!-- Header -->
-    <header>
+    <div class="nw-card" style="padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 16px;">
         <div>
-            <div class="brand-meta-group">
-                <span class="brand-company-tag">©NICOTINE WIRE</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">PDF TEMPLATE VIEWER</span>
-            </div>
-            <div class="brand-title" style="margin-top: 4px;">NICOTINE<span>WIRE</span></div>
+            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> TEMPLATE</span>
+            <h2 style="font-size: 1rem; font-weight: 600; margin-top: 2px; color: #FFFFFF;">Synthetic L-Nicotine Benchmark Report</h2>
         </div>
-        <nav>
-            <a href="index.html">Wire Feed</a>
-            <a href="report-template.html" class="active">Report Template</a>
-            <a href="newszoo-insights.html">Newszoo Insights</a>
-            <a href="b2b-case.html">B2B Case &amp; ROI</a>
-            <a href="reports.html">PDF Reports ($1.5k–$3.5k)</a>
-            <a href="directory.html">B2B Directory</a>
-            <a href="pricing.html">Pricing</a>
-        </nav>
-    </header>
-
-    <!-- Top Action Bar -->
-    <section class="deck-section" style="padding: 20px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <div>
-            <span style="background: var(--accent-yellow); color: var(--text-main); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 9999px; display: inline-block; margin-bottom: 4px;">FULL EXECUTIVE TEMPLATE</span>
-            <h2 style="font-size: 1.4rem; font-weight: 900; margin: 0;">The 2026 Global Synthetic L-Nicotine &amp; PMTA Benchmark Report</h2>
+            <a href="reports_pdf/NW-SYNTH-FULL-TEMPLATE-2026.pdf" download="NW-SYNTH-FULL-TEMPLATE-2026.pdf" class="btn-moz-blue">Download Template &rarr;</a>
         </div>
-        <div style="display: flex; gap: 12px;">
-            <a href="reports_pdf/NW-SYNTH-FULL-TEMPLATE-2026.pdf" download="NW-SYNTH-FULL-TEMPLATE-2026.pdf" class="link-action-yellow">📥 Download Tangible PDF Template (5 Pages) &rarr;</a>
-        </div>
-    </section>
+    </div>
 
-    <!-- Slide Navigation Bar (Canva Style) -->
-    <div style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;">
-        <button onclick="showSlide('slide-cover')" class="link-action slide-btn active-slide" id="btn-cover">PAGE 1: COVER SLIDE</button>
-        <button onclick="showSlide('slide-toc')" class="link-action-outline slide-btn" id="btn-toc">PAGE 2: TOC &amp; SUMMARY</button>
-        <button onclick="showSlide('slide-dmf')" class="link-action-outline slide-btn" id="btn-dmf">PAGE 3: DMF AUDIT MATRIX</button>
-        <button onclick="showSlide('slide-ma')" class="link-action-outline slide-btn" id="btn-ma">PAGE 4: M&amp;A MULTIPLES</button>
-        <button onclick="showSlide('slide-seizure')" class="link-action-outline slide-btn" id="btn-seizure">PAGE 5: CBP RED LIST</button>
+    <!-- Slide Navigation Bar -->
+    <div style="display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;">
+        <button onclick="showSlide('slide-cover')" class="btn-moz-blue slide-btn" id="btn-cover">P1: COVER</button>
+        <button onclick="showSlide('slide-toc')" class="btn-moz-outline slide-btn" id="btn-toc">P2: SUMMARY</button>
+        <button onclick="showSlide('slide-dmf')" class="btn-moz-outline slide-btn" id="btn-dmf">P3: DMF AUDIT</button>
+        <button onclick="showSlide('slide-ma')" class="btn-moz-outline slide-btn" id="btn-ma">P4: MULTIPLES</button>
+        <button onclick="showSlide('slide-seizure')" class="btn-moz-outline slide-btn" id="btn-seizure">P5: RED LIST</button>
     </div>
 
     <!-- CANVAS SLIDE CONTAINER -->
-    <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 2px solid var(--text-main); box-shadow: var(--shadow-float); padding: 40px; min-height: 520px; position: relative;">
-
-        <!-- PAGE 1: COVER SLIDE -->
+    <div style="background: var(--moz-surface); border: 1px solid var(--moz-border); border-radius: var(--radius-lg); padding: 20px; min-height: 380px;">
+        <!-- PAGE 1: COVER -->
         <div id="slide-cover" class="slide-content">
-            <div style="background: var(--card-dark); color: #FFFFFF; border-radius: var(--radius-md); padding: 40px; min-height: 420px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
-                <div style="z-index: 2;">
-                    <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-yellow); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">
-                        ©NICOTINE WIRE™ INSTITUTIONAL MONOGRAPH SERIES
+            <div style="background: var(--moz-subtle); border: 1px solid var(--moz-border); border-radius: var(--radius-md); padding: 24px; min-height: 320px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--moz-blue); font-weight: 600; text-transform: uppercase;">
+                        NICOTINEWIRE™ MONOGRAPH SERIES
                     </div>
-                    <h1 style="font-size: 3rem; font-weight: 900; line-height: 1.05; margin: 16px 0; color: var(--accent-yellow);">
+                    <h1 style="font-family: var(--font-slab); font-size: 1.8rem; font-weight: 700; line-height: 1.15; margin: 8px 0; color: #FFFFFF;">
                         The 2026 Global Synthetic L-Nicotine &amp; PMTA Benchmark Report
                     </h1>
-                    <p style="font-size: 1.1rem; color: var(--text-dark-muted); max-width: 720px; line-height: 1.6;">
-                        A 148-Page Quantitative Market Audit, DMF Lab Verification Standards, &amp; Supply Chain Valuation Playbook.
+                    <p style="font-size: 0.84rem; color: var(--moz-secondary); max-width: 600px;">
+                        A 148-Page Market Audit, DMF Lab Standards, &amp; Supply Chain Valuation.
                     </p>
                 </div>
 
-                <img src="nicotine_abstract.jpg" alt="3D Cover Art" style="position: absolute; right: -40px; bottom: -40px; width: 55%; opacity: 0.35; mix-blend-mode: lighten; pointer-events: none;">
-
-                <div style="z-index: 2; border-top: 1px solid var(--border-dark); padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+                <div style="border-top: 1px solid var(--moz-border); padding-top: 12px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dark-muted);">CODE: NW-SYNTH-2026 &bull; PUBLISHED: MAY 28, 2026</div>
-                        <div style="font-size: 0.88rem; font-weight: 700; color: #FFFFFF; margin-top: 2px;">BENCHMARK SPOT: $3,450 / KG (99.8% PURITY)</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--moz-muted);">NW-SYNTH-2026 &bull; MAY 2026</div>
                     </div>
-                    <div style="text-align: right;">
-                        <span style="background: rgba(224,254,0,0.2); color: var(--accent-yellow); padding: 6px 14px; border-radius: 9999px; font-weight: 800; font-size: 0.78rem;">CONFIDENTIAL EXECUTIVE LICENSE</span>
+                    <div>
+                        <span class="nw-badge" style="background: #FFFFFF; color: #000000;">CONFIDENTIAL</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE 2: TOC & SUMMARY -->
+        <!-- PAGE 2: TOC -->
         <div id="slide-toc" class="slide-content" style="display: none;">
-            <div class="section-head">
-                <span>PAGE 2 &bull; TABLE OF CONTENTS &amp; EXECUTIVE SUMMARY</span>
-            </div>
-
-            <table class="min-table" style="margin-bottom: 24px;">
+            <div style="font-size: 0.85rem; font-weight: 600; color: #FFFFFF; margin-bottom: 8px;">PAGE 2 &bull; Executive Summary</div>
+            <table class="nw-table">
                 <thead>
                     <tr>
-                        <th>Chapter Code</th>
-                        <th>Chapter Title &amp; Scope Description</th>
-                        <th>Page Location</th>
+                        <th>Code</th>
+                        <th>Chapter Title</th>
+                        <th>Page</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><b>CHAPTER 01</b></td>
-                        <td>Executive Summary &amp; Global Synthetic L-Nicotine Market Sizing</td>
-                        <td><b>PAGE 02</b></td>
+                        <td><b>CH 01</b></td>
+                        <td>Executive Summary &amp; Synthetic L-Nicotine Market Sizing</td>
+                        <td><b>02</b></td>
                     </tr>
                     <tr>
-                        <td><b>CHAPTER 02</b></td>
-                        <td>Drug Master File (DMF) Lab Audit Matrix (38 Primary Formulators)</td>
-                        <td><b>PAGE 03</b></td>
+                        <td><b>CH 02</b></td>
+                        <td>FDA Drug Master File (DMF) Audit of 38 Laboratories</td>
+                        <td><b>18</b></td>
                     </tr>
                     <tr>
-                        <td><b>CHAPTER 03</b></td>
-                        <td>EV/EBITDA Valuation Multiples &amp; Private Equity Buyout Playbook</td>
-                        <td><b>PAGE 04</b></td>
-                    </tr>
-                    <tr>
-                        <td><b>CHAPTER 04</b></td>
-                        <td>CBP Import Seizure Alert #99-43 Risk Assessment &amp; Red List Tracker</td>
-                        <td><b>PAGE 05</b></td>
+                        <td><b>CH 03</b></td>
+                        <td>Spot &amp; Long-Term Contract Price Benchmarks ($3,450/kg)</td>
+                        <td><b>44</b></td>
                     </tr>
                 </tbody>
             </table>
-
-            <div style="background: var(--card-bg-subtle); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
-                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 8px;">CHAPTER 01 EXECUTIVE SUMMARY</h3>
-                <p style="font-size: 0.92rem; color: #334155; line-height: 1.65;">
-                    Following the March 2022 Congressional Appropriations Law placing synthetic nicotine under FDA Center for Tobacco Products (CTP) jurisdiction, non-tobacco nicotine has matured into an audited enterprise commodity. Formulators using non-chiral racemic mixtures face rising batch rejection rates, driving a 15% pricing premium ($3,450/kg vs $3,000/kg) for verified 99.8% pure L-enantiomer substrate.
-                </p>
-            </div>
         </div>
 
-        <!-- PAGE 3: DMF LAB AUDIT MATRIX -->
+        <!-- PAGE 3: DMF AUDIT -->
         <div id="slide-dmf" class="slide-content" style="display: none;">
-            <div class="section-head">
-                <span>PAGE 3 &bull; DRUG MASTER FILE (DMF) SUPPLIER AUDIT MATRIX</span>
-            </div>
-
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Quantitative lab audit scores for primary synthesis manufacturers based on US FDA Part 607 compliance and optical purity verification.</p>
-
-            <table class="min-table">
+            <div style="font-size: 0.85rem; font-weight: 600; color: #FFFFFF; margin-bottom: 8px;">PAGE 3 &bull; DMF Audit Matrix</div>
+            <table class="nw-table">
                 <thead>
                     <tr>
-                        <th>Formulator / Lab</th>
-                        <th>Region</th>
-                        <th>Chiral Purity</th>
-                        <th>FDA DMF Status</th>
-                        <th>Audit Score</th>
-                        <th>Spot Price</th>
+                        <th>Lab Name</th>
+                        <th>DMF Status</th>
+                        <th>Purity</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><b>PureSynth Labs Inc.</b></td>
-                        <td>USA / EU</td>
-                        <td>99.85% L-isomer</td>
-                        <td><span style="background: var(--accent-yellow); padding: 2px 6px; border-radius: 4px; font-weight: 800;">DMF #03941 Verified</span></td>
-                        <td><b>98 / 100</b></td>
-                        <td><b>$3,450 / kg</b></td>
+                        <td>PureSynth Labs Inc.</td>
+                        <td><span class="nw-badge" style="color: var(--moz-blue);">ACTIVE DMF #03941</span></td>
+                        <td>99.85%</td>
                     </tr>
                     <tr>
-                        <td><b>Apex Bio-Pharm AB</b></td>
-                        <td>Sweden</td>
-                        <td>99.78% L-isomer</td>
-                        <td><span style="background: var(--accent-yellow); padding: 2px 6px; border-radius: 4px; font-weight: 800;">DMF #04112 Verified</span></td>
-                        <td><b>95 / 100</b></td>
-                        <td><b>$3,520 / kg</b></td>
-                    </tr>
-                    <tr>
-                        <td><b>Deccan Fine Chem</b></td>
-                        <td>India</td>
-                        <td>99.50% L-isomer</td>
-                        <td>DMF Pending (Q3)</td>
-                        <td>88 / 100</td>
-                        <td>$3,280 / kg</td>
-                    </tr>
-                    <tr>
-                        <td><b>SinoTech Synthetic</b></td>
-                        <td>China</td>
-                        <td>99.20% L-isomer</td>
-                        <td>Part 607 Listed</td>
-                        <td>82 / 100</td>
-                        <td>$3,150 / kg</td>
-                    </tr>
-                    <tr>
-                        <td><b>Nordic Chem OEM</b></td>
-                        <td>Denmark</td>
-                        <td>99.90% L-isomer</td>
-                        <td><span style="background: var(--accent-yellow); padding: 2px 6px; border-radius: 4px; font-weight: 800;">DMF #03890 Verified</span></td>
-                        <td><b>99 / 100</b></td>
-                        <td><b>$3,600 / kg</b></td>
+                        <td>Apex Bio-Chemical Corp</td>
+                        <td><span class="nw-badge" style="color: var(--moz-blue);">ACTIVE DMF #04112</span></td>
+                        <td>99.70%</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- PAGE 4: M&A VALUATION MULTIPLES -->
+        <!-- PAGE 4: MULTIPLES -->
         <div id="slide-ma" class="slide-content" style="display: none;">
-            <div class="section-head">
-                <span>PAGE 4 &bull; EV/EBITDA VALUATION MULTIPLES &amp; M&amp;A PLAYBOOK</span>
+            <div style="font-size: 0.85rem; font-weight: 600; color: #FFFFFF; margin-bottom: 8px;">PAGE 4 &bull; Valuation Multiples</div>
+            <div class="nw-cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="nw-card">
+                    <div style="font-size: 0.65rem; color: var(--moz-muted);">EV / Revenue</div>
+                    <div class="nw-stat-val">3.4x</div>
+                </div>
+                <div class="nw-card">
+                    <div style="font-size: 0.65rem; color: var(--moz-muted);">EV / EBITDA</div>
+                    <div class="nw-stat-val" style="color: var(--moz-blue);">8.8x</div>
+                </div>
+                <div class="nw-card">
+                    <div style="font-size: 0.65rem; color: var(--moz-muted);">Gross Margin</div>
+                    <div class="nw-stat-val">68–74%</div>
+                </div>
             </div>
-
-            <table class="min-table" style="margin-bottom: 24px;">
-                <thead>
-                    <tr>
-                        <th>Transaction Tier</th>
-                        <th>EV / EBITDA Multiple</th>
-                        <th>Pouch Can Cost</th>
-                        <th>OEM Gross Margin</th>
-                        <th>Annual Capacity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><b>Tier 1 Global OEM</b></td>
-                        <td><b style="font-size: 1.1rem; color: var(--accent-yellow-text); background: var(--accent-yellow); padding: 2px 8px; border-radius: 4px;">8.8x – 9.5x</b></td>
-                        <td>$0.42 / can</td>
-                        <td>74.5%</td>
-                        <td>&gt; 50 Million Cans</td>
-                    </tr>
-                    <tr>
-                        <td><b>Tier 2 Regional Formulator</b></td>
-                        <td>7.2x – 8.1x</td>
-                        <td>$0.49 / can</td>
-                        <td>68.2%</td>
-                        <td>15M – 50M Cans</td>
-                    </tr>
-                    <tr>
-                        <td><b>White-Label Brand Owner</b></td>
-                        <td>6.5x – 7.5x</td>
-                        <td>$0.65 / can</td>
-                        <td>62.0%</td>
-                        <td>&lt; 15 Million Cans</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
-        <!-- PAGE 5: CBP RED LIST -->
+        <!-- PAGE 5: RED LIST -->
         <div id="slide-seizure" class="slide-content" style="display: none;">
-            <div class="section-head">
-                <span>PAGE 5 &bull; CBP IMPORT SEIZURE ALERT #99-43 RED LIST TRACKER</span>
-            </div>
-
-            <table class="min-table">
+            <div style="font-size: 0.85rem; font-weight: 600; color: #FFFFFF; margin-bottom: 8px;">PAGE 5 &bull; CBP Red List</div>
+            <table class="nw-table">
                 <thead>
                     <tr>
-                        <th>Port of Entry</th>
-                        <th>Detained Freight</th>
-                        <th>Reason for Seizure</th>
-                        <th>Est. Container Loss</th>
+                        <th>Manufacturer</th>
+                        <th>Alert #</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><b>Port of Long Beach</b></td>
-                        <td>120,000 Disposable Units</td>
-                        <td>No PMTA Acceptance Letter</td>
-                        <td><b style="color: #DC2626;">$1,450,000</b></td>
-                    </tr>
-                    <tr>
-                        <td><b>Port of Newark</b></td>
-                        <td>45,000 Oral Pouch Tins</td>
-                        <td>Synthetic DMF Omission</td>
-                        <td><b style="color: #DC2626;">$520,000</b></td>
-                    </tr>
-                    <tr>
-                        <td><b>Port of Savannah</b></td>
-                        <td>80,000 Disposable Units</td>
-                        <td>Import Alert #99-43 Red List</td>
-                        <td><b style="color: #DC2626;">$980,000</b></td>
+                        <td>Zhengzhou Novel Vapor Co.</td>
+                        <td>Alert #99-43</td>
+                        <td><span class="nw-badge">SEIZURE</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
     </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="nw-footer">
         <div>
-            <strong>NicotineWire™ Media Group</strong> &bull; "Check the Wire before you acquire."
+            <strong>NicotineWire™ Intelligence</strong> &bull; Half Radiation, LLC
         </div>
         <div>
-            &copy; 2026 NicotineWire™. All rights reserved.
+            &copy; 2026 NicotineWire™.
         </div>
     </footer>
 </div>
 
+<!-- Clash Royale Mobile Bottom Floating Navigation Dock -->
+<nav class="cr-mobile-bottom-nav">
+    <a href="index.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+        <span>Wire</span>
+    </a>
+    <a href="reports.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+        <span>Reports</span>
+    </a>
+    <a href="directory.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+        <span>Directory</span>
+    </a>
+    <a href="report-template.html" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:article-multiple"></span></span>
+        <span>Viewer</span>
+    </a>
+    <a href="pricing.html" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+        <span>Terminal</span>
+    </a>
+</nav>
+
 <script src="app.js"></script>
 <script>
 function showSlide(slideId) {
-    const slides = document.querySelectorAll('.slide-content');
-    slides.forEach(s => s.style.display = 'none');
-    document.getElementById(slideId).style.display = 'block';
-
-    const btns = document.querySelectorAll('.slide-btn');
-    btns.forEach(b => {
-        b.classList.remove('link-action');
-        b.classList.add('link-action-outline');
+    document.querySelectorAll('.slide-content').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.slide-btn').forEach(btn => {
+        btn.className = 'btn-moz-outline slide-btn';
     });
+    document.getElementById(slideId).style.display = 'block';
     
-    const activeBtnMap = {
-        'slide-cover': 'btn-cover',
-        'slide-toc': 'btn-toc',
-        'slide-dmf': 'btn-dmf',
-        'slide-ma': 'btn-ma',
-        'slide-seizure': 'btn-seizure'
-    };
-    
-    const activeBtn = document.getElementById(activeBtnMap[slideId]);
-    if (activeBtn) {
-        activeBtn.classList.remove('link-action-outline');
-        activeBtn.classList.add('link-action');
-    }
+    const activeBtnId = 'btn-' + slideId.replace('slide-', '');
+    const activeBtn = document.getElementById(activeBtnId);
+    if (activeBtn) activeBtn.className = 'btn-moz-blue slide-btn';
 }
 </script>
 </body>

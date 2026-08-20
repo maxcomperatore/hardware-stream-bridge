@@ -1647,11 +1647,11 @@
                         logToPostHog('midi_dump_timeout', {
                             synth_model: synthModel,
                             bank_name: bankName,
-                            timeout_ms: 15000,
+                            timeout_ms: 25000,
                             reason: "No response to dump request command"
                         });
                     }
-                }, 15000);
+                }, 25000);
             }
         }
 
@@ -1685,11 +1685,11 @@
             const msgCount = countSysexMessages(ingestedBytes);
 
             if (isJuno || isProphet) {
-                const targetMsgCount = 128;
+                const targetMsgCount = isProphet ? 40 : 128;
                 const progress = Math.min(Math.floor((msgCount / targetMsgCount) * 100), 99);
                 updateStatusOverlay(
                     progress,
-                    isProphet ? `Receiving Prophet patches... (${msgCount}/128)` : `Receiving Juno patches... (${msgCount}/128)`,
+                    isProphet ? `Receiving Prophet patches... (${msgCount}/40)` : `Receiving Juno patches... (${msgCount}/128)`,
                     `${ingestedBytes.length} Bytes`,
                     "CAPTURING"
                 );
@@ -1699,8 +1699,8 @@
                     return;
                 }
                 
-                // Generous 15-second timeout for Prophet group/bank dumps to prevent early truncation
-                const idleDelay = isProphet ? 15000 : 4000;
+                // Generous 25-second timeout for Prophet group/bank dumps to prevent early truncation
+                const idleDelay = isProphet ? 25000 : 4000;
                 ingestIdleTimeout = setTimeout(() => {
                     if (isIngesting && ingestedBytes.length > 0) {
                         stopMidiIngestion(true);
@@ -1717,14 +1717,18 @@
                 );
 
                 const lastByte = ingestedBytes[ingestedBytes.length - 1];
-                if (lastByte === 0xF7 && ingestedBytes.length >= expectedSize - 100) {
+                // Detect Sequential Prophet header dynamically
+                const isAutoDetectProphet = ingestedBytes.length >= 2 && ingestedBytes[0] === 0xF0 && ingestedBytes[1] === 0x01;
+
+                // Only use the expectedSize optimization if it's not a Prophet
+                if (!isAutoDetectProphet && lastByte === 0xF7 && ingestedBytes.length >= expectedSize - 100) {
                     stopMidiIngestion(true);
                 } else {
                     ingestIdleTimeout = setTimeout(() => {
                         if (isIngesting && ingestedBytes.length >= 100) {
                             stopMidiIngestion(true);
                         }
-                    }, 2000);
+                    }, isAutoDetectProphet ? 25000 : 4000);
                 }
             }
         }

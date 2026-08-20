@@ -1,87 +1,84 @@
 import os
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, Response
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Response, HTTPException
+from fastapi.responses import HTMLResponse
 
 app = FastAPI(title="NicotineWire API", docs_url=None, redoc_url=None)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def serve_file(filename: str, media_type: str = None):
-    filepath = os.path.join(BASE_DIR, filename)
-    if os.path.exists(filepath):
-        return FileResponse(filepath, media_type=media_type)
-    raise HTTPException(status_code=404, detail="File not found")
+MEDIA_TYPES = {
+    ".html": "text/html; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".js": "application/javascript; charset=utf-8",
+    ".svg": "image/svg+xml",
+    ".ico": "image/svg+xml",
+    ".pdf": "application/pdf",
+    ".json": "application/json",
+    ".png": "image/png"
+}
 
-# Static assets
-@app.get("/styles.css")
-def get_styles():
-    return serve_file("styles.css", "text/css")
+def get_file_response(rel_path: str):
+    # Ensure safe path
+    clean_path = os.path.normpath(rel_path).lstrip("/\\")
+    full_path = os.path.join(BASE_DIR, clean_path)
+    
+    if not os.path.isfile(full_path):
+        raise HTTPException(status_code=404, detail="File not found")
+        
+    _, ext = os.path.splitext(full_path)
+    media_type = MEDIA_TYPES.get(ext.lower(), "application/octet-stream")
+    
+    with open(full_path, "rb") as f:
+        content = f.read()
+        
+    return Response(content=content, media_type=media_type)
 
-@app.get("/app.js")
-def get_app_js():
-    return serve_file("app.js", "application/javascript")
+ROUTE_MAP = {
+    "": "index.html",
+    "main.py": "index.html",
+    "index": "index.html",
+    "index.html": "index.html",
+    "directory": "directory.html",
+    "directory.html": "directory.html",
+    "reports": "reports.html",
+    "reports.html": "reports.html",
+    "pricing": "pricing.html",
+    "pricing.html": "pricing.html",
+    "b2b-case": "b2b-case.html",
+    "b2b-case.html": "b2b-case.html",
+    "insights": "newszoo-insights.html",
+    "newszoo-insights": "newszoo-insights.html",
+    "newszoo-insights.html": "newszoo-insights.html",
+    "viewer": "report-template.html",
+    "report-template": "report-template.html",
+    "report-template.html": "report-template.html",
+    "thank-you": "thank-you.html",
+    "thank-you.html": "thank-you.html",
+    "styles.css": "styles.css",
+    "app.js": "app.js",
+    "favicon.svg": "favicon.svg",
+    "favicon.ico": "favicon.svg"
+}
 
-@app.get("/favicon.svg")
-def get_favicon():
-    return serve_file("favicon.svg", "image/svg+xml")
-
-@app.get("/favicon.ico")
-def get_favicon_ico():
-    return serve_file("favicon.svg", "image/svg+xml")
-
-# HTML Pages (Clean routes + .html fallbacks)
 @app.get("/")
-def get_index():
-    return serve_file("index.html", "text/html")
+async def root():
+    return get_file_response("index.html")
 
-@app.get("/index.html")
-def get_index_html():
-    return serve_file("index.html", "text/html")
+@app.get("/{full_path:path}")
+async def catch_all(full_path: str):
+    path_key = full_path.strip("/").lower()
+    
+    # Check if exact route alias exists
+    if path_key in ROUTE_MAP:
+        return get_file_response(ROUTE_MAP[path_key])
+        
+    # Check if direct static file exists (e.g. reports_pdf/NW-SYNTH-2026.pdf)
+    local_file = os.path.join(BASE_DIR, full_path.strip("/"))
+    if os.path.isfile(local_file):
+        return get_file_response(full_path.strip("/"))
+        
+    # Check with .html appended
+    if path_key + ".html" in ROUTE_MAP:
+        return get_file_response(ROUTE_MAP[path_key + ".html"])
 
-@app.get("/directory")
-@app.get("/directory.html")
-def get_directory():
-    return serve_file("directory.html", "text/html")
-
-@app.get("/reports")
-@app.get("/reports.html")
-def get_reports():
-    return serve_file("reports.html", "text/html")
-
-@app.get("/pricing")
-@app.get("/pricing.html")
-def get_pricing():
-    return serve_file("pricing.html", "text/html")
-
-@app.get("/b2b-case")
-@app.get("/b2b-case.html")
-def get_b2b_case():
-    return serve_file("b2b-case.html", "text/html")
-
-@app.get("/insights")
-@app.get("/newszoo-insights")
-@app.get("/newszoo-insights.html")
-def get_insights():
-    return serve_file("newszoo-insights.html", "text/html")
-
-@app.get("/viewer")
-@app.get("/report-template")
-@app.get("/report-template.html")
-def get_viewer():
-    return serve_file("report-template.html", "text/html")
-
-@app.get("/thank-you")
-@app.get("/thank-you.html")
-def get_thank_you():
-    return serve_file("thank-you.html", "text/html")
-
-# PDF Reports Serving
-@app.get("/reports_pdf/{pdf_name}")
-def get_pdf(pdf_name: str):
-    # sanitize filename to prevent directory traversal
-    clean_name = os.path.basename(pdf_name)
-    pdf_path = os.path.join(BASE_DIR, "reports_pdf", clean_name)
-    if os.path.exists(pdf_path):
-        return FileResponse(pdf_path, media_type="application/pdf", filename=clean_name)
-    raise HTTPException(status_code=404, detail="PDF report not found")
+    raise HTTPException(status_code=404, detail="Page not found")

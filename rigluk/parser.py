@@ -420,7 +420,7 @@ def parse_prophet_sysex(data: bytes) -> list[str]:
                 name = m.strip()
                 if len(name) >= 3 and not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex", "system"]):
                     filtered.append(name)
-            patch_name = filtered[-1] if filtered else f"Prophet Patch {i+1:03d}"
+            patch_name = max(filtered, key=len) if filtered else f"Prophet Patch {i+1:03d}"
             patches.append(patch_name)
     else:
         text = clean_name(data)

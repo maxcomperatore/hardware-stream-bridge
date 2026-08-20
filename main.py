@@ -2581,11 +2581,12 @@ async def export_csv_all(request: Request):
         patches = full_bank.get("patches", []) if full_bank else []
         if patches:
             for p in patches:
+                idx = p.get("index", p.get("patch_index", 0)) + 1
                 writer.writerow([
                     bank["id"],
                     bank["name"],
                     bank["synth_model"],
-                    p.get("patch_index", 0) + 1,
+                    idx,
                     p.get("name", "Unnamed"),
                     bank.get("created_at", "")
                 ])
@@ -2631,7 +2632,7 @@ async def export_txt_all(request: Request):
         lines.append("-" * 40)
         if patches:
             for p in patches:
-                idx = p.get("patch_index", 0) + 1
+                idx = p.get("index", p.get("patch_index", 0)) + 1
                 lines.append(f"{idx:03d}  {p.get('name', 'Unnamed')}")
         else:
             lines.append("001  Full Soundbank Dump")
@@ -3007,7 +3008,7 @@ async def export_bank_txt(request: Request, bank_id: int):
     patches = bank.get("patches", [])
     lines = [f"# {bank['name']} ({bank['synth_model']}) - Hardware Sequential Patch List", ""]
     for p in patches:
-        idx = p.get("patch_index", 0) + 1
+        idx = p.get("index", p.get("patch_index", 0)) + 1
         name = p.get("name", "Unnamed")
         lines.append(f"{idx:03d}: {name}")
 
@@ -3036,7 +3037,7 @@ async def export_bank_csv(request: Request, bank_id: int):
 
     patches = bank.get("patches", [])
     for p in patches:
-        idx = p.get("patch_index", 0) + 1
+        idx = p.get("index", p.get("patch_index", 0)) + 1
         writer.writerow([idx, p.get("name", "Unnamed"), bank["name"], bank["synth_model"]])
 
     safe_name = bank["name"].lower().replace(" ", "_")

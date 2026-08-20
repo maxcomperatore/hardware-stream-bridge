@@ -1,16 +1,9 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
-    { "source": "/directory", "destination": "/directory.html" },
-    { "source": "/reports", "destination": "/reports.html" },
-    { "source": "/pricing", "destination": "/pricing.html" },
-    { "source": "/b2b-case", "destination": "/b2b-case.html" },
-    { "source": "/insights", "destination": "/newszoo-insights.html" },
-    { "source": "/newszoo-insights", "destination": "/newszoo-insights.html" },
-    { "source": "/viewer", "destination": "/report-template.html" },
-    { "source": "/report-template", "destination": "/report-template.html" },
-    { "source": "/thank-you", "destination": "/thank-you.html" }
+    {
+      "source": "/(.*)",
+      "destination": "main.py"
+    }
   ]
 }

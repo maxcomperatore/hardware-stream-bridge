@@ -1423,6 +1423,16 @@ async def privacy_page(request: Request):
 async def accessibility_page(request: Request):
     return render_template("accessibility.html", request)
 
+@app.get("/appraisal", response_class=HTMLResponse)
+async def appraisal_page(request: Request):
+    return render_template("lumdior_appraisal.html", request)
+
+@app.get("/marketplace", response_class=HTMLResponse)
+@app.get("/lasers", response_class=HTMLResponse)
+@app.get("/inventory", response_class=HTMLResponse)
+async def marketplace_page(request: Request):
+    return render_template("lumdior_marketplace.html", request)
+
 @app.get("/roadmap", response_class=HTMLResponse)
 async def roadmap_page(request: Request):
     return RedirectResponse(url="/resources", status_code=301)

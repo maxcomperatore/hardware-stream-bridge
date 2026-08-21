@@ -198,8 +198,8 @@ def _sync_send_alert(event_type: str, message: str, properties: dict = None, dis
                 data=json.dumps(payload_data).encode("utf-8"),
                 headers={
                     "Content-Type": "application/json",
-                    "User-Agent": "RiglukAlerts/1.0",
-                    "Title": clean_title or "Rigluk Alert",
+                    "User-Agent": "BiplukAlerts/1.0",
+                    "Title": clean_title or "Bipluk Alert",
                     "Topic": clean_topic or "activity"
                 },
                 method="POST"
@@ -218,7 +218,7 @@ def trigger_alert(event_type: str, message: str, properties: dict = None, distin
     thread.daemon = True
     thread.start()
 
-app = FastAPI(title="Rigluk - Guitar Pedal & Amp Modeler Preset Vault")
+app = FastAPI(title="Bipluk - Vintage Synth Patch Manager")
 
 import knobkraft_api
 app.include_router(knobkraft_api.router)
@@ -334,7 +334,7 @@ async def earth_day_middleware(request: Request, call_next):
         </div>
         
         <div class="pt-6 border-t border-zinc-900 text-[10px] font-mono text-zinc-650">
-            rigluk will wake up automatically tomorrow. Enjoy your temporary eviction from the cloud.
+            bipluk will wake up automatically tomorrow. Enjoy your temporary eviction from the cloud.
         </div>
     </div>
 
@@ -412,7 +412,7 @@ PREVIEW_BOT_MARKERS = (
     "undici",
 )
 
-OUR_HOSTS = frozenset({"rigluk.com", "www.rigluk.com", "repluk.com", "www.repluk.com", "rigluk", "www.rigluk", "localhost", "127.0.0.1"})
+OUR_HOSTS = frozenset({"bipluk.com", "www.bipluk.com", "repluk.com", "www.repluk.com", "bipluk", "www.bipluk", "localhost", "127.0.0.1"})
 
 MARKETING_ASSETS_DIR = os.path.join(BASE_DIR, "private", "marketing")
 
@@ -973,7 +973,7 @@ async def build_plan_checkout_line_items(plan: str, country_code: str | None) ->
     _ppp_raw = os.environ.get("PPP_ENABLED_COUNTRIES", "ALL").upper()
     code = (country_code or "US").upper().strip()
     ppp_active = _ppp_raw == "ALL" or code in _ppp_raw.split(",")
-    description = "Instant Web MIDI cloud backup & vault for guitar pedals & amp modelers. Zero drivers, zero preset loss. Unlimited exports. One-time payment, zero monthly rent."
+    description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
 
     # US + EU: never PPP — keep static catalog (€49 / $49 / etc).
     if ppp_active and code != "US" and code not in EU_EUR_COUNTRY_CODES:
@@ -989,7 +989,7 @@ async def build_plan_checkout_line_items(plan: str, country_code: str | None) ->
     currency = regional["currency"].lower()
     personal_clean = int(str(regional["personal_amount"]).replace(",", ""))
     unit_amount = personal_clean * 100
-    name = "rigluk+"
+    name = "bipluk+"
 
     return [
         {
@@ -1011,7 +1011,7 @@ SMTP_HOST = settings.SMTP_HOST
 SMTP_PORT = settings.SMTP_PORT
 SMTP_USER = settings.SMTP_USER
 SMTP_PASSWORD = settings.SMTP_PASSWORD
-SMTP_FROM = "Rigluk <support@bipluk.com>"
+SMTP_FROM = settings.SMTP_FROM
 CRON_SECRET = settings.CRON_SECRET or ""
 
 
@@ -1065,7 +1065,7 @@ def send_email_via_resend(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "User-Agent": "rigluk/1.0 (resend-api)",
+            "User-Agent": "bipluk/1.0 (resend-api)",
             "Accept": "application/json",
         },
         method="POST",
@@ -1134,7 +1134,7 @@ def render_template(template_name: str, request: Request, context: dict = None, 
         context = {}
     context["request"] = request
     
-    # Check if we are in Rigluk's Birthday Week (May 31st to June 6th)
+    # Check if we are in Bipluk's Birthday Week (May 31st to June 6th)
     query_birthday = False
     query_christmas = False
     query_halloween = False
@@ -1195,12 +1195,12 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
 
 SEO_DATA = {
     "why-silicon-microbes-are-living-in-your-synthesizer": {
-        "title": "Why Silicon Microbes Live in Your Vintage Synth Memory | rigluk",
+        "title": "Why Silicon Microbes Live in Your Vintage Synth Memory | bipluk",
         "description": "The secret lore of Knob Monsters: silicon-eating digital microbes that inhabit 1980s SRAM hardware circuits and feed on raw SysEx packets.",
-        "keywords": "rigluk lore, vintage synth memory, sysex packet dump, static RAM battery, synth circuit microbes, software ip",
+        "keywords": "bipluk lore, vintage synth memory, sysex packet dump, static RAM battery, synth circuit microbes, software ip",
         "synth_name": "Knob Monsters",
         "hero_title": "Why Silicon Microbes Live in Your Synthesizer.",
-        "hero_subtitle": "The digital biology of volatile static RAM and Rigluk."
+        "hero_subtitle": "The digital biology of volatile static RAM and Bipluk."
     },
     "dx7": {
         "title": "Yamaha DX7 Backup & SysEx Librarian | Cloud Patch Manager",
@@ -1326,7 +1326,7 @@ async def index(request: Request):
         cursor.execute("SELECT COUNT(*) FROM users;")
         user_count = cursor.fetchone()[0]
 
-        cursor.execute("SELECT COUNT(*) FROM users WHERE plan != 'free';")
+        cursor.execute("SELECT COUNT(*) FROM users WHERE tier != 'free';")
         paid_user_count = cursor.fetchone()[0]
 
         cursor.execute("SELECT COUNT(*) FROM patches;")
@@ -1394,13 +1394,13 @@ async def sysex_librarian_alternatives(request: Request):
 async def sysex_librarian_redirect():
     return RedirectResponse(url="/sysex-librarian-alternatives", status_code=301)
 
-@app.get("/rigluk-vs-snoize-sysex-librarian", response_class=HTMLResponse)
+@app.get("/bipluk-vs-snoize-sysex-librarian", response_class=HTMLResponse)
 @app.get("/knob-monster-vs-snoize-sysex-librarian", response_class=HTMLResponse)
 async def snoize_comparison(request: Request):
     user = get_current_user(request)
     return render_template("snoize_alternatives.html", request, {"user": user})
 
-@app.get("/rigluk-vs-midi-ox", response_class=HTMLResponse)
+@app.get("/bipluk-vs-midi-ox", response_class=HTMLResponse)
 @app.get("/knob-monster-vs-midi-ox", response_class=HTMLResponse)
 async def midi_ox_comparison(request: Request):
     user = get_current_user(request)
@@ -1422,6 +1422,16 @@ async def privacy_page(request: Request):
 @app.get("/accessibility", response_class=HTMLResponse)
 async def accessibility_page(request: Request):
     return render_template("accessibility.html", request)
+
+@app.get("/appraisal", response_class=HTMLResponse)
+async def appraisal_page(request: Request):
+    return render_template("lumdior_appraisal.html", request)
+
+@app.get("/marketplace", response_class=HTMLResponse)
+@app.get("/lasers", response_class=HTMLResponse)
+@app.get("/inventory", response_class=HTMLResponse)
+async def marketplace_page(request: Request):
+    return render_template("lumdior_marketplace.html", request)
 
 @app.get("/roadmap", response_class=HTMLResponse)
 async def roadmap_page(request: Request):
@@ -1799,14 +1809,14 @@ async def do_magic_request(request: Request):
         from urllib.parse import quote
         magic_url += f"&next={quote(next_url)}"
 
-    subject = "Your rigluk Magic Sign-In Link"
-    body = f"Hello,\n\nClick the link below to sign in to rigluk automatically:\n{magic_url}\n\nThis link will expire in 15 minutes."
+    subject = "Your bipluk Magic Sign-In Link"
+    body = f"Hello,\n\nClick the link below to sign in to bipluk automatically:\n{magic_url}\n\nThis link will expire in 15 minutes."
     
     html_content = f"""
     <div style="background-color: #050507; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
         <div style="max-width: 460px; margin: 0 auto; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; padding: 32px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
-            <img src="{SITE_BASE}/static/logo.svg" alt="rigluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
-            <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">rigluk</h1>
+            <img src="{SITE_BASE}/static/logo.svg" alt="bipluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
+            <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">bipluk</h1>
             <p style="color: #71717a; font-size: 12px; margin: 0 0 24px 0; font-weight: 500;">Passwordless Vault Sign-In</p>
             <hr style="border: 0; border-top: 1px solid #18181b; margin: 0 0 24px 0;">
             
@@ -1816,7 +1826,7 @@ async def do_magic_request(request: Request):
             </p>
 
             <a href="{magic_url}" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin: 12px 0 24px 0;">
-                Sign In To rigluk &rarr;
+                Sign In To bipluk &rarr;
             </a>
 
             <p style="color: #71717a; font-size: 11px; margin: 0 0 16px 0;">
@@ -1979,14 +1989,14 @@ async def do_forgot_password(request: Request, email: str = Form(...)):
     RESET_CODES[code] = {"email": email_clean, "expires": time.time() + 1800, "attempts": 0}
     
     # Send standard transactional confirmation email via Resend
-    subject = "Your Password Reset Confirmation Code - rigluk"
-    body = f"Hello,\n\nYour rigluk password reset confirmation code is: {code}\n\nThis code will expire in 30 minutes.\n\nIf you did not request this, please ignore this message."
+    subject = "Your Password Reset Confirmation Code - bipluk"
+    body = f"Hello,\n\nYour bipluk password reset confirmation code is: {code}\n\nThis code will expire in 30 minutes.\n\nIf you did not request this, please ignore this message."
     html_content = f"""
     <div style="background-color: #050507; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
         <div style="max-width: 460px; margin: 0 auto; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; padding: 32px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
             <!-- Logo Header -->
-            <img src="{SITE_BASE}/static/logo.svg" alt="rigluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
-            <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">rigluk</h1>
+            <img src="{SITE_BASE}/static/logo.svg" alt="bipluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
+            <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">bipluk</h1>
             <p style="color: #71717a; font-size: 12px; margin: 0 0 24px 0; font-weight: 500;">Vault Security & Account Recovery</p>
 
             <hr style="border: 0; border-top: 1px solid #18181b; margin: 0 0 24px 0;">
@@ -1994,7 +2004,7 @@ async def do_forgot_password(request: Request, email: str = Form(...)):
             <!-- Headline & Description -->
             <h2 style="color: #f4f4f5; font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">Password Reset Confirmation Code</h2>
             <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 0 0 24px 0;">
-                Enter the following 6-digit confirmation code on rigluk to set a new password for <span style="color: #ffffff; font-family: monospace;">{email_clean}</span>:
+                Enter the following 6-digit confirmation code on bipluk to set a new password for <span style="color: #ffffff; font-family: monospace;">{email_clean}</span>:
             </p>
 
             <!-- Giant 6-Digit Code Box -->
@@ -2008,13 +2018,13 @@ async def do_forgot_password(request: Request, email: str = Form(...)):
             <!-- Security Warning -->
             <div style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; padding: 12px; margin-bottom: 24px; text-align: left;">
                 <p style="color: #fca5a5; font-size: 11px; margin: 0; line-height: 1.4;">
-                    <strong>Security Alert:</strong> rigluk staff will never ask for this code over email or social media. If you did not request a password reset, your account is safe and you can ignore this email.
+                    <strong>Security Alert:</strong> bipluk staff will never ask for this code over email or social media. If you did not request a password reset, your account is safe and you can ignore this email.
                 </p>
             </div>
 
             <!-- Footer -->
             <p style="color: #52525b; font-size: 11px; margin: 0;">
-                © 2026 rigluk · Web MIDI Cloud Librarian
+                © 2026 bipluk · Web MIDI Cloud Librarian
             </p>
         </div>
     </div>
@@ -2136,7 +2146,7 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
     # Generate the personalized first name
     name_part = email.split('@')[0]
     first_name = re.split(r'[\._-]', name_part)[0]
-    first_name_cap = first_name.capitalize() if first_name else "musician"
+    first_name_cap = first_name.capitalize() if first_name else "synth head"
 
     # Generate avatar URL using 32-bit signed hash matching JS
     idx = calculate_avatar_idx(email)
@@ -2153,13 +2163,14 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
         # Plain text fallback body
         plain_body = (
             f"Hi {first_name_cap},\n\n"
-            "We believe a good Web MIDI librarian shouldn’t need a bunch of bloated desktop installers "
-            "to do its job well. rigluk comes with zero-driver preset backups running securely right inside your browser.\n\n"
-            "Open your vault: https://rigluk.com/home"
+            "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
+            "or desktop installers to do its job well. bipluk already comes with the features you "
+            "often have to install as add-ons, running securely right inside your web browser.\n\n"
+            "Open your vault: https://bipluk.com/home"
         )
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to rigluk",
+            subject="welcome to bipluk",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -2179,7 +2190,7 @@ async def test_welcome_email(email: str = "max@gmail.com", send: str = None):
 async def test_reengagement_email(email: str = "max@gmail.com", send: str = None):
     name_part = email.split('@')[0]
     first_name = re.split(r'[\._-]', name_part)[0]
-    first_name_cap = first_name.capitalize() if first_name else "musician"
+    first_name_cap = first_name.capitalize() if first_name else "synth head"
 
     template = templates.get_template("email_reengagement_sedo.html")
     html_content = template.render({
@@ -2189,13 +2200,13 @@ async def test_reengagement_email(email: str = "max@gmail.com", send: str = None
     if send == "1":
         plain_body = (
             f"Hello {first_name_cap},\n\n"
-            "It's been a while since you logged into your rigluk account. It's worth taking a look around "
-            "your cloud vault and exploring our newly updated preset parsers and pedal vaults again.\n\n"
-            "Log in: https://rigluk.com/login"
+            "It's been a while since you logged into your bipluk account. It's worth taking a look around "
+            "your cloud vault and exploring our newly updated SysEx parsers and synth soundbanks again.\n\n"
+            "Log in: https://bipluk.com/login"
         )
         ok, err = send_email_via_resend(
             to=email,
-            subject="We miss you at rigluk",
+            subject="We miss you at bipluk",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -2230,13 +2241,13 @@ def send_vault_limit_email(email: str) -> tuple[bool, str]:
         "unsubscribe_token": unsubscribe_token,
     })
     plain_body = (
-        f"Your rigluk preset vault is full!\n\n"
-        "You have reached your 1 free preset slot. Upgrade to rigluk+ Lifetime to store unlimited pedalboard vaults.\n\n"
-        "Upgrade now: https://rigluk.com/signup?plan=personal"
+        f"Your bipluk soundbank vault is full!\n\n"
+        "You have reached your 1 free soundbank slot. Upgrade to bipluk+ Lifetime to store unlimited synth vaults.\n\n"
+        "Upgrade now: https://bipluk.com/signup?plan=personal"
     )
     return send_email_via_resend(
         to=email_clean,
-        subject="Your rigluk preset vault is full! Unlock unlimited storage",
+        subject="Your bipluk soundbank vault is full! Unlock unlimited storage",
         body=plain_body,
         html=html_content,
         reply_to="halfradiationllc@gmail.com",
@@ -2251,13 +2262,13 @@ def send_battery_warning_email(email: str) -> tuple[bool, str]:
         "unsubscribe_token": unsubscribe_token,
     })
     plain_body = (
-        "⚠️ Guitar Pedal & Amp Modeler Preset Backup Reminder\n\n"
-        "Digital pedals & amp modelers (Strymon, Eventide, Line 6, Boss) store custom tones that can be lost on factory resets.\n"
-        "Protect your custom preset vault today: https://rigluk.com/home"
+        "⚠️ Hardware Synth Battery Health Warning\n\n"
+        "Vintage synthesizers (Juno-106, DX7, microKORG, M1) rely on internal RAM batteries that degrade over time.\n"
+        "Protect your custom patch vault today: https://bipluk.com/home"
     )
     return send_email_via_resend(
         to=email_clean,
-        subject="⚠️ Reminder: Have you backed up your pedalboard presets recently?",
+        subject="⚠️ Reminder: Have you backed up your hardware synth patches recently?",
         body=plain_body,
         html=html_content,
         reply_to="halfradiationllc@gmail.com",
@@ -2271,13 +2282,13 @@ def send_vip_purchase_email(email: str, plan: str = "personal") -> tuple[bool, s
         "plan": plan,
     })
     plain_body = (
-        f"🎉 Welcome to rigluk+ Lifetime!\n\n"
+        f"🎉 Welcome to bipluk+ Lifetime!\n\n"
         "Your purchase has been confirmed and your studio vault is now unlocked.\n\n"
-        "Open your VIP vault: https://rigluk.com/home"
+        "Open your VIP vault: https://bipluk.com/home"
     )
     return send_email_via_resend(
         to=email_clean,
-        subject="🎉 Welcome to rigluk+ Lifetime! Your studio vault is unlocked",
+        subject="🎉 Welcome to bipluk+ Lifetime! Your studio vault is unlocked",
         body=plain_body,
         html=html_content,
         reply_to="halfradiationllc@gmail.com",
@@ -2533,7 +2544,7 @@ async def export_all_banks(request: Request):
 
     buf = io.BytesIO()
     used_names: dict[str, int] = {}
-    manifest_lines = ["# rigluk vault export", f"# {len(entries)} soundbank(s)", ""]
+    manifest_lines = ["# bipluk vault export", f"# {len(entries)} soundbank(s)", ""]
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as archive:
         for bank, sysex_bytes in entries:
             base = re.sub(r"[^\w\-]+", "_", bank["name"].lower()).strip("_") or "bank"
@@ -2603,7 +2614,7 @@ async def export_csv_all(request: Request):
     return StreamingResponse(
         io.BytesIO(output.getvalue().encode("utf-8")),
         media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=rigluk_vault_presets.csv"}
+        headers={"Content-Disposition": "attachment; filename=bipluk_vault_presets.csv"}
     )
 
 @app.get("/banks/export-txt-all")
@@ -2618,7 +2629,7 @@ async def export_txt_all(request: Request):
 
     lines = [
         "=" * 80,
-        "RIGLUK SYNTHESIS VAULT — COMPLETE PATCH CATALOG EXPORT",
+        "BIPLUK SYNTHESIS VAULT — COMPLETE PATCH CATALOG EXPORT",
         "=" * 80,
         ""
     ]
@@ -2642,7 +2653,7 @@ async def export_txt_all(request: Request):
     return Response(
         content=content,
         media_type="text/plain",
-        headers={"Content-Disposition": 'attachment; filename="rigluk_vault_catalog.txt"'}
+        headers={"Content-Disposition": 'attachment; filename="bipluk_vault_catalog.txt"'}
     )
 
 @app.get("/banks/{bank_id}", response_class=HTMLResponse)
@@ -3207,7 +3218,7 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
                 "invoice_creation": {
                     "enabled": True,
                     "invoice_data": {
-                        "description": "rigluk+ Studio lifetime license (commercial use, one location).",
+                        "description": "bipluk+ Studio lifetime license (commercial use, one location).",
                         "metadata": {"plan": "studio"},
                     },
                 },
@@ -3470,8 +3481,8 @@ def build_sitemap_xml() -> str:
         (f"{SITE_BASE}/shop", "weekly", "0.9"),
         (f"{SITE_BASE}/vintage-synth-cloud-backup", "weekly", "1.0"),
         (f"{SITE_BASE}/sysex-librarian-alternatives", "weekly", "0.95"),
-        (f"{SITE_BASE}/rigluk-vs-snoize-sysex-librarian", "weekly", "0.9"),
-        (f"{SITE_BASE}/rigluk-vs-midi-ox", "weekly", "0.9"),
+        (f"{SITE_BASE}/bipluk-vs-snoize-sysex-librarian", "weekly", "0.9"),
+        (f"{SITE_BASE}/bipluk-vs-midi-ox", "weekly", "0.9"),
         (f"{SITE_BASE}/knob-monster-vs-snoize-sysex-librarian", "weekly", "0.5"),
         (f"{SITE_BASE}/knob-monster-vs-midi-ox", "weekly", "0.5"),
         (f"{SITE_BASE}/audit/midiox", "monthly", "0.85"),
@@ -3532,7 +3543,7 @@ Allow: /
 Disallow: /home
 Disallow: /banks/
 
-Sitemap: https://rigluk.com/sitemap.xml"""
+Sitemap: https://bipluk.com/sitemap.xml"""
     return Response(content=content, media_type="text/plain")
 
 @app.get("/llms.txt")
@@ -3548,7 +3559,7 @@ async def llms_txt():
             logger.error(f"Failed to read static llms.txt: {e}")
 
     lines = [
-        "# rigluk",
+        "# bipluk",
         "",
         "> The iCloud for your vintage synthesizers. Back up, organize, and search patches from your 1980s and 90s hardware directly in your web browser. No desktop software or drivers required.",
         "",
@@ -3556,42 +3567,42 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Lifetime Pricing:** rigluk+ $49 lifetime. Sound packs from $9 in the Shop.",
+        "- **Lifetime Pricing:** bipluk+ $49 lifetime. Sound packs from $9 in the Shop.",
         "",
         "## Key Pages",
-        "- [Home Page](https://rigluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
-        "- [Vintage Synth Cloud Backup](https://rigluk.com/vintage-synth-cloud-backup): Pillar guide for DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.",
-        "- [Shop](https://rigluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
-        "- [Alternatives Guide](https://rigluk.com/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.",
-        "- [Snoize Comparison](https://rigluk.com/rigluk-vs-snoize-sysex-librarian): rigluk vs Snoize SysEx Librarian.",
-        "- [MIDI-OX Comparison](https://rigluk.com/rigluk-vs-midi-ox): rigluk vs Windows MIDI-OX.",
-        "- [MIDI-OX TLS Audit](https://rigluk.com/audit/midiox): Independent transport-security review of midiox.com.",
-        "- [Payment Methods](https://rigluk.com/payment-methods): Supported payment options.",
+        "- [Home Page](https://bipluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
+        "- [Vintage Synth Cloud Backup](https://bipluk.com/vintage-synth-cloud-backup): Pillar guide for DX7 backup, Juno-106 patches, cloud backup for synthesizers, MIDI-OX alternative Mac.",
+        "- [Shop](https://bipluk.com/shop): Curated SysEx sound banks for DX7, Juno-106, and Korg M1.",
+        "- [Alternatives Guide](https://bipluk.com/sysex-librarian-alternatives): Comparison of web-based SysEx librarians.",
+        "- [Snoize Comparison](https://bipluk.com/bipluk-vs-snoize-sysex-librarian): bipluk vs Snoize SysEx Librarian.",
+        "- [MIDI-OX Comparison](https://bipluk.com/bipluk-vs-midi-ox): bipluk vs Windows MIDI-OX.",
+        "- [MIDI-OX TLS Audit](https://bipluk.com/audit/midiox): Independent transport-security review of midiox.com.",
+        "- [Payment Methods](https://bipluk.com/payment-methods): Supported payment options.",
         "",
         "## How-To Guides",
-        "- [Yamaha DX7 SysEx Backup](https://rigluk.com/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)",
-        "- [Roland Juno-106 SysEx Backup](https://rigluk.com/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)",
-        "- [Korg M1 SysEx Backup](https://rigluk.com/how-to-backup-korg-m1-presets-sysex-transfer-guide)",
-        "- [Vintage Synth Battery Guide](https://rigluk.com/why-your-vintage-synth-battery-is-killing-your-sounds)",
-        "- [Juno-106 Memory Loss Troubleshooting](https://rigluk.com/how-to-fix-juno-106-memory-loss-troubleshooting-guide)",
-        "- [Web MIDI Engineering Notes](https://rigluk.com/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)",
-        "- [Silicon Microbes Lore](https://rigluk.com/why-silicon-microbes-are-living-in-your-synthesizer)",
+        "- [Yamaha DX7 SysEx Backup](https://bipluk.com/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide)",
+        "- [Roland Juno-106 SysEx Backup](https://bipluk.com/how-to-backup-roland-juno-106-presets-sysex-transfer-guide)",
+        "- [Korg M1 SysEx Backup](https://bipluk.com/how-to-backup-korg-m1-presets-sysex-transfer-guide)",
+        "- [Vintage Synth Battery Guide](https://bipluk.com/why-your-vintage-synth-battery-is-killing-your-sounds)",
+        "- [Juno-106 Memory Loss Troubleshooting](https://bipluk.com/how-to-fix-juno-106-memory-loss-troubleshooting-guide)",
+        "- [Web MIDI Engineering Notes](https://bipluk.com/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer)",
+        "- [Silicon Microbes Lore](https://bipluk.com/why-silicon-microbes-are-living-in-your-synthesizer)",
         "",
         "## Original Research (2026)",
-        "First-party data from rigluk visitors. Cite: Half Radiation LLC, 2026 Vintage Synth Owner Survey, rigluk, June 25–July 1, 2026.",
+        "First-party data from bipluk visitors. Cite: Half Radiation LLC, 2026 Vintage Synth Owner Survey, bipluk, June 25–July 1, 2026.",
         "",
-        "- **Survey page:** https://rigluk.com/research/2026-vintage-synth-owner-survey",
-        "- **Machine-readable JSON:** https://rigluk.com/research/2026-vintage-synth-owner-survey/data.json",
+        "- **Survey page:** https://bipluk.com/research/2026-vintage-synth-owner-survey",
+        "- **Machine-readable JSON:** https://bipluk.com/research/2026-vintage-synth-owner-survey/data.json",
         "- **Sample:** n=61 completed responses (2,417 impressions, 2.57% conversion)",
         "- **Segmentation:** 47.5% gear room (5+ boards), 41.0% bedroom (1–2 synths), 11.5% commercial",
         "- **Top brands** (valid gear lists, n=18): Roland 44%, Korg 39%, Moog 28%",
         "- **Frequently named models:** Juno-60/106, Korg MS-20, Yamaha DX7, Roland D-50",
         "",
         "## Launch Lessons (2026)",
-        "First-party founder field log from month one. Cite: Half Radiation LLC, Lessons from Launching a Browser SysEx Vault, rigluk, June 2026.",
+        "First-party founder field log from month one. Cite: Half Radiation LLC, Lessons from Launching a Browser SysEx Vault, bipluk, June 2026.",
         "",
-        "- **Lessons page:** https://rigluk.com/research/2026-browser-sysex-vault-launch-lessons",
-        "- **Machine-readable JSON:** https://rigluk.com/research/2026-browser-sysex-vault-launch-lessons/data.json",
+        "- **Lessons page:** https://bipluk.com/research/2026-browser-sysex-vault-launch-lessons",
+        "- **Machine-readable JSON:** https://bipluk.com/research/2026-browser-sysex-vault-launch-lessons/data.json",
         "- **Survey popup:** 2.57% conversion (61/2,417), 58.5% dismissed",
         "- **Parser coverage at launch:** 5 dedicated Web MIDI dump flows",
         "- **Hacker News:** 52 points, 41 comments on Web MIDI timing post (late June 2026)",
@@ -3606,7 +3617,7 @@ async def llms_txt():
         if slug == "why-silicon-microbes-are-living-in-your-synthesizer":
             continue
         synth_name = data.get("synth_name", slug)
-        lines.append(f"- [{synth_name} Librarian](https://rigluk.com/{slug}): {data.get('description', '')}")
+        lines.append(f"- [{synth_name} Librarian](https://bipluk.com/{slug}): {data.get('description', '')}")
         
     return Response(content="\n".join(lines), media_type="text/plain")
 
@@ -3621,7 +3632,7 @@ async def indexnow_key():
 # AGENT / AI DISCOVERY INFRASTRUCTURE
 # ============================================================
 
-SITE_BASE = "https://rigluk.com"
+SITE_BASE = "https://bipluk.com"
 
 # --- Middleware: RFC 8288 Link Headers + Markdown Content Negotiation ---
 @app.middleware("http")
@@ -3635,7 +3646,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 
     # Markdown content negotiation (homepage only, text/markdown or text/x-markdown)
     if path == "/" and ("text/markdown" in accept or "text/x-markdown" in accept):
-        markdown_body = """# rigluk — The iCloud for Vintage Synthesizers
+        markdown_body = """# bipluk — The iCloud for Vintage Synthesizers
 
 > Back up, organize, and search SysEx patch banks from your 1980s and 90s hardware directly in your web browser. No desktop software or USB drivers required.
 
@@ -3646,7 +3657,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 - **Universal Support**: Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers
 
 ## Pricing
-- **rigluk+**: $49 one-time lifetime.
+- **bipluk+**: $49 one-time lifetime.
 - **Commercial / B2B**: Contact halfradiationllc@gmail.com for bespoke site licenses, white-labeling, and multi-site rollouts.
 
 ## API
@@ -3658,12 +3669,12 @@ async def agent_discovery_middleware(request: Request, call_next):
 See /auth.md for agent registration instructions.
 
 ## Links
-- [Sign Up](https://rigluk.com/signup)
-- [Log In](https://rigluk.com/login)
-- [Payment Methods](https://rigluk.com/payment-methods)
-- [Resources](https://rigluk.com/resources)
-- [Terms](https://rigluk.com/terms)
-- [Privacy](https://rigluk.com/privacy)
+- [Sign Up](https://bipluk.com/signup)
+- [Log In](https://bipluk.com/login)
+- [Payment Methods](https://bipluk.com/payment-methods)
+- [Resources](https://bipluk.com/resources)
+- [Terms](https://bipluk.com/terms)
+- [Privacy](https://bipluk.com/privacy)
 """
         token_count = len(markdown_body.split())
         return Response(
@@ -3716,7 +3727,7 @@ async def api_catalog():
 # --- RFC 8414: OAuth 2.0 Authorization Server Metadata ---
 @app.get("/.well-known/oauth-authorization-server")
 async def oauth_authorization_server():
-    """OAuth 2.0 AS metadata per RFC 8414. rigluk uses Stripe for payments and
+    """OAuth 2.0 AS metadata per RFC 8414. bipluk uses Stripe for payments and
     email/password auth — this document describes what agents need to know."""
     metadata = {
         "issuer": SITE_BASE,
@@ -3883,22 +3894,22 @@ async def auth_md():
     """auth.md — agent registration instructions per workos/auth.md spec."""
     content = """# auth.md
 
-This document describes how AI agents can register and authenticate with **rigluk**.
+This document describes how AI agents can register and authenticate with **bipluk**.
 
 ## Service Overview
 
-rigluk is a browser-native cloud SysEx librarian for vintage synthesizers. Agents can use the API to manage patch banks and SysEx dumps.
+bipluk is a browser-native cloud SysEx librarian for vintage synthesizers. Agents can use the API to manage patch banks and SysEx dumps.
 
 ## Authentication
 
-rigluk uses email/password authentication with session cookies. For agent access, use the REST API endpoints below.
+bipluk uses email/password authentication with session cookies. For agent access, use the REST API endpoints below.
 
 ### Registration
 
 To create an account as an agent:
 
 ```
-POST https://rigluk.com/signup
+POST https://bipluk.com/signup
 Content-Type: application/x-www-form-urlencoded
 
 email=agent@example.com&password=YourPassword123!&confirm_password=YourPassword123!&plan=lifetime
@@ -3907,7 +3918,7 @@ email=agent@example.com&password=YourPassword123!&confirm_password=YourPassword1
 ### Login / Token Acquisition
 
 ```
-POST https://rigluk.com/login
+POST https://bipluk.com/login
 Content-Type: application/x-www-form-urlencoded
 
 email=agent@example.com&password=YourPassword123!
@@ -3930,7 +3941,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access: rigluk+ ($49) lifetime plan. Checkout at `/checkout`. Commercial/B2B via email.
+Premium access: bipluk+ ($49) lifetime plan. Checkout at `/checkout`. Commercial/B2B via email.
 
 ## Discovery Documents
 
@@ -3952,7 +3963,7 @@ async def mcp_server_card():
     card = {
         "schemaVersion": "1.0",
         "serverInfo": {
-            "name": "rigluk",
+            "name": "bipluk",
             "version": "1.0.0",
             "description": "Cloud SysEx librarian for vintage synthesizers. Back up, organize, and recall MIDI patch banks via Web MIDI.",
             "homepage": SITE_BASE,
@@ -4051,7 +4062,7 @@ async def openapi_spec():
     spec = {
         "openapi": "3.1.0",
         "info": {
-            "title": "rigluk API",
+            "title": "bipluk API",
             "version": "1.0.0",
             "description": "Cloud SysEx librarian API for vintage synthesizers. Manage MIDI patch banks and SysEx dumps.",
             "contact": {"url": SITE_BASE},
@@ -4458,45 +4469,45 @@ async def dynamic_synth_seo(synth_slug: str, request: Request):
 DRIP_SUBJECT = "your studio vault is locked"
 DRIP_BODY_TEMPLATE = """hey there,
 
-you signed up for rigluk, but you are currently on the free tier.
+you signed up for bipluk, but you are currently on the free tier.
 
 right now, your vault is restricted. you can't download your sysex banks back to your computer, upload a second soundbank, or use preset name decoding.
 
-if you successfully tested your synth connection and want to protect your entire collection, it's time to upgrade. rigluk is a professional tool built exclusively for producers who want a bulletproof cloud archive for their vintage synthesizers.
+if you successfully tested your synth connection and want to protect your entire collection, it's time to upgrade. bipluk is a professional tool built exclusively for producers who want a bulletproof cloud archive for their vintage synthesizers.
 
 if you have a juno-106, dx7, or m1 sitting in your studio right now, those sounds are vulnerable. all it takes is one internal battery failure or local drive crash to wipe your custom patches forever.
 
-unlock your vault and get full, unlimited access to rigluk today:
+unlock your vault and get full, unlimited access to bipluk today:
 
-👉 https://rigluk.com/home
+👉 https://bipluk.com/home
 
 keep the analog alive,
 
-rigluk support
+bipluk support
 p.s. if you ran into issues setting up your midi connection or parsing your sysex bank, just reply directly to this email and let me know.
 """
 
 DRIP_HTML_TEMPLATE = """
 <div style="background-color: #050507; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
     <div style="max-width: 460px; margin: 0 auto; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; padding: 32px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
-        <img src="https://rigluk.com/static/logo.svg" alt="rigluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
-        <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">rigluk</h1>
+        <img src="https://bipluk.com/static/logo.svg" alt="bipluk" width="44" height="44" style="margin-bottom: 12px; image-rendering: pixelated;">
+        <h1 style="color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 6px 0;">bipluk</h1>
         <p style="color: #71717a; font-size: 12px; margin: 0 0 24px 0; font-weight: 500;">Vault Status & Protection Alert</p>
 
         <hr style="border: 0; border-top: 1px solid #18181b; margin: 0 0 24px 0;">
 
         <h2 style="color: #f4f4f5; font-size: 16px; font-weight: 600; margin: 0 0 12px 0;">Your Studio Vault is Restricted</h2>
         <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 0 0 16px 0; text-align: left;">
-            You signed up for rigluk, but you are currently on the free tier. Free vaults are restricted to 1 soundbank slot with export locks.
+            You signed up for bipluk, but you are currently on the free tier. Free vaults are restricted to 1 soundbank slot with export locks.
         </p>
         <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 0 0 24px 0; text-align: left;">
             If you have a <strong style="color: #ffffff;">Juno-106, DX7, or M1</strong> in your studio, those custom patches are vulnerable. All it takes is one dead RAM battery or local disk crash to wipe your soundbanks forever.
         </p>
 
-        <a href="https://rigluk.com/checkout" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px;">Unlock Unlimited Vault &rarr;</a>
+        <a href="https://bipluk.com/checkout" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px;">Unlock Unlimited Vault &rarr;</a>
 
         <p style="color: #52525b; font-size: 11px; margin: 0;">
-            © 2026 rigluk · Web MIDI Cloud Librarian
+            © 2026 bipluk · Web MIDI Cloud Librarian
         </p>
     </div>
 </div>
@@ -4543,14 +4554,14 @@ def send_welcome_email_task(email: str):
         plain_body = (
             f"Hi {first_name_cap},\n\n"
             "We believe a good SysEx librarian shouldn’t need a bunch of dusty plugins, local drivers, "
-            "or desktop installers to do its job well. rigluk already comes with the features you "
+            "or desktop installers to do its job well. bipluk already comes with the features you "
             "often have to install as add-ons, running securely right inside your web browser.\n\n"
-            "Open your vault: https://rigluk.com/home"
+            "Open your vault: https://bipluk.com/home"
         )
 
         ok, err = send_email_via_resend(
             to=email,
-            subject="welcome to rigluk",
+            subject="welcome to bipluk",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -4592,13 +4603,13 @@ def send_onboarding_activation_email_task(email: str, username: str = None):
         })
         plain_body = (
             f"Hi {username},\n\n"
-            "Noticed you logged into rigluk earlier today! You don’t even need a USB cable connected right now to test out the preset vault UI.\n\n"
-            "We added 3 Instant 1-Click Factory Demo Banks (Strymon, Line 6 HX, Eventide) directly inside your dashboard.\n\n"
-            "Open your vault: https://rigluk.com/home"
+            "Noticed you logged into bipluk earlier today! You don’t even need a USB MIDI cable connected right now to test out the librarian UI.\n\n"
+            "We added 3 Instant 1-Click Factory Demo Banks (Yamaha DX7, Juno-106, Korg M1) directly inside your dashboard.\n\n"
+            "Open your vault: https://bipluk.com/home"
         )
         send_email_via_resend(
             to=email_clean,
-            subject="Need a sample bank for rigluk? (No pedalboard needed to test)",
+            subject="Need a sample bank for bipluk? (No synth needed to test)",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -4632,12 +4643,12 @@ def send_inactivity_warning_email_task(email: str, username: str = None):
             "email": email_clean,
         })
         plain_body = (
-            f"Action Required: Your rigluk soundbank vault is scheduled for archival in 30 days due to inactivity.\n\n"
-            f"Log in now to keep your account & backups 100% active: https://rigluk.com/home"
+            f"Action Required: Your bipluk soundbank vault is scheduled for archival in 30 days due to inactivity.\n\n"
+            f"Log in now to keep your account & backups 100% active: https://bipluk.com/home"
         )
         send_email_via_resend(
             to=email_clean,
-            subject="Urgent: Your rigluk soundbank vault will be archived in 30 days",
+            subject="Urgent: Your bipluk soundbank vault will be archived in 30 days",
             body=plain_body,
             html=html_content,
             reply_to="halfradiationllc@gmail.com",
@@ -4673,15 +4684,15 @@ def send_abandoned_checkout_email_task(email: str, username: str = None):
 
         plain_body = (
             f"Hi {username},\n\n"
-            "Just following up: you considered starting your journey with rigluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
-            "Here’s what synth owners are doing with rigluk right now:\n"
+            "Just following up: you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
+            "Here’s what synth owners are doing with bipluk right now:\n"
             "- Zero-Driver Web MIDI Backups\n"
             "- RAM Battery Protection\n"
             "- Instant Preset Name Decoder\n"
             "- One-Time Lifetime Access\n\n"
-            "Complete your vault access: https://rigluk.com/signup?plan=personal\n\n"
+            "Complete your vault access: https://bipluk.com/signup?plan=personal\n\n"
             "If anything tripped you up during checkout, just reply directly to this email.\n\n"
-            "Justin & the rigluk Team"
+            "Justin & the bipluk Team"
         )
 
         ok, err = send_email_via_resend(
@@ -4761,9 +4772,9 @@ async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]
             html_content = template.render({"username": username, "email": email})
             plain_body = (
                 f"Hi {username},\n\n"
-                "Just following up—you considered starting your journey with rigluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
-                "Complete your vault access: https://rigluk.com/signup?plan=personal\n\n"
-                "Justin & the rigluk Team"
+                "Just following up—you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
+                "Complete your vault access: https://bipluk.com/signup?plan=personal\n\n"
+                "Justin & the bipluk Team"
             )
             eligible.append({
                 "id": u.get("id", 0),
@@ -4929,13 +4940,13 @@ async def get_reengagement_eligible_users(min_days_inactive: int = 14) -> tuple[
         html_content = template.render({"first_name": first_name_cap})
         plain_body = (
             f"Hello {first_name_cap},\n\n"
-            "It's been a while since you logged into your rigluk account. It's worth taking a look around "
+            "It's been a while since you logged into your bipluk account. It's worth taking a look around "
             "your cloud vault and exploring our newly updated SysEx parsers and synth soundbanks again.\n\n"
             "We would be very happy to see you again! Please log into your account to check your backed-up "
             "soundbanks and update your studio setup.\n\n"
-            "Log In To Your Account: https://rigluk.com/login\n\n"
+            "Log In To Your Account: https://bipluk.com/login\n\n"
             "Best regards,\n"
-            "Your rigluk Team"
+            "Your bipluk Team"
         )
 
         eligible.append(
@@ -4967,7 +4978,7 @@ async def reengagement_pending(request: Request):
         for u in eligible
     ]
     return {
-        "subject": "We miss you at rigluk",
+        "subject": "We miss you at bipluk",
         "from": SMTP_FROM,
         "reply_to": "halfradiationllc@gmail.com",
         "users": users_payload,
@@ -5021,10 +5032,10 @@ NEWSLETTER_TOPICS = [
 
 NEWSLETTER_PRODUCT_FACTS = """
 PRODUCT FACTS (use only these — do not invent features or pricing):
-- rigluk is a browser SysEx librarian at https://rigluk.com (Chrome/Edge, Web MIDI + SysEx).
+- bipluk is a browser SysEx librarian at https://bipluk.com (Chrome/Edge, Web MIDI + SysEx).
 - Dedicated parsers: Yamaha DX7, Roland Juno-106, Korg M1, Roland Jupiter-6, Casio CZ-101; generic scan for others.
-- Lifetime pricing: rigluk+ $49 one-time. NOT a monthly subscription.
-- Shop sound packs from $9 at https://rigluk.com/shop
+- Lifetime pricing: bipluk+ $49 one-time. NOT a monthly subscription.
+- Shop sound packs from $9 at https://bipluk.com/shop
 - Users back up, search, download .syx, and flash banks via Web MIDI.
 - Built by Half Radiation LLC. Support: halfradiationllc@gmail.com
 """
@@ -5032,10 +5043,10 @@ PRODUCT FACTS (use only these — do not invent features or pricing):
 NEWSLETTER_FOOTER = """
 ---
 back up your banks (lifetime — no subscription):
-https://rigluk.com/home
+https://bipluk.com/home
 
 to stop receiving these, unsubscribe instantly:
-https://rigluk.com/unsubscribe?token={{unsubscribe_token}}
+https://bipluk.com/unsubscribe?token={{unsubscribe_token}}
 """
 
 def get_openrouter_config():
@@ -5060,8 +5071,8 @@ def call_openrouter_chat(messages, json_object=False, timeout=30):
         headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "https://rigluk.com",
-            "X-Title": "rigluk",
+            "HTTP-Referer": "https://bipluk.com",
+            "X-Title": "bipluk",
         },
         method="POST",
     )
@@ -5098,7 +5109,7 @@ def answer_faq_question(question: str) -> dict:
         }
 
     corpus = faq_knowledge.build_faq_corpus()
-    prompt = f"""You are the rigluk support assistant on the landing page.
+    prompt = f"""You are the bipluk support assistant on the landing page.
 Answer the user's question using ONLY the official FAQ knowledge below.
 When a FAQ clearly covers the question, reuse that FAQ answer text as closely as possible (light edits for flow are OK).
 Do not invent features, pricing, synth support, or policies that are not in the FAQ.
@@ -5210,7 +5221,7 @@ tip: write protect off, known-good midi cable (out → in), chrome open, then re
     faq_corpus = faq_knowledge.build_faq_corpus()
     logger.info(f"Selected newsletter topic: {selected_topic}")
 
-    prompt = f"""You write the rigluk email — a field note for vintage synth owners (1983–1995 hardware).
+    prompt = f"""You write the bipluk email — a field note for vintage synth owners (1983–1995 hardware).
 
 VOICE: lowercase throughout. sound like a repair bench tech who has seen too many leaked batteries and flipped write-protect switches the wrong way. specific > poetic. no corporate hype, no "we're excited to announce", no sign-offs, no team name.
 
@@ -5326,7 +5337,7 @@ def run_newsletter_broadcast_sync(override_subject: str = None, override_body: s
                     msg['To'] = email
                     msg['Subject'] = subject
                     msg['Reply-To'] = "halfradiationllc@gmail.com"
-                    msg['List-Unsubscribe'] = f"<https://rigluk.com/unsubscribe?token={unsubscribe_token}>"
+                    msg['List-Unsubscribe'] = f"<https://bipluk.com/unsubscribe?token={unsubscribe_token}>"
                     msg['Precedence'] = "bulk"
                     msg.attach(MIMEText(personal_body, 'plain'))
                     
@@ -5397,7 +5408,7 @@ async def newsletter_pending(request: Request):
             {
                 "email": email,
                 "body": body_template.replace("{{unsubscribe_token}}", unsubscribe_token),
-                "list_unsubscribe": f"https://rigluk.com/unsubscribe?token={unsubscribe_token}",
+                "list_unsubscribe": f"https://bipluk.com/unsubscribe?token={unsubscribe_token}",
             }
         )
 

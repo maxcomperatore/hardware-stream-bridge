@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMDIOR | Certified & Clinic-Verified Medical Laser Marketplace</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23ffffff'/%3E%3Ccircle cx='39' cy='53' r='5' fill='%231a1a1a'/%3E%3Ccircle cx='156' cy='43' r='5.5' fill='%231a1a1a'/%3E%3Cpath d='M 92 65 C 88 85, 86 110, 88 125 C 89 135, 92 144, 94 150' stroke='%231a1a1a' stroke-width='11' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              purple: '#6d28d9',
+              purpleHover: '#5b21b6',
+              dark: '#111827',
+              grayBg: '#f8fafc',
+              border: '#e2e8f0',
+              accentGreen: '#10b981'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .card-shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.07); }
+    .card-shadow:hover { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- Top Global Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-[1520px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Left Nav -->
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg overflow-hidden border border-slate-300 shadow-sm flex items-center justify-center bg-white">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="w-full h-full">
+              <rect width="200" height="200" fill="#ffffff"></rect>
+              <circle cx="39" cy="53" r="5" fill="#1a1a1a"></circle>
+              <circle cx="156" cy="43" r="5.5" fill="#1a1a1a"></circle>
+              <path d="M 92 65 C 88 85, 86 110, 88 125 C 89 135, 92 144, 94 150" stroke="#1a1a1a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+            </svg>
+          </div>
+          <a href="/marketplace" class="font-extrabold tracking-tight text-xl text-slate-900">LUMDIOR<span class="text-purple-700">.AI</span></a>
+        </div>
+        <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-600">
+          <a href="/marketplace" class="text-purple-700 font-bold border-b-2 border-purple-700 pb-5 pt-5">Used Lasers</a>
+          <a href="/appraisal" class="hover:text-slate-900 transition pb-5 pt-5">AI Valuation Engine</a>
+          <a href="#pricing-section" onclick="document.getElementById('pricing-modal').classList.remove('hidden')" class="hover:text-slate-900 transition pb-5 pt-5 text-purple-700 font-bold">Pricing & Plans</a>
+          <a href="#" onclick="document.getElementById('sell-modal').classList.remove('hidden')" class="hover:text-slate-900 transition pb-5 pt-5">Sell Your Laser</a>
+          <a href="#" onclick="document.getElementById('pricing-modal').classList.remove('hidden')" class="hover:text-slate-900 transition pb-5 pt-5">Dealers & Brokers</a>
+        </nav>
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-3">
+        <a href="/appraisal" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold transition hover:bg-purple-100">
+          <span>⚡ Instant AI Appraisal</span>
+        </a>
+        <button onclick="document.getElementById('sell-modal').classList.remove('hidden')" class="px-4 py-2 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs shadow-sm transition cursor-pointer">
+          + List a Laser (Free)
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Body Content (Sidebar + Main Grid) -->
+  <div class="max-w-[1520px] mx-auto px-4 sm:px-8 py-6 w-full flex-1 flex flex-col lg:flex-row gap-6">
+    
+    <!-- LEFT SIDEBAR FILTERS (Cars.com Style) -->
+    <aside class="w-full lg:w-72 shrink-0 space-y-5">
+      
+      <!-- Search & AI Helper Card -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 card-shadow space-y-4">
+        
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-extrabold text-slate-900" id="result-count">42+ results</h2>
+        </div>
+
+        <!-- Save Search Purple Button -->
+        <button onclick="alert('Search saved! You will receive daily WhatsApp & Email alerts when matching lasers are listed.')" class="w-full py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm cursor-pointer">
+          <span>♡ Save search</span>
+        </button>
+
+        <!-- Try Search Pill -->
+        <div class="relative">
+          <input 
+            type="text" 
+            id="search-input" 
+            onkeyup="filterListings()"
+            placeholder='Try: "Candela 755nm"' 
+            class="w-full text-xs bg-white border border-slate-300 focus:border-purple-600 rounded-xl pl-3.5 pr-8 py-2.5 text-slate-800 placeholder-slate-400 outline-none transition font-medium"
+          />
+          <button onclick="filterListings()" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-sm">
+            ↻
+          </button>
+        </div>
+
+        <!-- Carson / Lumdior AI Assistant Card -->
+        <div class="rounded-2xl p-4 bg-gradient-to-br from-purple-950 via-slate-900 to-slate-950 text-white space-y-3 relative overflow-hidden">
+          <div class="flex items-center gap-2 text-xs font-bold text-purple-300">
+            <span>✦</span>
+            <span>Lumdior AI Match</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            I analyzed 42+ clinic lasers in your area. Want help finding the perfect match with low pulse wear?
+          </p>
+          <button onclick="alert('AI Concierge: Filtered for top Grade A+ lasers with under 100,000 shots.')" class="w-full py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold text-left flex items-center justify-between transition cursor-pointer">
+            <span>Narrow it down</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Location Filter Card -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 card-shadow space-y-4">
+        <h3 class="text-sm font-bold text-slate-900">Location</h3>
+
+        <div class="space-y-1.5">
+          <label class="text-[11px] text-slate-500 font-semibold uppercase">Search within</label>
+          <select class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-700 outline-none focus:border-purple-600 cursor-pointer font-medium">
+            <option>All Nationwide (Shippable)</option>
+            <option>50 miles</option>
+            <option>100 miles</option>
+            <option>250 miles</option>
+          </select>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[11px] text-slate-500 font-semibold uppercase">ZIP code</label>
+          <input type="text" value="90210" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 outline-none focus:border-purple-600 font-mono" />
+        </div>
+
+        <label class="flex items-center gap-2.5 text-xs text-slate-700 font-medium cursor-pointer pt-1">
+          <input type="checkbox" checked class="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 border-slate-300" />
+          <span>Include freight shippable units</span>
+        </label>
+      </div>
+
+      <!-- Brand / Manufacturer Filter -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 card-shadow space-y-3">
+        <h3 class="text-sm font-bold text-slate-900">Manufacturer</h3>
+        <div class="space-y-2 text-xs text-slate-700">
+          <label class="flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" onchange="filterListings()" value="Candela" class="brand-filter rounded text-purple-600 border-slate-300" checked />
+              <span>Candela Medical</span>
+            </div>
+            <span class="text-slate-400 font-mono text-[11px]">14</span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" onchange="filterListings()" value="Alma" class="brand-filter rounded text-purple-600 border-slate-300" checked />
+              <span>Alma Lasers</span>
+            </div>
+            <span class="text-slate-400 font-mono text-[11px]">9</span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" onchange="filterListings()" value="Sciton" class="brand-filter rounded text-purple-600 border-slate-300" checked />
+              <span>Sciton Inc.</span>
+            </div>
+            <span class="text-slate-400 font-mono text-[11px]">8</span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" onchange="filterListings()" value="InMode" class="brand-filter rounded text-purple-600 border-slate-300" checked />
+              <span>InMode Ltd.</span>
+            </div>
+            <span class="text-slate-400 font-mono text-[11px]">6</span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" onchange="filterListings()" value="Cutera" class="brand-filter rounded text-purple-600 border-slate-300" checked />
+              <span>Cutera</span>
+            </div>
+            <span class="text-slate-400 font-mono text-[11px]">5</span>
+          </label>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT (Banner + Grid) -->
+    <section class="flex-1 space-y-6">
+      
+      <!-- Cars.com Style "Certified & Dealer Verified" Top Banner -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 card-shadow flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        <div class="w-14 h-14 shrink-0 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-2xl">
+          🛡️
+        </div>
+        <div>
+          <h2 class="text-base font-extrabold text-slate-900">Certified & clinic-verified aesthetic laser exchange</h2>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            Look for verified badges to shop used lasers with confidence. Find options featuring OEM software recertification audits, certified optical pulse logs, and direct clinic-to-clinic pricing.
+          </p>
+        </div>
+      </div>
+
+      <!-- Laser Cards Grid (Cars.com Exact Card Layout) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5" id="listings-grid">
+        
+        <!-- CARD 1: Candela GentleMax Pro Plus -->
+        <div class="laser-card bg-white rounded-2xl overflow-hidden border border-slate-200 card-shadow flex flex-col justify-between transition group cursor-pointer" data-brand="Candela" data-title="Candela GentleMax Pro Plus" onclick="openDetailsModal(1)">
+          <div>
+            <!-- Image Area with Badges & Save Icon -->
+            <div class="relative h-44 bg-slate-900 overflow-hidden">
+              <div class="absolute top-2.5 left-2.5 z-10">
+                <span class="bg-slate-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                  Sponsored
+                </span>
+              </div>
+              <button onclick="event.stopPropagation(); alert('Saved to favorites!')" class="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center text-xs shadow-sm transition">
+                ♡
+              </button>
+
+              <!-- Laser Photo Mockup -->
+              <div class="w-full h-full flex items-center justify-center bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-800 text-center p-4">
+                <div>
+                  <div class="text-4xl mb-1">⚡</div>
+                  <div class="text-[10px] font-mono text-slate-400">755nm Alex / 1064nm YAG</div>
+                </div>
+              </div>
+
+              <!-- Carousel Dots Mockup -->
+              <div class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              </div>
+            </div>
+
+            <!-- Pricing & Title Block (Cars.com Style) -->
+            <div class="p-4 space-y-2">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="text-xl font-black text-slate-900 font-mono">$47,652</span>
+                  <span class="text-[11px] text-slate-400 ml-1 font-mono">Est. $895/mo ⓘ</span>
+                </div>
+                <span class="text-[10px] text-slate-400 font-mono line-through">MSRP $95,000</span>
+              </div>
+
+              <h3 class="text-xs font-bold text-slate-900 group-hover:text-purple-700 transition leading-snug">
+                Pre-Owned 2022 Candela GentleMax Pro Plus
+              </h3>
+
+              <!-- Demand / Condition Pill -->
+              <div class="pt-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-medium">
+                  🔥 High Demand • 78k Pulses
+                </span>
+              </div>
+
+              <!-- Dealer / Clinic Info with Stars -->
+              <div class="pt-2 text-[11px] text-slate-600 space-y-0.5">
+                <div class="flex items-center gap-1 font-medium">
+                  <span>Beverly Hills Dermatology</span>
+                  <span class="text-amber-500">★ 4.9</span>
+                </div>
+                <div class="text-slate-400 text-[10px] flex items-center gap-1">
+                  <span>📍 Beverly Hills, CA (8 mi)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Button -->
+          <div class="p-4 pt-0">
+            <button class="w-full py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs transition cursor-pointer">
+              Check Availability
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: Alma Soprano Titanium -->
+        <div class="laser-card bg-white rounded-2xl overflow-hidden border border-slate-200 card-shadow flex flex-col justify-between transition group cursor-pointer" data-brand="Alma" data-title="Alma Soprano Titanium" onclick="openDetailsModal(2)">
+          <div>
+            <div class="relative h-44 bg-slate-900 overflow-hidden">
+              <div class="absolute top-2.5 left-2.5 z-10">
+                <span class="bg-slate-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                  Sponsored
+                </span>
+              </div>
+              <button onclick="event.stopPropagation(); alert('Saved to favorites!')" class="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center text-xs shadow-sm transition">
+                ♡
+              </button>
+
+              <div class="w-full h-full flex items-center justify-center bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-800 text-center p-4">
+                <div>
+                  <div class="text-4xl mb-1">💎</div>
+                  <div class="text-[10px] font-mono text-slate-400">Triple Diode ICE Plus™</div>
+                </div>
+              </div>
+
+              <div class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              </div>
+            </div>
+
+            <div class="p-4 space-y-2">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="text-xl font-black text-slate-900 font-mono">$62,500</span>
+                  <span class="text-[11px] text-slate-400 ml-1 font-mono">Est. $1,140/mo ⓘ</span>
+                </div>
+                <span class="text-[10px] text-slate-400 font-mono line-through">MSRP $110,000</span>
+              </div>
+
+              <h3 class="text-xs font-bold text-slate-900 group-hover:text-purple-700 transition leading-snug">
+                Pre-Owned 2021 Alma Soprano Titanium
+              </h3>
+
+              <div class="pt-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-medium border border-emerald-100">
+                  ✓ Verified OCR • 5.45M Shots
+                </span>
+              </div>
+
+              <div class="pt-2 text-[11px] text-slate-600 space-y-0.5">
+                <div class="flex items-center gap-1 font-medium">
+                  <span>Advantage Medical Aesthetics</span>
+                  <span class="text-amber-500">★ 4.9</span>
+                </div>
+                <div class="text-slate-400 text-[10px]">
+                  <span>📍 Miami, FL (14 mi)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 pt-0">
+            <button class="w-full py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs transition cursor-pointer">
+              Check Availability
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 3: Sciton mJOULE (BBL HERO + MOXI) -->
+        <div class="laser-card bg-white rounded-2xl overflow-hidden border border-slate-200 card-shadow flex flex-col justify-between transition group cursor-pointer" data-brand="Sciton" data-title="Sciton mJOULE BBL HERO MOXI" onclick="openDetailsModal(3)">
+          <div>
+            <div class="relative h-44 bg-slate-900 overflow-hidden">
+              <button onclick="event.stopPropagation(); alert('Saved to favorites!')" class="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center text-xs shadow-sm transition">
+                ♡
+              </button>
+
+              <div class="w-full h-full flex items-center justify-center bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-800 text-center p-4">
+                <div>
+                  <div class="text-4xl mb-1">🌟</div>
+                  <div class="text-[10px] font-mono text-slate-400">BBL HERO & MOXI 1927nm</div>
+                </div>
+              </div>
+
+              <div class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              </div>
+            </div>
+
+            <div class="p-4 space-y-2">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="text-xl font-black text-slate-900 font-mono">$94,000</span>
+                  <span class="text-[11px] text-slate-400 ml-1 font-mono">Est. $1,840/mo ⓘ</span>
+                </div>
+                <span class="text-[10px] text-slate-400 font-mono line-through">MSRP $145,000</span>
+              </div>
+
+              <h3 class="text-xs font-bold text-slate-900 group-hover:text-purple-700 transition leading-snug">
+                Certified 2023 Sciton mJOULE Dual Platform
+              </h3>
+
+              <div class="pt-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-medium">
+                  🔥 Top Performer • 42k Pulses
+                </span>
+              </div>
+
+              <div class="pt-2 text-[11px] text-slate-600 space-y-0.5">
+                <div class="flex items-center gap-1 font-medium">
+                  <span>Dallas Laser Specialists</span>
+                  <span class="text-amber-500">★ 4.8</span>
+                </div>
+                <div class="text-slate-400 text-[10px]">
+                  <span>📍 Dallas, TX (30 mi)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 pt-0">
+            <button class="w-full py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs transition cursor-pointer">
+              Check Availability
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 4: InMode Optimas Max (Morpheus8) -->
+        <div class="laser-card bg-white rounded-2xl overflow-hidden border border-slate-200 card-shadow flex flex-col justify-between transition group cursor-pointer" data-brand="InMode" data-title="InMode Optimas Morpheus8" onclick="openDetailsModal(4)">
+          <div>
+            <div class="relative h-44 bg-slate-900 overflow-hidden">
+              <button onclick="event.stopPropagation(); alert('Saved to favorites!')" class="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center text-xs shadow-sm transition">
+                ♡
+              </button>
+
+              <div class="w-full h-full flex items-center justify-center bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-800 text-center p-4">
+                <div>
+                  <div class="text-4xl mb-1">🔥</div>
+                  <div class="text-[10px] font-mono text-slate-400">Morpheus8 Body/Face + Lumecca</div>
+                </div>
+              </div>
+
+              <div class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+              </div>
+            </div>
+
+            <div class="p-4 space-y-2">
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <span class="text-xl font-black text-slate-900 font-mono">$44,000</span>
+                  <span class="text-[11px] text-slate-400 ml-1 font-mono">Est. $790/mo ⓘ</span>
+                </div>
+                <span class="text-[10px] text-slate-400 font-mono line-through">MSRP $85,000</span>
+              </div>
+
+              <h3 class="text-xs font-bold text-slate-900 group-hover:text-purple-700 transition leading-snug">
+                Pre-Owned 2022 InMode Optimas Max (Morpheus8)
+              </h3>
+
+              <div class="pt-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-medium border border-emerald-100">
+                  ✓ Transferable License ($0 Lockout)
+                </span>
+              </div>
+
+              <div class="pt-2 text-[11px] text-slate-600 space-y-0.5">
+                <div class="flex items-center gap-1 font-medium">
+                  <span>Scottsdale MedSpa Group</span>
+                  <span class="text-amber-500">★ 4.9</span>
+                </div>
+                <div class="text-slate-400 text-[10px]">
+                  <span>📍 Scottsdale, AZ</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 pt-0">
+            <button class="w-full py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs transition cursor-pointer">
+              Check Availability
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- EXACT PRICING MATRIX TABLE (Screenshot Match) -->
+      <div id="pricing-section" class="mt-12 bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-800 text-white card-shadow">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div>
+            <span class="text-[10px] font-mono uppercase bg-purple-950 text-purple-400 border border-purple-800 px-2.5 py-1 rounded font-bold tracking-widest">
+              TRANSPARENT MARKETPLACE TOLLBOOTH
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black text-white mt-2">LUMDIOR Monetization & Pricing Matrix</h2>
+            <p class="text-xs text-slate-400 mt-1 font-mono">Zero 20% Broker Commissions • Direct Clinic-to-Clinic Exchange</p>
+          </div>
+          <div class="flex gap-2">
+            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono font-bold">
+              ✓ 98% Gross Margin
+            </span>
+          </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="overflow-x-auto mt-6">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 font-mono text-[11px] uppercase tracking-wider">
+                <th class="py-3 px-4">User Type</th>
+                <th class="py-3 px-4">Tier</th>
+                <th class="py-3 px-4">Price</th>
+                <th class="py-3 px-4">Included Features</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-medium">
+              <!-- Row 1: BUYER Free Browse -->
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3.5 px-4 font-bold text-slate-300 font-mono">BUYER</td>
+                <td class="py-3.5 px-4 font-bold text-white">Free Browse</td>
+                <td class="py-3.5 px-4 font-black text-slate-200 font-mono">$0</td>
+                <td class="py-3.5 px-4 text-slate-400">Search laser catalog by wavelength, view basic specs.</td>
+              </tr>
+              <!-- Row 2: BUYER Single Deal Unlock -->
+              <tr class="hover:bg-purple-950/20 bg-purple-950/10 transition">
+                <td class="py-3.5 px-4 font-bold text-purple-400 font-mono">BUYER</td>
+                <td class="py-3.5 px-4 font-bold text-white flex items-center gap-1.5">
+                  <span>🔑</span> Single Deal Unlock
+                </td>
+                <td class="py-3.5 px-4 font-black text-emerald-400 font-mono text-sm">$149 <span class="text-[10px] text-slate-400 font-normal">(One-Time)</span></td>
+                <td class="py-3.5 px-4 text-slate-200">Direct chat with seller for <strong class="text-white">1 specific laser</strong> + complete AI Inspection Report.</td>
+              </tr>
+              <!-- Row 3: BUYER VIP Buyer Pass -->
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3.5 px-4 font-bold text-purple-400 font-mono">BUYER</td>
+                <td class="py-3.5 px-4 font-bold text-amber-300 flex items-center gap-1.5">
+                  <span>👑</span> VIP Buyer Pass
+                </td>
+                <td class="py-3.5 px-4 font-black text-amber-400 font-mono text-sm">$199 / mo <span class="text-[10px] text-slate-400 font-normal">(SaaS ARR)</span></td>
+                <td class="py-3.5 px-4 text-slate-200"><strong class="text-white">UNLIMITED chats</strong> with ALL sellers + 24h early access alerts.</td>
+              </tr>
+              <!-- Row 4: SELLER Free Listing -->
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3.5 px-4 font-bold text-slate-300 font-mono">SELLER</td>
+                <td class="py-3.5 px-4 font-bold text-white">Free Listing</td>
+                <td class="py-3.5 px-4 font-black text-slate-200 font-mono">$0</td>
+                <td class="py-3.5 px-4 text-slate-400"><strong class="text-white">100% Free 3-Photo AI Laser Valuation</strong> + Basic Marketplace Listing.</td>
+              </tr>
+              <!-- Row 5: SELLER Fast-Sell Boost -->
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3.5 px-4 font-bold text-emerald-400 font-mono">SELLER</td>
+                <td class="py-3.5 px-4 font-bold text-white flex items-center gap-1.5">
+                  <span>⚡</span> Fast-Sell Boost
+                </td>
+                <td class="py-3.5 px-4 font-black text-emerald-400 font-mono text-sm">$99 <span class="text-[10px] text-slate-400 font-normal">(30 Days)</span></td>
+                <td class="py-3.5 px-4 text-slate-200">Top #1 placement in catalog + <strong class="text-white">"AI Verified Hardware"</strong> badge.</td>
+              </tr>
+              <!-- Row 6: SELLER Pro Dealer Sub -->
+              <tr class="hover:bg-purple-950/20 bg-purple-950/10 transition">
+                <td class="py-3.5 px-4 font-bold text-emerald-400 font-mono">SELLER</td>
+                <td class="py-3.5 px-4 font-bold text-purple-300 flex items-center gap-1.5">
+                  <span>🏢</span> Pro Dealer Sub
+                </td>
+                <td class="py-3.5 px-4 font-black text-purple-400 font-mono text-sm">$149 / mo <span class="text-[10px] text-slate-400 font-normal">(SaaS ARR)</span></td>
+                <td class="py-3.5 px-4 text-slate-200"><strong class="text-white">UNLIMITED listings</strong> + bulk AI appraisals + instant SMS buyer alerts.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- Cars.com Style Detail & Unlock Modal ($149 Digital Tollbooth) -->
+  <div id="details-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-2xl w-full rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="closeDetailsModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-xl font-bold">
+        ✕
+      </button>
+
+      <!-- Modal Header -->
+      <div class="pb-5 border-b border-slate-100">
+        <span class="text-[10px] font-bold uppercase bg-purple-100 text-purple-700 px-2.5 py-1 rounded-md tracking-wider">
+          LUMDIOR VERIFIED CLINICAL DOSSIER
+        </span>
+        <h2 class="text-2xl font-extrabold text-slate-900 mt-2" id="modal-title">Pre-Owned 2022 Candela GentleMax Pro Plus</h2>
+        <div class="text-xs text-slate-500 font-mono mt-1" id="modal-serial">SERIAL # GMP-8492-US • AUDITED BY AI OCR</div>
+      </div>
+
+      <!-- Pricing & Telemetry Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-5 text-xs">
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase">Asking Price</div>
+          <div class="text-lg font-black text-slate-900 font-mono mt-0.5" id="modal-price">$47,652</div>
+        </div>
+        <div class="bg-purple-50 p-3.5 rounded-xl border border-purple-100">
+          <div class="text-[10px] font-semibold text-purple-700 uppercase">AI Fair Value</div>
+          <div class="text-lg font-black text-purple-800 font-mono mt-0.5" id="modal-fair-value">$48,500</div>
+        </div>
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase">Pulse Count</div>
+          <div class="text-sm font-bold text-slate-800 font-mono mt-1" id="modal-pulses">78,450 Pulses</div>
+        </div>
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase">OEM Recert Fee</div>
+          <div class="text-sm font-bold text-amber-600 font-mono mt-1" id="modal-recert">-$12,500</div>
+        </div>
+      </div>
+
+      <!-- AI Inspection Notes -->
+      <div class="mb-6">
+        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-800 mb-2">🔍 AI Optical & Chassis Inspection Report</h4>
+        <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200" id="modal-notes">
+          Dual wavelength 755nm Alexandrite and 1064nm Nd:YAG system. Flashlamp telemetry confirms genuine OEM optics with less than 20% total rated duty wear. Casing and fiber delivery lines in pristine clinical condition.
+        </p>
+      </div>
+
+      <!-- TOLLBOOTH UNLOCK ACTION BOX -->
+      <div class="p-6 rounded-2xl bg-slate-900 text-white text-center space-y-4">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950 text-purple-300 border border-purple-800 text-[10px] font-bold">
+          <span>🔒 DIRECT SELLER CONTACT LOCKED</span>
+        </div>
+        <h3 class="text-lg font-extrabold">Connect Directly with the Selling Clinic</h3>
+        <p class="text-xs text-slate-300 max-w-md mx-auto">
+          Unlock instant direct chat, verified medical director phone number, clinical service records, and high-res optical test logs.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <button onclick="simulateUnlock()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-lg shadow-purple-600/30 transition transform active:scale-95 cursor-pointer">
+            ⚡ Unlock Direct Contact ($149 Spot Toll)
+          </button>
+          <button onclick="simulateVip()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition cursor-pointer">
+            👑 VIP Pass ($199/mo Unlimited)
+          </button>
+        </div>
+        <div class="text-[10px] text-slate-400">
+          Secure Stripe 256-Bit Checkout • 100% Direct Transaction (Zero 20% Broker Commissions)
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pricing Modal (Screenshot Match) -->
+  <div id="pricing-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 max-w-4xl w-full rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl relative max-h-[90vh] overflow-y-auto text-white">
+      
+      <button onclick="document.getElementById('pricing-modal').classList.add('hidden')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-xl font-bold">
+        ✕
+      </button>
+
+      <div class="pb-5 border-b border-slate-800">
+        <span class="text-[10px] font-mono uppercase bg-purple-950 text-purple-400 border border-purple-800 px-2.5 py-1 rounded font-bold tracking-wider">
+          LUMDIOR TOLLBOOTH PRICING
+        </span>
+        <h2 class="text-2xl font-black mt-2">Marketplace Tiers & Subscriptions</h2>
+        <p class="text-xs text-slate-400 mt-1 font-mono">100% Direct Clinic-to-Clinic • Zero 20% Broker Commissions</p>
+      </div>
+
+      <!-- Pricing Table -->
+      <div class="overflow-x-auto my-6">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400 font-mono text-[11px] uppercase tracking-wider">
+              <th class="py-3 px-4">User Type</th>
+              <th class="py-3 px-4">Tier</th>
+              <th class="py-3 px-4">Price</th>
+              <th class="py-3 px-4">Included Features</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/60 font-medium">
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3.5 px-4 font-bold text-slate-300 font-mono">BUYER</td>
+              <td class="py-3.5 px-4 font-bold text-white">Free Browse</td>
+              <td class="py-3.5 px-4 font-black text-slate-200 font-mono">$0</td>
+              <td class="py-3.5 px-4 text-slate-400">Search laser catalog by wavelength, view basic specs.</td>
+            </tr>
+            <tr class="bg-purple-950/20 hover:bg-purple-950/30 transition">
+              <td class="py-3.5 px-4 font-bold text-purple-400 font-mono">BUYER</td>
+              <td class="py-3.5 px-4 font-bold text-white flex items-center gap-1.5">
+                <span>🔑</span> Single Deal Unlock
+              </td>
+              <td class="py-3.5 px-4 font-black text-emerald-400 font-mono text-sm">$149 <span class="text-[10px] text-slate-400 font-normal">(One-Time)</span></td>
+              <td class="py-3.5 px-4 text-slate-200">Direct chat with seller for <strong class="text-white">1 specific laser</strong> + complete AI Inspection Report.</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3.5 px-4 font-bold text-purple-400 font-mono">BUYER</td>
+              <td class="py-3.5 px-4 font-bold text-amber-300 flex items-center gap-1.5">
+                <span>👑</span> VIP Buyer Pass
+              </td>
+              <td class="py-3.5 px-4 font-black text-amber-400 font-mono text-sm">$199 / mo <span class="text-[10px] text-slate-400 font-normal">(SaaS ARR)</span></td>
+              <td class="py-3.5 px-4 text-slate-200"><strong class="text-white">UNLIMITED chats</strong> with ALL sellers + 24h early access alerts.</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3.5 px-4 font-bold text-slate-300 font-mono">SELLER</td>
+              <td class="py-3.5 px-4 font-bold text-white">Free Listing</td>
+              <td class="py-3.5 px-4 font-black text-slate-200 font-mono">$0</td>
+              <td class="py-3.5 px-4 text-slate-400"><strong class="text-white">100% Free 3-Photo AI Laser Valuation</strong> + Basic Marketplace Listing.</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3.5 px-4 font-bold text-emerald-400 font-mono">SELLER</td>
+              <td class="py-3.5 px-4 font-bold text-white flex items-center gap-1.5">
+                <span>⚡</span> Fast-Sell Boost
+              </td>
+              <td class="py-3.5 px-4 font-black text-emerald-400 font-mono text-sm">$99 <span class="text-[10px] text-slate-400 font-normal">(30 Days)</span></td>
+              <td class="py-3.5 px-4 text-slate-200">Top #1 placement in catalog + <strong class="text-white">"AI Verified Hardware"</strong> badge.</td>
+            </tr>
+            <tr class="bg-purple-950/20 hover:bg-purple-950/30 transition">
+              <td class="py-3.5 px-4 font-bold text-emerald-400 font-mono">SELLER</td>
+              <td class="py-3.5 px-4 font-bold text-purple-300 flex items-center gap-1.5">
+                <span>🏢</span> Pro Dealer Sub
+              </td>
+              <td class="py-3.5 px-4 font-black text-purple-400 font-mono text-sm">$149 / mo <span class="text-[10px] text-slate-400 font-normal">(SaaS ARR)</span></td>
+              <td class="py-3.5 px-4 text-slate-200"><strong class="text-white">UNLIMITED listings</strong> + bulk AI appraisals + instant SMS buyer alerts.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button onclick="document.getElementById('pricing-modal').classList.add('hidden')" class="px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-600 font-bold text-xs">
+          Close Pricing
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sell / Appraisal Modal -->
+  <div id="sell-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-2xl text-center space-y-4 relative">
+      <button onclick="document.getElementById('sell-modal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">
+        ✕
+      </button>
+      <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center mx-auto text-2xl">
+        ⚡
+      </div>
+      <h2 class="text-xl font-extrabold text-slate-900">List Your Laser in 30 Seconds</h2>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Drop 3 photos into our AI appraiser to generate your verified certificate and publish your listing directly to thousands of MedSpa buyers for free.
+      </p>
+      <a href="/appraisal" class="block w-full py-3 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs shadow-sm transition">
+        Open AI Appraisal Engine →
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-8">
+    <div class="max-w-[1520px] mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-medium">
+      <div>LUMDIOR.AI • The Certified B2B Aesthetic Equipment Exchange</div>
+      <div class="flex gap-6">
+        <a href="/appraisal" class="hover:text-purple-700 transition">AI Valuation Engine</a>
+        <a href="/terms" class="hover:text-purple-700 transition">Terms</a>
+        <a href="/privacy" class="hover:text-purple-700 transition">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const listingsData = {
+      1: {
+        title: "Pre-Owned 2022 Candela GentleMax Pro Plus",
+        serial: "SERIAL # GMP-8492-US • AUDITED BY AI OCR",
+        price: "$47,652",
+        fairValue: "$48,500",
+        pulses: "78,450 Pulses",
+        recert: "-$12,500",
+        notes: "Dual-wavelength 755nm Alexandrite and 1064nm Nd:YAG system. Flashlamp telemetry confirms genuine OEM optics with less than 20% total rated duty wear. Casing and fiber delivery lines in pristine clinical condition."
+      },
+      2: {
+        title: "Pre-Owned 2021 Alma Soprano Titanium",
+        serial: "SERIAL # SPT1510444 • AUDITED BY AI OCR",
+        price: "$62,500",
+        fairValue: "$62,500",
+        pulses: "5.45M Shots",
+        recert: "-$7,500",
+        notes: "Triple-diode (755/810/1064nm) In-Motion hair removal platform with 15-inch Android touchscreen. ICE Plus cooling port clean with zero mineral scale. 4cm handpiece included."
+      },
+      3: {
+        title: "Certified 2023 Sciton mJOULE Dual Platform",
+        serial: "SERIAL # MJ-2023-901 • AUDITED BY AI OCR",
+        price: "$94,000",
+        fairValue: "$94,000",
+        pulses: "42,100 Pulses",
+        recert: "-$10,000",
+        notes: "Premier dual-treatment platform combining high-speed BBL HERO with 1927nm non-ablative fractional MOXI laser. Single-owner dermatology practice with complete OEM maintenance records."
+      },
+      4: {
+        title: "Pre-Owned 2022 InMode Optimas Max (Morpheus8)",
+        serial: "SERIAL # OPT-2201-384 • AUDITED BY AI OCR",
+        price: "$44,000",
+        fairValue: "$44,000",
+        pulses: "310 RF Hours",
+        recert: "$0 (Transferable)",
+        notes: "Subdermal adipose remodeling platform with Morpheus8 body and face handpieces, plus Lumecca IPL head. Fully transferable software license without manufacturer lockout penalty."
+      }
+    };
+
+    function openDetailsModal(id) {
+      const item = listingsData[id];
+      if (!item) return;
+
+      document.getElementById('modal-title').textContent = item.title;
+      document.getElementById('modal-serial').textContent = item.serial;
+      document.getElementById('modal-price').textContent = item.price;
+      document.getElementById('modal-fair-value').textContent = item.fairValue;
+      document.getElementById('modal-pulses').textContent = item.pulses;
+      document.getElementById('modal-recert').textContent = item.recert;
+      document.getElementById('modal-notes').textContent = item.notes;
+
+      document.getElementById('details-modal').classList.remove('hidden');
+    }
+
+    function closeDetailsModal() {
+      document.getElementById('details-modal').classList.add('hidden');
+    }
+
+    function simulateUnlock() {
+      alert("🔒 Lumdior Digital Tollbooth:\n\nProcessing $149.00 Spot Unlock via Stripe Checkout...\n\nPayment successful! Seller direct phone, WhatsApp, and clinic email unlocked!");
+      closeDetailsModal();
+    }
+
+    function simulateVip() {
+      alert("👑 Lumdior VIP Buyer Pass:\n\nSubscribing to $199/mo Unlimited Unlock Pass...\n\nWelcome VIP! All laser listings are now instantly unlocked with direct clinic chat!");
+      closeDetailsModal();
+    }
+
+    function filterListings() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const checkedBrands = Array.from(document.querySelectorAll('.brand-filter:checked')).map(cb => cb.value.toLowerCase());
+      
+      const cards = document.querySelectorAll('.laser-card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const brand = (card.getAttribute('data-brand') || '').toLowerCase();
+        const text = card.textContent.toLowerCase();
+        
+        const matchesQuery = text.includes(q);
+        const matchesBrand = checkedBrands.length === 0 || checkedBrands.includes(brand);
+
+        if (matchesQuery && matchesBrand) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('result-count').textContent = `${visibleCount} results`;
+    }
+  </script>
+</body>
+</html>

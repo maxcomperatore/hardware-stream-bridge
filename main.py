@@ -3364,7 +3364,10 @@ async def stripe_webhook(request: Request):
         customer_id = getattr(session, 'customer', None)
         metadata = getattr(session, 'metadata', None) or {}
         if not isinstance(metadata, dict):
-            metadata = dict(metadata) if metadata else {}
+            if hasattr(metadata, 'to_dict'):
+                metadata = metadata.to_dict()
+            else:
+                metadata = dict(metadata) if metadata else {}
         amount_total = getattr(session, 'amount_total', 0) or 0
         currency = (getattr(session, 'currency', 'usd') or 'usd').upper()
         amount_formatted = f"${amount_total / 100:.2f} {currency}" if amount_total else ""

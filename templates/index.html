@@ -924,6 +924,7 @@
         let isIngesting = false;
         let ingestedBytes = [];
         let currentIngestSynthModel = null;
+        let hasDetectedProphetHeader = false;
 
         // Currently selected bank state
         let currentActiveBank = null;
@@ -1571,6 +1572,7 @@
             isIngesting = true;
             ingestedBytes = [];
             currentIngestSynthModel = synthModel;
+            hasDetectedProphetHeader = false;
 
             const inputPort = midiAccess.inputs.get(selectedInput);
             const outputPort = midiAccess.outputs.get(selectedOutput);
@@ -1718,17 +1720,22 @@
 
                 const lastByte = ingestedBytes[ingestedBytes.length - 1];
                 // Detect Sequential Prophet header dynamically
-                const isAutoDetectProphet = ingestedBytes.length >= 2 && ingestedBytes[0] === 0xF0 && ingestedBytes[1] === 0x01;
+                if (!hasDetectedProphetHeader && ingestedBytes.length >= 2) {
+                    const len = ingestedBytes.length;
+                    if (ingestedBytes[len - 2] === 0xF0 && ingestedBytes[len - 1] === 0x01) {
+                        hasDetectedProphetHeader = true;
+                    }
+                }
 
                 // Only use the expectedSize optimization if it's not a Prophet
-                if (!isAutoDetectProphet && lastByte === 0xF7 && ingestedBytes.length >= expectedSize - 100) {
+                if (!hasDetectedProphetHeader && lastByte === 0xF7 && ingestedBytes.length >= expectedSize - 100) {
                     stopMidiIngestion(true);
                 } else {
                     ingestIdleTimeout = setTimeout(() => {
                         if (isIngesting && ingestedBytes.length >= 100) {
                             stopMidiIngestion(true);
                         }
-                    }, isAutoDetectProphet ? 25000 : 4000);
+                    }, hasDetectedProphetHeader ? 25000 : 4000);
                 }
             }
         }

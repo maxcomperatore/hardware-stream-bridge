@@ -1513,6 +1513,13 @@ async def blog_web_midi_page(request: Request):
     user = get_current_user(request)
     return render_template("blog_web_midi.html", request, {"user": user})
 
+@app.get("/why-web-midi-breaks-at-4134-bytes", response_class=HTMLResponse)
+@app.get("/blog/why-web-midi-breaks-at-4134-bytes", response_class=HTMLResponse)
+@app.get("/sysex-7bit-packing", response_class=HTMLResponse)
+async def blog_sysex_7bit_packing_page(request: Request):
+    user = get_current_user(request)
+    return render_template("blog_sysex_7bit_packing.html", request, {"user": user})
+
 @app.get("/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide", response_class=HTMLResponse)
 async def guide_dx7_page(request: Request):
     user = get_current_user(request)

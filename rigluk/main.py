@@ -1513,6 +1513,13 @@ async def blog_web_midi_page(request: Request):
     user = get_current_user(request)
     return render_template("blog_web_midi.html", request, {"user": user})
 
+@app.get("/why-web-midi-breaks-at-4134-bytes", response_class=HTMLResponse)
+@app.get("/blog/why-web-midi-breaks-at-4134-bytes", response_class=HTMLResponse)
+@app.get("/sysex-7bit-packing", response_class=HTMLResponse)
+async def blog_sysex_7bit_packing_page(request: Request):
+    user = get_current_user(request)
+    return render_template("blog_sysex_7bit_packing.html", request, {"user": user})
+
 @app.get("/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide", response_class=HTMLResponse)
 async def guide_dx7_page(request: Request):
     user = get_current_user(request)
@@ -3364,7 +3371,10 @@ async def stripe_webhook(request: Request):
         customer_id = getattr(session, 'customer', None)
         metadata = getattr(session, 'metadata', None) or {}
         if not isinstance(metadata, dict):
-            metadata = dict(metadata) if metadata else {}
+            if hasattr(metadata, 'to_dict'):
+                metadata = metadata.to_dict()
+            else:
+                metadata = dict(metadata) if metadata else {}
         amount_total = getattr(session, 'amount_total', 0) or 0
         currency = (getattr(session, 'currency', 'usd') or 'usd').upper()
         amount_formatted = f"${amount_total / 100:.2f} {currency}" if amount_total else ""

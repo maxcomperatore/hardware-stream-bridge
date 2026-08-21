@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    <title>Why Web MIDI Breaks at 4,134 Bytes (And the 1983 Bit-Packing Trick That Fixed It) | bipluk</title>
+    <meta name="description"
+        content="How vintage 8-to-7 bit SysEx packing works, why modern browser accumulators choke on Prophet-5 multi-message streams at byte 4,134, and how we solved it in JavaScript.">
+    <meta name="keywords"
+        content="web midi, sysex unpacking, prophet 5 sysex, sequential circuits 7 bit packing, browser midi bugs, web midi api chrome">
+    {% set seo_canonical = "https://bipluk.com/why-web-midi-breaks-at-4134-bytes" %}
+    {% set seo_title = "Why Web MIDI Breaks at 4,134 Bytes | bipluk" %}
+    {% set seo_description = "How vintage 8-to-7 bit SysEx packing works, why modern browser accumulators choke on Prophet-5 multi-message streams at byte 4,134, and how we solved it in JavaScript." %}
+    {% set seo_schema_type = "TechArticle" %}
+    {% include 'partials/seo_article_meta.html' %}
+
+    {% include 'partials/favicon.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        html { scroll-behavior: smooth; }
+        ::selection { background-color: rgba(41, 151, 255, 0.2); color: #ffffff; }
+
+        @keyframes logo-spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        .code-block {
+            background-color: #0d0e12;
+            border: 1px solid #27272a;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 0.8125rem;
+            line-height: 1.6;
+            color: #d4d4d8;
+        }
+
+        .callout-box {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 3px solid #10b981;
+            padding: 1rem 1.25rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[#060608] font-sans antialiased text-zinc-300 relative selection:bg-emerald-500/20 selection:text-emerald-300">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center" style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="bipluk Logo" width="24" height="24" class="absolute w-6 h-6 object-contain" style="transform: translateZ(0px); image-rendering: pixelated;">
+                    </div>
+                    <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-emerald-400 transition-colors">bipluk</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="hover:text-white transition-colors duration-200">Resources</a>
+                <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/home" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Open Vault
+                </a>
+                {% else %}
+                <a href="/login" class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
+                    Sign In
+                </a>
+                <a href="/signup" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Get Started Free
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 py-16 relative z-10">
+        <!-- Post Header -->
+        <article class="space-y-6 text-left mb-12 border-b border-zinc-900 pb-10">
+            <div class="flex items-center gap-3">
+                <span class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase bg-emerald-950/80 text-emerald-400 border border-emerald-800/40">
+                    Deep Dive / Reverse Engineering
+                </span>
+                <span class="text-xs font-mono text-zinc-500">August 2026</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                Why Web MIDI Breaks at 4,134 Bytes <span class="text-zinc-500 font-normal text-2xl md:text-3xl block mt-2">(And the 1983 Bit-Packing Trick That Fixed It)</span>
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
+                Web MIDI is a minor miracle. You open a browser tab, plug a synthesizer built in 1983 into a USB port, and raw hexadecimal streams directly into JavaScript memory. Then your bank dump silently cuts off at patch 26 every single time.
+            </p>
+        </article>
+
+        <!-- Article Content -->
+        <div class="space-y-8 text-zinc-300 text-base leading-relaxed">
+            
+            <p>
+                When building browser-based SysEx tools, you quickly realize that modern web APIs and vintage serial protocols speak two entirely different dialects of physics. Here is the story of how 40-year-old serial protocol constraints collided with modern browser stream accumulation—and why 8-to-7 bit MSB unpacking is still the most fascinating hack in music technology.
+            </p>
+
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight pt-4">
+                1. The 7-Bit Curse of 1983
+            </h2>
+
+            <p>
+                In 1983, Dave Smith and Roland engineers established the MIDI 1.0 specification with one inviolable rule:
+            </p>
+
+            <div class="callout-box font-mono text-sm text-emerald-300">
+                <strong>Rule #1 of MIDI:</strong> The Most Significant Bit (Bit 7) is strictly reserved for Status Bytes.
+            </div>
+
+            <p>
+                If a byte has <code class="bg-zinc-900 text-zinc-200 px-1.5 py-0.5 rounded text-sm font-mono">0b1xxxxxxx</code> (values <code class="bg-zinc-900 text-zinc-200 px-1.5 py-0.5 rounded text-sm font-mono">0x80</code> to <code class="bg-zinc-900 text-zinc-200 px-1.5 py-0.5 rounded text-sm font-mono">0xFF</code>), it is a command—like Note On (<code class="text-zinc-300 font-mono">0x90</code>), Clock (<code class="text-zinc-300 font-mono">0xF8</code>), or SysEx Start (<code class="text-zinc-300 font-mono">0xF0</code>).
+            </p>
+
+            <p>
+                If a byte has <code class="bg-zinc-900 text-zinc-200 px-1.5 py-0.5 rounded text-sm font-mono">0b0xxxxxxx</code> (values <code class="bg-zinc-900 text-zinc-200 px-1.5 py-0.5 rounded text-sm font-mono">0x00</code> to <code class="bg-zinc-900 text-zinc-200 px-1.5 py-0.5 rounded text-sm font-mono">0x7F</code>), it is Data.
+            </p>
+
+            <div class="code-block">
++---+---+---+---+---+---+---+---+
+| 0 | D6| D5| D4| D3| D2| D1| D0|  --> Valid MIDI Data Byte (Max value 127)
++---+---+---+---+---+---+---+---+
+            </div>
+
+            <p>
+                This created an immediate dilemma for synthesizer manufacturers: <em>How do you transmit full 8-bit parameter values (0–255) or raw ASCII patch names across a wire that only allows 7 bits per byte?</em>
+            </p>
+
+            <p>
+                Their solution was ingenious: <strong>8-to-7 Bit MSB Packing</strong>.
+            </p>
+
+            <p>
+                Instead of sending raw 8-bit bytes, you strip the 8th bit off 7 consecutive data bytes, pack those 7 high bits into an 8th "leader" byte, and transmit an 8-byte frame across the wire:
+            </p>
+
+            <div class="code-block">
+[MSB Leader: b0 b1 b2 b3 b4 b5 b6] + [Byte 0 (7-bit)] + [Byte 1 (7-bit)] ... [Byte 6 (7-bit)]
+            </div>
+
+            <p>
+                When you parse a Sequential Prophet-5, Prophet-6, or OB-6 dump in Python or JavaScript, if you don't reconstruct that 8th bit for every 7-byte block, every preset name comes out as unreadable gibberish:
+            </p>
+
+            <div class="code-block">
+def unescape_sequential(sysex: bytes) -> bytes:
+    result = bytearray()
+    idx = 0
+    while idx < len(sysex):
+        msbits = sysex[idx]
+        idx += 1
+        for i in range(7):
+            if idx < len(sysex):
+                # Restore the stripped 8th bit from the MSB leader byte
+                result.append(sysex[idx] | ((msbits & (1 << i)) << (7 - i)))
+            idx += 1
+    return bytes(result)
+            </div>
+
+            <div class="callout-box font-mono text-xs text-zinc-400">
+                <strong class="text-white">Remember this:</strong> If your hardware dump looks corrupted in a hex editor, you aren't looking at bad data. You are looking at a 7-bit packing matrix designed during the Reagan administration.
+            </div>
+
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight pt-6">
+                2. Why Chrome's Stream Accumulator Choked at Byte 4,134
+            </h2>
+
+            <p>
+                Most Web MIDI code examples online assume synths dump soundbanks in single, contiguous blocks. A Yamaha DX7 dumps exactly 4,104 bytes in one shot (32 voices &times; 128 bytes + headers).
+            </p>
+
+            <p>
+                Because of this, legacy ingestion logic frequently relies on a naive byte-count check:
+            </p>
+
+            <div class="code-block">
+// The classic naive auto-detect accumulator
+const expectedSize = 4104;
+if (lastByte === 0xF7 && ingestedBytes.length >= expectedSize - 100) {
+    stopMidiIngestion(true); // Close the stream!
+}
+            </div>
+
+            <p>
+                Now plug in a Sequential Prophet-5 (Rev 4). The Prophet-5 doesn't send one monolithic 4KB chunk. It transmits <strong>40 separate, distinct SysEx messages</strong> back-to-back—one message per patch, clocked at approximately 159 bytes each.
+            </p>
+
+            <p>
+                Do the math:
+            </p>
+
+            <div class="code-block">
+Patch 1 to 25 = 25 × 159 = 3,975 bytes
+Patch 26      = 26 × 159 = 4,134 bytes (>= 4,004 threshold!)
+            </div>
+
+            <p>
+                The exact millisecond the 26th patch arrived, <code class="bg-zinc-900 text-emerald-400 px-1 font-mono">ingestedBytes.length</code> hit <strong>4,134</strong>. The accumulator saw a closing <code class="bg-zinc-900 text-emerald-400 px-1 font-mono">0xF7</code> delimiter, matched the condition, assumed a DX7 dump had finished, and forcefully slammed the stream shut.
+            </p>
+
+            <p>
+                Patches 27 through 40 vanished into the ether.
+            </p>
+
+            <h2 class="text-xl md:text-2xl font-bold text-white tracking-tight pt-6">
+                3. The 3 Rules for Robust Web MIDI Ingestion
+            </h2>
+
+            <p>
+                To build browser-based Web MIDI tools that never drop hardware patches, follow these three rules:
+            </p>
+
+            <ol class="list-decimal list-inside space-y-4 text-zinc-300 font-sans pl-2">
+                <li>
+                    <strong class="text-white">Inspect Manufacturer ID Bytes, Not Lengths:</strong> Check byte <code class="font-mono text-zinc-200">data[1]</code> on incoming packets (<code class="font-mono text-zinc-200">0x01</code> for Sequential, <code class="font-mono text-zinc-200">0x41</code> for Roland, <code class="font-mono text-zinc-200">0x43</code> for Yamaha). Never assume uniform bank dimensions.
+                </li>
+                <li>
+                    <strong class="text-white">Debounced Ingestion Idle Timers Beat Message Counters:</strong> Hardware DIN-to-USB optocouplers introduce microsecond latency. Using a 25-second debounced silence detector allows multi-message dumps to complete organically without premature cutoffs.
+                </li>
+                <li>
+                    <strong class="text-white">Unbundle 30-Year-Old Native Utilities:</strong> Musicians shouldn't need to run 32-bit legacy executables just to backup soundbanks. With modern Web MIDI, WebAssembly, and local SQLite/PostgreSQL caching, zero-install studio workflows in the browser are finally production-ready.
+                </li>
+            </ol>
+
+            <div class="pt-8 border-t border-zinc-900 flex items-center justify-between">
+                <a href="/signup" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs font-mono transition-transform active:scale-95 shadow-lg shadow-emerald-500/20">
+                    Try the Web MIDI Vault Free →
+                </a>
+                <a href="/resources" class="text-xs text-zinc-500 hover:text-zinc-300 font-mono transition">
+                    ← Back to Tech Guides
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+</body>
+</html>

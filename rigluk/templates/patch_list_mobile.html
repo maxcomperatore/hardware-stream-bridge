@@ -19,13 +19,18 @@
     </div>
 
     {% if user.tier == 'premium' %}
-    <div class="px-4 pb-3">
+    <div class="px-4 pb-3 flex items-center gap-2">
         <a href="/banks/{{ bank.id }}/download"
             onclick="logToPostHog('bank_downloaded', { bank_id: {{ bank.id }}, bank_name: '{{ bank.name }}', mobile: true })"
             class="inline-flex items-center gap-2 rounded-full bg-white text-black text-xs font-semibold px-4 py-2 active:scale-[0.98] transition-transform">
             <img src="/static/icons/dinkie/download.svg" class="h-3.5 w-3.5" alt="" />
             Download .syx
         </a>
+        <button onclick="shareBankMobile({{ bank.id }}, '{{ bank.name }}')"
+            class="inline-flex items-center gap-2 rounded-full bg-zinc-800 text-white text-xs font-semibold px-4 py-2 active:scale-[0.98] transition-transform">
+            <img src="/static/icons/dinkie/globe-meridians.svg" class="h-3.5 w-3.5" style="filter: invert(1);" alt="" />
+            Share
+        </button>
     </div>
     {% endif %}
 
@@ -54,6 +59,34 @@
 </div>
 
 <script>
+    async function shareBankMobile(bankId, bankName) {
+        logToPostHog('bank_shared', { bank_id: bankId, bank_name: bankName, mobile: true });
+        try {
+            const response = await fetch(`/banks/${bankId}/share`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (!response.ok) throw new Error("Failed to generate share link");
+            const data = await response.json();
+            
+            await navigator.clipboard.writeText(data.url);
+            
+            // Simple mobile alert fallback if toast isn't available
+            if (typeof showToast === 'function') {
+                showToast("Link Copied", "Public read-only link copied to clipboard.", "success");
+            } else {
+                alert("Share link copied to clipboard:\n" + data.url);
+            }
+        } catch (error) {
+            console.error("Share error:", error);
+            if (typeof showToast === 'function') {
+                showToast("Share Failed", "Could not generate share link.", "error");
+            } else {
+                alert("Failed to generate share link.");
+            }
+        }
+    }
+
     window.mobileActivePatches = {{ bank.patches | tojson | safe }};
     window.mobileActiveBankMeta = {
         id: {{ bank.id }},

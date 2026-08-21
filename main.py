@@ -3005,6 +3005,29 @@ async def download_bank(request: Request, bank_id: int):
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
 
+@app.post("/banks/{bank_id}/share")
+async def share_bank(request: Request, bank_id: int):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    if user["tier"] != "premium":
+        raise HTTPException(status_code=403, detail="Premium required to share soundbanks")
+        
+    token = database.generate_bank_share_token(bank_id, user["id"])
+    if not token:
+        raise HTTPException(status_code=404, detail="Bank not found")
+        
+    base_url = str(request.base_url).rstrip("/")
+    share_url = f"{base_url}/share/{token}"
+    return JSONResponse({"url": share_url, "token": token})
+
+@app.get("/share/{token}", response_class=HTMLResponse)
+async def view_shared_bank(request: Request, token: str):
+    bank = database.get_bank_by_share_token(token)
+    if not bank:
+        raise HTTPException(status_code=404, detail="Shared soundbank not found or link has expired.")
+    return render_template("shared_bank.html", request, {"bank": bank})
+
 @app.get("/banks/{bank_id}/export-txt")
 async def export_bank_txt(request: Request, bank_id: int):
     user = get_current_user(request)

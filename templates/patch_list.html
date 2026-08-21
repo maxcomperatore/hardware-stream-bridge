@@ -53,6 +53,13 @@
                         <img src="/static/icons/dinkie/download.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
                         Download file
                     </a>
+                    
+                    <button onclick="shareBank({{ bank.id }}, '{{ bank.name }}')"
+                            title="Share as public read-only link"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-350 font-roman uppercase text-[9px] tracking-wider transition-colors tactical-button">
+                        <img src="/static/icons/dinkie/globe-meridians.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                        Share
+                    </button>
                     {% else %}
                     <a href="/checkout"
                        title="Download .syx backup file"
@@ -154,6 +161,24 @@
     }
     
     var cachedPatchRows = null;
+    async function shareBank(bankId, bankName) {
+        logToPostHog('bank_shared', { bank_id: bankId, bank_name: bankName });
+        try {
+            const response = await fetch(`/banks/${bankId}/share`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (!response.ok) throw new Error("Failed to generate share link");
+            const data = await response.json();
+            
+            await navigator.clipboard.writeText(data.url);
+            showToast("Link Copied", "Public read-only link copied to clipboard.", "success");
+        } catch (error) {
+            console.error("Share error:", error);
+            showToast("Share Failed", "Could not generate share link.", "error");
+        }
+    }
+
     function filterPatches() {
         if (!cachedPatchRows) {
             cachedPatchRows = document.querySelectorAll('.patch-row');

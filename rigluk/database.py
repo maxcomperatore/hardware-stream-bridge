@@ -183,6 +183,7 @@ def init_db():
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_archived BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS archived_at VARCHAR(100);")
         cursor.execute("ALTER TABLE pending_premiums ADD COLUMN IF NOT EXISTS plan VARCHAR(50) DEFAULT 'personal';")
+        cursor.execute("ALTER TABLE banks ADD COLUMN IF NOT EXISTS share_token VARCHAR(255) UNIQUE;")
         
         conn.commit()
     except Exception as e:
@@ -517,6 +518,61 @@ def get_bank(bank_id: int, user_id: int) -> dict | None:
             conn.close()
     except Exception as e:
         print(f"Database error in get_bank: {e}")
+        return None
+
+def generate_bank_share_token(bank_id: int, user_id: int) -> str | None:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SELECT share_token FROM banks WHERE id = %s AND user_id = %s", (bank_id, user_id))
+            row = cursor.fetchone()
+            if not row:
+                return None
+            if row[0]:
+                return row[0]
+            
+            import secrets
+            token = secrets.token_urlsafe(16)
+            cursor.execute("UPDATE banks SET share_token = %s WHERE id = %s AND user_id = %s", (token, bank_id, user_id))
+            conn.commit()
+            return token
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in generate_bank_share_token: {e}")
+        return None
+
+def get_bank_by_share_token(token: str) -> dict | None:
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = get_db_cursor(conn)
+            cursor.execute("SELECT * FROM banks WHERE share_token = %s", (token,))
+            row = cursor.fetchone()
+            if not row:
+                return None
+                
+            bank_id = row['id']
+            cursor.execute("SELECT * FROM patches WHERE bank_id = %s ORDER BY patch_index ASC", (bank_id,))
+            patch_rows = cursor.fetchall()
+            
+            dt = datetime.fromisoformat(row['created_at'])
+            formatted_date = dt.strftime("%b %d, %Y %I:%M %p")
+            
+            return {
+                "id": row['id'],
+                "name": row['name'],
+                "synth_model": row['synth_model'],
+                "sysex_hex": row['sysex_hex'],
+                "created_at": formatted_date,
+                "patches": [{"index": p['patch_index'], "name": p['name']} for p in patch_rows],
+                "user_id": row['user_id']
+            }
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in get_bank_by_share_token: {e}")
         return None
 
 def delete_bank(bank_id: int, user_id: int):

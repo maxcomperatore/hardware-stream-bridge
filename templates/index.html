@@ -1721,9 +1721,11 @@
                 const lastByte = ingestedBytes[ingestedBytes.length - 1];
                 // Detect Sequential Prophet header dynamically
                 if (!hasDetectedProphetHeader && ingestedBytes.length >= 2) {
-                    const len = ingestedBytes.length;
-                    if (ingestedBytes[len - 2] === 0xF0 && ingestedBytes[len - 1] === 0x01) {
-                        hasDetectedProphetHeader = true;
+                    for (let i = 0; i < ingestedBytes.length - 1; i++) {
+                        if (ingestedBytes[i] === 0xF0 && ingestedBytes[i + 1] === 0x01) {
+                            hasDetectedProphetHeader = true;
+                            break;
+                        }
                     }
                 }
 

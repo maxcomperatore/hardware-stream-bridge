@@ -484,21 +484,37 @@ def parse_prophet_sysex(data: bytes) -> list[str]:
                     name = m.strip()
                     if len(name) >= 3 and not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex", "system"]):
                         filtered.append(name)
-                patch_name = max(filtered, key=len) if filtered else f"Prophet Patch {i+1:03d}"
+                patch_name = max(filtered, key=len) if filtered else f"Patch {i+1:02d}"
+
+            # Format with Prophet-5 hardware base-8 bank/slot display (11..18, 21..28, up to 58)
+            group = (i // 8) + 1
+            slot = (i % 8) + 1
+            slot_label = f"{group}{slot}"
+            # Prepend if not already prefixed with hardware numbers
+            if not re.match(r'^\d{2}\s', patch_name):
+                patch_name = f"{slot_label} {patch_name}"
 
             patches.append(patch_name)
     else:
         text = clean_name(data)
         matches = re.findall(r'[A-Za-z0-9][A-Za-z0-9\s\-\.\_\+\*\/\[\]\!\#\’\']{3,15}', text)
-        for m in matches:
+        for i, m in enumerate(matches):
             name = m.strip()
             if len(name) >= 4 and not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex", "system"]):
+                group = (i // 8) + 1
+                slot = (i % 8) + 1
+                slot_label = f"{group}{slot}"
+                if not re.match(r'^\d{2}\s', name):
+                    name = f"{slot_label} {name}"
                 patches.append(name)
 
     expected_count = len(messages) if len(messages) >= 1 else (len(patches) if len(patches) > 0 else 40)
     if len(patches) < expected_count:
         while len(patches) < expected_count:
-            patches.append(f"Prophet Patch {len(patches)+1:03d}")
+            idx = len(patches)
+            group = (idx // 8) + 1
+            slot = (idx % 8) + 1
+            patches.append(f"{group}{slot} Prophet Patch {idx+1:02d}")
 
     return patches[:expected_count] if expected_count > 0 else patches
 

@@ -381,6 +381,62 @@ def parse_prophet_sysex(data: bytes) -> list[str]:
     Supports multi-message dumps and single bulk dumps.
     Handles non-standard quotes (e.g. ’ / '), spaces, and prevents +1 index offset caused by identity headers.
     """
+    def unescape_sequential(sysex):
+        result = bytearray()
+        dataIndex = 0
+        while dataIndex < len(sysex):
+            msbits = sysex[dataIndex]
+            dataIndex += 1
+            for i in range(7):
+                if dataIndex < len(sysex):
+                    result.append(sysex[dataIndex] | ((msbits & (1 << i)) << (7 - i)))
+                dataIndex += 1
+        return bytes(result)
+
+    def extract_dsi_name(unescaped):
+        strings = []
+        current = []
+        for b in unescaped:
+            if 32 <= b <= 126:
+                current.append(chr(b))
+            else:
+                if len(current) >= 4:
+                    strings.append("".join(current))
+                current = []
+        if len(current) >= 4:
+            strings.append("".join(current))
+
+        candidates = []
+        for s in strings:
+            if len(s) in [16, 20]:
+                if re.match(r'^[xXdX]+$', s): continue
+                if re.match(r'^[<]+$', s): continue
+                if re.match(r'^[0-9A-Fa-f]+$', s): continue
+                if sum(1 for c in s if c.isalpha()) >= 3:
+                    candidates.append(s)
+
+        if candidates:
+            return candidates[0]
+
+        if len(unescaped) >= 85:
+            p5_name = unescaped[65:85]
+            if all(32 <= b <= 126 for b in p5_name):
+                s = p5_name.decode('ascii')
+                if sum(1 for c in s if c.isalpha()) >= 3:
+                    return s
+
+        filtered = []
+        for s in strings:
+            if re.match(r'^[<xXdX]+$', s): continue
+            if re.match(r'^[0-9A-Fa-f]+$', s): continue
+            if sum(1 for c in s if c.isalpha()) >= 3:
+                filtered.append(s[:20])
+
+        if filtered:
+            return max(filtered, key=len)
+
+        return None
+
     messages = []
     idx = 0
     while True:
@@ -413,27 +469,52 @@ def parse_prophet_sysex(data: bytes) -> list[str]:
 
     if len(messages) > 0:
         for i, msg in enumerate(messages):
-            text = clean_name(msg)
-            matches = re.findall(r'[A-Za-z0-9][A-Za-z0-9\s\-\.\_\+\*\/\[\]\!\#\’\']{2,15}', text)
-            filtered = []
-            for m in matches:
-                name = m.strip()
-                if len(name) >= 3 and not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex", "system"]):
-                    filtered.append(name)
-            patch_name = max(filtered, key=len) if filtered else f"Prophet Patch {i+1:03d}"
+            patch_name = None
+            if len(msg) > 7 and msg[0] == 0xF0 and msg[1] == 0x01:
+                unescaped = unescape_sequential(msg[6:-1])
+                extracted = extract_dsi_name(unescaped)
+                if extracted:
+                    patch_name = extracted.strip()
+
+            if not patch_name:
+                text = clean_name(msg)
+                matches = re.findall(r'[A-Za-z0-9][A-Za-z0-9\s\-\.\_\+\*\/\[\]\!\#\’\']{2,15}', text)
+                filtered = []
+                for m in matches:
+                    name = m.strip()
+                    if len(name) >= 3 and not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex", "system"]):
+                        filtered.append(name)
+                patch_name = max(filtered, key=len) if filtered else f"Patch {i+1:02d}"
+
+            # Format with Prophet-5 hardware base-8 bank/slot display (11..18, 21..28, up to 58)
+            group = (i // 8) + 1
+            slot = (i % 8) + 1
+            slot_label = f"{group}{slot}"
+            # Prepend if not already prefixed with hardware numbers
+            if not re.match(r'^\d{2}\s', patch_name):
+                patch_name = f"{slot_label} {patch_name}"
+
             patches.append(patch_name)
     else:
         text = clean_name(data)
         matches = re.findall(r'[A-Za-z0-9][A-Za-z0-9\s\-\.\_\+\*\/\[\]\!\#\’\']{3,15}', text)
-        for m in matches:
+        for i, m in enumerate(matches):
             name = m.strip()
             if len(name) >= 4 and not any(kw in name.lower() for kw in ["dsi", "sequential", "sysex", "system"]):
+                group = (i // 8) + 1
+                slot = (i % 8) + 1
+                slot_label = f"{group}{slot}"
+                if not re.match(r'^\d{2}\s', name):
+                    name = f"{slot_label} {name}"
                 patches.append(name)
 
     expected_count = len(messages) if len(messages) >= 1 else (len(patches) if len(patches) > 0 else 40)
     if len(patches) < expected_count:
         while len(patches) < expected_count:
-            patches.append(f"Prophet Patch {len(patches)+1:03d}")
+            idx = len(patches)
+            group = (idx // 8) + 1
+            slot = (idx % 8) + 1
+            patches.append(f"{group}{slot} Prophet Patch {idx+1:02d}")
 
     return patches[:expected_count] if expected_count > 0 else patches
 

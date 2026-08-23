@@ -70,8 +70,8 @@ def main() -> int:
     failed: list[dict] = []
 
     for user in users:
-        html = user.get("html_content") or ""
-        text_body = user.get("plain_body") or ""
+        html = user.get("html") or user.get("html_content") or ""
+        text_body = user.get("text") or user.get("plain_body") or ""
         ok, err = send_resend(user["email"], subject, text_body, html, from_addr, reply_to)
         if ok:
             sent.append({"id": user["id"], "email": user["email"]})

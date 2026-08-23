@@ -90,7 +90,7 @@ FAQ_ENTRIES = [
             "saas",
         ],
         "answer": (
-            "No. bipluk is not a subscription. bipluk+ is a simple $49 one-time lifetime "
+            "No. bipluk is not a subscription. bipluk+ is a simple $99 one-time lifetime "
             "purchase. Pay once, keep your vault, and download your .syx files whenever you want. There are no "
             "monthly fees and no automatic renewals."
         ),
@@ -104,8 +104,8 @@ FAQ_ENTRIES = [
             "what does it cost",
         ],
         "answer": (
-            "bipluk+ is $49 one-time for lifetime access. "
-            "Includes unlimited soundbank backups, preset decoding, and full .syx/.zip/.csv exports. "
+            "bipluk+ is $99 one-time for lifetime access. "
+            "Includes unlimited soundbank vault, Web MIDI live capture, hardware base-8 numbered export, and Prophet-5/DX7/Juno decoders. "
             "There are no recurring monthly fees."
         ),
     },

@@ -608,7 +608,7 @@
         {
           "@type": "Offer",
           "name": "bipluk+",
-          "price": "49.00",
+          "price": "99.00",
           "priceCurrency": "USD",
           "url": "https://bipluk.com/#pricing",
           "description": "One-time lifetime license. Not a subscription."
@@ -750,7 +750,7 @@
           "name": "What is the price of bipluk?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We offer transparent lifetime pricing: bipluk+ at $49. One-time payment, no monthly fees, no automatic renewals. Includes unlimited soundbank saving, preset decoding, and .syx export."
+            "text": "We offer transparent lifetime pricing: bipluk+ at $99. One-time payment, no monthly fees, no automatic renewals. Includes unlimited soundbank vault, Web MIDI live capture, hardware base-8 numbered export, and Prophet-5/DX7/Juno decoders."
           }
         },
         {
@@ -1946,7 +1946,7 @@
         <!-- Pricing Grid -->
         <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
             {% if pricing is not defined %}
-            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '49', 'studio_amount': '399',
+            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '99', 'studio_amount': '399',
             'billing_label': 'USD / ONE-TIME', 'free_price_display': '$0'} %}
             {% endif %}
             <div class="text-center max-w-2xl mx-auto mb-8 reveal">
@@ -1992,7 +1992,7 @@
                             <div class="flex items-center gap-2 flex-wrap pr-16 pt-2">
                                 <h3 class="text-sm font-roman uppercase text-white tracking-wide">bipluk+</h3>
                             </div>
-                            <p class="text-xs text-zinc-400 mt-1 pr-16">Full unlimited cloud librarian for your synth collection.</p>
+                            <p class="text-xs text-zinc-400 mt-1 pr-16">Unlimited soundbank vault, Web MIDI live capture, hardware base-8 numbered export, and Prophet-5/DX7/Juno decoders.</p>
                         </div>
                         <div class="h-16 flex flex-col justify-center">
                                 <div class="flex items-baseline gap-2">
@@ -2024,17 +2024,22 @@
                                 <li class="flex items-center gap-2">
                                 <img src="/static/icons/dinkie/file-cabinet.svg" alt="" width="14"
                                     height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
-                                <span class="text-white font-semibold">Save unlimited soundbanks</span>
+                                <span class="text-white font-semibold">Unlimited soundbank vault</span>
                                 </li>
                                 <li class="flex items-center gap-2">
-                                <img src="/static/icons/dinkie/circled-information-source.svg" alt=""
+                                <img src="/static/icons/dinkie/sparkles.svg" alt=""
                                     width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
-                                    <span class="text-white font-semibold">See preset names instantly</span>
+                                    <span class="text-white font-semibold">Web MIDI live capture</span>
                                 </li>
                                 <li class="flex items-center gap-2">
-                                    <img src="/static/icons/dinkie/sparkles.svg" alt=""
+                                    <img src="/static/icons/dinkie/download.svg" alt="" width="14"
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                    <span class="text-white font-semibold">Hardware base-8 numbered export</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="/static/icons/dinkie/circled-information-source.svg" alt=""
                                     width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
-                                    <span class="text-white font-semibold">Lifetime updates, zero monthly fees</span>
+                                    <span class="text-white font-semibold">Prophet-5, DX7, and Juno decoders</span>
                                 </li>
                                 <li class="flex items-center gap-2">
                                     <img src="/static/icons/dinkie/code.svg" alt="" width="14"
@@ -2042,14 +2047,9 @@
                                     <span class="text-white font-semibold">Support for all 83+ vintage &amp; modern synths</span>
                                 </li>
                                 <li class="flex items-center gap-2">
-                                    <img src="/static/icons/dinkie/download.svg" alt="" width="14"
-                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
-                                    <span class="text-white font-semibold">Download your backups anytime (.syx / .zip / .csv)</span>
-                                </li>
-                                <li class="flex items-center gap-2">
                                     <img src="/static/icons/dinkie/hourglass-with-flowing-sand.svg"
                                     alt="" width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
-                                    <span class="text-white font-semibold">Protect patches from battery death</span>
+                                    <span class="text-white font-semibold">Lifetime updates, zero monthly fees</span>
                                 </li>
                                 <li class="flex items-center gap-1.5 md:gap-2 flex-nowrap">
                                 <img src="/static/icons/dinkie/heart-white-suit-circled.svg" alt=""
@@ -2144,12 +2144,12 @@
             const AU_COUNTRY_CODES = {{ au_country_codes | tojson if au_country_codes is defined else '[]' }};
             const CH_COUNTRY_CODES = {{ ch_country_codes | tojson if ch_country_codes is defined else '[]' }};
             const REGIONAL_PRICING_DISPLAY = {
-                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '49', free: '€0', competitor: '200' },
-                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '49', free: '£0', competitor: '200' },
-                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '69', free: '$0 CAD', competitor: '280' },
-                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '69', free: '$0 AUD', competitor: '280' },
-                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '49', free: 'Fr. 0', competitor: '200' },
-                jpy: { symbol: '¥', billing: 'JPY / ONE-TIME', personal: '7,800', free: '¥0', competitor: '32,000' },
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '99', free: '€0', competitor: '200' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '99', free: '£0', competitor: '200' },
+                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '139', free: '$0 CAD', competitor: '280' },
+                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '149', free: '$0 AUD', competitor: '280' },
+                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '99', free: 'Fr. 0', competitor: '200' },
+                jpy: { symbol: '¥', billing: 'JPY / ONE-TIME', personal: '15,800', free: '¥0', competitor: '32,000' },
             };
 
             function resolveRegionalPricingRegion(data) {
@@ -2881,7 +2881,7 @@
                             execute: async function () {
                                 return {
                                     plans: [
-                                        { name: "bipluk+", price: "$49 one-time", billing: "lifetime" },
+                                        { name: "bipluk+", price: "$99 one-time", billing: "lifetime" },
                                         { name: "Commercial / B2B", price: "Contact for quote", billing: "custom", contact: "halfradiationllc@gmail.com", perks: ["White-labeling", "Multi-site licenses", "Repair shop deployments", "Dedicated onboarding"] }
                                     ],
                                     signup_url: "https://bipluk.com/signup",

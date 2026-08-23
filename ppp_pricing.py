@@ -23,9 +23,9 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # 1.  BASE PRICE (USD)
 # ---------------------------------------------------------------------------
-BASE_USD_PRICE = 49.00          # Your product's US price
-MIN_USD_FLOOR  = 9.00           # Never go below $9 equivalent (abuse floor)
-MAX_USD_CEIL   = 49.00          # Never exceed base price
+BASE_USD_PRICE = 99.00          # Your product's US price
+MIN_USD_FLOOR  = 18.00          # Never go below $18 equivalent (abuse floor)
+MAX_USD_CEIL   = 99.00          # Never exceed base price
 GLOBAL_MEDIAN_GDP = 12_000      # Fallback for unlisted countries
 
 # ---------------------------------------------------------------------------
@@ -169,7 +169,7 @@ def _compute_ppp_price_usd(country_code: str) -> float:
     if country_code.upper() == "AR":
         adjusted_usd = max(21.99, adjusted_usd * 0.75)
 
-    return max(19.00, min(adjusted_usd, MAX_USD_CEIL))
+    return max(MIN_USD_FLOOR, min(adjusted_usd, MAX_USD_CEIL))
 
 
 def _snap_ending_9(whole: float) -> int:

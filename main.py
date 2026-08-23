@@ -95,7 +95,7 @@ def is_consumer_email(email: str) -> bool:
 
 
 def resolve_plan_for_email(plan: str, email: str) -> str:
-    """Allow users to choose Personal ($49) regardless of email domain."""
+    """Allow users to choose Personal ($99) regardless of email domain."""
     return normalize_plan(plan)
 # Clean up/delete any generated mockup assets in static folder
 def clean_old_assets():
@@ -630,7 +630,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "usd",
         "currency": "USD",
         "symbol": "$",
-        "personal_amount": "49",
+        "personal_amount": "99",
         "competitor_amount": "200",
         "billing_label": "USD / ONE-TIME",
     },
@@ -638,7 +638,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "eur",
         "currency": "EUR",
         "symbol": "€",
-        "personal_amount": "49",
+        "personal_amount": "99",
         "competitor_amount": "200",
         "billing_label": "EUR / ONE-TIME",
     },
@@ -646,7 +646,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "gbp",
         "currency": "GBP",
         "symbol": "£",
-        "personal_amount": "49",
+        "personal_amount": "99",
         "competitor_amount": "200",
         "billing_label": "GBP / ONE-TIME",
     },
@@ -654,7 +654,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "cad",
         "currency": "CAD",
         "symbol": "$",
-        "personal_amount": "69",
+        "personal_amount": "139",
         "competitor_amount": "280",
         "billing_label": "CAD / ONE-TIME",
     },
@@ -662,7 +662,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "aud",
         "currency": "AUD",
         "symbol": "$",
-        "personal_amount": "69",
+        "personal_amount": "149",
         "competitor_amount": "280",
         "billing_label": "AUD / ONE-TIME",
     },
@@ -670,7 +670,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "chf",
         "currency": "CHF",
         "symbol": "Fr.",
-        "personal_amount": "49",
+        "personal_amount": "99",
         "competitor_amount": "200",
         "billing_label": "CHF / ONE-TIME",
     },
@@ -678,7 +678,7 @@ REGIONAL_PRICING_CATALOG = {
         "region": "jpy",
         "currency": "JPY",
         "symbol": "¥",
-        "personal_amount": "7,800",
+        "personal_amount": "15,800",
         "competitor_amount": "32,000",
         "billing_label": "JPY / ONE-TIME",
     },
@@ -825,8 +825,8 @@ def get_request_country_code(request: Request) -> str:
 PLAN_CATALOG = {
     "personal": {
         "label": "Personal",
-        "price_display": "$49",
-        "amount_cents": 4900,
+        "price_display": "$99",
+        "amount_cents": 9900,
         "stripe_price_id": STRIPE_PRICE_ID_PERSONAL,
         "commercial": False,
     },
@@ -973,9 +973,9 @@ async def build_plan_checkout_line_items(plan: str, country_code: str | None) ->
     _ppp_raw = os.environ.get("PPP_ENABLED_COUNTRIES", "ALL").upper()
     code = (country_code or "US").upper().strip()
     ppp_active = _ppp_raw == "ALL" or code in _ppp_raw.split(",")
-    description = "Instant Web MIDI cloud backup & vault for vintage synths. Zero drivers, zero battery anxiety. Unlimited .syx exports. One-time payment, zero monthly rent."
+    description = "Unlimited soundbank vault, Web MIDI live capture, hardware base-8 numbered export, and Prophet-5/DX7/Juno decoders. One-time payment, zero monthly rent."
 
-    # US + EU: never PPP — keep static catalog (€49 / $49 / etc).
+    # US + EU: never PPP — keep static catalog (€99 / $99 / etc).
     if ppp_active and code != "US" and code not in EU_EUR_COUNTRY_CODES:
         try:
             ppp_result = await ppp_pricing.compute_ppp_checkout(code)
@@ -3600,7 +3600,7 @@ async def llms_txt():
         "- **Browser-Native Web MIDI:** Direct connection to physical synth memory banks over SysEx.",
         "- **Instant Search:** Fuzzy search through soundbanks by preset name.",
         "- **Universal Support:** Built for Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers.",
-        "- **Lifetime Pricing:** bipluk+ $49 lifetime. Sound packs from $9 in the Shop.",
+        "- **Lifetime Pricing:** bipluk+ $99 lifetime. Sound packs from $9 in the Shop.",
         "",
         "## Key Pages",
         "- [Home Page](https://bipluk.com/): SysEx librarian, vintage synth cloud backup, pricing, live MIDI demo.",
@@ -3690,7 +3690,7 @@ async def agent_discovery_middleware(request: Request, call_next):
 - **Universal Support**: Yamaha DX7, Roland Juno-106, Korg M1, Jupiter-6 (Europa), Casio CZ-101, and generic synthesizers
 
 ## Pricing
-- **bipluk+**: $49 one-time lifetime.
+- **bipluk+**: $99 one-time lifetime.
 - **Commercial / B2B**: Contact halfradiationllc@gmail.com for bespoke site licenses, white-labeling, and multi-site rollouts.
 
 ## API
@@ -3974,7 +3974,7 @@ The server sets a `session_user` cookie on successful login. Include this cookie
 
 ## Payments
 
-Premium access: bipluk+ ($49) lifetime plan. Checkout at `/checkout`. Commercial/B2B via email.
+Premium access: bipluk+ ($99) lifetime plan. Checkout at `/checkout`. Commercial/B2B via email.
 
 ## Discovery Documents
 
@@ -4121,9 +4121,9 @@ async def openapi_spec():
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 4900,
+                        "amount": 9900,
                         "currency": "USD",
-                        "description": "Premium lifetime access required ($49 one-time)"
+                        "description": "Premium lifetime access required ($99 one-time)"
                     },
                     "security": [{"sessionCookie": []}],
                     "responses": {
@@ -4139,9 +4139,9 @@ async def openapi_spec():
                     "x-payment-info": {
                         "intent": "session",
                         "method": "stripe",
-                        "amount": 4900,
+                        "amount": 9900,
                         "currency": "USD",
-                        "description": "Premium lifetime access required ($49 one-time)"
+                        "description": "Premium lifetime access required ($99 one-time)"
                     },
                     "security": [{"sessionCookie": []}],
                     "requestBody": {
@@ -4264,7 +4264,7 @@ async def acp_discovery():
             "status": f"{SITE_BASE}/status"
         },
         "pricing": {
-            "personal": {"amount": 4900, "currency": "USD", "interval": "one-time"},
+            "personal": {"amount": 9900, "currency": "USD", "interval": "one-time"},
             "studio": {"amount": 39900, "currency": "USD", "interval": "one-time", "commercial": True},
             "commercial": {"contact": "halfradiationllc@gmail.com"}
         }
@@ -5067,7 +5067,7 @@ NEWSLETTER_PRODUCT_FACTS = """
 PRODUCT FACTS (use only these — do not invent features or pricing):
 - bipluk is a browser SysEx librarian at https://bipluk.com (Chrome/Edge, Web MIDI + SysEx).
 - Dedicated parsers: Yamaha DX7, Roland Juno-106, Korg M1, Roland Jupiter-6, Casio CZ-101; generic scan for others.
-- Lifetime pricing: bipluk+ $49 one-time. NOT a monthly subscription.
+- Lifetime pricing: bipluk+ $99 one-time. NOT a monthly subscription.
 - Shop sound packs from $9 at https://bipluk.com/shop
 - Users back up, search, download .syx, and flash banks via Web MIDI.
 - Built by Half Radiation LLC. Support: halfradiationllc@gmail.com

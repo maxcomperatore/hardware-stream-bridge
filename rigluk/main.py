@@ -2536,6 +2536,16 @@ async def export_all_banks(request: Request):
     for bank in banks:
         try:
             sysex_bytes = bytes.fromhex(bank["sysex_hex"])
+
+            # Inject hardware prefixed names into binary if Prophet
+            if bank.get("synth_model") == "Sequential Prophet":
+                import parser
+                full_bank = database.get_bank(bank["id"], user["id"])
+                if full_bank:
+                    patches = full_bank.get("patches", [])
+                    patch_names = [p.get("name", f"Patch {p.get('index', 0)+1:02d}") for p in patches]
+                    sysex_bytes = parser.inject_hardware_base8_names_prophet(sysex_bytes, patch_names)
+
         except ValueError:
             corrupt.append(bank["name"])
             continue
@@ -2992,6 +3002,14 @@ async def download_bank(request: Request, bank_id: int):
         
     try:
         sysex_bytes = bytes.fromhex(bank["sysex_hex"])
+
+        # Inject hardware prefixed names into binary if Prophet
+        if bank.get("synth_model") == "Sequential Prophet":
+            import parser
+            patches = bank.get("patches", [])
+            patch_names = [p.get("name", f"Patch {p.get('index', 0)+1:02d}") for p in patches]
+            sysex_bytes = parser.inject_hardware_base8_names_prophet(sysex_bytes, patch_names)
+
     except ValueError:
         raise HTTPException(status_code=500, detail="Database data corruption: invalid hex")
         
@@ -3103,7 +3121,20 @@ async def get_bank_hex(request: Request, bank_id: int):
         {"email": user["email"], "bank_id": bank_id, "bank_name": bank["name"], "synth_model": bank["synth_model"]},
         distinct_id=user["email"]
     )
-    return {"sysex_hex": bank["sysex_hex"]}
+
+    sysex_hex = bank["sysex_hex"]
+    if bank.get("synth_model") == "Sequential Prophet":
+        try:
+            import parser
+            sysex_bytes = bytes.fromhex(sysex_hex)
+            patches = bank.get("patches", [])
+            patch_names = [p.get("name", f"Patch {p.get('index', 0)+1:02d}") for p in patches]
+            modified_bytes = parser.inject_hardware_base8_names_prophet(sysex_bytes, patch_names)
+            sysex_hex = modified_bytes.hex()
+        except Exception:
+            pass
+
+    return {"sysex_hex": sysex_hex}
 
 @app.get("/checkout-pack/{pack_id}")
 async def checkout_pack(request: Request, pack_id: str):

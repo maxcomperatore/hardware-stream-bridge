@@ -518,3 +518,124 @@ def parse_prophet_sysex(data: bytes) -> list[str]:
 
     return patches[:expected_count] if expected_count > 0 else patches
 
+
+def escape_sequential(unescaped: bytes) -> bytes:
+    result = bytearray()
+    idx = 0
+    while idx < len(unescaped):
+        chunk = unescaped[idx:idx+7]
+        idx += 7
+        msbits = 0
+        for i, b in enumerate(chunk):
+            if b & 0x80:
+                msbits |= (1 << i)
+        result.append(msbits)
+        for b in chunk:
+            result.append(b & 0x7F)
+    return bytes(result)
+
+def inject_hardware_base8_names_prophet(data: bytes, patch_names: list[str]) -> bytes:
+    """Modifies the Prophet SysEx to inject the hardware numbers back into the SysEx payload."""
+    def unescape_sequential(sysex):
+        result = bytearray()
+        dataIndex = 0
+        while dataIndex < len(sysex):
+            msbits = sysex[dataIndex]
+            dataIndex += 1
+            for i in range(7):
+                if dataIndex < len(sysex):
+                    result.append(sysex[dataIndex] | ((msbits & (1 << i)) << (7 - i)))
+                dataIndex += 1
+        return bytearray(result)
+
+    messages = []
+    idx = 0
+    while True:
+        start = data.find(b'\xF0', idx)
+        if start == -1:
+            break
+        end = data.find(b'\xF7', start)
+        if end == -1:
+            break
+        msg = data[start:end+1]
+        messages.append((start, end+1, msg))
+        idx = end + 1
+
+    modified_data = bytearray(data)
+
+    patch_messages = []
+    for start, end, msg in messages:
+        if len(msg) >= 10 and not msg.startswith(b'\xF0\x7E'):
+            patch_messages.append((start, end, msg))
+
+    if len(patch_messages) != len(patch_names):
+        return data
+
+    offset_diff = 0
+    for i, (start, end, msg) in enumerate(patch_messages):
+        new_name = patch_names[i]
+
+        new_name_bytes = new_name.encode('ascii', errors='ignore')
+        new_name_bytes = new_name_bytes[:20].ljust(20, b' ')
+
+        if len(msg) > 7 and msg[0] == 0xF0 and msg[1] == 0x01:
+            unescaped = unescape_sequential(msg[6:-1])
+
+            # Use same detection logic as extraction to find name position dynamically
+            strings = []
+            current = []
+            start_idx = -1
+            for j, b in enumerate(unescaped):
+                if 32 <= b <= 126:
+                    if not current: start_idx = j
+                    current.append(chr(b))
+                else:
+                    if len(current) >= 4:
+                        strings.append(("".join(current), start_idx))
+                    current = []
+                    start_idx = -1
+            if len(current) >= 4:
+                strings.append(("".join(current), start_idx))
+
+            name_offset = -1
+
+            import re
+            candidates = []
+            for s, s_idx in strings:
+                if len(s) in [16, 20]:
+                    if re.match(r'^[xXdX]+$', s): continue
+                    if re.match(r'^[<]+$', s): continue
+                    if re.match(r'^[0-9A-Fa-f]+$', s): continue
+                    if sum(1 for c in s if c.isalpha()) >= 3:
+                        candidates.append((s, s_idx))
+
+            if candidates:
+                name_offset = candidates[0][1]
+            elif len(unescaped) >= 85:
+                p5_name = unescaped[65:85]
+                if all(32 <= b <= 126 for b in p5_name):
+                    s = p5_name.decode('ascii')
+                    if sum(1 for c in s if c.isalpha()) >= 3:
+                        name_offset = 65
+
+            if name_offset == -1:
+                filtered = []
+                for s, s_idx in strings:
+                    if re.match(r'^[<xXdX]+$', s): continue
+                    if re.match(r'^[0-9A-Fa-f]+$', s): continue
+                    if sum(1 for c in s if c.isalpha()) >= 3:
+                        filtered.append((s[:20], s_idx))
+                if filtered:
+                    best = max(filtered, key=lambda item: len(item[0]))
+                    name_offset = best[1]
+
+            if name_offset != -1:
+                unescaped[name_offset:name_offset+20] = new_name_bytes
+
+                new_payload = escape_sequential(unescaped)
+                new_msg = msg[:6] + new_payload + msg[-1:]
+
+                modified_data[start+offset_diff : end+offset_diff] = new_msg
+                offset_diff += len(new_msg) - len(msg)
+
+    return bytes(modified_data)

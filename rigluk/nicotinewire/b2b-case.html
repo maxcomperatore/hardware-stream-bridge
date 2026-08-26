@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicotineWire — B2B Regulatory & Spend ROI Calculator</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Top Utility Ticker Bar -->
+<div class="top-utility-bar">
+    <div class="top-utility-left">
+        <span class="ticker-pulse"></span>
+        <span class="top-utility-pill">ENTERPRISE SPEND GOVERNANCE</span>
+        <span>Outside Counsel & Legal Spend Benchmark Intelligence</span>
+    </div>
+    <div class="top-utility-right">
+        <span>26% AVG YEAR-1 SAVINGS</span>
+        <span>|</span>
+        <span>4,800+ LAW FIRM BENCHMARKS</span>
+    </div>
+</div>
+
+<!-- Main Executive Header -->
+<header class="nw-header">
+    <a href="index.html" class="nw-brand">
+        <div class="nw-logo-icon">N</div>
+        <div>
+            <div class="nw-brand-text">NICOTINE<span>WIRE</span></div>
+            <div class="nw-brand-sub">Institutional Terminal</div>
+        </div>
+    </a>
+
+    <!-- Minimalist Navigation Tabs -->
+    <nav class="nw-nav">
+        <a href="index.html" class="nw-nav-link">Wire Feed</a>
+        <a href="reports.html" class="nw-nav-link">M&amp;A Reports</a>
+        <a href="directory.html" class="nw-nav-link">B2B Directory</a>
+        <a href="newszoo-insights.html" class="nw-nav-link">News &amp; Insights</a>
+        <a href="report-template.html" class="nw-nav-link">Report Viewer</a>
+        <a href="b2b-case.html" class="nw-nav-link active">B2B ROI</a>
+        <a href="pricing.html" class="nw-nav-link">Terminal Pass</a>
+    </nav>
+
+    <div class="nw-header-actions">
+        <a href="pricing.html" class="btn-terminal">
+            <span>Terminal Access</span>
+            <span style="opacity: 0.7; font-weight: 500;">$2,000/yr</span>
+        </a>
+    </div>
+</header>
+
+<div class="app-viewport">
+    <!-- Hero Header -->
+    <section class="nw-hero-banner" style="margin-bottom: 32px;">
+        <div>
+            <div class="nw-hero-tag">
+                <span class="ticker-pulse"></span>
+                ENTERPRISE SPEND &amp; PROCUREMENT GOVERNANCE
+            </div>
+            <h1 class="nw-hero-title">The B2B Case &amp; ROI Calculator</h1>
+            <p class="nw-hero-subtitle">Outside counsel and PMTA regulatory advisory costs are often the largest controllable spend items in legal operations. NicotineWire provides structured market benchmarking data to enforce rate compliance before invoices are issued.</p>
+        </div>
+
+        <div class="nw-stat-card-hero">
+            <div class="nw-stat-label">Average Savings Per Matter</div>
+            <div class="nw-stat-val" style="color: #34D399;">26% AVG</div>
+            <div class="nw-stat-desc">Achieved in Year 1 Competitive Sourcing</div>
+            <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-dark); font-size: 0.76rem; color: var(--text-dark-muted);">
+                "Enforces agreed rate cards and AFAs before invoice processing."
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Query Engine -->
+    <section style="background: var(--bg-dark); color: #FFFFFF; border-radius: var(--radius-lg); padding: 32px; margin-bottom: 36px; border: 1px solid var(--border-dark);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span class="nw-badge nw-badge-emerald" style="margin-bottom: 10px; display: inline-block;">NICOTINEWIRE QUERY ENGINE</span>
+                <h2 style="font-size: 1.6rem; font-weight: 900; color: #FFFFFF; letter-spacing: -0.02em;">Regulatory &amp; Market Spend Intelligence Desk</h2>
+                <p style="font-size: 0.9rem; color: var(--text-dark-secondary); max-width: 720px; margin-top: 6px; line-height: 1.6;">
+                    Access structured transaction benchmarks across PMTA advisory fees, M&amp;A legal rates, and synthetic L-nicotine spot prices.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 24px; border-top: 1px solid var(--border-dark); padding-top: 20px;">
+            <label style="font-size: 0.76rem; font-weight: 700; font-family: var(--font-mono); display: block; margin-bottom: 8px; color: var(--text-dark-muted); text-transform: uppercase;">ENTER A PROCUREMENT OR PMTA QUESTION:</label>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="text" id="terminal-query-input" placeholder="e.g. What is the average synthetic L-nicotine spot savings on competitive RFPs?" style="flex: 1; min-width: 280px; padding: 10px 16px; font-family: var(--font-sans); font-size: 0.88rem; border: 1px solid var(--border-dark); border-radius: var(--radius-sm); background: var(--bg-dark-card); color: #FFFFFF; outline: none;">
+                <button onclick="queryIntelligenceEngine()" class="btn-terminal-emerald">Run Terminal Query &rarr;</button>
+            </div>
+            <div id="terminal-query-response" style="display: none; margin-top: 16px; padding: 16px; border-radius: var(--radius-md); background: var(--bg-dark-card); border: 1px solid var(--border-dark); font-size: 0.88rem; line-height: 1.6; color: #FFFFFF;"></div>
+        </div>
+    </section>
+
+    <!-- Benchmark Metrics Grid -->
+    <div class="nw-section-title">
+        <h2>What the Industry Benchmark Data Shows</h2>
+    </div>
+
+    <div class="nw-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 36px;">
+        <div class="nw-card">
+            <div>
+                <div class="nw-stat-val" style="color: var(--text-primary);">26%</div>
+                <div style="font-size: 0.8rem; font-weight: 800; margin-top: 4px; color: var(--text-primary);">AVG FIRST-YEAR SAVINGS</div>
+                <p class="nw-card-text" style="margin-top: 8px;">Legal &amp; procurement teams running structured competitive RFPs reduce fee variance by 26% on average.</p>
+            </div>
+        </div>
+
+        <div class="nw-card">
+            <div>
+                <div class="nw-stat-val" style="color: var(--text-primary);">75%</div>
+                <div style="font-size: 0.8rem; font-weight: 800; margin-top: 4px; color: var(--text-primary);">MATTERS HAVE NO BUDGET</div>
+                <p class="nw-card-text" style="margin-top: 8px;">Three-quarters of matters begin without agreed fee caps. Of those with budgets, 24% overrun by 27%.</p>
+            </div>
+        </div>
+
+        <div class="nw-card">
+            <div>
+                <div class="nw-stat-val" style="color: var(--text-primary);">48%</div>
+                <div style="font-size: 0.8rem; font-weight: 800; margin-top: 4px; color: var(--text-primary);">LOWEST BID WINS</div>
+                <p class="nw-card-text" style="margin-top: 8px;">52% of the time quality, regulatory track record, and scope proposal dominate selection over pure lowest price.</p>
+            </div>
+        </div>
+
+        <div class="nw-card" style="background: var(--bg-dark); color: #FFFFFF; border-color: var(--bg-dark);">
+            <div>
+                <div class="nw-stat-val" style="color: #34D399;">46%</div>
+                <div style="font-size: 0.8rem; font-weight: 800; margin-top: 4px; color: #FFFFFF;">MATURE PROGRAM SAVINGS</div>
+                <p style="font-size: 0.82rem; color: var(--text-dark-secondary); margin-top: 8px; line-height: 1.5;">Teams running 80%+ of matters through benchmarked processes achieve 46% compound savings over 3 years.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive B2B ROI Calculator -->
+    <section class="nw-card" style="padding: 28px; margin-bottom: 36px;">
+        <div class="nw-section-title" style="margin-bottom: 12px; padding-bottom: 8px;">
+            <h2>Calculate Your Legal &amp; Outside Counsel Savings</h2>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.9rem;">Enter your company's annual outside counsel &amp; regulatory spend (USD) to calculate projected savings:</p>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px;">
+            <div>
+                <label style="font-size: 0.76rem; font-weight: 800; font-family: var(--font-mono); display: block; margin-bottom: 8px; color: var(--text-primary);">ANNUAL OUTSIDE SPEND ($ USD):</label>
+                <input type="number" id="roi-spend-input" value="5000000" oninput="calculateROI()" style="width: 100%; padding: 12px 16px; font-family: var(--font-mono); font-size: 1.5rem; font-weight: 800; border: 1px solid var(--border-light); border-radius: var(--radius-sm); background: var(--bg-main); color: var(--text-primary); outline: none;">
+                
+                <p style="margin-top: 16px; font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;">
+                    * Every dollar saved on legal and regulatory procurement drops directly to bottom-line net income. At an average 28% EBIT margin, this savings equivalent equals millions in top-line revenue.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                <div style="background: var(--bg-subtle); padding: 14px; border-radius: var(--radius-sm);">
+                    <div style="font-size: 0.7rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-muted);">YEAR 1 SAVINGS (26%)</div>
+                    <div id="calc-year1" style="font-size: 1.4rem; font-weight: 900; margin-top: 4px; color: var(--accent-emerald); font-family: var(--font-mono);">$1,300,000</div>
+                </div>
+
+                <div style="background: var(--bg-subtle); padding: 14px; border-radius: var(--radius-sm);">
+                    <div style="font-size: 0.7rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-muted);">MATURE PROGRAM (46%)</div>
+                    <div id="calc-mature" style="font-size: 1.4rem; font-weight: 900; margin-top: 4px; color: var(--text-primary); font-family: var(--font-mono);">$2,300,000</div>
+                </div>
+
+                <div style="background: var(--bg-subtle); padding: 14px; border-radius: var(--radius-sm);">
+                    <div style="font-size: 0.7rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-muted);">REVENUE EQUIVALENT</div>
+                    <div id="calc-revenue" style="font-size: 1.4rem; font-weight: 900; margin-top: 4px; color: var(--text-primary); font-family: var(--font-mono);">$4,642,857</div>
+                </div>
+
+                <div style="background: var(--bg-dark); color: #FFFFFF; padding: 14px; border-radius: var(--radius-sm);">
+                    <div style="font-size: 0.7rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dark-muted);">3-YEAR COMPOUND</div>
+                    <div id="calc-3year" style="font-size: 1.4rem; font-weight: 900; margin-top: 4px; color: var(--accent-amber); font-family: var(--font-mono);">$4,900,000</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Structural Comparison -->
+    <div class="nw-section-title">
+        <h2>Comparison: Without vs. With NicotineWire Intelligence</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 36px;">
+        <div class="nw-card" style="border-left: 4px solid #EF4444;">
+            <div style="font-size: 0.85rem; font-weight: 900; color: #EF4444; margin-bottom: 12px; font-family: var(--font-mono);">WITHOUT NICOTINEWIRE (STATUS QUO)</div>
+            <ul style="font-size: 0.86rem; line-height: 1.7; color: var(--text-secondary); padding-left: 18px;">
+                <li><strong>Unchecked rate inflation:</strong> Rate cards negotiated years ago quietly escalate with each matter scope change.</li>
+                <li><strong>Budget overruns:</strong> AFAs blowing through fee caps with no system to enforce compliance prior to invoice issue.</li>
+                <li><strong>Manual accrual tracking:</strong> Legal ops spend hours chasing PDFs and explaining variance to finance post-facto.</li>
+            </ul>
+        </div>
+
+        <div class="nw-card" style="border-left: 4px solid var(--accent-emerald); background: var(--bg-dark); color: #FFFFFF;">
+            <div style="font-size: 0.85rem; font-weight: 900; color: #34D399; margin-bottom: 12px; font-family: var(--font-mono);">WITH NICOTINEWIRE TERMINAL</div>
+            <ul style="font-size: 0.86rem; line-height: 1.7; color: var(--text-dark-secondary); padding-left: 18px;">
+                <li><strong>Data-backed rate setting:</strong> Rates set against actual benchmarks across 4,800+ law firm transactions.</li>
+                <li><strong>Automated governance:</strong> Purpose-built for fixed fee caps, capped AFAs, and regulatory RFPs.</li>
+                <li><strong>Defensible CFO reporting:</strong> Verified 26% to 46% savings documented by matter type and geography.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Minimalist Executive Footer -->
+    <footer class="nw-footer">
+        <div>
+            <strong>NicotineWire™ Terminal</strong> &bull; Half Radiation, LLC &bull; "Check the Wire before you acquire."
+        </div>
+        <div>
+            &copy; 2026 NicotineWire™. All rights reserved.
+        </div>
+    </footer>
+</div>
+
+<script src="app.js"></script>
+<script>
+function calculateROI() {
+    const val = parseFloat(document.getElementById('roi-spend-input').value) || 0;
+    const year1 = val * 0.26;
+    const mature = val * 0.46;
+    const revenue = year1 / 0.28;
+    const compound = year1 * 1.5 + mature * 1.5;
+
+    document.getElementById('calc-year1').innerText = '$' + Math.round(year1).toLocaleString();
+    document.getElementById('calc-mature').innerText = '$' + Math.round(mature).toLocaleString();
+    document.getElementById('calc-revenue').innerText = '$' + Math.round(revenue).toLocaleString();
+    document.getElementById('calc-3year').innerText = '$' + Math.round(compound).toLocaleString();
+}
+</script>
+</body>
+</html>

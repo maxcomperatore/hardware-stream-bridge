@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicotineWire — Pricing</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+</head>
+<body>
+
+<header class="nw-header">
+    <a href="/" class="nw-brand">
+        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <span class="nw-brand-text">NicotineWire</span>
+        <span class="nw-brand-sub">Intelligence</span>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="/" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
+        <a href="/reports" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
+        <a href="/directory" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
+        <a href="/insights" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
+        <a href="/viewer" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
+        <a href="/b2b-case" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
+        <a href="/pricing" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+    </nav>
+
+    <div>
+        <a href="/pricing" class="btn-moz-blue">
+            <span class="iconify" data-icon="pixelarticons:card"></span>
+            <span>Pricing</span>
+            <span class="nw-header-price" style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
+        </a>
+    </div>
+</header>
+
+<div class="app-viewport">
+    <div class="nw-grid-layout">
+        <aside class="nw-sidebar">
+            <div class="nw-sidebar-title">Categories</div>
+            <ul class="nw-sidebar-menu">
+                <li><a href="/"><span><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</span> <span class="nw-tag-count">Live</span></a></li>
+                <li><a href="/reports"><span><span class="iconify" data-icon="pixelarticons:file-text"></span> M&amp;A Databooks</span> <span class="nw-tag-count">$1.5k+</span></a></li>
+                <li><a href="/directory"><span><span class="iconify" data-icon="pixelarticons:briefcase"></span> B2B Directory</span> <span class="nw-tag-count">$300/m</span></a></li>
+                <li><a href="/insights"><span><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights &amp; Proof</span> <span class="nw-tag-count">Pro</span></a></li>
+                <li><a href="/viewer"><span><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Monograph Viewer</span> <span class="nw-tag-count">PDF</span></a></li>
+                <li><a href="/b2b-case"><span><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</span> <span class="nw-tag-count">Moat</span></a></li>
+                <li><a href="/pricing" class="active"><span><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</span> <span class="nw-tag-count">$2,000</span></a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <div class="nw-section-title">
+                <h2><span class="iconify" data-icon="pixelarticons:card"></span> Executive Pass Pricing Tiers</h2>
+            </div>
+
+            <div class="nw-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 20px;">
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge">MONTHLY</span>
+                        </div>
+                        <h3 class="nw-card-title">Monthly Pass</h3>
+                        <div class="nw-card-price" style="margin: 6px 0;">
+                            $500 <span style="font-size: 0.7rem; font-weight: 400; color: var(--moz-muted);">/ mo</span>
+                        </div>
+                        <p class="nw-card-text">Month-to-month intelligence access &amp; PMTA tracking.</p>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button onclick="openPreCheckoutModal('monthly')" class="btn-moz-outline" style="width: 100%;">Select ($500) &rarr;</button>
+                    </div>
+                </div>
+
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge">QUARTERLY</span>
+                        </div>
+                        <h3 class="nw-card-title">Quarterly Pass</h3>
+                        <div class="nw-card-price" style="margin: 6px 0;">
+                            $1,000 <span style="font-size: 0.7rem; font-weight: 400; color: var(--moz-muted);">/ qtr</span>
+                        </div>
+                        <p class="nw-card-text">Quarterly billing with weekly executive summaries.</p>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button onclick="openPreCheckoutModal('quarterly')" class="btn-moz-outline" style="width: 100%;">Select ($1,000) &rarr;</button>
+                    </div>
+                </div>
+
+                <div class="nw-card" style="border-color: var(--moz-blue);">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge" style="background: var(--moz-blue); color: #FFFFFF;"><span class="iconify" data-icon="pixelarticons:zap"></span> ANNUAL</span>
+                        </div>
+                        <h3 class="nw-card-title">Enterprise Pass</h3>
+                        <div class="nw-card-price" style="margin: 6px 0; color: var(--moz-blue); font-size: 1.3rem;">
+                            $2,000 <span style="font-size: 0.7rem; font-weight: 400; color: var(--moz-muted);">/ yr</span>
+                        </div>
+                        <p class="nw-card-text">Complete annual access to digests, M&amp;A models &amp; lab RFQs.</p>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button onclick="openPreCheckoutModal('annual')" class="btn-moz-blue" style="width: 100%;">Join Pass ($2,000) &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="nw-footer">
+        <div>
+            <strong>NicotineWire™ Intelligence</strong> &bull; Half Radiation, LLC
+        </div>
+        <div>
+            &copy; 2026 NicotineWire™.
+        </div>
+    </footer>
+</div>
+
+<!-- Fixed Edge-to-Edge Bottom Navigation Bar -->
+<nav class="cr-mobile-bottom-nav">
+    <a href="/" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+        <span>Wire</span>
+    </a>
+    <a href="/reports" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+        <span>Reports</span>
+    </a>
+    <a href="/directory" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+        <span>Directory</span>
+    </a>
+    <a href="/insights" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+        <span>Insights</span>
+    </a>
+    <a href="/pricing" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+        <span>Pricing</span>
+    </a>
+</nav>
+
+<script src="/static/app.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

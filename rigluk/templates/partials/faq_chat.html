@@ -1,0 +1,125 @@
+<section id="faq" class="border-t border-zinc-900 max-w-3xl mx-auto px-6 pt-12 pb-24 relative z-10 text-left">
+    <div class="text-center mb-8 reveal">
+        <div class="flex items-center justify-center gap-3 mt-3">
+            <img src="/static/talk_animation.gif" alt="Talking Duck" class="h-8 md:h-10 w-auto inline-block align-middle scale-x-[-1] transition-transform hover:scale-110" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+            <h2 class="text-2xl font-pixel uppercase text-white text-center">Ask rigluk</h2>
+            <img src="/static/walk_animation.gif" alt="Running Away Duck" class="h-8 md:h-10 w-auto inline-block align-middle scale-x-[-1] transition-transform hover:scale-110" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+        </div>
+    </div>
+
+    <div id="faq-chat" class="border border-zinc-800 bg-zinc-950/50 rounded-lg overflow-hidden reveal" style="--delay: 50ms;">
+        <div id="faq-chat-messages"
+            class="min-h-[220px] max-h-[420px] overflow-y-auto p-4 space-y-3 font-sans text-xs leading-relaxed">
+            <div id="faq-chat-welcome" class="text-zinc-500 text-center py-6">
+                Ask anything about pricing, supported pedals, security, or how Web MIDI works.
+            </div>
+        </div>
+
+        {% if faq_suggestions %}
+        <div class="flex flex-wrap gap-2 px-4 pb-3 border-t border-zinc-900 pt-3">
+            {% for suggestion in faq_suggestions %}
+            <button type="button"
+                class="faq-suggestion-btn text-[10px] font-pixel uppercase tracking-wide px-3 py-1.5 rounded border border-zinc-800 text-zinc-400 hover:text-lapis-mid hover:border-lapis-mid/40 transition-colors"
+                data-question="{{ suggestion }}">{{ suggestion }}</button>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form id="faq-chat-form" class="flex gap-2 p-4 border-t border-zinc-900">
+            <input type="text" id="faq-chat-input" maxlength="500" autocomplete="off"
+                placeholder="Type your question..."
+                class="flex-1 bg-zinc-900 border border-zinc-800 rounded px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-lapis-mid/60 font-sans" />
+            <button type="submit" id="faq-chat-submit"
+                class="font-pixel uppercase text-[10px] tracking-wide px-4 py-2 rounded bg-lapis-mid text-white hover:bg-lapis-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
+                Ask
+            </button>
+        </form>
+    </div>
+</section>
+
+<script>
+    (function () {
+        const form = document.getElementById('faq-chat-form');
+        const input = document.getElementById('faq-chat-input');
+        const submitBtn = document.getElementById('faq-chat-submit');
+        const messagesEl = document.getElementById('faq-chat-messages');
+        const welcomeEl = document.getElementById('faq-chat-welcome');
+        if (!form || !input || !messagesEl) return;
+
+        let busy = false;
+
+        function appendMessage(text, role) {
+            if (welcomeEl) welcomeEl.remove();
+            const bubble = document.createElement('div');
+            bubble.className = role === 'user'
+                ? 'ml-8 pl-3 border-l-2 border-lapis-mid text-zinc-200'
+                : 'mr-4 pr-3 border-r-2 border-zinc-700 text-zinc-400';
+            const label = document.createElement('div');
+            label.className = 'font-pixel uppercase text-[9px] tracking-wider mb-1 ' + (role === 'user' ? 'text-lapis-mid' : 'text-zinc-600');
+            label.textContent = role === 'user' ? 'You' : 'rigluk';
+            const body = document.createElement('p');
+            body.className = 'whitespace-pre-wrap';
+            body.textContent = text;
+            bubble.appendChild(label);
+            bubble.appendChild(body);
+            messagesEl.appendChild(bubble);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function appendLoading() {
+            const el = document.createElement('div');
+            el.id = 'faq-chat-loading';
+            el.className = 'text-zinc-600 text-center font-pixel uppercase text-[9px] tracking-wider py-2';
+            el.textContent = 'Thinking…';
+            messagesEl.appendChild(el);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function removeLoading() {
+            const el = document.getElementById('faq-chat-loading');
+            if (el) el.remove();
+        }
+
+        async function askQuestion(question) {
+            const trimmed = (question || '').trim();
+            if (!trimmed || busy) return;
+            busy = true;
+            submitBtn.disabled = true;
+            appendMessage(trimmed, 'user');
+            input.value = '';
+            appendLoading();
+            try {
+                const res = await fetch('/api/faq/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: trimmed }),
+                });
+                const data = await res.json().catch(function () { return {}; });
+                removeLoading();
+                if (!res.ok) {
+                    appendMessage(data.detail || 'Something went wrong. Please try again.', 'assistant');
+                    return;
+                }
+                appendMessage(data.answer || 'No answer returned.', 'assistant');
+            } catch (err) {
+                removeLoading();
+                appendMessage('Could not reach the server. Please try again in a moment.', 'assistant');
+            } finally {
+                busy = false;
+                submitBtn.disabled = false;
+                input.focus();
+            }
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            askQuestion(input.value);
+        });
+
+        document.querySelectorAll('.faq-suggestion-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                askQuestion(btn.getAttribute('data-question') || btn.textContent);
+            });
+        });
+    })();
+</script>

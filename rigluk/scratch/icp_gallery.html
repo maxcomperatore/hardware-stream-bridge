@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rigluk - ICP User Profile Gallery</title>
+    <style>
+        body {
+            background-color: #09090b;
+            color: #f4f4f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        h1 {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #60a5fa;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #71717a;
+            font-size: 13px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            max-w: 1200px;
+            margin: 0 auto;
+        }
+        .user-card {
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .user-card:hover {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+        }
+        .avatar-wrap {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 16px;
+        }
+        .avatar-img {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3f3f46;
+            background-color: #09090b;
+        }
+        .plan-badge {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .plan-badge.personal, .plan-badge.studio {
+            background: #2563eb;
+            color: #ffffff;
+            border: 1px solid #60a5fa;
+        }
+        .plan-badge.free {
+            background: #27272a;
+            color: #a1a1aa;
+            border: 1px solid #3f3f46;
+        }
+        .user-email {
+            font-size: 12px;
+            font-weight: 600;
+            color: #e4e4e7;
+            word-break: break-all;
+        }
+        .user-date {
+            font-size: 10px;
+            color: #71717a;
+            margin-top: 6px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👤 ICP Faces & User Profile Vault</h1>
+        <p>Total Registered Users: <strong>0</strong> · Google OAuth Pictures + Gravatar Auto-Resolution</p>
+    </div>
+    <div class="grid">
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicotineWire — Executive Membership & Terminal Pass Tiers</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Top Utility Ticker Bar -->
+<div class="top-utility-bar">
+    <div class="top-utility-left">
+        <span class="ticker-pulse"></span>
+        <span class="top-utility-pill">ENTERPRISE ACCESS</span>
+        <span>84% of Private Equity subscribers select Annual Enterprise Pass</span>
+    </div>
+    <div class="top-utility-right">
+        <span>7-DAY MONEY-BACK GUARANTEE</span>
+        <span>|</span>
+        <span>SECURE STRIPE B2B INVOICING</span>
+    </div>
+</div>
+
+<!-- Main Executive Header -->
+<header class="nw-header">
+    <a href="index.html" class="nw-brand">
+        <div class="nw-logo-icon">N</div>
+        <div>
+            <div class="nw-brand-text">NICOTINE<span>WIRE</span></div>
+            <div class="nw-brand-sub">Institutional Terminal</div>
+        </div>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="index.html" class="nw-nav-link">Wire Feed</a>
+        <a href="reports.html" class="nw-nav-link">M&amp;A Reports</a>
+        <a href="directory.html" class="nw-nav-link">B2B Directory</a>
+        <a href="newszoo-insights.html" class="nw-nav-link">News &amp; Insights</a>
+        <a href="report-template.html" class="nw-nav-link">Report Viewer</a>
+        <a href="b2b-case.html" class="nw-nav-link">B2B ROI</a>
+        <a href="pricing.html" class="nw-nav-link active">Terminal Pass</a>
+    </nav>
+
+    <div class="nw-header-actions">
+        <a href="pricing.html" class="btn-terminal">
+            <span>Terminal Access</span>
+            <span style="opacity: 0.7; font-weight: 500;">$2,000/yr</span>
+        </a>
+    </div>
+</header>
+
+<div class="app-viewport">
+    <div class="nw-grid-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="nw-sidebar">
+            <div class="nw-sidebar-group">
+                <div class="nw-sidebar-title">Terminal Aisles</div>
+                <ul class="nw-sidebar-menu">
+                    <li><a href="index.html"><span>⚡ Live Wire Feed</span> <span class="nw-tag-count">LIVE</span></a></li>
+                    <li><a href="reports.html"><span>📜 M&amp;A Databooks</span> <span class="nw-tag-count">$1.5k+</span></a></li>
+                    <li><a href="directory.html"><span>🏢 B2B Vendor Directory</span> <span class="nw-tag-count">$300/m</span></a></li>
+                    <li><a href="newszoo-insights.html"><span>📈 News &amp; Citations</span> <span class="nw-tag-count">PRO</span></a></li>
+                    <li><a href="report-template.html"><span>📄 Report Monograph</span> <span class="nw-tag-count">PDF</span></a></li>
+                    <li><a href="b2b-case.html"><span>💼 B2B Spend ROI</span> <span class="nw-tag-count">MOAT</span></a></li>
+                    <li><a href="pricing.html" class="active"><span>💳 Pass Pricing</span> <span class="nw-tag-count">$2,000</span></a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <div class="nw-section-title">
+                <h2>Executive Terminal Pass Tiers</h2>
+            </div>
+
+            <!-- Tier Cards Grid -->
+            <div class="nw-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 36px;">
+                <!-- Tier 1 -->
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge nw-badge-dark">MONTHLY FLEX</span>
+                        </div>
+                        <h3 class="nw-card-title" style="font-size: 1.15rem;">Monthly Access Pass</h3>
+                        <div class="nw-card-price" style="margin: 12px 0;">
+                            $500 <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);">/ month</span>
+                        </div>
+                        <p class="nw-card-text">Flexible month-to-month access to live terminal briefings &amp; PMTA regulatory dockets.</p>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <button onclick="openPreCheckoutModal('monthly')" class="btn-terminal-outline" style="width: 100%;">Select Monthly ($500) &rarr;</button>
+                    </div>
+                </div>
+
+                <!-- Tier 2 -->
+                <div class="nw-card">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge nw-badge-amber">SAVE 33%</span>
+                        </div>
+                        <h3 class="nw-card-title" style="font-size: 1.15rem;">Quarterly Pass</h3>
+                        <div class="nw-card-price" style="margin: 12px 0;">
+                            $1,000 <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);">/ quarter</span>
+                        </div>
+                        <p class="nw-card-text">Save 33% with quarterly billing. Full terminal access &amp; weekly executive summaries.</p>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <button onclick="openPreCheckoutModal('quarterly')" class="btn-terminal-outline" style="width: 100%;">Select Quarterly ($1,000) &rarr;</button>
+                    </div>
+                </div>
+
+                <!-- Tier 3 (Featured) -->
+                <div class="nw-card" style="border: 2px solid var(--accent-emerald); background: var(--bg-surface);">
+                    <div>
+                        <div class="nw-card-header">
+                            <span class="nw-badge nw-badge-emerald">★ RECOMMENDED FOR FUNDS</span>
+                        </div>
+                        <h3 class="nw-card-title" style="font-size: 1.25rem;">Annual Enterprise Pass</h3>
+                        <div class="nw-card-price" style="margin: 12px 0; color: var(--accent-emerald); font-size: 1.8rem;">
+                            $2,000 <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);">/ year</span>
+                        </div>
+                        <p class="nw-card-text">Save 66% with annual billing. Complete access to weekly digests, M&amp;A financial models, and B2B lab introductions.</p>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <button onclick="openPreCheckoutModal('annual')" class="btn-terminal-emerald" style="width: 100%;">Join Annual Pass ($2,000) &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="nw-footer">
+        <div>
+            <strong>NicotineWire™ Terminal</strong> &bull; Half Radiation, LLC &bull; "Check the Wire before you acquire."
+        </div>
+        <div>
+            &copy; 2026 NicotineWire™. All rights reserved.
+        </div>
+    </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

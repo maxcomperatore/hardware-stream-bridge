@@ -1,0 +1,21 @@
+name: Platform Uptime Heartbeat
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # Every hour
+  workflow_dispatch:
+
+jobs:
+  uptime-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping rigluk.com homepage
+        id: check_site
+        run: |
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" https://rigluk.com/)
+          echo "HTTP Status Code: $STATUS"
+          echo "status_code=$STATUS" >> $GITHUB_OUTPUT
+          if [ "$STATUS" -ne 200 ]; then
+            echo "HTTP check failed with status $STATUS"
+            exit 1
+          fi

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>Privacy Policy | bipluk</title>
+    <meta name="description" content="Read the Privacy Policy for bipluk. Understand how we collect, process, and protect your accounts, payment details, and SysEx data.">
+    {% set seo_canonical = "https://bipluk.com/privacy" %}
+    {% set seo_title = "Privacy Policy | bipluk" %}
+    {% set seo_description = "Read the Privacy Policy for bipluk. Understand how we collect, process, and protect your accounts, payment details, and SysEx data." %}
+    {% include 'partials/seo_article_meta.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-[#0b0b0f] text-zinc-300 min-h-screen selection:bg-zinc-800 selection:text-white">
+    <div class="max-w-4xl mx-auto px-6 py-20">
+        <!-- Logo -->
+        <div class="mb-12">
+            <a href="/" class="inline-flex items-center gap-2">
+                <img src="/static/logo.svg" alt="Bipluk Logo" class="h-5 w-auto object-contain">
+                <span class="font-pixel uppercase text-xs text-white tracking-widest">bipluk</span>
+            </a>
+        </div>
+
+        <h1
+            class="text-4xl font-bold text-white mb-4 uppercase tracking-tight font-pixel text-xs sm:text-2xl md:text-3xl leading-none">
+            Privacy Policy</h1>
+        <p class="text-xs text-zinc-500 font-mono uppercase tracking-widest mb-10">Last updated: July 1, 2026</p>
+
+        <div class="space-y-8 text-sm leading-relaxed text-zinc-400">
+            <!-- 1. Introduction -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">1. Privacy
+                    Commitment</h2>
+                <p>
+                    At bipluk, we respect your privacy and are committed to protecting the limited personal data
+                    you share with us. This policy describes what information we collect, how it is stored, who helps us
+                    process it, and your control over it.
+                </p>
+            </section>
+
+            <!-- 2. Data We Collect -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">2. Data
+                    Collection and Usage</h2>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>
+                        <strong>Account Credentials:</strong> We store your email address and a securely hashed
+                        representation of your password to manage authentication. We never store passwords in plain
+                        text.
+                    </li>
+                    <li>
+                        <strong>SysEx and Patch Data:</strong> When you backup patches or banks, the raw binary content
+                        (`.syx` format) and parsed names are stored in our secure database. This data is exclusively
+                        accessible by your authenticated user account.
+                    </li>
+                    <li>
+                        <strong>Payment Information:</strong> All payment transactions are securely handled directly by
+                        <strong>Stripe, Inc.</strong> We never collect, process, or store your credit card details or
+                        bank account information on our servers.
+                    </li>
+                    <li>
+                        <strong>Approximate Location (Pricing Only):</strong> We may infer your country or region from
+                        your IP address or hosting headers (for example, Vercel <code
+                            class="text-zinc-300">cf-ipcountry</code>) to show localized pricing symbols and amounts on
+                        the marketing site. We do not use this for advertising profiles or to sell data.
+                    </li>
+                    <li>
+                        <strong>Product Analytics:</strong> We use <strong>PostHog</strong> to understand how the site
+                        and dashboard are used (pages visited, feature usage, errors). This helps us fix bugs and
+                        improve the product. PostHog may set cookies or use similar browser storage. We do not use
+                        PostHog for cross-site ad targeting.
+                    </li>
+                </ul>
+            </section>
+
+            <!-- 3. Cookies & Analytics -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">3. Cookies,
+                    Sessions &amp; Analytics</h2>
+                <p class="mb-3">
+                    We use a signed session cookie to keep you logged into your dashboard. That cookie is strictly for
+                    authentication.
+                </p>
+                <p class="mb-3">
+                    We also use <strong>PostHog</strong> (a third-party analytics service) as described above. PostHog
+                    is
+                    not an advertising network. We do not run third-party advertising cookies or sell your browsing
+                    history to ad brokers.
+                </p>
+                <p>
+                    You can limit analytics in your browser (block third-party cookies, use a privacy extension, or
+                    disable JavaScript), though some dashboard features may not work correctly without session cookies.
+                </p>
+            </section>
+
+            <!-- 4. Email -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">4. Email
+                    Communications</h2>
+                <p class="mb-3">
+                    Transactional and marketing email is sent through <strong>Resend</strong> from
+                    <span class="font-mono text-zinc-300">support@bipluk</span>.
+                </p>
+                <ul class="list-disc pl-5 space-y-2 mb-3">
+                    <li>
+                        <strong>Account drip (one-time):</strong> If you register on the free tier, we may send a single
+                        follow-up email about upgrading your vault. This is not a recurring newsletter.
+                    </li>
+                    <li>
+                        <strong>Newsletter (opt-in only):</strong> If you subscribe via the footer or similar opt-in, we
+                        may send occasional product updates. Every newsletter includes an unsubscribe link.
+                    </li>
+                    <li>
+                        <strong>Support:</strong> If you email us, we reply from our support inbox.
+                    </li>
+                </ul>
+                <p>
+                    You can opt out of the newsletter at any time via the unsubscribe link in those emails. To stop the
+                    one-time account drip before it sends, delete your account or email
+                    <span class="font-mono text-white">halfradiationllc@gmail.com</span>.
+                </p>
+            </section>
+
+            <!-- 5. Internal Operations -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">5. Internal
+                    Operator Alerts</h2>
+                <p>
+                    When you sign up, purchase, upload banks, or trigger certain errors, we may send an automated
+                    notification to our private <strong>Discord</strong> webhook so the small team running bipluk
+                    can respond to support issues and monitor system health. These alerts are for internal operations
+                    only — not public channels — and typically include your email address and event type (for example,
+                    signup or checkout started). We do not post your SysEx file contents to Discord.
+                </p>
+            </section>
+
+            <!-- 6. Service Providers -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">6. Service
+                    Providers (Subprocessors)</h2>
+                <p class="mb-3">
+                    We use trusted vendors to run the service. They process data on our behalf only as needed to provide
+                    bipluk:
+                </p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Vercel</strong> — website hosting, serverless application runtime, and edge headers</li>
+                    <li><strong>Neon</strong> — PostgreSQL database hosting (accounts, banks, subscribers)</li>
+                    <li><strong>Stripe</strong> — payment processing and checkout</li>
+                    <li><strong>Resend</strong> — outbound email delivery</li>
+                    <li><strong>PostHog</strong> — product analytics</li>
+                    <li><strong>Discord</strong> — private webhook alerts for the operator team</li>
+                </ul>
+                <p class="mt-3">
+                    We do not sell, rent, or trade user database entries to anyone. All traffic between your browser and
+                    our servers is encrypted using industry-standard TLS.
+                </p>
+            </section>
+
+            <!-- 7. Security -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">7. Security
+                    and Data Protection</h2>
+                <p>
+                    Our databases are stored behind access controls with periodic backups. No system is perfectly
+                    secure; you are responsible for keeping your login credentials safe and maintaining your own
+                    offline SysEx backups.
+                </p>
+            </section>
+
+            <!-- 8. User Rights -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">8. Data
+                    Deletion and Portability</h2>
+                <p>
+                    Under modern privacy frameworks, you have the right to request deletion of your account and all
+                    associated MIDI SysEx banks at any time. To request full deletion of your record, email us at <span
+                        class="font-mono text-white">halfradiationllc@gmail.com</span>, and your account files will be
+                    purged from our database within 30 days.
+                </p>
+            </section>
+
+            <!-- 9. Policy Updates -->
+            <section>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">9. Changes to
+                    This Policy</h2>
+                <p>
+                    We may update this policy from time to time. The “Last updated” date at the top reflects the latest
+                    revision. Continued use of bipluk after an update means you accept the revised policy. If we
+                    make a material change to how we use personal data, we will update this page and may show a notice
+                    in the dashboard.
+                </p>
+            </section>
+
+            <!-- 10. Contact -->
+            <section class="border-t border-zinc-900 pt-8">
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">10. Contact Us
+                </h2>
+                <p>
+                    Questions about privacy or data deletion:
+                    <span class="font-mono text-white">halfradiationllc@gmail.com</span>
+                </p>
+            </section>
+        </div>
+        {% include 'visitor_avatar.html' %}
+        {% include "mobile_nav.html" %}
+</body>
+
+</html>

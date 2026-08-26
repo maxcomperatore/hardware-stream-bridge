@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>Resources | bipluk</title>
+    <meta name="description" content="Access free setup guides, diagnostics tools, comparisons, and documentation for backing up vintage synthesizers via Web MIDI.">
+    {% set seo_canonical = "https://bipluk.com/resources" %}
+    {% set seo_title = "Resources | bipluk" %}
+    {% set seo_description = "Access free setup guides, diagnostics tools, comparisons, and documentation for backing up vintage synthesizers via Web MIDI." %}
+    {% include 'partials/seo_article_meta.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* 3D spin animation for logo */
+        @keyframes logo-spin {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        /* Mobile specific fancy background pattern */
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .glow-card {
+            position: relative;
+            box-shadow: 4px 4px 0px 0px #18181b;
+            /* Hard zinc-900 shadow */
+            transition: none;
+            /* Instant 8-bit response */
+        }
+
+        .glow-card:hover {
+            transform: translate(-2px, -2px);
+            border-color: #26619C;
+            /* Blue-500 border */
+            box-shadow: 6px 6px 0px 0px #26619C;
+            /* Hard blue shadow */
+        }
+
+        .glow-card:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #26619C;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-black text-zinc-100 font-sans antialiased overflow-x-hidden relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <!-- Fancy Mobile Background Pattern -->
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <!-- Sticky Header -->
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Bipluk Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-lapis-light transition-colors">bipluk</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="text-white transition-colors duration-200">Resources</a>
+                <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/home"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Open Vault
+                </a>
+                {% else %}
+                <a href="/login"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">
+                    Sign In
+                </a>
+                <a href="/signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">
+                    Sign Up
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-20 relative z-10">
+        <!-- Title Header -->
+        <article class="space-y-6 text-center mb-20">
+            <span class="tag-lapis">
+                Knowledge Base
+            </span>
+            <h1
+                class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight max-w-3xl mx-auto font-pixel uppercase">
+                Guides, Deep-Dives <br class="hidden sm:inline"> &amp; Resources
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
+                Everything you need to configure vintage synthesizer hardware, understand Web MIDI protocol engineering,
+                and explore standard alternatives.
+            </p>
+        </article>
+
+        <a href="/vintage-synth-cloud-backup"
+            class="block mb-16 bg-gradient-to-br from-emerald-950/40 to-zinc-950 border border-emerald-500/20 hover:border-emerald-500/40 rounded-2xl p-8 transition-colors group">
+            <span class="text-[9px] font-pixel text-emerald-400 uppercase tracking-widest">Start here</span>
+            <h2 class="text-lg font-pixel text-white uppercase mt-2 group-hover:text-emerald-300 transition-colors">
+                Vintage Synth Cloud Backup &amp; SysEx Librarian (2026)</h2>
+            <p class="text-sm text-zinc-400 mt-2 font-mono leading-relaxed">
+                Pillar guide: DX7 backup without software, Juno-106 patches, MIDI-OX alternative for Mac, and cloud backup for synthesizers.
+            </p>
+        </a>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            <a href="/research/2026-vintage-synth-owner-survey"
+                class="block bg-zinc-950 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-8 transition-colors group h-full">
+                <span class="text-[9px] font-pixel text-zinc-500 uppercase tracking-widest">Original research</span>
+                <h2 class="text-lg font-pixel text-white uppercase mt-2 group-hover:text-emerald-300 transition-colors">
+                    2026 Vintage Synth Owner Survey (n=61)</h2>
+                <p class="text-sm text-zinc-400 mt-2 font-mono leading-relaxed">
+                    First-party segmentation: 47.5% gear room, 41% bedroom, 11.5% commercial. Roland, Korg, and Moog dominate desk lists.
+                </p>
+            </a>
+            <a href="/research/2026-browser-sysex-vault-launch-lessons"
+                class="block bg-zinc-950 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-8 transition-colors group h-full">
+                <span class="text-[9px] font-pixel text-zinc-500 uppercase tracking-widest">Launch lessons</span>
+                <h2 class="text-lg font-pixel text-white uppercase mt-2 group-hover:text-emerald-300 transition-colors">
+                    Browser SysEx Vault: Month One</h2>
+                <p class="text-sm text-zinc-400 mt-2 font-mono leading-relaxed">
+                    HN: 52 points, 41 comments. Survey conversion, parser gaps, pricing feedback, and Web MIDI scheduling lessons from month one.
+                </p>
+            </a>
+        </div>
+
+        <!-- Library Grid Sections -->
+        <div class="space-y-20">
+
+            <!-- Section 1: Setup Guides -->
+            <section class="space-y-8">
+                <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">I. Hardware Setup Guides</h2>
+                    <span class="text-zinc-600 font-mono text-2xs">3 Articles</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Yamaha DX7 Guide -->
+                    <a href="/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide" id="resources-guide-dx7"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis">Hardware</span>
+                                <span class="text-zinc-600 font-mono text-2xs">1983</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Yamaha DX7 Backup Guide</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Step-by-step physical configuration to disable internal Memory Protect and configure
+                                function registers for SysEx.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Guide</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- Roland Juno-106 Guide -->
+                    <a href="/how-to-backup-roland-juno-106-presets-sysex-transfer-guide" id="resources-guide-juno"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis">Hardware</span>
+                                <span class="text-zinc-600 font-mono text-2xs">1984</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Juno-106 Preset Transfer</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Enable raw SysEx data transfer using the rear function switch and avoid filter/patch
+                                bank loading lockouts.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Guide</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- Korg M1 Guide -->
+                    <a href="/how-to-backup-korg-m1-presets-sysex-transfer-guide" id="resources-guide-m1"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis">Hardware</span>
+                                <span class="text-zinc-600 font-mono text-2xs">1988</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Korg M1 Setup Routine</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Configure page parameters, set MIDI filters, and switch memory protect status on classic
+                                Korg workstation units.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Guide</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- Section 2: Interactive Diagnostic Tools -->
+            <section class="space-y-8">
+                <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">II. Interactive Tools &amp;
+                        Diagnostics</h2>
+                    <span class="text-zinc-600 font-mono text-2xs">3 Tools</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Battery Health Calculator -->
+                    <a href="/why-your-vintage-synth-battery-is-killing-your-sounds" id="resources-tool-battery"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis-tool">Interactive Calculator</span>
+                                <span class="text-zinc-600 font-mono text-2xs">SRAM Preserver</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Internal Battery Health Calculator</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Calculate your synthesizer's internal voltage decay rate and SRAM data corruption risk
+                                curves based on model age and temperature storage factors.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Launch
+                                Tool</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- Juno-106 Diagnostic Flowsheet -->
+                    <a href="/how-to-fix-juno-106-memory-loss-troubleshooting-guide" id="resources-tool-juno-diag"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis-tool">Interactive Troubleshooter</span>
+                                <span class="text-zinc-600 font-mono text-2xs">Juno-106 Diagnostic</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Juno-106 Memory Loss Diagnostic Flow</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Troubleshoot blank displays, garbled patch lists, and hardware protect write lockouts
+                                step-by-step to compile a custom repair protocol.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Launch
+                                Troubleshooter</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- Web SysEx Hex Inspector & FM Synthesizer Sandbox -->
+                    <a href="/resources/sysex-inspector" id="resources-tool-sysex-inspector"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis-tool bg-teal-950/40 text-teal-400 border-teal-500/30">Web MIDI Tool</span>
+                                <span class="text-zinc-600 font-mono text-2xs">Live Sandbox</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Web SysEx Hex Parser &amp; FM Audition Sandbox</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Drag-and-drop any standard MIDI .syx file to decode manufacturers, extract presets, map raw hexadecimal structures, and play/audition them with a Web Audio synthesizer sandbox.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Launch Inspector</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- Section 3: Deep Dives -->
+            <section class="space-y-8">
+                <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">III. Technical Deep-Dives</h2>
+                    <span class="text-zinc-600 font-mono text-2xs">2 Articles</span>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Web MIDI crash prevention -->
+                    <a href="/how-do-you-keep-web-midi-from-crashing-a-1983-synthesizer" id="resources-deepdive-midi"
+                        class="block bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-3xl p-8 glow-card group relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]">
+                        </div>
+                        <div class="space-y-4 max-w-2xl relative z-10">
+                            <div class="flex items-center gap-3">
+                                <span class="tag-lapis-blog">Blog Post</span>
+                                <span class="text-zinc-600 font-mono text-2xs">5 Min Read</span>
+                            </div>
+                            <h3
+                                class="text-base md:text-lg font-pixel text-white uppercase tracking-tight leading-none group-hover:text-blue-400 transition-colors">
+                                How we prevent Web MIDI from crashing a 1983 synthesizer
+                            </h3>
+                            <p class="text-xs text-zinc-300 leading-relaxed font-mono">
+                                We open-source our engineering protocol: packet throttling, millisecond buffer delays, and
+                                customized sysex framing engineered to bypass vintage CPU limitations.
+                            </p>
+                        </div>
+
+                        <div class="mt-8 border-t border-zinc-900/80 pt-6 flex items-center justify-between relative z-10">
+                            <span class="text-xs font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Technical Article</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-xs group-hover:translate-x-1.5 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- Silicon Microbes Lore -->
+                    <a href="/why-silicon-microbes-are-living-in-your-synthesizer" id="resources-deepdive-lore"
+                        class="block bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-3xl p-8 glow-card group relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]">
+                        </div>
+                        <div class="space-y-4 max-w-2xl relative z-10">
+                            <div class="flex items-center gap-3">
+                                <span class="tag-lapis-blog">Branding &amp; Lore</span>
+                                <span class="text-zinc-600 font-mono text-2xs">4 Min Read</span>
+                            </div>
+                            <h3
+                                class="text-base md:text-lg font-pixel text-white uppercase tracking-tight leading-none group-hover:text-blue-400 transition-colors">
+                                Why Silicon Microbes are Living in Your Synthesizer
+                            </h3>
+                            <p class="text-xs text-zinc-300 leading-relaxed font-mono">
+                                The biology of static RAM: how volatile silicon circuits support the metabolism of Bipluk, and why lithium decay poses an existential threat to your custom sounds.
+                            </p>
+                        </div>
+
+                        <div class="mt-8 border-t border-zinc-900/80 pt-6 flex items-center justify-between relative z-10">
+                            <span class="text-xs font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Lore Article</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-xs group-hover:translate-x-1.5 transition-transform">-></span>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Section 4: Comparisons -->
+            <section class="space-y-8">
+                <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">IV. Comparisons &amp;
+                        Alternatives</h2>
+                    <span class="text-zinc-600 font-mono text-2xs">3 Articles</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- General Alternatives Guide -->
+                    <a href="/sysex-librarian-alternatives" id="resources-alt-general"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis">Overview</span>
+                                <span class="text-zinc-600 font-mono text-2xs">Universal</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Universal SysEx Alternatives</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                The ultimate review of classic desktop utilities, modern VSTs, and why cloud sync beats
+                                offline file directories.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- Snoize vs bipluk -->
+                    <a href="/bipluk-vs-snoize-sysex-librarian" id="resources-alt-snoize"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis">Comparison</span>
+                                <span class="text-zinc-600 font-mono text-2xs">macOS</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                Snoize vs. bipluk</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Head-to-head comparison: Apple CoreMIDI offline utility versus cross-platform Web MIDI
+                                browser vaults.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- MIDI-OX TLS audit -->
+                    <a href="/audit/midiox" id="resources-audit-midiox"
+                        class="bg-zinc-950 border border-rose-950/40 hover:border-rose-900/60 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis-audit">Audit</span>
+                                <span class="text-zinc-600 font-mono text-2xs">TLS</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-rose-400 transition-colors">
+                                MIDI-OX SSL audit</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Hostname mismatch, cert expired 2022, HTTP-only delivery. Observable findings from
+                                midiox.com, June 2026.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read report</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                    <!-- MIDI-OX vs bipluk -->
+                    <a href="/bipluk-vs-midi-ox" id="resources-alt-midiox"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="tag-lapis">Comparison</span>
+                                <span class="text-zinc-600 font-mono text-2xs">Windows</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                MIDI-OX vs. bipluk</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                Comparing the legendary 32-bit Windows system software with instant, driver-less
+                                browser-native backups.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Compare</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- Section 5: The Vintage Synth Wiki -->
+            <section class="space-y-8">
+                <div class="border-b border-zinc-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-xs font-pixel uppercase text-white tracking-wider">V. Vintage Synth Wiki &amp;
+                        Database</h2>
+                    <span class="text-zinc-600 font-mono text-2xs">{{ wiki_synths|length }} Hardware Profiles</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {% for synth in wiki_synths %}
+                    <a href="/{{ synth.slug }}" id="resources-wiki-{{ synth.slug }}"
+                        class="bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-6 glow-card flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[8px] font-pixel px-2 py-0.5 rounded uppercase bg-lapis-deep border-3 border-double inline-flex items-center 
+                                    {% if synth.brand == 'Yamaha' %}text-teal-400 border-teal-500/80
+                                    {% elif synth.brand == 'Roland' %}text-orange-400 border-orange-500/80
+                                    {% elif synth.brand == 'Korg' %}text-blue-300 border-blue-400/80
+                                    {% elif synth.brand == 'Casio' %}text-purple-300 border-purple-500/80
+                                    {% elif synth.brand == 'Sequential' %}text-red-400 border-red-500/80
+                                    {% elif synth.brand == 'Oberheim' %}text-yellow-200 border-yellow-500/80
+                                    {% else %}text-zinc-300 border-zinc-500/80{% endif %}">
+                                    {{ synth.brand }}
+                                </span>
+                                <span class="text-zinc-650 font-mono text-[9px] uppercase">Wiki Profile</span>
+                            </div>
+                            <h3
+                                class="text-xs font-pixel text-white uppercase group-hover:text-blue-400 transition-colors">
+                                {{ synth.name }}</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-sans">
+                                {{ synth.description }}
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-900/60">
+                            <span
+                                class="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 transition-colors">Read
+                                Wiki &amp; Setup</span>
+                            <span
+                                class="text-zinc-600 font-pixel text-3xs group-hover:translate-x-1 transition-transform">-></span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Call to Action -->
+        <div class="mt-20 pt-12 border-t border-zinc-900 text-center space-y-6">
+            <h3 class="text-sm font-pixel uppercase text-white tracking-wider">Ready to back up your hardware?</h3>
+            <a href="/signup"
+                class="inline-flex bg-white hover:bg-zinc-200 text-black px-8 py-3.5 rounded-full text-2xs font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 shadow-lg">
+                Sign Up
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+    <script>
+        const RECT_FLAGS_MAP = {{ (rect_flags_map or {}) | tojson | safe }};
+        function getFlagUrl(code) {
+            const codeUpper = (code || '').toUpperCase();
+            const filename = RECT_FLAGS_MAP[codeUpper];
+            if (filename) return `/static/icons/flags/Rect/${filename}`;
+            return `/static/icons/flags/Rect/${codeUpper}_rect.png`;
+        }
+        // Call the secure same-origin proxy to get geoip details
+        const fetchGeoData = () => {
+            return fetch('/api/geoip')
+                .then(res => {
+                    if (!res.ok) throw new Error();
+                    return res.json().catch(() => ({}));
+                })
+                .catch(() => ({}));
+        };
+
+        fetchGeoData()
+            .then(data => {
+                if (data.country_name && data.country) {
+                    const country = data.country_name;
+                    const code = data.country.toLowerCase();
+
+                    let countryName = country;
+                    if (code === 'us') countryName = 'the USA';
+                    else if (code === 'gb') countryName = 'the UK';
+                    else if (code === 'nl') countryName = 'the Netherlands';
+                    else if (code === 'uae') countryName = 'the UAE';
+                    else if (code === 'ph') countryName = 'the Philippines';
+
+                    const tag = document.getElementById('visitor-geo-tag');
+                    if (tag) {
+                        tag.innerHTML = `Made for geniuses in ${countryName} <img src="${getFlagUrl(code)}" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
+                    }
+                }
+            })
+            .catch(() => {
+                const tag = document.getElementById('visitor-geo-tag');
+                if (tag) tag.textContent = 'Made for geniuses everywhere';
+            });
+
+        // Footer email subscription logic
+        function submitFooterSubscribe(event) {
+            event.preventDefault();
+            const form = event.target;
+            const emailInput = document.getElementById('footer-subscribe-email');
+            const email = emailInput.value.trim();
+            const statusDiv = document.getElementById('footer-subscribe-status');
+            const submitBtn = document.getElementById('footer-subscribe-btn');
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                statusDiv.textContent = "that.. doesn't look like an email address. Want to double check?";
+                statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                return;
+            }
+
+            statusDiv.textContent = "Connecting to preset database...";
+            statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
+            submitBtn.disabled = true;
+
+            fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `email=${encodeURIComponent(email)}`
+            })
+                .then(res => {
+                    if (res.ok) {
+                        statusDiv.textContent = "Subscribed. Updates about twice a month. Unsubscribe anytime.";
+                        statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                        form.reset();
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    statusDiv.textContent = "Oops, connection dropped. Give it another shot?";
+                    statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
+        }
+    </script>
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

@@ -1,0 +1,2957 @@
+<!DOCTYPE html>
+<html lang="en" data-pricing-region="{{ pricing.region if pricing is defined else 'usd' }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="origin-trial" content="Ah0DUlSjh07hgLL8JCWkCDq0srJ+qjq3jFUdQ/5qyLluOwhrP3sL8bBj5/ll815yDAZuwBxh2p924Hn7RX7DEQYAAABweyJvcmlnaW4iOiJodHRwczovL2JpcGx1ay5jb206NDQzIiwiZmVhdHVyZSI6IkVtYWlsVmVyaWZpY2F0aW9uUHJvdG9jb2wiLCJleHBpcnkiOjE3OTQ4NzM2MDAsImlzU3ViZG9tYWluIjp0cnVlfQ==">
+    <meta name="google-site-verification" content="STOaPWGwgPycvNfxtzTRhyetLyvasi3uelnlo5SV_QA" />
+    {% include "partials/local_fonts.html" %}
+    <title>{{ seo.title if seo else "Strymon & HX Stomp Preset Backup Online | rigluk" }}</title>
+    <meta name="description" content="{{ seo.description if seo else 'Browser-native Web MIDI vault for guitar pedals & amp modelers. Back up Strymon, Eventide, Line 6, Boss, Kemper, and Quad Cortex presets in 1 click.' }}">
+    <meta name="keywords" content="{{ seo.keywords if seo else 'guitar pedal preset backup, strymon bigsky librarian, eventide h90 presets, hx stomp preset manager, quad cortex backup, rigluk, web midi pedal vault' }}">
+    <link rel="canonical" href="https://rigluk.com/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="en" href="https://rigluk.com/{{ seo_slug if seo_slug else '' }}">
+    <link rel="alternate" hreflang="x-default" href="https://rigluk.com/{{ seo_slug if seo_slug else '' }}">
+    {% include 'partials/favicon.html' %}
+    <meta property="og:site_name" content="rigluk">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rigluk.com/{{ seo_slug if seo_slug else '' }}">
+    <meta property="og:title"
+        content="{{ seo.title if seo else 'rigluk | The Cloud Vault for Guitar Pedals & Amp Modelers' }}">
+    <meta property="og:description"
+        content="{{ seo.description if seo else 'Backup & recall presets from Strymon, Eventide, Line 6, Boss, and Kemper pedals in the cloud via Web MIDI.' }}">
+    <meta property="og:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
+    <meta property="og:image:type" content="image/gif">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://rigluk.com/{{ seo_slug if seo_slug else '' }}">
+    <meta property="twitter:title"
+        content="{{ seo.title if seo else 'rigluk | The Cloud Vault for Guitar Pedals & Amp Modelers' }}">
+    <meta property="twitter:description"
+        content="{{ seo.description if seo else 'Backup & recall presets from Strymon, Eventide, Line 6, Boss, and Kemper pedals in the cloud via Web MIDI.' }}">
+    <meta property="twitter:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
+
+    <!-- Prevent Flash of Unstyled Content (FOUC) and set default background early -->
+    <style>
+        html,
+        body {
+            background-color: #09090b !important;
+            background-image: 
+                radial-gradient(ellipse 90% 60% at 50% -10%, rgba(38, 97, 156, 0.24), transparent 70%),
+                radial-gradient(circle 600px at 50% 500px, rgba(16, 185, 129, 0.05), transparent 80%) !important;
+            background-attachment: fixed !important;
+            color: #f4f4f5 !important;
+            color-scheme: dark;
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+            width: 100% !important;
+        }
+    </style>
+
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        /* Perceptual color tokens — hex fallback, OKLCH primary, P3 wide-gamut on capable displays */
+        :root {
+            --canvas-void: #09090B;
+            --canvas-surface: #18181B;
+            --border-muted: #3F3F46;
+            --ink-primary: #FAFAFA;
+            --ink-secondary: #A1A1AA;
+            --ink-muted: #71717A;
+            --lapis-deep: #1B4F8C;
+            --lapis-mid: #26619C;
+            --lapis-light: #4A7FB8;
+            --gem-facet: #E8F0F8;
+            --gem-flash: #FFFFFF;
+            --avoid-neon: #B8CC3A;
+            --pain-blood: #DC2626;
+            --stuck-rust: #EF4444;
+            --lapis-glow: color-mix(in srgb, var(--lapis-light) 35%, transparent);
+            --lapis-glow-strong: color-mix(in srgb, var(--lapis-light) 50%, transparent);
+            --lapis-glow-soft: color-mix(in srgb, var(--lapis-light) 20%, transparent);
+            --lapis-border: color-mix(in srgb, var(--lapis-light) 45%, transparent);
+            --lapis-fill-soft: color-mix(in srgb, var(--lapis-mid) 12%, transparent);
+            --gem-glow: color-mix(in srgb, var(--gem-flash) 35%, transparent);
+            --gem-glow-soft: color-mix(in srgb, var(--gem-flash) 12%, transparent);
+            --facet-border: color-mix(in srgb, var(--gem-facet) 22%, transparent);
+            --avoid-neon-glow: color-mix(in srgb, var(--avoid-neon) 50%, transparent);
+            --avoid-neon-shadow: color-mix(in srgb, #5a6e1e 60%, transparent);
+            --pain-blood-glow: color-mix(in srgb, var(--pain-blood) 45%, transparent);
+            --shadow-void: color-mix(in srgb, #000 35%, transparent);
+        }
+
+        @supports (color: oklch(0% 0 0)) {
+            :root {
+                --canvas-void: oklch(14.08% 0.0044 285.82);
+                --canvas-surface: oklch(21.03% 0.0059 285.89);
+                --border-muted: oklch(37.03% 0.0119 285.81);
+                --ink-primary: oklch(98.51% 0 0);
+                --ink-secondary: oklch(71.18% 0.0129 286.07);
+                --ink-muted: oklch(55.17% 0.0138 285.94);
+
+                /* Lapis lazuli — perceptually uniform lightness steps */
+                --lapis-deep: oklch(42.72% 0.1149 254.84);
+                --lapis-mid: oklch(48.42% 0.1129 251.34);
+                --lapis-light: oklch(58.50% 0.1049 251.61);
+                --gem-facet: oklch(95.14% 0.0138 247.97);
+                --gem-flash: oklch(100% 0 0);
+
+                /* Pain anchors — competitor framing only */
+                --avoid-neon: oklch(80.41% 0.1655 117.11);
+                --pain-blood: oklch(57.71% 0.2152 27.33);
+                --stuck-rust: oklch(63.68% 0.2078 25.33);
+
+                /* Alpha tokens — derived from base hues via color-mix */
+                --lapis-glow: color-mix(in oklch, var(--lapis-light) 35%, transparent);
+                --lapis-glow-strong: color-mix(in oklch, var(--lapis-light) 50%, transparent);
+                --lapis-glow-soft: color-mix(in oklch, var(--lapis-light) 20%, transparent);
+                --lapis-border: color-mix(in oklch, var(--lapis-light) 45%, transparent);
+                --lapis-fill-soft: color-mix(in oklch, var(--lapis-mid) 12%, transparent);
+                --gem-glow: color-mix(in oklch, var(--gem-flash) 35%, transparent);
+                --gem-glow-soft: color-mix(in oklch, var(--gem-flash) 12%, transparent);
+                --facet-border: color-mix(in oklch, var(--gem-facet) 22%, transparent);
+                --avoid-neon-glow: color-mix(in oklch, var(--avoid-neon) 50%, transparent);
+                --avoid-neon-shadow: color-mix(in oklch, oklch(48% 0.08 117) 60%, transparent);
+                --pain-blood-glow: color-mix(in oklch, var(--pain-blood) 45%, transparent);
+                --shadow-void: color-mix(in oklch, black 35%, transparent);
+
+                --pricing-gem-gradient: linear-gradient(105deg,
+                        var(--lapis-deep) 0%,
+                        var(--lapis-mid) 14%,
+                        var(--lapis-light) 28%,
+                        var(--gem-facet) 38%,
+                        var(--gem-flash) 44%,
+                        var(--lapis-light) 52%,
+                        var(--lapis-mid) 64%,
+                        var(--gem-facet) 74%,
+                        var(--lapis-light) 86%,
+                        var(--lapis-deep) 100%);
+            }
+        }
+
+        /* Display P3 — extra chroma on Retina / OLED (colors hex cannot reach) */
+        @media (color-gamut: p3) {
+            :root {
+                --lapis-deep: oklch(42.72% 0.142 254.84);
+                --lapis-mid: oklch(48.42% 0.148 251.34);
+                --lapis-light: oklch(58.50% 0.138 251.61);
+                --avoid-neon: oklch(80.41% 0.205 117.11);
+                --pain-blood: oklch(57.71% 0.26 27.33);
+                --stuck-rust: oklch(63.68% 0.25 25.33);
+            }
+        }
+
+        :root {
+            --pricing-gem-gradient: linear-gradient(105deg,
+                    var(--lapis-deep) 0%,
+                    var(--lapis-mid) 14%,
+                    var(--lapis-light) 28%,
+                    var(--gem-facet) 38%,
+                    var(--gem-flash) 44%,
+                    var(--lapis-light) 52%,
+                    var(--lapis-mid) 64%,
+                    var(--gem-facet) 74%,
+                    var(--lapis-light) 86%,
+                    var(--lapis-deep) 100%);
+        }
+
+        .btn-free {
+            background: linear-gradient(180deg, #27272a 0%, #18181b 100%) !important;
+            border: 1px solid #52525b !important;
+            color: #ffffff !important;
+            opacity: 1 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+
+        .btn-free:hover {
+            background: linear-gradient(180deg, #3f3f46 0%, #27272a 100%) !important;
+            border-color: #71717a !important;
+            box-shadow: 0 0 24px rgba(161, 161, 170, 0.3), 0 6px 20px rgba(0, 0, 0, 0.7) !important;
+            opacity: 1 !important;
+        }
+
+        .btn-free:active {
+            transform: scale(0.98);
+        }
+
+        .btn-lapis {
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%) !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            border: 1px solid #60a5fa !important;
+            opacity: 1 !important;
+            box-shadow:
+                0 0 28px rgba(37, 99, 235, 0.7),
+                0 4px 16px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+
+        .btn-lapis:hover {
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%) !important;
+            color: #ffffff !important;
+            border-color: #93c5fd !important;
+            opacity: 1 !important;
+            box-shadow:
+                0 0 40px rgba(59, 130, 246, 0.9),
+                0 6px 22px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .btn-lapis:active {
+            transform: scale(0.98);
+        }
+
+        .btn-lapis-outline {
+            background: transparent;
+            color: var(--lapis-light);
+            border: 1px solid var(--lapis-border, rgba(74, 127, 184, 0.45));
+            box-shadow: none;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .btn-lapis-outline:hover {
+            background: var(--lapis-fill-soft, rgba(38, 97, 156, 0.12));
+            border-color: var(--lapis-light);
+            box-shadow: 0 0 20px var(--lapis-glow-soft, rgba(74, 127, 184, 0.2));
+        }
+
+        .btn-lapis-outline:active {
+            transform: scale(0.98);
+        }
+
+        .pricing-card-featured {
+            border-color: var(--lapis-glow, rgba(74, 127, 184, 0.35)) !important;
+            box-shadow: 0 0 48px var(--lapis-glow-soft, rgba(74, 127, 184, 0.1)), 4px 4px 0 0 var(--canvas-surface);
+        }
+
+        .pricing-card-featured.glow-card:hover {
+            border-color: var(--lapis-mid) !important;
+            box-shadow: 6px 6px 0 0 var(--lapis-mid), 0 0 28px var(--lapis-glow-soft, rgba(74, 127, 184, 0.2)) !important;
+        }
+
+        .pricing-card-featured.glow-card:active {
+            box-shadow: 2px 2px 0 0 var(--lapis-mid) !important;
+        }
+
+        /* Dinkie SVG tinting — one lapis filter sitewide on landing */
+        .dinkie-lapis {
+            filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);
+        }
+
+        .dinkie-dead {
+            filter: invert(0.4);
+        }
+
+        .dinkie-muted {
+            filter: invert(1);
+            opacity: 0.4;
+        }
+
+        @font-palette-values --synth-nabla {
+            font-family: "Nabla";
+            base-palette: 0;
+            override-colors:
+                0 #ffffff,
+                1 #26619C,
+                2 #1B4F8C,
+                3 #4A7FB8,
+                4 #0a1a2e,
+                5 #153d66;
+        }
+
+        .font-nabla-synth {
+            font-family: 'Nabla', system-ui;
+            font-palette: --synth-nabla;
+        }
+
+        @keyframes pricing-gem-shimmer {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .pricing-gem-price {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0;
+            letter-spacing: -0.03em;
+            text-wrap: balance;
+        }
+
+        .pricing-gem-blue {
+            background: var(--pricing-gem-gradient);
+            background-size: 260% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+            animation: pricing-gem-shimmer 7s ease-in-out infinite;
+            filter: drop-shadow(0 0 14px var(--gem-glow, rgba(248, 250, 252, 0.35))) drop-shadow(0 0 8px var(--lapis-glow-soft, rgba(74, 127, 184, 0.28)));
+        }
+
+        /* rigluk+ — lapis brand (same family as price gem) */
+        .text-brand-plus {
+            color: var(--lapis-light);
+        }
+
+        /* Primal “avoid” — bile / radioactive chartreuse (neon = danger, not cool) */
+        .text-anchor-competitor {
+            color: var(--avoid-neon);
+            text-shadow: 0 0 10px var(--avoid-neon-glow, rgba(184, 204, 58, 0.5)), 0 0 2px var(--avoid-neon-shadow, rgba(90, 110, 30, 0.6));
+        }
+
+        .text-anchor-blood {
+            color: var(--pain-blood);
+            text-shadow: 0 0 8px var(--pain-blood-glow, rgba(220, 38, 38, 0.45));
+        }
+
+        .pricing-gem-currency-icon {
+            display: inline-block;
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            transform: translateY(-2px);
+            background: var(--pricing-gem-gradient);
+            background-size: 260% 100%;
+            animation: pricing-gem-shimmer 7s ease-in-out infinite;
+            filter: drop-shadow(0 0 14px var(--gem-glow, rgba(248, 250, 252, 0.35))) drop-shadow(0 0 8px var(--lapis-glow-soft, rgba(74, 127, 184, 0.28)));
+        }
+
+        .pricing-gem-currency-usd {
+            -webkit-mask: url('/static/icons/dinkie/heavy-dollar-sign.svg') center / contain no-repeat;
+            mask: url('/static/icons/dinkie/heavy-dollar-sign.svg') center / contain no-repeat;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .pricing-gem-blue,
+            .pricing-gem-currency-icon {
+                animation: none;
+                background-position: 50% 50%;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .shadow-lapis-glow {
+            box-shadow: 0 0 12px var(--lapis-glow);
+        }
+
+        .shadow-lapis-glow-lg {
+            box-shadow: 0 0 20px var(--lapis-glow);
+        }
+
+        .shadow-lapis-glow-soft {
+            box-shadow: 0 0 20px var(--lapis-glow-soft);
+        }
+
+        /* Custom selection color */
+        ::selection {
+            background-color: rgba(74, 127, 184, 0.25);
+            color: var(--ink-primary);
+        }
+
+        @supports (color: oklch(0% 0 0)) {
+            ::selection {
+                background-color: oklch(58.50% 0.1049 251.61 / 0.25);
+            }
+        }
+
+        /* Minecraft-style 3D spinning item animation */
+        @keyframes minecraft-spin {
+            0% {
+                transform: perspective(600px) rotateX(12deg) rotateY(0deg);
+            }
+
+            100% {
+                transform: perspective(600px) rotateX(12deg) rotateY(360deg);
+            }
+        }
+
+        .spin-minecraft {
+            animation: minecraft-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        /* Dither effect on images */
+        .dithered {
+            filter: grayscale(100%) contrast(130%) brightness(110%) url(#dither-filter);
+            image-rendering: pixelated;
+            will-change: filter;
+        }
+
+        .mono-pixel-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* B&W, pixel-crunched — no dither (code screenshots, UI crops) */
+        .mono-pixel-wrap img.mono-pixel {
+            width: 54%;
+            height: 54%;
+            max-width: none;
+            object-fit: cover;
+            flex-shrink: 0;
+            filter: grayscale(100%) contrast(200%) brightness(80%);
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            transform: scale(2.04);
+            transform-origin: center center;
+            transition: transform 500ms;
+        }
+
+        .mono-pixel-wrap:hover img.mono-pixel {
+            transform: scale(2.15);
+        }
+
+        /* 1-bit style dither mesh with retro ASCII characters */
+        /* Mobile specific fancy background pattern */
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        /* Scroll Reveal System */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal.reveal-left {
+            transform: translateX(-32px);
+        }
+
+        .reveal.reveal-right {
+            transform: translateX(32px);
+        }
+
+        .reveal.reveal-scale {
+            transform: scale(0.96);
+        }
+
+        /* Horizontal slide reveals overflow the viewport on mobile before scroll-in */
+        @media (max-width: 767px) {
+            .reveal.reveal-left,
+            .reveal.reveal-right {
+                transform: translateY(24px);
+            }
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+
+        /* Delays for staggered fades */
+        .reveal.active[style*="--delay"] {
+            transition-delay: var(--delay);
+        }
+
+        /* Looping Confetti Banner Effect */
+        @keyframes confetti-loop {
+            0% {
+                background-position: 0 0, 0 0, 0 0;
+            }
+
+            100% {
+                background-position: 0 0, 200px 200px, -160px 320px;
+            }
+        }
+
+        .confetti-banner-bg {
+            background-image:
+                linear-gradient(to right, rgba(11, 15, 25, 0.70) 0%, rgba(9, 9, 11, 0.75) 100%),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27200%27 height%3D%27200%27 viewBox%3D%270 0 200 200%27%3E%3Crect x%3D%2720%27 cy%3D%2730%27 width%3D%275%27 height%3D%277%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2812 22.5 33.5%29%27 opacity%3D%270.9%27%2F%3E%3Crect x%3D%27150%27 y%3D%2725%27 width%3D%274%27 height%3D%276%27 fill%3D%27%2310b981%27 transform%3D%27rotate%2845 152 28%29%27 opacity%3D%270.85%27%2F%3E%3Crect x%3D%2790%27 y%3D%2770%27 width%3D%276%27 height%3D%274%27 fill%3D%27%2306b6d4%27 transform%3D%27rotate%28115 93 72%29%27 opacity%3D%270.9%27%2F%3E%3Crect x%3D%2740%27 y%3D%27140%27 width%3D%274%27 height%3D%274%27 fill%3D%27%236366f1%27 transform%3D%27rotate%2870 42 142%29%27 opacity%3D%270.95%27%2F%3E%3Crect x%3D%27120%27 y%3D%27160%27 width%3D%277%27 height%3D%273%27 fill%3D%27%233b82f6%27 transform%3D%27rotate%2835 123.5 161.5%29%27 opacity%3D%270.85%27%2F%3E%3Ccircle cx%3D%2775%27 cy%3D%2740%27 r%3D%272.5%27 fill%3D%27%2306b6d4%27 opacity%3D%270.9%27%2F%3E%3Ccircle cx%3D%27160%27 cy%3D%27110%27 r%3D%273.5%27 fill%3D%27%2310b981%27 opacity%3D%270.9%27%2F%3E%3Ccircle cx%3D%2725%27 cy%3D%2795%27 r%3D%272%27 fill%3D%27%233b82f6%27 opacity%3D%270.85%27%2F%3E%3Ccircle cx%3D%27105%27 cy%3D%27130%27 r%3D%273%27 fill%3D%27%236366f1%27 opacity%3D%270.9%27%2F%3E%3Cpath d%3D%27M50%2C85 Q60%2C95 50%2C105%27 stroke%3D%27%2310b981%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.85%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M140%2C75 Q130%2C85 140%2C95%27 stroke%3D%27%233b82f6%27 stroke-width%3D%271.2%27 fill%3D%27none%27 opacity%3D%270.85%27 stroke-linecap%3D%27round%27%2F%3E%3Cpath d%3D%27M85%2C170 Q95%2C160 105%2C170%27 stroke%3D%27%2306b6d4%27 stroke-width%3D%271.5%27 fill%3D%27none%27 opacity%3D%270.85%27 stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+            background-size: auto, 200px 200px;
+            animation: confetti-loop 14s linear infinite;
+        }
+
+        /* Looping Christmas Snow Banner Effect */
+        @keyframes snow-loop {
+            0% {
+                background-position: 0 0, 0 0, 0 0;
+            }
+
+            100% {
+                background-position: 0 0, 150px 300px, -100px 150px;
+            }
+        }
+
+        .christmas-banner-bg {
+            background-image:
+                linear-gradient(to right, rgba(12, 28, 18, 0.8) 0%, rgba(9, 9, 11, 0.85) 100%),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27150%27 height%3D%27150%27 viewBox%3D%270 0 150 150%27%3E%3Ccircle cx%3D%2720%27 cy%3D%2730%27 r%3D%272.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27120%27 cy%3D%2740%27 r%3D%271.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.6%27%2F%3E%3Ccircle cx%3D%2780%27 cy%3D%2790%27 r%3D%273%27 fill%3D%27%23ffffff%27 opacity%3D%270.75%27%2F%3E%3Ccircle cx%3D%2740%27 cy%3D%27120%27 r%3D%272%27 fill%3D%27%23ffffff%27 opacity%3D%270.8%27%2F%3E%3Ccircle cx%3D%27140%27 cy%3D%27110%27 r%3D%272%27 fill%3D%27%23ffffff%27 opacity%3D%270.7%27%2F%3E%3C%2Fsvg%3E"),
+                url("data:image/svg+xml;utf8,%3Csvg xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27 width%3D%27100%27 height%3D%27100%27 viewBox%3D%270 0 100 100%27%3E%3Ccircle cx%3D%2715%27 cy%3D%2725%27 r%3D%271.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.5%27%2F%3E%3Ccircle cx%3D%2785%27 cy%3D%2775%27 r%3D%272.5%27 fill%3D%27%23ffffff%27 opacity%3D%270.7%27%2F%3E%3Ccircle cx%3D%2750%27 cy%3D%2750%27 r%3D%271.2%27 fill%3D%27%23ffffff%27 opacity%3D%270.6%27%2F%3E%3C%2Fsvg%3E");
+            background-size: auto, 150px 150px, 100px 100px;
+            animation: snow-loop 12s linear infinite;
+        }
+
+        .glow-card {
+            position: relative;
+            box-shadow: 4px 4px 0px 0px #18181b;
+            /* Hard zinc-900 shadow */
+            transition: none !important;
+            /* Instant 8-bit response */
+        }
+
+        .glow-card:hover {
+            transform: translate(-2px, -2px) !important;
+            border-color: var(--lapis-mid) !important;
+            box-shadow: 6px 6px 0px 0px var(--lapis-mid) !important;
+        }
+
+        .glow-card:active {
+            transform: translate(2px, 2px) !important;
+            box-shadow: 2px 2px 0px 0px var(--lapis-mid) !important;
+        }
+
+        /* Slow, zero-gravity levitation animation for the meme image */
+        @keyframes levitate {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .animate-levitate {
+            animation: levitate 6s ease-in-out infinite;
+        }
+
+        /* Custom FAQ Accordion Toggles */
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details summary {
+            list-style: none;
+        }
+
+        details[open] summary .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        details[open] .faq-answer {
+            animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .demo-loop-video {
+            opacity: 1;
+            transition: opacity 0.12s linear;
+            will-change: opacity;
+        }
+
+        .font-pixel {
+            font-family: 'Silkscreen', monospace;
+        }
+
+        .font-lcd {
+            font-family: 'VT323', monospace;
+        }
+    </style>
+    {% include 'posthog.html' %}
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "rigluk - Guitar Pedal & Amp Modeler Vault",
+      "description": "{{ seo.description if seo else 'Browser-native Web MIDI vault for guitar pedals & amp modelers. Back up Strymon, Eventide, Line 6, Boss, Kemper, and Quad Cortex presets in 1 click.' }}",
+      "operatingSystem": "Windows, macOS, Linux, Android, iOS, iPadOS",
+      "applicationCategory": "MultimediaApplication",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "136",
+        "reviewCount": "88"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "rigluk+",
+          "price": "49.00",
+          "priceCurrency": "USD",
+          "url": "https://rigluk.com/#pricing",
+          "availability": "https://schema.org/InStock",
+          "description": "One-time lifetime license. Not a subscription."
+        },
+        {
+          "@type": "Offer",
+          "name": "rigluk+ Studio",
+          "price": "399.00",
+          "priceCurrency": "USD",
+          "url": "https://rigluk.com/#pricing",
+          "availability": "https://schema.org/InStock",
+          "description": "One-time lifetime commercial license for one business location. Not a subscription."
+        }
+      ],
+      "author": {
+        "@type": "Organization",
+        "name": "rigluk",
+        "url": "https://rigluk.com"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Web MIDI SysEx Connection Demo",
+        "description": "Connecting vintage hardware synthesizers directly to a browser using native Web MIDI to back up patch names and RAM registers.",
+        "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
+        "uploadDate": "2026-05-30T08:00:00+00:00",
+        "duration": "PT0M10S",
+        "contentUrl": "https://rigluk/static/1.mp4?v=20260701b"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Rigluk Cloud Librarian Walkthrough",
+        "description": "A demonstration of storing, searching, and restoring backup SysEx patch banks directly from a private cloud librarian vault.",
+        "thumbnailUrl": "{{ asset_abs_url('dithered_knob_og.gif') }}",
+        "uploadDate": "2026-05-30T08:00:00+00:00",
+        "duration": "PT0M10S",
+        "contentUrl": "https://rigluk/static/2.mp4?v=20260701b"
+      }
+    ]
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is rigluk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "rigluk is a browser-native cloud SysEx librarian and patch manager designed for vintage synthesizers from the 1980s and 90s. It eliminates the need for legacy drivers, desktop software, or complicated MIDI-OX configurations by connecting your instruments directly to the web."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does browser-native Web MIDI work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Modern browsers like Google Chrome, Microsoft Edge, and Opera support the Web MIDI API. This allows our website to communicate directly with your physical USB-to-MIDI interface cables and hardware synths without running any local background utilities or installing manual USB drivers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which synthesizers are fully supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We feature dedicated name-decoding parsers for the Yamaha DX7 (and compatible synths like DX7II, TX7, TX81Z), Roland Juno-106, Korg M1, Roland Jupiter-6 (Europa-modded), Sequential Prophet, and the Casio CZ series. We also feature a universal Generic Scan that works with almost any vintage synthesizer by scanning raw SysEx bulk dumps for readable ASCII character arrays to extract patch names automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a special MIDI interface or cable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any standard, class-compliant USB-to-MIDI interface will work. However, we highly recommend avoiding low-cost, unbranded interface cables, as they lack internal timing buffers and frequently drop or corrupt long SysEx byte blocks during large memory dumps."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I prevent 'Buffer Overflow' errors?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Older synthesizers utilize slow microprocessors and are easily overwhelmed by high-speed USB data. rigluk's MIDI transmission protocol is fine-tuned to throttle outbound dumps into small packages with 60ms pauses, ensuring your physical hardware can write the data to memory without dropping packets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my patches private and secure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. All soundbanks and SysEx dumps uploaded to rigluk are stored securely in your private cloud account. We only read the ASCII patch names to display them in your private searchable library, and your raw .syx binary files are never shared."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is rigluk secure from a cybersecurity standpoint?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. rigluk is designed with a defense-in-depth security model. Because it is completely browser-native, you do not need to install local desktop executables, background drivers, or untrusted utilities, keeping your operating system completely isolated from security risks. On the backend, our processing engine runs in isolated environments with strict input sanitization on all uploaded binary data to prevent SSRF vulnerabilities or buffer exploit attempts. Additionally, all billing is securely managed via Stripe. No credit cards or payment credentials ever touch or reside on our servers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export and download my SysEx files?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. Every backup captured using rigluk can be downloaded as a standard .syx binary file at any time. Your data is never locked in, allowing you to use your backups with classic tools like Snoize, MIDI-OX, or hardware sequencers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is rigluk better than Snoize or MIDI-OX?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Snoize (macOS) and MIDI-OX (Windows) were great in their day, but they are desktop relics. MIDI-OX hasn't been updated since 2011, runs on Windows 95/XP, and its official website currently triggers invalid SSL certificate warnings. Beyond the security risks, manually adjusting buffer settings on ancient desktop software is a headache. rigluk runs directly in your browser with zero installation, automatically manages buffer sizing to prevent transfer crashes, and keeps your library synced in the cloud."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why use this instead of free utilities or MIDI Quest?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Regardless of whether you understand the complex binary details of SysEx or have no clue what that even is, rigluk just works without any local installation or setup. It saves you time so you can focus on exploring soundbanks and making music. Plus, you get zero setup, no app sprawl, a secure cloud library, and transparent, fair pricing compared to legacy solutions like SoundQuest/MIDI Quest or SoundTower which cost hundreds of dollars."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it support editing patches in real time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "rigluk is primarily a librarian for backup, storage, organization, and quick retrieval of patch banks. While it does not feature a graphical synthesizer editor (with virtual sliders for every parameter), it allows you to audition and swap banks in one click."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the price of rigluk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer transparent lifetime pricing: rigluk+ at $49. One-time payment, no monthly fees, no automatic renewals. Includes unlimited soundbank saving, preset decoding, and .syx export."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is rigluk a subscription?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. rigluk is not a subscription service. Personal and Studio are one-time lifetime purchases processed through Stripe. Your vault stays accessible and you can download your .syx backups at any time. There is no monthly rent for your patches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you support browser-native MIDI on iOS or Android?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Android Chrome natively supports Web MIDI out of the box. On iOS, you can use specialized Web MIDI browsers (like WebMIDI Browser or WebBLE) to connect your iPhone or iPad to your synthesizers via USB-MIDI or Bluetooth-MIDI adapters."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who is behind rigluk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "rigluk is built by Half Radiation LLC, a small independent team of vintage synthesizer enthusiasts and software developers. We built this tool to solve the frustration of backing up and organizing our own classic hardware rigs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How robust is the patch parser?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The patch parser is built to be extremely robust. The specific defects identified in our analysis, including the Korg M1 name offset bugs, the Casio CZ-101 nibble-packing logic, the Roland Juno-106 switch parsing, and the Yamaha DX7 header validation, have been fully corrected and verified against standard synthesizer SysEx specifications. While the parser is now robust against standard MIDI dumps for these machines, some edge cases always remain when dealing with vintage hardware: Corrupted Transfers: If a MIDI transmission is interrupted and bytes are dropped, checksum validation (where implemented) or structural boundaries might cause the file to be rejected. Custom Firmware: Modified synthesizer firmware (like some custom Jupiter-6 modifications or custom DX7 firmware) can change the memory map, causing dynamic parameter naming to yield inaccurate descriptors. Generic Heuristics: The generic parser relies on printable ASCII scans, which can still experience false positives if binary parameter sequences happen to fall into the ASCII character range."
+          }
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "https://rigluk/static/logo.svg",
+        "license": "https://rigluk/terms",
+        "acquireLicensePage": "https://rigluk/#pricing",
+        "creditText": "rigluk",
+        "creator": {
+          "@type": "Organization",
+          "name": "rigluk"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "{{ asset_abs_url('studio_detail.avif') }}",
+        "license": "https://rigluk/terms",
+        "acquireLicensePage": "https://rigluk/#pricing",
+        "creditText": "rigluk",
+        "creator": {
+          "@type": "Organization",
+          "name": "rigluk"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "{{ asset_abs_url('midi_handshake.avif') }}",
+        "license": "https://rigluk/terms",
+        "acquireLicensePage": "https://rigluk/#pricing",
+        "creditText": "rigluk",
+        "creator": {
+          "@type": "Organization",
+          "name": "rigluk"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "{{ asset_abs_url('index_extraction.avif') }}",
+        "license": "https://rigluk/terms",
+        "acquireLicensePage": "https://rigluk/#pricing",
+        "creditText": "rigluk",
+        "creator": {
+          "@type": "Organization",
+          "name": "rigluk"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "{{ asset_abs_url('recall_button.avif') }}",
+        "license": "https://rigluk/terms",
+        "acquireLicensePage": "https://rigluk/#pricing",
+        "creditText": "rigluk",
+        "creator": {
+          "@type": "Organization",
+          "name": "rigluk"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      },
+      {
+        "@context": "https://schema.org/",
+        "@type": "ImageObject",
+        "contentUrl": "{{ asset_abs_url('trade_offer.avif') }}",
+        "license": "https://rigluk/terms",
+        "acquireLicensePage": "https://rigluk/#pricing",
+        "creditText": "rigluk",
+        "creator": {
+          "@type": "Organization",
+          "name": "rigluk"
+        },
+        "copyrightNotice": "Half Radiation LLC"
+      }
+    ]
+    </script>
+
+
+    {% if is_halloween_week %}
+    <!-- Google Spooky Fonts -->
+    <style>
+        /* Spooky Font & Color Overrides */
+        h1,
+        h2,
+        h3,
+        .logo-text,
+        .font-pixel {
+            font-family: 'Kablammo', cursive !important;
+            letter-spacing: 0.05em !important;
+        }
+
+        /* Spooky orange and violet/purple colors replacing emerald green theme */
+        :root {
+            --halloween-orange: #f97316;
+            --halloween-purple: #8b5cf6;
+        }
+
+        /* Border, Text, and Background overrides to transform Emerald -> Spooky Orange */
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
+            border-color: rgba(249, 115, 22, 0.3) !important;
+        }
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
+            color: #f97316 !important;
+        }
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
+            background-color: rgba(249, 115, 22, 0.1) !important;
+        }
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
+            background-color: #f97316 !important;
+            color: #000000 !important;
+        }
+
+        /* Change hover backgrounds and colors */
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
+            background-color: #ea580c !important;
+        }
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
+            color: #f97316 !important;
+        }
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
+            border-color: #f97316 !important;
+        }
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
+            --tw-ring-color: #f97316 !important;
+        }
+
+        /* Spooky Card and Glow Hovering effects */
+        .glow-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.4) !important;
+            border-color: #f97316 !important;
+        }
+
+        /* Spin Logo hue rotate to give a creepy alien green/orange look */
+        .spin-logo img {
+            filter: hue-rotate(60deg) saturate(1.8) !important;
+        }
+
+        /* Creepy vignette overlay on body */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(139, 92, 246, 0.12) 100%);
+            pointer-events: none;
+            z-index: 49;
+        }
+
+        /* Floating title keyframes */
+        @keyframes float-spooky {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-4px) rotate(0.5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        h1,
+        h2 {
+            animation: float-spooky 4s ease-in-out infinite;
+            text-shadow: 0 0 12px rgba(249, 115, 22, 0.6) !important;
+            color: #f97316 !important;
+        }
+
+        /* Spooky blinking light effect in the background */
+        @keyframes spooky-flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            96% {
+                opacity: 0.8;
+            }
+
+            97% {
+                opacity: 1;
+            }
+
+            98% {
+                opacity: 0.7;
+            }
+
+            99% {
+                opacity: 1;
+            }
+        }
+
+        .glow-card {
+            animation: spooky-flicker 10s infinite;
+        }
+    </style>
+    {% endif %}
+    {% if is_birthday_week %}
+    <style>
+        /* Birthday Party Theme: Rose Pink & Violet accents replacing Emerald Green */
+        :root {
+            --birthday-rose: #ec4899;
+            --birthday-violet: #8b5cf6;
+        }
+
+        /* Border, Text, and Background overrides to transform Emerald -> Party Pink/Purple */
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
+            border-color: rgba(236, 72, 153, 0.3) !important;
+        }
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
+            color: #ec4899 !important;
+        }
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
+            background-color: rgba(236, 72, 153, 0.1) !important;
+        }
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
+            background-color: #ec4899 !important;
+            color: #ffffff !important;
+        }
+
+        /* Change hover backgrounds and colors */
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
+            background-color: #db2777 !important;
+        }
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
+            color: #ec4899 !important;
+        }
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
+            border-color: #ec4899 !important;
+        }
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
+            --tw-ring-color: #ec4899 !important;
+        }
+
+        /* Premium Glow Cards for birthday party night */
+        .glow-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.4) !important;
+            border-color: #ec4899 !important;
+        }
+
+        /* Festive background radial gradient overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(236, 72, 153, 0.08) 100%);
+            pointer-events: none;
+            z-index: 49;
+    </style>
+    {% endif %}
+    {% if is_christmas_week %}
+    <style>
+        /* Cozy Christmas Theme: Fireplace Red & Warm Gold accents replacing Emerald Green */
+        :root {
+            --christmas-red: #ef4444;
+            --christmas-gold: #f59e0b;
+        }
+
+        /* Border, Text, and Background overrides to transform Emerald -> Holiday Red/Gold */
+        [class*="border-emerald"],
+        [class*="border-teal"],
+        [class*="border-zinc-800"] {
+            border-color: rgba(239, 68, 68, 0.3) !important;
+        }
+
+        [class*="text-emerald"],
+        [class*="text-teal"],
+        [class*="text-rose-400"] {
+            color: #ef4444 !important;
+        }
+
+        [class*="bg-emerald-500/10"],
+        [class*="bg-rose-500/10"] {
+            background-color: rgba(239, 68, 68, 0.1) !important;
+        }
+
+        [class*="bg-emerald-600"],
+        [class*="bg-emerald-500"],
+        [class*="bg-rose-600"],
+        [class*="bg-rose-500"] {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+        }
+
+        /* Change hover backgrounds and colors */
+        .hover\:bg-emerald-600:hover,
+        .hover\:bg-rose-600:hover {
+            background-color: #dc2626 !important;
+        }
+
+        .hover\:text-emerald-400:hover,
+        .hover\:text-rose-400:hover {
+            color: #ef4444 !important;
+        }
+
+        .hover\:border-emerald-400:hover,
+        .hover\:border-rose-400:hover {
+            border-color: #ef4444 !important;
+        }
+
+        .focus\:ring-emerald-500:focus,
+        .focus\:ring-rose-500:focus {
+            --tw-ring-color: #ef4444 !important;
+        }
+
+        /* Premium Glow Cards for cozy Christmas night */
+        .glow-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.4) !important;
+            border-color: #ef4444 !important;
+        }
+
+        /* Cozy fire glow radial gradient overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(239, 68, 68, 0.08) 100%);
+            pointer-events: none;
+            z-index: 49;
+        }
+    </style>
+    {% endif %}
+</head>
+
+<body class="bg-black text-zinc-100 font-sans antialiased relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <!-- Fancy Mobile Background Pattern -->
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <!-- SVG Dither Filter definition -->
+    <svg class="absolute h-0 w-0 pointer-events-none" width="0" height="0">
+        <filter id="dither-filter">
+            <!-- Generate heavy fractal noise grain -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />
+            <!-- Convert noise to high-contrast dither matrix -->
+            <feColorMatrix type="matrix" values="0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 15 -7" result="dither" />
+            <!-- Composite the noise over the source graphic -->
+            <feComposite in="SourceGraphic" in2="dither" operator="in" />
+        </filter>
+    </svg>
+
+    <!-- Top Announcement Banner -->
+    <div id="announcement-banner"
+        class="w-full {% if is_birthday_week %}confetti-banner-bg border-b border-zinc-800{% elif is_christmas_week %}christmas-banner-bg border-b border-emerald-950/40{% else %}confetti-banner-bg border-b border-zinc-900{% endif %} py-2.5 px-6 relative z-[100] flex items-center justify-between text-[10px] md:text-xs font-roman tracking-wide">
+        <div class="flex-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
+            {% if is_birthday_week %}
+            <span class="tag-lapis-audit animate-pulse">
+                🎂 Birthday Week
+            </span>
+            <span class="text-zinc-250">
+                Rigluk is {% if birthday_age > 0 %}turning {{ birthday_age }}{% else %}celebrating its launch{%
+                endif %}! Get 20% off with code <span
+                    class="text-rose-400 px-1.5 py-0.5 bg-rose-950/40 rounded border border-rose-900/40 select-all font-mono font-bold">{{
+                    birthday_code }}</span> at checkout (Ends in <span id="promo-timer"
+                    class="font-mono text-rose-400 font-bold bg-rose-950/20 px-1.5 py-0.5 rounded border border-rose-900/30">--h
+                    --m --s</span>)!
+            </span>
+            <script>
+                    (function () {
+                        const currentYear = new Date().getFullYear();
+                        let targetDate = new Date(`June 6, ${currentYear} 23:59:59`).getTime();
+                        const now = new Date().getTime();
+
+                        if (targetDate <= now) {
+                            // Rolling 24h countdown for preview/testing
+                            targetDate = now + 24 * 60 * 60 * 1000;
+                        }
+
+                        function updateTimer() {
+                            const timerElement = document.getElementById('promo-timer');
+                            if (!timerElement) return;
+
+                            const currentNow = new Date().getTime();
+                            const distance = targetDate - currentNow;
+
+                            if (distance < 0) {
+                                timerElement.innerHTML = "Expired";
+                                return;
+                            }
+
+                            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                            let timeStr = "";
+                            if (days > 0) {
+                                timeStr += days + "d ";
+                            }
+                            timeStr += String(hours).padStart(2, '0') + "h " +
+                                String(minutes).padStart(2, '0') + "m " +
+                                String(seconds).padStart(2, '0') + "s";
+
+                            timerElement.innerHTML = timeStr;
+                        }
+
+                        updateTimer();
+                        setInterval(updateTimer, 1000);
+                    })();
+            </script>
+            {% elif is_christmas_week %}
+            <span class="tag-lapis-audit animate-pulse">
+                🎄 Holiday Sale
+            </span>
+            <span class="text-zinc-250">
+                Merry Christmas! Get 20% off with code <span
+                    class="text-emerald-400 px-1.5 py-0.5 bg-emerald-950/40 rounded border border-emerald-900/40 select-all font-mono font-bold">{{
+                    christmas_code }}</span> at checkout (Ends in <span id="xmas-timer"
+                    class="font-mono text-emerald-400 font-bold bg-emerald-950/20 px-1.5 py-0.5 rounded border border-emerald-900/30">--h
+                    --m --s</span>)!
+            </span>
+            <script>
+                (function () {
+                    const currentYear = new Date().getFullYear();
+                    let targetDate = new Date(`December 31, ${currentYear} 23:59:59`).getTime();
+                    const now = new Date().getTime();
+
+                    if (targetDate <= now) {
+                        // Rolling 24h countdown for preview/testing
+                        targetDate = now + 24 * 60 * 60 * 1000;
+                    }
+
+                    function updateTimer() {
+                        const timerElement = document.getElementById('xmas-timer');
+                        if (!timerElement) return;
+
+                        const currentNow = new Date().getTime();
+                        const distance = targetDate - currentNow;
+
+                        if (distance < 0) {
+                            timerElement.innerHTML = "Expired";
+                            return;
+                        }
+
+                        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                        let timeStr = "";
+                        if (days > 0) {
+                            timeStr += days + "d ";
+                        }
+                        timeStr += String(hours).padStart(2, '0') + "h " +
+                            String(minutes).padStart(2, '0') + "m " +
+                            String(seconds).padStart(2, '0') + "s";
+
+                        timerElement.innerHTML = timeStr;
+                    }
+
+                    updateTimer();
+                    setInterval(updateTimer, 1000);
+                })();
+            </script>
+            {% else %}
+            <span class="tag-lapis">
+                Supported
+            </span>
+            <span class="inline-flex flex-wrap items-center justify-center gap-1.5">
+                <!-- Apple-style Hover Popover Trigger -->
+                <div class="relative inline-block group">
+                    <span onclick="document.getElementById('synth-popover-card').classList.toggle('hidden')"
+                        onmouseenter="document.getElementById('synth-popover-card').classList.remove('hidden')"
+                        class="px-2.5 py-0.5 rounded border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 font-pixel text-xs cursor-pointer flex items-center gap-1 group-hover:border-emerald-400 group-hover:text-white transition-all shadow-sm">
+                        <img src="/static/icons/dinkie/backhand-index-pointing-right.svg" alt="" class="w-3.5 h-3.5 object-contain inline-block shrink-0" style="filter: brightness(0) invert(1);" />
+                        100+ Guitar Pedals & Rigs
+                        <svg class="w-3 h-3 text-emerald-400 group-hover:translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </span>
+
+                    <!-- Apple-style Hover Popover Card -->
+                    <div id="synth-popover-card"
+                        class="fixed inset-x-3 top-12 sm:absolute sm:inset-auto sm:left-1/2 sm:-translate-x-1/2 sm:top-full sm:mt-2 sm:w-[420px] sm:max-w-none p-3.5 sm:p-4 rounded-2xl bg-zinc-950/95 border border-zinc-800/90 shadow-2xl backdrop-blur-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-[120] text-left">
+                        
+                        <!-- Top Pointer Arrow -->
+                        <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-zinc-950 border-t border-l border-zinc-800/90"></div>
+
+                        <!-- Header -->
+                        <div class="flex items-center justify-between border-b border-zinc-800/80 pb-2 mb-2.5">
+                            <span class="font-pixel text-xs text-white uppercase tracking-wider">Universal Hardware Engine</span>
+                            <button type="button" onclick="document.getElementById('synth-popover-card').classList.add('hidden'); event.stopPropagation();"
+                                class="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-900 transition-colors" aria-label="Close popover">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Category List Grid (All 83 Synths) -->
+                        <div id="popover-synths-container" class="space-y-3 text-xs font-sans">
+                            
+                            <!-- Yamaha (8) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Yamaha</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DX7</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DX7II</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">TX7</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">TX81Z</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Reface DX</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Reface CP</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">FS1R</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">YC Series</span>
+                                </div>
+                            </div>
+
+                            <!-- Roland (12) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Roland</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Juno-106</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">D-50</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JX-8P</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JD-Xi</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Juno-DS</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JV-1080</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JV-80</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">XV-3080</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">MKS-70</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">SE-02</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">TD-07</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">U-20/U-220</span>
+                                </div>
+                            </div>
+
+                            <!-- Korg (8) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Korg</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">M1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">MS2000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">microKORG</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Minilogue XD</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DW-8000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DW-6000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">03R/W</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">R3</span>
+                                </div>
+                            </div>
+
+                            <!-- Sequential & DSI (14) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Sequential & DSI</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet-5</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet 6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet 12</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet 08</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Prophet X</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pro 2</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pro 3</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Take 5</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Trigon-6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Evolver</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Mopho</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Mopho X4</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Tempest</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Tetra</span>
+                                </div>
+                            </div>
+
+                            <!-- Oberheim & Moog (8) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Oberheim & Moog</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Matrix-1000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Matrix 6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-8</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-X</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-X8</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">OB-Xa</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Teo-5</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Moog Voyager</span>
+                                </div>
+                            </div>
+
+                            <!-- Waldorf & Elektron (7) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Waldorf & Elektron</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Blofeld</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Kyra</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Waldorf M</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">MicroWave 1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pulse</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Analog Rytm</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Digitone</span>
+                                </div>
+                            </div>
+
+                            <!-- Behringer, Kawai & Boutique (26) -->
+                            <div class="synth-group">
+                                <div class="font-pixel text-[10px] text-emerald-400 uppercase tracking-widest mb-1">Behringer, Kawai & Boutique</div>
+                                <div class="text-[11px] text-zinc-300 flex flex-wrap gap-1">
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">DeepMind 12</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Pro-800</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Behringer Wave</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Kawai K1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">K3</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">K4/K4r</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">K5000</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Akai AX80</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Andromeda A6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">BC Kijimi</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">3rd Wave</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">E-mu Morpheus</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Ensoniq ESQ-1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">VFX</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">JB Solaris</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Line 6 POD</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Zoom MS</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Novation AStation</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Bass Station II</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Summit</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">UltraNova</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Cyber-6</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Electra One</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Toraiz AS-1</span>
+                                    <span class="synth-pill px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800">Sledge</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="border-t border-zinc-800/80 pt-2.5 mt-3 flex items-center justify-between text-[10px] text-zinc-400 font-mono">
+                            <span>Web MIDI Direct Backup</span>
+                            <span class="text-emerald-400 font-semibold">Zero Install</span>
+                        </div>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+        </div>
+        <button onclick="document.getElementById('announcement-banner').style.display='none'"
+            class="text-zinc-500 hover:text-white transition-colors duration-150 p-1 flex items-center justify-center self-center"
+            aria-label="Close Announcement">
+            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-[60]">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-minecraft flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Rigluk Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-lapis-light transition-colors">rigluk™</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="hover:text-white transition-colors duration-200">Resources</a>
+                <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                {% if user %}
+                <a href="/home"
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Open
+                </a>
+                {% else %}
+                <a href="/login"
+                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
+                    Enter
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="pb-20 md:pb-0 overflow-x-clip max-w-full">
+
+        <!-- Hero Section -->
+        <section class="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center relative z-10">
+            <h1
+                class="text-3xl md:text-5xl font-nabla-synth text-white leading-tight max-w-5xl mx-auto tracking-normal reveal">
+                {% if is_halloween_week %}
+                The Haunted Vault
+                <span class="inline-flex items-center align-middle mx-1">
+                    <img src="/static/f6.png" alt="F" class="inline-block align-middle h-[1.6em] md:h-[2.0em] w-auto relative top-[-1px] md:top-[-3px] scale-105 rotate-[-2deg] hover:scale-100 hover:rotate-0 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                    <img src="/static/o4.png" alt="O" class="inline-block align-middle h-[1.6em] md:h-[2.0em] w-auto relative top-[-1px] md:top-[-3px] scale-105 rotate-[2deg] hover:scale-100 hover:rotate-0 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                    <img src="/static/r1.png" alt="R" class="inline-block align-middle h-[1.6em] md:h-[2.0em] w-auto relative top-[-1px] md:top-[-3px] scale-105 rotate-[-1deg] hover:scale-100 hover:rotate-0 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                </span>
+                <img src="/static/your3.png" alt="your" class="inline-block align-middle h-[1.7em] md:h-[2.1em] w-auto mx-1 relative top-[-1px] md:top-[-3px] scale-105 rotate-[-2deg] hover:scale-100 hover:rotate-0 active:scale-95 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                <span class="inline-flex items-center justify-center align-middle mx-1.5 w-12 h-12 md:w-16 md:h-16 shrink-0 relative top-[-1px] md:top-[-2px] shadow-[0_0_12px_rgba(249,115,22,0.3)]">
+                    <img id="hero-visitor-avatar"
+                        src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>"
+                        alt="Your Avatar" class="absolute inset-[4px] w-[calc(100%-8px)] h-[calc(100%-8px)] object-cover bg-zinc-950">
+                    <img src="/static/panels/transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+                </span>
+                <br class="hidden sm:inline">
+                <span class="text-zinc-400">cemetery of vintage synths. <img src="/static/icons/dinkie/musical-keyboard.svg" alt="Keyboard" class="inline-block align-middle h-[0.85em] md:h-[0.95em] w-auto ml-1.5 relative top-[-2px] opacity-90" style="filter: invert(1); image-rendering: pixelated;" /></span>
+                {% elif seo %}
+                {{ seo.hero_title | safe }}
+                {% else %}
+                The iCloud
+                <span
+                    class="hidden md:inline-flex items-center align-middle mx-1.5 w-8 h-8 md:w-11 md:h-11 shrink-0 relative top-[-1px] md:top-[-2px]">
+                    <img src="/static/icons/pixelarticons_cloud.svg" alt="Cloud"
+                        class="w-full h-full object-contain" style="filter: invert(1);">
+                </span>
+                <span class="inline-flex items-center align-middle mx-1">
+                    <img src="/static/f6.png" alt="F" class="inline-block align-middle h-[1.6em] md:h-[2.0em] w-auto relative top-[-1px] md:top-[-3px] scale-105 rotate-[-2deg] hover:scale-100 hover:rotate-0 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                    <img src="/static/o4.png" alt="O" class="inline-block align-middle h-[1.6em] md:h-[2.0em] w-auto relative top-[-1px] md:top-[-3px] scale-105 rotate-[2deg] hover:scale-100 hover:rotate-0 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                    <img src="/static/r1.png" alt="R" class="inline-block align-middle h-[1.6em] md:h-[2.0em] w-auto relative top-[-1px] md:top-[-3px] scale-105 rotate-[-1deg] hover:scale-100 hover:rotate-0 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                </span>
+                <img src="/static/your3.png" alt="your" class="inline-block align-middle h-[1.7em] md:h-[2.1em] w-auto mx-1 relative top-[-1px] md:top-[-3px] scale-105 rotate-[-2deg] hover:scale-100 hover:rotate-0 active:scale-95 transition-all duration-200 cursor-pointer contrast-150" style="image-rendering: pixelated; image-rendering: crisp-edges;" loading="eager" fetchpriority="high">
+                <span class="inline-flex items-center justify-center align-middle mx-1.5 w-12 h-12 md:w-16 md:h-16 shrink-0 relative top-[-1px] md:top-[-2px] shadow-lapis-glow overflow-hidden bg-zinc-950">
+                    <div class="absolute inset-[4px] bg-repeat opacity-100 z-0" style="background-image: url('/static/texture224.png');"></div>
+                    <img id="hero-visitor-avatar"
+                        src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>"
+                        alt="Your Avatar" class="absolute inset-[4px] w-[calc(100%-8px)] h-[calc(100%-8px)] object-cover z-10">
+                    <img src="/static/panels/transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none z-20" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+                </span>
+                <br class="hidden sm:inline">
+                <span class="text-zinc-400">guitar pedals & amp modelers</span>
+                {% endif %}
+            </h1>
+
+            <p class="text-xs md:text-sm font-mono text-zinc-400 max-w-xl mx-auto mt-8 leading-relaxed reveal tracking-wide"
+                style="--delay: 150ms;">
+                Back up, organize, and search pedalboard presets directly in your browser.
+                The zero-config <span class="relative inline-block px-1 select-none"><span
+                        class="text-zinc-500">Strymon Nixie & HX Edit</span><span
+                        class="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none"><svg
+                            class="w-full h-2.5 text-red-500/80 overflow-visible" preserveAspectRatio="none"
+                            viewBox="0 0 100 10">
+                            <line x1="-3" y1="8" x2="103" y2="2" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" />
+                        </svg></span></span> alternative you deserve. <span class="underline decoration-zinc-700/60 underline-offset-4 decoration-1">No driver wall, no app sprawl. One click backs it all.</span>
+            </p>
+
+            <!-- Interactive MIDI Detector (SaaS Style) -->
+            <div class="hidden lg:block max-w-md mx-auto mt-10 reveal" style="--delay: 300ms;">
+                <div
+                    class="bg-zinc-950/80 backdrop-blur-md border border-white/10 rounded-2xl p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.03)] relative ring-1 ring-white/5">
+                    <!-- Status Area: MIDI Icon + Text -->
+                    <div class="flex-1 flex items-center gap-3 px-4 py-3 sm:py-0">
+                        <span id="midi-icon" class="h-5 w-5 bg-zinc-500 shrink-0 transition-colors duration-200"
+                            style="mask: url('/static/icons/dinkie/musical-keyboard.svg') no-repeat center; -webkit-mask: url('/static/icons/dinkie/musical-keyboard.svg') no-repeat center; mask-size: contain; -webkit-mask-size: contain;"></span>
+                        <div id="midi-status-text"
+                            class="text-xs font-mono text-zinc-400 text-left truncate w-full select-none">
+                            {% if is_halloween_week %}Summoning spooky MIDI signals...{% else %}Waiting for MIDI
+                            connection...{% endif %}
+                        </div>
+                    </div>
+                    <!-- Scan Button -->
+                    <button id="midi-scan-btn" onclick="initiateMIDIScan()"
+                        class="bg-white hover:bg-zinc-200 text-black px-6 py-3.5 rounded-xl text-2xs font-pixel uppercase tracking-wider transition-all duration-150 active:scale-[0.97] shrink-0 flex items-center justify-center gap-1.5 shadow-sm">
+                        <span>{% if is_halloween_week %}Awaken MIDI{% else %}Scan MIDI{% endif %}</span>
+                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cable Recommendation -->
+            <p class="hidden lg:block text-zinc-500 text-[10px] font-mono mt-4 text-center reveal"
+                style="--delay: 400ms;">
+                Connect via direct USB or a high-quality 5-pin interface like the Roland UM-ONE or iConnectivity mio.
+            </p>
+
+            <!-- Press & Social Proof Trust Bar -->
+            <div class="mt-10 mb-6 max-w-2xl mx-auto flex flex-col items-center justify-center gap-2 text-xs font-mono text-zinc-400 select-none reveal text-center px-2">
+                <span class="text-[9px] font-pixel uppercase tracking-widest text-zinc-500">FEATURED IN &amp; TRUSTED BY</span>
+                <div class="flex items-center justify-center gap-2 sm:gap-4 flex-nowrap w-full">
+                    <span class="font-serif font-bold text-[10px] sm:text-xs uppercase tracking-wider text-zinc-100 shrink-0">Synthtopia</span>
+                    <span class="text-zinc-700 text-[10px] shrink-0">•</span>
+                    <div class="inline-flex items-center gap-1 text-zinc-100 font-mono font-bold text-[10px] sm:text-xs shrink-0">
+                        <img src="/static/modwiggler.svg" alt="ModWiggler" class="h-3.5 w-3.5 sm:h-4 sm:w-4 object-contain inline-block text-zinc-100" style="filter: brightness(0) invert(1);" />
+                        <span>ModWiggler</span>
+                    </div>
+                    <span class="text-zinc-700 text-[10px] shrink-0">•</span>
+                    <img src="https://ecosistemastartup.com/wp-content/themes/esup-child/assets/img/logo-light.svg"
+                        alt="Ecosistema Startup"
+                        class="h-3 sm:h-3.5 w-auto object-contain inline-block align-middle opacity-100 shrink-0"
+                        style="filter: brightness(0) invert(1);" />
+                    <span class="text-zinc-700 text-[10px] shrink-0">•</span>
+                    <div class="inline-flex items-center gap-1 text-zinc-100 font-mono font-bold text-[10px] sm:text-xs shrink-0" title="Arcade Orchestra (Las Vegas)">
+                        <img src="/static/logos/arcade_orchestra.svg" alt="Arcade Orchestra" class="h-3.5 sm:h-4 w-auto object-contain inline-block align-middle" />
+                        <span>Arcade Orchestra</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Counter Band -->
+            <div class="border-t border-b border-zinc-900 py-6 sm:py-8 mt-12 sm:mt-16 max-w-4xl mx-auto grid grid-cols-3 divide-x divide-zinc-800/80 text-center reveal"
+                style="--delay: 200ms;">
+                <div class="px-2 sm:px-4 py-1">
+                    <span id="live-patch-counter" data-initial="{{ total_patches | default(740) }}"
+                        class="block text-2xl sm:text-3xl md:text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{
+                        total_patches | default(740) }}</span>
+                    <span class="text-[8px] sm:text-[9px] md:text-[10px] font-roman uppercase text-zinc-400 mt-1.5 block tracking-wider leading-tight">PRESETS BACKED UP</span>
+                </div>
+                <div class="px-2 sm:px-4 py-1">
+                    <span class="block text-2xl sm:text-3xl md:text-4xl font-lcd text-emerald-400 tracking-wider leading-none">{{ user_count | default(0) }}</span>
+                    <span class="text-[8px] sm:text-[9px] md:text-[10px] font-roman uppercase text-zinc-400 mt-1.5 block tracking-wider leading-tight">ACTIVE USERS</span>
+                </div>
+                <div class="px-2 sm:px-4 py-1">
+                    <span class="block text-2xl sm:text-3xl md:text-4xl font-lcd text-emerald-400 tracking-wider leading-none">{{ paid_user_count | default(0) }}</span>
+                    <span class="text-[8px] sm:text-[9px] md:text-[10px] font-roman uppercase text-zinc-400 mt-1.5 block tracking-wider leading-tight">HAPPY RIGLUKERS</span>
+                </div>
+            </div>
+
+            <!-- Symmetric Preview Grid (Physical Synth vs. Virtual App) -->
+            <div id="demo"
+                class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch text-left">
+
+                <!-- Left Card: 4K Physical Hardware Photography -->
+                <div
+                    class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-left">
+                    <div class="p-6">
+                        <span class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider">physical
+                            hardware</span>
+                        <h2 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Connection via Web
+                            MIDI</h2>
+                        <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Connect your pedalboard's USB or MIDI ports to your laptop and read preset names directly from bank registers.</p>
+                    </div>
+                    <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
+                        <video autoplay loop muted playsinline preload="auto"
+                            aria-label="MIDI keyboard backup demo video"
+                            class="demo-loop-video w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                            <source src="/static/1.mp4?v=20260701b" type="video/mp4">
+                            <track kind="captions" src="" srclang="en" label="No captions" default>
+                        </video>
+                    </div>
+                </div>
+
+                <!-- Right Card: Stylized Dashboard Mockup -->
+                <div class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 flex flex-col justify-between shadow-2xl backdrop-blur-md group reveal reveal-right"
+                    style="--delay: 150ms;">
+                    <div class="p-6">
+                        <span class="text-[10px] font-pixel uppercase text-zinc-400 tracking-wider">cloud
+                            librarian</span>
+                        <h2 class="text-base font-pixel uppercase text-white mt-1.5 tracking-wide">Secure Preset Database
+                        </h2>
+                        <p class="text-xs text-zinc-400 mt-2 leading-relaxed font-normal">Guitar pedals & amp modelers are built to last. Gig mishaps and pedal resets aren't. Protect custom preset engineering in a private cloud vault. Search soundbanks, export patch catalogs to CSV, and restore your rig with a single click.</p>
+                    </div>
+                    <div class="relative overflow-hidden aspect-[4/3] w-full border-t border-zinc-900 bg-black">
+                        <video autoplay loop muted playsinline preload="auto"
+                            aria-label="Web cloud patch editor database demo video"
+                            class="demo-loop-video w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                            <source src="/static/2.mp4?v=20260701b" type="video/mp4">
+                            <track kind="captions" src="" srclang="en" label="No captions" default>
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Problem Section -->
+        <section id="problem" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-20 reveal">
+                <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{% if is_halloween_week %}Why
+                    backups feel <span id="rn-1995" class="inline-block" data-color="#ef4444">trapped in 1995</span>.{%
+                    else %}Why backups feel <span id="rn-1995" class="inline-block" data-color="#ef4444">stuck in
+                        1995</span>.{% endif %}</h2>
+                <p class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-sans">Guitar pedals & pedalboards are built to last forever, but the digital tools to manage them didn't keep up.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Archaic Tools -->
+                <div class="rounded-2xl border border-zinc-900 bg-zinc-950/20 p-8 space-y-6 reveal reveal-left">
+                    <div
+                        class="h-8 w-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                        <img src="/static/icons/dinkie/diagonal-cross.svg" alt="" width="16"
+                            height="16" class="h-4 w-4 dinkie-dead" />
+                    </div>
+                    <h3 class="text-sm font-pixel uppercase text-zinc-350 tracking-wide">Archaic Desktop Utilities</h3>
+                    <ul class="space-y-3.5 text-xs text-zinc-450">
+                        <li class="flex items-start gap-3">
+                            <img src="/static/icons/dinkie/desktop-computer.svg" alt="" width="14"
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-muted" />
+                            Requires downloading 4 bloated desktop programs (Strymon Nixie, Eventide H9, HX Edit, Boss Tone Studio).
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="/static/icons/dinkie/lock-filled.svg" alt="" width="14"
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-muted" />
+                            Requires manually cataloging cryptic .syx / .hlx preset files with no cross-brand visual search.
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="/static/icons/dinkie/adjustments.svg" alt="" width="14"
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-muted" />
+                            Risk losing all custom gig & studio presets when swapping, selling, or resetting pedals.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- rigluk -->
+                <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-8 space-y-6 reveal reveal-right"
+                    style="--delay: 150ms;">
+                    <div
+                        class="h-8 w-8 rounded-full bg-blue-650/10 border border-blue-500/20 flex items-center justify-center">
+                        <img src="/static/icons/dinkie/checkmark-circled.svg" alt="" width="16"
+                            height="16" class="h-4 w-4 dinkie-lapis" />
+                    </div>
+                    <h3 class="text-sm font-pixel uppercase text-white tracking-wide">rigluk Flow</h3>
+                    <ul class="space-y-3.5 text-xs text-zinc-300">
+                        <li class="flex items-start gap-3">
+                            <img src="/static/icons/dinkie/window-browser.svg" alt="" width="14"
+                                height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-lapis" />
+                            Zero-installation. Connects natively inside any Chrome or Edge tab in 1 click.
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="/static/icons/dinkie/code.svg" alt="" width="14" height="14"
+                                class="h-3.5 w-3.5 mt-0.5 dinkie-lapis" />
+                            Hex-to-ASCII Parser decompresses dumps automatically to extract preset names and tags in real-time.
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="/static/icons/dinkie/multiple-musical-notes.svg" alt=""
+                                width="14" height="14" class="h-3.5 w-3.5 mt-0.5 dinkie-lapis" />
+                            Organize, search, and cloud-sync preset banks across all your pedals before hitting the stage.
+                        </li>
+                    </ul>
+                </div>
+                  </div>
+        </section>
+
+        {% if seo and seo.docs %}
+        <!-- Docs Section -->
+        <section class="border-t border-zinc-900 bg-zinc-950 pt-12 pb-24 relative z-10">
+            <div class="max-w-3xl mx-auto px-6">
+                <div class="mb-12 reveal">
+                    <span class="text-[11px] font-pixel uppercase text-zinc-400 tracking-wider">HARDWARE GUIDE</span>
+                    <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">{{ seo.docs.title }}</h2>
+                </div>
+
+                <div class="prose prose-invert prose-zinc max-w-none reveal" style="--delay: 150ms;">
+                    {{ seo.docs.content | safe }}
+                </div>
+
+                <div class="mt-16 text-center reveal" style="--delay: 300ms;">
+                    <p class="text-zinc-400 mb-6 text-sm font-medium">Ready to back up your {{ seo.synth_name }}?</p>
+                    <a href="/login"
+                        class="bg-emerald-500 hover:bg-emerald-400 text-white px-8 py-4 rounded-xl text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 inline-flex items-center gap-3 shadow-lapis-glow-lg">
+                        <span>Get Premium Vault</span>
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Visual Detail Feature Break -->
+        <section class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-12 relative z-10">
+            <div
+                class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 grid grid-cols-1 md:grid-cols-2 items-center gap-0 shadow-xl">
+                <div class="p-8 md:p-16 space-y-6 text-left reveal reveal-left">
+                    <span class="text-[11px] font-pixel text-blue-500 uppercase tracking-widest font-semibold">Pure Fidelity. Timeless Memory.</span>
+                    <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white tracking-wide">Not merely a backup. A physical preservation of your rig's tone.</h2>
+                    <p class="text-xs text-zinc-400 leading-relaxed font-normal">
+                        <span class="text-blue-400 font-semibold">Every preset, reverb tail, and delay algorithm</span> is captured with <span class="text-blue-400 font-semibold">absolute reverence</span>. Our Web MIDI engine records pedal dumps with <span class="text-blue-400 font-semibold">byte-for-byte precision</span>, capturing every parameter exactly as programmed on your board. Guaranteed byte-accurate delivery so your custom gig & studio tones remain <span class="text-blue-400 font-semibold">forever untouched, untamed, and instantly recalled</span>.
+                    </p>
+                </div>
+                <div class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black reveal reveal-right"
+                    style="--delay: 150ms;">
+                    <img src="{{ asset_url('studio_detail.avif') }}" alt="Pedalboard &amp; Strymon pedals close-up" width="1024"
+                        height="1016" sizes="(max-width: 768px) 100vw, 50vw" fetchpriority="high"
+                        class="w-full h-full object-cover dithered">
+                </div>
+            </div>
+        </section>
+
+        <!-- Three Core Pillars (Visual Steps) -->
+        <section id="features" class="border-t border-zinc-900 bg-zinc-950/20 pt-12 pb-24 relative z-10">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+                    <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">Abstracting 40 years of
+                        <span id="rn-friction" class="inline-block" data-color="#ef4444">hardware
+                            friction</span>.
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div
+                        class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal">
+                        <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black">
+                            <img src="{{ asset_url('midi_handshake.avif') }}" alt="MIDI Din Connection Handshake" width="1024"
+                                height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 dithered">
+                        </div>
+                        <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                            <div class="space-y-3 text-left">
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                                        <img src="/static/icons/dinkie/desktop-computer.svg" alt=""
+                                            width="14" height="14" class="h-3.5 w-3.5"
+                                            style="filter: invert(1);" /></span>
+                                    <h3 class="text-sm font-pixel uppercase text-white tracking-wide">The MIDI Handshake
+                                    </h3>
+                                </div>
+                                <p class="text-2xs text-zinc-400 leading-relaxed font-normal">
+                                    Plug in your pedal or pedalboard using a USB cable or MIDI interface. Open rigluk: the browser Web MIDI API initiates a handshake immediately.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal"
+                        style="--delay: 150ms;">
+                        <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black mono-pixel-wrap">
+                            <img src="{{ asset_url('index_extraction.avif') }}" alt="Auto-naming Hexadecimal Parser" width="1024"
+                                height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
+                                class="mono-pixel">
+                        </div>
+                        <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                            <div class="space-y-3 text-left">
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                                        <img src="/static/icons/dinkie/left-magnifying-glass.svg"
+                                            alt="" width="14" height="14" class="h-3.5 w-3.5"
+                                            style="filter: invert(1);" /></span>
+                                    <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Index Extraction
+                                    </h3>
+                                </div>
+                                <p class="text-2xs text-zinc-400 leading-relaxed font-normal">
+                                    We send specific low-level request sequences to dump presets. The parser instantly
+                                    extracts text characters from the registers in real-time.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="glow-card rounded-2xl border border-zinc-900 bg-zinc-950/20 overflow-hidden flex flex-col justify-between group reveal"
+                        style="--delay: 300ms;">
+                        <div class="relative overflow-hidden aspect-[16/10] w-full border-b border-zinc-900 bg-black mono-pixel-wrap">
+                            <img src="{{ asset_url('recall_button.avif') }}" alt="Single Click Preset Flash Sync" width="1024"
+                                height="636" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy"
+                                class="mono-pixel">
+                        </div>
+                        <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                            <div class="space-y-3 text-left">
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="h-6 w-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                                        <img src="/static/icons/dinkie/multiple-musical-notes.svg"
+                                            alt="" width="14" height="14" class="h-3.5 w-3.5"
+                                            style="filter: invert(1);" /></span>
+                                    <h3 class="text-sm font-pixel uppercase text-white tracking-wide">Single-Click
+                                        Recall
+                                    </h3>
+                                </div>
+                                <p class="text-2xs text-zinc-400 leading-relaxed font-normal">
+                                    Hit Sync to write preset banks back. We flash the entire hexadecimal data payload,
+                                    overwriting hardware memory registers instantly.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Pricing Grid -->
+        <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
+            {% if pricing is not defined %}
+            {% set pricing = {'region': 'usd', 'symbol': '$', 'personal_amount': '49', 'studio_amount': '399',
+            'billing_label': 'USD / ONE-TIME', 'free_price_display': '$0'} %}
+            {% endif %}
+            <div class="text-center max-w-2xl mx-auto mb-8 reveal">
+                <h2 id="pricing-title" class="text-2xl md:text-3xl font-pixel uppercase text-white mt-3">A pricing system built for fellow pedalboard nerds &amp; guitarists.</h2>
+                <p
+                    class="text-xs text-zinc-400 mt-4 leading-relaxed font-normal font-mono tracking-wide max-w-lg mx-auto">
+                    Guitar pedals are built for tone. Reset mistakes &amp; gig mishaps happen, but <span id="rn-timebomb">your presets
+                        don't have to disappear</span>. <span id="rn-securesounds">Protect your creative work with simple,
+                        reliable backups and keep your rig ready.</span>
+                </p>
+                <div class="relative mt-8 mb-14 mx-auto w-full max-w-sm pt-5">
+                    <img src="/static/logo.png" alt="" width="56" height="56" aria-hidden="true"
+                        class="absolute left-1/2 top-0 z-0 w-14 h-14 -translate-x-1/2 -translate-y-1 select-none pointer-events-none"
+                        style="image-rendering: pixelated; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));">
+                    <a href="/login" role="button"
+                        class="btn-free pricing-free-cta relative z-10 mx-auto w-full flex flex-col items-center justify-center gap-1 py-4 md:py-5 px-8 rounded-full cursor-pointer active:scale-[0.98] select-none overflow-hidden">
+                        <div class="absolute inset-0 bg-repeat opacity-20 pointer-events-none select-none z-0" style="background-image: url('/static/corrugated_iron_smooth.png'); image-rendering: pixelated;"></div>
+                        <span class="text-lg md:text-xl font-pixel uppercase tracking-widest relative z-10">Start Free</span>
+                        <span id="pricing-free-subtext" class="text-[11px] md:text-xs font-mono uppercase tracking-wider text-zinc-400 relative z-10">{{ pricing.free_price_display }} · no card · click to start</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="max-w-xl mx-auto text-left mt-8">
+                <!-- Personal -->
+                <div class="glow-card pricing-card-featured rounded-2xl border border-blue-500/50 bg-zinc-950/80 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale shadow-lapis-glow-md"
+                    style="--delay: 200ms;">
+                    <!-- Most Popular Top Badge -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[9px] font-pixel uppercase tracking-widest px-3 py-0.5 rounded-b border-x border-b border-blue-400 shadow-lapis-glow-md z-20">LIFETIME ACCESS</div>
+                    <div class="absolute inset-0 bg-repeat opacity-15 pointer-events-none select-none z-0"
+                        style="background-image: url('/static/grey_patterned_brick_floor_dark.png'); image-rendering: pixelated;"></div>
+                    <div id="stamp-diamond"
+                        class="absolute top-6 right-6 -rotate-12 pointer-events-none select-none flex items-center justify-center w-12 h-12 shadow-lapis-glow-lg overflow-hidden bg-zinc-950">
+                        <div class="absolute inset-[3px] bg-repeat opacity-100 z-0" style="background-image: url('/static/texture224.png');"></div>
+                        <img id="landing-lifetime-avatar" src="/static/logo.svg"
+                            class="absolute inset-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] object-cover z-10" alt="rigluk+ Stamp">
+                        <img src="/static/panels/transparent/ziggurat.png" alt="Frame" class="absolute inset-0 w-full h-full object-fill pointer-events-none z-20" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+                    </div>
+                    <div class="space-y-5 relative z-10">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap pr-16 pt-2">
+                                <h3 class="text-sm font-roman uppercase text-white tracking-wide">rigluk+</h3>
+                            </div>
+                            <p class="text-xs text-zinc-400 mt-1 pr-16">Full unlimited cloud librarian for your pedalboard collection.</p>
+                        </div>
+                        <div class="h-16 flex flex-col justify-center">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-lcd flex items-baseline gap-0.5">
+                                    <span class="pricing-gem-price">
+                                    <span id="pricing-personal-currency" class="pricing-currency-slot inline-flex items-baseline">
+                                        {% if pricing.region == 'usd' or pricing.region == 'cad' or pricing.region == 'aud' %}
+                                        <span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>
+                                        {% else %}
+                                        <span class="pricing-gem-blue select-none text-2xl leading-none"
+                                            style="transform: translateY(-2px);">{{ pricing.symbol }}</span>
+                                        {% endif %}
+                                    </span><span id="pricing-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount }}</span>
+                                    </span>
+                                    </span>
+                                <span id="pricing-personal-billing"
+                                    class="text-xs font-roman uppercase text-zinc-400">{{ pricing.billing_label
+                                    }}</span>
+                                </div>
+                                <div class="text-[9px] font-roman text-zinc-400 uppercase tracking-wider mt-1 flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-brand-plus font-semibold">Own it forever.</span>
+                                    <span>·</span>
+                                    <span>No subscriptions</span>
+                                    <span>·</span>
+                                    <span>What you see is what you pay</span>
+                                </div>
+                            </div>
+                            <ul class="space-y-2.5 text-xs text-zinc-400">
+                                <li class="flex items-center gap-2">
+                                <img src="/static/icons/dinkie/file-cabinet.svg" alt="" width="14"
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                <span class="text-white font-semibold">Save unlimited preset banks</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                <img src="/static/icons/dinkie/circled-information-source.svg" alt=""
+                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                    <span class="text-white font-semibold">See preset names instantly</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="/static/icons/dinkie/sparkles.svg" alt=""
+                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                    <span class="text-white font-semibold">Lifetime updates, zero monthly fees</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="/static/icons/dinkie/code.svg" alt="" width="14"
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                    <span class="text-white font-semibold">Support for 100+ digital pedals &amp; amp modelers</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="/static/icons/dinkie/download.svg" alt="" width="14"
+                                    height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                    <span class="text-white font-semibold">Download your backups anytime (.syx / .zip)</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <img src="/static/icons/dinkie/envelope.svg"
+                                        alt="" width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                    <span class="text-white font-semibold">Unlimited 1:1 bespoke email support</span>
+                                </li>
+                                <li class="flex items-center gap-1.5 md:gap-2 flex-nowrap">
+                                <img src="/static/icons/dinkie/heart-white-suit-circled.svg" alt=""
+                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                <span class="text-[10px] sm:text-xs leading-tight">Customer-funded: 0 ads, 0 VC pressure</span>
+                                <div class="flex items-center shrink-0 -space-x-1.5 md:-space-x-2 ml-0.5">
+                                    <img src="/static/avatars/Simple colors/Icon1.png" alt=""
+                                        width="16" height="16" loading="lazy"
+                                        class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[3] select-none"
+                                        style="image-rendering: pixelated;" />
+                                    <img src="/static/avatars/Simple colors/Icon2.png" alt=""
+                                        width="16" height="16" loading="lazy"
+                                        class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[2] select-none"
+                                        style="image-rendering: pixelated;" />
+                                    <img src="/static/avatars/Simple colors/Icon3.png" alt=""
+                                        width="16" height="16" loading="lazy"
+                                        class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[1] select-none"
+                                        style="image-rendering: pixelated;" />
+                                </div>
+                                </li>
+                            </ul>
+                        </div>
+                    <div class="mt-8 text-center space-y-2">
+                        <a href="/login"
+                            class="btn-lapis pricing-cta-personal w-full flex items-center justify-center gap-1.5 py-3.5 md:py-4 rounded-full text-xs md:text-sm font-roman uppercase tracking-wider shadow-lapis-glow-lg hover:scale-[1.02] transition-all duration-200">
+                            <span>Back Up My Pedals Forever</span>
+                        </a>
+                        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
+                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/lock.svg" class="w-3 h-3 opacity-90 brightness-0 invert" alt="" /> 256-Bit SSL Encrypted</span>
+                            <span>·</span>
+                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/keycap-digit-one.svg" class="w-3 h-3 opacity-90 brightness-0 invert" alt="One" /> One payment</span>
+                            <span>·</span>
+                            <span class="inline-flex items-center gap-1"><img src="/static/icons/dinkie/squint-smiling-face.svg" class="w-3 h-3 opacity-90 brightness-0 invert" alt="Forever" /> yours forever</span>
+                        </div>
+
+                        <!-- Independent Pixel Food Support Badge -->
+                        <div class="pt-2.5 border-t border-zinc-850/60 mt-3 flex items-center justify-center gap-2 text-[11px] font-mono text-zinc-400 text-center">
+                            <div class="flex items-center gap-1.5 shrink-0 select-none">
+                                <img src="/static/Ghostpixxells_pixelfood/98_sushi_dish.png" class="w-5 h-5 object-contain hover:scale-110 transition-transform" alt="Sushi" style="image-rendering: pixelated;" />
+                                <img src="/static/Ghostpixxells_pixelfood/87_ramen.png" class="w-5 h-5 object-contain hover:scale-110 transition-transform" alt="Ramen" style="image-rendering: pixelated;" />
+                            </div>
+                            <span>You're supporting indie devs for sushi &amp; ramen!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Value anchor -->
+            <div class="max-w-4xl mx-auto mt-6 text-center reveal" style="--delay: 320ms;">
+
+                <p class="text-[11px] text-zinc-500 font-mono leading-relaxed">
+                    <span class="text-anchor-competitor font-semibold">Desktop librarians</span> often cost <span class="text-anchor-blood font-semibold">USD $<span id="pricing-anchor-competitor-amount">{{ pricing.competitor_amount if pricing.competitor_amount is defined else '200' }}</span>+</span>. <span class="text-brand-plus font-semibold">rigluk+</span> is just
+                    <span class="pricing-gem-price font-semibold inline-flex items-baseline text-[11px]"><span id="pricing-anchor-personal-symbol" class="pricing-gem-blue">{{
+                            pricing.symbol }}</span><span id="pricing-anchor-personal-amount" class="pricing-gem-blue">{{ pricing.personal_amount
+                            }}</span></span>
+                    once. <span class="block mt-1 font-semibold" style="color: #10b981;">Saving over 80% never sounded <span class="inline-block align-middle h-[12px] w-[12px] mx-0.5 relative top-[-1px] bg-[#10b981]" style="-webkit-mask: url('/static/icons/dinkie/multiple-musical-notes.svg') no-repeat center; mask: url('/static/icons/dinkie/multiple-musical-notes.svg') no-repeat center; -webkit-mask-size: contain; mask-size: contain;" aria-hidden="true"></span> better.</span>
+                </p>
+            </div>
+
+            <!-- Centered Meme Image -->
+            <div class="flex items-center justify-center mt-8 reveal reveal-scale" style="--delay: 350ms;">
+                <img src="{{ asset_url('trade_offer.avif') }}" alt="Meme" width="380" height="513" loading="lazy"
+                    sizes="(max-width: 768px) 380px, 380px"
+                    class="w-full max-w-[380px] md:max-w-[400px] rounded-2xl border border-zinc-900 shadow-2xl">
+                    </div>
+        </section>
+
+
+
+        <!-- FAQ Chat (accordion hidden; JSON-LD retained for SEO) -->
+        {% include "partials/faq_chat.html" %}
+
+        <!-- Footer -->
+        {% include "footer.html" %}
+
+        <script>
+            const RECT_FLAGS_MAP = {{ (rect_flags_map or {}) | tojson | safe }};
+            function getFlagUrl(code) {
+                const codeUpper = (code || '').toUpperCase();
+                const filename = RECT_FLAGS_MAP[codeUpper];
+                if (filename) return `/static/icons/flags/Rect/${filename}`;
+                return `/static/icons/flags/Rect/${codeUpper}_rect.png`;
+            }
+            const EUR_PRICING_ENABLED = {{ 'true' if (eur_pricing_enabled is defined and eur_pricing_enabled) else 'false' }};
+            const GBP_PRICING_ENABLED = {{ 'true' if (gbp_pricing_enabled is defined and gbp_pricing_enabled) else 'false' }};
+            const CAD_PRICING_ENABLED = {{ 'true' if (cad_pricing_enabled is defined and cad_pricing_enabled) else 'false' }};
+            const AUD_PRICING_ENABLED = {{ 'true' if (aud_pricing_enabled is defined and aud_pricing_enabled) else 'false' }};
+            const CHF_PRICING_ENABLED = {{ 'true' if (chf_pricing_enabled is defined and chf_pricing_enabled) else 'false' }};
+            const EU_COUNTRY_CODES = {{ eu_country_codes | tojson if eu_country_codes is defined else '[]' }};
+            const GB_COUNTRY_CODES = {{ gb_country_codes | tojson if gb_country_codes is defined else '[]' }};
+            const CA_COUNTRY_CODES = {{ ca_country_codes | tojson if ca_country_codes is defined else '[]' }};
+            const AU_COUNTRY_CODES = {{ au_country_codes | tojson if au_country_codes is defined else '[]' }};
+            const CH_COUNTRY_CODES = {{ ch_country_codes | tojson if ch_country_codes is defined else '[]' }};
+            const REGIONAL_PRICING_DISPLAY = {
+                eur: { symbol: '€', billing: 'EUR / ONE-TIME', personal: '49', free: '€0', competitor: '200' },
+                gbp: { symbol: '£', billing: 'GBP / ONE-TIME', personal: '49', free: '£0', competitor: '200' },
+                cad: { symbol: '$', billing: 'CAD / ONE-TIME', personal: '69', free: '$0 CAD', competitor: '280' },
+                aud: { symbol: '$', billing: 'AUD / ONE-TIME', personal: '69', free: '$0 AUD', competitor: '280' },
+                chf: { symbol: 'Fr.', billing: 'CHF / ONE-TIME', personal: '49', free: 'Fr. 0', competitor: '200' },
+                jpy: { symbol: '¥', billing: 'JPY / ONE-TIME', personal: '7,800', free: '¥0', competitor: '32,000' },
+            };
+
+            function resolveRegionalPricingRegion(data) {
+                if (!data) return null;
+                const code = (data.country || '').toUpperCase();
+                if (data.pricing_region === 'jpy' || code === 'JP') return 'jpy';
+                if (data.pricing_region === 'gbp' || GB_COUNTRY_CODES.includes(code)) return 'gbp';
+                if (data.pricing_region === 'chf' || CH_COUNTRY_CODES.includes(code)) return 'chf';
+                if (data.pricing_region === 'cad' || CA_COUNTRY_CODES.includes(code)) return 'cad';
+                if (data.pricing_region === 'aud' || AU_COUNTRY_CODES.includes(code)) return 'aud';
+                if (data.pricing_region === 'eur' || EU_COUNTRY_CODES.includes(code)) return 'eur';
+                return null;
+            }
+
+            function pricingCurrencyMarkup(symbol) {
+                if (symbol === '$') {
+                    return '<span class="pricing-gem-currency-icon pricing-gem-currency-usd" aria-hidden="true"></span>';
+                }
+                return `<span class="pricing-gem-blue select-none text-2xl leading-none" style="transform: translateY(-2px);">${symbol}</span>`;
+            }
+
+            function applyRegionalPricingDisplay(region) {
+                const cfg = REGIONAL_PRICING_DISPLAY[region];
+                if (!cfg) return;
+                const personalCurrency = document.getElementById('pricing-personal-currency');
+                const personalAmount = document.getElementById('pricing-personal-amount');
+                const personalBilling = document.getElementById('pricing-personal-billing');
+                const symbolMarkup = pricingCurrencyMarkup(cfg.symbol);
+                if (personalCurrency) personalCurrency.innerHTML = symbolMarkup;
+                if (personalAmount) personalAmount.textContent = cfg.personal;
+                if (personalBilling) personalBilling.textContent = cfg.billing;
+                const anchorPersonalSymbol = document.getElementById('pricing-anchor-personal-symbol');
+                const anchorPersonalAmount = document.getElementById('pricing-anchor-personal-amount');
+                if (anchorPersonalSymbol) {
+                    anchorPersonalSymbol.textContent = cfg.symbol;
+                    anchorPersonalSymbol.classList.add('pricing-gem-blue');
+                }
+                if (anchorPersonalAmount) anchorPersonalAmount.textContent = cfg.personal;
+                const sloganSymbol = document.getElementById('pricing-slogan-symbol');
+                const sloganAmount = document.getElementById('pricing-slogan-amount');
+                if (sloganSymbol) {
+                    sloganSymbol.textContent = cfg.symbol;
+                    sloganSymbol.classList.add('pricing-gem-blue');
+                }
+                if (sloganAmount) sloganAmount.textContent = cfg.personal;
+                const freeSubtext = document.getElementById('pricing-free-subtext');
+                if (freeSubtext && cfg.free) {
+                    freeSubtext.textContent = `${cfg.free} · no card · click to start`;
+                }
+                document.documentElement.dataset.pricingRegion = region;
+            }
+
+            const initialPricingRegion = document.documentElement.dataset.pricingRegion;
+            if (initialPricingRegion && initialPricingRegion !== 'usd') {
+                applyRegionalPricingDisplay(initialPricingRegion);
+            }
+
+            const fetchGeoData = () => {
+                return fetch('/api/geoip')
+                    .then(res => {
+                        if (!res.ok) throw new Error();
+                        return res.text();
+                    })
+                    .then(text => {
+                        return text ? JSON.parse(text) : {};
+                    });
+            };
+
+            fetchGeoData()
+                .then(data => {
+                    const regionalRegion = resolveRegionalPricingRegion(data);
+                    if (regionalRegion) {
+                        applyRegionalPricingDisplay(regionalRegion);
+                    }
+
+                    if (data.country_name && data.country) {
+                        const code = (data.country || '').toLowerCase();
+
+                        let countryName = data.country_name;
+                        if (code === 'us') countryName = 'the USA';
+                        else if (code === 'gb') countryName = 'the UK';
+                        else if (code === 'ca') countryName = 'Canada';
+                        else if (code === 'au') countryName = 'Australia';
+                        else if (code === 'de') countryName = 'Germany';
+                        else if (code === 'nl') countryName = 'the Netherlands';
+                        else if (code === 'uae') countryName = 'the UAE';
+                        else if (code === 'ph') countryName = 'the Philippines';
+
+                        const tag = document.getElementById('visitor-geo-tag');
+                        if (tag) {
+                            tag.innerHTML = `Made for geniuses in ${countryName} <img src="${getFlagUrl(code)}" width="18" height="14" class="h-3.5 w-auto inline-block align-middle ml-1" alt="${countryName}" />`;
+                        }
+
+                        const pricingTitle = document.getElementById('pricing-title');
+                        if (pricingTitle && data.pricing_title_html) {
+                            pricingTitle.innerHTML = data.pricing_title_html;
+                        }
+
+                        // Dynamically match Nabla font colors to the country flag
+                        const flagColors = {
+                            us: { face: '#ffffff', side1: '#ff0000', side2: '#002868', shadow: '#00153a' },
+                            ca: { face: '#ffffff', side1: '#ff0000', side2: '#ff0000', shadow: '#800000' },
+                            gb: { face: '#ffffff', side1: '#012169', side2: '#c8102e', shadow: '#000f3a' },
+                            de: { face: '#ffcf00', side1: '#dd0000', side2: '#111111', shadow: '#000000' },
+                            fr: { face: '#ffffff', side1: '#00209f', side2: '#f10f29', shadow: '#000a3a' },
+                            it: { face: '#ffffff', side1: '#008c45', side2: '#cd212a', shadow: '#003a1d' },
+                            es: { face: '#f1bf00', side1: '#aa151b', side2: '#aa151b', shadow: '#400000' },
+                            jp: { face: '#ffffff', side1: '#bc002d', side2: '#bc002d', shadow: '#5c0010' },
+                            br: { face: '#ffdf00', side1: '#009c3b', side2: '#002776', shadow: '#003c16' },
+                            mx: { face: '#ffffff', side1: '#006847', side2: '#ce1126', shadow: '#002c1e' },
+                            nl: { face: '#ffffff', side1: '#ae1c28', side2: '#21468b', shadow: '#0b1e3f' },
+                            ar: { face: '#75aadb', side1: '#ffffff', side2: '#fcbf49', shadow: '#3a6a9b' },
+                            se: { face: '#fecc00', side1: '#006aa7', side2: '#006aa7', shadow: '#002a43' },
+                            no: { face: '#ffffff', side1: '#ef2b2d', side2: '#002868', shadow: '#00103a' },
+                            fi: { face: '#ffffff', side1: '#002f6c', side2: '#002f6c', shadow: '#001030' },
+                            ch: { face: '#ffffff', side1: '#da291c', side2: '#da291c', shadow: '#6b1008' },
+                            at: { face: '#ffffff', side1: '#ed2939', side2: '#ed2939', shadow: '#7b1016' },
+                            be: { face: '#fdda24', side1: '#ef3340', side2: '#111111', shadow: '#000000' },
+                            pl: { face: '#ffffff', side1: '#dc143c', side2: '#dc143c', shadow: '#6b0416' },
+                            kr: { face: '#ffffff', side1: '#cd2e3a', side2: '#0047a0', shadow: '#001a40' },
+                            ru: { face: '#ffffff', side1: '#0039a6', side2: '#d52b1e', shadow: '#0f172a' },
+                            in: { face: '#ff9933', side1: '#ffffff', side2: '#138808', shadow: '#022c22' },
+                            cn: { face: '#ffde00', side1: '#de2910', side2: '#de2910', shadow: '#500800' },
+                            tw: { face: '#ffffff', side1: '#000095', side2: '#fe0000', shadow: '#500000' },
+                            sg: { face: '#ffffff', side1: '#ef3340', side2: '#ef3340', shadow: '#500000' },
+                            nz: { face: '#ffffff', side1: '#00247d', side2: '#cc142b', shadow: '#000b2b' },
+                            dk: { face: '#ffffff', side1: '#c60c30', side2: '#c60c30', shadow: '#500000' },
+                            ie: { face: '#ffffff', side1: '#169b62', side2: '#ff883e', shadow: '#052e16' },
+                            za: { face: '#ffb612', side1: '#007a3d', side2: '#e03c31', shadow: '#000c3a' },
+                            ua: { face: '#ffd700', side1: '#0057b7', side2: '#0057b7', shadow: '#002450' },
+                            ro: { face: '#fcd116', side1: '#002b7f', side2: '#ce1126', shadow: '#000f3f' },
+                            hu: { face: '#ffffff', side1: '#c8102e', side2: '#436f4d', shadow: '#0f2613' },
+                            gr: { face: '#ffffff', side1: '#0d5eaf', side2: '#0d5eaf', shadow: '#021e3c' },
+                            pt: { face: '#ffff00', side1: '#ff0000', side2: '#006600', shadow: '#002a00' },
+                            co: { face: '#fcd116', side1: '#003893', side2: '#ce1126', shadow: '#000f3f' },
+                            cl: { face: '#ffffff', side1: '#0039a6', side2: '#d52b1e', shadow: '#00103a' },
+                            pe: { face: '#ffffff', side1: '#d91414', side2: '#d91414', shadow: '#5c0000' },
+                            ve: { face: '#fcd116', side1: '#003893', side2: '#cf142b', shadow: '#000f3f' },
+                            tr: { face: '#ffffff', side1: '#e30a17', side2: '#e30a17', shadow: '#5c0000' }
+                        };
+
+                        if (flagColors[code]) {
+                            const colors = flagColors[code];
+                            const styleEl = document.createElement('style');
+                            styleEl.textContent = '@font-palette-values --synth-nabla { font-family: "Nabla"; base-palette: 0; override-colors: 0 ' + colors.face + ', 1 ' + colors.side1 + ', 2 ' + colors.side2 + ', 3 ' + colors.side1 + ', 4 ' + colors.shadow + ', 5 ' + colors.shadow + '; }';
+                            document.head.appendChild(styleEl);
+                        }
+                    }
+                })
+                .catch(() => {
+                    const tag = document.getElementById('visitor-geo-tag');
+                    if (tag) tag.textContent = 'Made for geniuses everywhere';
+
+                    const pricingTitle = document.getElementById('pricing-title');
+                    if (pricingTitle) pricingTitle.textContent = {{ pricing_title_fallback | default('A pricing system built for fellow pedalboard nerds & guitarists.') | tojson }};
+                });
+
+            // Scroll animation observer
+            document.addEventListener("DOMContentLoaded", () => {
+                const reveals = document.querySelectorAll('.reveal');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            // stop observing to run the animation only once
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.05,
+                    rootMargin: "0px 0px -40px 0px"
+                });
+                reveals.forEach(el => observer.observe(el));
+            });
+
+            // Footer email subscription logic (Tony's style validation)
+            function submitFooterSubscribe(event) {
+                event.preventDefault();
+                const form = event.target;
+                const emailInput = document.getElementById('footer-subscribe-email');
+                const email = emailInput.value.trim();
+                const statusDiv = document.getElementById('footer-subscribe-status');
+                const submitBtn = document.getElementById('footer-subscribe-btn');
+
+                // Email Regex Validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email || !emailRegex.test(email)) {
+                    statusDiv.textContent = "that.. doesn't look like an email address. Want to double check?";
+                    statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                    return;
+                }
+
+                statusDiv.textContent = "Connecting to preset database...";
+                statusDiv.className = "text-xs font-mono text-zinc-500 mt-2";
+                submitBtn.disabled = true;
+
+                fetch('/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `email=${encodeURIComponent(email)}`
+                })
+                    .then(res => {
+                        if (res.ok) {
+                            statusDiv.textContent = "Subscribed. Updates about twice a month. Unsubscribe anytime.";
+                            statusDiv.className = "text-xs font-mono text-emerald-500 font-semibold mt-2";
+                            form.reset();
+                        } else {
+                            throw new Error();
+                        }
+                    })
+                    .catch(() => {
+                        statusDiv.textContent = "Error. Connection refused. Enjoy your temporary privacy.";
+                        statusDiv.className = "text-xs font-mono text-rose-500 mt-2";
+                    })
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                    });
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const emailInput = document.getElementById('footer-subscribe-email');
+                const statusDiv = document.getElementById('footer-subscribe-status');
+                if (emailInput && statusDiv) {
+                    emailInput.addEventListener('input', () => {
+                        statusDiv.textContent = "";
+                    });
+                }
+
+                // Static Favicon initialization (Prevents continuous log spamming)
+                const favIconElement = document.getElementById('favicon');
+                if (favIconElement) {
+                    favIconElement.href = '/static/logo.svg';
+                }
+            });
+
+            function lapisLightColor() {
+                return getComputedStyle(document.documentElement).getPropertyValue('--lapis-light').trim() || '#4A7FB8';
+            }
+
+            function initiateMIDIScan() {
+                const statusText = document.getElementById('midi-status-text');
+                const midiIcon = document.getElementById('midi-icon');
+                const scanBtn = document.getElementById('midi-scan-btn');
+
+                if (!navigator.requestMIDIAccess) {
+                    statusText.innerText = "Error: Web MIDI not supported.";
+                    statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                    statusText.style.color = "#f43f5e";
+                    if (midiIcon) {
+                        midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                        midiIcon.style.backgroundColor = "#f43f5e";
+                    }
+                    return;
+                }
+
+                statusText.innerText = "Querying Web MIDI system...";
+                statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                statusText.style.color = "#a1a1aa";
+                if (midiIcon) {
+                    midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200 animate-pulse";
+                    midiIcon.style.backgroundColor = "#f59e0b";
+                }
+
+                if (scanBtn) {
+                    scanBtn.disabled = true;
+                    scanBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+
+                const midiPromise = navigator.requestMIDIAccess({ sysex: true });
+
+                Promise.all([midiPromise, new Promise(resolve => setTimeout(resolve, 600))])
+                    .then(([midiAccess]) => {
+                        function updateDevices() {
+                            const inputs = Array.from(midiAccess.inputs.values());
+                            const outputs = Array.from(midiAccess.outputs.values());
+
+                            if (inputs.length === 0 && outputs.length === 0) {
+                                statusText.innerText = "No MIDI hardware plugged in.";
+                                statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                                statusText.style.color = "#fbbf24";
+                                if (midiIcon) {
+                                    midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                                    midiIcon.style.backgroundColor = "#f59e0b";
+                                }
+                            } else {
+                                const devName = inputs[0]?.name || outputs[0]?.name || "MIDI Port";
+                                const devNameLower = (devName || "").toLowerCase();
+                                const isSupported = ['dx7', 'juno', 'm1', 'jupiter', 'cz', 'matrix', 'prophet', 'korg', 'yamaha', 'roland', 'casio', 'oberheim', 'sequential', 'usb', 'midi', 'interface', 'port', 'link', 'um-one', 'mio', 'scarlett', 'focusrite', 'presonus', 'motu', 'audio', 'key', 'control', 'instr', 'device', 'cable'].some(kw => devNameLower.includes(kw));
+                                if (isSupported) {
+                                    statusText.innerText = `Connected: ${devName} (SUPPORTED!)`;
+                                    statusText.className = "text-xs font-mono text-left truncate w-full select-none font-semibold";
+                                    statusText.style.color = "#10b981";
+                                    if (midiIcon) {
+                                        midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                                        midiIcon.style.backgroundColor = "#10b981";
+                                    }
+                                } else {
+                                    statusText.innerText = `Connected: ${devName} (unsupported)`;
+                                    statusText.className = "text-xs font-mono text-left truncate w-full select-none font-semibold";
+                                    statusText.style.color = lapisLightColor();
+                                    if (midiIcon) {
+                                        midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                                        midiIcon.style.backgroundColor = lapisLightColor();
+                                    }
+                                }
+                            }
+                        }
+
+                        updateDevices();
+                        midiAccess.onstatechange = updateDevices;
+                    })
+                    .catch(err => {
+                        statusText.innerText = "Access denied: check permissions.";
+                        statusText.className = "text-xs font-mono text-left truncate w-full select-none";
+                        statusText.style.color = "#f43f5e";
+                        if (midiIcon) {
+                            midiIcon.className = "h-5 w-5 shrink-0 transition-colors duration-200";
+                            midiIcon.style.backgroundColor = "#f43f5e";
+                        }
+                    })
+                    .finally(() => {
+                        if (scanBtn) {
+                            scanBtn.disabled = false;
+                            scanBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
+                    });
+            }
+            // Auto-scan on load if permission is already granted
+            document.addEventListener('DOMContentLoaded', () => {
+                if (navigator.permissions && navigator.permissions.query) {
+                    try {
+                        navigator.permissions.query({ name: 'midi', sysex: true })
+                            .then(permissionStatus => {
+                                if (permissionStatus.state === 'granted') {
+                                    initiateMIDIScan();
+                                }
+                            }).catch(() => { });
+                    } catch (e) {
+                        // Some browsers (like Safari) throw a TypeError for unsupported permission names
+                    }
+                }
+            });
+        </script>
+
+        <!-- Lazy Loading script for MP4 Videos -->
+        <script>
+            function softenDemoVideoLoop(video, fadeSec = 0.4, minOpacity = 0.8) {
+                let rafId = null;
+                const tick = () => {
+                    const duration = video.duration;
+                    if (video.paused || !duration || !isFinite(duration)) {
+                        rafId = null;
+                        return;
+                    }
+                    const t = video.currentTime;
+                    let opacity = 1;
+                    if (t < fadeSec) {
+                        opacity = minOpacity + (1 - minOpacity) * (t / fadeSec);
+                    } else if (duration - t < fadeSec) {
+                        opacity = minOpacity + (1 - minOpacity) * ((duration - t) / fadeSec);
+                    }
+                    video.style.opacity = String(opacity);
+                    rafId = requestAnimationFrame(tick);
+                };
+                const start = () => {
+                    if (rafId === null) rafId = requestAnimationFrame(tick);
+                };
+                video.addEventListener('play', start);
+                video.addEventListener('loadedmetadata', start);
+                if (!video.paused) start();
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('#demo .demo-loop-video').forEach((video) => {
+                    softenDemoVideoLoop(video);
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const lazyVideos = document.querySelectorAll('video[preload="none"]');
+                if ('IntersectionObserver' in window) {
+                    const videoObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const video = entry.target;
+                                const sources = video.querySelectorAll('source');
+                                sources.forEach(source => {
+                                    if (source.dataset.src) {
+                                        source.src = source.dataset.src;
+                                    }
+                                });
+                                video.load();
+                                videoObserver.unobserve(video);
+                            }
+                        });
+                    });
+                    lazyVideos.forEach(video => {
+                        videoObserver.observe(video);
+                    });
+                } else {
+                    lazyVideos.forEach(video => {
+                        const sources = video.querySelectorAll('source');
+                        sources.forEach(source => {
+                            if (source.dataset.src) {
+                                source.src = source.dataset.src;
+                            }
+                        });
+                        video.load();
+                    });
+                }
+            });
+        </script>
+
+
+        {% include "mobile_nav.html" %}
+    </main>
+
+    {% if is_christmas_week %}
+    <!-- Dynamic falling snow canvas overlay for Christmas week -->
+    <canvas id="christmas-snow-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+    <script>
+        (function () {
+            const canvas = document.getElementById('christmas-snow-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const numFlakes = 100;
+            const flakes = [];
+
+            for (let i = 0; i < numFlakes; i++) {
+                flakes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 2 + 1,
+                    d: Math.random() * numFlakes,
+                    speed: Math.random() * 1 + 0.5,
+                    density: Math.random() * 20
+                });
+            }
+
+            let angle = 0;
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+                ctx.beginPath();
+                for (let i = 0; i < numFlakes; i++) {
+                    const f = flakes[i];
+                    ctx.moveTo(f.x, f.y);
+                    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+                }
+                ctx.fill();
+                update();
+            }
+
+            function update() {
+                angle += 0.01;
+                for (let i = 0; i < numFlakes; i++) {
+                    const f = flakes[i];
+                    f.y += f.speed;
+                    f.x += Math.sin(angle + f.density) * 0.5;
+
+                    if (f.y > height) {
+                        flakes[i] = {
+                            x: Math.random() * width,
+                            y: -10,
+                            r: f.r,
+                            d: f.d,
+                            speed: f.speed,
+                            density: f.density
+                        };
+                    }
+                }
+            }
+
+            function tick() {
+                draw();
+                requestAnimationFrame(tick);
+            }
+            tick();
+        })();
+    </script>
+    {% endif %}
+
+    {% if is_birthday_week %}
+    <!-- Dynamic floating confetti canvas overlay for Birthday week -->
+    <canvas id="birthday-confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+    <script>
+        (function () {
+            const canvas = document.getElementById('birthday-confetti-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const colors = ['#ec4899', getComputedStyle(document.documentElement).getPropertyValue('--lapis-mid').trim() || '#26619C', '#10b981', '#eab308', '#a855f7', '#f97316'];
+            const numParticles = 75;
+            const particles = [];
+
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * -height - 20,
+                    r: Math.random() * 4 + 3,
+                    d: Math.random() * numParticles,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+                    tiltAngle: 0,
+                    speed: Math.random() * 1.5 + 1
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < numParticles; i++) {
+                    const p = particles[i];
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r / 2;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+                }
+                update();
+            }
+
+            function update() {
+                for (let i = 0; i < numParticles; i++) {
+                    const p = particles[i];
+                    p.y += p.speed;
+                    p.tiltAngle += p.tiltAngleIncremental;
+                    p.tilt = Math.sin(p.tiltAngle) * 12;
+
+                    if (p.y > height) {
+                        particles[i] = {
+                            x: Math.random() * width,
+                            y: -20,
+                            r: p.r,
+                            d: p.d,
+                            color: p.color,
+                            tilt: Math.random() * 10 - 5,
+                            tiltAngleIncremental: p.tiltAngleIncremental,
+                            tiltAngle: 0,
+                            speed: p.speed
+                        };
+                    }
+                }
+            }
+
+            function tick() {
+                draw();
+                requestAnimationFrame(tick);
+            }
+            tick();
+        })();
+    </script>
+    {% endif %}
+    {% include 'visitor_avatar.html' %}
+
+    <script type="module">
+        import { annotate } from '/static/js/rough-notation.js';
+
+        function resolveCssColor(raw, fallback) {
+            if (!raw) return fallback;
+            if (raw.startsWith('#') || raw.startsWith('oklch') || raw.startsWith('rgb')) return raw;
+            const varName = raw.startsWith('--') ? raw : `--${raw}`;
+            const resolved = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            return resolved || fallback;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const e = document.querySelector('#hero-your-text');
+            if (e) {
+                const color = resolveCssColor(e.getAttribute('data-color'), resolveCssColor('lapis-light', '#4A7FB8'));
+                const annotation = annotate(e, {
+                    type: 'circle',
+                    color: color,
+                    strokeWidth: 2,
+                    padding: 5,
+                    iterations: 2,
+                    animationDuration: 800
+                });
+
+                // Add a small delay for better entrance effect alongside other reveal animations
+                setTimeout(() => {
+                    annotation.show();
+                }, 800);
+            }
+
+            const frictionElem = document.querySelector('#rn-friction');
+            if (frictionElem) {
+                const color = resolveCssColor(frictionElem.getAttribute('data-color'), resolveCssColor('stuck-rust', '#ef4444'));
+                const annotation = annotate(frictionElem, {
+                    type: 'highlight',
+                    color: color,
+                    multiline: true,
+                    iterations: 1,
+                    animationDuration: 800
+                });
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries, obs) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                // Add a small delay so user actually sees the drawing animation
+                                setTimeout(() => {
+                                    annotation.show();
+                                }, 300);
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    observer.observe(frictionElem);
+                } else {
+                    setTimeout(() => {
+                        annotation.show();
+                    }, 1000);
+                }
+            }
+
+            const rn1995Elem = document.querySelector('#rn-1995');
+            if (rn1995Elem) {
+                const color = resolveCssColor(rn1995Elem.getAttribute('data-color'), resolveCssColor('stuck-rust', '#ef4444'));
+                const annotation = annotate(rn1995Elem, {
+                    type: 'underline',
+                    color: color,
+                    multiline: true,
+                    iterations: 1,
+                    animationDuration: 800
+                });
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries, obs) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    annotation.show();
+                                }, 300);
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    observer.observe(rn1995Elem);
+                } else {
+                    setTimeout(() => {
+                        annotation.show();
+                    }, 1000);
+                }
+            }
+
+
+            const secureSoundsElem = document.querySelector('#rn-securesounds');
+            if (secureSoundsElem) {
+                const annotation = annotate(secureSoundsElem, {
+                    type: 'highlight',
+                    color: 'rgba(250, 204, 21, 0.3)',
+                    multiline: true,
+                    iterations: 1,
+                    animationDuration: 1000
+                });
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries, obs) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    annotation.show();
+                                }, 600);
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    observer.observe(secureSoundsElem);
+                } else {
+                    setTimeout(() => {
+                        annotation.show();
+                    }, 1500);
+                }
+            }
+        });
+    </script>
+
+    <!-- WebMCP: Expose site tools to AI agents in the browser (https://webmachinelearning.github.io/webmcp/) -->
+    <script>
+        (function () {
+            if (typeof navigator === 'undefined' || !navigator.modelContext) return;
+            try {
+                navigator.modelContext.provideContext({
+                    tools: [
+                        {
+                            name: "search_patches",
+                            description: "Search for synthesizer patch names across stored SysEx banks. Returns matching patch names and their bank IDs.",
+                            inputSchema: {
+                                type: "object",
+                                properties: {
+                                    query: {
+                                        type: "string",
+                                        description: "Patch name or keyword to search for (e.g. 'bass', 'pad', 'FM Rhodes')"
+                                    }
+                                },
+                                required: ["query"]
+                            },
+                            execute: async function (args) {
+                                const res = await fetch('/banks', { credentials: 'include' });
+                                if (!res.ok) return { error: "Authentication required. Please log in at /login." };
+                                return { result: "Search requires a premium account. Visit rigluk/signup to get started." };
+                            }
+                        },
+                        {
+                            name: "get_pricing",
+                            description: "Get current pricing plans for rigluk",
+                            inputSchema: { type: "object", properties: {} },
+                            execute: async function () {
+                                return {
+                                    plans: [
+                                        { name: "rigluk+", price: "$49 one-time", billing: "lifetime" },
+                                        { name: "Commercial / B2B", price: "Contact for quote", billing: "custom", contact: "halfradiationllc@gmail.com", perks: ["White-labeling", "Multi-site licenses", "Repair shop deployments", "Dedicated onboarding"] }
+                                    ],
+                                    signup_url: "https://rigluk/signup",
+                                    payment_methods: ["Visa", "Mastercard", "Amex", "Apple Pay", "Google Pay", "Cash App Pay", "Pix", "Naver Pay", "USDC"]
+                                };
+                            }
+                        },
+                        {
+                            name: "get_supported_synthesizers",
+                            description: "Get the list of vintage synthesizers supported by rigluk for SysEx backup and recall",
+                            inputSchema: { type: "object", properties: {} },
+                            execute: async function () {
+                                return {
+                                    synthesizers: [
+                                        "Yamaha DX7", "Roland Juno-106", "Korg M1",
+                                        "Roland Jupiter-6 (+ Europa mod)", "Casio CZ-101",
+                                        "Yamaha TX81Z", "Roland D-50", "Prophet-600",
+                                        "Oberheim Matrix-1000", "Yamaha FB-01",
+                                        "Roland Juno-60 (MIDI modded)", "Korg Wavestation",
+                                        "Generic (universal ASCII patch name scanner)"
+                                    ],
+                                    api_docs: "https://rigluk/openapi.json",
+                                    llms_txt: "https://rigluk/llms.txt"
+                                };
+                            }
+                        }
+                    ]
+                });
+            } catch (e) {
+                // WebMCP not available — silently ignore
+            }
+        })();
+    </script>
+{% if pricing is defined and pricing.ppp_enabled %}
+    <script>
+    /* PPP Live Price Fetcher — silently updates price for PPP-eligible countries */
+    (async () => {
+        const country = "{{ pricing.country_code | default('US') }}";
+        try {
+            const res = await fetch(`/api/ppp-price?country=${country}`);
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data.error) return;
+            const display  = data.display;
+            const symbol   = display.symbol;        // e.g. "Fr.", "R$", "₹", "$"
+            const amount   = display.amount_display; // e.g. "27,999"
+            const currency = display.currency;       // e.g. "ARS"
+
+            // Amount spans
+            document.querySelectorAll('#pricing-personal-amount, #pricing-anchor-personal-amount')
+                .forEach(el => { el.textContent = amount; });
+
+            // Main price slot: replace innerHTML with a proper gradient span
+            const symbolHTML = `<span class="pricing-gem-blue select-none text-2xl leading-none" style="transform:translateY(-2px)">${symbol}</span>`;
+            const mainSlot = document.getElementById('pricing-personal-currency');
+            if (mainSlot) mainSlot.innerHTML = symbolHTML;
+
+            // Anchor: already a .pricing-gem-blue span — text only
+            const anchorSymbol = document.getElementById('pricing-anchor-personal-symbol');
+            if (anchorSymbol) anchorSymbol.textContent = symbol;
+
+            // Billing label — neutral English everywhere
+            document.querySelectorAll('#pricing-personal-billing')
+                .forEach(el => { el.textContent = `${currency} / ONE-TIME`; });
+
+            // Free button subtext — dynamic local currency symbol (₺0, R$0, €0, $0)
+            const freeSubtext = document.getElementById('pricing-free-subtext');
+            if (freeSubtext) {
+                freeSubtext.textContent = `${symbol}0 · no card · click to start`;
+            }
+
+        } catch (e) { /* silently keep static price on error */ }
+    })();
+    </script>
+{% endif %}
+
+</body>
+
+
+</html>

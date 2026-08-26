@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>Vintage Synth Cloud Backup & SysEx Librarian (2026) | bipluk</title>
+    <meta name="description"
+        content="The complete guide to vintage synth cloud backup. Browser SysEx librarian for DX7 backup, Juno-106 patches, and Korg M1 presets — no desktop software required.">
+    <meta name="keywords"
+        content="vintage synth backup, cloud backup for synthesizers, sysex librarian, dx7 backup, juno-106 patches, backup dx7 patches without software, best sysex librarian 2026">
+    {% set seo_canonical = "https://bipluk.com/vintage-synth-cloud-backup" %}
+    {% set seo_title = "Vintage Synth Cloud Backup & SysEx Librarian (2026) | bipluk" %}
+    {% set seo_description = "The complete guide to vintage synth cloud backup. Browser SysEx librarian for DX7 backup, Juno-106 patches, and Korg M1 presets — no desktop software required." %}
+    {% set seo_schema_type = "TechArticle" %}
+    {% include 'partials/seo_article_meta.html' %}
+
+    {% include 'partials/tailwind_lapis.html' %}
+    <style>
+        html { scroll-behavior: smooth; }
+        .mobile-bg-pattern {
+            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative">
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <header class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2.5 group">
+                <img src="/static/logo.svg" alt="Bipluk Logo" width="24" height="24" class="w-6 h-6" style="image-rendering: pixelated;">
+                <span class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">bipluk</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/sysex-librarian-alternatives" class="hover:text-white transition-colors">SysEx Librarian</a>
+                <a href="/resources" class="hover:text-white transition-colors">Guides</a>
+                <a href="/shop" class="hover:text-white transition-colors">Shop</a>
+            </nav>
+            <a href="/signup" class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all">Sign Up</a>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
+        <article class="space-y-6 text-left mb-12">
+            <span class="tag-lapis">
+                Pillar Guide · 2026
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
+                Vintage Synth Cloud Backup &amp; SysEx Librarian
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
+                Cloud backup for synthesizers used to mean desktop drivers, MIDI-OX buffer tuning, and folders of
+                unnamed <code class="text-zinc-300">.syx</code> files. In 2026, a browser-native SysEx librarian can
+                back up DX7 patches, save Juno-106 presets, and sync your vault — without installing software.
+            </p>
+        </article>
+
+        <section class="space-y-10 text-zinc-300 text-sm leading-relaxed max-w-2xl mx-auto">
+            <div class="space-y-3">
+                <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
+                    What is a SysEx librarian?
+                </h2>
+                <p>
+                    A SysEx librarian captures, stores, and restores synthesizer presets. For decades, doing this meant installing drivers, adjusting MIDI-OX buffer size, and sorting folders of raw, unnamed <code>.syx</code> files.
+                </p>
+                <p>
+                    I built bipluk because I wanted to back up my DX7 and Juno-106 without dealing with legacy desktop apps. It runs in the browser, uses Web MIDI, and saves everything to a secure cloud vault.
+                </p>
+                <p>
+                    <a href="/sysex-librarian-alternatives" class="text-emerald-400 hover:text-white underline">Compare the best SysEx librarian alternatives for Windows &amp; macOS →</a>
+                </p>
+            </div>
+
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    Zero-install web utilities are not a compromise—they are a feature. Most synth owners only back up their sounds twice a year. Downloading desktop software for a five-minute task is a waste of time.
+                </p>
+            </div>
+
+            <div class="space-y-3">
+                <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
+                    Universal cloud backups
+                </h2>
+                <p>
+                    If you tour with vintage synths, run a commercial studio, or just want to protect your patches from dead internal batteries, local backups aren't enough. You need off-site storage.
+                </p>
+                <p>
+                    <span class="text-zinc-500 font-mono">My cloud library saves your soundbanks privately.</span>
+                </p>
+                <ul class="list-disc list-inside space-y-2 font-mono text-zinc-400 pl-2">
+                    <li>Raw exports: You can download your standard <code>.syx</code> files anytime. No lock-in.</li>
+                    <li>Paced sending: The app handles Web MIDI output timing so you don't overflow vintage microprocessor buffers.</li>
+                    <li>Searchable vault: Name your patches, search them, and organize soundbanks online.</li>
+                </ul>
+            </div>
+
+            <div class="space-y-3">
+                <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
+                    Back up your DX7 (no desktop apps)
+                </h2>
+                <p>
+                    The Yamaha DX7 is the classic entry point. To back it up: disable memory protect, enable SysEx channel 1, and request the dump directly from the web interface. No TX7 editors or legacy setups.
+                </p>
+                <p>
+                    <a href="/how-to-backup-yamaha-dx7-presets-sysex-transfer-guide" class="text-emerald-400 hover:text-white underline">DX7 backup step-by-step guide →</a>
+                    · <a href="/dx7" class="text-emerald-400 hover:text-white underline">Yamaha DX7 SysEx librarian →</a>
+                </p>
+            </div>
+
+            <div class="space-y-3">
+                <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
+                    Save your Juno-106 patches
+                </h2>
+                <p>
+                    A Roland Juno-106 stores 128 presets in battery-backed RAM. When the internal CR2032 battery dies, those presets disappear forever.
+                </p>
+                <p>
+                    You cannot request a dump remotely on the Juno-106. You have to set the rear function switch to 'III' (enable SysEx) and physically press 'WRITE' on the panel to stream the patches.
+                </p>
+                <p>
+                    <a href="/how-to-backup-roland-juno-106-presets-sysex-transfer-guide" class="text-emerald-400 hover:text-white underline">Save &amp; backup Juno-106 presets →</a>
+                    · <a href="/juno-106" class="text-emerald-400 hover:text-white underline">Juno-106 librarian →</a>
+                </p>
+            </div>
+
+            <div class="space-y-3">
+                <h2 class="text-lg font-pixel uppercase text-white tracking-wide border-b border-zinc-900 pb-2">
+                    The desktop alternatives are dead
+                </h2>
+                <p>
+                    Windows users still run MIDI-OX—a 32-bit utility last updated in 2010. Mac users rely on Snoize. Neither offers cloud sync, and both require platform-specific installation.
+                </p>
+                <p>
+                    By running in Chrome or Edge, bipluk works on Mac, Windows, Linux, and Chromebooks out of the box.
+                </p>
+                <p>
+                    <a href="/bipluk-vs-midi-ox" class="text-emerald-400 hover:text-white underline">MIDI-OX vs Bipluk (Mac &amp; Windows) →</a>
+                    · <a href="/bipluk-vs-snoize-sysex-librarian" class="text-emerald-400 hover:text-white underline">Snoize alternative for Mac →</a>
+                </p>
+            </div>
+
+            <div class="p-8 bg-zinc-950 border border-zinc-900 rounded-2xl text-center space-y-4">
+                <h3 class="text-xl font-pixel text-white uppercase">Start your vintage synth cloud backup</h3>
+                <p class="text-sm text-zinc-500 font-mono max-w-md mx-auto">
+                    bipluk+ $99 lifetime · Sound packs from $9
+                </p>
+                <a href="/signup"
+                    class="inline-block bg-white hover:bg-zinc-200 text-black px-8 py-4 rounded-full text-sm font-pixel uppercase tracking-widest transition-all active:scale-95">
+                    Open SysEx Vault
+                </a>
+            </div>
+        </section>
+    </main>
+
+    {% include "footer.html" %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

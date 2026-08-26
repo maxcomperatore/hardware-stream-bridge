@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Did you know? Synth Secrets & SysEx Facts</title>
+</head>
+<body style="background-color: #050507; color: #d4d4d8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #050507; table-layout: fixed;">
+        <tr>
+            <td align="center" style="padding: 40px 16px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 540px; background-color: #0b0b0e; border: 1px solid #1f1f24; border-radius: 20px; overflow: hidden; border-collapse: separate; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+                    <!-- Header Logo -->
+                    <tr>
+                        <td style="padding: 32px 32px 24px 32px; border-bottom: 1px solid #18181b; text-align: center;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="vertical-align: middle; padding-right: 10px;">
+                                        <img src="https://bipluk.com/static/logo.svg" width="36" height="36" style="display: block; image-rendering: pixelated; border: none;" alt="bipluk Logo">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <span style="font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 18px; color: #ffffff; letter-spacing: 3px; text-transform: uppercase;">bipluk</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="color: #10b981; font-size: 10px; margin: 6px 0 0 0; font-family: monospace; text-transform: uppercase; letter-spacing: 1.5px;">💡 Did You Know? · Synth Secrets</p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 32px;">
+                            <h1 style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">Hey {{ first_name }}, did you know this about vintage synths? 🎹</h1>
+
+                            <p style="font-size: 14px; line-height: 22px; margin-top: 0; margin-bottom: 24px; color: #a1a1aa;">
+                                Vintage hardware synths are incredible instruments, but their internal memory is surprisingly fragile. Here are 3 facts every synth owner should know:
+                            </p>
+
+                            <!-- Fact 1 Card -->
+                            <div style="background-color: #121217; border: 1px solid #27272a; border-radius: 12px; padding: 18px; margin-bottom: 16px;">
+                                <h3 style="color: #38bdf8; font-size: 14px; font-weight: 600; margin: 0 0 8px 0; font-family: monospace;">🔋 1. The Internal Battery Clock</h3>
+                                <p style="font-size: 13px; line-height: 20px; color: #d4d4d8; margin: 0;">
+                                    Classic synths like the Yamaha DX7, Korg M1, and Roland Juno-106 store your custom soundbanks in volatile RAM powered by a tiny internal lithium battery (CR2032). When that battery dies, <strong>all custom soundbanks vanish permanently</strong> upon power off.
+                                </p>
+                            </div>
+
+                            <!-- Fact 2 Card -->
+                            <div style="background-color: #121217; border: 1px solid #27272a; border-radius: 12px; padding: 18px; margin-bottom: 16px;">
+                                <h3 style="color: #a78bfa; font-size: 14px; font-weight: 600; margin: 0 0 8px 0; font-family: monospace;">🔍 2. SysEx Header Signatures</h3>
+                                <p style="font-size: 13px; line-height: 20px; color: #d4d4d8; margin: 0;">
+                                    Every SysEx dump starts with <code style="background-color: #1f1f24; color: #f472b6; padding: 2px 6px; border-radius: 4px; font-family: monospace;">F0</code> and ends with <code style="background-color: #1f1f24; color: #f472b6; padding: 2px 6px; border-radius: 4px; font-family: monospace;">F7</code>. In between sits the manufacturer ID (e.g. <code style="background-color: #1f1f24; color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-family: monospace;">43</code> for Yamaha, <code style="background-color: #1f1f24; color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-family: monospace;">41</code> for Roland). Bipluk uses these exact byte signatures to auto-detect your synth in milliseconds.
+                                </p>
+                            </div>
+
+                            <!-- Fact 3 Card -->
+                            <div style="background-color: #121217; border: 1px solid #27272a; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+                                <h3 style="color: #34d399; font-size: 14px; font-weight: 600; margin: 0 0 8px 0; font-family: monospace;">⚡ 3. Instant Web MIDI Vaults</h3>
+                                <p style="font-size: 13px; line-height: 20px; color: #d4d4d8; margin: 0;">
+                                    You don't need old MIDI-OX software or serial drivers anymore. Modern Web MIDI lets you back up your hardware synth directly inside Chrome or Edge with zero latency.
+                                </p>
+                            </div>
+
+                            <!-- Primary CTA Button -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://bipluk.com/home" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px;">Back Up Your Synth Now</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Signoff -->
+                            <div style="border-top: 1px solid #18181b; padding-top: 20px; margin-top: 24px;">
+                                <p style="font-size: 13px; color: #a1a1aa; margin: 0 0 4px 0;">Keep making great music,</p>
+                                <p style="font-size: 14px; font-weight: bold; color: #ffffff; margin: 0; font-family: 'Courier New', Courier, monospace;">Your bipluk Team</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 24px 32px; background-color: #08080a; border-top: 1px solid #18181b; text-align: center;">
+                            <p style="color: #52525b; font-size: 11px; line-height: 16px; margin: 0 0 8px 0; font-family: monospace;">
+                                &copy; 2026 bipluk / Half Radiation LLC. All rights reserved.
+                            </p>
+                            <p style="color: #3f3f46; font-size: 10px; margin: 0; font-family: monospace;">
+                                <a href="https://bipluk.com/unsubscribe?email={{ email }}" style="color: #71717a; text-decoration: underline;">Unsubscribe</a> from marketing updates.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

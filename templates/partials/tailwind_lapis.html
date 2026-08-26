@@ -1,0 +1,275 @@
+<style>
+    :root {
+        --lapis-mid: #26619C;
+        accent-color: var(--lapis-mid);
+    }
+
+    @supports (color: oklch(0% 0 0)) {
+        :root {
+            --lapis-mid: oklch(48.42% 0.1129 251.34);
+        }
+    }
+
+    html {
+        color-scheme: dark;
+        scrollbar-gutter: stable;
+    }
+
+    h1 {
+        text-wrap: balance;
+    }
+
+    .footer-seo-blob {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 12rem;
+    }
+
+    /* Branded pixel cursors for every possible interaction state */
+    :root {
+        --cursor-default: url('/static/cursors/pointer.png') 0 0, auto;
+        --cursor-pointer: url('/static/cursors/link.png') 0 0, pointer;
+        --cursor-text: url('/static/cursors/beam.png') 4 8, text;
+        --cursor-not-allowed: url('/static/cursors/unavailable.png') 0 0, not-allowed;
+        --cursor-help: url('/static/cursors/help.png') 0 0, help;
+        --cursor-grab: url('/static/cursors/grab.png') 8 8, grab;
+        --cursor-grabbing: url('/static/cursors/grab_hover.png') 8 8, grabbing;
+        --cursor-wait: url('/static/cursors/busy.gif') 0 0, wait;
+        --cursor-progress: url('/static/cursors/working.gif') 0 0, progress;
+        --cursor-move: url('/static/cursors/move.png') 8 8, move;
+        --cursor-zoom-in: url('/static/cursors/lens_maximize.png') 4 4, zoom-in;
+        --cursor-zoom-out: url('/static/cursors/lens_minimize.png') 4 4, zoom-out;
+    }
+
+    html,
+    body {
+        cursor: var(--cursor-default);
+    }
+
+    a,
+    button,
+    [role="button"],
+    label[for],
+    select,
+    summary,
+    .cursor-pointer,
+    input[type="submit"],
+    input[type="button"],
+    input[type="reset"],
+    input[type="checkbox"],
+    input[type="radio"],
+    .tactical-button,
+    .faq-suggestion-btn,
+    [style*="cursor: pointer"] {
+        cursor: var(--cursor-pointer) !important;
+    }
+
+    input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    [contenteditable="true"],
+    .cursor-text,
+    [style*="cursor: text"] {
+        cursor: var(--cursor-text) !important;
+    }
+
+    :disabled,
+    [aria-disabled="true"],
+    .cursor-not-allowed,
+    [style*="cursor: not-allowed"] {
+        cursor: var(--cursor-not-allowed) !important;
+    }
+
+    .cursor-help,
+    [style*="cursor: help"] {
+        cursor: var(--cursor-help) !important;
+    }
+
+    .cursor-grab,
+    [style*="cursor: grab"] {
+        cursor: var(--cursor-grab) !important;
+    }
+
+    .cursor-grabbing,
+    [style*="cursor: grabbing"] {
+        cursor: var(--cursor-grabbing) !important;
+    }
+
+    .cursor-wait,
+    [style*="cursor: wait"] {
+        cursor: var(--cursor-wait) !important;
+    }
+
+    .cursor-progress,
+    [style*="cursor: progress"] {
+        cursor: var(--cursor-progress) !important;
+    }
+
+    .cursor-move,
+    [style*="cursor: move"] {
+        cursor: var(--cursor-move) !important;
+    }
+
+    /* Centralized Retro Lapis Tags */
+    .tag-lapis {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 7px;
+        font-family: 'Silkscreen', monospace;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        background-color: oklch(35.46% 0.0842 251.90) !important; /* Deep Lapis */
+        color: #ffffff !important;
+        border: 3px double oklch(58.50% 0.1049 251.61) !important; /* Lapis light double border */
+        border-radius: 4px;
+        text-shadow: 0 1px 0px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        line-height: 1;
+    }
+
+    @keyframes backgroundDriftSlow {
+        0% { background-position: 0 0, 0 0, 0 0; }
+        50% { background-position: 32px 32px, 48px -48px, -48px 48px; }
+        100% { background-position: 0 0, 0 0, 0 0; }
+    }
+
+    .mobile-bg-pattern, .dither-mesh, .audit-paper, .bg-mesh-pattern {
+        animation: backgroundDriftSlow 40s ease-in-out infinite !important;
+    }
+
+    .tag-lapis-tool {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 7px;
+        font-family: 'Silkscreen', monospace;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        background-color: oklch(35.46% 0.0842 251.90) !important; /* Deep Lapis */
+        color: #a7f3d0 !important; /* Emerald green text */
+        border: 2px solid #059669 !important; /* Emerald border */
+        border-radius: 4px;
+        text-shadow: 0 1px 0px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        line-height: 1;
+    }
+
+    .tag-lapis-blog {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 7px;
+        font-family: 'Silkscreen', monospace;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        background-color: oklch(35.46% 0.0842 251.90) !important; /* Deep Lapis */
+        color: #e2f8ff !important; /* Light sky blue text */
+        border: 3px double oklch(68.50% 0.08 220) !important; /* Teal double border */
+        border-radius: 4px;
+        text-shadow: 0 1px 0px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        line-height: 1;
+    }
+
+    .tag-lapis-audit {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 7px;
+        font-family: 'Silkscreen', monospace;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        background-color: oklch(35.46% 0.0842 251.90) !important; /* Deep Lapis */
+        color: #fecdd3 !important; /* Light rose text */
+        border: 3px double #f43f5e !important; /* Rose double border */
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        line-height: 1;
+    }
+</style>
+<script>
+    // Suppress Tailwind CDN production warning in console
+    (function() {
+        var origWarn = console.warn;
+        console.warn = function() {
+            if (arguments[0] && typeof arguments[0] === 'string' && arguments[0].indexOf('cdn.tailwindcss.com') !== -1) return;
+            origWarn.apply(console, arguments);
+        };
+    })();
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    zinc: {
+                        450: '#8c8c9a',
+                        550: '#8c8c9a',
+                        555: '#8c8c9a',
+                        650: '#7e7e8a',
+                        655: '#7e7e8a',
+                        850: '#1c1c21',
+                    },
+                    blue: {
+                        400: 'oklch(58.50% 0.1049 251.61)',
+                        500: 'oklch(48.42% 0.1129 251.34)',
+                        600: 'oklch(42.72% 0.1149 254.84)',
+                        650: 'oklch(42.72% 0.1149 254.84)',
+                        700: 'oklch(42.72% 0.1149 254.84)',
+                        800: 'oklch(35.46% 0.0842 251.90)',
+                        900: 'oklch(42.72% 0.1149 254.84)',
+                    },
+                    lapis: {
+                        deep: 'oklch(42.72% 0.1149 254.84)',
+                        DEFAULT: 'oklch(48.42% 0.1129 251.34)',
+                        mid: 'oklch(48.42% 0.1129 251.34)',
+                        light: 'oklch(58.50% 0.1049 251.61)',
+                    },
+                    rose: {
+                        450: '#fb7185',
+                    },
+                    emerald: {
+                        50: 'oklch(97.2% 0.008 251.6)',
+                        100: 'oklch(93.8% 0.018 251.3)',
+                        200: 'oklch(86.5% 0.038 251.4)',
+                        300: 'oklch(73.2% 0.062 251.5)',
+                        400: 'oklch(58.50% 0.1049 251.61)',
+                        500: 'oklch(48.42% 0.1129 251.34)',
+                        600: 'oklch(42.72% 0.1149 254.84)',
+                        700: 'oklch(42.72% 0.1149 254.84)',
+                        800: 'oklch(35.46% 0.0842 251.90)',
+                        900: 'oklch(27.53% 0.0654 255.18)',
+                        950: 'oklch(21.57% 0.0452 254.99)',
+                    },
+                    green: {
+                        50: 'oklch(97.2% 0.008 251.6)',
+                        100: 'oklch(93.8% 0.018 251.3)',
+                        200: 'oklch(86.5% 0.038 251.4)',
+                        300: 'oklch(73.2% 0.062 251.5)',
+                        400: 'oklch(58.50% 0.1049 251.61)',
+                        500: 'oklch(48.42% 0.1129 251.34)',
+                        600: 'oklch(42.72% 0.1149 254.84)',
+                        700: 'oklch(42.72% 0.1149 254.84)',
+                        800: 'oklch(35.46% 0.0842 251.90)',
+                        900: 'oklch(27.53% 0.0654 255.18)',
+                        950: 'oklch(21.57% 0.0452 254.99)',
+                    }
+                },
+                fontFamily: {
+                    sans: ['Geist', 'Geist Sans', 'sans-serif'],
+                    mono: ['Geist Mono', 'monospace'],
+                    pixel: ['Silkscreen', 'monospace'],
+                    lcd: ['VT323', 'monospace'],
+                    nabla: ['Nabla', 'system-ui'],
+                },
+                fontSize: {
+                    '2xs': '0.68rem',
+                    '3xs': '0.58rem',
+                }
+            }
+        }
+    }
+</script>

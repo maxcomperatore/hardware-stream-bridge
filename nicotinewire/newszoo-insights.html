@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicotineWire — Market Insights</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+</head>
+<body>
+
+<header class="nw-header">
+    <a href="/" class="nw-brand">
+        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <span class="nw-brand-text">NicotineWire</span>
+        <span class="nw-brand-sub">Intelligence</span>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="/" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
+        <a href="/reports" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
+        <a href="/directory" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
+        <a href="/insights" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
+        <a href="/viewer" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
+        <a href="/b2b-case" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
+        <a href="/pricing" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+    </nav>
+
+    <div>
+        <a href="/pricing" class="btn-moz-blue">
+            <span class="iconify" data-icon="pixelarticons:card"></span>
+            <span>Pricing</span>
+            <span class="nw-header-price" style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
+        </a>
+    </div>
+</header>
+
+<div class="app-viewport">
+    <div class="nw-grid-layout">
+        <aside class="nw-sidebar">
+            <div class="nw-sidebar-title">Categories</div>
+            <ul class="nw-sidebar-menu">
+                <li><a href="/"><span><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</span> <span class="nw-tag-count">Live</span></a></li>
+                <li><a href="/reports"><span><span class="iconify" data-icon="pixelarticons:file-text"></span> M&amp;A Databooks</span> <span class="nw-tag-count">$1.5k+</span></a></li>
+                <li><a href="/directory"><span><span class="iconify" data-icon="pixelarticons:briefcase"></span> B2B Directory</span> <span class="nw-tag-count">$300/m</span></a></li>
+                <li><a href="/insights" class="active"><span><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights &amp; Proof</span> <span class="nw-tag-count">Pro</span></a></li>
+                <li><a href="/viewer"><span><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Monograph Viewer</span> <span class="nw-tag-count">PDF</span></a></li>
+                <li><a href="/b2b-case"><span><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</span> <span class="nw-tag-count">Moat</span></a></li>
+                <li><a href="/pricing"><span><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</span> <span class="nw-tag-count">$2,000</span></a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section class="nw-hero-banner" style="margin-bottom: 20px;">
+                <h1 class="nw-hero-title">
+                    <span class="iconify" data-icon="pixelarticons:sliders"></span>
+                    Market Insights &amp; Citations
+                </h1>
+                <p class="nw-hero-subtitle">Quantitative research cited on Wall Street earnings calls.</p>
+            </section>
+
+            <div style="display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap;">
+                <button onclick="filterNewszoo('all')" class="btn-moz-blue" style="font-size: 0.72rem; padding: 3px 8px;">All</button>
+                <button onclick="filterNewszoo('earnings')" class="btn-moz-outline" style="font-size: 0.72rem; padding: 3px 8px;">Earnings</button>
+                <button onclick="filterNewszoo('empire')" class="btn-moz-outline" style="font-size: 0.72rem; padding: 3px 8px;">M&amp;A</button>
+            </div>
+
+            <div class="nw-feed-container" id="newszoo-feed-container">
+                <details class="nw-feed-item newszoo-item earnings" open>
+                    <summary>
+                        <div class="nw-feed-meta">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:trending-up"></span> EARNINGS</span>
+                            <span>Q1 2026</span>
+                        </div>
+                        NicotineWire Data Cited in Q1 Earnings Calls
+                    </summary>
+                    <div class="nw-feed-body">
+                        Executive teams at major public nicotine conglomerates cited NicotineWire tracking during Q1 earnings calls verifying +4.2% oral pouch expansion.
+                    </div>
+                </details>
+
+                <details class="nw-feed-item newszoo-item empire" open>
+                    <summary>
+                        <div class="nw-feed-meta">
+                            <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:float-right-sharp"></span> M&amp;A</span>
+                            <span>6h ago</span>
+                        </div>
+                        NicotineWire Media Group Acquires 'Tobacco Reporter'
+                    </summary>
+                    <div class="nw-feed-body">
+                        NicotineWire has acquired <em>Tobacco Reporter Trade Journal</em> (est. 1874), consolidating 152 years of archival trade data.
+                    </div>
+                </details>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="nw-footer">
+        <div>
+            <strong>NicotineWire™ Intelligence</strong> &bull; Half Radiation, LLC
+        </div>
+        <div>
+            &copy; 2026 NicotineWire™.
+        </div>
+    </footer>
+</div>
+
+<!-- Fixed Edge-to-Edge Bottom Navigation Bar -->
+<nav class="cr-mobile-bottom-nav">
+    <a href="/" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+        <span>Wire</span>
+    </a>
+    <a href="/reports" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+        <span>Reports</span>
+    </a>
+    <a href="/directory" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+        <span>Directory</span>
+    </a>
+    <a href="/insights" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+        <span>Insights</span>
+    </a>
+    <a href="/pricing" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+        <span>Pricing</span>
+    </a>
+</nav>
+
+<script src="/static/app.js"></script>
+<script src="/app.js"></script>
+<script>
+function filterNewszoo(category) {
+    const items = document.querySelectorAll('.newszoo-item');
+    items.forEach(item => {
+        if (category === 'all' || item.classList.contains(category)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+</script>
+</body>
+</html>

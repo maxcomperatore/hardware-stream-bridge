@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /home
+Disallow: /banks/
+Disallow: /login
+Disallow: /signup
+Disallow: /checkout
+Disallow: /checkout-pack/
+Disallow: /mock-checkout-success
+Disallow: /portal
+
+Sitemap: https://bipluk.com/sitemap.xml
+
+Content-Signal: ai-train=no, search=yes, ai-input=no

@@ -1,0 +1,90 @@
+{# Requires: seo_canonical, seo_title, seo_description. Optional: seo_schema_type (default TechArticle) #}
+<link rel="canonical" href="{{ seo_canonical }}">
+<link rel="alternate" hreflang="en" href="{{ seo_canonical }}">
+<link rel="alternate" hreflang="x-default" href="{{ seo_canonical }}">
+{% if seo_distribution_url %}
+<link rel="alternate" type="application/json" href="{{ seo_distribution_url }}" title="Dataset JSON">
+{% endif %}
+
+<meta property="og:site_name" content="rigluk">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ seo_canonical }}">
+<meta property="og:title" content="{{ seo_title }}">
+<meta property="og:description" content="{{ seo_description }}">
+<meta property="og:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
+<meta property="og:image:type" content="image/gif">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ seo_canonical }}">
+<meta name="twitter:title" content="{{ seo_title }}">
+<meta name="twitter:description" content="{{ seo_description }}">
+<meta name="twitter:image" content="{{ asset_abs_url('dithered_knob_og.gif') }}">
+
+{% if seo_schema_type == 'Dataset' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {{ seo_title | tojson }},
+  "description": {{ seo_description | tojson }},
+  "url": {{ seo_canonical | tojson }},
+  "inLanguage": "en",
+  "creator": {
+    "@type": "Organization",
+    "name": "Half Radiation LLC",
+    "url": "https://rigluk"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "rigluk",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://rigluk/static/logo.svg"
+    }
+  },
+  "datePublished": {{ (seo_date_published | default('2026-07-01')) | tojson }},
+  "temporalCoverage": {{ (seo_temporal_coverage | default('2026-06-25/2026-07-01')) | tojson }},
+  "variableMeasured": ["Studio setup type", "Vintage synthesizer models on desk"],
+  {% if seo_distribution_url %}
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "application/json",
+    "contentUrl": {{ seo_distribution_url | tojson }}
+  },
+  {% endif %}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ seo_canonical | tojson }}
+  }
+}
+</script>
+{% else %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{ seo_schema_type | default('TechArticle') }}",
+  "headline": {{ seo_title | tojson }},
+  "description": {{ seo_description | tojson }},
+  "image": {{ asset_abs_url('dithered_knob_og.gif') | tojson }},
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "rigluk"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "rigluk",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://rigluk/static/logo.svg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ seo_canonical | tojson }}
+  }
+}
+</script>
+{% endif %}

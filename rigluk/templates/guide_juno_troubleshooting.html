@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    <title>How to fix Juno-106 memory loss | rigluk</title>
+    <meta name="description"
+        content="Use this interactive Juno-106 memory loss troubleshooter. Diagnose garbled characters, write protect errors, and restore lost presets using Web MIDI.">
+    <meta name="keywords"
+        content="juno 106 memory loss, roland juno 106 restore patches, juno 106 write error, voice chip failure, web midi sysex">
+    {% set seo_canonical = "https://rigluk/how-to-fix-juno-106-memory-loss-troubleshooting-guide" %}
+    {% set seo_title = "How to fix Juno-106 memory loss | rigluk" %}
+    {% set seo_description = "Use this interactive Juno-106 memory loss troubleshooter. Diagnose garbled characters, write protect errors, and restore lost presets using Web MIDI." %}
+    {% set seo_schema_type = "HowTo" %}
+    {% include 'partials/seo_article_meta.html' %}
+
+    {% include 'partials/favicon.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        @keyframes logo-spin {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .step-btn.active {
+            border-color: #26619C;
+            background-color: rgba(59, 131, 246, 0.05);
+            color: #ffffff;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body
+    class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-blue-500/20 selection:text-white">
+
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Rigluk Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">rigluk</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="hover:text-white transition-colors duration-200">Resources</a>
+                <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/home"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Open
+                    Vault</a>
+                {% else %}
+                <a href="/login"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">Sign
+                    In</a>
+                <a href="/signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Sign
+                    Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
+        <article class="space-y-6 text-left mb-12">
+            <span class="tag-lapis">
+                Troubleshooting
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
+                How to Fix Juno-106 Memory Loss
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
+                Is your Roland Juno-106 losing its patches, showing weird symbols on the LCD, or throwing write protect
+                errors when saving? Run this interactive diagnostic tool to discover the exact solution.
+            </p>
+        </article>
+
+        <!-- DYNAMIC INTERACTIVE DIAGNOSTIC TOOL -->
+        <section class="bg-zinc-950 border border-zinc-900 rounded-3xl p-6 md:p-8 my-12 space-y-6 shadow-2xl relative">
+            <div class="space-y-2 text-center md:text-left border-b border-zinc-900 pb-4">
+                <h2
+                    class="text-base font-pixel text-white uppercase tracking-wider flex items-center gap-2 justify-center md:justify-start">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                    Juno-106 Memory Loss Diagnostic Tool
+                </h2>
+                <p class="text-xs text-zinc-400 font-mono">Click through the options to isolate hardware parameters and
+                    compile an immediate repair steps checklist.</p>
+            </div>
+
+            <!-- STEP 1: SYMPTOMS -->
+            <div class="space-y-3 font-mono text-xs">
+                <p class="text-zinc-400 font-pixel text-3xs uppercase tracking-wider">Step 1: Choose Your LCD Display
+                    Symptom</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <button onclick="selectSymptom('garbled')" id="sym-garbled"
+                        class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
+                        <strong class="block text-white mb-1">ASCII Garbage</strong>
+                        Random symbols, weird letters, or blanks on screen.
+                    </button>
+                    <button onclick="selectSymptom('silent')" id="sym-silent"
+                        class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
+                        <strong class="block text-white mb-1">Silence or Blanks</strong>
+                        Display shows standard program numbers but emits no sound.
+                    </button>
+                    <button onclick="selectSymptom('write_err')" id="sym-write_err"
+                        class="step-btn border border-zinc-800 rounded-xl p-4 text-left hover:border-zinc-700 transition-colors text-zinc-300">
+                        <strong class="block text-white mb-1">Write Protect</strong>
+                        Cannot save patches. Display blinks when pressing WRITE.
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: STATE INPUTS (DYNAMCIALLY REVEALED) -->
+            <div id="step-2-container" class="space-y-4 font-mono text-xs hidden border-t border-zinc-900 pt-6">
+                <div>
+                    <label id="step-2-label"
+                        class="block text-zinc-400 uppercase tracking-wider mb-2 font-pixel text-3xs">Step 2: Check
+                        Hardware Configuration</label>
+                    <select id="diag-hw-state" onchange="runDiagnostic()"
+                        class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors font-mono">
+                        <!-- Options generated dynamically -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- DIAGNOSTIC RESOLUTION BOX -->
+            <div id="diag-result" class="hidden border-t border-zinc-900 pt-6">
+                <div class="bg-black border border-zinc-900 rounded-2xl p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-zinc-900 pb-2">
+                        <span class="text-3xs font-pixel text-zinc-500 uppercase">Diagnosis Code</span>
+                        <span id="result-code" class="text-xs font-mono text-blue-400">J106-ERR-01</span>
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-3xs font-pixel text-zinc-500 uppercase">Resolution Steps</span>
+                        <div id="result-steps" class="text-xs font-mono text-zinc-300 space-y-2 pl-3">
+                            <!-- Bullet points generated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action inside tool -->
+            <div class="pt-4 border-t border-zinc-900 text-center">
+                <a href="/signup"
+                    class="inline-block bg-white hover:bg-zinc-200 text-black px-6 py-3 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 shadow-md">
+                    Connect via Web MIDI
+                </a>
+            </div>
+        </section>
+
+        <!-- Static troubleshooting details -->
+        <section class="space-y-6 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal max-w-2xl mx-auto">
+            <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
+                Understanding Roland SRAM Architecture
+            </h2>
+            <p class="font-mono text-xs text-zinc-400">
+                The Roland Juno-106 uses CMOS static RAM chips (μPD444) to store patch data. These memory registers require a continuous feed of 2.0V or higher. When the internal battery drops below this threshold, the memory cells lose their state, corrupting the stored patches.
+            </p>
+            <p class="font-mono text-xs text-zinc-400">
+                A common issue is the rear-panel Protect Switch. When set to 'ON', it applies a pull-up voltage to the SRAM's write-enable pin. This prevents the microprocessor from modifying the patch library, displaying a blinking write-protection error on the front screen.
+            </p>
+
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    Replacing a battery wipes the SRAM. Your display will show garbage characters immediately after battery replacement. This is normal. You must load a clean SysEx patch bank to restore the memory registers to a readable state.
+                </p>
+            </div>
+
+            <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
+                Factory restoring with zero-config Web MIDI
+            </h2>
+            <p class="font-mono text-xs text-zinc-400">
+                If your patches are lost or replaced by random characters, you need to execute a factory SysEx restore. Traditional desktop software like MIDI-OX requires configuring specific millisecond delay intervals to prevent buffer overruns on the Juno's slow 8-bit CPU.
+            </p>
+            <p class="font-mono text-xs text-zinc-400">
+                I designed rigluk with built-in pacing filters matched to the Juno-106's microchip specifications. You can reload the complete 64 factory presets in under 10 seconds directly inside your browser.
+            </p>
+        </section>
+    </main>
+
+    {% include "footer.html" %}
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+
+    <!-- Diagnostic Logic -->
+    <script>
+        let selectedSymptomCode = null;
+
+        const selectSymptom = (code) => {
+            selectedSymptomCode = code;
+
+            // Reset buttons styling
+            document.querySelectorAll('.step-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Activate chosen button
+            document.getElementById(`sym-${code}`).classList.add('active');
+
+            // Set up Step 2 dropdown options
+            const hwDropdown = document.getElementById('diag-hw-state');
+            const step2Container = document.getElementById('step-2-container');
+            hwDropdown.innerHTML = ''; // clear
+
+            if (code === 'garbled') {
+                hwDropdown.innerHTML = `
+                    <option value="bat_old">Synthesizer battery has never been replaced (1984 original)</option>
+                    <option value="bat_recent">Battery replaced recently, but screen is still garbled</option>
+                    <option value="midi_i">Rear MIDI Function switch is set to I or II</option>
+                `;
+            } else if (code === 'silent') {
+                hwDropdown.innerHTML = `
+                    <option value="ch_mismatch">MIDI Receive channel does not match software (Channel mismatch)</option>
+                    <option value="voice_chip">Some notes make sound but others trigger clicks or silence (Voice chip issue)</option>
+                    <option value="vol_knob">Master volume slider and connection lines checked</option>
+                `;
+            } else if (code === 'write_err') {
+                hwDropdown.innerHTML = `
+                    <option value="prot_on">Rear panel Protect Switch is flipped to ON</option>
+                    <option value="prot_off">Rear panel Protect Switch is OFF, but write still fails</option>
+                `;
+            }
+
+            step2Container.classList.remove('hidden');
+            runDiagnostic();
+        };
+
+        const runDiagnostic = () => {
+            const hwState = document.getElementById('diag-hw-state').value;
+            const resultCode = document.getElementById('result-code');
+            const resultSteps = document.getElementById('result-steps');
+            const diagResult = document.getElementById('diag-result');
+
+            let codeStr = "J106-ERR-00";
+            let steps = [];
+
+            if (selectedSymptomCode === 'garbled') {
+                if (hwState === 'bat_old') {
+                    codeStr = "J106-BAT-DEAD";
+                    steps = [
+                        "<strong>Step 1:</strong> Do not turn off your Juno. Connect to a Web MIDI librarian to see if you can extract any remaining patch structures.",
+                        "<strong>Step 2:</strong> Purchase a standard CR2032 battery and a solder-in battery holder socket.",
+                        "<strong>Step 3:</strong> Solder the new battery socket. Check voltage is above 3.0V.",
+                        "<strong>Step 4:</strong> Boot up and load the factory patch banks using rigluk's one-click restore."
+                    ];
+                } else if (hwState === 'bat_recent') {
+                    codeStr = "J106-SRAM-RESET";
+                    steps = [
+                        "<strong>Step 1:</strong> Replacing the battery naturally wipes SRAM, leaving it in a garbled state.",
+                        "<strong>Step 2:</strong> Set the rear panel MIDI function switch to position III.",
+                        "<strong>Step 3:</strong> Turn the rear panel Protect Switch to OFF.",
+                        "<strong>Step 4:</strong> Connect to rigluk and load a clean patch file to overwrite the memory registers."
+                    ];
+                } else if (hwState === 'midi_i') {
+                    codeStr = "J106-MIDI-LOCK";
+                    steps = [
+                        "<strong>Step 1:</strong> Locate the physical MIDI function switch on the rear panel of your Juno-106.",
+                        "<strong>Step 2:</strong> Flip the switch to position III. Position I and II block SysEx data transfers, causing silences.",
+                        "<strong>Step 3:</strong> Try executing your preset backup scan again."
+                    ];
+                }
+            } else if (selectedSymptomCode === 'silent') {
+                if (hwState === 'ch_mismatch') {
+                    codeStr = "J106-MIDI-CH";
+                    steps = [
+                        "<strong>Step 1:</strong> Turn on your Juno-106. Press Key controller buttons to identify the MIDI channel.",
+                        "<strong>Step 2:</strong> Set both the Juno and rigluk to run on MIDI Channel 1.",
+                        "<strong>Step 3:</strong> Verify that your MIDI interface Tx/Rx cables are not plugged in backwards."
+                    ];
+                } else if (hwState === 'voice_chip') {
+                    codeStr = "J106-VOICE-8001";
+                    steps = [
+                        "<strong>Step 1:</strong> Turn on the Juno. Hold transpose and switch power on to enter test mode.",
+                        "<strong>Step 2:</strong> Play notes to test individual voice chips (1 through 6).",
+                        "<strong>Step 3:</strong> If a voice is silent or crackling, your 8001A VCF/VCA module has degraded. Consider custom resin stripping or replacement."
+                    ];
+                } else if (hwState === 'vol_knob') {
+                    codeStr = "J106-AUDIO-LINE";
+                    steps = [
+                        "<strong>Step 1:</strong> Check that your audio patch cords are connected to the Mono or Stereo output jacks.",
+                        "<strong>Step 2:</strong> Ensure the rear panel output level switch is set to High or Medium.",
+                        "<strong>Step 3:</strong> Check the master volume fader. Spray with deoxit slider lube if there is crackling."
+                    ];
+                }
+            } else if (selectedSymptomCode === 'write_err') {
+                if (hwState === 'prot_on') {
+                    codeStr = "J106-PROT-LOCK";
+                    steps = [
+                        "<strong>Step 1:</strong> Locate the Protect switch next to the MIDI sockets on the rear panel.",
+                        "<strong>Step 2:</strong> Flip it to the OFF position. This frees the SRAM write-enable line.",
+                        "<strong>Step 3:</strong> Try saving your preset soundbank again."
+                    ];
+                } else if (hwState === 'prot_off') {
+                    codeStr = "J106-WRITE-LINE";
+                    steps = [
+                        "<strong>Step 1:</strong> If the physical switch is OFF but you still get write-protect screens, the switch contacts are corroded.",
+                        "<strong>Step 2:</strong> Spray physical contact cleaner inside the rear protect switch slider.",
+                        "<strong>Step 3:</strong> Work the slider back and forth 20 times. If it still fails, the write pin on the CMOS RAM chip needs repair."
+                    ];
+                }
+            }
+
+            resultCode.textContent = codeStr;
+            resultSteps.innerHTML = steps.map(s => `<p class="mb-2 text-zinc-300 font-mono">${s}</p>`).join('');
+            diagResult.classList.remove('hidden');
+        };
+    </script>
+</body>
+
+</html>

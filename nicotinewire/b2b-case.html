@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NicotineWire — B2B Spend ROI Calculator</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+</head>
+<body>
+
+<header class="nw-header">
+    <a href="/" class="nw-brand">
+        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <span class="nw-brand-text">NicotineWire</span>
+        <span class="nw-brand-sub">Intelligence</span>
+    </a>
+
+    <nav class="nw-nav">
+        <a href="/" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
+        <a href="/reports" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
+        <a href="/directory" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
+        <a href="/insights" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
+        <a href="/viewer" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
+        <a href="/b2b-case" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
+        <a href="/pricing" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+    </nav>
+
+    <div>
+        <a href="/pricing" class="btn-moz-blue">
+            <span class="iconify" data-icon="pixelarticons:card"></span>
+            <span>Pricing</span>
+            <span class="nw-header-price" style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
+        </a>
+    </div>
+</header>
+
+<div class="app-viewport">
+    <!-- Centered Hero Banner -->
+    <section class="nw-hero-banner" style="margin-bottom: 20px;">
+        <h1 class="nw-hero-title">
+            <span class="iconify" data-icon="pixelarticons:trending-up"></span>
+            B2B Case &amp; ROI Calculator
+        </h1>
+        <p class="nw-hero-subtitle">Outside counsel &amp; regulatory benchmarking to enforce rate compliance.</p>
+    </section>
+
+    <!-- Query Desk -->
+    <section class="nw-card" style="padding: 20px; margin-bottom: 20px;">
+        <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:sliders"></span> QUERY DESK</span>
+        <h2 style="font-size: 1rem; font-weight: 600; color: #FFFFFF; margin-top: 6px;">Regulatory &amp; Spend Query</h2>
+
+        <div style="margin-top: 10px; border-top: 1px solid var(--moz-border); padding-top: 10px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <input type="text" id="terminal-query-input" placeholder="Enter procurement question..." style="flex: 1; min-width: 220px; padding: 6px 10px; font-family: var(--font-sans); font-size: 0.84rem; border: 1px solid var(--moz-border); border-radius: var(--radius-sm); background: var(--moz-bg); color: #FFFFFF; outline: none;">
+                <button onclick="queryIntelligenceEngine()" class="btn-moz-blue">Run &rarr;</button>
+            </div>
+            <div id="terminal-query-response" style="display: none; margin-top: 10px; padding: 10px; border-radius: var(--radius-sm); background: var(--moz-bg); border: 1px solid var(--moz-border); font-size: 0.82rem; line-height: 1.4; color: #FFFFFF;"></div>
+        </div>
+    </section>
+
+    <!-- Interactive ROI Calculator -->
+    <section class="nw-card" style="padding: 20px; margin-bottom: 20px;">
+        <h2 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #FFFFFF;"><span class="iconify" data-icon="pixelarticons:sliders"></span> Outside Counsel ROI Calculator</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <label style="font-size: 0.68rem; font-family: var(--font-mono); display: block; margin-bottom: 6px; color: var(--moz-muted);">ANNUAL SPEND ($ USD):</label>
+                <input type="number" id="roi-spend-input" value="5000000" oninput="calculateROI()" style="width: 100%; padding: 10px; font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; border: 1px solid var(--moz-border); border-radius: var(--radius-sm); background: var(--moz-bg); color: #FFFFFF; outline: none;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="nw-card" style="padding: 10px; background: var(--moz-bg);">
+                    <div style="font-size: 0.65rem; font-family: var(--font-mono); color: var(--moz-muted);">YEAR 1 (26%)</div>
+                    <div id="calc-year1" style="font-size: 1.2rem; font-weight: 700; color: var(--moz-blue); font-family: var(--font-mono);">$1,300,000</div>
+                </div>
+
+                <div class="nw-card" style="padding: 10px; background: var(--moz-bg);">
+                    <div style="font-size: 0.65rem; font-family: var(--font-mono); color: var(--moz-muted);">MATURE (46%)</div>
+                    <div id="calc-mature" style="font-size: 1.2rem; font-weight: 700; color: #FFFFFF; font-family: var(--font-mono);">$2,300,000</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pitch Black Minimalist Footer -->
+    <footer class="nw-footer">
+        <div>
+            <strong>NicotineWire™ Intelligence</strong> &bull; Half Radiation, LLC
+        </div>
+        <div>
+            &copy; 2026 NicotineWire™.
+        </div>
+    </footer>
+</div>
+
+<!-- Fixed Edge-to-Edge Bottom Navigation Bar -->
+<nav class="cr-mobile-bottom-nav">
+    <a href="/" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+        <span>Wire</span>
+    </a>
+    <a href="/reports" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+        <span>Reports</span>
+    </a>
+    <a href="/directory" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+        <span>Directory</span>
+    </a>
+    <a href="/insights" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+        <span>Insights</span>
+    </a>
+    <a href="/b2b-case" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:trending-up"></span></span>
+        <span>Spend</span>
+    </a>
+    <a href="/pricing" class="cr-nav-item">
+        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+        <span>Pricing</span>
+    </a>
+</nav>
+
+<script src="/static/app.js"></script>
+<script src="/app.js"></script>
+<script>
+function calculateROI() {
+    const val = parseFloat(document.getElementById('roi-spend-input').value) || 0;
+    const year1 = val * 0.26;
+    const mature = val * 0.46;
+    document.getElementById('calc-year1').innerText = '$' + Math.round(year1).toLocaleString();
+    document.getElementById('calc-mature').innerText = '$' + Math.round(mature).toLocaleString();
+}
+</script>
+</body>
+</html>

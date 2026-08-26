@@ -1,0 +1,198 @@
+<div class="flex-1 hidden md:flex flex-col select-none min-h-0 overflow-hidden">
+    
+    <!-- iTunes Playlist / Album Header -->
+    <div class="p-6 border-b border-zinc-900 bg-[#0e0e11]/80 flex items-start gap-5">
+        
+        <!-- Cassette Tape / Floppy Disk Graphic -->
+        <div class="h-24 w-24 rounded bg-zinc-950 border border-zinc-800 flex flex-col justify-between p-2 shadow-inner select-none relative flex-shrink-0">
+            <!-- Floppy Shutter sliding metal band -->
+            <div class="h-8 w-11 bg-zinc-700 border border-zinc-650 rounded-sm self-center flex items-center justify-center text-[5px] font-roman text-zinc-400 select-none">
+                SHUTTER
+            </div>
+            <!-- Dynamic Label block -->
+            <div class="bg-white text-black rounded p-1 flex-1 flex flex-col justify-center text-[7px] font-roman select-none tracking-normal leading-tight mt-1.5 overflow-hidden">
+                <span class="truncate uppercase font-bold text-center block tracking-widest text-emerald-500">
+                    {{ bank.synth_model.split(' ')[0] }}
+                </span>
+                <span class="text-[5.5px] text-zinc-600 font-mono text-center block mt-0.5">
+                    {{ bank.patches | length }} FILES
+                </span>
+            </div>
+            <!-- Protect notch notch -->
+            <div class="absolute bottom-2.5 right-2.5 h-1.5 w-1.5 bg-black rounded-xs"></div>
+        </div>
+        
+        <!-- Playlist details & actions -->
+        <div class="flex-1 flex flex-col justify-between h-24 min-w-0">
+            <div>
+                <span class="text-[10px] font-roman text-emerald-400 uppercase tracking-widest">Bipluk Soundbank</span>
+                <h2 class="text-lg font-roman uppercase text-white tracking-tight leading-tight truncate mt-0.5">
+                    {{ bank.name }}
+                </h2>
+                <p class="text-2xs text-zinc-500 font-mono mt-1">
+                    {{ bank.synth_model }} &bull; {{ bank.patches | length }} Presets &bull; Saved: {{ bank.created_at }}
+                </p>
+            </div>
+            
+            <!-- Actions bar -->
+            <div class="flex items-center justify-between gap-4 mt-2">
+                <div class="flex items-center gap-2">
+                    <!-- Sync/Flash Button -->
+                    <button onclick="flashBank({{ bank.id }}, {{ bank.name | tojson }}, {{ bank.synth_model | tojson }})" 
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-500 font-roman uppercase text-[9px] tracking-wider transition-colors shadow active:scale-95 tactical-pink-button">
+                        <img src="/static/icons/dinkie/revert.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                        Sync to Synth
+                    </button>
+                    
+                    <!-- Download -->
+                    {% if user.tier == 'premium' %}
+                    <a href="/banks/{{ bank.id }}/download" 
+                       title="Download .syx backup file" 
+                       onclick="logToPostHog('bank_downloaded', { bank_id: {{ bank.id }}, bank_name: '{{ bank.name }}' })"
+                       class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-350 font-roman uppercase text-[9px] tracking-wider transition-colors tactical-button">
+                        <img src="/static/icons/dinkie/download.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                        Download file
+                    </a>
+                    
+                    <button onclick="shareBank({{ bank.id }}, '{{ bank.name }}')"
+                            title="Share as public read-only link"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-350 font-roman uppercase text-[9px] tracking-wider transition-colors tactical-button">
+                        <img src="/static/icons/dinkie/globe-meridians.svg" class="h-3.5 w-3.5" style="filter: invert(1);" />
+                        Share
+                    </button>
+                    {% else %}
+                    <a href="/checkout"
+                       title="Download .syx backup file"
+                       class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded bg-amber-600/20 border border-amber-500/30 hover:bg-amber-600/30 text-amber-400 font-roman uppercase text-[9px] tracking-wider transition-colors tactical-button">
+                        <img src="/static/icons/dinkie/lock.svg" class="h-3.5 w-3.5" style="filter: invert(70%) sepia(80%) saturate(1000%) hue-rotate(350deg);" />
+                        Unlock Download
+                    </a>
+                    {% endif %}
+                    
+                    <!-- Delete -->
+                    <button hx-delete="/banks/{{ bank.id }}" 
+                            hx-target="#bank-list-container" 
+                            hx-confirm="Remove this soundbank from your library?"
+                            onclick="logToPostHog('bank_deleted', { bank_id: {{ bank.id }}, bank_name: '{{ bank.name }}' })"
+                            class="inline-flex items-center gap-1 px-2 py-1 rounded hover:bg-rose-500/10 text-zinc-500 hover:text-rose-450 font-semibold text-xs transition-colors border border-transparent hover:border-rose-500/20">
+                        <img src="/static/icons/dinkie/diagonal-cross.svg" class="h-3.5 w-3.5 opacity-60 hover:opacity-100 transition-opacity" style="filter: invert(1);" />
+                    </button>
+                </div>
+
+                <!-- Playlist Search bar styled as retro console terminal input -->
+                <div class="relative w-52">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[8px] font-roman text-zinc-600">
+                        $ SEARCH &gt;
+                    </div>
+                    <input type="text" 
+                           id="patch-search" 
+                           placeholder="" 
+                           onkeyup="filterPatches()"
+                           class="block w-full pl-20 pr-2.5 py-1.5 text-2xs bg-zinc-950 border border-zinc-900 focus:border-zinc-750 rounded text-zinc-350 focus:outline-none font-mono placeholder-zinc-850">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- iTunes Song Grid Table -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar bg-[#08080a]">
+        <table class="w-full border-collapse text-left">
+            <thead>
+                <tr class="border-b border-zinc-900 text-[10px] font-roman text-zinc-600 uppercase tracking-widest select-none bg-[#0a0a0c]/80 sticky top-0 backdrop-blur-xs">
+                    <th class="py-2.5 pl-6 w-16 text-center">Index</th>
+                    <th class="py-2.5 px-4 font-roman">Preset Name</th>
+                    <th class="py-2.5 px-4 w-40 font-roman">Synthesizer</th>
+                    <th class="py-2.5 px-4 w-28 font-roman">Slot</th>
+                    <th class="py-2.5 pr-6 w-24 text-right font-roman">Size</th>
+                </tr>
+            </thead>
+            <tbody id="patches-grid">
+                {% for patch in bank.patches %}
+                <tr id="patch-row-{{ patch.index }}"
+                    onclick="selectPatch({{ patch.index }}, '{{ patch.name }}')"
+                    ondblclick="selectPatch({{ patch.index }}, '{{ patch.name }}'); toggleAuditionPlay();"
+                    class="patch-row group border-b border-zinc-900/40 hover:bg-zinc-900/20 transition-colors cursor-pointer text-xs"
+                    data-name="{{ patch.name | lower }}"
+                    data-index="{{ patch.index + 1 }}">
+                    
+                    <!-- Index / Play Trigger -->
+                    <td class="py-2.5 pl-6 text-center text-zinc-600 font-lcd text-sm relative">
+                        <span class="group-hover:hidden tracking-wider">{{ "%02d" | format(patch.index + 1) }}</span>
+                        <!-- Play Hover Icon -->
+                        <button onclick="event.stopPropagation(); selectPatch({{ patch.index }}, '{{ patch.name }}'); toggleAuditionPlay();"
+                                class="hidden group-hover:flex absolute inset-0 items-center justify-center text-emerald-400">
+                            <img src="/static/icons/dinkie/right-black-triangle-filled.svg" class="h-3.5 w-3.5 animate-pulse" style="filter: invert(48%) sepia(91%) saturate(2321%) hue-rotate(200deg) brightness(95%) contrast(95%);" />
+                        </button>
+                    </td>
+                    
+                    <!-- Name -->
+                    <td class="py-2.5 px-4 font-semibold text-zinc-300 group-hover:text-emerald-400 transition-colors font-mono tracking-wide">
+                        {{ patch.name }}
+                    </td>
+                    
+                    <!-- Model -->
+                    <td class="py-2.5 px-4 text-zinc-550 font-mono text-[10px]">
+                        {{ bank.synth_model }}
+                    </td>
+                    
+                    <!-- Hardware slot -->
+                    <td class="py-2.5 px-4 text-zinc-550 font-lcd text-xs">
+                        Preset Slot {{ patch.index + 1 }}
+                    </td>
+                    
+                    <!-- Size -->
+                    <td class="py-2.5 pr-6 text-right text-zinc-650 font-lcd text-xs">
+                        128 B
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Update local variables inside index.html global context
+    currentActivePatches = {{ bank.patches | tojson | safe }};
+    
+    // Select the first patch as default preview target
+    if (currentActivePatches.length > 0) {
+        selectPatch(0, currentActivePatches[0].name);
+    }
+    
+    var cachedPatchRows = null;
+    async function shareBank(bankId, bankName) {
+        logToPostHog('bank_shared', { bank_id: bankId, bank_name: bankName });
+        try {
+            const response = await fetch(`/banks/${bankId}/share`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (!response.ok) throw new Error("Failed to generate share link");
+            const data = await response.json();
+            
+            await navigator.clipboard.writeText(data.url);
+            showToast("Link Copied", "Public read-only link copied to clipboard.", "success");
+        } catch (error) {
+            console.error("Share error:", error);
+            showToast("Share Failed", "Could not generate share link.", "error");
+        }
+    }
+
+    function filterPatches() {
+        if (!cachedPatchRows) {
+            cachedPatchRows = document.querySelectorAll('.patch-row');
+        }
+        const query = document.getElementById('patch-search').value.toLowerCase();
+        for (let i = 0; i < cachedPatchRows.length; i++) {
+            const item = cachedPatchRows[i];
+            const name = item.getAttribute('data-name');
+            const index = item.getAttribute('data-index');
+            if (name.includes(query) || index.includes(query)) {
+                item.style.display = 'table-row';
+            } else {
+                item.style.display = 'none';
+            }
+        }
+    }
+</script>

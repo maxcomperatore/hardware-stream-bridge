@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>Independent TLS Audit: midiox.com (MIDI-OX) | June 2026</title>
+    <meta name="description" content="Independent TLS transport-security audit of the official MIDI-OX website (midiox.com) from June 2026. Reviewing certificate expiry and hostname mismatch details.">
+    {% set seo_canonical = "https://rigluk/audit/midiox" %}
+    {% set seo_title = "Independent TLS Audit: midiox.com (MIDI-OX) | June 2026" %}
+    {% set seo_description = "Independent TLS transport-security audit of the official MIDI-OX website (midiox.com) from June 2026. Reviewing certificate expiry and hostname mismatch details." %}
+    {% include 'partials/seo_article_meta.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+    <style>
+        html { scroll-behavior: smooth; }
+        ::selection { background-color: rgba(244, 63, 94, 0.25); color: #fff; }
+        .audit-paper {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-black text-zinc-300 font-sans antialiased min-h-screen flex flex-col audit-paper overflow-x-hidden w-full max-w-full">
+    <header class="sticky top-0 bg-black/90 backdrop-blur-md border-b border-zinc-900 h-14 flex items-center px-4 md:px-6 z-40 w-full max-w-full">
+        <div class="max-w-3xl w-full mx-auto flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 group">
+                <img src="/static/logo.svg" alt="" width="20" height="20" class="opacity-90 group-hover:opacity-100">
+                <span class="font-pixel text-2xs text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">rigluk</span>
+            </a>
+            <a href="/knob-monster-vs-midi-ox" class="text-2xs font-mono text-zinc-500 hover:text-rose-400 transition-colors truncate max-w-[160px] sm:max-w-none">MIDI-OX comparison →</a>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-3xl w-full mx-auto px-4 md:px-6 py-8 md:py-16 space-y-10 overflow-x-hidden">
+        <article class="space-y-8">
+            <header class="space-y-4 border-b border-zinc-900 pb-8">
+                <p class="text-2xs font-mono text-rose-400 uppercase tracking-[0.2em]">Security bulletin · HR-2026-061</p>
+                <h1 class="text-2xl md:text-4xl font-bold text-white tracking-tight leading-tight">
+                    Independent TLS Audit:<br class="hidden sm:block"> <span class="text-zinc-400">midiox.com</span>
+                </h1>
+                <p class="text-sm text-zinc-500 leading-relaxed max-w-2xl">
+                    Observable transport-security review of the official MIDI-OX website. No exploit claims. No malware
+                    accusations. Just certificates, clocks, and the sad geometry of abandonware.
+                </p>
+                <dl class="grid grid-cols-2 md:grid-cols-4 gap-4 text-2xs font-mono pt-2">
+                    <div>
+                        <dt class="text-zinc-600 uppercase">Auditor</dt>
+                        <dd class="text-zinc-300 mt-1">Absolutely Nobody LLP</dd>
+                    </div>
+                    <div>
+                        <dt class="text-zinc-600 uppercase">Commissioned by</dt>
+                        <dd class="text-zinc-300 mt-1">Half Radiation LLC</dd>
+                    </div>
+                    <div>
+                        <dt class="text-zinc-600 uppercase">Observed</dt>
+                        <dd class="text-zinc-300 mt-1">29 Jun 2026 UTC</dd>
+                    </div>
+                    <div>
+                        <dt class="text-zinc-600 uppercase">Overall grade</dt>
+                        <dd class="text-rose-400 mt-1 font-bold">F (would not SysEx)</dd>
+                    </div>
+                </dl>
+            </header>
+
+            <section class="space-y-4">
+                <h2 class="text-xs font-pixel text-white uppercase tracking-wider">Executive summary</h2>
+                <div class="text-sm text-zinc-400 leading-relaxed space-y-3">
+                    <p>
+                        <strong class="text-zinc-200">MIDI-OX</strong> is legendary Windows MIDI freeware. Its official
+                        site, <code class="text-rose-300/90">midiox.com</code>, is how thousands of synth owners still
+                        find downloads sixteen years after the last listed release.
+                    </p>
+                    <p>
+                        As of this audit, <strong class="text-zinc-200">HTTPS does not work</strong> on either
+                        <code class="text-zinc-300">www.midiox.com</code> or <code class="text-zinc-300">midiox.com</code>.
+                        The server presents a TLS certificate issued for <code class="text-rose-300/90">*.hostingplatform.com</code>
+                        that <strong class="text-zinc-200">expired on 12 September 2022</strong>. Plain HTTP responds
+                        normally. Browsers that enforce certificate validation cannot establish a trusted connection.
+                    </p>
+                    <p>
+                        The downloadable utility itself was last listed as <strong class="text-zinc-200">MIDI-OX 7.0.2
+                            (17-JUN-10)</strong>. The site's own footer still reads "page was last modified on
+                        <strong class="text-zinc-200">10-26-2018</strong>."
+                    </p>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-xs font-pixel text-white uppercase tracking-wider">Findings</h2>
+                <div class="overflow-x-auto border border-zinc-900 rounded-lg">
+                    <table class="w-full text-left text-2xs font-mono">
+                        <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-900">
+                            <tr>
+                                <th class="p-3 uppercase tracking-wider">ID</th>
+                                <th class="p-3 uppercase tracking-wider">Check</th>
+                                <th class="p-3 uppercase tracking-wider">Result</th>
+                                <th class="p-3 uppercase tracking-wider">Severity</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-900 text-zinc-400">
+                            <tr>
+                                <td class="p-3 text-zinc-600">F-01</td>
+                                <td class="p-3">TLS hostname match (<code>www.midiox.com</code>)</td>
+                                <td class="p-3 text-rose-400">FAIL — hostname mismatch</td>
+                                <td class="p-3"><span class="tag-lapis-audit">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-zinc-600">F-02</td>
+                                <td class="p-3">TLS hostname match (<code>midiox.com</code>)</td>
+                                <td class="p-3 text-rose-400">FAIL — hostname mismatch</td>
+                                <td class="p-3"><span class="tag-lapis-audit">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-zinc-600">F-03</td>
+                                <td class="p-3">Certificate validity window</td>
+                                <td class="p-3 text-rose-400">EXPIRED 2022-09-12</td>
+                                <td class="p-3"><span class="tag-lapis-audit">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-zinc-600">F-04</td>
+                                <td class="p-3">Certificate subject / SAN</td>
+                                <td class="p-3"><code>CN=*.hostingplatform.com</code><br>SAN: <code>*.hostingplatform.com</code>, <code>hostingplatform.com</code></td>
+                                <td class="p-3"><span class="tag-lapis-tool">High</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-zinc-600">F-05</td>
+                                <td class="p-3">HTTP fallback (<code>http://www.midiox.com/</code>)</td>
+                                <td class="p-3 text-amber-300">HTTP 200 — site loads unencrypted</td>
+                                <td class="p-3"><span class="tag-lapis-tool">High</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-zinc-600">F-06</td>
+                                <td class="p-3">Listed software version (<code>app.htm</code>)</td>
+                                <td class="p-3">MIDI-OX 7.0.2 — <code>17-JUN-10</code></td>
+                                <td class="p-3"><span class="tag-lapis">Info</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-zinc-600">F-07</td>
+                                <td class="p-3">On-page "last modified" footer</td>
+                                <td class="p-3"><code>10-26-2018</code></td>
+                                <td class="p-3"><span class="tag-lapis">Info</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-xs font-pixel text-white uppercase tracking-wider">Certificate observed on port 443</h2>
+                <pre class="text-2xs font-mono bg-zinc-950 border border-zinc-900 rounded-lg p-4 overflow-x-auto text-zinc-400 leading-relaxed"><code>subject:  CN=*.hostingplatform.com
+issuer:   CN=Sectigo RSA Domain Validation Secure Server CA
+          O=Sectigo Limited
+notAfter: 2022-09-12 23:59:59 UTC
+SAN:      *.hostingplatform.com, hostingplatform.com
+
+openssl / Python ssl default context:
+  [SSL: CERTIFICATE_VERIFY_FAILED]
+  Hostname mismatch, certificate is not valid for 'www.midiox.com'</code></pre>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-xs font-pixel text-white uppercase tracking-wider">Reproduce it yourself</h2>
+                <p class="text-sm text-zinc-500">Run these from any machine with OpenSSL or Python 3. We did not bypass
+                    browser warnings or install anything from the site.</p>
+                <pre class="text-2xs font-mono bg-zinc-950 border border-zinc-900 rounded-lg p-4 overflow-x-auto text-emerald-400/80 leading-relaxed"><code># Should fail (expected):
+curl -I https://www.midiox.com/
+
+# Shows the wrong cert + expiry (inspect manually):
+openssl s_client -connect www.midiox.com:443 -servername www.midiox.com
+
+# Plain HTTP works:
+curl -I http://www.midiox.com/app.htm</code></pre>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-xs font-pixel text-white uppercase tracking-wider">What we are not claiming</h2>
+                <ul class="text-sm text-zinc-500 space-y-2 list-disc pl-5 leading-relaxed">
+                    <li>We did not reverse-engineer MIDI-OX binaries or allege tampering with installers.</li>
+                    <li>We are not affiliated with John O'Donnell, MIDI-OX, or midiox.com.</li>
+                    <li>Third-party mirrors (e.g. community preservation sites) are out of scope for this bulletin.</li>
+                    <li>MIDI-OX remains capable freeware on many Windows installs. This report is about the <em>website</em>, not the author's legacy.</li>
+                </ul>
+            </section>
+
+            <section class="space-y-4 border border-zinc-900 rounded-xl p-6 bg-zinc-950/40">
+                <h2 class="text-xs font-pixel text-white uppercase tracking-wider">Why we bothered</h2>
+                <p class="text-sm text-zinc-400 leading-relaxed">
+                    Vintage synth owners still route irreplaceable factory SysEx dumps through tools and download pages
+                    frozen in the Windows XP era. If the front door certificate expired four years ago and HTTPS is
+                    broken, maybe it is time for a backup utility that does not require trusting a hostname mismatch.
+                </p>
+                <p class="text-sm text-zinc-500 leading-relaxed">
+                    We build <a href="/" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">rigluk</a>,
+                    a browser-native SysEx librarian. No install. No expired wildcard cert from a defunct host.
+                    Compare features in our <a href="/knob-monster-vs-midi-ox" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">MIDI-OX write-up</a>.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <a href="/signup"
+                        class="inline-flex items-center px-4 py-2 rounded-full bg-white hover:bg-zinc-200 text-black text-2xs font-pixel uppercase tracking-wider transition-colors">
+                        Try rigluk
+                    </a>
+                    <a href="/knob-monster-vs-midi-ox"
+                        class="inline-flex items-center px-4 py-2 rounded-full border border-zinc-700 hover:border-zinc-500 text-zinc-300 text-2xs font-pixel uppercase tracking-wider transition-colors">
+                        Full comparison
+                    </a>
+                </div>
+            </section>
+
+            <footer class="text-2xs font-mono text-zinc-600 border-t border-zinc-900 pt-6 space-y-2">
+                <p>Absolutely Nobody LLP · Partner Emeritus: Absolutely Nobody · New Mexico, emotionally</p>
+                <p>This document is opinionated security theater commissioned by Half Radiation LLC. Not a penetration test. Not financial advice. Not a MIDI Yoke driver.</p>
+                <p>Questions: <a href="mailto:halfradiationllc@gmail.com" class="text-zinc-500 hover:text-zinc-300">halfradiationllc@gmail.com</a></p>
+            </footer>
+        </article>
+    </main>
+
+    {% include "footer.html" %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    <title>How to Save &amp; Backup Juno-106 Presets | Juno-106 Patches Guide (2026)</title>
+    <meta name="description"
+        content="How to save Juno-106 presets and back up Roland Juno-106 patches to the cloud. SysEx transfer guide for vintage synth backup — no desktop software.">
+    <meta name="keywords"
+        content="how to save juno-106 presets, juno-106 patches, roland juno 106 backup, juno 106 sysex guide, vintage synth backup, web midi juno-106">
+    {% set seo_canonical = "https://rigluk/how-to-backup-roland-juno-106-presets-sysex-transfer-guide" %}
+    {% set seo_title = "How to Save & Backup Juno-106 Presets | Juno-106 Patches Guide (2026)" %}
+    {% set seo_description = "How to save Juno-106 presets and back up Roland Juno-106 patches to the cloud. SysEx transfer guide for vintage synth backup — no desktop software." %}
+    {% set seo_schema_type = "HowTo" %}
+    {% include 'partials/seo_article_meta.html' %}
+
+    {% include 'partials/favicon.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background-color: rgba(41, 151, 255, 0.2);
+            color: #ffffff;
+        }
+
+        @keyframes logo-spin {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .spin-logo {
+            animation: logo-spin 8s linear infinite;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        /* Mobile specific fancy background pattern */
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+    {% include 'posthog.html' %}
+</head>
+
+<body
+    class="bg-black text-zinc-200 font-sans antialiased overflow-x-hidden relative selection:bg-blue-500/20 selection:text-white">
+
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <!-- Fancy Mobile Background Pattern -->
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <header
+        class="sticky top-0 bg-black/85 backdrop-blur-md border-b border-zinc-900 h-16 flex items-center justify-between px-6 z-40">
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5 group">
+                    <div class="relative spin-logo flex items-center justify-center"
+                        style="transform-style: preserve-3d; width: 24px; height: 24px;">
+                        <img src="/static/logo.svg" alt="Rigluk Logo" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(0px); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-0.5px); filter: brightness(0.6); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.0px); filter: brightness(0.4); image-rendering: pixelated;">
+                        <img src="/static/logo.svg" alt="" width="24" height="24"
+                            class="absolute w-6 h-6 object-contain"
+                            style="transform: translateZ(-1.5px); filter: brightness(0.2); image-rendering: pixelated;">
+                    </div>
+                    <span
+                        class="font-pixel uppercase text-sm text-white tracking-widest group-hover:text-blue-400 transition-colors">rigluk</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-xs font-pixel text-zinc-400 uppercase tracking-wider">
+                <a href="/#features" class="hover:text-white transition-colors duration-200">Features</a>
+                <a href="/#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+                <span class="text-zinc-600 select-none">/</span>
+                <a href="/resources" class="hover:text-white transition-colors duration-200">Resources</a>
+                <a href="/shop" class="hover:text-white transition-colors duration-200">Shop</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="/home"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Open
+                    Vault</a>
+                {% else %}
+                <a href="/login"
+                    class="hidden md:flex border border-zinc-700 hover:border-zinc-500 text-white px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 items-center">Sign
+                    In</a>
+                <a href="/signup"
+                    class="bg-white hover:bg-zinc-200 text-black px-4 py-2 rounded-full text-2xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center shadow-sm">Sign
+                    Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 py-20 relative z-10">
+        <div class="mb-10 p-4 bg-zinc-950 border border-zinc-800 rounded-xl relative text-center shadow-md">
+            <h2 class="text-sm font-pixel text-blue-400 uppercase tracking-widest">No drivers required. Runs natively on
+                Chrome/Edge.</h2>
+        </div>
+
+        <article class="space-y-6 text-left mb-16 max-w-2xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight font-pixel uppercase">
+                How to Save and Backup Juno-106 Presets
+            </h1>
+            <p class="text-sm md:text-base text-zinc-400 leading-relaxed font-mono">
+                The Roland Juno-106 is a 1984 analog synthesizer. It contains 128 patch memories powered by a CR2032 battery. Unlike modern MIDI hardware, the Juno-106 does not support dump request commands over MIDI. You cannot pull patches from the machine remotely; you must initiate the stream physically from the front panel. This guide shows you how to configure the rear switches to allow SysEx transmission and how to stream your memory banks to the browser.
+            </p>
+        </article>
+
+        <section class="space-y-8 text-zinc-300 text-[14px] leading-relaxed font-sans font-normal max-w-2xl mx-auto">
+            <h2 class="text-lg font-pixel uppercase text-white tracking-wide pt-4 border-b border-zinc-900 pb-2">
+                Hardware Setup Steps
+            </h2>
+            <ul class="list-disc list-inside space-y-4 pl-4 font-mono text-zinc-300">
+                <li><strong>Step 1:</strong> Locate the <strong>Protect Switch</strong> on the back of the Juno-106 next to the patch shift jack. Flip it to <strong>OFF</strong>.</li>
+                <li><strong>Step 2:</strong> Locate the <strong>MIDI Function Switch</strong> on the rear panel.</li>
+                <li><strong>Step 3:</strong> Ensure it is switched to <strong>III</strong> (Keyboard, controllers, and System Exclusive data). If it is set to I or II, Web MIDI backups will fail silently.</li>
+                <li><strong>Step 4:</strong> Set your MIDI receive channel to match the app (typically <strong>Channel 1</strong>).</li>
+            </ul>
+
+            <div class="my-6 p-5 bg-zinc-950 border-l-2 border-emerald-500 rounded-r-xl space-y-2">
+                <p class="text-xs font-pixel uppercase text-emerald-400">Remember this</p>
+                <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                    If the rear-panel MIDI function switch is set to position I or II, the Juno-106 filters out all System Exclusive data. It must be set to position III to enable patch dumps.
+                </p>
+            </div>
+
+            <div class="my-12 p-8 bg-zinc-900 border border-zinc-800 rounded-2xl relative overflow-hidden text-center space-y-6 shadow-2xl">
+                <h3 class="text-xl font-pixel text-white uppercase tracking-wide">Ready to backup?</h3>
+                <p class="text-sm text-zinc-400 max-w-md mx-auto leading-relaxed font-sans">
+                    Now that your hardware is configured, connect your MIDI cables and backup your Juno-106 patches directly to the cloud.
+                </p>
+                <div class="pt-4 pb-2">
+                    <a href="/signup"
+                        class="inline-block bg-white hover:bg-zinc-200 text-black px-8 py-4 rounded-full text-sm font-pixel uppercase tracking-widest transition-all duration-200 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        Backup Presets Now
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include "footer.html" %}
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

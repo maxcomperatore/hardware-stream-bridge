@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden bg-black text-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>{{ bank.name }} | Shared Soundbank</title>
+    {% include 'partials/tailwind_lapis.html' %}
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #08080a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0e0e11] font-sans antialiased text-zinc-300">
+
+<!-- Header CTA -->
+<div class="bg-indigo-600/20 border-b border-indigo-500/30 text-center py-3 px-4">
+    <p class="text-xs md:text-sm font-medium text-indigo-300">
+        This is a shared soundbank from bipluk. 
+        <a href="/signup" class="text-white hover:text-indigo-200 underline underline-offset-2 ml-2 transition-colors font-semibold">Get your own free synth vault &rarr;</a>
+    </p>
+</div>
+
+<!-- Main Container -->
+<div class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-8 flex flex-col min-h-0">
+    
+    <!-- Bank Details Header -->
+    <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8 mb-6 flex flex-col md:flex-row items-center md:items-start gap-6 shadow-xl">
+        <!-- Cassette Tape Graphic -->
+        <div class="h-32 w-32 rounded bg-zinc-950 border border-zinc-800 flex flex-col justify-between p-2.5 shadow-inner select-none relative flex-shrink-0">
+            <div class="h-10 w-14 bg-zinc-700 border border-zinc-650 rounded-sm self-center flex items-center justify-center text-[6px] font-roman text-zinc-400">
+                SHUTTER
+            </div>
+            <div class="bg-white text-black rounded p-1.5 flex-1 flex flex-col justify-center text-[9px] font-roman tracking-normal leading-tight mt-2 overflow-hidden">
+                <span class="truncate uppercase font-bold text-center block tracking-widest text-emerald-500">
+                    {{ bank.synth_model.split(' ')[0] }}
+                </span>
+                <span class="text-[7px] text-zinc-600 font-mono text-center block mt-1">
+                    {{ bank.patches | length }} FILES
+                </span>
+            </div>
+            <div class="absolute bottom-3 right-3 h-2 w-2 bg-black rounded-xs"></div>
+        </div>
+
+        <div class="flex-1 text-center md:text-left min-w-0">
+            <span class="text-xs font-roman text-emerald-400 uppercase tracking-widest">Shared Soundbank</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight mt-1 truncate">
+                {{ bank.name }}
+            </h1>
+            <div class="mt-4 flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-4 text-sm text-zinc-400 font-mono">
+                <div class="flex items-center gap-1.5">
+                    <img src="/static/icons/dinkie/musical-keyboard.svg" class="h-4 w-4 opacity-50" style="filter: invert(1);" />
+                    <span>{{ bank.synth_model }}</span>
+                </div>
+                <div class="hidden md:block opacity-30">&bull;</div>
+                <div class="flex items-center gap-1.5">
+                    <img src="/static/icons/dinkie/file-cabinet.svg" class="h-4 w-4 opacity-50" style="filter: invert(1);" />
+                    <span>{{ bank.patches | length }} Presets</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patch List -->
+    <div class="flex-1 bg-[#08080a] border border-zinc-800 rounded-xl overflow-hidden flex flex-col min-h-0 shadow-lg">
+        <div class="p-4 border-b border-zinc-900 bg-zinc-900/30 flex items-center justify-between">
+            <h3 class="text-sm font-semibold text-zinc-300">Preset List</h3>
+            <div class="relative w-48">
+                <input type="text" id="patch-search" onkeyup="filterPatches()" placeholder="Search presets..." 
+                       class="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-1.5 pl-3 pr-3 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-colors">
+            </div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-[#0a0a0c]/90 sticky top-0 backdrop-blur-sm border-b border-zinc-900/50 z-10">
+                    <tr class="text-[10px] font-roman text-zinc-500 uppercase tracking-wider">
+                        <th class="py-3 pl-6 w-16 text-center font-medium">No.</th>
+                        <th class="py-3 px-4 font-medium">Preset Name</th>
+                        <th class="py-3 pr-6 text-right font-medium">Size</th>
+                    </tr>
+                </thead>
+                <tbody id="patches-grid">
+                    {% for patch in bank.patches %}
+                    <tr class="patch-row border-b border-zinc-900/30 hover:bg-zinc-900/20 transition-colors text-sm"
+                        data-name="{{ patch.name | lower }}" data-index="{{ patch.index + 1 }}">
+                        <td class="py-3 pl-6 text-center text-zinc-500 font-lcd font-medium">
+                            {{ "%02d" | format(patch.index + 1) }}
+                        </td>
+                        <td class="py-3 px-4 text-zinc-300 font-mono tracking-wide font-semibold">
+                            {{ patch.name }}
+                        </td>
+                        <td class="py-3 pr-6 text-right text-zinc-600 font-lcd text-xs">
+                            128 B
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not bank.patches %}
+            <div class="py-12 text-center text-zinc-500 text-sm italic">
+                No presets found in this bank.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    var cachedPatchRows = null;
+    function filterPatches() {
+        if (!cachedPatchRows) {
+            cachedPatchRows = document.querySelectorAll('.patch-row');
+        }
+        const query = document.getElementById('patch-search').value.toLowerCase();
+        for (let i = 0; i < cachedPatchRows.length; i++) {
+            const item = cachedPatchRows[i];
+            const name = item.getAttribute('data-name');
+            const index = item.getAttribute('data-index');
+            if (name.includes(query) || index.includes(query)) {
+                item.style.display = 'table-row';
+            } else {
+                item.style.display = 'none';
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

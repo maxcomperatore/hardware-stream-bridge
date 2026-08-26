@@ -1,0 +1,27 @@
+name: Recurring Marketing Campaign Cron (Bi-Weekly)
+
+on:
+  schedule:
+    - cron: "0 14 */14 * *"   # Bi-weekly (Every 14 days at 14:00 UTC)
+  workflow_dispatch:
+
+jobs:
+  send-marketing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests jinja2 psycopg2-binary python-dotenv
+
+      - name: Dispatch randomized marketing emails via Resend
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python scripts/send_marketing_campaigns.py 14

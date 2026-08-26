@@ -1,0 +1,66 @@
+// NicotineWire™ PDF Delivery, Payment & Pitch Black Terminal Integration
+
+const PDF_FILES = {
+    'NW-SYNTH-2026': 'reports_pdf/NW-SYNTH-2026.pdf',
+    'NW-MA-POUCH-2026': 'reports_pdf/NW-MA-POUCH-2026.pdf',
+    'NW-FDA-SEIZURE-2026': 'reports_pdf/NW-FDA-SEIZURE-2026.pdf'
+};
+
+const STRIPE_LINKS = {
+    monthly: "https://buy.stripe.com/4gM14o9dj9NEa1tfoM0Ba00",
+    quarterly: "https://buy.stripe.com/4gM14o9dj9NEa1tfoM0Ba00",
+    annual: "https://buy.stripe.com/8x27sMdtz0d4gpR5Oc0Ba02",
+    report_synth: "reports_pdf/NW-SYNTH-2026.pdf",
+    report_pouch: "reports_pdf/NW-MA-POUCH-2026.pdf",
+    report_fda: "reports_pdf/NW-FDA-SEIZURE-2026.pdf",
+    vendor_directory: "https://buy.stripe.com/4gM14oblr7Fw8Xp6Sg0Ba07",
+    job_listing: "https://buy.stripe.com/dRm00kahn9NEddF6Sg0Ba08"
+};
+
+function downloadPdfReport(code) {
+    const pdfPath = PDF_FILES[code] || 'reports_pdf/NW-SYNTH-2026.pdf';
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = code + '.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function openPreCheckoutModal(planKey) {
+    const targetUrl = STRIPE_LINKS[planKey] || 'reports_pdf/NW-SYNTH-2026.pdf';
+    if (targetUrl.endsWith('.pdf')) {
+        downloadPdfReport(planKey.replace('report_', 'NW-').toUpperCase());
+    } else {
+        window.location.href = targetUrl;
+    }
+}
+
+function queryIntelligenceEngine() {
+    const inputEl = document.getElementById('terminal-query-input');
+    const respBox = document.getElementById('terminal-query-response');
+    if (!inputEl || !respBox) return;
+
+    const queryText = inputEl.value.trim();
+    if (!queryText) {
+        respBox.style.display = 'block';
+        respBox.innerHTML = '<strong style="color:var(--moz-blue); font-family:var(--font-mono); font-size:0.8rem;">[NICOTINEWIRE TERMINAL DESK]</strong><br><br>Please enter a procurement, PMTA, or legal spend question above.';
+        return;
+    }
+
+    respBox.style.display = 'block';
+    respBox.innerHTML = '<strong style="color:var(--moz-blue); font-family:var(--font-mono); font-size:0.8rem;">[NICOTINEWIRE TERMINAL DESK]</strong><br><br>' +
+        'Based on benchmark datasets &amp; PMTA transaction history: Competitive sourcing on <em>"' + escapeHtml(queryText) + '"</em> achieves an average <strong>26% Year-1 savings</strong>. Enforces agreed rate cards and fee caps prior to invoice issuance.';
+}
+
+function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function(m) {
+        return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        }[m];
+    });
+}

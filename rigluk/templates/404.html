@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    <title>404 - Page Not Found</title>
+
+    {% include 'partials/favicon.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+
+    <style>
+        /* Dither effect on images */
+        .dithered {
+            filter: grayscale(100%) contrast(130%) brightness(110%) url(#dither-filter);
+            image-rendering: pixelated;
+            will-change: filter;
+        }
+
+        /* 1-bit style dither mesh with retro ASCII characters */
+        /* Mobile specific fancy background pattern */
+        .mobile-bg-pattern {
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px, 32px 32px, 32px 32px;
+            background-position: 12px 12px, 0 0, 0 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        .dither-mesh {
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext x='0' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.045'%3E%E2%96%91%3C/text%3E%3Ctext x='32' y='16' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='0' y='48' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.025'%3E%E2%96%92%3C/text%3E%3Ctext x='16' y='32' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='64' font-family='monospace' font-size='10' fill='%23ffffff' opacity='0.03'%3E%E2%96%93%3C/text%3E%3Ctext x='48' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E.%3C/text%3E%3Ctext x='16' y='16' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3Ctext x='48' y='48' font-family='monospace' font-size='8' fill='%23ffffff' opacity='0.015'%3E%2B%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-black text-zinc-100 font-sans antialiased h-screen flex flex-col justify-between overflow-hidden selection:bg-blue-600/30 selection:text-white relative">
+
+    <!-- Global Dither Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 dither-mesh opacity-100"></div>
+    <!-- Fancy Mobile Background Pattern -->
+    <div class="fixed inset-0 pointer-events-none z-0 mobile-bg-pattern md:hidden"></div>
+
+    <!-- SVG Dither Filter definition -->
+    <svg class="absolute h-0 w-0 pointer-events-none" width="0" height="0">
+        <filter id="dither-filter">
+            <!-- Generate heavy fractal noise grain -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />
+            <!-- Convert noise to high-contrast dither matrix -->
+            <feColorMatrix type="matrix" values="0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 0 0
+                                             0 0 0 15 -7" result="dither" />
+            <!-- Composite the noise over the source graphic -->
+            <feComposite in="SourceGraphic" in2="dither" operator="in" />
+        </filter>
+    </svg>
+
+    <!-- Header Navigation (Simple logo link) -->
+    <header class="h-16 flex items-center justify-between px-6 border-b border-zinc-900/60 w-full flex-shrink-0 z-40">
+        <a href="/" class="flex items-center gap-2.5 mx-auto max-w-6xl w-full">
+            <img src="/static/logo.svg" alt="rigluk Logo" class="h-6 w-auto object-contain"
+                style="image-rendering: pixelated;">
+            <span class="font-pixel uppercase text-sm text-white tracking-widest">rigluk</span>
+        </a>
+    </header>
+
+    <!-- Main Content Container -->
+    <main
+        class="flex-1 flex items-center justify-center p-6 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 select-none z-10">
+
+        <!-- Left: Image Container (4K Luxury Vintage Camera Lens Close-up) -->
+        <div
+            class="md:col-span-6 rounded-2xl border border-zinc-900 overflow-hidden bg-black shadow-2xl relative aspect-[4/3] md:aspect-square flex items-center justify-center">
+            <img src="{{ asset_url('vintage_camera_404.avif') }}" alt="Out of register mechanical camera gear"
+                class="w-full h-full object-cover dithered">
+        </div>
+
+        <!-- Right: Error Information -->
+        <div class="md:col-span-6 text-left space-y-6">
+            <div>
+                <span class="text-[11px] font-pixel uppercase text-zinc-550 tracking-wider">ERROR 404</span>
+                <h1 class="text-2xl md:text-3xl font-pixel uppercase text-white mt-2 leading-tight tracking-wide">
+                    This page is <br>
+                    <span class="text-zinc-550">out of register.</span>
+                </h1>
+            </div>
+
+            <p class="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
+                Like vintage tape reels or misaligned rangefinders, digital routes can sometimes fall out of alignment.
+                The requested address does not exist on this server.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center gap-4 pt-2">
+                <a href="/"
+                    class="w-full sm:w-auto text-center bg-white hover:bg-zinc-200 text-black px-6 py-2.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
+                    Homepage
+                </a>
+                <a href="/home"
+                    class="w-full sm:w-auto text-center bg-transparent border border-zinc-800 hover:border-zinc-700 text-white px-6 py-2.5 rounded-full text-xs font-pixel uppercase tracking-wider transition-all duration-200 active:scale-[0.98]">
+                    Vault
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

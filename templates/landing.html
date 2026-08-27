@@ -1835,20 +1835,29 @@
         </section>
         {% endif %}
 
-        <!-- Visual Detail Feature Break -->
+        <!-- Jim Daneker Legendary Testimonial Spotlight -->
         <section class="border-t border-zinc-900 max-w-6xl mx-auto px-6 py-12 relative z-10">
             <div
                 class="rounded-2xl border border-zinc-900 overflow-hidden bg-zinc-950/20 grid grid-cols-1 md:grid-cols-2 items-center gap-0 shadow-xl">
                 <div class="p-8 md:p-16 space-y-6 text-left reveal reveal-left">
-                    <span class="text-[11px] font-pixel text-blue-500 uppercase tracking-widest font-semibold">Pure Fidelity. Timeless Memory.</span>
-                    <h2 class="text-2xl md:text-3xl font-pixel uppercase text-white tracking-wide">Not merely a backup. A physical preservation of sonic soul.</h2>
-                    <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                        <span class="text-blue-400 font-semibold">Every patch, filter curve, and analog nuance</span> is captured with <span class="text-blue-400 font-semibold">absolute reverence</span>. Our SysEx engine records standard MIDI dumps with <span class="text-blue-400 font-semibold">byte-for-byte precision</span>, capturing every parameter exactly as it emerged from your synthesizer’s microprocessor. Calibrated data pacing honors the <span class="text-blue-400 font-semibold">delicate architectural pulse</span> of vintage 8-bit chips, guaranteeing your sonic identity remains <span class="text-blue-400 font-semibold">forever untouched, untamed, and instantly recalled</span>.
-                    </p>
+                    <span class="text-[11px] font-pixel text-blue-500 uppercase tracking-widest font-semibold">Artist &amp; Studio Spotlight</span>
+                    <h2 class="text-lg md:text-xl font-pixel uppercase text-white tracking-wide leading-snug">Replicating vintage hardware for live tours.</h2>
+                    <blockquote class="text-sm md:text-base text-zinc-300 font-sans italic leading-relaxed border-l-2 border-blue-500 pl-4 py-0.5">
+                        "I needed to export custom soundbanks from my Prophet-5 to software plugins without touring the heavy hardware. <strong class="text-white not-italic font-semibold">bipluk decoded the SysEx instantly.</strong> <span class="text-blue-400 not-italic font-semibold">The speed of updates and support is incredible.</span>"
+                    </blockquote>
+                    <div class="pt-4 border-t border-zinc-900 flex items-center justify-between gap-3 text-xs font-mono">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-bold text-white text-sm tracking-wide">Jim Daneker</span>
+                                <span class="text-zinc-400 border border-zinc-800 bg-zinc-900/80 px-2 py-0.5 rounded text-[10px] font-mono tracking-wider">Prophet-5 (Rev 4)</span>
+                            </div>
+                            <span class="block text-zinc-400 text-xs mt-1">Musical Director &amp; Producer (Michael W. Smith)</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black reveal reveal-right"
+                <div class="h-80 md:h-full min-h-[360px] overflow-hidden border-t md:border-t-0 md:border-l border-zinc-900 bg-black reveal reveal-right relative"
                     style="--delay: 150ms;">
-                    <img src="{{ asset_url('studio_detail.avif') }}" alt="Studio Synthesizer Cables close-up" width="1024"
+                    <img src="/static/avatars/customers/4.avif" alt="Jim Daneker in Studio" width="1024"
                         height="1016" sizes="(max-width: 768px) 100vw, 50vw" fetchpriority="high"
                         class="w-full h-full object-cover dithered">
                 </div>
@@ -1952,7 +1961,6 @@
             </div>
         </section>
 
-
         <!-- Pricing Grid -->
         <section id="pricing" class="border-t border-zinc-900 max-w-6xl mx-auto px-6 pt-12 pb-24 relative z-10">
             {% if pricing is not defined %}
@@ -1986,8 +1994,17 @@
                 <!-- Personal -->
                 <div class="glow-card pricing-card-featured rounded-2xl border border-blue-500/50 bg-zinc-950/80 p-6 md:p-8 flex flex-col justify-between relative overflow-hidden reveal reveal-scale shadow-lapis-glow-md"
                     style="--delay: 200ms;">
-                    <!-- Most Popular Top Badge -->
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[9px] font-pixel uppercase tracking-widest px-3 py-0.5 rounded-b border-x border-b border-blue-400 shadow-lapis-glow-md z-20">LIFETIME ACCESS</div>
+                    <!-- Most Popular Top Badge with 5 Pixel Stars -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[9px] font-pixel uppercase tracking-widest px-3.5 py-1 rounded-b border-x border-b border-blue-400 shadow-lapis-glow-md z-20 flex flex-col items-center gap-0.5 select-none">
+                        <span>LIFETIME ACCESS</span>
+                        <div class="flex items-center gap-0.5 pt-0.5">
+                            <img src="/static/icons/dinkie/white-medium-star-small-filled.svg" alt="★" width="8" height="8" class="w-2 h-2 brightness-0 invert" style="image-rendering: pixelated;" />
+                            <img src="/static/icons/dinkie/white-medium-star-small-filled.svg" alt="★" width="8" height="8" class="w-2 h-2 brightness-0 invert" style="image-rendering: pixelated;" />
+                            <img src="/static/icons/dinkie/white-medium-star-small-filled.svg" alt="★" width="8" height="8" class="w-2 h-2 brightness-0 invert" style="image-rendering: pixelated;" />
+                            <img src="/static/icons/dinkie/white-medium-star-small-filled.svg" alt="★" width="8" height="8" class="w-2 h-2 brightness-0 invert" style="image-rendering: pixelated;" />
+                            <img src="/static/icons/dinkie/white-medium-star-small-filled.svg" alt="★" width="8" height="8" class="w-2 h-2 brightness-0 invert" style="image-rendering: pixelated;" />
+                        </div>
+                    </div>
                     <div class="absolute inset-0 bg-repeat opacity-15 pointer-events-none select-none z-0"
                         style="background-image: url('/static/grey_patterned_brick_floor_dark.png'); image-rendering: pixelated;"></div>
                     <div id="stamp-diamond"
@@ -2061,24 +2078,21 @@
                                         width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
                                     <span class="text-white font-semibold">Lifetime updates, zero monthly fees</span>
                                 </li>
-                                <li class="flex items-center gap-1.5 md:gap-2 flex-nowrap">
-                                <img src="/static/icons/dinkie/heart-white-suit-circled.svg" alt=""
-                                    width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
-                                <span class="text-[10px] sm:text-xs leading-tight">Customer-funded: 0 ads, 0 VC pressure</span>
-                                <div class="flex items-center shrink-0 -space-x-1.5 md:-space-x-2 ml-0.5">
-                                    <img src="/static/avatars/Simple colors/Icon1.png" alt=""
-                                        width="16" height="16" loading="lazy"
-                                        class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[3] select-none"
-                                        style="image-rendering: pixelated;" />
-                                    <img src="/static/avatars/Simple colors/Icon2.png" alt=""
-                                        width="16" height="16" loading="lazy"
-                                        class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[2] select-none"
-                                        style="image-rendering: pixelated;" />
-                                    <img src="/static/avatars/Simple colors/Icon3.png" alt=""
-                                        width="16" height="16" loading="lazy"
-                                        class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-zinc-950 md:border-2 bg-zinc-900 object-cover relative z-[1] select-none"
-                                        style="image-rendering: pixelated;" />
-                                </div>
+                                <li class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                                    <img src="/static/icons/dinkie/heart-white-suit-circled.svg" alt=""
+                                        width="14" height="14" class="h-3.5 w-3.5 shrink-0 dinkie-lapis" />
+                                    <span class="text-white font-semibold">Customer-funded: 0 ads, 0 VC pressure</span>
+                                    <div class="inline-flex items-center shrink-0 -space-x-2 hover:space-x-1 transition-all duration-300 ml-1 group/avatars cursor-pointer">
+                                        <img src="/static/avatars/customers/1.avif" alt="Customer"
+                                            width="24" height="24" loading="lazy"
+                                            class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-zinc-950 object-cover relative z-[3] select-none shadow-sm transition-all duration-300 hover:scale-125 hover:-translate-y-1 hover:z-30 hover:border-blue-400 hover:shadow-lg" />
+                                        <img src="/static/avatars/customers/2.avif" alt="Customer"
+                                            width="24" height="24" loading="lazy"
+                                            class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-zinc-950 object-cover relative z-[2] select-none shadow-sm transition-all duration-300 hover:scale-125 hover:-translate-y-1 hover:z-30 hover:border-blue-400 hover:shadow-lg" />
+                                        <img src="/static/avatars/customers/3.avif" alt="Customer"
+                                            width="24" height="24" loading="lazy"
+                                            class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-zinc-950 object-cover relative z-[1] select-none shadow-sm transition-all duration-300 hover:scale-125 hover:-translate-y-1 hover:z-30 hover:border-blue-400 hover:shadow-lg" />
+                                    </div>
                                 </li>
                             </ul>
                         </div>

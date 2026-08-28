@@ -1311,6 +1311,9 @@ SEO_DATA = {
         "docs": {"title": "How to Turn Off Memory Protect on Korg Wavestation", "content": "<p class=\"text-zinc-400 mb-4 text-sm md:text-base\">To restore wave sequences and patches, the Korg Wavestation must have its memory protect turned off.</p>\n<ol class=\"list-decimal list-inside space-y-3 text-zinc-300 text-sm md:text-base font-medium\">\n    <li>Press the <strong class=\"text-white\">GLOBAL</strong> button on the front panel.</li>\n    <li>Use the soft keys and page buttons to navigate to the <strong class=\"text-white\">Protect</strong> page.</li>\n    <li>Set both <strong class=\"text-white\">Internal Protect</strong> and <strong class=\"text-white\">Card Protect</strong> (if applicable) to <strong class=\"text-white\">OFF</strong>.</li>\n    <li>Navigate to the <strong class=\"text-white\">MIDI</strong> page and make sure <strong class=\"text-white\">SysEx Receive</strong> is set to <strong class=\"text-white\">ON</strong>.</li>\n</ol>\n<p class=\"text-zinc-400 mt-5 text-sm md:text-base\">Your Korg Wavestation is now ready to receive patches via MIDI.</p>"}    }
 }
 
+import synth_seo_catalog
+SEO_DATA = synth_seo_catalog.get_expanded_seo_data(SEO_DATA)
+
 # --- Marketing & Auth Pages ---
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -1448,21 +1451,22 @@ async def resources_page(request: Request):
     for slug, data in SEO_DATA.items():
         if slug == "why-silicon-microbes-are-living-in-your-synthesizer":
             continue
+        wiki_entry = WIKI_DATA.get(slug, {})
         name = data.get("synth_name", slug)
-        # Infer brand
-        brand = "Generic"
-        if "yamaha" in name.lower():
-            brand = "Yamaha"
-        elif "roland" in name.lower():
-            brand = "Roland"
-        elif "korg" in name.lower():
-            brand = "Korg"
-        elif "casio" in name.lower():
-            brand = "Casio"
-        elif "prophet" in name.lower():
-            brand = "Sequential"
-        elif "oberheim" in name.lower():
-            brand = "Oberheim"
+        brand = wiki_entry.get("brand", "Vintage")
+        if brand == "Vintage":
+            if "yamaha" in name.lower():
+                brand = "Yamaha"
+            elif "roland" in name.lower():
+                brand = "Roland"
+            elif "korg" in name.lower():
+                brand = "Korg"
+            elif "casio" in name.lower():
+                brand = "Casio"
+            elif "prophet" in name.lower() or "dsi" in name.lower() or "sequential" in name.lower():
+                brand = "Sequential"
+            elif "oberheim" in name.lower() or "matrix" in name.lower():
+                brand = "Oberheim"
         
         wiki_synths.append({
             "slug": slug,
@@ -4600,6 +4604,8 @@ WIKI_DATA = {
         "funny_anecdote": "The Wavestation's complex wave sequences were so long that a sound designer once left a sequence looping while he went out for lunch. When he returned, the building was surrounded by police because neighbors reported hearing 'evolving alien messages' communicating from the second-floor window."
     }
 }
+
+WIKI_DATA = synth_seo_catalog.get_expanded_wiki_data(WIKI_DATA)
 
 
 @app.get("/unsubscribe", response_class=HTMLResponse)

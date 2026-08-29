@@ -712,7 +712,6 @@
                                         <span class="text-xs font-pixel text-white uppercase tracking-widest">
                                             EVERYONE HAS A DEMO SOUNDBANK
                                         </span>
-                                        <span class="text-blue-400 font-bold text-lg animate-bounce">↓</span>
                                     </div>
                                     <button type="button" onclick="startDriverJsTour()" class="px-2.5 py-1 rounded-md bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-400 font-pixel text-[9px] uppercase tracking-wider transition-all inline-flex items-center gap-1 cursor-pointer">
                                         <span>Click for Guided Demo Tour</span>
@@ -2538,7 +2537,17 @@
         });
 
         // Show success/cancel billing status notifications
+        function checkUpgradeParams() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('upgrade') === '1' || params.get('upgrade') === 'true' || window.location.hash === '#upgrade') {
+                showUpgradeModal();
+            } else if (params.get('update') === '1' || window.location.hash === '#update') {
+                showUpdatePaywallModal();
+            }
+        }
+        window.addEventListener('hashchange', checkUpgradeParams);
         window.addEventListener('DOMContentLoaded', () => {
+            checkUpgradeParams();
             const params = new URLSearchParams(window.location.search);
             if (params.get('welcome') === '1') {
                 showToast("Account Ready", "Free vault created. Connect MIDI and save your first bank.", "success");

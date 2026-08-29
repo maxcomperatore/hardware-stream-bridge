@@ -1315,6 +1315,20 @@ import synth_seo_catalog
 SEO_DATA = synth_seo_catalog.get_expanded_seo_data(SEO_DATA)
 
 # --- Marketing & Auth Pages ---
+@app.get("/upgrade")
+async def upgrade_redirect(request: Request):
+    user = get_current_user(request)
+    if user:
+        return RedirectResponse(url="/home?upgrade=1", status_code=303)
+    return RedirectResponse(url="/login?redirect=/home?upgrade=1", status_code=303)
+
+@app.get("/pricing")
+async def pricing_redirect(request: Request):
+    user = get_current_user(request)
+    if user:
+        return RedirectResponse(url="/home?upgrade=1", status_code=303)
+    return RedirectResponse(url="/#pricing", status_code=307)
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     user = get_current_user(request)

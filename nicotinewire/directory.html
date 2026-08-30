@@ -46,7 +46,7 @@
             <div class="nw-section-title">
                 <div>
                     <h2><ix-icon name="folder"></ix-icon> Verified B2B Intelligence Directory</h2>
-                    <p style="font-size: 0.76rem; color: var(--moz-muted); margin-top: 2px;">142 Audited DMF Holders, ISO 17025 Testing Labs &amp; White Pouch OEMs</p>
+                    <p style="font-size: 0.76rem; color: var(--moz-muted); margin-top: 2px;">Verified B2B Packaging OEMs, ISO Testing Labs &amp; Formulation Partners</p>
                 </div>
                 <button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-blue">Get Listed ($1,000/yr) &rarr;</button>
             </div>
@@ -54,15 +54,15 @@
             <!-- Search & Filter Controls -->
             <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 260px; position: relative;">
-                    <input type="text" id="directory-search" placeholder="Search 142 DMF holders, ISO labs, pouch OEMs..." 
+                    <input type="text" id="directory-search" placeholder="Search verified pouch packaging, OEMs, testing labs..." 
                         style="width: 100%; background: var(--moz-surface); border: 1px solid var(--moz-border); color: #FFF; padding: 8px 12px 8px 32px; border-radius: var(--radius-sm); font-size: 0.8rem; outline: none; font-family: var(--font-sans);" />
                     <ix-icon name="filter" style="position: absolute; left: 10px; top: 9px; color: var(--moz-muted);"></ix-icon>
                 </div>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                     <span class="nw-filter-chip active">All Vendors</span>
                     <span class="nw-filter-chip">Metal Tins &amp; Packaging</span>
-                    <span class="nw-filter-chip">Synthetic L-Nicotine</span>
                     <span class="nw-filter-chip">White Pouch OEM</span>
+                    <span class="nw-filter-chip">Synthetic L-Nicotine</span>
                     <span class="nw-filter-chip">ISO 17025 Labs</span>
                 </div>
             </div>
@@ -95,95 +95,25 @@
                     </div>
                 </div>
 
-                <!-- Vendor 1 -->
-                <div class="nw-card nw-vendor-card">
+                <!-- Apply Card for New Vendors -->
+                <div class="nw-card nw-vendor-card" style="border: 1px dashed rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.02); display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
                         <div class="nw-card-header">
-                            <span class="nw-badge" style="background: rgba(16, 185, 129, 0.12); color: #10B981; border-color: rgba(16, 185, 129, 0.3);"><ix-icon name="double-check"></ix-icon> FDA DMF ACTIVE</span>
-                            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--moz-muted);">USA / EU</span>
+                            <span class="nw-badge" style="background: rgba(255, 255, 255, 0.08); color: var(--moz-muted);"><ix-icon name="plus"></ix-icon> OPEN REGISTRATION</span>
+                            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--moz-muted);">GLOBAL</span>
                         </div>
-                        <h3 class="nw-card-title" style="font-size: 1rem;">PureSynth Labs Inc.</h3>
-                        <p class="nw-card-text">Primary synthetic (S)-isomer L-nicotine manufacturer with active Drug Master File.</p>
+                        <h3 class="nw-card-title" style="font-size: 1.05rem;">Claim Your Verified Dossier</h3>
+                        <p class="nw-card-text">Are you a pouch packaging manufacturer, cGMP formulation facility, or ISO 17025 lab? Get listed in the verified B2B intelligence directory.</p>
                         
-                        <!-- Technical Specs Matrix -->
                         <div style="background: var(--moz-bg); border: 1px solid var(--moz-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.6;">
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Filing:</span> <span style="color: var(--moz-text); font-weight: 600;">US FDA DMF #03941</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Purity:</span> <span style="color: #10B981; font-weight: 600;">99.92% USP Grade</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Capacity:</span> <span style="color: var(--moz-secondary);">24 Metric Tons/yr</span></div>
+                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Direct RFQ Routing:</span> <span style="color: #10B981; font-weight: 600;">Active Inbound</span></div>
+                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Verified Badge:</span> <span style="color: var(--moz-text); font-weight: 600;">Audited Status</span></div>
+                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Directory Reach:</span> <span style="color: var(--moz-secondary);">10k+ Pouch Execs</span></div>
                         </div>
                     </div>
                     <div class="nw-card-footer" style="padding-top: 10px;">
-                        <span style="color: #10B981; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;">Audited 2026</span>
-                        <button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-blue" style="padding: 4px 10px; font-size: 0.74rem;">Direct RFQ &rarr;</button>
-                    </div>
-                </div>
-
-                <!-- Vendor 2 -->
-                <div class="nw-card nw-vendor-card">
-                    <div>
-                        <div class="nw-card-header">
-                            <span class="nw-badge" style="background: rgba(14, 165, 233, 0.12); color: #0EA5E9; border-color: rgba(14, 165, 233, 0.3);"><ix-icon name="document"></ix-icon> TPD3 COMPLIANT</span>
-                            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--moz-muted);">Sweden</span>
-                        </div>
-                        <h3 class="nw-card-title" style="font-size: 1rem;">Apex Pouch Formulators AB</h3>
-                        <p class="nw-card-text">Contract manufacturing and turnkey white nicotine pouch formulation facility.</p>
-                        
-                        <!-- Technical Specs Matrix -->
-                        <div style="background: var(--moz-bg); border: 1px solid var(--moz-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.6;">
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Standard:</span> <span style="color: var(--moz-text); font-weight: 600;">Cleanroom ISO 8</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Formats:</span> <span style="color: var(--moz-secondary);">Slim, Mini, Dry 2-16mg</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Capacity:</span> <span style="color: #0EA5E9; font-weight: 600;">65M Cans/month</span></div>
-                        </div>
-                    </div>
-                    <div class="nw-card-footer" style="padding-top: 10px;">
-                        <span style="color: #0EA5E9; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;">OEM Verified</span>
-                        <button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-blue" style="padding: 4px 10px; font-size: 0.74rem;">Direct RFQ &rarr;</button>
-                    </div>
-                </div>
-
-                <!-- Vendor 3 -->
-                <div class="nw-card nw-vendor-card">
-                    <div>
-                        <div class="nw-card-header">
-                            <span class="nw-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--moz-amber); border-color: rgba(245, 158, 11, 0.3);"><ix-icon name="filter"></ix-icon> ISO 17025 ACCREDITED</span>
-                            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--moz-muted);">Raleigh, NC</span>
-                        </div>
-                        <h3 class="nw-card-title" style="font-size: 1rem;">VapeTech Analytics Laboratories</h3>
-                        <p class="nw-card-text">Specialized GLP toxicology, aerosol characterization, and FDA PMTA analytical testing.</p>
-                        
-                        <!-- Technical Specs Matrix -->
-                        <div style="background: var(--moz-bg); border: 1px solid var(--moz-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.6;">
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Accreditation:</span> <span style="color: var(--moz-text); font-weight: 600;">A2LA / ISO 17025</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Capability:</span> <span style="color: var(--moz-amber); font-weight: 600;">Full HPHC Battery</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">FDA CTP:</span> <span style="color: var(--moz-secondary);">Audited Pre-Clinical</span></div>
-                        </div>
-                    </div>
-                    <div class="nw-card-footer" style="padding-top: 10px;">
-                        <span style="color: var(--moz-amber); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;">GLP Certified</span>
-                        <button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-blue" style="padding: 4px 10px; font-size: 0.74rem;">Direct RFQ &rarr;</button>
-                    </div>
-                </div>
-
-                <!-- Vendor 4 -->
-                <div class="nw-card nw-vendor-card">
-                    <div>
-                        <div class="nw-card-header">
-                            <span class="nw-badge" style="background: rgba(244, 63, 94, 0.12); color: #F43F5E; border-color: rgba(244, 63, 94, 0.3);"><ix-icon name="document"></ix-icon> PHYTOSANITARY</span>
-                            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--moz-muted);">India / Global</span>
-                        </div>
-                        <h3 class="nw-card-title" style="font-size: 1rem;">Deccan Leaf Exporters Ltd</h3>
-                        <p class="nw-card-text">Direct-origin flue-cured Virginia (FCV) and Burley unmanufactured tobacco leaf supplier.</p>
-                        
-                        <!-- Technical Specs Matrix -->
-                        <div style="background: var(--moz-bg); border: 1px solid var(--moz-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.6;">
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Varietals:</span> <span style="color: var(--moz-text); font-weight: 600;">FCV, Burley, Rustica</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Compliance:</span> <span style="color: #F43F5E; font-weight: 600;">CORESTA Guidance</span></div>
-                            <div style="display: flex; justify-content: space-between;"><span style="color: var(--moz-muted);">Annual Export:</span> <span style="color: var(--moz-secondary);">18,000 MT</span></div>
-                        </div>
-                    </div>
-                    <div class="nw-card-footer" style="padding-top: 10px;">
-                        <span style="color: #F43F5E; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;">Supply Traceable</span>
-                        <button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-blue" style="padding: 4px 10px; font-size: 0.74rem;">Direct RFQ &rarr;</button>
+                        <span style="color: var(--moz-muted); font-family: var(--font-mono); font-size: 0.7rem;">$1,000 / Year</span>
+                        <button onclick="openPreCheckoutModal('vendor_directory')" class="btn-moz-outline" style="padding: 4px 10px; font-size: 0.74rem;">Apply for Listing &rarr;</button>
                     </div>
                 </div>
             </div>

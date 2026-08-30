@@ -64,3 +64,50 @@ function escapeHtml(str) {
         }[m];
     });
 }
+
+// NicotineWire™ Precision Terminal Cursor Controller
+document.addEventListener('DOMContentLoaded', () => {
+    // Only mount on desktop pointer devices
+    if (window.matchMedia('(hover: none) or (pointer: coarse)').matches) return;
+
+    const dot = document.createElement('div');
+    dot.className = 'nw-cursor-dot';
+    const ring = document.createElement('div');
+    ring.className = 'nw-cursor-ring';
+
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+    }, { passive: true });
+
+    function animateRing() {
+        ringX += (mouseX - ringX) * 0.2;
+        ringY += (mouseY - ringY) * 0.2;
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateRing);
+    }
+    requestAnimationFrame(animateRing);
+
+    // Interactive Hover Reticle expansion
+    const interactiveSelector = 'a, button, input, select, textarea, label, [onclick], .nw-filter-chip, .btn-moz-blue, .btn-moz-outline, .nw-card, .nw-table tr';
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(interactiveSelector)) {
+            document.body.classList.add('nw-cursor-hover');
+        }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(interactiveSelector)) {
+            document.body.classList.remove('nw-cursor-hover');
+        }
+    });
+});

@@ -41,6 +41,10 @@
     --radius-md: 10px;
     --radius-lg: 14px;
     --radius-pill: 9999px;
+
+    /* Custom Terminal Precision Cursors */
+    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M4 4l7.5 16 2.5-6.5L20.5 11 4 4z' fill='%23F59E0B' stroke='%2307080B' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='6' cy='6' r='1.5' fill='%23FFFFFF'/%3E%3C/svg%3E") 4 4, auto;
+    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Ccircle cx='14' cy='14' r='4' fill='%2310B981' fill-opacity='0.9'/%3E%3Ccircle cx='14' cy='14' r='9' stroke='%2310B981' stroke-width='1.5' stroke-opacity='0.7' stroke-dasharray='3 2'/%3E%3Cpath d='M14 2v4M14 22v4M2 14h4M22 14h4' stroke='%2310B981' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") 14 14, pointer;
 }
 
 * {
@@ -54,6 +58,7 @@ html {
     scrollbar-width: none;
     max-width: 100vw;
     background-color: var(--moz-bg);
+    cursor: var(--cursor-default);
 }
 
 ::-webkit-scrollbar {
@@ -72,6 +77,62 @@ body {
     overflow-x: hidden;
     max-width: 100vw;
     -ms-overflow-style: none;
+    cursor: var(--cursor-default);
+}
+
+/* Interactive Cursor States */
+a, button, input, select, textarea, label, [onclick], .nw-filter-chip, .btn-moz-blue, .btn-moz-outline, .nw-card, .nw-table tr {
+    cursor: var(--cursor-pointer);
+}
+
+/* Dynamic Smooth Terminal Trail Cursor Elements (Non-Touch) */
+.nw-cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background-color: var(--moz-amber);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s ease, height 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+}
+
+.nw-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid rgba(245, 158, 11, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1), height 0.2s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+
+body.nw-cursor-hover .nw-cursor-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--moz-emerald);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.8);
+}
+
+body.nw-cursor-hover .nw-cursor-ring {
+    width: 44px;
+    height: 44px;
+    border-color: rgba(16, 185, 129, 0.6);
+    background-color: rgba(16, 185, 129, 0.06);
+}
+
+@media (hover: none) or (pointer: coarse) {
+    .nw-cursor-dot, .nw-cursor-ring {
+        display: none !important;
+    }
 }
 
 /* Siemens IX Icon & Icon Styling */

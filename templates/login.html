@@ -85,6 +85,7 @@
         <form id="magic-form" onsubmit="sendMagicLink(); return false;" class="space-y-2">
             <input type="email" id="magic-email" name="email" autocomplete="email" placeholder="name@domain.com"
                 class="block w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-400 transition-colors text-center" required>
+            <div id="magic-mailcheck-suggestion" class="hidden text-xs text-amber-300 bg-amber-950/40 border border-amber-500/30 rounded-xl p-2 text-center transition-all"></div>
             <input type="hidden" id="evt-token" name="token" autocomplete="email-verification-token">
             <button type="submit" id="magic-btn"
                 class="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-semibold flex items-center justify-center gap-2 transition-all duration-150 active:scale-[0.98] relative">
@@ -100,20 +101,36 @@
         </form>
     </div>
 
+    <script src="/static/js/mailcheck.js"></script>
     <script>
         const feedbackEl = document.getElementById('magic-feedback');
         const emailInput = document.getElementById('magic-email');
         const tokenInput = document.getElementById('evt-token');
+        const mailcheckSuggestionEl = document.getElementById('magic-mailcheck-suggestion');
+
+        if (typeof Mailcheck !== 'undefined') {
+            Mailcheck.attach('#magic-email', '#magic-mailcheck-suggestion');
+        }
 
         function showFeedback(msg, isError = false) {
             if (!feedbackEl) return;
             feedbackEl.classList.remove('hidden', 'bg-red-950/30', 'border-red-800/50', 'text-rose-300', 'bg-emerald-950/40', 'border-emerald-500/40', 'text-emerald-300');
             if (isError) {
                 feedbackEl.classList.add('bg-red-950/30', 'border', 'border-red-800/50', 'text-rose-300');
-            } else {
-                feedbackEl.classList.add('bg-emerald-950/40', 'border', 'border-emerald-500/40', 'text-emerald-300');
             }
             feedbackEl.textContent = msg;
+        }
+
+        function applyMagicSuggestion(suggestedEmail) {
+            if (emailInput) {
+                emailInput.value = suggestedEmail;
+                if (mailcheckSuggestionEl) {
+                    mailcheckSuggestionEl.classList.add('hidden');
+                    mailcheckSuggestionEl.innerHTML = '';
+                    mailcheckSuggestionEl.dataset.confirmed = 'true';
+                }
+                sendMagicLink();
+            }
         }
 
         async function sendMagicLink() {
@@ -125,18 +142,14 @@
                 return;
             }
 
-            const typos = {
-                'gmai.com': 'gmail.com', 'gmaill.com': 'gmail.com', 'gamil.com': 'gmail.com',
-                'gmai.co': 'gmail.com', 'gmai.con': 'gmail.com', 'hotmial.com': 'hotmail.com',
-                'hotmai.com': 'hotmail.com', 'outlok.com': 'outlook.com', 'yaho.com': 'yahoo.com',
-                'iclaud.com': 'icloud.com'
-            };
-            const parts = email.split('@');
-            if (parts.length === 2 && typos[parts[1]]) {
-                const suggest = parts[0] + '@' + typos[parts[1]];
-                showFeedback('Did you mean ' + suggest + '?', true);
-                if (emailInput) emailInput.focus();
-                return;
+            // Real-time Mailcheck verification before submitting
+            if (typeof Mailcheck !== 'undefined') {
+                const suggestion = Mailcheck.run({ email: email });
+                if (suggestion && mailcheckSuggestionEl && !mailcheckSuggestionEl.dataset.confirmed) {
+                    mailcheckSuggestionEl.innerHTML = 'Did you mean <button type="button" class="underline text-amber-400 font-bold hover:text-amber-300" onclick="applyMagicSuggestion(\'' + suggestion.full + '\')">' + suggestion.full + '</button>?';
+                    mailcheckSuggestionEl.classList.remove('hidden');
+                    return;
+                }
             }
 
             const evtToken = tokenInput ? tokenInput.value : '';

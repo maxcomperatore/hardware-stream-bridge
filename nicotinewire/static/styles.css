@@ -1,22 +1,38 @@
-/* NicotineWire™ — Pitch Black Fullscreen Mode with Mozilla Fonts & Iconify Pixelarticons
-   Fixed Non-Floating Bottom Bar & Mobile-Safe Bounds */
+/* NicotineWire™ — High-Ticket Regulatory & Financial Intelligence Terminal
+   Bespoke Obsidian, Electric Amber-Gold & Terminal Cyan Aesthetic */
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Fira+Code:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap');
 
 :root {
-    --moz-bg: #000000;
-    --moz-surface: #0E1015;
-    --moz-subtle: #14171F;
+    /* Obsidian Canvas & Tactical Surfaces */
+    --moz-bg: #07080B;
+    --moz-surface: #0E1118;
+    --moz-subtle: #141824;
     
-    --moz-text: #FFFFFF;
-    --moz-secondary: #9CA3AF;
-    --moz-muted: #6B7280;
+    /* Monograph Editorial Typography */
+    --moz-text: #F8FAFC;
+    --moz-secondary: #94A3B8;
+    --moz-muted: #64748B;
 
-    --moz-blue: #3B82F6;
-    --moz-blue-hover: #2563EB;
+    /* Distinctive Signature Palette: Electric Amber & Terminal Cyan */
+    --moz-amber: #F59E0B;
+    --moz-amber-light: #FBBF24;
+    --moz-amber-dark: #D97706;
+    --moz-amber-glow: rgba(245, 158, 11, 0.15);
 
-    --moz-border: #22252E;
-    --moz-border-light: #2A2E3A;
+    --moz-cyan: #0EA5E9;
+    --moz-cyan-glow: rgba(14, 165, 233, 0.15);
 
+    --moz-emerald: #10B981;
+    --moz-coral: #F43F5E;
+
+    --moz-blue: var(--moz-amber);
+    --moz-blue-hover: var(--moz-amber-dark);
+
+    /* Precision Financial Hairlines */
+    --moz-border: #1E2330;
+    --moz-border-light: #2A3144;
+
+    /* Typography Engines */
     --font-sans: 'Fira Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'Fira Code', monospace;
     --font-slab: 'Zilla Slab', serif;
@@ -37,6 +53,7 @@ html {
     overflow-x: hidden;
     scrollbar-width: none;
     max-width: 100vw;
+    background-color: var(--moz-bg);
 }
 
 ::-webkit-scrollbar {
@@ -57,33 +74,37 @@ body {
     -ms-overflow-style: none;
 }
 
-/* Iconify Icon Styling */
-.iconify {
+/* Siemens IX Icon & Icon Styling */
+.iconify, ix-icon {
     display: inline-block;
     vertical-align: -0.15em;
-    width: 1.1em;
-    height: 1.1em;
+    width: 1.15em;
+    height: 1.15em;
 }
 
-/* Fullscreen App Viewport */
+/* Clean Fullscreen Layout */
 .app-viewport {
     width: 100%;
-    max-width: 1600px;
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 0 40px 80px 40px;
+    padding: 24px 24px 80px 24px;
     overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
     .app-viewport {
-        padding: 0 14px 80px 14px;
+        padding: 16px 14px 80px 14px;
+    }
+    .nw-hide-mobile {
+        display: none !important;
     }
 }
 
 /* Header Navigation Bar */
 header.nw-header {
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(16px);
+    background: rgba(7, 8, 11, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--moz-border);
     padding: 12px 40px;
     position: sticky;
@@ -113,33 +134,57 @@ header.nw-header {
 .nw-brand {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     text-decoration: none;
     color: var(--moz-text);
     white-space: nowrap;
 }
 
+.nw-brand-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    object-fit: contain;
+    display: inline-block;
+    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.35));
+}
+
+.nw-hero-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: -0.15em;
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
+}
+
 .nw-brand-text {
     font-family: var(--font-slab);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .nw-brand-sub {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    color: var(--moz-muted);
-    font-weight: 500;
+    color: var(--moz-amber);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     border-left: 1px solid var(--moz-border);
-    padding-left: 6px;
+    padding-left: 8px;
 }
 
 /* Desktop Nav Links */
 .nw-nav {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
 }
 
 @media (max-width: 768px) {
@@ -156,26 +201,37 @@ header.nw-header {
     text-decoration: none;
     font-size: 0.82rem;
     font-weight: 500;
-    transition: color 0.15s ease;
+    transition: all 0.15s ease;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    padding: 6px 4px;
+    position: relative;
 }
 
-.nw-nav-link:hover, .nw-nav-link.active {
-    color: #FFFFFF;
+.nw-nav-link:hover {
+    color: var(--moz-text);
+}
+
+.nw-nav-link.active {
+    color: var(--moz-amber);
+    font-weight: 600;
+}
+
+.nw-nav-link.active ix-icon {
+    color: var(--moz-amber);
 }
 
 /* Action Buttons */
 .btn-moz {
     background: #FFFFFF;
-    color: #000000;
+    color: #07080B;
     border: none;
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: var(--radius-sm);
     font-family: var(--font-sans);
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
@@ -183,16 +239,21 @@ header.nw-header {
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    transition: transform 0.1s ease;
+}
+
+.btn-moz:active {
+    transform: scale(0.98);
 }
 
 .btn-moz-outline {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.03);
     color: var(--moz-text);
     border: 1px solid var(--moz-border);
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: var(--radius-sm);
     font-family: var(--font-sans);
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     font-weight: 500;
     text-decoration: none;
     cursor: pointer;
@@ -200,6 +261,7 @@ header.nw-header {
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    transition: all 0.15s ease;
 }
 
 .btn-moz-outline:hover {
@@ -207,25 +269,34 @@ header.nw-header {
     border-color: var(--moz-secondary);
 }
 
+/* Signature Amber-Gold Executive Button */
 .btn-moz-blue {
-    background: var(--moz-blue);
-    color: #FFFFFF;
-    border: none;
-    padding: 6px 12px;
+    background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+    color: #07080B !important;
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    padding: 6px 14px;
     border-radius: var(--radius-sm);
     font-family: var(--font-sans);
-    font-size: 0.76rem;
-    font-weight: 600;
+    font-size: 0.78rem;
+    font-weight: 700;
     text-decoration: none;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+    transition: all 0.15s ease;
 }
 
 .btn-moz-blue:hover {
-    background: var(--moz-blue-hover);
+    background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+    box-shadow: 0 0 22px rgba(245, 158, 11, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-moz-blue ix-icon {
+    color: #07080B !important;
 }
 
 /* Non-Floating Fixed Mobile Bottom Navigation Bar */
@@ -237,11 +308,11 @@ header.nw-header {
     right: 0;
     width: 100%;
     max-width: 100%;
-    background: #0E1015;
+    background: #090B10;
     border-top: 1px solid var(--moz-border);
     padding: 6px 0;
     z-index: 9999;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.9);
 }
 
 @media (max-width: 768px) {
@@ -270,8 +341,8 @@ header.nw-header {
 }
 
 .cr-nav-item.active {
-    color: #FFFFFF;
-    background: rgba(59, 130, 246, 0.18);
+    color: var(--moz-amber);
+    background: rgba(245, 158, 11, 0.12);
 }
 
 .cr-nav-icon-wrap {
@@ -282,8 +353,8 @@ header.nw-header {
 /* Fullscreen Grid Layout */
 .nw-grid-layout {
     display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 28px;
+    grid-template-columns: 230px 1fr;
+    gap: 32px;
     margin-top: 24px;
 }
 
@@ -300,10 +371,11 @@ header.nw-header {
 .nw-sidebar-title {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     color: var(--moz-muted);
-    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
 }
 
 .nw-sidebar-menu {
@@ -317,64 +389,125 @@ header.nw-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 10px;
+    padding: 8px 12px;
     border-radius: var(--radius-sm);
     color: var(--moz-secondary);
     text-decoration: none;
     font-size: 0.82rem;
     font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
 }
 
-.nw-sidebar-menu a:hover,
+.nw-sidebar-menu a:hover {
+    color: var(--moz-text);
+    background: var(--moz-surface);
+    border-color: var(--moz-border);
+}
+
 .nw-sidebar-menu a.active {
     color: #FFFFFF;
     background: var(--moz-surface);
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: inset 2px 0 0 var(--moz-amber);
+}
+
+.nw-sidebar-menu a.active ix-icon {
+    color: var(--moz-amber);
 }
 
 .nw-tag-count {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    color: var(--moz-muted);
+    color: var(--moz-amber);
+    background: rgba(245, 158, 11, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* Filter Chips */
+.nw-filter-chip {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--moz-surface);
+    color: var(--moz-secondary);
+    border: 1px solid var(--moz-border);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.nw-filter-chip:hover {
+    color: var(--moz-text);
+    border-color: var(--moz-border-light);
+}
+
+.nw-filter-chip.active {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--moz-amber);
+    border-color: rgba(245, 158, 11, 0.35);
 }
 
 /* Fullscreen Centered Hero Banner */
 .nw-hero-banner {
-    background: var(--moz-surface);
+    background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.08) 0%, var(--moz-surface) 75%);
     border: 1px solid var(--moz-border);
     border-radius: var(--radius-md);
-    padding: 24px;
-    margin-bottom: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.nw-hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--moz-amber), transparent);
+    opacity: 0.6;
 }
 
 .nw-hero-title {
     font-family: var(--font-slab);
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     color: #FFFFFF;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
+.nw-hero-title ix-icon {
+    color: var(--moz-amber);
+}
+
 @media (max-width: 768px) {
     .nw-hero-title {
-        font-size: 1.35rem;
+        font-size: 1.4rem;
     }
 }
 
 .nw-hero-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: var(--moz-secondary);
-    max-width: 600px;
+    max-width: 620px;
 }
 
 /* Section Title */
@@ -382,94 +515,103 @@ header.nw-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-    padding-bottom: 6px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--moz-border);
 }
 
 .nw-section-title h2 {
-    font-size: 0.95rem;
+    font-size: 0.98rem;
     font-weight: 600;
     color: #FFFFFF;
     display: flex;
     align-items: center;
     gap: 8px;
+    letter-spacing: -0.01em;
+}
+
+.nw-section-title h2 ix-icon {
+    color: var(--moz-amber);
 }
 
 /* Fullscreen Cards Grid */
 .nw-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 18px;
+    margin-bottom: 32px;
 }
 
 .nw-card {
     background: var(--moz-surface);
     border: 1px solid var(--moz-border);
     border-radius: var(--radius-md);
-    padding: 16px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: all 0.2s ease;
 }
 
 .nw-card:hover {
-    border-color: var(--moz-border-light);
+    border-color: rgba(245, 158, 11, 0.4);
     background: var(--moz-subtle);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .nw-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .nw-badge {
     font-family: var(--font-mono);
     font-size: 0.65rem;
-    font-weight: 600;
-    padding: 2px 6px;
+    font-weight: 700;
+    padding: 2px 7px;
     border-radius: 4px;
     text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--moz-secondary);
-    border: 1px solid var(--moz-border);
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--moz-amber);
+    border: 1px solid rgba(245, 158, 11, 0.25);
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    letter-spacing: 0.04em;
 }
 
 .nw-card-price {
     font-family: var(--font-mono);
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #FFFFFF;
 }
 
 .nw-card-title {
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     font-weight: 600;
     color: #FFFFFF;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     line-height: 1.35;
 }
 
 .nw-card-text {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--moz-secondary);
-    line-height: 1.45;
-    margin-bottom: 12px;
+    line-height: 1.5;
+    margin-bottom: 14px;
 }
 
 .nw-card-footer {
     border-top: 1px solid var(--moz-border);
-    padding-top: 10px;
+    padding-top: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     color: var(--moz-muted);
 }
 
@@ -479,12 +621,17 @@ header.nw-header {
     border: 1px solid var(--moz-border);
     border-radius: var(--radius-md);
     overflow: hidden;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 }
 
 .nw-feed-item {
     border-bottom: 1px solid var(--moz-border);
-    padding: 14px 18px;
+    padding: 16px 20px;
+    transition: background 0.15s ease;
+}
+
+.nw-feed-item:hover {
+    background: rgba(255, 255, 255, 0.015);
 }
 
 .nw-feed-item:last-child {
@@ -495,7 +642,7 @@ header.nw-header {
     cursor: pointer;
     outline: none;
     font-weight: 600;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: #FFFFFF;
     list-style: none;
 }
@@ -507,22 +654,24 @@ header.nw-header {
     font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--moz-muted);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .nw-feed-body {
-    margin-top: 8px;
-    font-size: 0.82rem;
+    margin-top: 10px;
+    font-size: 0.84rem;
     color: var(--moz-secondary);
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 /* Table */
 .nw-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     background: var(--moz-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
 }
 
 .nw-table th {
@@ -532,13 +681,14 @@ header.nw-header {
     font-size: 0.68rem;
     font-weight: 600;
     text-transform: uppercase;
-    padding: 10px 14px;
+    letter-spacing: 0.06em;
+    padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid var(--moz-border);
 }
 
 .nw-table td {
-    padding: 12px 14px;
+    padding: 14px 16px;
     border-bottom: 1px solid var(--moz-border);
     color: var(--moz-text);
 }
@@ -546,11 +696,11 @@ header.nw-header {
 /* Footer */
 footer.nw-footer {
     border-top: 1px solid var(--moz-border);
-    padding: 24px 0;
-    margin-top: 36px;
+    padding: 28px 0;
+    margin-top: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     color: var(--moz-muted);
 }

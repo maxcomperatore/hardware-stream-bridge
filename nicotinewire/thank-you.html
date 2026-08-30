@@ -7,32 +7,30 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/styles.css">
-    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@siemens/ix-icons@3.5.0/dist/ix-icons/ix-icons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@siemens/ix-icons@3.5.0/dist/ix-icons/ix-icons.js"></script>
 </head>
 <body>
 
 <div class="app-viewport">
     <header class="nw-header" style="margin-top: 16px;">
         <a href="/" class="nw-brand">
-            <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <img src="/static/favicon.svg" alt="NW" class="nw-brand-icon" />
             <span class="nw-brand-text">NicotineWire</span>
-            <span class="nw-brand-sub">Intelligence</span>
         </a>
 
-        <nav class="nw-nav">
-            <a href="/" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
-            <a href="/reports" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
-            <a href="/directory" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
-            <a href="/insights" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
-            <a href="/viewer" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
-            <a href="/b2b-case" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
-            <a href="/pricing" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
-        </nav>
+            <nav class="nw-nav">
+        <a href="/" class="nw-nav-link "><ix-icon name="electrical-energy"></ix-icon> Wire Feed</a>
+        <a href="/reports" class="nw-nav-link "><ix-icon name="document"></ix-icon> Reports</a>
+        <a href="/directory" class="nw-nav-link "><ix-icon name="folder"></ix-icon> Directory</a>
+        <a href="/insights" class="nw-nav-link "><ix-icon name="filter"></ix-icon> Insights</a>
+        <a href="/pricing" class="nw-nav-link active"><ix-icon name="money"></ix-icon> Pricing</a>
+    </nav>
     </header>
 
     <div class="nw-card" style="max-width: 600px; margin: 30px auto; padding: 24px;">
         <span class="nw-badge" style="background: var(--moz-blue); color: #FFFFFF; margin-bottom: 10px; display: inline-block;">
-            <span class="iconify" data-icon="pixelarticons:check-double"></span> Payment Successful
+            <ix-icon name="double-check"></ix-icon> Payment Successful
         </span>
         <h1 style="font-family: var(--font-slab); font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; color: #FFFFFF;">
             Thank You For Your Order
@@ -64,26 +62,26 @@
     </footer>
 </div>
 
-<!-- Fixed Edge-to-Edge Bottom Navigation Bar -->
+<!-- Fixed Edge-to-Edge Bottom Navigation Bar (5 Core Tabs) -->
 <nav class="cr-mobile-bottom-nav">
-    <a href="/" class="cr-nav-item active">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+    <a href="/" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="electrical-energy"></ix-icon></span>
         <span>Wire</span>
     </a>
-    <a href="/reports" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+    <a href="/reports" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="document"></ix-icon></span>
         <span>Reports</span>
     </a>
-    <a href="/directory" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+    <a href="/directory" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="folder"></ix-icon></span>
         <span>Directory</span>
     </a>
-    <a href="/insights" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+    <a href="/insights" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="filter"></ix-icon></span>
         <span>Insights</span>
     </a>
-    <a href="/pricing" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+    <a href="/pricing" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><ix-icon name="money"></ix-icon></span>
         <span>Pricing</span>
     </a>
 </nav>

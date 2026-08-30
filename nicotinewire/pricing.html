@@ -7,30 +7,28 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/styles.css">
-    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@siemens/ix-icons@3.5.0/dist/ix-icons/ix-icons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@siemens/ix-icons@3.5.0/dist/ix-icons/ix-icons.js"></script>
 </head>
 <body>
 
 <header class="nw-header">
     <a href="/" class="nw-brand">
-        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <img src="/static/favicon.svg" alt="NW" class="nw-brand-icon" />
         <span class="nw-brand-text">NicotineWire</span>
-        <span class="nw-brand-sub">Intelligence</span>
     </a>
 
-    <nav class="nw-nav">
-        <a href="/" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
-        <a href="/reports" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
-        <a href="/directory" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
-        <a href="/insights" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
-        <a href="/viewer" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
-        <a href="/b2b-case" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
-        <a href="/pricing" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+        <nav class="nw-nav">
+        <a href="/" class="nw-nav-link "><ix-icon name="electrical-energy"></ix-icon> Wire Feed</a>
+        <a href="/reports" class="nw-nav-link "><ix-icon name="document"></ix-icon> Reports</a>
+        <a href="/directory" class="nw-nav-link "><ix-icon name="folder"></ix-icon> Directory</a>
+        <a href="/insights" class="nw-nav-link "><ix-icon name="filter"></ix-icon> Insights</a>
+        <a href="/pricing" class="nw-nav-link active"><ix-icon name="money"></ix-icon> Pricing</a>
     </nav>
 
     <div>
         <a href="/pricing" class="btn-moz-blue">
-            <span class="iconify" data-icon="pixelarticons:card"></span>
+            <ix-icon name="money"></ix-icon>
             <span>Pricing</span>
             <span class="nw-header-price" style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
         </a>
@@ -38,23 +36,11 @@
 </header>
 
 <div class="app-viewport">
-    <div class="nw-grid-layout">
-        <aside class="nw-sidebar">
-            <div class="nw-sidebar-title">Categories</div>
-            <ul class="nw-sidebar-menu">
-                <li><a href="/"><span><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</span> <span class="nw-tag-count">Live</span></a></li>
-                <li><a href="/reports"><span><span class="iconify" data-icon="pixelarticons:file-text"></span> M&amp;A Databooks</span> <span class="nw-tag-count">$1.5k+</span></a></li>
-                <li><a href="/directory"><span><span class="iconify" data-icon="pixelarticons:briefcase"></span> B2B Directory</span> <span class="nw-tag-count">$300/m</span></a></li>
-                <li><a href="/insights"><span><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights &amp; Proof</span> <span class="nw-tag-count">Pro</span></a></li>
-                <li><a href="/viewer"><span><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Monograph Viewer</span> <span class="nw-tag-count">PDF</span></a></li>
-                <li><a href="/b2b-case"><span><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</span> <span class="nw-tag-count">Moat</span></a></li>
-                <li><a href="/pricing" class="active"><span><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</span> <span class="nw-tag-count">$2,000</span></a></li>
-            </ul>
-        </aside>
+    
 
         <main>
             <div class="nw-section-title">
-                <h2><span class="iconify" data-icon="pixelarticons:card"></span> Executive Pass Pricing Tiers</h2>
+                <h2><ix-icon name="money"></ix-icon> Executive Pass Pricing Tiers</h2>
             </div>
 
             <div class="nw-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 20px;">
@@ -93,7 +79,7 @@
                 <div class="nw-card" style="border-color: var(--moz-blue);">
                     <div>
                         <div class="nw-card-header">
-                            <span class="nw-badge" style="background: var(--moz-blue); color: #FFFFFF;"><span class="iconify" data-icon="pixelarticons:zap"></span> ANNUAL</span>
+                            <span class="nw-badge" style="background: var(--moz-blue); color: #FFFFFF;"><ix-icon name="electrical-energy"></ix-icon> ANNUAL</span>
                         </div>
                         <h3 class="nw-card-title">Enterprise Pass</h3>
                         <div class="nw-card-price" style="margin: 6px 0; color: var(--moz-blue); font-size: 1.3rem;">
@@ -106,8 +92,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Outside Counsel ROI Calculator (Consolidated from Spend ROI) -->
+            <section class="nw-card" style="padding: 22px; margin-bottom: 24px; border-color: rgba(245, 158, 11, 0.25);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 style="font-size: 1rem; font-weight: 600; color: #FFFFFF; display: flex; align-items: center; gap: 8px;">
+                            <ix-icon name="trend-upward" style="color: var(--moz-amber);"></ix-icon>
+                            Outside Counsel ROI &amp; Spend Offset Calculator
+                        </h3>
+                        <p style="font-size: 0.78rem; color: var(--moz-muted); margin-top: 2px;">Calculate annual savings by replacing routine regulatory billing with NicotineWire intelligence.</p>
+                    </div>
+                    <span class="nw-badge" style="background: rgba(16, 185, 129, 0.12); color: #10B981; border-color: rgba(16, 185, 129, 0.3);">TYPICAL 26% - 46% OFFSET</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 14px;">
+                    <div>
+                        <label style="font-size: 0.68rem; font-family: var(--font-mono); display: block; margin-bottom: 6px; color: var(--moz-muted);">ANNUAL REGULATORY &amp; LEGAL SPEND ($ USD):</label>
+                        <input type="number" id="roi-spend-input" value="5000000" oninput="calculateROI()" style="width: 100%; padding: 10px 14px; font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; border: 1px solid var(--moz-border); border-radius: var(--radius-sm); background: var(--moz-bg); color: #FFFFFF; outline: none;">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="nw-card" style="padding: 12px; background: var(--moz-bg); border-color: var(--moz-border);">
+                            <div style="font-size: 0.65rem; font-family: var(--font-mono); color: var(--moz-muted); font-weight: 600;">YEAR 1 SAVINGS (26%)</div>
+                            <div id="calc-year1" style="font-size: 1.2rem; font-weight: 700; color: var(--moz-amber); font-family: var(--font-mono); margin-top: 4px;">$1,300,000</div>
+                        </div>
+
+                        <div class="nw-card" style="padding: 12px; background: var(--moz-bg); border-color: var(--moz-border);">
+                            <div style="font-size: 0.65rem; font-family: var(--font-mono); color: var(--moz-muted); font-weight: 600;">MATURE SAVINGS (46%)</div>
+                            <div id="calc-mature" style="font-size: 1.2rem; font-weight: 700; color: #10B981; font-family: var(--font-mono); margin-top: 4px;">$2,300,000</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
+
+    <script>
+    function calculateROI() {
+        const val = parseFloat(document.getElementById('roi-spend-input').value) || 0;
+        const year1 = val * 0.26;
+        const mature = val * 0.46;
+        document.getElementById('calc-year1').innerText = '$' + Math.round(year1).toLocaleString();
+        document.getElementById('calc-mature').innerText = '$' + Math.round(mature).toLocaleString();
+    }
+    </script>
 
     <!-- Footer -->
     <footer class="nw-footer">
@@ -120,26 +149,26 @@
     </footer>
 </div>
 
-<!-- Fixed Edge-to-Edge Bottom Navigation Bar -->
+<!-- Fixed Edge-to-Edge Bottom Navigation Bar (5 Core Tabs) -->
 <nav class="cr-mobile-bottom-nav">
-    <a href="/" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+    <a href="/" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="electrical-energy"></ix-icon></span>
         <span>Wire</span>
     </a>
-    <a href="/reports" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+    <a href="/reports" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="document"></ix-icon></span>
         <span>Reports</span>
     </a>
-    <a href="/directory" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+    <a href="/directory" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="folder"></ix-icon></span>
         <span>Directory</span>
     </a>
-    <a href="/insights" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+    <a href="/insights" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="filter"></ix-icon></span>
         <span>Insights</span>
     </a>
     <a href="/pricing" class="cr-nav-item active">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+        <span class="cr-nav-icon-wrap"><ix-icon name="money"></ix-icon></span>
         <span>Pricing</span>
     </a>
 </nav>

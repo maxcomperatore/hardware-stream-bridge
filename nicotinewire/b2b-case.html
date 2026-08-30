@@ -7,30 +7,28 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/styles.css">
-    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@siemens/ix-icons@3.5.0/dist/ix-icons/ix-icons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@siemens/ix-icons@3.5.0/dist/ix-icons/ix-icons.js"></script>
 </head>
 <body>
 
 <header class="nw-header">
     <a href="/" class="nw-brand">
-        <span class="iconify" data-icon="pixelarticons:float-right-sharp" data-inline="false"></span>
+        <img src="/static/favicon.svg" alt="NW" class="nw-brand-icon" />
         <span class="nw-brand-text">NicotineWire</span>
-        <span class="nw-brand-sub">Intelligence</span>
     </a>
 
-    <nav class="nw-nav">
-        <a href="/" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:zap"></span> Wire Feed</a>
-        <a href="/reports" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:file-text"></span> Reports</a>
-        <a href="/directory" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:briefcase"></span> Directory</a>
-        <a href="/insights" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:sliders"></span> Insights</a>
-        <a href="/viewer" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:article-multiple"></span> Viewer</a>
-        <a href="/b2b-case" class="nw-nav-link active"><span class="iconify" data-icon="pixelarticons:trending-up"></span> Spend ROI</a>
-        <a href="/pricing" class="nw-nav-link"><span class="iconify" data-icon="pixelarticons:card"></span> Pricing</a>
+        <nav class="nw-nav">
+        <a href="/" class="nw-nav-link "><ix-icon name="electrical-energy"></ix-icon> Wire Feed</a>
+        <a href="/reports" class="nw-nav-link "><ix-icon name="document"></ix-icon> Reports</a>
+        <a href="/directory" class="nw-nav-link "><ix-icon name="folder"></ix-icon> Directory</a>
+        <a href="/insights" class="nw-nav-link "><ix-icon name="filter"></ix-icon> Insights</a>
+        <a href="/pricing" class="nw-nav-link active"><ix-icon name="money"></ix-icon> Pricing</a>
     </nav>
 
     <div>
         <a href="/pricing" class="btn-moz-blue">
-            <span class="iconify" data-icon="pixelarticons:card"></span>
+            <ix-icon name="money"></ix-icon>
             <span>Pricing</span>
             <span class="nw-header-price" style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
         </a>
@@ -41,7 +39,7 @@
     <!-- Centered Hero Banner -->
     <section class="nw-hero-banner" style="margin-bottom: 20px;">
         <h1 class="nw-hero-title">
-            <span class="iconify" data-icon="pixelarticons:trending-up"></span>
+            <ix-icon name="trend-upward"></ix-icon>
             B2B Case &amp; ROI Calculator
         </h1>
         <p class="nw-hero-subtitle">Outside counsel &amp; regulatory benchmarking to enforce rate compliance.</p>
@@ -49,7 +47,7 @@
 
     <!-- Query Desk -->
     <section class="nw-card" style="padding: 20px; margin-bottom: 20px;">
-        <span class="nw-badge"><span class="iconify" data-icon="pixelarticons:sliders"></span> QUERY DESK</span>
+        <span class="nw-badge"><ix-icon name="filter"></ix-icon> QUERY DESK</span>
         <h2 style="font-size: 1rem; font-weight: 600; color: #FFFFFF; margin-top: 6px;">Regulatory &amp; Spend Query</h2>
 
         <div style="margin-top: 10px; border-top: 1px solid var(--moz-border); padding-top: 10px;">
@@ -63,7 +61,7 @@
 
     <!-- Interactive ROI Calculator -->
     <section class="nw-card" style="padding: 20px; margin-bottom: 20px;">
-        <h2 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #FFFFFF;"><span class="iconify" data-icon="pixelarticons:sliders"></span> Outside Counsel ROI Calculator</h2>
+        <h2 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #FFFFFF;"><ix-icon name="filter"></ix-icon> Outside Counsel ROI Calculator</h2>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div>
@@ -96,30 +94,26 @@
     </footer>
 </div>
 
-<!-- Fixed Edge-to-Edge Bottom Navigation Bar -->
+<!-- Fixed Edge-to-Edge Bottom Navigation Bar (5 Core Tabs) -->
 <nav class="cr-mobile-bottom-nav">
-    <a href="/" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:zap"></span></span>
+    <a href="/" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="electrical-energy"></ix-icon></span>
         <span>Wire</span>
     </a>
-    <a href="/reports" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:file-text"></span></span>
+    <a href="/reports" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="document"></ix-icon></span>
         <span>Reports</span>
     </a>
-    <a href="/directory" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:briefcase"></span></span>
+    <a href="/directory" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="folder"></ix-icon></span>
         <span>Directory</span>
     </a>
-    <a href="/insights" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:sliders"></span></span>
+    <a href="/insights" class="cr-nav-item ">
+        <span class="cr-nav-icon-wrap"><ix-icon name="filter"></ix-icon></span>
         <span>Insights</span>
     </a>
-    <a href="/b2b-case" class="cr-nav-item active">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:trending-up"></span></span>
-        <span>Spend</span>
-    </a>
-    <a href="/pricing" class="cr-nav-item">
-        <span class="cr-nav-icon-wrap"><span class="iconify" data-icon="pixelarticons:card"></span></span>
+    <a href="/pricing" class="cr-nav-item active">
+        <span class="cr-nav-icon-wrap"><ix-icon name="money"></ix-icon></span>
         <span>Pricing</span>
     </a>
 </nav>

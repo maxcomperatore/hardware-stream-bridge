@@ -253,10 +253,21 @@ var Mailcheck = {
     return result;
   },
 
-  attach: function(inputSelector, containerSelector) {
+  attach: function(inputSelector, containerSelector, buttonSelector) {
     var input = typeof inputSelector === 'string' ? document.querySelector(inputSelector) : inputSelector;
     var container = typeof containerSelector === 'string' ? document.querySelector(containerSelector) : containerSelector;
+    var button = typeof buttonSelector === 'string' ? document.querySelector(buttonSelector) : buttonSelector;
     if (!input) return;
+
+    function setButtonState(disabled) {
+      if (!button) return;
+      button.disabled = disabled;
+      if (disabled) {
+        button.classList.add('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+      } else {
+        button.classList.remove('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+      }
+    }
 
     function check() {
       var val = input.value.trim();
@@ -264,16 +275,20 @@ var Mailcheck = {
         email: val,
         suggested: function(suggestion) {
           if (container) {
-            container.innerHTML = 'Did you mean <button type="button" class="underline text-amber-400 font-bold hover:text-amber-300 transition-colors" data-mailcheck-suggest="' + suggestion.full + '">' + suggestion.full + '</button>?';
+            container.innerHTML = 'Did you mean <button type="button" class="underline text-amber-400 font-bold hover:text-amber-300 transition-colors pointer-events-auto" data-mailcheck-suggest="' + suggestion.full + '">' + suggestion.full + '</button>?';
             container.classList.remove('hidden');
+            setButtonState(true);
             var btn = container.querySelector('[data-mailcheck-suggest]');
             if (btn) {
-              btn.onclick = function() {
+              btn.onclick = function(e) {
+                if (e) e.preventDefault();
                 input.value = suggestion.full;
                 container.classList.add('hidden');
                 container.innerHTML = '';
+                setButtonState(false);
                 input.focus();
                 if (typeof checkResetEmail === 'function') checkResetEmail();
+                if (typeof applyMagicSuggestion === 'function') applyMagicSuggestion(suggestion.full);
               };
             }
           }
@@ -282,6 +297,7 @@ var Mailcheck = {
           if (container) {
             container.classList.add('hidden');
             container.innerHTML = '';
+            setButtonState(false);
           }
         }
       });
@@ -289,9 +305,7 @@ var Mailcheck = {
 
     input.addEventListener('blur', check);
     input.addEventListener('input', function() {
-      if (container && !container.classList.contains('hidden')) {
-        check();
-      }
+      check();
     });
   }
 };

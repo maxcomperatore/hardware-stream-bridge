@@ -109,7 +109,7 @@
         const mailcheckSuggestionEl = document.getElementById('magic-mailcheck-suggestion');
 
         if (typeof Mailcheck !== 'undefined') {
-            Mailcheck.attach('#magic-email', '#magic-mailcheck-suggestion');
+            Mailcheck.attach('#magic-email', '#magic-mailcheck-suggestion', '#magic-btn');
         }
 
         function showFeedback(msg, isError = false) {

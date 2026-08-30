@@ -70,6 +70,7 @@ ROUTE_MAP = {
     "b2b-case": "b2b-case.html",
     "b2b-case.html": "b2b-case.html",
     "insights": "newszoo-insights.html",
+    "research": "newszoo-insights.html",
     "newszoo-insights": "newszoo-insights.html",
     "newszoo-insights.html": "newszoo-insights.html",
     "viewer": "report-template.html",
@@ -77,6 +78,8 @@ ROUTE_MAP = {
     "report-template.html": "report-template.html",
     "thank-you": "thank-you.html",
     "thank-you.html": "thank-you.html",
+    "article": "article.html",
+    "article.html": "article.html",
 }
 
 @app.get("/")

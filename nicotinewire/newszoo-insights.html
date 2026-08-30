@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicotineWire — Market Insights</title>
+    <title>NicotineWire — Market Research</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/styles.css">
@@ -22,17 +22,11 @@
         <a href="/" class="nw-nav-link "><ix-icon name="electrical-energy"></ix-icon> Wire Feed</a>
         <a href="/reports" class="nw-nav-link "><ix-icon name="document"></ix-icon> Reports</a>
         <a href="/directory" class="nw-nav-link "><ix-icon name="folder"></ix-icon> Directory</a>
-        <a href="/insights" class="nw-nav-link active"><ix-icon name="filter"></ix-icon> Insights</a>
-        <a href="/pricing" class="nw-nav-link "><ix-icon name="money"></ix-icon> Pricing</a>
+        <a href="/insights" class="nw-nav-link active"><ix-icon name="filter"></ix-icon> Research</a>
+        <a href="/pricing" class="nw-nav-link nw-nav-pricing "><ix-icon name="money"></ix-icon> Pricing</a>
     </nav>
 
-    <div>
-        <a href="/pricing" class="btn-moz-blue">
-            <ix-icon name="money"></ix-icon>
-            <span>Pricing</span>
-            <span class="nw-header-price" style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
-        </a>
-    </div>
+    
 </header>
 
 <div class="app-viewport">
@@ -42,7 +36,7 @@
             <section class="nw-hero-banner" style="margin-bottom: 20px;">
                 <h1 class="nw-hero-title">
                     <ix-icon name="filter"></ix-icon>
-                    Market Insights &amp; Citations
+                    Market Research &amp; Citations
                 </h1>
                 <p class="nw-hero-subtitle">Quantitative research cited on Wall Street earnings calls.</p>
             </section>
@@ -80,6 +74,74 @@
                     </div>
                 </details>
             </div>
+
+            <!-- NicotineWire Global Spot Settlement Benchmark Matrix (ICIS Standard) -->
+            <section class="nw-card" style="padding: 20px; margin-bottom: 28px; border-color: rgba(245, 158, 11, 0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 style="font-size: 1.05rem; font-weight: 700; color: #FFFFFF; display: flex; align-items: center; gap: 8px;">
+                            <ix-icon name="trend-upward" style="color: var(--moz-amber);"></ix-icon>
+                            NicotineWire™ Global Spot Price Index (NW-INDEX)
+                        </h3>
+                        <p style="font-size: 0.78rem; color: var(--moz-muted); margin-top: 2px;">Official institutional benchmark for B2B procurement contract indexation &amp; quarterly settlement.</p>
+                    </div>
+                    <span class="nw-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--moz-amber); border-color: rgba(245, 158, 11, 0.3);">WEEK 35 · 2026 SETTLEMENT</span>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="nw-table">
+                        <thead>
+                            <tr>
+                                <th>Index Symbol</th>
+                                <th>Commodity / Grade</th>
+                                <th>Incoterm / Hub</th>
+                                <th>Spot Price</th>
+                                <th>W/W Change</th>
+                                <th>Contract Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b style="color: var(--moz-amber); font-family: var(--font-mono);">SYNTH</b></td>
+                                <td>Synthetic (S)-Isomer Nicotine (USP &gt;99.9%)</td>
+                                <td>CIF Rotterdam</td>
+                                <td><b style="font-family: var(--font-mono); color: #FFF;">$3,450 / kg</b></td>
+                                <td><span style="color: #10B981; font-weight: 600; font-family: var(--font-mono);">▲ +1.8%</span></td>
+                                <td><span class="nw-badge" style="background: rgba(16, 185, 129, 0.12); color: #10B981; border-color: rgba(16, 185, 129, 0.3);">BENCHMARK PEGGED</span></td>
+                            </tr>
+                            <tr>
+                                <td><b style="color: var(--moz-amber); font-family: var(--font-mono);">POUCH</b></td>
+                                <td>Standard White Pouch Fill (Slim 6mg Dry)</td>
+                                <td>Ex-Works Sweden</td>
+                                <td><b style="font-family: var(--font-mono); color: #FFF;">$0.182 / can</b></td>
+                                <td><span style="color: #10B981; font-weight: 600; font-family: var(--font-mono);">▲ +0.6%</span></td>
+                                <td><span class="nw-badge" style="background: rgba(14, 165, 233, 0.12); color: #0EA5E9; border-color: rgba(14, 165, 233, 0.3);">OEM CONTRACTED</span></td>
+                            </tr>
+                            <tr>
+                                <td><b style="color: var(--moz-amber); font-family: var(--font-mono);">EXTRACT</b></td>
+                                <td>Natural Tobacco-Derived Extract (EP Grade)</td>
+                                <td>FOB Nhava Sheva</td>
+                                <td><b style="font-family: var(--font-mono); color: #FFF;">$1,280 / kg</b></td>
+                                <td><span style="color: #F43F5E; font-weight: 600; font-family: var(--font-mono);">▼ -0.4%</span></td>
+                                <td><span class="nw-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--moz-amber); border-color: rgba(245, 158, 11, 0.3);">SPOT INDEX</span></td>
+                            </tr>
+                            <tr>
+                                <td><b style="color: var(--moz-amber); font-family: var(--font-mono);">LEAF</b></td>
+                                <td>Flue-Cured Virginia Strips (Grade A)</td>
+                                <td>FOB Guntur</td>
+                                <td><b style="font-family: var(--font-mono); color: #FFF;">$6.40 / kg</b></td>
+                                <td><span style="color: #10B981; font-weight: 600; font-family: var(--font-mono);">▲ +2.1%</span></td>
+                                <td><span class="nw-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--moz-amber); border-color: rgba(245, 158, 11, 0.3);">SPOT INDEX</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--moz-border); font-size: 0.74rem; color: var(--moz-muted); flex-wrap: wrap; gap: 8px;">
+                    <span>Contract Clause: <em>"Price adjusted quarterly against the published NicotineWire™ Spot Index."</em></span>
+                    <button onclick="openPreCheckoutModal('annual')" class="btn-moz-blue" style="padding: 4px 10px; font-size: 0.74rem;">Download Full Pricing Model (PDF) &rarr;</button>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -110,9 +172,9 @@
     </a>
     <a href="/insights" class="cr-nav-item active">
         <span class="cr-nav-icon-wrap"><ix-icon name="filter"></ix-icon></span>
-        <span>Insights</span>
+        <span>Research</span>
     </a>
-    <a href="/pricing" class="cr-nav-item ">
+    <a href="/pricing" class="cr-nav-item nw-nav-pricing ">
         <span class="cr-nav-icon-wrap"><ix-icon name="money"></ix-icon></span>
         <span>Pricing</span>
     </a>

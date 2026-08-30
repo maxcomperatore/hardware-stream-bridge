@@ -22,17 +22,11 @@
         <a href="/" class="nw-nav-link active"><ix-icon name="electrical-energy"></ix-icon> Wire Feed</a>
         <a href="/reports" class="nw-nav-link "><ix-icon name="document"></ix-icon> Reports</a>
         <a href="/directory" class="nw-nav-link "><ix-icon name="folder"></ix-icon> Directory</a>
-        <a href="/insights" class="nw-nav-link "><ix-icon name="filter"></ix-icon> Insights</a>
-        <a href="/pricing" class="nw-nav-link "><ix-icon name="money"></ix-icon> Pricing</a>
+        <a href="/insights" class="nw-nav-link "><ix-icon name="filter"></ix-icon> Research</a>
+        <a href="/pricing" class="nw-nav-link nw-nav-pricing "><ix-icon name="money"></ix-icon> Pricing</a>
     </nav>
 
-    <div>
-        <a href="/pricing" class="btn-moz-blue">
-            <ix-icon name="money"></ix-icon>
-            <span>Pricing</span>
-            <span class="nw-header-price" style="opacity: 0.8; font-weight: 400;">$2,000/yr</span>
-        </a>
-    </div>
+    
 </header>
 
 <div class="app-viewport">
@@ -48,64 +42,109 @@
                 <p class="nw-hero-subtitle">Independent regulatory news, FDA dockets &amp; market intelligence.</p>
             </section>
 
+            <!-- NicotineWire Global Spot Index (ICIS / Bloomberg Settlement Standard) -->
+            <div class="nw-ticker-strip">
+                <div class="nw-ticker-cell">
+                    <span class="nw-ticker-code" style="color: var(--moz-amber);"><ix-icon name="trend-upward"></ix-icon> SYNTH</span>
+                    <span class="nw-ticker-price">$3,450/kg</span>
+                    <span class="nw-ticker-up">▲ +1.8%</span>
+                    <span class="nw-ticker-terms">CIF Rotterdam</span>
+                </div>
+                <div class="nw-ticker-cell">
+                    <span class="nw-ticker-code">POUCH</span>
+                    <span class="nw-ticker-price">$0.182/can</span>
+                    <span class="nw-ticker-up">▲ +0.6%</span>
+                    <span class="nw-ticker-terms">Ex-Works Sweden</span>
+                </div>
+                <div class="nw-ticker-cell">
+                    <span class="nw-ticker-code">EXTRACT</span>
+                    <span class="nw-ticker-price">$1,280/kg</span>
+                    <span class="nw-ticker-down">▼ -0.4%</span>
+                    <span class="nw-ticker-terms">FOB Nhava Sheva</span>
+                </div>
+                <div class="nw-ticker-cell">
+                    <span class="nw-ticker-code">LEAF</span>
+                    <span class="nw-ticker-price">$6.40/kg</span>
+                    <span class="nw-ticker-up">▲ +2.1%</span>
+                    <span class="nw-ticker-terms">FOB Guntur</span>
+                </div>
+                <div class="nw-ticker-cell">
+                    <span class="nw-ticker-code">GLYCOL</span>
+                    <span class="nw-ticker-price">$1.95/kg</span>
+                    <span style="color: var(--moz-muted); font-size: 0.68rem;">— 0.0%</span>
+                    <span class="nw-ticker-terms">CIF Houston</span>
+                </div>
+            </div>
+
             <!-- 1. LIVE WIRE NEWS FEED -->
             <div class="nw-section-title">
                 <h2><ix-icon name="electrical-energy"></ix-icon> Live Wire News &amp; Ingestion Feed</h2>
-                <a href="/insights" style="color: var(--moz-blue); font-size: 0.78rem; text-decoration: none;">All Insights &rarr;</a>
+                <a href="/insights" style="color: var(--moz-blue); font-size: 0.78rem; text-decoration: none;">All Research &rarr;</a>
             </div>
 
             <div class="nw-feed-container">
-                <details class="nw-feed-item" open>
-                    <summary>
-                        <div class="nw-feed-meta">
+                <!-- Article 1 -->
+                <div class="nw-feed-item" style="padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--moz-border); border-radius: var(--radius-sm); background: var(--moz-surface);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div class="nw-feed-meta" style="margin: 0;">
+                            <span class="nw-badge" style="background: rgba(244, 63, 94, 0.12); color: #F43F5E; border-color: rgba(244, 63, 94, 0.3);"><ix-icon name="warning"></ix-icon> FDA CTP</span>
+                            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--moz-muted);">14h ago &bull; Docket 2026-13047</span>
+                        </div>
+                        <span class="nw-badge" style="background: rgba(14, 165, 233, 0.12); color: #0EA5E9; border-color: rgba(14, 165, 233, 0.3);">21 CFR PART 607</span>
+                    </div>
+                    <h3 style="font-size: 1.08rem; font-weight: 700; color: #FFFFFF; line-height: 1.35; margin-bottom: 6px;">
+                        <a href="/article" style="color: inherit; text-decoration: none;">FDA Moves to Register Foreign Synthetic Facilities Under Docket 2026-13047</a>
+                    </h3>
+                    <p style="font-size: 0.84rem; color: var(--moz-secondary); line-height: 1.5; margin-bottom: 10px;">
+                        The FDA proposed extending Part 607 registration requirements to foreign synthetic nicotine establishments, closing overseas exemption gaps and directly impacting bulk chemical importers...
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--moz-muted);">4 Min Read &bull; Regulatory Bureau</span>
+                        <a href="/article" class="btn-moz-outline" style="padding: 3px 10px; font-size: 0.74rem;">Read Docket Analysis &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="nw-feed-item" style="padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--moz-border); border-radius: var(--radius-sm); background: var(--moz-surface);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div class="nw-feed-meta" style="margin: 0;">
                             <span class="nw-badge"><ix-icon name="trend-upward"></ix-icon> EARNINGS</span>
-                            <span>Q1 2026</span>
+                            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--moz-muted);">Q1 2026 Analysis</span>
                         </div>
-                        NicotineWire Third-Party Market Share Data Cited in Public Earnings Calls
-                    </summary>
-                    <div class="nw-feed-body">
-                        Independent research by NicotineWire tracking brand market share shifts was cited during Q1 earnings calls across 4 major public nicotine conglomerates. Wall Street analysts highlighted NicotineWire's data in verifying +4.2% oral pouch expansion.
+                        <span class="nw-badge" style="background: rgba(16, 185, 129, 0.12); color: #10B981; border-color: rgba(16, 185, 129, 0.3);">WALL STREET CITED</span>
                     </div>
-                </details>
-
-                <details class="nw-feed-item" open>
-                    <summary>
-                        <div class="nw-feed-meta">
-                            <span class="nw-badge"><ix-icon name="warning"></ix-icon> FDA CTP</span>
-                            <span>14h ago</span>
-                        </div>
-                        FDA Moves to Register Foreign Synthetic Facilities Under Docket 2026-13047
-                    </summary>
-                    <div class="nw-feed-body">
-                        The FDA proposed extending Part 607 registration requirements to foreign synthetic nicotine establishments, closing overseas exemption gaps and directly impacting importers.
+                    <h3 style="font-size: 1.08rem; font-weight: 700; color: #FFFFFF; line-height: 1.35; margin-bottom: 6px;">
+                        <a href="/article" style="color: inherit; text-decoration: none;">NicotineWire Third-Party Market Share Data Cited in Public Earnings Calls</a>
+                    </h3>
+                    <p style="font-size: 0.84rem; color: var(--moz-secondary); line-height: 1.5; margin-bottom: 10px;">
+                        Independent research by NicotineWire tracking brand market share shifts was cited during Q1 earnings calls across 4 major public nicotine conglomerates. Wall Street analysts highlighted NicotineWire's data in verifying +4.2% oral pouch expansion...
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--moz-muted);">3 Min Read &bull; Equity Research</span>
+                        <a href="/article" class="btn-moz-outline" style="padding: 3px 10px; font-size: 0.74rem;">Read Equity Analysis &rarr;</a>
                     </div>
-                </details>
+                </div>
 
-                <details class="nw-feed-item" open>
-                    <summary>
-                        <div class="nw-feed-meta">
+                <!-- Article 3 -->
+                <div class="nw-feed-item" style="padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--moz-border); border-radius: var(--radius-sm); background: var(--moz-surface);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div class="nw-feed-meta" style="margin: 0;">
                             <span class="nw-badge"><ix-icon name="trend-upward"></ix-icon> M&amp;A</span>
-                            <span>6h ago</span>
+                            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--moz-muted);">6h ago</span>
                         </div>
-                        NicotineWire Media Group Acquires 152-Year-Old 'Tobacco Reporter' Trade Journal
-                    </summary>
-                    <div class="nw-feed-body">
-                        NicotineWire has acquired legacy publication <em>Tobacco Reporter</em> (est. 1874), consolidating 1.5 centuries of trade archives into the monograph viewer.
+                        <span class="nw-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--moz-amber); border-color: rgba(245, 158, 11, 0.3);">MEDIA MERGER</span>
                     </div>
-                </details>
-
-                <details class="nw-feed-item">
-                    <summary>
-                        <div class="nw-feed-meta">
-                            <span class="nw-badge"><ix-icon name="filter"></ix-icon> REGULATORY</span>
-                            <span>1d ago</span>
-                        </div>
-                        Congressional Appropriations Directive Mandates Synthetic L-Nicotine DMF Audits
-                    </summary>
-                    <div class="nw-feed-body">
-                        New regulatory guidelines mandate Drug Master File (DMF) purity verification for synthetic L-nicotine formulations sold within North American territories.
+                    <h3 style="font-size: 1.08rem; font-weight: 700; color: #FFFFFF; line-height: 1.35; margin-bottom: 6px;">
+                        <a href="/article" style="color: inherit; text-decoration: none;">NicotineWire Media Group Acquires 152-Year-Old 'Tobacco Reporter' Trade Journal</a>
+                    </h3>
+                    <p style="font-size: 0.84rem; color: var(--moz-secondary); line-height: 1.5; margin-bottom: 10px;">
+                        NicotineWire has acquired legacy publication <em>Tobacco Reporter</em> (est. 1874), consolidating 1.5 centuries of trade archives into the monograph viewer and historic formulation registry...
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--moz-muted);">2 Min Read &bull; Corporate Desk</span>
+                        <a href="/article" class="btn-moz-outline" style="padding: 3px 10px; font-size: 0.74rem;">Read M&amp;A Scoop &rarr;</a>
                     </div>
-                </details>
+                </div>
             </div>
 
             <!-- 2. Featured Reports Section (Hidden on Mobile) -->
@@ -206,9 +245,9 @@
     </a>
     <a href="/insights" class="cr-nav-item ">
         <span class="cr-nav-icon-wrap"><ix-icon name="filter"></ix-icon></span>
-        <span>Insights</span>
+        <span>Research</span>
     </a>
-    <a href="/pricing" class="cr-nav-item ">
+    <a href="/pricing" class="cr-nav-item nw-nav-pricing ">
         <span class="cr-nav-icon-wrap"><ix-icon name="money"></ix-icon></span>
         <span>Pricing</span>
     </a>

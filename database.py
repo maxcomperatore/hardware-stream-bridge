@@ -173,6 +173,7 @@ def init_db():
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS drip_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS reengagement_email_sent BOOLEAN DEFAULT FALSE;")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS abandoned_checkout_sent BOOLEAN DEFAULT FALSE;")
+        cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_checkout_initiated_at VARCHAR(100);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_marketing_email_sent VARCHAR(100);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(50);")
         cursor.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS picture_url TEXT;")
@@ -677,6 +678,25 @@ def mark_abandoned_checkout_sent(user_id: int):
             conn.close()
     except Exception as e:
         print(f"Database error in mark_abandoned_checkout_sent: {e}")
+        return
+
+def record_checkout_initiated(user_id: int):
+    try:
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            from datetime import datetime
+            now_str = datetime.now().isoformat()
+            cursor.execute("""
+                UPDATE users 
+                SET last_checkout_initiated_at = %s, abandoned_checkout_sent = FALSE 
+                WHERE id = %s
+            """, (now_str, user_id))
+            conn.commit()
+        finally:
+            conn.close()
+    except Exception as e:
+        print(f"Database error in record_checkout_initiated: {e}")
         return
 
 def get_pending_marketing_users(days_interval: int = 14) -> list[dict]:

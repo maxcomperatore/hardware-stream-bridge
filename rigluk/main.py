@@ -3408,6 +3408,8 @@ async def create_checkout_session(request: Request, plan: str = "personal"):
             checkout_kwargs["customer_email"] = user["email"]
 
         checkout_session = stripe.checkout.Session.create(**checkout_kwargs)
+        if user.get("id") and hasattr(database, "record_checkout_initiated"):
+            database.record_checkout_initiated(int(user["id"]))
         trigger_alert(
             "stripe_checkout_initiated",
             f"Stripe checkout initiated by `{user['email']}` for plan `{normalized_plan}`.",
@@ -4943,8 +4945,12 @@ async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]
         if u.get("abandoned_checkout_sent"):
             continue
         try:
-            created_at = datetime.fromisoformat(str(u["created_at"]))
-            elapsed_hours = (now - created_at).total_seconds() / 3600
+            checkout_ts = u.get("last_checkout_initiated_at") or u.get("created_at")
+            if not checkout_ts:
+                continue
+            ts_str = str(checkout_ts).replace("Z", "").split("+")[0]
+            ts_dt = datetime.fromisoformat(ts_str)
+            elapsed_hours = (now - ts_dt).total_seconds() / 3600
             if elapsed_hours < 1:
                 skipped_young += 1
                 continue
@@ -4955,7 +4961,7 @@ async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]
             html_content = template.render({"username": username, "email": email})
             plain_body = (
                 f"Hi {username},\n\n"
-                "Just following up—you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
+                "Just following up: you considered starting your journey with bipluk yesterday but didn’t cross the finish line. Your vault checkout is still ready to go.\n\n"
                 "Complete your vault access: https://bipluk.com/signup?plan=personal\n\n"
                 "Justin & the bipluk Team"
             )
@@ -4968,8 +4974,8 @@ async def get_abandoned_checkout_eligible_users() -> tuple[list[dict], int, int]
                 "text": plain_body,
                 "elapsed_hours": round(elapsed_hours, 1)
             })
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error(f"Error checking abandoned checkout for user {u.get('email')}: {e}")
     return eligible, skipped_young, len(users)
 
 

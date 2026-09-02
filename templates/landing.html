@@ -1537,8 +1537,8 @@
                 </a>
                 {% else %}
                 <a href="/login"
-                    class="btn-lapis px-6 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-md">
-                    Enter
+                    class="btn-lapis px-5 py-2.5 rounded-full text-2xs font-pixel uppercase tracking-widest active:scale-95 flex items-center justify-center shadow-lapis-glow-sm hover:shadow-lapis-glow transition-all">
+                    Start Free
                 </a>
                 {% endif %}
             </div>
@@ -1614,7 +1614,15 @@
                 {% endif %}
             </p>
 
-            <!-- Interactive MIDI Detector (SaaS Style) -->
+            <!-- Mobile Only CTA (Replaces MIDI scanner on phones/tablets) -->
+            <div class="block lg:hidden max-w-xs mx-auto mt-8 reveal" style="--delay: 200ms;">
+                <a href="/login"
+                    class="btn-lapis w-full py-3.5 px-6 rounded-2xl text-xs font-pixel uppercase tracking-widest text-white flex items-center justify-center shadow-lapis-glow active:scale-[0.98] transition-all">
+                    <span>Start Free</span>
+                </a>
+            </div>
+
+            <!-- Interactive MIDI Detector (Desktop Only) -->
             <div class="hidden lg:block max-w-md mx-auto mt-10 reveal" style="--delay: 300ms;">
                 <div
                     class="bg-zinc-950/80 backdrop-blur-md border border-white/10 rounded-2xl p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.03)] relative ring-1 ring-white/5">
@@ -2449,7 +2457,7 @@
                             const outputs = Array.from(midiAccess.outputs.values());
 
                             if (inputs.length === 0 && outputs.length === 0) {
-                                statusText.innerText = "No MIDI hardware plugged in.";
+                                statusText.innerHTML = `No MIDI hardware plugged in. <a href="/login" class="underline text-emerald-400 hover:text-emerald-300 ml-1 font-bold">Open free demo vault</a>`;
                                 statusText.className = "text-xs font-mono text-left truncate w-full select-none";
                                 statusText.style.color = "#fbbf24";
                                 if (midiIcon) {

@@ -2425,7 +2425,7 @@
                 const scanBtn = document.getElementById('midi-scan-btn');
 
                 if (!navigator.requestMIDIAccess) {
-                    statusText.innerText = "Error: Web MIDI not supported.";
+                    statusText.innerHTML = `Web MIDI not supported. <a href="/login" class="underline text-emerald-400 hover:text-emerald-300 ml-1 font-bold">Start free</a>`;
                     statusText.className = "text-xs font-mono text-left truncate w-full select-none";
                     statusText.style.color = "#f43f5e";
                     if (midiIcon) {
@@ -2457,7 +2457,7 @@
                             const outputs = Array.from(midiAccess.outputs.values());
 
                             if (inputs.length === 0 && outputs.length === 0) {
-                                statusText.innerHTML = `No MIDI hardware plugged in. <a href="/login" class="underline text-emerald-400 hover:text-emerald-300 ml-1 font-bold">Open free demo vault</a>`;
+                                statusText.innerHTML = `No hardware plugged in? <a href="/login" class="underline text-emerald-400 hover:text-emerald-300 ml-1 font-bold">Start free</a>`;
                                 statusText.className = "text-xs font-mono text-left truncate w-full select-none";
                                 statusText.style.color = "#fbbf24";
                                 if (midiIcon) {
@@ -2492,7 +2492,7 @@
                         midiAccess.onstatechange = updateDevices;
                     })
                     .catch(err => {
-                        statusText.innerText = "Access denied: check permissions.";
+                        statusText.innerHTML = `Access denied. <a href="/login" class="underline text-emerald-400 hover:text-emerald-300 ml-1 font-bold">Start free</a>`;
                         statusText.className = "text-xs font-mono text-left truncate w-full select-none";
                         statusText.style.color = "#f43f5e";
                         if (midiIcon) {

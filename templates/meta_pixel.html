@@ -10,6 +10,27 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1478411254323869');
 fbq('track', 'PageView');
+
+// Automatic Conversion Event Detection
+(function() {
+    try {
+        var params = new URLSearchParams(window.location.search);
+        var payment = params.get('payment');
+        if (payment === 'success') {
+            fbq('track', 'Purchase', { value: 95.00, currency: 'USD' });
+        } else if (payment === 'pack_success') {
+            fbq('track', 'Purchase', { value: 9.00, currency: 'USD' });
+        }
+        
+        // Track Checkout Initiations on upgrade/buy button clicks
+        document.addEventListener('click', function(e) {
+            var target = e.target.closest('a[href*="/checkout"], button[onclick*="checkout"], a[href*="buy"], form[action*="/checkout"]');
+            if (target) {
+                fbq('track', 'InitiateCheckout');
+            }
+        }, { passive: true });
+    } catch(e) {}
+})();
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1478411254323869&ev=PageView&noscript=1"

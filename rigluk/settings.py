@@ -73,6 +73,8 @@ CRON_SECRET = getenv("CRON_SECRET")
 # Analytics & alerts
 POSTHOG_API_KEY = getenv("POSTHOG_API_KEY")
 POSTHOG_HOST = getenv("POSTHOG_HOST", "https://e.rigluk.com")
+if POSTHOG_HOST and "knob.monster" in POSTHOG_HOST:
+    POSTHOG_HOST = "https://e.rigluk.com"
 # PostHog Support → Identity verification secret (not the phc_ project key)
 POSTHOG_CONVERSATIONS_IDENTITY_SECRET = getenv("POSTHOG_CONVERSATIONS_IDENTITY_SECRET")
 

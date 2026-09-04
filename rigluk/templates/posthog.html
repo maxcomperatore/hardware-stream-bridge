@@ -19,6 +19,9 @@
         var identityDistinctId = {{ posthog_identity_distinct_id | default(none) | tojson }};
         var identityHash = {{ posthog_identity_hash | default(none) | tojson }};
         var apiHost = {{ posthog_api_host | tojson }} || 'https://e.rigluk.com';
+        if (!apiHost || apiHost.indexOf('knob.monster') !== -1) {
+            apiHost = 'https://e.rigluk.com';
+        }
         var assetHost = apiHost.replace(/\.i\.posthog\.com$/, '-assets.i.posthog.com');
         var script = document.createElement('script');
         script.src = assetHost + '/static/array.js';

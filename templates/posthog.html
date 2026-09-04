@@ -18,11 +18,33 @@
         var enableConversations = {{ posthog_enable_conversations | default(false) | tojson }};
         var identityDistinctId = {{ posthog_identity_distinct_id | default(none) | tojson }};
         var identityHash = {{ posthog_identity_hash | default(none) | tojson }};
+        var apiHost = {{ posthog_api_host | tojson }} || 'https://e.bipluk.com';
+        var assetHost = apiHost.replace(/\.i\.posthog\.com$/, '-assets.i.posthog.com');
         var script = document.createElement('script');
-        script.src = 'https://us-assets.i.posthog.com/static/1.396.2/array.js';
+        script.src = assetHost + '/static/array.js';
         script.crossOrigin = 'anonymous';
         script.async = true;
+        var fallbackAttempted = false;
         script.onerror = function() {
+            if (!fallbackAttempted && script.src.indexOf('us-assets.i.posthog.com') === -1) {
+                fallbackAttempted = true;
+                var fallbackScript = document.createElement('script');
+                fallbackScript.src = 'https://us-assets.i.posthog.com/static/array.js';
+                fallbackScript.crossOrigin = 'anonymous';
+                fallbackScript.async = true;
+                fallbackScript.onload = script.onload;
+                fallbackScript.onerror = function() {
+                    window.posthog = window.posthog || {
+                        init: function() {},
+                        identify: function() {},
+                        capture: function() {},
+                        on: function() {},
+                        get_distinct_id: function() { return ''; }
+                    };
+                };
+                document.head.appendChild(fallbackScript);
+                return;
+            }
             window.posthog = window.posthog || {
                 init: function() {},
                 identify: function() {},
@@ -38,9 +60,8 @@
                 }
                 var isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
                 var initOptions = {
-                    api_host: {{ posthog_api_host | tojson }},
+                    api_host: apiHost,
                     ui_host: 'https://us.posthog.com',
-                    strict_script_versioning: true,
                     defaults: '2026-05-30',
                     person_profiles: 'identified_only',
                     disable_conversations: !enableConversations || isMobile,

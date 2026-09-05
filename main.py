@@ -1411,7 +1411,7 @@ async def api_send_studio_link(request: Request):
         return JSONResponse({"ok": False, "error": "Invalid JSON payload."}, status_code=400)
 
     email = (body.get("email") or "").strip().lower()
-    if not email or "@" not in email or "." not in email:
+    if not email or not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
         return JSONResponse({"ok": False, "error": "Please enter a valid email address."}, status_code=400)
 
     # Save to subscribers list

@@ -1615,26 +1615,21 @@
             </p>
 
             <!-- Mobile Only CTA: Send to Studio Computer -->
-            <div class="block lg:hidden max-w-sm mx-auto mt-8 px-2 reveal" style="--delay: 200ms;">
-                <div class="p-4 rounded-2xl bg-zinc-950/90 border border-zinc-800 text-left shadow-2xl backdrop-blur-md">
-                    <div class="flex items-center gap-2 mb-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" class="w-3.5 h-3.5 text-zinc-400 shrink-0"><path fill="currentColor" d="M2 12h7V1H2Zm3-1v-1h1v1ZM3 9V4h5v5Zm1-6V2h3v1Zm0 0"/></svg>
-                        <span class="text-[11px] font-pixel uppercase text-zinc-200 tracking-wider">Browsing on your phone?</span>
-                    </div>
-                    <p class="text-2xs text-zinc-400 font-sans leading-relaxed mb-3">
-                        Send a link to open at your studio desk.
-                    </p>
-                    <form onsubmit="submitMobileStudioLink(event, this)" class="flex items-center gap-1.5">
-                        <input type="email" required placeholder="producer@studio.com"
-                            class="flex-1 min-w-0 bg-zinc-900 border border-zinc-750 rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-blue-500 transition-colors" />
-                        <button type="submit" aria-label="Send studio link"
-                            class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white p-2.5 rounded-xl shrink-0 flex items-center justify-center transition-all shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 12 12" class="w-4 h-4"><path fill="currentColor" d="M4 12h1v-1h1v-1h1V7H6v1H5v1H4Zm-4 0h2v-1H1v-1H0Zm2-1h1V9H1v1h1Zm1-2h1V8H3ZM0 8h3V7h1V6h1V5H2v1H1v1H0Zm5-1h1V6H5Zm0-2h1V4H5Zm2 2h1V6H7ZM6 4h1V3H6Zm2 2h1V5H8ZM7 5h1V4H7Zm0-2h1V2H7Zm2 2h1V4H9Zm1-1h1V1H8v1h2ZM8 4h1V3H8Zm0 0"/></svg>
-                        </button>
-                    </form>
-                    <div class="mobile-studio-feedback hidden text-emerald-400 text-2xs font-mono mt-2 flex items-center gap-1.5">
-                        <span>✓ Link sent! Check your inbox when you're at your desk.</span>
-                    </div>
+            <div class="block lg:hidden max-w-sm mx-auto mt-7 px-3 reveal text-center" style="--delay: 200ms;">
+                <div class="flex items-center justify-center gap-1.5 mb-2.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" class="w-3 h-3 text-zinc-400 shrink-0"><path fill="currentColor" d="M2 12h7V1H2Zm3-1v-1h1v1ZM3 9V4h5v5Zm1-6V2h3v1Zm0 0"/></svg>
+                    <span class="text-2xs text-zinc-400 font-mono">Send a link to open at your studio desk</span>
+                </div>
+                <form onsubmit="submitMobileStudioLink(event, this)" class="flex items-center gap-1.5">
+                    <input type="email" required placeholder="you@gmail.com"
+                        class="flex-1 min-w-0 bg-zinc-900/90 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-blue-500 transition-colors shadow-inner" />
+                    <button type="submit" aria-label="Send studio link"
+                        class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white p-2.5 rounded-xl shrink-0 flex items-center justify-center transition-all shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 12 12" class="w-4 h-4"><path fill="currentColor" d="M4 12h1v-1h1v-1h1V7H6v1H5v1H4Zm-4 0h2v-1H1v-1H0Zm2-1h1V9H1v1h1Zm1-2h1V8H3ZM0 8h3V7h1V6h1V5H2v1H1v1H0Zm5-1h1V6H5Zm0-2h1V4H5Zm2 2h1V6H7ZM6 4h1V3H6Zm2 2h1V5H8ZM7 5h1V4H7Zm0-2h1V2H7Zm2 2h1V4H9Zm1-1h1V1H8v1h2ZM8 4h1V3H8Zm0 0"/></svg>
+                    </button>
+                </form>
+                <div class="mobile-studio-feedback hidden text-emerald-400 text-2xs font-mono mt-2 flex items-center justify-center gap-1.5">
+                    <span>✓ Link sent! Check your inbox when you're at your desk.</span>
                 </div>
             </div>
 
@@ -1758,29 +1753,6 @@
                     </div>
             </div>
 
-            <!-- Mobile Video Demo Follow-up Box -->
-            <div class="block lg:hidden max-w-sm mx-auto mt-8 px-2">
-                <div class="p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800 text-left shadow-lg backdrop-blur-md">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="text-sm">🎹</span>
-                        <span class="text-[11px] font-pixel uppercase text-zinc-200 tracking-wider">Ready to connect your synth?</span>
-                    </div>
-                    <p class="text-2xs text-zinc-400 font-sans leading-relaxed mb-3">
-                        Web MIDI requires desktop Chrome. Email yourself a direct studio pass link to open at your desk:
-                    </p>
-                    <form onsubmit="submitMobileStudioLink(event, this)" class="flex items-center gap-1.5">
-                        <input type="email" required placeholder="producer@studio.com"
-                            class="flex-1 min-w-0 bg-zinc-900 border border-zinc-750 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-blue-500 transition-colors" />
-                        <button type="submit" aria-label="Send studio link"
-                            class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white p-2 rounded-xl shrink-0 flex items-center justify-center transition-all shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 12 12" class="w-4 h-4"><path fill="currentColor" d="M4 12h1v-1h1v-1h1V7H6v1H5v1H4Zm-4 0h2v-1H1v-1H0Zm2-1h1V9H1v1h1Zm1-2h1V8H3ZM0 8h3V7h1V6h1V5H2v1H1v1H0Zm5-1h1V6H5Zm0-2h1V4H5Zm2 2h1V6H7ZM6 4h1V3H6Zm2 2h1V5H8ZM7 5h1V4H7Zm0-2h1V2H7Zm2 2h1V4H9Zm1-1h1V1H8v1h2ZM8 4h1V3H8Zm0 0"/></svg>
-                        </button>
-                    </form>
-                    <div class="mobile-studio-feedback hidden text-emerald-400 text-2xs font-mono mt-2 flex items-center gap-1.5">
-                        <span>✓ Link sent! Check your inbox when you're at your desk.</span>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- The Problem Section -->
@@ -3031,8 +3003,16 @@
         const input = formEl.querySelector('input[type="email"]');
         const button = formEl.querySelector('button');
         const feedback = formEl.parentElement.querySelector('.mobile-studio-feedback');
-        const email = input ? input.value.trim() : '';
-        if (!email) return;
+        const email = input ? input.value.trim().toLowerCase() : '';
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!email || !emailRegex.test(email)) {
+            if (input) {
+                input.focus();
+                input.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+                setTimeout(() => input.classList.remove('border-red-500', 'ring-1', 'ring-red-500'), 2500);
+            }
+            return;
+        }
 
         button.disabled = true;
         const originalHtml = button.innerHTML;

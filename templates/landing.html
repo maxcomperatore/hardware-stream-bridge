@@ -1688,24 +1688,7 @@
                 </div>
             </div>
 
-            <!-- Real Technical Specs Banner -->
-            <div class="border-t border-b border-zinc-900 py-6 sm:py-8 mt-12 sm:mt-16 max-w-4xl mx-auto grid grid-cols-3 divide-x divide-zinc-800/80 text-center reveal"
-                style="--delay: 200ms;">
-                <div class="px-2 sm:px-4 py-1">
-                    <span id="live-patch-counter" data-initial="{{ total_patches | default(1000) }}"
-                        class="block text-2xl sm:text-3xl md:text-4xl font-lcd text-emerald-400 tracking-wider leading-none transition-colors duration-200">{{
-                        total_patches | default(1000) }}</span>
-                    <span class="text-[8px] sm:text-[9px] md:text-[10px] font-roman uppercase text-zinc-400 mt-1.5 block tracking-wider leading-tight">PATCHES BACKED UP</span>
-                </div>
-                <div class="px-2 sm:px-4 py-1">
-                    <span class="block text-2xl sm:text-3xl md:text-4xl font-lcd text-emerald-400 tracking-wider leading-none">{{ user_count | default(0) }}</span>
-                    <span class="text-[8px] sm:text-[9px] md:text-[10px] font-roman uppercase text-zinc-400 mt-1.5 block tracking-wider leading-tight">ACTIVE USERS</span>
-                </div>
-                <div class="px-2 sm:px-4 py-1">
-                    <span class="block text-2xl sm:text-3xl md:text-4xl font-lcd text-emerald-400 tracking-wider leading-none">{{ paid_user_count | default(0) }}</span>
-                    <span class="text-[8px] sm:text-[9px] md:text-[10px] font-roman uppercase text-zinc-400 mt-1.5 block tracking-wider leading-tight">HAPPY BIPLUKERS</span>
-                </div>
-            </div>
+
 
             <!-- Symmetric Preview Grid (Physical Synth vs. Virtual App) -->
             <div id="demo"

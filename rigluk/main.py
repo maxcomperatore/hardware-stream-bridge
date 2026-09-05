@@ -1385,6 +1385,61 @@ async def faq_ask(request: Request):
     result = answer_faq_question(question)
     return result
 
+
+@app.post("/api/send-studio-link")
+async def api_send_studio_link(request: Request):
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"ok": False, "error": "Invalid JSON payload."}, status_code=400)
+
+    email = (body.get("email") or "").strip().lower()
+    if not email or "@" not in email or "." not in email:
+        return JSONResponse({"ok": False, "error": "Please enter a valid email address."}, status_code=400)
+
+    # Save to subscribers list
+    try:
+        database.create_subscriber(email)
+    except Exception as e:
+        print(f"Error saving subscriber in send_studio_link: {e}")
+
+    # Send link email
+    subject = "🎹 Your Bipluk Studio Link (Open on your DAW computer)"
+    html_content = f"""
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; background: #09090b; color: #f4f4f5; padding: 32px; border-radius: 16px; border: 1px solid #27272a;">
+        <div style="margin-bottom: 24px;">
+            <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #10b981; font-weight: bold;">Bipluk Web MIDI</span>
+            <h1 style="color: #ffffff; font-size: 22px; margin: 8px 0 0 0; font-weight: 700;">Here is your studio link 🎹</h1>
+        </div>
+        <p style="color: #a1a1aa; font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
+            You requested this link while browsing on your phone. When you're sitting at your studio computer (Mac or PC), open this in Google Chrome, Brave, or Edge:
+        </p>
+        <div style="text-align: center; margin: 28px 0;">
+            <a href="https://bipluk.com/?ref=mobile_reminder&email={email}" style="display: inline-block; background: #2563eb; color: #ffffff; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: 0.5px;">
+                Open Bipluk on Studio Computer →
+            </a>
+        </div>
+        <p style="color: #71717a; font-size: 12px; line-height: 1.5; margin-top: 24px;">
+            What to do next:<br>
+            1. Connect your standard USB-MIDI cable to your synth.<br>
+            2. Open the link in Chrome.<br>
+            3. Back up or audition your hardware patches in 1 click (zero drivers needed).
+        </p>
+        <div style="border-top: 1px solid #18181b; margin-top: 32px; padding-top: 16px; font-size: 11px; color: #52525b;">
+            bipluk.com • Browser-based hardware synthesizer patch vault
+        </div>
+    </div>
+    """
+    text_content = f"Here is your link to open Bipluk on your studio computer: https://bipluk.com/?ref=mobile_reminder&email={email}\n\nPlug in your USB-MIDI cable to back up your hardware synth patches in 1 click."
+
+    try:
+        send_email_via_resend(email, subject, text_content, html=html_content)
+    except Exception as e:
+        print(f"Error sending email in send_studio_link: {e}")
+
+    return JSONResponse({"ok": True, "message": "Link sent! Check your inbox."})
+
+
 @app.get("/sysex-librarian-alternatives", response_class=HTMLResponse)
 async def sysex_librarian_alternatives(request: Request):
     user = get_current_user(request)

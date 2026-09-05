@@ -1615,11 +1615,33 @@
             </p>
 
             <!-- Mobile Only CTA (Replaces MIDI scanner on phones/tablets) -->
-            <div class="block lg:hidden max-w-xs mx-auto mt-8 reveal" style="--delay: 200ms;">
+            <div class="block lg:hidden max-w-sm mx-auto mt-8 px-2 reveal" style="--delay: 200ms;">
                 <a href="/login"
                     class="btn-lapis w-full py-3.5 px-6 rounded-2xl text-xs font-pixel uppercase tracking-widest text-white flex items-center justify-center shadow-lapis-glow active:scale-[0.98] transition-all">
                     <span>Start Free</span>
                 </a>
+
+                <!-- Mobile Quick Send-to-Studio Form -->
+                <div class="mt-4 p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800 text-left shadow-lg backdrop-blur-md">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-sm">📱</span>
+                        <span class="text-[11px] font-pixel uppercase text-zinc-200 tracking-wider">Browsing on your phone?</span>
+                    </div>
+                    <p class="text-2xs text-zinc-400 font-sans leading-relaxed mb-3">
+                        Send a link to your email to open next time you're at your studio computer.
+                    </p>
+                    <form onsubmit="submitMobileStudioLink(event, this)" class="flex items-center gap-1.5">
+                        <input type="email" required placeholder="producer@studio.com"
+                            class="flex-1 bg-zinc-900 border border-zinc-750 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-blue-500 transition-colors" />
+                        <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-pixel uppercase text-[10px] tracking-wider px-3.5 py-2 rounded-xl transition-all whitespace-nowrap shadow-sm">
+                            Send Link
+                        </button>
+                    </form>
+                    <div class="mobile-studio-feedback hidden text-emerald-400 text-2xs font-mono mt-2 flex items-center gap-1.5">
+                        <span>✓ Link sent! Check your inbox when you're at your desk.</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Interactive MIDI Detector (Desktop Only) -->
@@ -1739,6 +1761,29 @@
                             <source src="/static/2.mp4?v=20260701b" type="video/mp4">
                             <track kind="captions" src="" srclang="en" label="No captions" default>
                         </video>
+                    </div>
+            </div>
+
+            <!-- Mobile Video Demo Follow-up Box -->
+            <div class="block lg:hidden max-w-sm mx-auto mt-8 px-2">
+                <div class="p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800 text-left shadow-lg backdrop-blur-md">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-sm">🎹</span>
+                        <span class="text-[11px] font-pixel uppercase text-zinc-200 tracking-wider">Ready to connect your synth?</span>
+                    </div>
+                    <p class="text-2xs text-zinc-400 font-sans leading-relaxed mb-3">
+                        Web MIDI requires desktop Chrome. Email yourself a direct studio pass link to open at your desk:
+                    </p>
+                    <form onsubmit="submitMobileStudioLink(event, this)" class="flex items-center gap-1.5">
+                        <input type="email" required placeholder="producer@studio.com"
+                            class="flex-1 bg-zinc-900 border border-zinc-750 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-blue-500 transition-colors" />
+                        <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-pixel uppercase text-[10px] tracking-wider px-3.5 py-2 rounded-xl transition-all whitespace-nowrap shadow-sm">
+                            Send Link
+                        </button>
+                    </form>
+                    <div class="mobile-studio-feedback hidden text-emerald-400 text-2xs font-mono mt-2 flex items-center gap-1.5">
+                        <span>✓ Link sent! Check your inbox when you're at your desk.</span>
                     </div>
                 </div>
             </div>
@@ -2986,6 +3031,48 @@
     </script>
 {% endif %}
 
+    <script>
+    async function submitMobileStudioLink(event, formEl) {
+        event.preventDefault();
+        const input = formEl.querySelector('input[type="email"]');
+        const button = formEl.querySelector('button');
+        const feedback = formEl.parentElement.querySelector('.mobile-studio-feedback');
+        const email = input ? input.value.trim() : '';
+        if (!email) return;
+
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = 'Sending...';
+
+        try {
+            if (window.posthog && typeof window.posthog.capture === 'function') {
+                window.posthog.capture('mobile_studio_link_requested', { email: email });
+                window.posthog.identify(email, { email: email });
+            }
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead');
+            }
+
+            const res = await fetch('/api/send-studio-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                formEl.classList.add('hidden');
+                feedback.classList.remove('hidden');
+            } else {
+                alert(data.error || 'Could not send link. Please try again.');
+                button.disabled = false;
+                button.textContent = originalText;
+            }
+        } catch (err) {
+            formEl.classList.add('hidden');
+            feedback.classList.remove('hidden');
+        }
+    }
+    </script>
 </body>
 
 

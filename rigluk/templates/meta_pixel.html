@@ -19,8 +19,14 @@ fbq('track', 'PageView');
         var payment = params.get('payment');
         if (payment === 'success') {
             fbq('track', 'Purchase', { value: 95.00, currency: 'USD' });
+            if (window.posthog && typeof window.posthog.capture === 'function') {
+                window.posthog.capture('purchase_completed', { value: 95.00, currency: 'USD' });
+            }
         } else if (payment === 'pack_success') {
             fbq('track', 'Purchase', { value: 9.00, currency: 'USD' });
+            if (window.posthog && typeof window.posthog.capture === 'function') {
+                window.posthog.capture('purchase_completed', { value: 9.00, currency: 'USD' });
+            }
         }
         
         // Track Checkout Initiations on upgrade/buy button clicks

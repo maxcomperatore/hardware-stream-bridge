@@ -1607,17 +1607,11 @@
                         </svg></span></span> alternative you deserve. <span class="underline decoration-zinc-700/60 underline-offset-4 decoration-1">No driver wall, no app sprawl. One click backs it all.</span>
             </p>
 
-            <!-- Mobile Only CTA (Replaces MIDI scanner on phones/tablets) -->
+            <!-- Mobile Only CTA: Send to Studio Computer -->
             <div class="block lg:hidden max-w-sm mx-auto mt-8 px-2 reveal" style="--delay: 200ms;">
-                <a href="/login"
-                    class="btn-lapis w-full py-3.5 px-6 rounded-2xl text-xs font-pixel uppercase tracking-widest text-white flex items-center justify-center shadow-lapis-glow active:scale-[0.98] transition-all">
-                    <span>Start Free</span>
-                </a>
-
-                <!-- Mobile Quick Send-to-Studio Form -->
-                <div class="mt-4 p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800 text-left shadow-lg backdrop-blur-md">
+                <div class="p-4 rounded-2xl bg-zinc-950/90 border border-zinc-800 text-left shadow-2xl backdrop-blur-md">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="text-sm">📱</span>
+                        <span class="text-base">📱</span>
                         <span class="text-[11px] font-pixel uppercase text-zinc-200 tracking-wider">Browsing on your phone?</span>
                     </div>
                     <p class="text-2xs text-zinc-400 font-sans leading-relaxed mb-3">
@@ -1625,9 +1619,9 @@
                     </p>
                     <form onsubmit="submitMobileStudioLink(event, this)" class="flex items-center gap-1.5">
                         <input type="email" required placeholder="producer@studio.com"
-                            class="flex-1 bg-zinc-900 border border-zinc-750 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-blue-500 transition-colors" />
+                            class="flex-1 bg-zinc-900 border border-zinc-750 rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-blue-500 transition-colors" />
                         <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-pixel uppercase text-[10px] tracking-wider px-3.5 py-2 rounded-xl transition-all whitespace-nowrap shadow-sm">
+                            class="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-pixel uppercase text-[10px] tracking-wider px-4 py-2.5 rounded-xl transition-all whitespace-nowrap shadow-sm">
                             Send Link
                         </button>
                     </form>

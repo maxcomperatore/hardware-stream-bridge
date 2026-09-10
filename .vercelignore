@@ -1,0 +1,21 @@
+# Heavy folders not needed for Vercel web app
+knobkraft_src/
+sysex_adapters/
+private/
+scratch/
+tests/
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# Local scripts run on GitHub Actions, not Vercel
+scripts/
+.github/
+
+# Development & temporary files
+*.md
+*.log
+bipluk.db
+test_*.py
+check_panels.py
+upload_to_r2.py

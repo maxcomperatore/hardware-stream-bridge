@@ -1,0 +1,80 @@
+<!-- Apple iOS Floating Glass Island Mobile Navigation -->
+<div class="md:hidden fixed bottom-4 inset-x-0 z-50 flex justify-center px-4 pointer-events-none pb-[env(safe-area-inset-bottom)]">
+    <nav
+        class="pointer-events-auto w-full max-w-[340px] flex items-center justify-around px-2 py-1.5 rounded-full bg-zinc-950/85 backdrop-blur-2xl border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.12)]">
+        <a href="/#features"
+            class="mobile-nav-item flex flex-col items-center gap-0.5 py-1 px-3 group active:scale-90 transition-all">
+            <img src="/static/icons/dinkie/bigger.svg" alt="Features"
+                class="h-5 w-5 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
+                style="filter: invert(1);">
+            <span
+                class="text-[10px] font-sans font-medium tracking-tight text-zinc-400 group-hover:text-white group-[.active]:text-white transition-colors">Features</span>
+        </a>
+        <a href="/#pricing"
+            class="mobile-nav-item flex flex-col items-center gap-0.5 py-1 px-3 group active:scale-90 transition-all">
+            <img id="mobile-nav-pricing-icon" src="/static/icons/dinkie/money-bag-usd.svg" alt="Pricing"
+                class="h-5 w-5 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
+                style="filter: invert(1);">
+            <span
+                class="text-[10px] font-sans font-medium tracking-tight text-zinc-400 group-hover:text-white group-[.active]:text-white transition-colors">Pricing</span>
+        </a>
+        <a href="/resources"
+            class="mobile-nav-item flex flex-col items-center gap-0.5 py-1 px-3 group active:scale-90 transition-all relative">
+            <img src="/static/icons/dinkie/graduation-cap.svg" alt="Resources"
+                class="h-5 w-5 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
+                style="filter: invert(1);">
+            <span
+                class="text-[10px] font-sans font-medium tracking-tight text-zinc-400 group-hover:text-white group-[.active]:text-white transition-colors">Resources</span>
+        </a>
+        <a href="/shop"
+            class="mobile-nav-item flex flex-col items-center gap-0.5 py-1 px-3 group active:scale-90 transition-all">
+            <img src="/static/icons/dinkie/shopping-bag.svg" alt="Shop"
+                class="h-5 w-5 opacity-60 group-hover:opacity-100 group-[.active]:opacity-100 transition-opacity"
+                style="filter: invert(1);">
+            <span
+                class="text-[10px] font-sans font-medium tracking-tight text-zinc-400 group-hover:text-white group-[.active]:text-white transition-colors">Shop</span>
+        </a>
+    </nav>
+</div>
+<script>
+    (function () {
+        const PRICING_NAV_ICONS = {
+            usd: 'money-bag-usd',
+            gbp: 'money-bag-gbp',
+            eur: 'money-bag-eur',
+            chf: 'money-bag-frf',
+            cad: 'money-bag-usd',
+            aud: 'money-bag-usd',
+        };
+
+        function setMobilePricingIcon(region) {
+            const img = document.getElementById('mobile-nav-pricing-icon');
+            const icon = PRICING_NAV_ICONS[region] || PRICING_NAV_ICONS.usd;
+            if (img) img.src = `/static/icons/dinkie/${icon}.svg`;
+        }
+
+        const fromPage = document.documentElement.dataset.pricingRegion;
+        if (fromPage && PRICING_NAV_ICONS[fromPage]) {
+            setMobilePricingIcon(fromPage);
+        } else {
+            fetch('/api/geoip')
+                .then((res) => (res.ok ? res.text() : ''))
+                .then((text) => (text ? JSON.parse(text) : null))
+                .then((data) => {
+                    if (data && data.pricing_region) setMobilePricingIcon(data.pricing_region);
+                })
+                .catch(() => {});
+        }
+
+        // Highlight active navigation tab
+        try {
+            const path = window.location.pathname.replace(/\/$/, '') || '/';
+            document.querySelectorAll('.mobile-nav-item').forEach((item) => {
+                const href = (item.getAttribute('href') || '').split('#')[0].replace(/\/$/, '') || '/';
+                if (href !== '/' && path.startsWith(href)) {
+                    item.classList.add('active');
+                }
+            });
+        } catch (_) {}
+    })();
+</script>

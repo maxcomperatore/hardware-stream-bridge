@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Soft Apple Pro Ambient Radial Glow -->
+    <radialGradient id="ogSpotlight" cx="50%" cy="38%" r="48%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.015"/>
+      <stop offset="100%" stop-color="#060608" stop-opacity="0"/>
+    </radialGradient>
+    
+    <!-- Precision Hardware Grid -->
+    <pattern id="hardwareGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#ffffff" stroke-opacity="0.025" stroke-width="1"/>
+    </pattern>
+
+    <!-- Exact Landing Page Button Gradient -->
+    <linearGradient id="landingBtnGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1c1c20"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+
+    <!-- Center Badge Gradient -->
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1c1c20"/>
+      <stop offset="100%" stop-color="#0c0c0e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 1. Deep Obsidian Base -->
+  <rect width="1200" height="630" fill="#060608"/>
+  <rect width="1200" height="630" fill="url(#hardwareGrid)"/>
+  <rect width="1200" height="630" fill="url(#ogSpotlight)"/>
+  <rect x="1" y="1" width="1198" height="628" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1.5"/>
+
+  <!-- 2. Top Eyebrow: Monochrome Silver Pill (NO GREEN PULSE) -->
+  <g transform="translate(480, 68)">
+    <rect width="240" height="28" rx="14" fill="#0f0f13" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+    <text x="120" y="18" fill="#a1a1aa" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="10.5" font-weight="600" letter-spacing="0.14em" text-anchor="middle">WEB MIDI - HARDWARE VAULT</text>
+  </g>
+
+  <!-- 3. Center Pixel Crest in Apple-grade Anodized Bezel -->
+  <g transform="translate(533, 115)">
+    <!-- Bezel -->
+    <rect width="134" height="134" rx="22" fill="url(#badgeGrad)" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1"/>
+    <!-- Specular rim highlight -->
+    <line x1="22" y1="1" x2="112" y2="1" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1"/>
+    <!-- Centered 11x11 sprite (99x99 inside 134x134 -> 17.5px integer margin) -->
+    <svg x="17.5" y="17.5" width="99" height="99" viewBox="0 1 11 11">
+      <path fill="#ffffff" d="M10 9h1V7H9V6h2V4h-1v1H8v1H7v1h1v1h2Zm-9 2h1v-1H1Zm1-1h1V9H2Zm1 2h2v-2h1v2h2v-1H7V9H4v2H3Zm0-3h1V8H3ZM0 9h1V8h2V7h1V6H3V5H1V4H0v2h2v1H0Zm5-1h1V7H5Zm2 1h1V8H7ZM3 5h1V4H3ZM2 4h1V3H2ZM1 3h1V2H1Zm7 7h1V9H8Zm1 1h1v-1H9ZM5 6h1V5H5ZM4 4h3V2h1V1H6v2H5V1H3v1h1Zm3 1h1V4H7Zm1-1h1V3H8Zm1-1h1V2H9Zm0 0"/>
+    </svg>
+  </g>
+
+  <!-- 4. Wordmark: bipluk -->
+  <text x="600" y="325" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif" font-size="58" font-weight="700" letter-spacing="-0.035em" text-anchor="middle">bipluk</text>
+
+  <!-- 5. Subtitle -->
+  <text x="600" y="368" fill="#94949e" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif" font-size="23" font-weight="400" letter-spacing="-0.01em" text-anchor="middle">Zero-install Web MIDI SysEx patch librarian and hardware vault.</text>
+
+  <!-- 6. Exact Landing Page .btn-upgrade-tv Tactical Button -->
+  <g transform="translate(485, 418)">
+    <!-- Outer Bezel Border -->
+    <rect x="-1" y="-1" width="232" height="48" rx="13" fill="#ffffff" fill-opacity="0.08"/>
+    <!-- Inner Tactical Gradient -->
+    <rect width="230" height="46" rx="12" fill="url(#landingBtnGrad)"/>
+    <!-- Top Inset Specular Line -->
+    <line x1="12" y1="1" x2="218" y2="1" stroke="#ffffff" stroke-opacity="0.18" stroke-width="1"/>
+    
+    <!-- Mini Logo Icon inside button -->
+    <svg x="42" y="16" width="14" height="14" viewBox="0 1 11 11">
+      <path fill="#ffffff" d="M10 9h1V7H9V6h2V4h-1v1H8v1H7v1h1v1h2Zm-9 2h1v-1H1Zm1-1h1V9H2Zm1 2h2v-2h1v2h2v-1H7V9H4v2H3Zm0-3h1V8H3ZM0 9h1V8h2V7h1V6H3V5H1V4H0v2h2v1H0Zm5-1h1V7H5Zm2 1h1V8H7ZM3 5h1V4H3ZM2 4h1V3H2ZM1 3h1V2H1Zm7 7h1V9H8Zm1 1h1v-1H9ZM5 6h1V5H5ZM4 4h3V2h1V1H6v2H5V1H3v1h1Zm3 1h1V4H7Zm1-1h1V3H8Zm1-1h1V2H9Zm0 0"/>
+    </svg>
+
+    <!-- Button Typography -->
+    <text x="127" y="28" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" letter-spacing="0.04em" text-anchor="middle">CONNECT SYNTH</text>
+  </g>
+
+  <!-- 7. Hardware Badges (Apple Pro Anodized Strips) -->
+  <g transform="translate(230, 502)" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="11" font-weight="600" letter-spacing="0.06em" text-anchor="middle">
+    <!-- Tag 1 -->
+    <g transform="translate(0, 0)">
+      <rect width="144" height="26" rx="6" fill="#0c0c0f" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+      <text x="72" y="17" fill="#71717a">ROLAND JUNO-106</text>
+    </g>
+    <!-- Tag 2 -->
+    <g transform="translate(152, 0)">
+      <rect width="112" height="26" rx="6" fill="#0c0c0f" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+      <text x="56" y="17" fill="#71717a">YAMAHA DX7</text>
+    </g>
+    <!-- Tag 3 -->
+    <g transform="translate(272, 0)">
+      <rect width="96" height="26" rx="6" fill="#0c0c0f" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+      <text x="48" y="17" fill="#71717a">KORG M1</text>
+    </g>
+    <!-- Tag 4 -->
+    <g transform="translate(376, 0)">
+      <rect width="116" height="26" rx="6" fill="#0c0c0f" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+      <text x="58" y="17" fill="#71717a">CASIO CZ-101</text>
+    </g>
+    <!-- Tag 5 -->
+    <g transform="translate(500, 0)">
+      <rect width="134" height="26" rx="6" fill="#0c0c0f" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+      <text x="67" y="17" fill="#71717a">ENSONIQ ESQ-1</text>
+    </g>
+  </g>
+
+  <!-- 8. Bottom Precision Spec Line -->
+  <text x="600" y="580" fill="#52525b" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" font-weight="600" letter-spacing="0.12em" text-anchor="middle">ANY BROWSER  |  NO DRIVERS OR MIDI-OX REQUIRED  |  BIPLUK.COM</text>
+</svg>

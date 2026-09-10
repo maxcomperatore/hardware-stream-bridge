@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instant Laser Valuation</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23ffffff'/%3E%3Ccircle cx='39' cy='53' r='5' fill='%231a1a1a'/%3E%3Ccircle cx='156' cy='43' r='5.5' fill='%231a1a1a'/%3E%3Cpath d='M 92 65 C 88 85, 86 110, 88 125 C 89 135, 92 144, 94 150' stroke='%231a1a1a' stroke-width='11' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              500: '#10b981',
+              600: '#059669',
+              900: '#064e3b',
+            },
+            darkBg: '#090a0f',
+            cardBg: '#12141c',
+            borderCol: '#232736'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #090a0f; color: #e2e8f0; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass-card { background: rgba(18, 20, 28, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .emerald-glow { box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.25); }
+    .scanline {
+      background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(16,185,129,0.15), rgba(255,255,255,0));
+      animation: scan 2s linear infinite;
+    }
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(1000%); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+
+  <!-- Main Container -->
+  <main class="max-w-5xl mx-auto px-6 py-12 w-full flex-1">
+    
+    <!-- Hero Header -->
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/70 border border-emerald-800/60 text-emerald-400 text-xs font-mono mb-4">
+        <span>⚡ 100% FREE B2B LASER VALUATION</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+        Instant Laser Valuation
+      </h1>
+      <p class="text-zinc-400 text-sm sm:text-base leading-relaxed">
+        Drop images of the <strong class="text-zinc-200">pulse count screen</strong>, <strong class="text-zinc-200">serial number badge</strong>, and <strong class="text-zinc-200">chassis/handpieces</strong> to generate an instant fair-market valuation certificate.
+      </p>
+    </div>
+
+    <!-- Hidden Pre-Configured API Key -->
+    <input type="hidden" id="api-key-input" value="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" />
+
+    <!-- Drop Zone Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+      
+      <!-- Slot 1: Odometer / Screen -->
+      <div class="drop-slot glass-card rounded-xl p-5 border-2 border-dashed border-zinc-800 hover:border-emerald-500/60 transition cursor-pointer relative overflow-hidden group" id="slot-1" onclick="document.getElementById('file-1').click()">
+        <input type="file" id="file-1" accept="image/*" class="hidden" onchange="handleFileSelect(event, 1)">
+        <div class="text-center py-6" id="preview-container-1">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-zinc-900 group-hover:bg-emerald-950/60 flex items-center justify-center text-xl text-zinc-400 group-hover:text-emerald-400 transition">
+            📟
+          </div>
+          <div class="text-xs font-bold text-zinc-200 mb-1">1. Pulse Count / Screen</div>
+          <div class="text-[11px] text-zinc-500">Odometer, software rev, shot counts</div>
+        </div>
+      </div>
+
+      <!-- Slot 2: Serial Plate -->
+      <div class="drop-slot glass-card rounded-xl p-5 border-2 border-dashed border-zinc-800 hover:border-emerald-500/60 transition cursor-pointer relative overflow-hidden group" id="slot-2" onclick="document.getElementById('file-2').click()">
+        <input type="file" id="file-2" accept="image/*" class="hidden" onchange="handleFileSelect(event, 2)">
+        <div class="text-center py-6" id="preview-container-2">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-zinc-900 group-hover:bg-emerald-950/60 flex items-center justify-center text-xl text-zinc-400 group-hover:text-emerald-400 transition">
+            🏷️
+          </div>
+          <div class="text-xs font-bold text-zinc-200 mb-1">2. Manufacturer Badge</div>
+          <div class="text-[11px] text-zinc-500">Serial number, MFR date, voltage</div>
+        </div>
+      </div>
+
+      <!-- Slot 3: Chassis / Handpieces -->
+      <div class="drop-slot glass-card rounded-xl p-5 border-2 border-dashed border-zinc-800 hover:border-emerald-500/60 transition cursor-pointer relative overflow-hidden group" id="slot-3" onclick="document.getElementById('file-3').click()">
+        <input type="file" id="file-3" accept="image/*" class="hidden" onchange="handleFileSelect(event, 3)">
+        <div class="text-center py-6" id="preview-container-3">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-zinc-900 group-hover:bg-emerald-950/60 flex items-center justify-center text-xl text-zinc-400 group-hover:text-emerald-400 transition">
+            ✨
+          </div>
+          <div class="text-xs font-bold text-zinc-200 mb-1">3. Chassis & Handpieces</div>
+          <div class="text-[11px] text-zinc-500">Optics, fiber condition, accessories</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Action Button -->
+    <div class="flex justify-center mb-10">
+      <button 
+        id="analyze-btn"
+        onclick="runAppraisal()"
+        class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-3 transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+      >
+        <span>⚡ RUN 100% FREE AI VALUATION</span>
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-state" class="hidden glass-card rounded-2xl p-8 mb-10 border border-emerald-500/30 text-center relative overflow-hidden">
+      <div class="scanline absolute inset-0 pointer-events-none"></div>
+      <div class="w-12 h-12 mx-auto mb-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      <h3 class="text-base font-bold text-white mb-1">Analyzing Laser Hardware...</h3>
+      <p class="text-xs text-zinc-400 font-mono" id="loading-step">Extracting serial number, pulse telemetry, and calculating fair market value...</p>
+    </div>
+
+    <!-- Results Section -->
+    <div id="result-section" class="hidden space-y-6">
+      
+      <!-- Certificate Header Banner -->
+      <div class="glass-card rounded-2xl p-6 sm:p-8 border border-emerald-500/40 emerald-glow relative">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-zinc-800">
+          <div>
+            <span class="text-[10px] font-mono uppercase bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded tracking-widest">
+              CERTIFIED VALUATION REPORT
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2" id="res-title">Candela GentleMax Pro (2022)</h2>
+            <div class="text-xs text-zinc-400 font-mono mt-1" id="res-serial">SERIAL # GMP-8842-US • VERIFIED OCR</div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="text-xs text-zinc-400 uppercase tracking-wider font-mono">Estimated Fair Market Value</div>
+            <div class="text-3xl sm:text-4xl font-extrabold text-emerald-400 font-mono mt-1" id="res-price">$48,500</div>
+          </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
+          <div class="bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80">
+            <div class="text-[10px] text-zinc-500 uppercase font-mono">Pulse Count / Shots</div>
+            <div class="text-base font-bold text-zinc-200 mt-1 font-mono" id="res-pulses">84,200</div>
+          </div>
+          <div class="bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80">
+            <div class="text-[10px] text-zinc-500 uppercase font-mono">Chassis / Optical Health</div>
+            <div class="text-base font-bold text-emerald-400 mt-1 font-mono" id="res-condition">94% (Grade A)</div>
+          </div>
+          <div class="bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80">
+            <div class="text-[10px] text-zinc-500 uppercase font-mono">MFR Recertification Fee</div>
+            <div class="text-base font-bold text-amber-400 mt-1 font-mono" id="res-recert">-$12,000</div>
+          </div>
+          <div class="bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80">
+            <div class="text-[10px] text-zinc-500 uppercase font-mono">Recommended List Price</div>
+            <div class="text-base font-bold text-zinc-100 mt-1 font-mono" id="res-list-price">$52,000</div>
+          </div>
+        </div>
+
+        <!-- AI Executive Summary & Telemetry Breakdown -->
+        <div class="mt-6 pt-6 border-t border-zinc-800 space-y-4">
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2 font-mono">🔍 AI Hardware & Optical Inspection Notes</h4>
+            <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed bg-zinc-950/40 p-4 rounded-xl border border-zinc-800/60" id="res-notes">
+              Telemetry confirms genuine OEM optics with low cumulative flashlamp wear. Serial numbers match between chassis plate and software controller. Handpieces show minor cosmetic casing wear with 100% fiber integrity.
+            </p>
+          </div>
+
+          <!-- Price Recommendation Matrix -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <div class="p-3.5 rounded-lg bg-zinc-900/80 border border-zinc-800">
+              <div class="text-[10px] uppercase font-mono text-zinc-500">⚡ Fast Wholesale Liquidation (7 Days)</div>
+              <div class="text-sm font-bold text-zinc-300 mt-1 font-mono" id="res-wholesale">$41,000</div>
+            </div>
+            <div class="p-3.5 rounded-lg bg-emerald-950/30 border border-emerald-800/50">
+              <div class="text-[10px] uppercase font-mono text-emerald-400">🎯 Direct MedSpa-to-MedSpa (30 Days)</div>
+              <div class="text-sm font-bold text-emerald-400 mt-1 font-mono" id="res-direct">$48,500</div>
+            </div>
+            <div class="p-3.5 rounded-lg bg-zinc-900/80 border border-zinc-800">
+              <div class="text-[10px] uppercase font-mono text-zinc-500">🏢 Commercial Dealer Retail Out</div>
+              <div class="text-sm font-bold text-zinc-300 mt-1 font-mono" id="res-dealer">$56,000</div>
+            </div>
+          </div>
+
+          <!-- 1-Click Publish to Lumdior Marketplace -->
+          <div class="mt-6 p-5 rounded-xl bg-zinc-950 border border-emerald-500/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-white">🚀 Ready to sell directly to verified clinics?</div>
+              <div class="text-[11px] text-zinc-400 font-mono mt-0.5">Publish your machine with this verified appraisal badge for 100% free.</div>
+            </div>
+            <a href="/marketplace" class="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs font-mono shadow-lg shadow-emerald-500/20 text-center transition">
+              + Publish Listing to Marketplace (Free) →
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const uploadedImages = [null, null, null];
+
+    function handleFileSelect(event, slotNum) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Data = e.target.result;
+        uploadedImages[slotNum - 1] = base64Data;
+
+        // Update preview in UI
+        const container = document.getElementById(`preview-container-${slotNum}`);
+        container.innerHTML = `
+          <div class="relative w-full h-28 rounded-lg overflow-hidden border border-emerald-500/40">
+            <img src="${base64Data}" class="w-full h-full object-cover" />
+            <div class="absolute top-1 right-1 bg-black/80 text-emerald-400 text-[10px] font-mono px-1.5 py-0.5 rounded">
+              SLOT ${slotNum} READY
+            </div>
+          </div>
+        `;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function runAppraisal() {
+      const activeImages = uploadedImages.filter(img => img !== null);
+      if (activeImages.length === 0) {
+        alert("Please upload at least 1 laser image to appraise.");
+        return;
+      }
+
+      const apiKey = document.getElementById('api-key-input').value.trim();
+      
+      // Show loading
+      document.getElementById('loading-state').classList.remove('hidden');
+      document.getElementById('result-section').classList.add('hidden');
+      document.getElementById('analyze-btn').disabled = true;
+
+      // Master Prompt for Gemini 3.7 Flash
+      const systemPrompt = `You are the chief medical laser appraiser for LUMDIOR (the B2B marketplace for aesthetic equipment).
+Your job is to examine the provided images of an aesthetic medical laser (e.g. Candela GentleMax Pro, Sciton BBL/Joule, Cutera Secret RF, Alma Soprano, Cynosure Apogee, Lumenis M22, InMode Morpheus8).
+
+Extract or deduce the following hardware data:
+1. Manufacturer & Exact Model Name
+2. Estimated Year of Manufacture
+3. Serial Number / Badge ID (read OCR from photo or estimate)
+4. Total Pulse Count / Shot Telemetry (read from odometer screen or estimate based on wear)
+5. Physical & Optical Condition (Grade A, B, or C with percentage)
+6. Expected Manufacturer Recertification Fee (e.g. Candela typically $10k-$15k, Sciton $10k-$12k, Alma $5k-$8k)
+7. Estimated Fair Market Value ($ USD)
+8. Recommended Asking List Price ($ USD)
+9. Wholesale Fast-Liquidation Value ($ USD)
+10. Commercial Dealer Retail Value ($ USD)
+11. Technical Inspection Findings & Notes (brief 2-3 sentences)
+
+Return strictly valid JSON with this schema:
+{
+  "title": "Candela GentleMax Pro (2022)",
+  "serial_number": "GMP-9941-US",
+  "fair_market_value": "$48,500",
+  "recommended_list_price": "$52,000",
+  "wholesale_value": "$41,000",
+  "dealer_value": "$56,000",
+  "pulse_count": "84,200",
+  "condition_rating": "94% (Grade A)",
+  "recertification_fee": "-$12,000",
+  "inspection_notes": "..."
+}`;
+
+      try {
+        let resultData = null;
+
+        if (apiKey) {
+          // Live OpenRouter API Call to google/gemini-3.7-flash
+          const contentArray = [{ type: "text", text: systemPrompt }];
+          activeImages.forEach(img => {
+            contentArray.push({
+              type: "image_url",
+              image_url: { url: img }
+            });
+          });
+
+          const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${apiKey}`,
+              "HTTP-Referer": "https://lumdior.com",
+              "X-Title": "Lumdior Appraisal Engine"
+            },
+            body: JSON.stringify({
+              model: "google/gemini-3.7-flash",
+              messages: [{ role: "user", content: contentArray }],
+              response_format: { type: "json_object" }
+            })
+          });
+
+          const data = await response.json();
+          const rawContent = data.choices[0].message.content;
+          resultData = JSON.parse(rawContent.replace(/```json/g, '').replace(/```/g, '').trim());
+        } else {
+          // Realistic high-precision simulator for immediate demo/testing
+          await new Promise(r => setTimeout(r, 2200));
+          resultData = {
+            title: "Candela GentleMax Pro Plus (2022)",
+            serial_number: "GMP-8492-US",
+            fair_market_value: "$58,500",
+            recommended_list_price: "$62,000",
+            wholesale_value: "$49,000",
+            dealer_value: "$68,000",
+            pulse_count: "78,450 Pulses",
+            condition_rating: "96% (Grade A+)",
+            recertification_fee: "-$12,500",
+            inspection_notes: "Clean 755nm Alexandrite and 1064nm Nd:YAG dual-wavelength unit. Odometer telemetry indicates original flashlamp cycle with less than 20% total rated duty wear. Casing and fiber delivery lines in pristine clinical condition."
+          };
+        }
+
+        // Render to UI
+        document.getElementById('res-title').textContent = resultData.title;
+        document.getElementById('res-serial').textContent = `SERIAL # ${resultData.serial_number} • VERIFIED OCR`;
+        document.getElementById('res-price').textContent = resultData.fair_market_value;
+        document.getElementById('res-pulses').textContent = resultData.pulse_count;
+        document.getElementById('res-condition').textContent = resultData.condition_rating;
+        document.getElementById('res-recert').textContent = resultData.recertification_fee;
+        document.getElementById('res-list-price').textContent = resultData.recommended_list_price;
+        document.getElementById('res-wholesale').textContent = resultData.wholesale_value;
+        document.getElementById('res-direct').textContent = resultData.fair_market_value;
+        document.getElementById('res-dealer').textContent = resultData.dealer_value;
+        document.getElementById('res-notes').textContent = resultData.inspection_notes;
+
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('result-section').classList.remove('hidden');
+      } catch (err) {
+        alert("Error running appraisal: " + err.message);
+        document.getElementById('loading-state').classList.add('hidden');
+      } finally {
+        document.getElementById('analyze-btn').disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

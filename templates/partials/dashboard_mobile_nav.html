@@ -1,0 +1,20 @@
+<nav id="mobile-dashboard-nav"
+    class="shrink-0 bg-zinc-950/85 backdrop-blur-2xl border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] flex items-stretch justify-around px-2 pt-2 pb-[calc(0.6rem+env(safe-area-inset-bottom))] z-50 relative">
+    <button type="button" data-mobile-tab="home" id="mobile-nav-btn-home"
+        class="mobile-nav-btn flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl text-white active:scale-95 transition-all">
+        <img src="/static/icons/dinkie/file-folder-filled.svg" class="h-5 w-5 transition-opacity" alt=""
+            style="filter: invert(1); opacity: 1;" />
+        <span class="text-[10px] font-sans font-medium tracking-tight">Library</span>
+    </button>
+    <button type="button" data-mobile-tab="search" id="mobile-nav-btn-search"
+        class="mobile-nav-btn flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl text-zinc-500 active:scale-95 transition-all">
+        <img src="/static/icons/dinkie/left-magnifying-glass.svg" class="h-5 w-5 transition-opacity" alt=""
+            style="filter: invert(1); opacity: 0.5;" />
+        <span class="text-[10px] font-sans font-medium tracking-tight">Search</span>
+    </button>
+    <button type="button" data-mobile-tab="you" id="mobile-nav-btn-you"
+        class="mobile-nav-btn flex-1 flex flex-col items-center gap-1 py-1.5 rounded-xl text-zinc-500 active:scale-95 transition-all">
+        <img id="mobile-nav-avatar" src="" class="h-5 w-5 rounded-full border border-zinc-700 object-cover transition-opacity" style="opacity: 0.5;" alt="" width="20" height="20" />
+        <span class="text-[10px] font-sans font-medium tracking-tight">You</span>
+    </button>
+</nav>

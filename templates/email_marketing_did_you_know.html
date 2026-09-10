@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Synthesizer Architecture & SysEx Insights — bipluk</title>
+</head>
+<body style="background-color: #000000; color: #d4d4d8; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #000000; table-layout: fixed;">
+        <tr>
+            <td align="center" style="padding: 40px 16px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #121215; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden; border-collapse: separate; box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);">
+                    
+                    <!-- Header Logo -->
+                    <tr>
+                        <td style="padding: 32px 32px 24px 32px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); text-align: center;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="vertical-align: middle; padding-right: 10px;">
+                                        <img src="https://bipluk.com/static/logo.svg" width="34" height="34" style="display: block; border-radius: 8px; border: none;" alt="bipluk Logo">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; font-weight: 600; font-size: 18px; color: #ffffff; letter-spacing: -0.02em;">bipluk</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="color: #86868b; font-size: 11px; margin: 6px 0 0 0; font-weight: 400; letter-spacing: 0;">Hardware Architecture &amp; Insights</p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 32px;">
+                            <h1 style="color: #ffffff; font-size: 20px; font-weight: 600; margin: 0 0 16px 0; letter-spacing: -0.02em;">3 things every vintage synthesizer owner should know</h1>
+
+                            <p style="font-size: 14px; line-height: 23px; margin-top: 0; margin-bottom: 24px; color: #a1a1a6;">
+                                Vintage hardware synths are timeless instruments, but their internal memory is remarkably fragile. Here are 3 architectural details worth remembering:
+                            </p>
+
+                            <!-- Fact 1 Card -->
+                            <div style="background-color: #18181c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 18px; margin-bottom: 12px;">
+                                <h3 style="color: #ffffff; font-size: 13px; font-weight: 600; margin: 0 0 6px 0;">1. The Static RAM Battery Clock</h3>
+                                <p style="font-size: 13px; line-height: 20px; color: #a1a1a6; margin: 0;">
+                                    Synths like the Yamaha DX7, Korg M1, and Roland Juno-106 store custom soundbanks in volatile RAM maintained by an internal lithium cell (CR2032). When it drops below 2.5V, all custom presets vanish upon power down.
+                                </p>
+                            </div>
+
+                            <!-- Fact 2 Card -->
+                            <div style="background-color: #18181c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 18px; margin-bottom: 12px;">
+                                <h3 style="color: #ffffff; font-size: 13px; font-weight: 600; margin: 0 0 6px 0;">2. SysEx Byte Signatures</h3>
+                                <p style="font-size: 13px; line-height: 20px; color: #a1a1a6; margin: 0;">
+                                    Every SysEx dump starts with <code style="font-family: -apple-system-ui-monospace, monospace; color: #ffffff; background: rgba(255, 255, 255, 0.08); padding: 2px 6px; border-radius: 4px;">F0</code> and ends with <code style="font-family: -apple-system-ui-monospace, monospace; color: #ffffff; background: rgba(255, 255, 255, 0.08); padding: 2px 6px; border-radius: 4px;">F7</code>. Bipluk reads the hardware manufacturer ID in the header to auto-detect your machine in milliseconds.
+                                </p>
+                            </div>
+
+                            <!-- Fact 3 Card -->
+                            <div style="background-color: #18181c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 18px; margin-bottom: 28px;">
+                                <h3 style="color: #ffffff; font-size: 13px; font-weight: 600; margin: 0 0 6px 0;">3. Browser-Native Web MIDI</h3>
+                                <p style="font-size: 13px; line-height: 20px; color: #a1a1a6; margin: 0;">
+                                    You no longer need 1990s desktop utilities like MIDI-OX or virtual drivers. Web MIDI communicates directly with class-compliant USB-MIDI hardware inside Chrome or Edge with zero latency.
+                                </p>
+                            </div>
+
+                            <!-- Primary Apple CTA Button -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://bipluk.com/home" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 13px 36px; border-radius: 9999px; font-size: 14px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; letter-spacing: -0.01em; box-shadow: 0 4px 16px rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);">Backup Your Hardware Now</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Signoff -->
+                            <div style="border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 20px; margin-top: 24px;">
+                                <p style="font-size: 13px; color: #86868b; margin: 0 0 4px 0;">Keep making great music,</p>
+                                <p style="font-size: 14px; font-weight: 600; color: #ffffff; margin: 0;">The bipluk Team</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 24px 32px; background-color: #0b0b0e; border-top: 1px solid rgba(255, 255, 255, 0.06); text-align: center;">
+                            <p style="color: #6e6e73; font-size: 11px; line-height: 18px; margin: 0 0 6px 0;">
+                                &copy; 2026 bipluk / Half Radiation LLC. All rights reserved.
+                            </p>
+                            <p style="color: #52525b; font-size: 11px; margin: 0;">
+                                <a href="https://bipluk.com/unsubscribe?email={{ email }}" style="color: #86868b; text-decoration: underline;">Unsubscribe</a> from hardware updates.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

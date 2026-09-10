@@ -1,0 +1,26 @@
+name: Drip Email Cron
+
+on:
+  schedule:
+    - cron: "15 * * * *"   # hourly at :15 UTC
+  workflow_dispatch:
+
+jobs:
+  send-drips:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install python-dotenv
+
+      - name: Send drip emails via Resend (bypass Vercel/Cloudflare 1010)
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: python scripts/send_drips.py

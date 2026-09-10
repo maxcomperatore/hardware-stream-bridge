@@ -1,0 +1,33 @@
+name: IndexNow Ping
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "main.py"
+      - "templates/**"
+      - "static/**"
+      - "research_survey_2026.py"
+      - "ping_seo.py"
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours (UTC)
+  workflow_dispatch:
+
+jobs:
+  ping-indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Wait for production deploy
+        if: github.event_name == 'push'
+        run: sleep 120
+
+      - name: Run IndexNow submit
+        run: python ping_seo.py

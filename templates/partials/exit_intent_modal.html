@@ -1,0 +1,114 @@
+<!-- Exit Intent Modal for Content & Guide Pages (Bannerbear-Style Ultra-Minimal) -->
+<div id="exit-intent-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-200 opacity-0" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
+    <div class="relative w-full max-w-md rounded-2xl border-2 border-zinc-700 bg-[#0e0e12] p-7 md:p-9 shadow-2xl space-y-6 text-left transform scale-95 transition-transform duration-200" id="exit-modal-card">
+        
+        <!-- Close Button (X) -->
+        <button type="button" id="exit-modal-close-x" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl font-mono p-1 transition-colors cursor-pointer" aria-label="Close modal">&times;</button>
+        
+        <!-- 1. Green Pill Badge -->
+        <div>
+            <span class="inline-block px-3.5 py-1 rounded-full bg-[#24663a] text-white text-xs font-semibold tracking-wide">
+                Free Demo
+            </span>
+        </div>
+
+        <!-- 2. Massive Bold Headline -->
+        <h3 id="exit-modal-title" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+            Back Up &amp; Audition<br>Your Synths
+        </h3>
+
+        <!-- 3. One Clean Explanatory Sentence -->
+        <p class="text-sm sm:text-base text-zinc-300 leading-relaxed font-sans">
+            bipluk helps you audition, manage, and back up your vintage soundbanks with our browser-native Web MIDI engine.
+        </p>
+
+        <!-- 4. Big Prominent Tactile Button -->
+        <div class="pt-1">
+            <a href="/?utm_source=exit_intent&utm_medium=modal#pricing" id="exit-modal-cta-btn" class="inline-block px-8 py-3.5 rounded-xl bg-[#7dd3a0] hover:bg-[#6ec291] text-zinc-950 font-bold text-base border-2 border-black shadow-[3px_3px_0px_#000] hover:shadow-[1px_1px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer">
+                Learn More
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // Only run on non-landing and non-app pages
+    const path = window.location.pathname;
+    const isLanding = path === '/' || path === '' || path === '/landing';
+    const isApp = path.startsWith('/home') || path.startsWith('/banks') || path.startsWith('/login') || path.startsWith('/signup');
+    if (isLanding || isApp) {
+        return;
+    }
+
+    // Check if already shown in this session
+    if (sessionStorage.getItem('bipluk_exit_intent_shown')) {
+        return;
+    }
+
+    const modal = document.getElementById('exit-intent-modal');
+    const card = document.getElementById('exit-modal-card');
+    const closeX = document.getElementById('exit-modal-close-x');
+    const closeBtn = document.getElementById('exit-modal-close-btn');
+    const ctaBtn = document.getElementById('exit-modal-cta-btn');
+
+    if (!modal || !card) return;
+
+    let hasTriggered = false;
+
+    function showExitModal() {
+        if (hasTriggered) return;
+        hasTriggered = true;
+        sessionStorage.setItem('bipluk_exit_intent_shown', 'true');
+
+        modal.classList.remove('hidden');
+        requestAnimationFrame(function() {
+            modal.classList.remove('opacity-0');
+            card.classList.remove('scale-95');
+            card.classList.add('scale-100');
+        });
+
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('exit_intent_modal_shown', { page: path });
+        }
+    }
+
+    function closeExitModal() {
+        modal.classList.add('opacity-0');
+        card.classList.add('scale-95');
+        card.classList.remove('scale-100');
+        setTimeout(function() {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    // Desktop: Trigger when mouse leaves top edge of viewport (intent to close/switch tab)
+    document.addEventListener('mouseleave', function(e) {
+        if (e.clientY <= 10 && !hasTriggered) {
+            showExitModal();
+        }
+    });
+
+    if (closeX) closeX.addEventListener('click', closeExitModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeExitModal);
+    if (ctaBtn) {
+        ctaBtn.addEventListener('click', function() {
+            if (window.posthog && typeof window.posthog.capture === 'function') {
+                window.posthog.capture('exit_intent_modal_clicked', { page: path });
+            }
+        });
+    }
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeExitModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeExitModal();
+        }
+    });
+})();
+</script>

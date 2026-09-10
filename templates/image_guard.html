@@ -1,0 +1,61 @@
+<!-- Discourage casual image save / right-click (static URLs remain public) -->
+<style>
+    img,
+    picture,
+    image {
+        -webkit-user-drag: none;
+        user-drag: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+    }
+</style>
+<script>
+    (function () {
+        if (window.__kmImageGuard) return;
+        window.__kmImageGuard = true;
+        function guardImage(img) {
+            if (!img || img.dataset.kmGuarded === "1") return;
+            img.dataset.kmGuarded = "1";
+            img.setAttribute("draggable", "false");
+            img.addEventListener("dragstart", function (e) {
+                e.preventDefault();
+            });
+            img.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+            });
+        }
+
+        function guardAllImages(root) {
+            (root || document).querySelectorAll("img").forEach(guardImage);
+        }
+
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener("dragstart", function (e) {
+            if (e.target && e.target.tagName === "IMG") {
+                e.preventDefault();
+            }
+        });
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", function () {
+                guardAllImages();
+            });
+        } else {
+            guardAllImages();
+        }
+
+        new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
+                m.addedNodes.forEach(function (node) {
+                    if (node.nodeType !== 1) return;
+                    if (node.tagName === "IMG") guardImage(node);
+                    else guardAllImages(node);
+                });
+            });
+        }).observe(document.documentElement, { childList: true, subtree: true });
+    })();
+</script>

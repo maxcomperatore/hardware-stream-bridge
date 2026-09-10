@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter" stroke-linecap="square">
+  <!-- Top M Section -->
+  <path d="M 15,8 L 50,28 L 85,8 L 85,44 L 56,38 L 56,45 L 15,37 Z" />
+  <!-- Bottom W Section -->
+  <path d="M 15,92 L 50,72 L 85,92 L 85,56 L 44,63 L 44,56 L 15,63 Z" />
+</svg>

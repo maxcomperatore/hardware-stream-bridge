@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Bipluk!</title>
+</head>
+<body style="background-color: #000000; color: #d4d4d8; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #000000; table-layout: fixed;">
+        <tr>
+            <td align="center" style="padding: 40px 16px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #121215; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden; border-collapse: separate; box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);">
+
+                    <!-- Header Logo -->
+                    <tr>
+                        <td style="padding: 32px 32px 24px 32px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); text-align: center;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="vertical-align: middle; padding-right: 10px;">
+                                        <img src="https://bipluk.com/static/logo.svg" width="34" height="34" style="display: block; border-radius: 8px; border: none;" alt="bipluk Logo">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; font-weight: 600; font-size: 18px; color: #ffffff; letter-spacing: -0.02em;">bipluk</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="color: #86868b; font-size: 11px; margin: 6px 0 0 0; font-weight: 400; letter-spacing: 0;">Hardware Cloud Librarian</p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 32px;">
+                            
+                            <!-- Avatar / Welcome Greeting -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+                                <tr>
+                                    <td style="padding-right: 16px; vertical-align: middle;">
+                                        <img src="{{ avatar_url }}" width="52" height="52" style="display: block; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.16); background-color: #18181b;" alt="Avatar">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <h1 style="color: #ffffff; font-size: 20px; font-weight: 600; margin: 0; letter-spacing: -0.02em;">Welcome, {{ first_name }}</h1>
+                                        <span style="display: inline-block; font-size: 11px; font-family: -apple-system-ui-monospace, 'SF Mono', 'Geist Mono', monospace; color: #a1a1a6; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); padding: 2px 9px; border-radius: 9999px; margin-top: 6px; letter-spacing: 0.02em;">Vault Active</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Intro / Stance -->
+                            <p style="font-size: 14px; line-height: 23px; margin-top: 0; margin-bottom: 14px; color: #e4e4e7;">
+                                We built <strong style="color: #ffffff;">bipluk</strong> because we were sick of two things: 1990s abandonware drivers failing during soundcheck, and watching decades of custom patches vanish into the void when a 3-volt internal coin battery quietly dies.
+                            </p>
+                            <p style="font-size: 14px; line-height: 23px; margin-top: 0; margin-bottom: 24px; color: #a1a1a6;">
+                                No legacy COM ports, no driver installers, no desktop software sprawl. Just byte-for-byte SysEx precision running directly inside your browser. Your cloud vault is ready.
+                            </p>
+
+                            <!-- Hardware Compatibility Badge Group -->
+                            <div style="background-color: #18181c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 16px; margin-bottom: 28px; text-align: center;">
+                                <p style="color: #86868b; font-size: 11px; font-weight: 500; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 0.06em;">Engineered For Over 80+ Hardware Synthesizers</p>
+                                <div style="font-family: -apple-system-ui-monospace, 'SF Mono', 'Geist Mono', monospace; font-size: 11px; color: #a1a1a6;">
+                                    <span style="display: inline-block; color: #ffffff; background: rgba(255, 255, 255, 0.08); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 2px;">Yamaha DX7</span>
+                                    <span style="display: inline-block; color: #ffffff; background: rgba(255, 255, 255, 0.08); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 2px;">Roland Juno-106</span>
+                                    <span style="display: inline-block; color: #ffffff; background: rgba(255, 255, 255, 0.08); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 2px;">Korg M1</span>
+                                    <span style="display: inline-block; color: #ffffff; background: rgba(255, 255, 255, 0.08); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 2px;">Sequential Prophet</span>
+                                </div>
+                            </div>
+
+                            <!-- Setup Steps Heading -->
+                            <h3 style="color: #ffffff; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0; margin-bottom: 14px;">Quick Start</h3>
+                            
+                            <!-- Step 1 Card -->
+                            <div style="background-color: #18181c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 16px; margin-bottom: 10px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 28px; vertical-align: top; font-family: -apple-system-ui-monospace, 'SF Mono', 'Geist Mono', monospace; font-size: 13px; font-weight: 600; color: #86868b;">01</td>
+                                        <td style="padding-left: 8px; vertical-align: top;">
+                                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Connect your MIDI interface</h4>
+                                            <p style="color: #a1a1a6; font-size: 13px; line-height: 20px; margin: 0;">Plug in your synthesizer using any class-compliant USB-MIDI cable.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Step 2 Card -->
+                            <div style="background-color: #18181c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 16px; margin-bottom: 10px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 28px; vertical-align: top; font-family: -apple-system-ui-monospace, 'SF Mono', 'Geist Mono', monospace; font-size: 13px; font-weight: 600; color: #86868b;">02</td>
+                                        <td style="padding-left: 8px; vertical-align: top;">
+                                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Capture your soundbank</h4>
+                                            <p style="color: #a1a1a6; font-size: 13px; line-height: 20px; margin: 0;">Open your dashboard, click <strong style="color: #ffffff;">Capture Soundbank</strong>, and press Send on your synth.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Step 3 Card -->
+                            <div style="background-color: #18181c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 16px; margin-bottom: 28px;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 28px; vertical-align: top; font-family: -apple-system-ui-monospace, 'SF Mono', 'Geist Mono', monospace; font-size: 13px; font-weight: 600; color: #86868b;">03</td>
+                                        <td style="padding-left: 8px; vertical-align: top;">
+                                            <h4 style="color: #ffffff; font-size: 14px; font-weight: 600; margin: 0 0 4px 0;">Organize and protect</h4>
+                                            <p style="color: #a1a1a6; font-size: 13px; line-height: 20px; margin: 0;">Search patch names, export raw .syx files, and restore hardware anytime in one click.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Primary Apple CTA Button -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 16px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://bipluk.com/home" style="display: inline-block; background-color: #ffffff; color: #000000; text-decoration: none; padding: 13px 36px; border-radius: 9999px; font-size: 14px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; letter-spacing: -0.01em; box-shadow: 0 4px 16px rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);">Open Your Vault</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="text-align: center; color: #6e6e73; font-size: 11px; margin: 0;">
+                                Browser-Native Web MIDI · Zero Software Installation
+                            </p>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 24px 32px; background-color: #0b0b0e; border-top: 1px solid rgba(255, 255, 255, 0.06); text-align: center;">
+                            <p style="font-size: 12px; line-height: 20px; color: #86868b; margin: 0 0 6px 0;">
+                                Questions or setting up MIDI? Reply directly to this email.
+                            </p>
+                            <p style="font-size: 11px; line-height: 18px; color: #52525b; margin: 0;">
+                                &copy; 2026 bipluk · Web MIDI Cloud Librarian
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

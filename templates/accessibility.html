@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "partials/local_fonts.html" %}
+    {% include 'partials/favicon.html' %}
+    <title>Web Accessibility Statement (WCAG 2.1 AA) | bipluk</title>
+    <meta name="description" content="bipluk is committed to digital accessibility for people with disabilities. Read our WCAG 2.1 AA compliance statement and accessibility standards.">
+    {% set seo_canonical = "https://bipluk.com/accessibility" %}
+    {% set seo_title = "Web Accessibility Statement (WCAG 2.1 AA) | bipluk" %}
+    {% set seo_description = "bipluk is committed to digital accessibility for people with disabilities. Read our WCAG 2.1 AA compliance statement and accessibility standards." %}
+    {% include 'partials/seo_article_meta.html' %}
+    {% include 'partials/tailwind_lapis.html' %}
+    {% include 'posthog.html' %}
+</head>
+
+<body class="bg-[#0b0b0f] text-zinc-300 min-h-screen selection:bg-zinc-800 selection:text-white overflow-x-hidden w-full max-w-full">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-left relative z-10 w-full max-w-full overflow-x-hidden">
+        <div class="space-y-6">
+            <!-- Header Badge & Title -->
+            <div class="space-y-3">
+                <span class="inline-block text-[10px] font-pixel uppercase tracking-widest text-emerald-400 font-semibold px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded">ADA & WCAG 2.1 AA Compliance</span>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-pixel uppercase text-white tracking-wide break-words">Accessibility Statement</h1>
+                <p class="text-xs text-zinc-400 font-mono">Last Updated: August 5, 2026</p>
+            </div>
+
+            <hr class="border-zinc-900 my-8">
+
+            <!-- Commitment Section -->
+            <section class="space-y-4 text-sm text-zinc-300 leading-relaxed">
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">1. Our Commitment</h2>
+                <p>
+                    <strong>bipluk</strong> is committed to ensuring digital accessibility for all users, including people with disabilities. We are continually improving the user experience for everyone, applying relevant accessibility standards, and ensuring our browser-native Web MIDI librarian interface complies with the <strong>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</strong> standards.
+                </p>
+            </section>
+
+            <!-- Measures Taken -->
+            <section class="space-y-4 text-sm text-zinc-300 leading-relaxed border-t border-zinc-900 pt-8">
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">2. Measures to Support Accessibility</h2>
+                <p>To ensure accessibility across the bipluk web application, we implement the following practices:</p>
+                <ul class="list-disc list-inside space-y-2 text-zinc-400 font-sans pl-2">
+                    <li>Integrate accessibility best practices into all frontend component design and development.</li>
+                    <li>Ensure full keyboard navigability across editor controls, patch vaults, and interactive elements.</li>
+                    <li>Maintain high contrast color ratios for maximum visual legibility.</li>
+                    <li>Implement semantic HTML5 structural tags and WAI-ARIA attributes for assistive screen readers (NVDA, JAWS, VoiceOver).</li>
+                    <li>Conduct regular automated testing and manual keyboard audit reviews.</li>
+                </ul>
+            </section>
+
+            <!-- Conformance Status -->
+            <section class="space-y-4 text-sm text-zinc-300 leading-relaxed border-t border-zinc-900 pt-8">
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">3. Conformance Status</h2>
+                <p>
+                    The <em>Web Content Accessibility Guidelines (WCAG)</em> defines requirements for designers and developers to improve accessibility for people with disabilities. It defines three levels of conformance: Level A, Level AA, and Level AAA. 
+                </p>
+                <div class="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 space-y-2">
+                    <span class="text-xs font-mono text-emerald-400 font-semibold uppercase">Conformance Designation</span>
+                    <p class="text-xs text-zinc-300">
+                        <strong>bipluk is fully conformant with WCAG 2.1 Level AA.</strong> Fully conformant means that site features and browser-native SysEx interfaces conform to accessibility standards without exception on supported modern browsers.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Technical Specifications -->
+            <section class="space-y-4 text-sm text-zinc-300 leading-relaxed border-t border-zinc-900 pt-8">
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">4. Technical Specifications</h2>
+                <p>
+                    Accessibility of bipluk relies on the following core web technologies to operate with web browsers, screen readers, and assistive devices:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 font-mono text-xs text-zinc-300">
+                    <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-lg text-center truncate">HTML5 & WAI-ARIA</div>
+                    <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-lg text-center truncate">Vanilla CSS3</div>
+                    <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-lg text-center truncate">JavaScript (Web MIDI)</div>
+                    <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-lg text-center truncate">SVG Icons</div>
+                </div>
+            </section>
+
+            <!-- Feedback & Contact -->
+            <section class="space-y-4 text-sm text-zinc-300 leading-relaxed border-t border-zinc-900 pt-8">
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-3 font-pixel text-xs">5. Feedback & Support</h2>
+                <p>
+                    We welcome your feedback on the accessibility of bipluk. If you encounter accessibility barriers or have suggestions on how we can improve accessibility for screen readers or assistive devices, please let us know:
+                </p>
+                <div class="p-4 rounded-xl border border-zinc-800 bg-zinc-900/60 font-mono text-xs text-zinc-300 space-y-1">
+                    <p><strong>Email:</strong> <button type="button" data-open-contact-modal="true" class="text-emerald-400 hover:underline cursor-pointer">halfradiationllc@gmail.com</button></p>
+                    <p><strong>Response Time:</strong> Within 2 to 4 business hours</p>
+                </div>
+            </section>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+    {% include 'visitor_avatar.html' %}
+    {% include "mobile_nav.html" %}
+</body>
+
+</html>

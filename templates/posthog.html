@@ -1,0 +1,125 @@
+<!-- PostHog Tracking -->
+<script>
+    // Suppress external Android/Facebook WebView injected script bridge errors
+    window.addEventListener('error', function(e) {
+        var msg = (e && (e.message || (e.error && e.error.message))) || '';
+        if (typeof msg === 'string' && (
+            msg.indexOf('Java object is gone') !== -1 ||
+            msg.indexOf('sendJsBlockingTimeMessage') !== -1 ||
+            msg.indexOf('sendDataToNative') !== -1
+        )) {
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+            if (e.preventDefault) e.preventDefault();
+            return true;
+        }
+    }, true);
+
+    // Ensure essential open graph tags exist to prevent third-party scripts from crashing on querySelector().content
+    ['og:type', 'og:title', 'og:description'].forEach(function(prop) {
+        if (!document.querySelector("meta[property='" + prop + "']")) {
+            var meta = document.createElement('meta');
+            meta.setAttribute('property', prop);
+            meta.setAttribute('content', prop === 'og:type' ? 'website' : document.title || '');
+            document.head.appendChild(meta);
+        }
+    });
+
+    (function() {
+        var posthogKey = {{ posthog_api_key | tojson }};
+        if (!posthogKey) {
+            return;
+        }
+        var enableConversations = {{ posthog_enable_conversations | default(false) | tojson }};
+        var identityDistinctId = {{ posthog_identity_distinct_id | default(none) | tojson }};
+        var identityHash = {{ posthog_identity_hash | default(none) | tojson }};
+        var apiHost = {{ posthog_api_host | tojson }} || 'https://e.bipluk.com';
+        if (!apiHost || apiHost.indexOf('knob.monster') !== -1) {
+            apiHost = 'https://e.bipluk.com';
+        }
+        var assetHost = apiHost.replace(/\.i\.posthog\.com$/, '-assets.i.posthog.com');
+        var script = document.createElement('script');
+        script.src = assetHost + '/static/array.js';
+        script.crossOrigin = 'anonymous';
+        script.async = true;
+        var fallbackAttempted = false;
+        script.onerror = function() {
+            if (!fallbackAttempted && script.src.indexOf('us-assets.i.posthog.com') === -1) {
+                fallbackAttempted = true;
+                var fallbackScript = document.createElement('script');
+                fallbackScript.src = 'https://us-assets.i.posthog.com/static/array.js';
+                fallbackScript.crossOrigin = 'anonymous';
+                fallbackScript.async = true;
+                fallbackScript.onload = script.onload;
+                fallbackScript.onerror = function() {
+                    window.posthog = window.posthog || {
+                        init: function() {},
+                        identify: function() {},
+                        capture: function() {},
+                        on: function() {},
+                        get_distinct_id: function() { return ''; }
+                    };
+                };
+                document.head.appendChild(fallbackScript);
+                return;
+            }
+            window.posthog = window.posthog || {
+                init: function() {},
+                identify: function() {},
+                capture: function() {},
+                on: function() {},
+                get_distinct_id: function() { return ''; }
+            };
+        };
+        script.onload = function() {
+            try {
+                if (!window.posthog || typeof window.posthog.init !== 'function') {
+                    return;
+                }
+                var isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+                var initOptions = {
+                    api_host: apiHost,
+                    ui_host: 'https://us.posthog.com',
+                    defaults: '2026-05-30',
+                    person_profiles: 'identified_only',
+                    disable_conversations: !enableConversations || isMobile,
+                    before_send: function(event) {
+                        if (event && event.event === '$exception') {
+                            var exProps = event.properties || {};
+                            var val = String(exProps.$exception_value || exProps.$exception_message || '');
+                            var raw = '';
+                            try { raw = JSON.stringify(exProps); } catch (e) {}
+                            if (
+                                val.indexOf('Permission denied to access property') !== -1 ||
+                                val.indexOf('nodeName') !== -1 ||
+                                val.indexOf('Unexpected end of input') !== -1 ||
+                                val.indexOf('Script error.') !== -1 ||
+                                val.indexOf('Java object is gone') !== -1 ||
+                                val.indexOf('sendDataToNative') !== -1 ||
+                                val.indexOf('sendJsBlockingTimeMessage') !== -1 ||
+                                raw.indexOf('Java object is gone') !== -1 ||
+                                raw.indexOf('sendDataToNative') !== -1 ||
+                                raw.indexOf('sendJsBlockingTimeMessage') !== -1
+                            ) {
+                                return null;
+                            }
+                        }
+                        return event;
+                    }
+                };
+                if (identityDistinctId && identityHash) {
+                    initOptions.identity_distinct_id = identityDistinctId;
+                    initOptions.identity_hash = identityHash;
+                }
+                window.posthog.init(posthogKey, initOptions);
+                if (identityDistinctId) {
+                    window.posthog.identify(identityDistinctId, { email: identityDistinctId });
+                }
+            } catch (err) {
+                console.warn('PostHog initialization caught error:', err);
+            }
+        };
+        document.head.appendChild(script);
+    })();
+</script>
+{% include 'image_guard.html' %}
+{% include 'meta_pixel.html' %}

@@ -1,0 +1,95 @@
+<!-- Visitor Avatar & Web MIDI Status Initializer -->
+<script>
+    (function() {
+        const userEmail = "{{ user.email if user else '' }}";
+        const userPictureUrl = "{{ user.picture_url if user and user.picture_url else '' }}";
+        const AVATAR_COUNT = 48;
+        const AVATAR_BASE = '/static/avatars/Simple colors/Icon';
+
+        function avatarUrlForKey(key) {
+            const cleanKey = String(key || '').toLowerCase().trim();
+            let hash = 5381;
+            for (let i = 0; i < cleanKey.length; i++) {
+                hash = ((hash << 5) + hash) + cleanKey.charCodeAt(i);
+            }
+            const idx = (Math.abs(hash) % AVATAR_COUNT) + 1;
+            return `${AVATAR_BASE}${idx}.png`;
+        }
+
+        function initVisitorAvatar(overrideKey) {
+            let avatarKey = overrideKey || localStorage.getItem('visitor-avatar-key');
+            if (avatarKey === 'visitor') {
+                avatarKey = null;
+                try { localStorage.removeItem('visitor-avatar-key'); } catch(e){}
+            }
+            try { localStorage.removeItem('visitor-avatar-seed'); } catch(e){}
+
+            if (userEmail) {
+                avatarKey = userEmail.toLowerCase().trim();
+                try { localStorage.setItem('visitor-avatar-key', avatarKey); } catch(e){}
+            } else if (!avatarKey) {
+                avatarKey = 'km-' + Math.random().toString(36).slice(2, 10);
+                try { localStorage.setItem('visitor-avatar-key', avatarKey); } catch(e){}
+            }
+
+            const isCustomPicture = Boolean(userPictureUrl);
+            const avatarSrc = userPictureUrl || avatarUrlForKey(avatarKey);
+
+            [
+                'landing-lifetime-avatar',
+                'landing-upgrade-avatar',
+                'hero-visitor-avatar',
+                'dashboard-upgrade-avatar',
+                'sidebar-user-avatar',
+                'mobile-nav-avatar',
+                'mobile-you-avatar'
+            ].forEach(id => {
+                const img = document.getElementById(id);
+                if (img) {
+                    img.src = avatarSrc;
+                    img.style.imageRendering = isCustomPicture ? 'auto' : 'pixelated';
+                }
+            });
+
+            const geoTag = document.getElementById('visitor-geo-tag');
+            if (geoTag) {
+                if (!document.getElementById('footer-visitor-avatar')) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = "flex items-center gap-2 mt-1 justify-center md:justify-start";
+
+                    geoTag.classList.remove('mt-1', 'justify-center', 'md:justify-start');
+                    geoTag.classList.add('flex', 'items-center', 'gap-1.5');
+
+                    geoTag.parentNode.insertBefore(wrapper, geoTag);
+
+                    const footerAvatarImg = document.createElement('img');
+                    footerAvatarImg.id = 'footer-visitor-avatar';
+                    footerAvatarImg.src = avatarSrc;
+                    footerAvatarImg.className = 'w-5 h-5 rounded-full border border-zinc-855 bg-zinc-900 object-cover shrink-0 select-none';
+                    footerAvatarImg.style.imageRendering = 'pixelated';
+                    footerAvatarImg.alt = 'Visitor Footer Avatar';
+
+                    wrapper.appendChild(footerAvatarImg);
+                    wrapper.appendChild(geoTag);
+                }
+            }
+        }
+
+        window.initVisitorAvatar = initVisitorAvatar;
+        window.setVisitorAvatarEmail = function(email) {
+            if (!email || typeof email !== 'string') return;
+            const clean = email.toLowerCase().trim();
+            if (!clean.includes('@')) return;
+            try { localStorage.setItem('visitor-avatar-key', clean); } catch(e){}
+            initVisitorAvatar(clean);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                initVisitorAvatar();
+            });
+        } else {
+            initVisitorAvatar();
+        }
+    })();
+</script>
